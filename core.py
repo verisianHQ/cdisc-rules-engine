@@ -4,9 +4,10 @@ import logging
 import os
 import pickle
 import tempfile
+import time
 from datetime import datetime
 from multiprocessing import freeze_support
-from typing import Tuple
+from typing import Tuple, Any, Optional
 
 import click
 from pathlib import Path
@@ -16,7 +17,6 @@ from cdisc_rules_engine.enums.progress_parameter_options import ProgressParamete
 from cdisc_rules_engine.enums.report_types import ReportTypes
 from cdisc_rules_engine.enums.dataformat_types import DataFormatTypes
 from cdisc_rules_engine.models.validation_args import Validation_args
-from scripts.run_validation import run_validation
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
 from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
@@ -28,12 +28,18 @@ from cdisc_rules_engine.utilities.utils import (
     generate_report_filename,
     get_rules_cache_key,
 )
+from cdisc_rules_engine.ingestion.loader import DataLoader
+from cdisc_rules_engine.database.rule_engine import RuleEngine
+from cdisc_rules_engine.database.reports import ReportGenerator
 from scripts.list_dataset_metadata_handler import list_dataset_metadata_handler
+from scripts.run_validation import set_log_level
 from version import __version__
 
+engine_logger = logging.getLogger("cdisc_rules_engine")
 
-def valid_data_file(data_path: list) -> Tuple[list, set]:
-    allowed_formats = [format.value for format in DataFormatTypes]
+def valid_data_file(data_path: list) -> Optional[Tuple[list[Any], set[Any]]]:
+    """ Check if the provided data path contains valid data files. """
+    allowed_formats = [frmt.value for frmt in DataFormatTypes]
     found_formats = set()
     file_list = []
     for file in data_path:
@@ -45,6 +51,48 @@ def valid_data_file(data_path: list) -> Tuple[list, set]:
         return [], found_formats
     elif len(found_formats) == 1:
         return file_list, found_formats
+    return None
+
+def run_validation(args: Validation_args):
+    """ Run validation using postgres engine. """
+    set_log_level(args)
+
+    loader = DataLoader()
+    engine = RuleEngine(max_workers=args.pool_size)
+    report_gen = ReportGenerator()
+
+    dataset_ids = []
+    study_id = f"study_{datetime.now().isoformat()}"
+
+    for dataset_path in args.dataset_paths:
+        try:
+            dataset_id = loader.load_dataset(
+                dataset_path, study_id,
+                args.standard, args.version
+            )
+            dataset_ids.append(dataset_id)
+        except Exception as e:
+            engine_logger.error(f"Failed to load {dataset_path}: {e}")
+
+    if not dataset_ids:
+        raise ValueError("No datasets successfully loaded")
+
+    engine_logger.info(f"Running validation on {len(dataset_ids)} datasets")
+    start = time.time()
+
+    execution_id = engine.execute_validation(dataset_ids)
+
+    elapsed_time = time.time() - start
+    engine_logger.info(f"Validation completed in {elapsed_time:.2f} seconds")
+
+    for output_format in args.output_format:
+        if output_format == "XLSX":
+            report_gen.generate_excel_report(execution_id, args.output)
+        elif output_format == "JSON":
+            report_gen.generate_json_report(execution_id, args.output)
+
+    print(f"Output: {args.output}")
+
 
 
 @click.group()
@@ -183,7 +231,7 @@ def cli():
     required=False,
     is_flag=True,
     default=False,
-    help=("flag to run a validation using a custom_standard from the cache"),
+    help=("Flag to run a validation using a custom_standard from the cache"),
 )
 @click.option(
     "-p",
@@ -235,15 +283,7 @@ def validate(
     define_xml_path: str,
     validate_xml: str,
 ):
-    """
-    Validate data using CDISC Rules Engine
-
-    Example:
-
-    python core.py -s SDTM -v 3.4 -d /path/to/datasets
-    """
-
-    # Validate conditional options
+    """ Validate data using CDISC Rules Engine. """
     logger = logging.getLogger("validator")
 
     if raw_report is True:
@@ -254,8 +294,6 @@ def validate(
             ctx.exit()
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
-
-    # Construct ExternalDictionariesContainer:
     external_dictionaries = ExternalDictionariesContainer(
         {
             DictionaryTypes.UNII.value: unii,
@@ -322,7 +360,6 @@ def validate(
             validate_xml_bool,
         )
     )
-
 
 @click.command()
 @click.option(
