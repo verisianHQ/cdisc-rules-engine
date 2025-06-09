@@ -1,14 +1,18 @@
 from typing import List, Union, Dict, Any, Iterator, Tuple
 import uuid
-import json
-from contextlib import contextmanager
 from psycopg2.extras import Json, execute_values
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 
+# requires connection pool pass
+# creation should be much earlier
+# operators exist here and as abstracts in base class
+# execute_cursor_sql
+# two or three operators to begin
+# no need for helper tools for postgreSQL just point here
 
 class PostgreSQLDataset(DatasetInterface):
     """ PostgreSQL-backed dataset implementation. """
-    
+
     def __init__(self, dataset_id: str = None, connection_pool=None, 
                  columns=None, table_name=None, length=None):
         self.dataset_id = dataset_id or str(uuid.uuid4())
@@ -18,30 +22,49 @@ class PostgreSQLDataset(DatasetInterface):
         self._length = length
         self._data = None  # lazy loaded
         self._create_dataset_entry()
-    
-    def _create_dataset_entry(self):
-        """ Register dataset in metadata table. """
+
+    def execute_cursor_sql(self, sql_code: str, args: tuple):
+        """ Execute sql. """
         if self.connection_pool:
             with self.connection_pool.get_connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute("""
-                        INSERT INTO datasets (dataset_id, dataset_name) 
-                        VALUES (%s, %s)
-                        ON CONFLICT (dataset_name, dataset_type) DO NOTHING
-                    """, (self.dataset_id, self._table_name))
+                    cur.execute(sql_code, args)
+
+    def fetch_all(self) -> Any:
+        """ Fetch all data. """
+        if self.connection_pool:
+            with self.connection_pool.get_connection() as conn:
+                with conn.cursor() as cur:
+                    return cur.fetchall()
+    
+    def fetch_one(self) -> Any:
+        """ Fetch all data. """
+        if self.connection_pool:
+            with self.connection_pool.get_connection() as conn:
+                with conn.cursor() as cur:
+                    return cur.fetchone()
+
+    def _create_dataset_entry(self):
+        """ Register dataset in metadata table. """
+        self.execute_cursor_sql(
+            """
+                INSERT INTO datasets (dataset_id, dataset_name) 
+                VALUES (%s, %s)
+                ON CONFLICT (dataset_name, dataset_type) DO NOTHING
+            """, (self.dataset_id, self._table_name))
 
     @property
     def data(self):
         """ Lazy load data when accessed. """
-        if self._data is None and self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("""
-                        SELECT data FROM dataset_records
-                        WHERE dataset_id = %s
-                        ORDER BY row_num
-                    """, (self.dataset_id,))
-                    self._data = [row['data'] for row in cur.fetchall()]
+        if self._data is None:
+            self.execute_cursor_sql(
+                """
+                    SELECT data FROM dataset_records
+                    WHERE dataset_id = %s
+                    ORDER BY row_num
+                """, (self.dataset_id,)
+            )
+            self._data = [row['data'] for row in self.fetch_all()]
         return self._data
 
     @property
@@ -52,32 +75,30 @@ class PostgreSQLDataset(DatasetInterface):
     @property
     def columns(self):
         """ Get column names from metadata or data. """
-        if not self._columns and self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # first try metadata table
-                    cur.execute("""
+        if not self._columns:
+            # first try metadata table
+            self.execute_cursor_sql("""
                         SELECT column_name 
                         FROM dataset_columns 
                         WHERE dataset_id = %s 
                         ORDER BY column_index
                     """, (self.dataset_id,))
-                    cols = [row['column_name'] for row in cur.fetchall()]
+            cols = [row['column_name'] for row in self.fetch_all()]
                     
-                    if not cols:
-                        # fallback to extracting from first record
-                        cur.execute("""
-                            SELECT data FROM dataset_records
-                            WHERE dataset_id = %s
-                            ORDER BY row_num LIMIT 1
-                        """, (self.dataset_id,))
-                        result = cur.fetchone()
-                        if result and result['data']:
-                            cols = list(result['data'].keys())
-                            # store columns for future use
-                            self._register_columns(cols)
-                    
-                    self._columns = cols
+            if not cols:
+                # fallback to extracting from first record
+                self.execute_cursor_sql("""
+                    SELECT data FROM dataset_records
+                    WHERE dataset_id = %s
+                    ORDER BY row_num LIMIT 1
+                """, (self.dataset_id,))
+                result = self.fetch_one()
+                if result and result['data']:
+                    cols = list(result['data'].keys())
+                    # store columns for future use
+                    self._register_columns(cols)
+            
+            self._columns = cols
         return self._columns
 
     @columns.setter
@@ -89,19 +110,18 @@ class PostgreSQLDataset(DatasetInterface):
 
     def _register_columns(self, columns: List[str]):
         """ Register columns in metadata table. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # clear existing columns
-                    cur.execute("DELETE FROM dataset_columns WHERE dataset_id = %s", 
-                            (self.dataset_id,))
-                    # insert new columns
-                    for idx, col in enumerate(columns):
-                        cur.execute("""
-                            INSERT INTO dataset_columns 
-                            (dataset_id, column_name, column_index)
-                            VALUES (%s, %s, %s)
-                        """, (self.dataset_id, col, idx))
+        # clear existing columns
+        self.execute_cursor_sql(
+            "DELETE FROM dataset_columns WHERE dataset_id = %s", 
+            (self.dataset_id,)
+        )
+        # insert new columns
+        for idx, col in enumerate(columns):
+            self.execute_cursor_sql("""
+                INSERT INTO dataset_columns 
+                (dataset_id, column_name, column_index)
+                VALUES (%s, %s, %s)
+            """, (self.dataset_id, col, idx))
 
     @classmethod
     def from_dict(cls, data: dict, connection_pool=None, **kwargs):
@@ -174,54 +194,43 @@ class PostgreSQLDataset(DatasetInterface):
     
     def _get_column(self, column_name: str) -> List[Any]:
         """ Get single column as list. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("""
-                        SELECT data->>%s as value
-                        FROM dataset_records
-                        WHERE dataset_id = %s
-                        ORDER BY row_num
-                    """, (column_name, self.dataset_id))
-                    return [row['value'] for row in cur.fetchall()]
-        return []
+        self.execute_cursor_sql("""
+                SELECT data->>%s as value
+                FROM dataset_records
+                WHERE dataset_id = %s
+                ORDER BY row_num
+            """, (column_name, self.dataset_id))
+        return [row['value'] for row in self.fetch_all()]
     
     def _get_columns(self, column_names: List[str]) -> "PostgreSQLDataset":
         """ Get multiple columns as new dataset. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # build json object with selected columns
-                    json_build = ', '.join([f"'{col}', data->>'{col}'" 
-                                          for col in column_names])
-                    
-                    new_dataset_id = str(uuid.uuid4())
-                    cur.execute(f"""
-                        INSERT INTO dataset_records (dataset_id, row_num, data)
-                        SELECT %s, row_num, 
-                               json_build_object({json_build})::jsonb
-                        FROM dataset_records
-                        WHERE dataset_id = %s
-                        ORDER BY row_num
-                    """, (new_dataset_id, self.dataset_id))
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=column_names
-                    )
-        return PostgreSQLDataset(columns=column_names)
+        # build json object with selected columns
+        json_build = ', '.join([f"'{col}', data->>'{col}'" 
+                                for col in column_names])
+        new_dataset_id = str(uuid.uuid4())
+        self.execute_cursor_sql(f"""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                SELECT %s, row_num, 
+                        json_build_object({json_build})::jsonb
+                FROM dataset_records
+                WHERE dataset_id = %s
+                ORDER BY row_num
+            """,
+            (new_dataset_id, self.dataset_id)
+        )  
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=column_names
+        )
 
     def _get_rows(self, slice_obj: slice) -> 'PostgreSQLDataset':
         """ Get rows by slice. """
         start = slice_obj.start or 0
         stop = slice_obj.stop or len(self)
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
-                    cur.execute("""
+        new_dataset_id = str(uuid.uuid4())
+        self.execute_cursor_sql("""
                         INSERT INTO dataset_records (dataset_id, row_num, data)
                         SELECT %s, row_num - %s, data
                         FROM dataset_records
@@ -240,14 +249,11 @@ class PostgreSQLDataset(DatasetInterface):
 
     def _get_row(self, row_idx: int) -> dict:
         """ Get single row as dict. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("""
+        self.execute_cursor_sql("""
                         SELECT data FROM dataset_records
                         WHERE dataset_id = %s AND row_num = %s
                     """, (self.dataset_id, row_idx))
-                    result = cur.fetchone()
+                    result = self.fetch_one()
                     return result['data'] if result else {}
         return {}
 
@@ -255,40 +261,36 @@ class PostgreSQLDataset(DatasetInterface):
         """ Set column values. """
         if not self.connection_pool:
             return
-            
-        with self.connection_pool.get_connection() as conn:
-            with conn.cursor() as cur:
-                if isinstance(value, (list, tuple)):
-                    # set column from list of values
-                    for idx, val in enumerate(value):
-                        cur.execute("""
-                            UPDATE dataset_records
-                            SET data = jsonb_set(data, %s, %s)
-                            WHERE dataset_id = %s AND row_num = %s
-                        """, ([key], Json(val), self.dataset_id, idx))
-                else:
-                    # set all rows to single value
-                    cur.execute("""
-                        UPDATE dataset_records
-                        SET data = jsonb_set(data, %s, %s)
-                        WHERE dataset_id = %s
-                    """, ([key], Json(value), self.dataset_id))
-                
-                # update columns if new
-                if key not in self._columns:
-                    self._columns.append(key)
-                    self._register_columns(self._columns)
+        
+        if isinstance(value, (list, tuple)):
+            # set column from list of values
+            for idx, val in enumerate(value):
+                self.execute_cursor_sql("""
+                    UPDATE dataset_records
+                    SET data = jsonb_set(data, %s, %s)
+                    WHERE dataset_id = %s AND row_num = %s
+                """, ([key], Json(val), self.dataset_id, idx))
+        else:
+            # set all rows to single value
+            self.execute_cursor_sql("""
+                UPDATE dataset_records
+                SET data = jsonb_set(data, %s, %s)
+                WHERE dataset_id = %s
+            """, ([key], Json(value), self.dataset_id))
+        
+        # update columns if new
+        if key not in self._columns:
+            self._columns.append(key)
+            self._register_columns(self._columns)
 
     def __len__(self):
         """ Get number of rows. """
-        if self._length is None and self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    cur.execute("""
-                        SELECT COUNT(*) FROM dataset_records
-                        WHERE dataset_id = %s
-                    """, (self.dataset_id,))
-                    self._length = cur.fetchone()[0]
+        if self._length is None:
+            self.execute_cursor_sql("""
+                    SELECT COUNT(*) FROM dataset_records
+                    WHERE dataset_id = %s
+                """, (self.dataset_id,))
+            self._length = self.fetch_one()[0]
         return self._length or 0
 
     def __contains__(self, item: str) -> bool:
@@ -319,77 +321,69 @@ class PostgreSQLDataset(DatasetInterface):
         """ Concatenate datasets. """
         if axis == 0:  # vertical concat
             datasets = [other] if not isinstance(other, list) else other
-            if self.connection_pool:
-                with self.connection_pool.get_connection() as conn:
-                    with conn.cursor() as cur:
-                        new_dataset_id = str(uuid.uuid4())
-                        
-                        # copy self first
-                        cur.execute("""
-                            INSERT INTO dataset_records (dataset_id, row_num, data)
-                            SELECT %s, row_num, data
-                            FROM dataset_records
-                            WHERE dataset_id = %s
-                        """, (new_dataset_id, self.dataset_id))
-                        
-                        # append others
-                        offset = len(self)
-                        for ds in datasets:
-                            cur.execute("""
-                                INSERT INTO dataset_records (dataset_id, row_num, data)
-                                SELECT %s, row_num + %s, data
-                                FROM dataset_records
-                                WHERE dataset_id = %s
-                            """, (new_dataset_id, offset, ds.dataset_id))
-                            offset += len(ds)
-                        
-                        return PostgreSQLDataset(
-                            dataset_id=new_dataset_id,
-                            connection_pool=self.connection_pool,
-                            columns=self._columns
-                        )
+            new_dataset_id = str(uuid.uuid4())
+        
+            # copy self first
+            self.execute_cursor_sql("""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                SELECT %s, row_num, data
+                FROM dataset_records
+                WHERE dataset_id = %s
+            """, (new_dataset_id, self.dataset_id))
+            
+            # append others
+            offset = len(self)
+            for ds in datasets:
+                self.execute_cursor_sql("""
+                    INSERT INTO dataset_records (dataset_id, row_num, data)
+                    SELECT %s, row_num + %s, data
+                    FROM dataset_records
+                    WHERE dataset_id = %s
+                """, (new_dataset_id, offset, ds.dataset_id))
+                offset += len(ds)
+            
+            return PostgreSQLDataset(
+                dataset_id=new_dataset_id,
+                connection_pool=self.connection_pool,
+                columns=self._columns
+            )
         else:  # horizontal concat
             datasets = [other] if not isinstance(other, list) else other
-            if self.connection_pool:
-                with self.connection_pool.get_connection() as conn:
-                    with conn.cursor() as cur:
-                        new_dataset_id = str(uuid.uuid4())
-                        
-                        # merge columns from all datasets
-                        merge_sql = "a.data"
-                        for i, ds in enumerate(datasets):
-                            merge_sql += f" || b{i}.data"
-                        
-                        # build join conditions
-                        join_parts = []
-                        for i, ds in enumerate(datasets):
-                            join_parts.append(f"""
-                                LEFT JOIN dataset_records b{i} 
-                                ON a.row_num = b{i}.row_num 
-                                AND b{i}.dataset_id = '{ds.dataset_id}'
-                            """)
-                        
-                        cur.execute(f"""
-                            INSERT INTO dataset_records (dataset_id, row_num, data)
-                            SELECT %s, a.row_num, {merge_sql}
-                            FROM dataset_records a
-                            {' '.join(join_parts)}
-                            WHERE a.dataset_id = %s
-                        """, (new_dataset_id, self.dataset_id))
-                        
-                        # combine columns
-                        all_columns = list(self._columns)
-                        for ds in datasets:
-                            all_columns.extend([c for c in ds.columns 
-                                              if c not in all_columns])
-                        
-                        return PostgreSQLDataset(
-                            dataset_id=new_dataset_id,
-                            connection_pool=self.connection_pool,
-                            columns=all_columns
-                        )
-        
-        return PostgreSQLDataset(columns=self._columns)
+            new_dataset_id = str(uuid.uuid4())
+            
+            # merge columns from all datasets
+            merge_sql = "a.data"
+            for i, ds in enumerate(datasets):
+                merge_sql += f" || b{i}.data"
+            
+            # build join conditions
+            join_parts = []
+            for i, ds in enumerate(datasets):
+                join_parts.append(f"""
+                    LEFT JOIN dataset_records b{i} 
+                    ON a.row_num = b{i}.row_num 
+                    AND b{i}.dataset_id = '{ds.dataset_id}'
+                """)
+            
+            self.execute_cursor_sql(f"""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                SELECT %s, a.row_num, {merge_sql}
+                FROM dataset_records a
+                {' '.join(join_parts)}
+                WHERE a.dataset_id = %s
+            """, (new_dataset_id, self.dataset_id))
+            
+            # combine columns
+            all_columns = list(self._columns)
+            for ds in datasets:
+                all_columns.extend([c for c in ds.columns 
+                                    if c not in all_columns])
+            
+            return PostgreSQLDataset(
+                dataset_id=new_dataset_id,
+                connection_pool=self.connection_pool,
+                columns=all_columns
+            )
 
     def merge(self, other: 'PostgreSQLDataset', on=None, how='inner', **kwargs):
         """ Merge datasets using sql join. """
@@ -402,46 +396,40 @@ class PostgreSQLDataset(DatasetInterface):
         }
         
         join_type = join_type_map.get(how, 'INNER JOIN')
+        new_dataset_id = str(uuid.uuid4())
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
-                    
-                    if on:
-                        if isinstance(on, str):
-                            on = [on]
-                        join_conditions = ' AND '.join([
-                            f"a.data->>'{col}' = b.data->>'{col}'" for col in on
-                        ])
-                    else:
-                        join_conditions = '1=1'
-                    
-                    cur.execute(f"""
-                        INSERT INTO dataset_records (dataset_id, row_num, data)
-                        SELECT 
-                            %s,
-                            ROW_NUMBER() OVER (ORDER BY a.row_num, b.row_num) - 1,
-                            a.data || b.data
-                        FROM dataset_records a
-                        {join_type} dataset_records b 
-                            ON {join_conditions}
-                        WHERE a.dataset_id = %s 
-                          AND b.dataset_id = %s
-                    """, (new_dataset_id, self.dataset_id, other.dataset_id))
-                    
-                    # combine columns
-                    merged_columns = list(self._columns)
-                    merged_columns.extend([c for c in other.columns 
-                                         if c not in merged_columns])
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=merged_columns
-                    )
+        if on:
+            if isinstance(on, str):
+                on = [on]
+            join_conditions = ' AND '.join([
+                f"a.data->>'{col}' = b.data->>'{col}'" for col in on
+            ])
+        else:
+            join_conditions = '1=1'
         
-        return PostgreSQLDataset(columns=self._columns)
+        self.execute_cursor_sql(f"""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT 
+                %s,
+                ROW_NUMBER() OVER (ORDER BY a.row_num, b.row_num) - 1,
+                a.data || b.data
+            FROM dataset_records a
+            {join_type} dataset_records b 
+                ON {join_conditions}
+            WHERE a.dataset_id = %s 
+                AND b.dataset_id = %s
+        """, (new_dataset_id, self.dataset_id, other.dataset_id))
+        
+        # combine columns
+        merged_columns = list(self._columns)
+        merged_columns.extend([c for c in other.columns 
+                                if c not in merged_columns])
+        
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=merged_columns
+        )
 
     def apply(self, func, axis=0, **kwargs):
         """ Apply function to dataset. """
@@ -472,15 +460,15 @@ class PostgreSQLDataset(DatasetInterface):
 
     def iterrows(self) -> Iterator[Tuple[int, dict]]:
         """ Iterate over rows. """
+        self.execute_cursor_sql("""
+                SELECT row_num, data FROM dataset_records
+                WHERE dataset_id = %s
+                ORDER BY row_num
+            """, (self.dataset_id,))
+                    
         if self.connection_pool:
             with self.connection_pool.get_connection() as conn:
                 with conn.cursor() as cur:
-                    cur.execute("""
-                        SELECT row_num, data FROM dataset_records
-                        WHERE dataset_id = %s
-                        ORDER BY row_num
-                    """, (self.dataset_id,))
-                    
                     for row in cur:
                         yield (row['row_num'], row['data'])
 
@@ -506,75 +494,66 @@ class PostgreSQLDataset(DatasetInterface):
 
     def rename(self, index=None, columns=None, inplace=True):
         """ Rename columns. """
-        if columns and self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # update data in place
-                    for old_name, new_name in columns.items():
-                        cur.execute("""
-                            UPDATE dataset_records
-                            SET data = data - %s || jsonb_build_object(%s, data->%s)
-                            WHERE dataset_id = %s
-                        """, (old_name, new_name, old_name, self.dataset_id))
-                    
-                    # update columns list
-                    self._columns = [columns.get(c, c) for c in self._columns]
-                    self._register_columns(self._columns)
-        
-        return self if inplace else self.copy()
+        if columns:
+            for old_name, new_name in columns.items():
+                self.execute_cursor_sql("""
+                    UPDATE dataset_records
+                    SET data = data - %s || jsonb_build_object(%s, data->%s)
+                    WHERE dataset_id = %s
+                """, (old_name, new_name, old_name, self.dataset_id))
+            
+            # update columns list
+            self._columns = [columns.get(c, c) for c in self._columns]
+            self._register_columns(self._columns)
 
     def drop(self, labels=None, axis=0, columns=None, errors="raise"):
         """ Drop rows or columns. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    if axis == 1 or columns:  # drop columns
-                        cols_to_drop = columns or labels
-                        if isinstance(cols_to_drop, str):
-                            cols_to_drop = [cols_to_drop]
-                        
-                        # remove from data
-                        for col in cols_to_drop:
-                            if errors == 'raise' and col not in self._columns:
-                                raise KeyError(f"Column '{col}' not found")
-                            
-                            cur.execute("""
-                                UPDATE dataset_records
-                                SET data = data - %s
-                                WHERE dataset_id = %s
-                            """, (col, self.dataset_id))
-                        
-                        # update columns
-                        self._columns = [c for c in self._columns 
-                                       if c not in cols_to_drop]
-                        self._register_columns(self._columns)
-                    
-                    else:  # drop rows
-                        if isinstance(labels, int):
-                            labels = [labels]
-                        
-                        for label in labels:
-                            cur.execute("""
-                                DELETE FROM dataset_records
-                                WHERE dataset_id = %s AND row_num = %s
-                            """, (self.dataset_id, label))
-                        
-                        # reindex remaining rows
-                        cur.execute("""
-                            UPDATE dataset_records
-                            SET row_num = new_num - 1
-                            FROM (
-                                SELECT record_id, 
-                                       ROW_NUMBER() OVER (ORDER BY row_num) as new_num
-                                FROM dataset_records
-                                WHERE dataset_id = %s
-                            ) as reindexed
-                            WHERE dataset_records.record_id = reindexed.record_id
-                        """, (self.dataset_id,))
-                        
-                        self._length = None  # reset cached length
         
-        return self
+        if axis == 1 or columns:  # drop columns
+            cols_to_drop = columns or labels
+            if isinstance(cols_to_drop, str):
+                cols_to_drop = [cols_to_drop]
+            
+            # remove from data
+            for col in cols_to_drop:
+                if errors == 'raise' and col not in self._columns:
+                    raise KeyError(f"Column '{col}' not found")
+                
+                self.execute_cursor_sql("""
+                    UPDATE dataset_records
+                    SET data = data - %s
+                    WHERE dataset_id = %s
+                """, (col, self.dataset_id))
+            
+            # update columns
+            self._columns = [c for c in self._columns 
+                            if c not in cols_to_drop]
+            self._register_columns(self._columns)
+        
+        else:  # drop rows
+            if isinstance(labels, int):
+                labels = [labels]
+            
+            for label in labels:
+                self.execute_cursor_sql("""
+                    DELETE FROM dataset_records
+                    WHERE dataset_id = %s AND row_num = %s
+                """, (self.dataset_id, label))
+            
+            # reindex remaining rows
+            self.execute_cursor_sql("""
+                UPDATE dataset_records
+                SET row_num = new_num - 1
+                FROM (
+                    SELECT record_id, 
+                            ROW_NUMBER() OVER (ORDER BY row_num) as new_num
+                    FROM dataset_records
+                    WHERE dataset_id = %s
+                ) as reindexed
+                WHERE dataset_records.record_id = reindexed.record_id
+            """, (self.dataset_id,))
+            
+            self._length = None  # reset cached length
 
     def melt(self, id_vars=None, value_vars=None, var_name=None, 
              value_name="value", col_level=None):
@@ -586,60 +565,57 @@ class PostgreSQLDataset(DatasetInterface):
         value_vars = value_vars or [c for c in self.columns if c not in id_vars]
         var_name = var_name or 'variable'
         
-        with self.connection_pool.get_connection() as conn:
-            with conn.cursor() as cur:
-                new_dataset_id = str(uuid.uuid4())
+        new_dataset_id = str(uuid.uuid4())
                 
-                # create unpivoted records
-                insert_values = []
-                row_num = 0
-                
-                for orig_row in self.iterrows():
-                    row_data = orig_row[1]
-                    id_data = {k: row_data.get(k) for k in id_vars}
-                    
-                    for var in value_vars:
-                        if var in row_data:
-                            new_row = id_data.copy()
-                            new_row[var_name] = var
-                            new_row[value_name] = row_data[var]
-                            insert_values.append((new_dataset_id, row_num, Json(new_row)))
-                            row_num += 1
-                
-                # bulk insert
-                execute_values(cur, """
-                    INSERT INTO dataset_records (dataset_id, row_num, data)
-                    VALUES %s
-                """, insert_values)
-                
-                # new columns
-                new_columns = id_vars + [var_name, value_name]
-                
-                return PostgreSQLDataset(
-                    dataset_id=new_dataset_id,
-                    connection_pool=self.connection_pool,
-                    columns=new_columns,
-                    length=row_num
-                )
+        # create unpivoted records
+        insert_values = []
+        row_num = 0
+        
+        for orig_row in self.iterrows():
+            row_data = orig_row[1]
+            id_data = {k: row_data.get(k) for k in id_vars}
+            
+            for var in value_vars:
+                if var in row_data:
+                    new_row = id_data.copy()
+                    new_row[var_name] = var
+                    new_row[value_name] = row_data[var]
+                    insert_values.append((new_dataset_id, row_num, Json(new_row)))
+                    row_num += 1
+        
+        # bulk insert
+        if self.connection_pool:
+            with self.connection_pool.get_connection() as conn:
+                with conn.cursor() as cur:
+                    execute_values(cur, """
+                        INSERT INTO dataset_records (dataset_id, row_num, data)
+                        VALUES %s
+                    """, insert_values)
+        
+        # new columns
+        new_columns = id_vars + [var_name, value_name]
+        
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=new_columns,
+            length=row_num
+        )
 
     def set_index(self, keys, **kwargs):
         """ Set index columns (stored as metadata). """
         if isinstance(keys, str):
             keys = [keys]
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # store index info in dataset metadata
-                    cur.execute("""
-                        UPDATE datasets
-                        SET metadata = jsonb_set(
-                            COALESCE(metadata, '{}'), 
-                            '{index_columns}', 
-                            %s
-                        )
-                        WHERE dataset_id = %s
-                    """, (Json(keys), self.dataset_id))
+        self.execute_cursor_sql("""
+                UPDATE datasets
+                SET metadata = jsonb_set(
+                    COALESCE(metadata, '{}'), 
+                    '{index_columns}', 
+                    %s
+                )
+                WHERE dataset_id = %s
+            """, (Json(keys), self.dataset_id))
         
         return self
 
@@ -667,56 +643,49 @@ class PostgreSQLDataset(DatasetInterface):
 
     def copy(self) -> 'PostgreSQLDataset':
         """ Create deep copy of dataset. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
+        new_dataset_id = str(uuid.uuid4())
                     
-                    # copy all records
-                    cur.execute("""
-                        INSERT INTO dataset_records (dataset_id, row_num, data)
-                        SELECT %s, row_num, data
-                        FROM dataset_records
-                        WHERE dataset_id = %s
-                    """, (new_dataset_id, self.dataset_id))
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=self._columns.copy(),
-                        length=self._length
-                    )
+        # copy all records
+        self.execute_cursor_sql("""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT %s, row_num, data
+            FROM dataset_records
+            WHERE dataset_id = %s
+        """, (new_dataset_id, self.dataset_id))
         
-        return PostgreSQLDataset(columns=self._columns.copy())
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=self._columns.copy(),
+            length=self._length
+        )
 
     def get_error_rows(self, results) -> 'PostgreSQLDataset':
         """ Get rows where results is true. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
-                    
-                    # filter rows where result is true
-                    error_rows = []
-                    for idx, (row_num, row_data) in enumerate(self.iterrows()):
-                        if idx < len(results) and results[idx]:
-                            error_rows.append((new_dataset_id, len(error_rows), 
-                                             Json(row_data)))
-                    
-                    if error_rows:
+        new_dataset_id = str(uuid.uuid4())
+        
+        # filter rows where result is true
+        error_rows = []
+        for idx, (row_num, row_data) in enumerate(self.iterrows()):
+            if idx < len(results) and results[idx]:
+                error_rows.append((new_dataset_id, len(error_rows), 
+                                    Json(row_data)))
+        
+        if error_rows:
+            if self.connection_pool:
+                with self.connection_pool.get_connection() as conn:
+                    with conn.cursor() as cur:
                         execute_values(cur, """
                             INSERT INTO dataset_records (dataset_id, row_num, data)
                             VALUES %s
-                        """, error_rows[:1000])  # limit to 1000
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=self._columns,
-                        length=min(len(error_rows), 1000)
-                    )
+                        """, error_rows[:1000]) # limit to 1000
         
-        return PostgreSQLDataset(columns=self._columns)
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=self._columns,
+            length=min(len(error_rows), 1000)
+        )
 
     def equals(self, other: 'PostgreSQLDataset') -> bool:
         """ Check if datasets are equal. """
@@ -725,7 +694,7 @@ class PostgreSQLDataset(DatasetInterface):
         
         if self.connection_pool:
             # compare data row by row
-            for (idx1, row1), (idx2, row2) in zip(self.iterrows(), other.iterrows()):
+            for (_, row1), (_, row2) in zip(self.iterrows(), other.iterrows()):
                 if row1 != row2:
                     return False
             return True
@@ -734,44 +703,42 @@ class PostgreSQLDataset(DatasetInterface):
 
     def where(self, cond, other=None, **kwargs):
         """ Filter rows by condition. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
+        new_dataset_id = str(uuid.uuid4())
                     
-                    # if cond is string, use as sql where clause
-                    if isinstance(cond, str):
-                        cur.execute(f"""
-                            INSERT INTO dataset_records (dataset_id, row_num, data)
-                            SELECT %s, 
-                                   ROW_NUMBER() OVER (ORDER BY row_num) - 1,
-                                   data
-                            FROM dataset_records
-                            WHERE dataset_id = %s AND ({cond})
-                        """, (new_dataset_id, self.dataset_id))
-                    else:
-                        # cond is list of booleans
-                        filtered_rows = []
-                        for idx, (row_num, row_data) in enumerate(self.iterrows()):
-                            if idx < len(cond) and cond[idx]:
-                                filtered_rows.append((new_dataset_id, 
-                                                    len(filtered_rows), 
-                                                    Json(row_data)))
-                        
-                        if filtered_rows:
+        # if cond is string, use as sql where clause
+        if isinstance(cond, str):
+            self.execute_cursor_sql(f"""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                SELECT %s, 
+                        ROW_NUMBER() OVER (ORDER BY row_num) - 1,
+                        data
+                FROM dataset_records
+                WHERE dataset_id = %s AND ({cond})
+            """, (new_dataset_id, self.dataset_id))
+        else:
+            # cond is list of booleans
+            filtered_rows = []
+            for idx, (row_num, row_data) in enumerate(self.iterrows()):
+                if idx < len(cond) and cond[idx]:
+                    filtered_rows.append((new_dataset_id, 
+                                        len(filtered_rows), 
+                                        Json(row_data)))
+            
+            if filtered_rows:
+                if self.connection_pool:
+                    with self.connection_pool.get_connection() as conn:
+                        with conn.cursor() as cur:
                             execute_values(cur, """
                                 INSERT INTO dataset_records (dataset_id, row_num, data)
                                 VALUES %s
                             """, filtered_rows)
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=self._columns
-                    )
         
-        return PostgreSQLDataset(columns=self._columns)
-
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=self._columns
+        )
+    
     @classmethod
     def cartesian_product(cls, left: 'PostgreSQLDataset', 
                          right: 'PostgreSQLDataset') -> 'PostgreSQLDataset':
@@ -783,169 +750,146 @@ class PostgreSQLDataset(DatasetInterface):
         if isinstance(by, str):
             by = [by]
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    new_dataset_id = str(uuid.uuid4())
-                    
-                    # build order by clause
-                    order_parts = []
-                    for col in by:
-                        direction = 'ASC' if ascending else 'DESC'
-                        order_parts.append(f"(data->>'{col}') {direction}")
-                    order_clause = ', '.join(order_parts)
-                    
-                    cur.execute(f"""
-                        INSERT INTO dataset_records (dataset_id, row_num, data)
-                        SELECT %s,
-                               ROW_NUMBER() OVER (ORDER BY {order_clause}) - 1,
-                               data
-                        FROM dataset_records
-                        WHERE dataset_id = %s
-                        ORDER BY {order_clause}
-                    """, (new_dataset_id, self.dataset_id))
-                    
-                    return PostgreSQLDataset(
-                        dataset_id=new_dataset_id,
-                        connection_pool=self.connection_pool,
-                        columns=self._columns,
-                        length=self._length
-                    )
+        new_dataset_id = str(uuid.uuid4())
         
-        return self
+        # build order by clause
+        order_parts = []
+        for col in by:
+            direction = 'ASC' if ascending else 'DESC'
+            order_parts.append(f"(data->>'{col}') {direction}")
+        order_clause = ', '.join(order_parts)
+        
+        self.execute_cursor_sql(f"""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT %s,
+                    ROW_NUMBER() OVER (ORDER BY {order_clause}) - 1,
+                    data
+            FROM dataset_records
+            WHERE dataset_id = %s
+            ORDER BY {order_clause}
+        """, (new_dataset_id, self.dataset_id))
+        
+        return PostgreSQLDataset(
+            dataset_id=new_dataset_id,
+            connection_pool=self.connection_pool,
+            columns=self._columns,
+            length=self._length
+        )
 
     def is_column_sorted_within(self, group: Union[str, List[str]], column: str) -> bool:
         """ Check if column is sorted within groups. """
         if isinstance(group, str):
             group = [group]
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    # use window function to check ordering
-                    group_cols = ', '.join([f"data->>'{g}'" for g in group])
-                    
-                    cur.execute(f"""
-                        SELECT EXISTS (
-                            SELECT 1
-                            FROM (
-                                SELECT data->>%s as col_val,
-                                       LAG(data->>%s) OVER (
-                                           PARTITION BY {group_cols}
-                                           ORDER BY row_num
-                                       ) as prev_val
-                                FROM dataset_records
-                                WHERE dataset_id = %s
-                            ) t
-                            WHERE prev_val IS NOT NULL 
-                              AND prev_val > col_val
-                        )
-                    """, (column, column, self.dataset_id))
-                    
-                    return not cur.fetchone()[0]
+        # use window function to check ordering
+        group_cols = ', '.join([f"data->>'{g}'" for g in group])
         
-        return True
+        self.execute_cursor_sql(f"""
+            SELECT EXISTS (
+                SELECT 1
+                FROM (
+                    SELECT data->>%s as col_val,
+                            LAG(data->>%s) OVER (
+                                PARTITION BY {group_cols}
+                                ORDER BY row_num
+                            ) as prev_val
+                    FROM dataset_records
+                    WHERE dataset_id = %s
+                ) t
+                WHERE prev_val IS NOT NULL 
+                    AND prev_val > col_val
+            )
+        """, (column, column, self.dataset_id))
+        
+        return not self.fetch_one()[0]
 
     def min(self, axis=0, skipna=True, **kwargs):
         """ Get minimum values. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    if axis == 0:  # column-wise
-                        result = {}
-                        for col in self.columns:
-                            cur.execute("""
-                                SELECT MIN((data->>%s)::numeric)
-                                FROM dataset_records
-                                WHERE dataset_id = %s
-                                  AND data ? %s
-                            """, (col, self.dataset_id, col))
-                            result[col] = cur.fetchone()[0]
-                        return result
-                    else:  # row-wise
-                        results = []
-                        for row_num, row_data in self.iterrows():
-                            numeric_vals = [v for v in row_data.values() 
-                                          if isinstance(v, (int, float))]
-                            results.append(min(numeric_vals) if numeric_vals else None)
-                        return results
-        
-        return {}
+        if axis == 0:  # column-wise
+            result = {}
+            for col in self.columns:
+                self.execute_cursor_sql("""
+                    SELECT MIN((data->>%s)::numeric)
+                    FROM dataset_records
+                    WHERE dataset_id = %s
+                        AND data ? %s
+                """, (col, self.dataset_id, col))
+                result[col] = self.fetch_one()[0]
+            return result
+        else:  # row-wise
+            results = []
+            for row_num, row_data in self.iterrows():
+                numeric_vals = [v for v in row_data.values() 
+                                if isinstance(v, (int, float))]
+                results.append(min(numeric_vals) if numeric_vals else None)
+            return results
 
     def reset_index(self, drop=False, **kwargs):
         """ Reset row numbers to sequential. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    if not drop:
-                        # save current row_num as index column
-                        cur.execute("""
-                            UPDATE dataset_records
-                            SET data = jsonb_set(data, '{index}', to_jsonb(row_num))
-                            WHERE dataset_id = %s
-                        """, (self.dataset_id,))
-                        
-                        if 'index' not in self._columns:
-                            self._columns.insert(0, 'index')
-                            self._register_columns(self._columns)
-                    
-                    # resequence row numbers
-                    cur.execute("""
-                        UPDATE dataset_records dr
-                        SET row_num = t.new_row_num - 1
-                        FROM (
-                            SELECT record_id,
-                                   ROW_NUMBER() OVER (ORDER BY row_num) as new_row_num
-                            FROM dataset_records
-                            WHERE dataset_id = %s
-                        ) t
-                        WHERE dr.record_id = t.record_id
-                    """, (self.dataset_id,))
+        if not drop:
+            # save current row_num as index column
+            self.execute_cursor_sql("""
+                UPDATE dataset_records
+                SET data = jsonb_set(data, '{index}', to_jsonb(row_num))
+                WHERE dataset_id = %s
+            """, (self.dataset_id,))
+            
+            if 'index' not in self._columns:
+                self._columns.insert(0, 'index')
+                self._register_columns(self._columns)
         
-        return self
+        # resequence row numbers
+        self.execute_cursor_sql("""
+            UPDATE dataset_records dr
+            SET row_num = t.new_row_num - 1
+            FROM (
+                SELECT record_id,
+                        ROW_NUMBER() OVER (ORDER BY row_num) as new_row_num
+                FROM dataset_records
+                WHERE dataset_id = %s
+            ) t
+            WHERE dr.record_id = t.record_id
+        """, (self.dataset_id,))
 
     def fillna(self, value=None, method=None, axis=None, 
                inplace=False, limit=None, downcast=None):
         """ Fill null values. """
         dataset = self if inplace else self.copy()
         
-        if dataset.connection_pool:
-            with dataset.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    if value is not None:
-                        # fill with specific value
-                        for col in dataset.columns:
-                            cur.execute("""
-                                UPDATE dataset_records
-                                SET data = jsonb_set(
-                                    data, 
-                                    %s,
-                                    COALESCE(data->%s, %s)
-                                )
-                                WHERE dataset_id = %s
-                            """, ([col], col, Json(value), dataset.dataset_id))
-                    
-                    elif method == 'ffill':
-                        # forward fill
-                        for col in dataset.columns:
-                            cur.execute(f"""
-                                UPDATE dataset_records dr
-                                SET data = jsonb_set(
-                                    data,
-                                    %s,
-                                    COALESCE(
-                                        data->%s,
-                                        (SELECT data->%s
-                                         FROM dataset_records dr2
-                                         WHERE dr2.dataset_id = dr.dataset_id
-                                           AND dr2.row_num < dr.row_num
-                                           AND dr2.data ? %s
-                                         ORDER BY dr2.row_num DESC
-                                         LIMIT 1)
-                                    )
-                                )
-                                WHERE dataset_id = %s
-                            """, ([col], col, col, col, dataset.dataset_id))
+        if value is not None:
+            # fill with specific value
+            for col in dataset.columns:
+                dataset.execute_cursor_sql("""
+                    UPDATE dataset_records
+                    SET data = jsonb_set(
+                        data, 
+                        %s,
+                        COALESCE(data->%s, %s)
+                    )
+                    WHERE dataset_id = %s
+                """, ([col], col, Json(value), dataset.dataset_id))
+        
+        elif method == 'ffill':
+            # forward fill
+            for col in dataset.columns:
+                dataset.execute_cursor_sql(f"""
+                    UPDATE dataset_records dr
+                    SET data = jsonb_set(
+                        data,
+                        %s,
+                        COALESCE(
+                            data->%s,
+                            (SELECT data->%s
+                                FROM dataset_records dr2
+                                WHERE dr2.dataset_id = dr.dataset_id
+                                AND dr2.row_num < dr.row_num
+                                AND dr2.data ? %s
+                                ORDER BY dr2.row_num DESC
+                                LIMIT 1)
+                        )
+                    )
+                    WHERE dataset_id = %s
+                """, ([col], col, col, col, dataset.dataset_id))
         
         return dataset
 
@@ -953,71 +897,63 @@ class PostgreSQLDataset(DatasetInterface):
         """ Get size of each group. """
         if isinstance(by, str):
             by = [by]
+
+        group_cols = ', '.join([f"data->>'{col}' as {col}" for col in by])
         
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    group_cols = ', '.join([f"data->>'{col}' as {col}" for col in by])
-                    
-                    cur.execute(f"""
-                        SELECT {group_cols}, COUNT(*) as size
-                        FROM dataset_records
-                        WHERE dataset_id = %s
-                        GROUP BY {', '.join([f"data->>'{col}'" for col in by])}
-                    """, (self.dataset_id,))
-                    
-                    # return as new dataset
-                    records = []
-                    for row in cur.fetchall():
-                        record = {col: row[col] for col in by}
-                        record['size'] = row['size']
-                        records.append(record)
-                    
-                    result = PostgreSQLDataset.from_records(
-                        records, 
-                        connection_pool=self.connection_pool
-                    )
-                    return result
+        self.execute_cursor_sql(f"""
+            SELECT {group_cols}, COUNT(*) as size
+            FROM dataset_records
+            WHERE dataset_id = %s
+            GROUP BY {', '.join([f"data->>'{col}'" for col in by])}
+        """, (self.dataset_id,))
         
-        return PostgreSQLDataset()
+        # return as new dataset
+        records = []
+        for row in self.fetch_all():
+            record = {col: row[col] for col in by}
+            record['size'] = row['size']
+            records.append(record)
+        
+        result = PostgreSQLDataset.from_records(
+            records, 
+            connection_pool=self.connection_pool
+        )
+        return result
 
     def to_dict(self, orient='records'):
         """ Export to dictionary format. """
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                with conn.cursor() as cur:
-                    if orient == 'records':
-                        cur.execute("""
-                            SELECT data 
-                            FROM dataset_records 
-                            WHERE dataset_id = %s 
-                            ORDER BY row_num
-                        """, (self.dataset_id,))
-                        return [row['data'] for row in cur.fetchall()]
-                    
-                    elif orient == 'list':
-                        result = {}
-                        for col in self.columns:
-                            result[col] = self._get_column(col)
-                        return result
-                    
-                    elif orient == 'series':
-                        result = {}
-                        for col in self.columns:
-                            result[col] = self._get_column(col)
-                        return result
-                    
-                    elif orient == 'split':
-                        return {
-                            'index': list(range(len(self))),
-                            'columns': self.columns,
-                            'data': [list(row[1].values()) 
-                                   for row in self.iterrows()]
-                        }
-                    
-                    elif orient == 'index':
-                        return {row[0]: row[1] for row in self.iterrows()}
+        if orient == 'records':
+            self.execute_cursor_sql("""
+                SELECT data 
+                FROM dataset_records 
+                WHERE dataset_id = %s 
+                ORDER BY row_num
+            """, (self.dataset_id,))
+            return [row['data'] for row in self.fetch_all()]
         
+        elif orient == 'list':
+            result = {}
+            for col in self.columns:
+                result[col] = self._get_column(col)
+            return result
+        
+        elif orient == 'series':
+            result = {}
+            for col in self.columns:
+                result[col] = self._get_column(col)
+            return result
+        
+        elif orient == 'split':
+            return {
+                'index': list(range(len(self))),
+                'columns': self.columns,
+                'data': [list(row[1].values()) 
+                        for row in self.iterrows()]
+            }
+        
+        elif orient == 'index':
+            return {row[0]: row[1] for row in self.iterrows()}
+
         return {} if orient != 'records' else []
 
 
@@ -1034,57 +970,55 @@ class GroupedDataset:
         if not self.dataset.connection_pool:
             return PostgreSQLDataset()
         
-        with self.dataset.connection_pool.get_connection() as conn:
-            with conn.cursor() as cur:
-                # build aggregation expressions
-                agg_exprs = []
-                result_cols = list(self.groupby_cols)
-                
-                for col, funcs in func_dict.items():
-                    if isinstance(funcs, str):
-                        funcs = [funcs]
-                    
-                    for func in funcs:
-                        if func == 'sum':
-                            agg_exprs.append(f"SUM((data->>'{col}')::numeric) as {col}_sum")
-                            result_cols.append(f"{col}_sum")
-                        elif func == 'mean' or func == 'avg':
-                            agg_exprs.append(f"AVG((data->>'{col}')::numeric) as {col}_mean")
-                            result_cols.append(f"{col}_mean")
-                        elif func == 'min':
-                            agg_exprs.append(f"MIN((data->>'{col}')::numeric) as {col}_min")
-                            result_cols.append(f"{col}_min")
-                        elif func == 'max':
-                            agg_exprs.append(f"MAX((data->>'{col}')::numeric) as {col}_max")
-                            result_cols.append(f"{col}_max")
-                        elif func == 'count':
-                            agg_exprs.append(f"COUNT(data->>'{col}') as {col}_count")
-                            result_cols.append(f"{col}_count")
-                        elif func == 'std':
-                            agg_exprs.append(f"STDDEV((data->>'{col}')::numeric) as {col}_std")
-                            result_cols.append(f"{col}_std")
-                
-                # build group by query
-                group_cols = ', '.join([f"data->>'{col}'" for col in self.groupby_cols])
-                select_cols = ', '.join([f"data->>'{col}' as {col}" 
-                                       for col in self.groupby_cols])
-                
-                cur.execute(f"""
-                    SELECT {select_cols}, {', '.join(agg_exprs)}
-                    FROM dataset_records
-                    WHERE dataset_id = %s
-                    GROUP BY {group_cols}
-                """, (self.dataset.dataset_id,))
-                
-                # create result dataset
-                records = []
-                for row in cur.fetchall():
-                    records.append(dict(row))
-                
-                return PostgreSQLDataset.from_records(
-                    records,
-                    connection_pool=self.dataset.connection_pool
-                )
+        # build aggregation expressions
+        agg_exprs = []
+        result_cols = list(self.groupby_cols)
+        
+        for col, funcs in func_dict.items():
+            if isinstance(funcs, str):
+                funcs = [funcs]
+            
+            for func in funcs:
+                if func == 'sum':
+                    agg_exprs.append(f"SUM((data->>'{col}')::numeric) as {col}_sum")
+                    result_cols.append(f"{col}_sum")
+                elif func == 'mean' or func == 'avg':
+                    agg_exprs.append(f"AVG((data->>'{col}')::numeric) as {col}_mean")
+                    result_cols.append(f"{col}_mean")
+                elif func == 'min':
+                    agg_exprs.append(f"MIN((data->>'{col}')::numeric) as {col}_min")
+                    result_cols.append(f"{col}_min")
+                elif func == 'max':
+                    agg_exprs.append(f"MAX((data->>'{col}')::numeric) as {col}_max")
+                    result_cols.append(f"{col}_max")
+                elif func == 'count':
+                    agg_exprs.append(f"COUNT(data->>'{col}') as {col}_count")
+                    result_cols.append(f"{col}_count")
+                elif func == 'std':
+                    agg_exprs.append(f"STDDEV((data->>'{col}')::numeric) as {col}_std")
+                    result_cols.append(f"{col}_std")
+        
+        # build group by query
+        group_cols = ', '.join([f"data->>'{col}'" for col in self.groupby_cols])
+        select_cols = ', '.join([f"data->>'{col}' as {col}" 
+                                for col in self.groupby_cols])
+        
+        self.dataset.execute_cursor_sql(f"""
+            SELECT {select_cols}, {', '.join(agg_exprs)}
+            FROM dataset_records
+            WHERE dataset_id = %s
+            GROUP BY {group_cols}
+        """, (self.dataset.dataset_id,))
+        
+        # create result dataset
+        records = []
+        for row in self.dataset.fetch_all():
+            records.append(dict(row))
+        
+        return PostgreSQLDataset.from_records(
+            records,
+            connection_pool=self.dataset.connection_pool
+        )
     
     def sum(self):
         """ Sum numeric columns. """

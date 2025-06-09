@@ -22,8 +22,8 @@ class PostgreSQLBulkLoader:
                             (dataset_id, column_name, column_index)
                             VALUES (%s, %s, %s)
                         """, (dataset_id, col, idx))
-                
-                # second pass: bulk load using COPY
+            
+                # second pass -> bulk load using COPY
                 with open(file_path, 'r') as f:
                     # transform CSV to JSONB format
                     reader = csv.DictReader(f)
