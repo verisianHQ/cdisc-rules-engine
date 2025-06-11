@@ -25,3 +25,4 @@ psutil==6.1.1
 pyreadstat==1.2.7
 fastparquet==2024.2.0
 psycopg2==2.9.10
+sqlite3==3.13.4
