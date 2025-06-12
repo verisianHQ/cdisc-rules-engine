@@ -1,133 +1,47 @@
 import json
-import queue
-import sqlite3
-import threading
 import uuid
 
-from contextlib import contextmanager
 from typing import List, Dict, Any, Union
 
 from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase
+from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
 
 
 class SQLiteDataset(SQLDatasetBase):
     """SQLite-backed dataset implementation."""
 
-    def __init__(self, dataset_id: str, columns=None, table_name=None, length=None):
+    def __init__(self,
+                 dataset_id: str = None,
+                 database_config: SQLiteDatabaseConfig = None,
+                 columns=None,
+                 table_name=None,
+                 length=None):
+
         self.dataset_id = dataset_id or str(uuid.uuid4())
         self._columns = columns or []
         self._table_name = table_name or f"dataset_{self.dataset_id.replace('-', '_')}"
         self._length = length
         self._data = None  # lazy loaded
-        self.min_connections = 2
-        self.max_connections = 20
-        self.connection_pool = self.initialise_pool()
+
+        self.database_config = database_config
+        if not self.database_config:
+            raise ValueError("database_config is required")
+        
+        # create dataset entry in metadata table
         self._create_dataset_entry()
-
-    # ========== Connection pool classes and methods ==========
-
-    class SQLiteConnectionPool:
-        """Connection pool for SQLite since it doesn't have built-in threading pools."""
-        
-        def __init__(self, database_path: str, max_connections: int = 20):
-            self.database_path = database_path
-            self.max_connections = max_connections
-            self._connections = queue.Queue(maxsize=max_connections)
-            self._lock = threading.Lock()
-            self._created_connections = 0
-        
-        def _create_connection(self):
-            """Create a new SQLite connection."""
-            conn = sqlite3.connect(
-                self.database_path,
-                check_same_thread=False,
-                timeout=30.0,
-                isolation_level=None  # autocommit mode
-            )
-            conn.row_factory = sqlite3.Row  # enable column access by name
-            return conn
-        
-        def get_connection(self):
-            """Get a connection from the pool."""
-            try:
-                # try to get an existing connection
-                return self._connections.get_nowait()
-            except queue.Empty:
-                with self._lock:
-                    if self._created_connections < self.max_connections:
-                        # create a new connection
-                        self._created_connections += 1
-                        return self._create_connection()
-                    else:
-                        # wait for a connection to become available
-                        return self._connections.get(timeout=10)
-        
-        def put_connection(self, conn):
-            """Return a connection to the pool."""
-            if conn and not self._connections.full():
-                self._connections.put_nowait(conn)
-            elif conn:
-                # pool is full, close the connection
-                conn.close()
-                with self._lock:
-                    self._created_connections -= 1
-        
-        def close_all(self):
-            """Close all connections in the pool."""
-            while not self._connections.empty():
-                try:
-                    conn = self._connections.get_nowait()
-                    conn.close()
-                except queue.Empty:
-                    break
-            self._created_connections = 0
-
-    def initialise_pool(self, **config_params):
-        """Initialise SQLite connection pool."""
-        if 'database_path' not in config_params:
-            raise ValueError("Missing required parameter: database_path")
-        
-        try:
-            self.connection_pool = self.SQLiteConnectionPool(
-                database_path=config_params['database_path'],
-                max_connections=self.max_connections
-            )
-            print(f"SQLite connection pool initialised for: {config_params['database_path']}")
-        except Exception as e:
-            raise RuntimeError(f"Failed to initialise SQLite connection pool: {e}")
-    
-    @contextmanager
-    def get_connection(self):
-        """Get a connection from the SQLite pool."""
-        if not self.connection_pool:
-            raise RuntimeError("Connection pool not initialised")
-        
-        connection = None
-        try:
-            connection = self.connection_pool.get_connection()
-            yield connection
-        except Exception as e:
-            if connection:
-                connection.rollback()
-            raise e
-        finally:
-            if connection:
-                self.connection_pool.put_connection(connection)
-    
-    def cleanup(self):
-        """Close all connections in the pool."""
-        if self.connection_pool:
-            self.connection_pool.close_all()
-            self.connection_pool = None
-            print("SQLite connection pool closed")
 
     # ========== SQLite-specific methods ==========
 
     def execute_sql(self, sql_code: str, args: tuple = ()) -> Any:
         """Execute sql code on cursor."""
-        with self.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             return conn.execute(sql_code, args)
-        return None
+    
+    def execute_many(self, sql_code: str, data: List[tuple]):
+        """Execute many with sql code on cursor."""
+        with self.database_config.get_connection() as conn:
+            conn.executemany(sql_code, data)
+            conn.commit()
     
     def fetch_all(self, cursor=None) -> List[Any]:
         """Fetch all data from cursor."""
@@ -152,7 +66,7 @@ class SQLiteDataset(SQLDatasetBase):
     
     def _insert_records(self, records: List[dict]):
         """Bulk insert records into database."""
-        if not self.connection_pool or not records:
+        if not records:
             return
         
         values = [(self.dataset_id, idx, json.dumps(record)) 
@@ -163,13 +77,6 @@ class SQLiteDataset(SQLDatasetBase):
             VALUES (?, ?, ?)
         """, values)
         self._length = len(records)
-    
-    def execute_many(self, sql_code: str, data: List[tuple]):
-        """Execute many with sql code on cursor."""
-        if self.connection_pool:
-            with self.connection_pool.get_connection() as conn:
-                conn.executemany(sql_code, data)
-                conn.commit()
     
     def _get_json_extract_expr(self, column_name: str) -> str:
         """Get SQL expression for extracting JSON field value."""
@@ -207,23 +114,19 @@ class SQLiteDataset(SQLDatasetBase):
     
     def _set_column_value(self, column: str, value: Any, row_idx: int):
         """Set a single cell value."""
-        with self.connection_pool.get_connection() as conn:
-            conn.execute("""
-                UPDATE dataset_records
-                SET data = json_set(data, ?, json(?))
-                WHERE dataset_id = ? AND row_num = ?
-            """, (f'$.{column}', json.dumps(value), self.dataset_id, row_idx))
-            conn.commit()
+        self.execute_sql("""
+            UPDATE dataset_records
+            SET data = json_set(data, ?, json(?))
+            WHERE dataset_id = ? AND row_num = ?
+        """, (f'$.{column}', json.dumps(value), self.dataset_id, row_idx))
     
     def _set_column_value_all(self, column: str, value: Any):
         """Set all rows in a column to the same value."""
-        with self.connection_pool.get_connection() as conn:
-            conn.execute("""
-                UPDATE dataset_records
-                SET data = json_set(data, ?, json(?))
-                WHERE dataset_id = ?
-            """, (f'$.{column}', json.dumps(value), self.dataset_id))
-            conn.commit()
+        self.execute_sql("""
+            UPDATE dataset_records
+            SET data = json_set(data, ?, json(?))
+            WHERE dataset_id = ?
+        """, (f'$.{column}', json.dumps(value), self.dataset_id))
     
     def _get_columns(self, column_names: List[str]) -> 'SQLiteDataset':
         """Get multiple columns as new dataset."""
@@ -242,14 +145,14 @@ class SQLiteDataset(SQLDatasetBase):
         
         return SQLiteDataset(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=column_names
         )
     
     def rename(self, index=None, columns=None, inplace=True):
         """Rename columns."""
         if columns:
-            with self.connection_pool.get_connection() as conn:
+            with self.database_config.get_connection() as conn:
                 for old_name, new_name in columns.items():
                     # Update each record's JSON
                     cursor = conn.execute("""
@@ -266,11 +169,60 @@ class SQLiteDataset(SQLDatasetBase):
                                 SET data = ?
                                 WHERE record_id = ?
                             """, (json.dumps(data), row['record_id']))
+                
                 conn.commit()
             
             # update columns list
             self._columns = [columns.get(c, c) for c in self._columns]
             self._register_columns(self._columns)
+        
+        return self if inplace else self.copy()
+    
+    def set_index(self, keys, **kwargs):
+        """Set index columns (stored as metadata)."""
+        if isinstance(keys, str):
+            keys = [keys]
+        
+        with self.database_config.get_connection() as conn:
+            cursor = conn.execute("""
+                SELECT metadata FROM datasets WHERE dataset_id = ?
+            """, (self.dataset_id,))
+            
+            row = cursor.fetchone()
+            metadata = json.loads(row['metadata'] or '{}') if row else {}
+            metadata['index_columns'] = keys
+            
+            conn.execute("""
+                UPDATE datasets
+                SET metadata = ?
+                WHERE dataset_id = ?
+            """, (json.dumps(metadata), self.dataset_id))
+            conn.commit()
+        
+        return self
+    
+    def _bulk_insert_melt_records(self, records: List[tuple]):
+        """Bulk insert records for melt operation."""
+        self.execute_many("""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            VALUES (?, ?, ?)
+        """, records)
+    
+    def _bulk_insert_error_rows(self, rows: List[tuple]):
+        """Bulk insert error rows."""
+        self.execute_many("""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            VALUES (?, ?, ?)
+        """, rows)
+    
+    def _bulk_insert_where_rows(self, rows: List[tuple]):
+        """Bulk insert filtered rows."""
+        self.execute_many("""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            VALUES (?, ?, ?)
+        """, rows)
+
+    # ========== Factory methods ==========
     
     def drop(self, labels=None, axis=0, columns=None, errors="raise"):
         """Drop rows or columns."""
@@ -280,7 +232,7 @@ class SQLiteDataset(SQLDatasetBase):
                 cols_to_drop = [cols_to_drop]
             
             # remove from data
-            with self.connection_pool.get_connection() as conn:
+            with self.database_config.get_connection() as conn:
                 for col in cols_to_drop:
                     if errors == 'raise' and col not in self._columns:
                         raise KeyError(f"Column '{col}' not found")
@@ -310,7 +262,7 @@ class SQLiteDataset(SQLDatasetBase):
             if isinstance(labels, int):
                 labels = [labels]
             
-            with self.connection_pool.get_connection() as conn:
+            with self.database_config.get_connection() as conn:
                 for label in labels:
                     conn.execute("""
                         DELETE FROM dataset_records
@@ -331,50 +283,7 @@ class SQLiteDataset(SQLDatasetBase):
                 conn.commit()
             
             self._length = None  # reset cached length
-    
-    def _bulk_insert_melt_records(self, records: List[tuple]):
-        """Bulk insert records for melt operation."""
-        self.execute_many("""
-            INSERT INTO dataset_records (dataset_id, row_num, data)
-            VALUES (?, ?, ?)
-        """, records)
-    
-    def set_index(self, keys, **kwargs):
-        """Set index columns (stored as metadata)."""
-        if isinstance(keys, str):
-            keys = [keys]
         
-        with self.connection_pool.get_connection() as conn:
-            cursor = conn.execute("""
-                SELECT metadata FROM datasets WHERE dataset_id = ?
-            """, (self.dataset_id,))
-            
-            metadata = json.loads(cursor.fetchone()['metadata'] or '{}')
-            metadata['index_columns'] = keys
-            
-            conn.execute("""
-                UPDATE datasets
-                SET metadata = ?
-                WHERE dataset_id = ?
-            """, (json.dumps(metadata), self.dataset_id))
-            conn.commit()
-        
-        return self
-    
-    def _bulk_insert_error_rows(self, rows: List[tuple]):
-        """Bulk insert error rows."""
-        self.execute_many("""
-            INSERT INTO dataset_records (dataset_id, row_num, data)
-            VALUES (?, ?, ?)
-        """, rows)
-    
-    def _bulk_insert_where_rows(self, rows: List[tuple]):
-        """Bulk insert filtered rows."""
-        self.execute_many("""
-            INSERT INTO dataset_records (dataset_id, row_num, data)
-            VALUES (?, ?, ?)
-        """, rows)
-    
     def concat(self, other: Union['SQLiteDataset', List['SQLiteDataset']], 
                axis=0, **kwargs):
         """Concatenate datasets."""
@@ -382,7 +291,7 @@ class SQLiteDataset(SQLDatasetBase):
             datasets = [other] if not isinstance(other, list) else other
             new_dataset_id = str(uuid.uuid4())
             
-            with self.connection_pool.get_connection() as conn:
+            with self.database_config.get_connection() as conn:
                 # copy self first
                 conn.execute("""
                     INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -405,7 +314,7 @@ class SQLiteDataset(SQLDatasetBase):
             
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
-                connection_pool=self.connection_pool,
+                database_config=self.database_config,
                 columns=self._columns
             )
         else:  # horizontal concat
@@ -413,7 +322,7 @@ class SQLiteDataset(SQLDatasetBase):
             new_dataset_id = str(uuid.uuid4())
             
             # Build a query that merges JSON objects
-            with self.connection_pool.get_connection() as conn:
+            with self.database_config.get_connection() as conn:
                 # First, create temp table with all data
                 temp_table = f"temp_concat_{new_dataset_id.replace('-', '_')}"
                 conn.execute(f"""
@@ -457,11 +366,11 @@ class SQLiteDataset(SQLDatasetBase):
             
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
-                connection_pool=self.connection_pool,
+                database_config=self.database_config,
                 columns=all_columns
             )
     
-    def merge(self, other: 'SQLiteDataset', on=None, how='inner', **kwargs):
+    def merge(self, other: type['SQLDatasetBase'], on=None, how='inner', **kwargs):
         """Merge datasets using sql join."""
         join_type_map = {
             'inner': 'INNER JOIN',
@@ -484,7 +393,7 @@ class SQLiteDataset(SQLDatasetBase):
         else:
             join_conditions = '1=1'
         
-        with self.connection_pool.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             if how == 'outer':
                 # Simulate FULL OUTER JOIN with UNION
                 conn.execute(f"""
@@ -533,7 +442,7 @@ class SQLiteDataset(SQLDatasetBase):
         
         return SQLiteDataset(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=merged_columns
         )
     
@@ -599,7 +508,7 @@ class SQLiteDataset(SQLDatasetBase):
     
     def reset_index(self, drop=False, **kwargs):
         """Reset row numbers to sequential."""
-        with self.connection_pool.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             if not drop:
                 # save current row_num as index column
                 cursor = conn.execute("""
@@ -638,7 +547,7 @@ class SQLiteDataset(SQLDatasetBase):
         """Fill null values."""
         dataset = self if inplace else self.copy()
         
-        with dataset.connection_pool.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             if value is not None:
                 # fill with specific value
                 for col in dataset.columns:
@@ -747,5 +656,5 @@ class SQLiteDataset(SQLDatasetBase):
         
         return SQLiteDataset.from_records(
             records,
-            connection_pool=self.connection_pool
+            database_config=self.database_config
         )

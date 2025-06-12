@@ -1,19 +1,21 @@
-from typing import List, Union, Dict, Any, Iterator, Tuple
 import uuid
+
 from abc import ABC, abstractmethod
+from typing import List, Union, Dict, Any, Iterator, Tuple
+
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 
 
 class SQLDatasetBase(DatasetInterface, ABC):
     """Base class for SQL-backed dataset implementations."""
     
-    def __init__(self, dataset_id: str = None, columns=None, table_name=None, length=None):
+    def __init__(self, dataset_id: str = None, database_config=None, columns=None, table_name=None, length=None):
         self.dataset_id = dataset_id or str(uuid.uuid4())
         self._columns = columns or []
         self._table_name = table_name or f"dataset_{self.dataset_id.replace('-', '_')}"
         self._length = length
         self._data = None  # lazy loaded
-        self._connection_pool = None
+        self.database_config = database_config
         self._create_dataset_entry()
     
     # ========== Abstract methods that must be implemented by subclasses ==========
@@ -130,7 +132,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         pass
     
     @abstractmethod
-    def merge(self, other: 'SQLDatasetBase', on=None, how='inner', **kwargs):
+    def merge(self, other: type['SQLDatasetBase'], on=None, how='inner', **kwargs):
         """Merge datasets using sql join."""
         pass
 
@@ -215,7 +217,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def columns(self, columns):
         """Set column names and update metadata."""
         self._columns = columns
-        if self.connection_pool:
+        if self.database_config:
             self._register_columns(columns)
     
     def _register_columns(self, columns: List[str]):
@@ -237,33 +239,42 @@ class SQLDatasetBase(DatasetInterface, ABC):
     # ========== Factory methods ==========
     
     @classmethod
-    def from_dict(cls, data: dict, connection_pool=None, **kwargs):
+    def from_dict(cls, data: dict, database_config=None, **kwargs):
         """Create dataset from dictionary."""
-        dataset = cls(connection_pool=connection_pool)
-        if connection_pool:
-            records = []
-            columns = set()
-            for col, values in data.items():
-                columns.add(col)
-                for idx, val in enumerate(values):
-                    if idx >= len(records):
-                        records.append({})
-                    records[idx][col] = val
+        if not database_config:
+            raise ValueError("database_config is required")
             
-            dataset._insert_records(records)
-            dataset._columns = list(columns)
-            dataset._register_columns(dataset._columns)
+        dataset = cls(database_config=database_config)
+        
+        records = []
+        columns = set()
+        for col, values in data.items():
+            columns.add(col)
+            for idx, val in enumerate(values):
+                if idx >= len(records):
+                    records.append({})
+                records[idx][col] = val
+        
+        dataset._insert_records(records)
+        dataset._columns = list(columns)
+        dataset._register_columns(dataset._columns)
+        
         return dataset
     
     @classmethod
-    def from_records(cls, data: List[dict], connection_pool=None, **kwargs):
+    def from_records(cls, data: List[dict], database_config=None, **kwargs):
         """Create dataset from list of records."""
-        dataset = cls(connection_pool=connection_pool)
-        if connection_pool and data:
+        if not database_config:
+            raise ValueError("database_config is required")
+            
+        dataset = cls(database_config=database_config)
+        
+        if data:
             dataset._insert_records(data)
             dataset._columns = list(data[0].keys()) if data else []
             if dataset._columns:
                 dataset._register_columns(dataset._columns)
+        
         return dataset
     
     # ========== Common class methods ==========
@@ -307,7 +318,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     
     def __setitem__(self, key: str, value):
         """Set column values."""
-        if not self.connection_pool:
+        if not self.database_config:
             return
         
         if isinstance(value, (list, tuple)):
@@ -371,7 +382,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=self._columns
         )
     
@@ -433,7 +444,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def melt(self, id_vars=None, value_vars=None, var_name=None, 
              value_name="value", col_level=None):
         """Unpivot dataset from wide to long format."""
-        if not self.connection_pool:
+        if not self.database_config:
             return self.__class__()
         
         id_vars = id_vars or []
@@ -466,7 +477,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=new_columns,
             length=row_num
         )
@@ -507,7 +518,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=self._columns.copy(),
             length=self._length
         )
@@ -528,7 +539,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=self._columns,
             length=min(len(error_rows), 1000)
         )
@@ -538,7 +549,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if len(self) != len(other) or self.columns != other.columns:
             return False
         
-        if self.connection_pool:
+        if self.database_config:
             # compare data row by row
             for (_, row1), (_, row2) in zip(self.iterrows(), other.iterrows()):
                 if row1 != row2:
@@ -575,13 +586,13 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=self._columns
         )
     
     def apply(self, func, axis=0, **kwargs):
         """Apply function to dataset."""
-        if self.connection_pool:
+        if self.database_config:
             if axis == 1:  # row-wise
                 # fetch all data and apply function
                 results = []
@@ -589,7 +600,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
                     results.append(func(row[1]))
                 
                 # create new dataset with results
-                new_dataset = self.__class__(connection_pool=self.connection_pool)
+                new_dataset = self.__class__(database_config=self.database_config)
                 if isinstance(results[0], dict):
                     new_dataset._insert_records(results)
                 else:
@@ -628,7 +639,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            database_config=self.database_config,
             columns=self._columns,
             length=self._length
         )
@@ -657,7 +668,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         
         return self.__class__.from_records(
             records, 
-            connection_pool=self.connection_pool
+            database_config=self.database_config
         )
     
     def to_dict(self, orient='records'):
@@ -711,7 +722,7 @@ class GroupedSQLOperations:
     
     def agg(self, func_dict: Dict[str, Union[str, List[str]]]):
         """Aggregate using multiple functions."""
-        if not self.dataset.connection_pool:
+        if not self.dataset.database_config:
             return self.dataset.__class__()
         
         # let the child dataset build the aggregation query

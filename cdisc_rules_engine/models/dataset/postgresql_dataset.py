@@ -1,86 +1,39 @@
 import uuid
+
+from psycopg2.extras import Json, execute_values
 from typing import List, Dict, Any, Union
 
-from contextlib import contextmanager
-import psycopg2.pool
-from psycopg2.extras import Json, execute_values, RealDictCursor
-
 from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase
-
+from cdisc_rules_engine.config.databases.postgresql_database_config import PostgreSQLDatabaseConfig
 
 class PostgreSQLDataset(SQLDatasetBase):
     """PostgreSQL-backed dataset implementation."""
 
-    def __init__(self, dataset_id: str, columns=None, table_name=None, length=None):
+    def __init__(self,
+                 dataset_id: str = None,
+                 database_config: PostgreSQLDatabaseConfig = None,
+                 columns=None,
+                 table_name=None,
+                 length=None):
+
         self.dataset_id = dataset_id or str(uuid.uuid4())
         self._columns = columns or []
         self._table_name = table_name or f"dataset_{self.dataset_id.replace('-', '_')}"
         self._length = length
         self._data = None  # lazy loaded
-        self.min_connections = 2
-        self.max_connections = 20
-        self.connection_pool = self.initialise_pool()
+        
+        self.database_config = database_config
+        if not self.database_config:
+            raise ValueError("database_config is required")
+        
+        # create dataset entry in metadata table
         self._create_dataset_entry()
-
-    # ========== Connection pool methods ==========
-
-    def initialise_pool(self, **config_params):
-        """Initialise PostgreSQL connection pool."""
-        required_params = ['host', 'port', 'database', 'user', 'password']
-        for param in required_params:
-            if param not in config_params:
-                raise ValueError(f"Missing required parameter: {param}")
-        
-        try:
-            return psycopg2.pool.ThreadedConnectionPool(
-                self.min_connections,
-                self.max_connections,
-                host=config_params['host'],
-                port=config_params.get('port', 5432),
-                database=config_params['database'],
-                user=config_params['user'],
-                password=config_params['password'],
-                cursor_factory=RealDictCursor,
-            )
-        except Exception as e:
-            raise RuntimeError(f"Failed to initialise PostgreSQL connection pool: {e}")
-    
-    @contextmanager
-    def get_connection(self):
-        """Get a connection from the PostgreSQL pool."""
-        if not self.connection_pool:
-            raise RuntimeError("Connection pool not initialised")
-        
-        connection = None
-        try:
-            connection = self.connection_pool.getconn()
-            if connection.closed:
-                # Connection is closed, get a new one
-                self.connection_pool.putconn(connection, close=True)
-                connection = self.connection_pool.getconn()
-            
-            yield connection
-            connection.commit()
-        except Exception as e:
-            if connection:
-                connection.rollback()
-            raise e
-        finally:
-            if connection:
-                self.connection_pool.putconn(connection)
-    
-    def cleanup(self):
-        """Close all connections in the pool."""
-        if self.connection_pool:
-            self.connection_pool.closeall()
-            self.connection_pool = None
-            print("PostgreSQL connection pool closed")
 
     # ========== PostgreSQL-specific methods ==========
 
     def execute_sql(self, sql_code: str, args: tuple) -> Any:
         """Execute sql code on cursor."""
-        with self.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(sql_code, args)
                 return cur
@@ -88,7 +41,7 @@ class PostgreSQLDataset(SQLDatasetBase):
 
     def execute_sql_values(self, sql_code: str, args: List[tuple]):
         """Execute value sql code on cursor."""
-        with self.get_connection() as conn:
+        with self.database_config.get_connection() as conn:
             with conn.cursor() as cur:
                 execute_values(cur, sql_code, args)
 
@@ -188,7 +141,7 @@ class PostgreSQLDataset(SQLDatasetBase):
         
         return PostgreSQLDataset(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            connection_pool=self.database_config,
             columns=column_names
         )
     
@@ -320,7 +273,7 @@ class PostgreSQLDataset(SQLDatasetBase):
             
             return PostgreSQLDataset(
                 dataset_id=new_dataset_id,
-                connection_pool=self.connection_pool,
+                connection_pool=self.database_config,
                 columns=self._columns
             )
         else:  # horizontal concat
@@ -357,7 +310,7 @@ class PostgreSQLDataset(SQLDatasetBase):
             
             return PostgreSQLDataset(
                 dataset_id=new_dataset_id,
-                connection_pool=self.connection_pool,
+                connection_pool=self.database_config,
                 columns=all_columns
             )
     
@@ -403,7 +356,7 @@ class PostgreSQLDataset(SQLDatasetBase):
         
         return PostgreSQLDataset(
             dataset_id=new_dataset_id,
-            connection_pool=self.connection_pool,
+            connection_pool=self.database_config,
             columns=merged_columns
         )
     
@@ -582,5 +535,5 @@ class PostgreSQLDataset(SQLDatasetBase):
         
         return PostgreSQLDataset.from_records(
             records,
-            connection_pool=self.connection_pool
+            connection_pool=self.database_config
         )
