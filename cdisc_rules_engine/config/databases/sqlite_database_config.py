@@ -11,8 +11,8 @@ class SQLiteDatabaseConfig:
         self._local = threading.local()
         self._database_path: Optional[str] = None
         self._connection_params: Dict[str, Any] = {
-            'check_same_thread': False,  # allow connection sharing between threads
-            'timeout': 30.0,
+            'check_same_thread': True,  # do not allow connection sharing between threads
+            'timeout': 100.0,
             'isolation_level': None  # Autocommit mode
         }
     
@@ -43,10 +43,12 @@ class SQLiteDatabaseConfig:
         conn = self._get_thread_connection()
         try:
             yield conn
+            # check if in auto-commit mode, if not then commit.
+            if not self._connection_params['isolation_level']:
+                conn.commit()
         except Exception as e:
             conn.rollback()
             raise e
-        # Note: No commit here since we're in autocommit mode (isolation_level=None)
     
     def close_thread_connection(self):
         """Close the connection for the current thread."""
