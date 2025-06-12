@@ -7,7 +7,6 @@ from cdisc_rules_engine.interfaces import (
     DataServiceInterface,
     FactoryInterface,
 )
-from cdisc_rules_engine.models.dataset import DaskDataset, PandasDataset
 from cdisc_rules_engine.services.data_services.excel_data_service import (
     ExcelDataService,
 )
@@ -18,6 +17,7 @@ from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 
 
 class DataServiceFactory(FactoryInterface):
@@ -107,22 +107,9 @@ class DataServiceFactory(FactoryInterface):
         )
 
     def get_dataset_implementation(self):
-        """
-        Gets the class that should be used to represent datasets for the rules engine. This class may be dependent on
-        rule size or config values
-
-        :returns DatasetInterface.__class__
-        """
-        if (
-            self.max_dataset_size
-            and self.max_dataset_size >= self.dataset_size_threshold
-            and self.data_service_name != "usdm"
-        ):
-            # Use large dataset class
-            logger.info("Using DASK dataset implementation")
-            return DaskDataset
-        logger.info("Using PANDAS dataset implementation")
-        return PandasDataset
+        """Gets the class that should be used to represent datasets for the rules engine."""
+        logger.info("Using SQLite dataset implementation")
+        return SQLiteDataset
 
     @classmethod
     def register_service(cls, name: str, service: Type[DataServiceInterface]) -> None:

@@ -78,6 +78,10 @@ class RulesEngine:
         )
         self.dataset_implementation = data_service_factory.get_dataset_implementation()
         kwargs["dataset_implementation"] = self.dataset_implementation
+        if self.dataset_implementation.__name__ == "SQLiteDataset":
+            kwargs["database_config"] = getattr(
+                self.data_service, "sqlite_config", None
+            )
         self.data_service = data_service or data_service_factory.get_data_service(
             self.dataset_paths
         )
