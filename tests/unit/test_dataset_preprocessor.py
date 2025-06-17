@@ -20,7 +20,10 @@ from cdisc_rules_engine.models.library_metadata_container import (
 from cdisc_rules_engine.models.dataset import DatasetInterface, SQLiteDataset
 from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
 
-def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict, db_config):
+
+def test_preprocess_no_datasets_in_rule(
+    dataset_rule_equal_to_error_objects: dict, db_config
+):
     """
     Unit test for preprocess method. Checks the case when
     no datasets are provided in the rule.
@@ -35,7 +38,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
                 3,
             ],
         },
-        db_config
+        db_config,
     )
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
@@ -197,7 +200,7 @@ def test_preprocess(
     dataset_rule_equal_to: dict,
     join_type: str,
     expected_dataset: dict,
-    db_config
+    db_config,
 ):
     """
     Unit test for preprocess method. Checks the case when
@@ -241,7 +244,7 @@ def test_preprocess(
                 "CDISC003",
             ],
         },
-        db_config
+        db_config,
     )
     ae_dataset = SQLiteDataset.from_dict(
         {
@@ -270,7 +273,7 @@ def test_preprocess(
                 "CDISC002",
             ],
         },
-        db_config
+        db_config,
     )
     ts_dataset = SQLiteDataset.from_dict(
         {
@@ -291,14 +294,14 @@ def test_preprocess(
                 "CDISC001",
             ],
         },
-        db_config
+        db_config,
     )
 
     ec_metadata = SDTMDatasetMetadata(
         domain="EC",
-        name="EC", 
+        name="EC",
         filename="ec.xpt",
-        full_path=os.path.join("path", "ec.xpt")
+        full_path=os.path.join("path", "ec.xpt"),
     )
 
     datasets_metadata = [
@@ -306,13 +309,13 @@ def test_preprocess(
             domain="AE",
             name="AE",
             filename="ae.xpt",
-            full_path=os.path.join("path", "ae.xpt")
+            full_path=os.path.join("path", "ae.xpt"),
         ),
         SDTMDatasetMetadata(
             domain="TS",
-            name="TS", 
+            name="TS",
             filename="ts.xpt",
-            full_path=os.path.join("path", "ts.xpt")
+            full_path=os.path.join("path", "ts.xpt"),
         ),
     ]
 
@@ -342,17 +345,18 @@ def test_preprocess(
         InMemoryCacheService(),
     )
     preprocessed_dataset = preprocessor.preprocess(
-        dataset_rule_equal_to,
-        datasets_metadata
+        dataset_rule_equal_to, datasets_metadata
     )
-    assert preprocessed_dataset.equals(SQLiteDataset.from_dict(expected_dataset, db_config))
+    assert preprocessed_dataset.equals(
+        SQLiteDataset.from_dict(expected_dataset, db_config)
+    )
 
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
 def test_preprocess_relationship_dataset(
     mock_get_dataset: MagicMock,
     dataset_rule_record_in_parent_domain_equal_to: dict,
-    db_config
+    db_config,
 ):
     """
     Unit test for preprocess method. Checks the case when
@@ -391,7 +395,7 @@ def test_preprocess_relationship_dataset(
                 5,
             ],
         },
-        db_config
+        db_config,
     )
     suppec_dataset = SQLiteDataset.from_dict(
         {
@@ -416,9 +420,8 @@ def test_preprocess_relationship_dataset(
                 "5.0",
             ],
         },
-        db_config
+        db_config,
     )
-
 
     # mock blob storage call
     path_to_dataset_map: dict = {
@@ -484,7 +487,7 @@ def test_preprocess_relationship_dataset(
                 5.0,
             ],
         },
-        db_config
+        db_config,
     )
     assert preprocessed_dataset.equals(expected_dataset)
 
@@ -657,7 +660,7 @@ def test_preprocess_relrec_dataset(
                 "CDISC003",
             ],
         },
-        db_config
+        db_config,
     )
     ae_dataset = SQLiteDataset.from_dict(
         {
@@ -686,7 +689,7 @@ def test_preprocess_relrec_dataset(
                 "CDISC002",
             ],
         },
-        db_config
+        db_config,
     )
     relrec_dataset = SQLiteDataset.from_dict(relrec, db_config)
 
@@ -736,7 +739,7 @@ def test_preprocess_relrec_dataset(
 def test_preprocess_with_merge_comparison(
     mock_get_dataset: MagicMock,
     dataset_rule_equal_to_compare_same_value: dict,
-    db_config
+    db_config,
 ):
     """
     Unit test for the rules engine that ensures that
@@ -756,7 +759,7 @@ def test_preprocess_with_merge_comparison(
             ],
             "NOTVISIT": [12],
         },
-        db_config
+        db_config,
     )
     match_dataset = SQLiteDataset.from_dict(
         {
@@ -771,7 +774,7 @@ def test_preprocess_with_merge_comparison(
             ],
             "VISIT": [24],
         },
-        db_config
+        db_config,
     )
 
     path_to_dataset_map: dict = {

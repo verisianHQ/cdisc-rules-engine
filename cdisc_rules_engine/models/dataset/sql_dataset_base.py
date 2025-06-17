@@ -273,9 +273,11 @@ class SQLDatasetBase(DatasetInterface, ABC):
             raise ValueError("database_config is required")
 
         dataset = cls(database_config=database_config)
-        
-        if not hasattr(dataset, 'dataset_id'):
-            raise RuntimeError(f"Failed to create valid dataset instance of class {cls}")
+
+        if not hasattr(dataset, "dataset_id"):
+            raise RuntimeError(
+                f"Failed to create valid dataset instance of class {cls}"
+            )
 
         records = []
         columns_set = set()
@@ -283,14 +285,16 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if data:
             for col, values in data.items():
                 columns_set.add(col)
-                
-                if hasattr(values, 'tolist'):
+
+                if hasattr(values, "tolist"):
                     values = values.tolist()
-                elif hasattr(values, '__iter__') and not isinstance(values, (str, dict)):
+                elif hasattr(values, "__iter__") and not isinstance(
+                    values, (str, dict)
+                ):
                     values = list(values)
                 elif not isinstance(values, list):
                     values = [values]
-                
+
                 for idx, val in enumerate(values):
                     if idx >= len(records):
                         records.append({})
@@ -298,12 +302,14 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
         if records:
             dataset._insert_records(records)
-        
+
         dataset.columns = list(columns_set)
-        
+
         if not isinstance(dataset, cls):
-            raise RuntimeError(f"Dataset is not an instance of {cls}, got {type(dataset)}")
-        
+            raise RuntimeError(
+                f"Dataset is not an instance of {cls}, got {type(dataset)}"
+            )
+
         return dataset
 
     @classmethod
@@ -313,8 +319,10 @@ class SQLDatasetBase(DatasetInterface, ABC):
             raise ValueError("database_config is required")
 
         provided_columns = kwargs.pop("columns", None)
-        
-        dataset = cls(database_config=database_config, columns=provided_columns, **kwargs)
+
+        dataset = cls(
+            database_config=database_config, columns=provided_columns, **kwargs
+        )
 
         if data:
             dataset._insert_records(data)
@@ -624,12 +632,12 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
     def equals(self, other: "SQLDatasetBase") -> bool:
         """Check if datasets are equal."""
-        if not hasattr(other, 'dataset_id'):
+        if not hasattr(other, "dataset_id"):
             return False
 
         if len(self) != len(other):
             return False
-        
+
         if set(self.columns) != set(other.columns):
             return False
 
