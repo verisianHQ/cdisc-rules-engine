@@ -4,8 +4,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
     ExternalDictionariesContainer,
 )
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-
-import pandas as pd
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 
 
 @dataclass
@@ -17,7 +16,7 @@ class OperationParams:
 
     # Required parameters (no defaults) first
     core_id: str
-    dataframe: pd.DataFrame
+    dataframe: SQLiteDataset
     dataset_path: str
     datasets: Iterable[SDTMDatasetMetadata]
     domain: str
@@ -51,3 +50,4 @@ class OperationParams:
     original_target: str = None
     returntype: str = None
     target: str = None
+    whodrug_path: str = None

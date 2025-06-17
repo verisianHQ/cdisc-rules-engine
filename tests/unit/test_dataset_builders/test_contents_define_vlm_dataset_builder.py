@@ -7,14 +7,14 @@ from cdisc_rules_engine.dataset_builders.contents_define_vlm_dataset_builder imp
     ContentsDefineVLMDatasetBuilder,
 )
 from cdisc_rules_engine.services.data_services import LocalDataService
-from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 
 
 @pytest.mark.parametrize(
     "dataset_implementation, content, vlm_metadata, expected",
     [
         (
-            PandasDataset,
+            SQLiteDataset,
             {"VAR1": ["1A", "1B", "1C"], "VAR2": ["2A", "2B", "2C"]},
             {
                 "define_variable_name": ["VAR1", "VAR3"],
@@ -51,48 +51,8 @@ from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
                 ],
                 "define_vlm_length": [1],
                 "define_vlm_mandatory": ["Yes"],
-            },
-        ),
-        (
-            DaskDataset,
-            {"VAR1": ["1A", "1B", "1C"], "VAR2": ["2A", "2B", "2C"]},
-            {
-                "define_variable_name": ["VAR1", "VAR3"],
-                "define_vlm_name": ["VAR1B VLM Name", "VAR3C VLM Name"],
-                "define_vlm_label": ["VAR1B Label", "VAR3C Label"],
-                "define_vlm_data_type": ["text", "text"],
-                "define_vlm_role": ["VAR1B ROLE", "VAR3C ROLE"],
-                "define_vlm_length": [1, 2],
-                "filter": [
-                    lambda row: row["VAR2"] == "2B",
-                    lambda row: row["VAR2"] == "2C",
-                ],
-                "define_vlm_mandatory": ["Yes", "No"],
-            },
-            {
-                "row_number": [2],
-                "variable_name": ["VAR1"],
-                "variable_value": ["1B"],
-                "variable_value_length": [2],
-                "define_variable_name": [
-                    "VAR1",
-                ],
-                "define_vlm_name": [
-                    "VAR1B VLM Name",
-                ],
-                "define_vlm_label": [
-                    "VAR1B Label",
-                ],
-                "define_vlm_data_type": [
-                    "text",
-                ],
-                "define_vlm_role": [
-                    "VAR1B ROLE",
-                ],
-                "define_vlm_length": [1],
-                "define_vlm_mandatory": ["Yes"],
-            },
-        ),
+            }
+        )
     ],
 )
 @patch(
@@ -133,7 +93,7 @@ def test_contents_define_vlm_dataset_builder(
         library_metadata=LibraryMetadataContainer(),
     ).build()
     expected_df = dataset_implementation.from_dict(expected)
-    if dataset_implementation == PandasDataset:
+    if dataset_implementation == SQLiteDataset:
         expected_df.data.sort_index(axis=1, inplace=True)
         result.data.sort_index(axis=1, inplace=True)
         assert result.equals(expected_df)

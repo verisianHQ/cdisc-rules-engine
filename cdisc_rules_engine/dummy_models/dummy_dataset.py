@@ -4,6 +4,8 @@ from datetime import datetime
 
 from cdisc_rules_engine.dummy_models.dummy_variable import DummyVariable
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
+from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
 
 
 class DummyDataset(SDTMDatasetMetadata):
@@ -41,9 +43,12 @@ class DummyDataset(SDTMDatasetMetadata):
                 DummyVariable(variable_data)
                 for variable_data in dataset_data.get("variables", [])
             ]
-            self.data = pd.DataFrame.from_dict(dataset_data.get("records", {}))
+            self.data = SQLiteDataset.from_dict(
+                dataset_data.get("records", {}),
+                SQLiteDatabaseConfig().initialise(in_memory=True)
+            )
 
-            self.record_count = len(self.data.index)
+            self.record_count = self.data.__len__()
 
     def get_metadata(self):
         return {

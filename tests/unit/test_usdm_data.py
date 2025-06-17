@@ -1,7 +1,7 @@
 from typing import List
 from unittest.mock import patch, MagicMock
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.rules_engine import RulesEngine
 import unittest
 from click.testing import CliRunner
@@ -59,7 +59,7 @@ def test_get_dataset(domain_name, record_count):
     )
     dataset_name = os.path.join(dataset_path, "{}.json".format(domain_name))
     data = data_service.get_dataset(dataset_name=dataset_name)
-    assert isinstance(data, PandasDataset)
+    assert isinstance(data, SQLiteDataset)
     assert len(data) == record_count
 
 
@@ -76,17 +76,18 @@ def test_get_raw_dataset_metadata():
     assert data.record_count == 117
 
 
-def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict):
+def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict, db_config):
     """
     The test checks the rules validation for a single dataset.
     In this case the rules does not have "datasets" key
     and datasets map is also empty.
     """
-    dataset_mock = PandasDataset.from_dict(
+    dataset_mock = SQLiteDataset.from_dict(
         {
             "ECCOOLVAR": [20, 100, 10, 34],
             "AESTDY": [1, 2, 40, 50],
-        }
+        },
+        db_config
     )
     with patch(
         "cdisc_rules_engine.services.data_services.USDMDataService.get_dataset",
@@ -138,7 +139,7 @@ def test_get_variables_metdata():
     data = data_service.get_variables_metadata(
         dataset_name=os.path.join(dataset_path, "StudyIdentifier.json")
     )
-    assert isinstance(data, PandasDataset)
+    assert isinstance(data, SQLiteDataset)
     expected_keys = [
         "variable_name",
         "variable_format",

@@ -9,14 +9,14 @@ from cdisc_rules_engine.dataset_builders.contents_define_variables_dataset_build
     ContentsDefineVariablesDatasetBuilder,
 )
 from cdisc_rules_engine.services.data_services import LocalDataService
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 
 
 @pytest.mark.parametrize(
     "dataset_implementation, content, variables_metadata, expected",
     [
         (
-            PandasDataset,
+            SQLiteDataset,
             {"VAR1": ["1A", "1B", "1C"], "VAR2": ["2A", "2B", "2C"]},
             {
                 "define_variable_name": ["VAR1", "VAR3"],
@@ -92,7 +92,7 @@ def test_contents_define_variables_dataset_builder(
     expected,
 ):
     mock_get_dataset.return_value = dataset_implementation.from_dict(content)
-    mock_get_define_xml_variables_metadata.return_value = pd.DataFrame.from_dict(
+    mock_get_define_xml_variables_metadata.return_value = dataset_implementation.from_dict(
         variables_metadata
     ).to_records(index=False)
     result = ContentsDefineVariablesDatasetBuilder(

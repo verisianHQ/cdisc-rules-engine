@@ -26,7 +26,7 @@ from cdisc_rules_engine.services.cache import (
 from cdisc_rules_engine.services.data_services import (
     DataServiceFactory,
 )
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.services.data_services.dummy_data_service import (
     DummyDataService,
 )
@@ -142,7 +142,7 @@ def run_validation(args: Validation_args):
     # install dictionaries if needed
     dictionary_versions = fill_cache_with_dictionaries(shared_cache, args, data_service)
     large_dataset_validation: bool = (
-        data_service.dataset_implementation != PandasDataset
+        data_service.dataset_implementation != SQLiteDataset
     )
     datasets = data_service.get_datasets()
     created_files = []

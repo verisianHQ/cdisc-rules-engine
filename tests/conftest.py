@@ -2,10 +2,12 @@ import os
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 import pytest
 import sys
 from cdisc_rules_engine.config.config import ConfigService
+from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
+
 
 from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
@@ -27,6 +29,92 @@ meddra_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/meddra"
 whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug"
 
 
+# =====================================================
+# DATABASE CONFIG FUNCTIONS
+# =====================================================
+
+@pytest.fixture(scope="function")
+def db_config():
+    """Create a fresh database config for each test function."""
+    config = SQLiteDatabaseConfig()
+    config.initialise(in_memory=True)
+    yield config
+    # Cleanup after test
+    config.close_all()
+
+
+@pytest.fixture(scope="function")
+def dataset_factory(db_config):
+    """Factory for creating SQLiteDataset instances with the test database."""
+    def create_dataset(data_dict):
+        return SQLiteDataset.from_dict(data_dict, db_config)
+    return create_dataset
+
+
+@pytest.fixture(scope="class")
+def class_db_config():
+    """Create a database config shared within a test class."""
+    config = SQLiteDatabaseConfig()
+    config.initialise(in_memory=True)
+    yield config
+    config.close_all()
+
+
+@pytest.fixture(scope="module")
+def module_db_config():
+    """Create a database config shared within a module."""
+    config = SQLiteDatabaseConfig()
+    config.initialise(in_memory=True)
+    
+    def cleanup_tables():
+        """Clean all data but keep table structure."""
+        with config.get_connection() as conn:
+            cursor = conn.cursor()
+            # Delete all data from tables
+            cursor.execute("DELETE FROM dataset_records")
+            cursor.execute("DELETE FROM dataset_columns")
+            cursor.execute("DELETE FROM datasets")
+            conn.commit()
+    
+    # Store cleanup function on config for access in tests
+    config.cleanup_tables = cleanup_tables
+    
+    yield config
+    config.close_all()
+
+
+@pytest.fixture(scope="session")
+def shared_db_config():
+    """
+    Shared database config for performance-critical tests.
+    Provides cleanup method that should be called between tests.
+    """
+    config = SQLiteDatabaseConfig()
+    config.initialise(in_memory=True)
+    
+    def cleanup():
+        with config.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM dataset_records")
+            cursor.execute("DELETE FROM dataset_columns")
+            cursor.execute("DELETE FROM datasets")
+            conn.commit()
+    
+    config.cleanup = cleanup
+    yield config
+    config.close_all()
+
+
+@pytest.fixture(autouse=True)
+def auto_cleanup_shared_db(request, shared_db_config):
+    """
+    Automatically cleanup shared database before tests that use it.
+    Only runs for tests that use shared_db_config fixture.
+    """
+    if 'shared_db_config' in request.fixturenames:
+        shared_db_config.cleanup()
+    yield
+
 def pytest_collection_modifyitems(config, items):
     run_regression_tests = config.getoption("-m") == "regression"
     if not run_regression_tests:
@@ -42,10 +130,10 @@ def run_regression_tests(request):
 
 def mock_get_dataset(dataset_name):
     dataframe_map = {
-        "ae.xpt": PandasDataset.from_dict(
+        "ae.xpt": SQLiteDataset.from_dict(
             {"AESTDY": [1, 2, 40, 59], "USUBJID": [1, 2, 3, 45]}
         ),
-        "ec.xpt": PandasDataset.from_dict(
+        "ec.xpt": SQLiteDataset.from_dict(
             {"ECCOOLVAR": [3, 4, 5000, 35], "USUBJID": [1, 2, 3, 45]}
         ),
     }
@@ -78,6 +166,12 @@ def get_matches_regex_pattern_rule(pattern: str) -> dict:
             }
         ],
     }
+
+
+
+# =====================================================
+# OTHER FUNCTIONS
+# =====================================================
 
 
 @pytest.fixture
@@ -1228,7 +1322,7 @@ def operation_params() -> OperationParams:
         core_id="test_id",
         operation_id="operation_id",
         operation_name="operation_name",
-        dataframe=PandasDataset.from_dict({}),
+        dataframe=SQLiteDataset.from_dict({}, SQLiteDatabaseConfig().initialise(in_memory=True)),
         target="target",
         domain="domain",
         dataset_path="dataset_path",

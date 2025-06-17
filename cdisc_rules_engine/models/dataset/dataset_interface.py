@@ -46,7 +46,7 @@ class DatasetInterface(ABC):
         """
 
     @abstractmethod
-    def __getitem__(self, item: str):
+    def __getitem__(self, item: Union[str, List[str], slice, int]):
         """
         Access dataset column by name
         """
@@ -183,7 +183,7 @@ class DatasetInterface(ABC):
         """
 
     @abstractmethod
-    def equals(self) -> bool:
+    def equals(self, other) -> bool:
         """
         Determine if two datasets are equal
         """

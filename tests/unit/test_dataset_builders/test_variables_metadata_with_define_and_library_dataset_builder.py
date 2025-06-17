@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
@@ -54,18 +54,16 @@ def test_build_combined_metadata(
     )
 
     # Setup dataset contents
-    mock_get_dataset.return_value = PandasDataset(
-        pd.DataFrame.from_dict(
-            {
-                "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-                "USUBJID": ["SUBJ1", "", "SUBJ3"],
-                "AETERM": ["Headache", "Nausea", ""],
-            }
-        )
+    mock_get_dataset.return_value = SQLiteDataset.from_dict(
+        {
+            "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
+            "USUBJID": ["SUBJ1", "", "SUBJ3"],
+            "AETERM": ["Headache", "Nausea", ""],
+        }
     )
 
     # Create mock library variables metadata
-    library_vars_data = pd.DataFrame(
+    library_vars_data = SQLiteDataset.from_dict(
         {
             "library_variable_name": ["STUDYID", "USUBJID", "AETERM", "AESEQ"],
             "library_variable_role": ["Identifier", "Identifier", "Topic", "Topic"],
@@ -80,7 +78,7 @@ def test_build_combined_metadata(
             "library_variable_data_type": ["Char", "Char", "Char", "Num"],
         }
     )
-    mock_get_library_variables_metadata.return_value = PandasDataset(library_vars_data)
+    mock_get_library_variables_metadata.return_value = library_vars_data
 
     standard_data = {
         "_links": {"model": {"href": "/mdr/sdtm/1-5"}},

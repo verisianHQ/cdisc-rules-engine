@@ -273,20 +273,37 @@ class SQLDatasetBase(DatasetInterface, ABC):
             raise ValueError("database_config is required")
 
         dataset = cls(database_config=database_config)
+        
+        if not hasattr(dataset, 'dataset_id'):
+            raise RuntimeError(f"Failed to create valid dataset instance of class {cls}")
 
         records = []
-        columns = set()
-        for col, values in data.items():
-            columns.add(col)
-            for idx, val in enumerate(values):
-                if idx >= len(records):
-                    records.append({})
-                records[idx][col] = val
+        columns_set = set()
 
-        dataset._insert_records(records)
-        dataset._columns = list(columns)
-        dataset._register_columns(dataset._columns)
+        if data:
+            for col, values in data.items():
+                columns_set.add(col)
+                
+                if hasattr(values, 'tolist'):
+                    values = values.tolist()
+                elif hasattr(values, '__iter__') and not isinstance(values, (str, dict)):
+                    values = list(values)
+                elif not isinstance(values, list):
+                    values = [values]
+                
+                for idx, val in enumerate(values):
+                    if idx >= len(records):
+                        records.append({})
+                    records[idx][col] = val
 
+        if records:
+            dataset._insert_records(records)
+        
+        dataset.columns = list(columns_set)
+        
+        if not isinstance(dataset, cls):
+            raise RuntimeError(f"Dataset is not an instance of {cls}, got {type(dataset)}")
+        
         return dataset
 
     @classmethod
@@ -295,11 +312,14 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if not database_config:
             raise ValueError("database_config is required")
 
-        dataset = cls(database_config=database_config)
+        provided_columns = kwargs.pop("columns", None)
+        
+        dataset = cls(database_config=database_config, columns=provided_columns, **kwargs)
 
         if data:
             dataset._insert_records(data)
-            dataset._columns = list(data[0].keys()) if data else []
+            if not provided_columns:
+                dataset._columns = list(data[0].keys()) if data else []
             if dataset._columns:
                 dataset._register_columns(dataset._columns)
 
@@ -422,7 +442,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return self.__class__(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self._columns,
+            columns=self.columns,
         )
 
     def _get_row(self, row_idx: int) -> dict:
@@ -538,7 +558,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def filter(self, items=None, like=None, regex=None, axis=None):
         """Filter columns by criteria."""
         if axis in (1, "columns"):
-            filtered_cols = self._columns.copy()
+            filtered_cols = self.columns.copy()
 
             if items is not None:
                 filtered_cols = [c for c in filtered_cols if c in items]
@@ -576,7 +596,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return self.__class__(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self._columns.copy(),
+            columns=self.columns.copy(),
             length=self._length,
         )
 
@@ -598,20 +618,26 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return self.__class__(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self._columns,
+            columns=self.columns,
             length=min(len(error_rows), 1000),
         )
 
     def equals(self, other: "SQLDatasetBase") -> bool:
         """Check if datasets are equal."""
-        if len(self) != len(other) or self.columns != other.columns:
+        if not hasattr(other, 'dataset_id'):
+            return False
+
+        if len(self) != len(other):
+            return False
+        
+        if set(self.columns) != set(other.columns):
             return False
 
         if self.database_config:
-            # compare data row by row
             for (_, row1), (_, row2) in zip(self.iterrows(), other.iterrows()):
-                if row1 != row2:
-                    return False
+                for col in self.columns:
+                    if col not in row2 or row1.get(col) != row2.get(col):
+                        return False
             return True
 
         return False
@@ -652,7 +678,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return self.__class__(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self._columns,
+            columns=self.columns,
         )
 
     def apply(self, func, axis=0, **kwargs):
@@ -708,7 +734,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return self.__class__(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self._columns,
+            columns=self.columns,
             length=self._length,
         )
 

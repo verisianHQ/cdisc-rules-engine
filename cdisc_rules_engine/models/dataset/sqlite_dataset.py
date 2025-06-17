@@ -1,4 +1,5 @@
 import json
+from math import isnan
 import uuid
 
 from typing import List, Dict, Any, Union
@@ -60,7 +61,7 @@ class SQLiteDataset(SQLDatasetBase):
         """Register dataset in metadata table."""
         self.execute_sql(
             """
-                INSERT OR IGNORE INTO datasets (dataset_id, dataset_name) 
+                INSERT OR IGNORE INTO datasets (dataset_id, table_name) 
                 VALUES (?, ?)
             """, (self.dataset_id, self._table_name))
     
@@ -658,3 +659,120 @@ class SQLiteDataset(SQLDatasetBase):
             records,
             database_config=self.database_config
         )
+
+    def applymap(self, func, batch_size=1000, na_action=None, **kwargs):
+        """
+            Apply a function to every element of the dataset.
+            Batch processing.
+        """
+        new_dataset_id = str(uuid.uuid4())
+        
+        with self.database_config.get_connection() as conn:
+            # process in batches
+            offset = 0
+            while True:
+                cursor = conn.execute("""
+                    SELECT row_num, data FROM dataset_records
+                    WHERE dataset_id = ?
+                    ORDER BY row_num
+                    LIMIT ? OFFSET ?
+                """, (self.dataset_id, batch_size, offset))
+                
+                batch = cursor.fetchall()
+                if not batch:
+                    break
+                
+                transformed_records = []
+                for row in batch:
+                    row_num = row['row_num']
+                    data = json.loads(row['data'])
+                    
+                    transformed_data = {}
+                    for key, value in data.items():
+                        if na_action == 'ignore' and (value is None or 
+                                                    (isinstance(value, float) and isnan(value))):
+                            transformed_data[key] = value
+                        else:
+                            try:
+                                transformed_data[key] = func(value)
+                            except Exception:
+                                transformed_data[key] = value
+                    
+                    transformed_records.append((new_dataset_id, row_num, json.dumps(transformed_data)))
+                
+                conn.executemany("""
+                    INSERT INTO dataset_records (dataset_id, row_num, data)
+                    VALUES (?, ?, ?)
+                """, transformed_records)
+                
+                offset += batch_size
+            
+            conn.commit()
+        
+        return SQLiteDataset(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self._columns,
+            length=self._length
+        )
+
+    def to_records(self, index=True, column_dtypes=None, index_dtypes=None):
+        """ Convert SQLiteDataset to a numpy structured array. """
+        from numpy import floating, integer, recarray
+        
+        # first get all records
+        records = []
+        
+        with self.database_config.get_connection() as conn:
+            cursor = conn.execute("""
+                SELECT row_num, data FROM dataset_records
+                WHERE dataset_id = ?
+                ORDER BY row_num
+            """, (self.dataset_id,))
+            
+            for row in cursor.fetchall():
+                row_num = row['row_num']
+                data = json.loads(row['data'])
+                
+                if index:
+                    # include the row number
+                    record_tuple = (row_num,) + tuple(data.get(col) for col in self._columns)
+                else:
+                    # just the data values
+                    record_tuple = tuple(data.get(col) for col in self._columns)
+                
+                records.append(record_tuple)
+        
+        # create dtype for structured array
+        if index:
+            dtype_list = [('index', index_dtypes or 'i8')]  # default to int64 for index
+        else:
+            dtype_list = []
+        
+        # add column dtypes
+        for col in self._columns:
+            if column_dtypes and col in column_dtypes:
+                dtype_list.append((col, column_dtypes[col]))
+            else:
+                # infer dtype from first non-null value
+                dtype = 'O'  # default to object
+                for record in records:
+                    idx = len(dtype_list) if index else len(dtype_list)
+                    val = record[idx] if len(record) > idx else None
+                    if val is not None:
+                        if isinstance(val, (int, integer)):
+                            dtype = 'i8'
+                        elif isinstance(val, (float, floating)):
+                            dtype = 'f8'
+                        elif isinstance(val, bool):
+                            dtype = 'bool'
+                        else:
+                            dtype = 'O'  # object for strings and others
+                        break
+                dtype_list.append((col, dtype))
+        
+        # create structured array
+        if records:
+            return recarray(records, dtype=dtype_list)
+        else:
+            return recarray([], dtype=dtype_list)

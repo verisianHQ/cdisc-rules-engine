@@ -1,6 +1,5 @@
 from cdisc_rules_engine.config.config import ConfigService
-from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
-from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.dummy_models.dummy_dataset import DummyDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -13,31 +12,34 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
 
 
 @pytest.mark.parametrize(
-    "target, expected, dataset_type",
+    "target, expected",
     [
-        ("DOMAIN", {12: 2, 6: 2, 1: 2}, PandasDataset),
-        ("STUDYID", {4: 2, 7: 1, 9: 1, 8: 1, 12: 1}, DaskDataset),
-        ("AESEQ", {1: 1, 2: 1, 3: 1}, PandasDataset),
-        ("EXSEQ", {1: 1, 2: 1, 3: 1}, DaskDataset),
-        ("--SEQ", {1: 2, 2: 2, 3: 2}, PandasDataset),
-        ("COOLVAR", {}, PandasDataset),
+        ("DOMAIN", {12: 2, 6: 2, 1: 2}),
+        ("STUDYID", {4: 2, 7: 1, 9: 1, 8: 1, 12: 1}),
+        ("AESEQ", {1: 1, 2: 1, 3: 1}),
+        ("EXSEQ", {1: 1, 2: 1, 3: 1}),
+        ("--SEQ", {1: 2, 2: 2, 3: 2}),
+        ("COOLVAR", {}),
     ],
 )
 def test_variable_value_count(
-    target, expected, dataset_type, mock_data_service, operation_params: OperationParams
+    target, expected, mock_data_service, operation_params: OperationParams, db_config
 ):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     dataset_path = os.path.join("study", "bundle", "blah")
     datasets_map = {
-        "AE": dataset_type.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
+        "AE": SQLiteDataset.from_dict(
+            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
-        "EX": dataset_type.from_dict(
-            {"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
+        "EX": SQLiteDataset.from_dict(
+            {"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
-        "AE2": dataset_type.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
+        "AE2": SQLiteDataset.from_dict(
+            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
     }
 
@@ -69,7 +71,7 @@ def test_variable_value_count(
         )
     )
     mock_data_service.concat_split_datasets.side_effect = (
-        lambda func, files: dataset_type().concat([func(f) for f in files])
+        lambda func, files: SQLiteDataset(database_config=db_config).concat([func(f) for f in files])
     )
     operation_params.datasets = datasets
     operation_params.original_target = target

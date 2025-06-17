@@ -5,7 +5,7 @@ import pytest
 from cdisc_rules_engine.config.config import ConfigService
 
 from cdisc_rules_engine.services.data_services import LocalDataService
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 
 
 def test_read_metadata():
@@ -44,7 +44,7 @@ def test_has_all_files(files, expected_result):
 
 @pytest.mark.parametrize(
     "dataset_implementation",
-    [PandasDataset],
+    [SQLiteDataset],
 )
 def test_get_dataset(dataset_implementation):
     dataset_path = f"{os.path.dirname(__file__)}/../../../resources/test_dataset.xpt"
@@ -61,7 +61,7 @@ def test_get_dataset(dataset_implementation):
 
 @pytest.mark.parametrize(
     "dataset_implementation",
-    [PandasDataset],
+    [SQLiteDataset],
 )
 def test_get_variables_metdata(dataset_implementation):
     dataset_path = (

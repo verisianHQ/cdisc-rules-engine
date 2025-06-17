@@ -36,7 +36,7 @@ from cdisc_rules_engine.utilities.utils import (
 )
 from cdisc_rules_engine.utilities.sdtm_utilities import get_class_and_domain_metadata
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 
 
@@ -106,7 +106,7 @@ class BaseDataService(DataServiceInterface, ABC):
         self.standard_substandard = kwargs.get("standard_substandard")
         self.library_metadata = kwargs.get("library_metadata")
         self.dataset_implementation = kwargs.get(
-            "dataset_implementation", PandasDataset
+            "dataset_implementation", SQLiteDataset
         )
 
         self.sqlite_config = SQLiteDatabaseConfig()

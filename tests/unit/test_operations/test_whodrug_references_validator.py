@@ -1,6 +1,5 @@
 from cdisc_rules_engine.config.config import ConfigService
-from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
-from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 from cdisc_rules_engine.operations.whodrug_references_validator import (
     WhodrugReferencesValidator,
 )
@@ -14,11 +13,12 @@ from cdisc_rules_engine.services.data_services.data_service_factory import (
 import pytest
 
 
-@pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
+@pytest.mark.parametrize("dataset_type", [SQLiteDataset])
 def test_valid_whodrug_references(
     installed_whodrug_dictionaries: dict,
     operation_params: OperationParams,
     dataset_type,
+    db_config
 ):
     """
     Unit test for valid_whodrug_references function.
@@ -36,7 +36,8 @@ def test_valid_whodrug_references(
                 "AE",
             ],
             "AEINA": ["A", "A01", "A01AC", "A01AD"],
-        }
+        },
+        db_config
     )
 
     operation_params.dataframe = invalid_df

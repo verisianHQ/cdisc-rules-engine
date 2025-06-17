@@ -13,7 +13,7 @@ from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.models.dataset_types import DatasetTypes
 from cdisc_rules_engine.services.data_readers import DataReaderFactory
 from cdisc_rules_engine.services.data_services import BaseDataService
-from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset import SQLiteDataset
 
 
 class DummyDataService(BaseDataService):
@@ -57,15 +57,14 @@ class DummyDataService(BaseDataService):
                 return dataset
         return None
 
-    def get_dataset(self, dataset_name: str, **params) -> PandasDataset:
+    def get_dataset(self, dataset_name: str, **params) -> SQLiteDataset:
         dataset: Optional[DummyDataset] = self.get_dataset_data(dataset_name)
         if dataset is not None:
-            df: pd.DataFrame = dataset.data
+            df: SQLiteDataset = dataset.data
             df = df.applymap(lambda x: x.decode("utf-8") if isinstance(x, bytes) else x)
-            result = PandasDataset(df)
-            return result
+            return df
         else:
-            return PandasDataset.from_dict({})
+            return SQLiteDataset.from_dict({})
 
     def get_raw_dataset_metadata(
         self, dataset_name: str, **kwargs
@@ -82,7 +81,7 @@ class DummyDataService(BaseDataService):
             record_count=dataset_metadata["record_count"][0],
         )
 
-    def get_variables_metadata(self, dataset_name: str, **params) -> PandasDataset:
+    def get_variables_metadata(self, dataset_name: str, **params) -> SQLiteDataset:
         metadata_to_return = {
             "variable_name": [],
             "variable_order_number": [],
@@ -111,11 +110,11 @@ class DummyDataService(BaseDataService):
             metadata_to_return["variable_format"] = metadata_to_return[
                 "variable_format"
             ] + [variable.format]
-        return PandasDataset.from_dict(metadata_to_return)
+        return SQLiteDataset.from_dict(metadata_to_return)
 
     def get_dataset_by_type(
         self, dataset_name: str, dataset_type: str, **params
-    ) -> PandasDataset:
+    ) -> SQLiteDataset:
         dataset_type_to_function_map: dict = {
             DatasetTypes.CONTENTS.value: self.get_dataset,
             DatasetTypes.METADATA.value: self.get_dataset_metadata,
