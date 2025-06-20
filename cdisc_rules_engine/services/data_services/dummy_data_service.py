@@ -111,11 +111,11 @@ class DummyDataService(BaseDataService):
             metadata_to_return["variable_format"] = metadata_to_return[
                 "variable_format"
             ] + [variable.format]
-        return SQLiteDataset.from_dict(metadata_to_return)
+        return PandasDataset.from_dict(metadata_to_return)
 
     def get_dataset_by_type(
         self, dataset_name: str, dataset_type: str, **params
-    ) -> SQLiteDataset:
+    ) -> PandasDataset:
         dataset_type_to_function_map: dict = {
             DatasetTypes.CONTENTS.value: self.get_dataset,
             DatasetTypes.METADATA.value: self.get_dataset_metadata,

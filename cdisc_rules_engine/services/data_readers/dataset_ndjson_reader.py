@@ -31,7 +31,7 @@ class DatasetNDJSONReader(DataReaderInterface):
         schema = self.get_schema()
         metadatandjson, datandjson = self.read_json_file(file_path)
 
-        jsonschema.validate(metadata_ndjson, schema)
+        jsonschema.validate(metadatandjson, schema)
 
         df = pd.DataFrame(
             [item for item in datandjson],
