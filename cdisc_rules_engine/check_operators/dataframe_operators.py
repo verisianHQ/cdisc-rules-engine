@@ -22,7 +22,9 @@ import pandas as pd
 import re
 import operator
 from uuid import uuid4
-from cdisc_rules_engine.models.dataset import DatasetInterface, SQLiteDataset
+from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
+from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from pandas.api.types import is_integer_dtype
 from cdisc_rules_engine.services import logger
 from functools import wraps
@@ -879,7 +881,7 @@ class DataframeType(BaseType):
                 else (x in NULL_FLAVORS or pd.isna(x))
             )
         )
-        if isinstance(self.value, SQLiteDataset) and self.value.is_series(results):
+        if isinstance(self.value, DaskDataset) and self.value.is_series(results):
             results = results.compute()
         # return values with corresponding indexes from results
         return pd.Series(results.reset_index(level=0, drop=True))
@@ -1524,7 +1526,7 @@ class DataframeType(BaseType):
         within: str = self.replace_prefix(other_value.get("within"))
         columns = other_value["comparator"]
         result = pd.Series([True] * len(self.value), index=self.value.index)
-        pandas = isinstance(self.value, SQLiteDataset)
+        pandas = isinstance(self.value, PandasDataset)
         for col in columns:
             comparator: str = self.replace_prefix(col["name"])
             ascending: bool = col["sort_order"].lower() != "desc"

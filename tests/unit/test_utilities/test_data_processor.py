@@ -7,25 +7,30 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
-from cdisc_rules_engine.models.dataset import SQLiteDataset
-from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
+from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.enums.join_types import JoinTypes
 import numpy as np
 
 
 @pytest.mark.parametrize(
-    "data_dict",
+    "data",
     [
-        {
-            "RDOMAIN": ["AE", "EC", "EC", "AE"],
-            "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
-            "IDVARVAL": [1, 2, 1, 3],
-        },
-        {"RSUBJID": [1, 4, 6000]},
+        (
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "RDOMAIN": ["AE", "EC", "EC", "AE"],
+                        "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
+                        "IDVARVAL": [1, 2, 1, 3],
+                    }
+                )
+            )
+        ),
+        (PandasDataset(pd.DataFrame.from_dict({"RSUBJID": [1, 4, 6000]}))),
     ],
 )
-def test_preprocess_relationship_dataset(data_dict, db_config):
+def test_preprocess_relationship_dataset(data):
     dataset_metadata = [
         SDTMDatasetMetadata(
             name=domain,
@@ -34,24 +39,25 @@ def test_preprocess_relationship_dataset(data_dict, db_config):
         )
         for domain in ["AE", "EC", "SUPP", "DM"]
     ]
-    ae = SQLiteDataset.from_dict(
-        {
-            "AESTDY": [4, 5, 6],
-            "STUDYID": [101, 201, 300],
-            "AESEQ": [1, 2, 3],
-        },
-        db_config,
+    ae = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [4, 5, 6],
+                "STUDYID": [101, 201, 300],
+                "AESEQ": [1, 2, 3],
+            }
+        )
     )
-    ec = SQLiteDataset.from_dict(
-        {
-            "ECSTDY": [500, 4],
-            "STUDYID": [201, 101],
-            "ECSEQ": [2, 1],
-        },
-        db_config,
+    ec = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECSTDY": [500, 4],
+                "STUDYID": [201, 101],
+                "ECSEQ": [2, 1],
+            }
+        )
     )
-    dm = SQLiteDataset.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, db_config)
-    data = [SQLiteDataset.from_dict(_dict, db_config) for _dict in data_dict]
+    dm = PandasDataset(pd.DataFrame.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}))
     path_to_dataset_map: dict = {
         os.path.join("path", "ae.xpt"): ae,
         os.path.join("path", "ec.xpt"): ec,
@@ -123,8 +129,8 @@ def test_filter_dataset_columns_by_metadata_and_rule():
     ]
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
-def test_merge_datasets_on_relationship_columns(dataset_implementation, db_config):
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
+def test_merge_datasets_on_relationship_columns(dataset_implementation):
     """
     Unit test for DataProcessor.merge_datasets_on_relationship_columns method.
     """
@@ -146,8 +152,7 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 2,
                 3,
             ],
-        },
-        db_config,
+        }
     )
     right_dataset = dataset_implementation.from_dict(
         {
@@ -181,8 +186,7 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 "3.0",
                 "3.0",
             ],
-        },
-        db_config,
+        }
     )
 
     # call the tested function and check the results
@@ -246,16 +250,13 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 3.0,
                 3.0,
             ],
-        },
-        db_config,
+        }
     )
     assert merged_df.equals(expected_df)
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
-def test_merge_datasets_on_string_relationship_columns(
-    dataset_implementation, db_config
-):
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset])
+def test_merge_datasets_on_string_relationship_columns(dataset_implementation):
     """
     Unit test for DataProcessor.merge_datasets_on_relationship_columns method.
     Test the case when the columns that describe the relation
@@ -279,8 +280,7 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IB",
                 "CDISC_IC",
             ],
-        },
-        db_config,
+        }
     )
     right_dataset = dataset_implementation.from_dict(
         {
@@ -314,8 +314,7 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IC",
                 "CDISC_IC",
             ],
-        },
-        db_config,
+        }
     )
 
     # call the tested function and check the results
@@ -378,109 +377,116 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IC",
                 "CDISC_IC",
             ],
-        },
-        db_config,
+        }
     )
     assert merged_df.equals(expected_df)
 
 
 @pytest.mark.parametrize(
-    "join_type, exp_df",
+    "join_type, expected_df",
     [
         (
             JoinTypes.INNER,
-            {
-                "USUBJID": [
-                    "CDISC01",
-                    "CDISC01",
-                ],
-                "DOMAIN": [
-                    "BE",
-                    "BE",
-                ],
-                "BESEQ": [
-                    1,
-                    3,
-                ],
-                "BEREFID": [
-                    "SAMPLE_1",
-                    "SAMPLE_3",
-                ],
-                "REFID": [
-                    "SAMPLE_1",
-                    "SAMPLE_3",
-                ],
-                "PARENT": [
-                    "",
-                    "SAMPLE_1",
-                ],
-                "LEVEL": [
-                    1,
-                    2,
-                ],
-            },
+            PandasDataset(
+                pd.DataFrame(
+                    {
+                        "USUBJID": [
+                            "CDISC01",
+                            "CDISC01",
+                        ],
+                        "DOMAIN": [
+                            "BE",
+                            "BE",
+                        ],
+                        "BESEQ": [
+                            1,
+                            3,
+                        ],
+                        "BEREFID": [
+                            "SAMPLE_1",
+                            "SAMPLE_3",
+                        ],
+                        "REFID": [
+                            "SAMPLE_1",
+                            "SAMPLE_3",
+                        ],
+                        "PARENT": [
+                            "",
+                            "SAMPLE_1",
+                        ],
+                        "LEVEL": [
+                            1,
+                            2,
+                        ],
+                    }
+                )
+            ),
         ),
         (
             JoinTypes.LEFT,
-            {
-                "USUBJID": [
-                    "CDISC01",
-                    "CDISC01",
-                    "CDISC01",
-                ],
-                "DOMAIN": [
-                    "BE",
-                    "BE",
-                    "BE",
-                ],
-                "BESEQ": [
-                    1,
-                    2,
-                    3,
-                ],
-                "BEREFID": [
-                    "SAMPLE_1",
-                    "SAMPLE_2",
-                    "SAMPLE_3",
-                ],
-                "REFID": [
-                    "SAMPLE_1",
-                    None,
-                    "SAMPLE_3",
-                ],
-                "PARENT": [
-                    "",
-                    None,
-                    "SAMPLE_1",
-                ],
-                "LEVEL": pd.Series(
-                    [
-                        1,
-                        None,
-                        2,
-                    ],
-                    dtype="object",
+            PandasDataset(
+                pd.DataFrame(
+                    {
+                        "USUBJID": [
+                            "CDISC01",
+                            "CDISC01",
+                            "CDISC01",
+                        ],
+                        "DOMAIN": [
+                            "BE",
+                            "BE",
+                            "BE",
+                        ],
+                        "BESEQ": [
+                            1,
+                            2,
+                            3,
+                        ],
+                        "BEREFID": [
+                            "SAMPLE_1",
+                            "SAMPLE_2",
+                            "SAMPLE_3",
+                        ],
+                        "REFID": [
+                            "SAMPLE_1",
+                            None,
+                            "SAMPLE_3",
+                        ],
+                        "PARENT": [
+                            "",
+                            None,
+                            "SAMPLE_1",
+                        ],
+                        "LEVEL": pd.Series(
+                            [
+                                1,
+                                None,
+                                2,
+                            ],
+                            dtype="object",
+                        ),
+                        "_merge_RELSPEC": pd.Categorical(
+                            [
+                                "both",
+                                "left_only",
+                                "both",
+                            ],
+                            categories=["left_only", "right_only", "both"],
+                            ordered=False,
+                        ),
+                    }
                 ),
-                "_merge_RELSPEC": pd.Categorical(
-                    [
-                        "both",
-                        "left_only",
-                        "both",
-                    ],
-                    categories=["left_only", "right_only", "both"],
-                    ordered=False,
-                ),
-            },
+            ),
         ),
     ],
 )
-def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_config):
+def test_merge_datasets_on_join_type(join_type: JoinTypes, expected_df: PandasDataset):
     """
     Unit test for DataProcessor.merge_sdtm_datasets method.
     Test cases when either inner or left join type is specified.
     """
     # prepare data
-    left_dataset: SQLiteDataset = SQLiteDataset.from_dict(
+    left_dataset: PandasDataset = PandasDataset.from_dict(
         {
             "USUBJID": [
                 "CDISC01",
@@ -502,10 +508,9 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_conf
                 "SAMPLE_2",
                 "SAMPLE_3",
             ],
-        },
-        db_config,
+        }
     )
-    right_dataset: SQLiteDataset = SQLiteDataset.from_dict(
+    right_dataset: PandasDataset = PandasDataset.from_dict(
         {
             "USUBJID": [
                 "CDISC01",
@@ -523,12 +528,11 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_conf
                 1,
                 2,
             ],
-        },
-        db_config,
+        }
     )
 
     # call the tested function and check the results
-    merged_df = DataProcessor.merge_sdtm_datasets(
+    merged_df: PandasDataset = DataProcessor.merge_sdtm_datasets(
         left_dataset=left_dataset,
         left_dataset_match_keys=["USUBJID", "BEREFID"],
         right_dataset=right_dataset,
@@ -536,5 +540,4 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_conf
         right_dataset_match_keys=["USUBJID", "REFID"],
         join_type=join_type,
     )
-    expected_df = SQLiteDataset.from_dict(exp_df)
     assert merged_df.equals(expected_df)

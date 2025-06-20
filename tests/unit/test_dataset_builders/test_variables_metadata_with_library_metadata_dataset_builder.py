@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
@@ -41,7 +41,7 @@ def test_variable_metadata_with_library_metadata_dataset_builder(
         }
     )
 
-    library_vars_data = SQLiteDataset.from_dict(
+    library_vars_data = pd.DataFrame(
         {
             "library_variable_name": ["STUDYID", "USUBJID", "AETERM", "AESEQ"],
             "library_variable_role": ["Identifier", "Identifier", "Topic", "Topic"],
@@ -56,15 +56,17 @@ def test_variable_metadata_with_library_metadata_dataset_builder(
             "library_variable_data_type": ["Char", "Char", "Char", "Num"],
         }
     )
-    mock_get_library_variables_metadata.return_value = library_vars_data
+    mock_get_library_variables_metadata.return_value = PandasDataset(library_vars_data)
 
-    mock_get_dataset.return_value = SQLiteDataset.from_dict(
-        {
-            "STUDYID": ["A", "B", "C"],
-            "USUBJID": ["", "A", "B"],
-            "AETERM": ["", "C", "A"],
-            "AESEQ": [1, 2, 3],
-        }
+    mock_get_dataset.return_value = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": ["A", "B", "C"],
+                "USUBJID": ["", "A", "B"],
+                "AETERM": ["", "C", "A"],
+                "AESEQ": [1, 2, 3],
+            }
+        )
     )
     cache = InMemoryCacheService()
     standard = "sdtmig"
@@ -188,7 +190,7 @@ def test_variable_metadata_with_library_metadata_dataset_builder_variable_only_i
     mock_get_variables_metadata: MagicMock,
     mock_get_dataset: MagicMock,
 ):
-    mock_get_variables_metadata.return_value = SQLiteDataset.from_dict(
+    mock_get_variables_metadata.return_value = pd.DataFrame.from_dict(
         {
             "variable_name": ["STUDYID", "USUBJID", "AETERM", "AEMODELVAR"],
             "variable_label": ["A", "B", "C", "A"],
@@ -197,7 +199,7 @@ def test_variable_metadata_with_library_metadata_dataset_builder_variable_only_i
             "variable_data_type": ["Char", "Char", "Char", "Num"],
         }
     )
-    library_vars_data = SQLiteDataset.from_dict(
+    library_vars_data = pd.DataFrame(
         {
             "library_variable_name": ["STUDYID", "USUBJID", "AETERM", "AEMODELVAR"],
             "library_variable_role": ["Identifier", "Identifier", "Topic", "Timing"],
@@ -212,14 +214,16 @@ def test_variable_metadata_with_library_metadata_dataset_builder_variable_only_i
             "library_variable_data_type": ["Char", "Char", "Char", "Num"],
         }
     )
-    mock_get_library_variables_metadata.return_value = library_vars_data
-    mock_get_dataset.return_value = SQLiteDataset.from_dict(
-        {
-            "STUDYID": ["A", "B", "C"],
-            "USUBJID": ["", "A", "B"],
-            "AETERM": ["", "C", "A"],
-            "AEMODELVAR": ["C", "D", "A"],
-        }
+    mock_get_library_variables_metadata.return_value = PandasDataset(library_vars_data)
+    mock_get_dataset.return_value = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": ["A", "B", "C"],
+                "USUBJID": ["", "A", "B"],
+                "AETERM": ["", "C", "A"],
+                "AEMODELVAR": ["C", "D", "A"],
+            }
+        )
     )
     cache = InMemoryCacheService()
     standard = "sdtmig"

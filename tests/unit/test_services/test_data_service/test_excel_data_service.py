@@ -5,7 +5,7 @@ import pytest
 from cdisc_rules_engine.config.config import ConfigService
 
 from cdisc_rules_engine.services.data_services import ExcelDataService
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset
 
 
 @pytest.mark.parametrize(
@@ -19,11 +19,11 @@ def test_get_dataset(dataset_name):
     data_service = ExcelDataService.get_instance(
         config=ConfigService(),
         cache_service=mock_cache,
-        dataset_implementation=SQLiteDataset,
+        dataset_implementation=PandasDataset,
         dataset_path=dataset_path,
     )
     data = data_service.get_dataset(dataset_name=dataset_name)
-    assert isinstance(data, SQLiteDataset)
+    assert isinstance(data, PandasDataset)
 
 
 @pytest.mark.parametrize(
@@ -80,11 +80,11 @@ def test_get_variables_metdata(dataset_name):
     data_service = ExcelDataService.get_instance(
         config=ConfigService(),
         cache_service=mock_cache,
-        dataset_implementation=SQLiteDataset,
+        dataset_implementation=PandasDataset,
         dataset_path=dataset_path,
     )
     data = data_service.get_variables_metadata(dataset_name=dataset_name, datasets=[])
-    assert isinstance(data, SQLiteDataset)
+    assert isinstance(data, PandasDataset)
     expected_keys = [
         "variable_name",
         "variable_format",

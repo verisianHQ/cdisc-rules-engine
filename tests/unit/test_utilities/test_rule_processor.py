@@ -22,7 +22,7 @@ from cdisc_rules_engine.constants.classes import (
     EVENTS,
     INTERVENTIONS,
 )
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
 
 
 @pytest.mark.parametrize(
@@ -346,10 +346,15 @@ def test_rule_applies_to_domain_split_datasets(
     ],
 )
 def test_rule_applies_to_class(
-    mock_data_service, datasets, rule_metadata, data, class_name, outcome, db_config
+    mock_data_service,
+    datasets,
+    rule_metadata,
+    data,
+    class_name,
+    outcome,
 ):
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
-    dataset_mock = SQLiteDataset.from_dict(data, db_config)
+    dataset_mock = PandasDataset.from_dict(data)
     mock_data_service.get_dataset_class.return_value = class_name
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -422,8 +427,8 @@ def test_rule_applies_to_use_case(
     )
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
-def test_perform_rule_operation(mock_data_service, dataset_implementation, db_config):
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
+def test_perform_rule_operation(mock_data_service, dataset_implementation):
     conditions = {
         "any": [
             {
@@ -472,8 +477,7 @@ def test_perform_rule_operation(mock_data_service, dataset_implementation, db_co
         ],
     }
     df = dataset_implementation.from_dict(
-        {"AESTDY": [11, 12, 40, 59, 59], "DOMAIN": ["AE", "AE", "AE", "AE", "AE"]},
-        db_config,
+        {"AESTDY": [11, 12, 40, 59, 59], "DOMAIN": ["AE", "AE", "AE", "AE", "AE"]}
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -500,9 +504,9 @@ def test_perform_rule_operation(mock_data_service, dataset_implementation, db_co
         assert result["$unique_aestdy"].equals(pd.Series([{11, 12, 40, 59}] * len(df)))
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
 def test_perform_rule_operation_with_grouping(
-    mock_data_service, dataset_implementation, db_config
+    mock_data_service, dataset_implementation
 ):
     conditions = {
         "all": [
@@ -563,8 +567,7 @@ def test_perform_rule_operation_with_grouping(
             "USUBJID": [1, 200, 1, 200],
             "AESEQ": [1, 2, 3, 4],
             "DOMAIN": ["AE", "AE", "AE", "AE"],
-        },
-        db_config,
+        }
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -619,9 +622,9 @@ def test_perform_rule_operation_with_grouping(
         )
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
 def test_perform_rule_operation_with_multi_key_grouping(
-    mock_data_service, dataset_implementation, db_config
+    mock_data_service, dataset_implementation
 ):
     conditions = {
         "all": [
@@ -675,8 +678,7 @@ def test_perform_rule_operation_with_multi_key_grouping(
             "USUBJID": [1, 200, 1, 200, 200, 1],
             "DOMAIN": ["AE", "AE", "AE", "AE", "AE", "AE"],
             "STUDYID": ["A", "A", "A", "A", "B", "B"],
-        },
-        db_config,
+        }
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -701,9 +703,9 @@ def test_perform_rule_operation_with_multi_key_grouping(
         assert data["$min_aestdy"].values.tolist() == [10, 11, 10, 11, 30, 112]
 
 
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
 def test_perform_rule_operation_with_null_operations(
-    mock_data_service, dataset_implementation, db_config
+    mock_data_service, dataset_implementation
 ):
     conditions = {
         "all": [
@@ -730,7 +732,7 @@ def test_perform_rule_operation_with_null_operations(
         "operations": None,
     }
     df = dataset_implementation.from_dict(
-        {"AESTDY": [11, 12, 40, 59], "USUBJID": [1, 200, 1, 200]}, db_config
+        {"AESTDY": [11, 12, 40, 59], "USUBJID": [1, 200, 1, 200]}
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     new_data = processor.perform_rule_operations(
@@ -749,12 +751,11 @@ def test_perform_rule_operation_with_null_operations(
 @patch(
     "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset_metadata"
 )
-@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
 def test_perform_extract_metadata_operation(
     mock_get_dataset_metadata: MagicMock,
     dataset_implementation,
     rule_equal_to_with_extract_metadata_operation: dict,
-    db_config,
 ):
     """
     Unit test for extract_metadata operation.
@@ -762,13 +763,12 @@ def test_perform_extract_metadata_operation(
     will be added to the given dataframe.
     """
     # mock download of dataset metadata
-    mock_get_dataset_metadata.return_value = dataset_implementation.from_dict(
+    mock_get_dataset_metadata.return_value = pd.DataFrame.from_dict(
         {
             "dataset_name": [
                 "SUPPEC",
             ],
-        },
-        db_config,
+        }
     )
 
     # call rule processor
@@ -789,8 +789,7 @@ def test_perform_extract_metadata_operation(
                 2,
                 3,
             ],
-        },
-        db_config,
+        }
     )
 
     mock = MagicMock()
@@ -800,8 +799,7 @@ def test_perform_extract_metadata_operation(
             "dataset_name": [
                 "SUPPEC",
             ],
-        },
-        db_config,
+        }
     )
     processor = RuleProcessor(mock, InMemoryCacheService())
     dataset_after_operation = processor.perform_rule_operations(

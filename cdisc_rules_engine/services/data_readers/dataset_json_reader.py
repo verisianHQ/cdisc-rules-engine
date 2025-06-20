@@ -1,7 +1,9 @@
 import pandas as pd
+import dask.dataframe as dd
 import os
 import json
 import jsonschema
+
 from cdisc_rules_engine.interfaces import (
     DataReaderInterface,
 )
@@ -24,41 +26,18 @@ class DatasetJSONReader(DataReaderInterface):
             datasetjson = json.load(file)
         return datasetjson
 
-    def _prepare_records_from_dataset_json(self, datasetjson: dict) -> list:
-        """Convert Dataset-JSON array format to list of record dictionaries."""
-        columns = [item["name"] for item in datasetjson.get("columns", [])]
-        rows = datasetjson.get("rows", [])
-        records = []
-
-        for row in rows:
-            # Create a dictionary for each row
-            record = {}
-            for idx, col in enumerate(columns):
-                if idx < len(row):
-                    value = row[idx]
-                    if isinstance(value, float):
-                        value = round(value, 15)  # 15-rounded float
-                    record[col] = value
-                else:
-                    record[col] = None
-            records.append(record)
-
-        return records
-
-    def _raw_dataset_from_file(self, file_path) -> PandasDataset:
+    def _raw_dataset_from_file(self, file_path) -> pd.DataFrame:
         # Load Dataset-JSON Schema
         schema = self.get_schema()
         datasetjson = self.read_json_file(file_path)
+
         jsonschema.validate(datasetjson, schema)
 
-        records = self._prepare_records_from_dataset_json(datasetjson)
-        columns = [item["name"] for item in datasetjson.get("columns", [])]
-
-        df = self.dataset_implementation.from_records(
-            records,
-            columns=columns,
+        df = pd.DataFrame(
+            [item for item in datasetjson.get("rows", [])],
+            columns=[item["name"] for item in datasetjson.get("columns", [])],
         )
-        return df
+        return df.applymap(lambda x: round(x, 15) if isinstance(x, float) else x)
 
     def from_file(self, file_path):
         try:
@@ -75,14 +54,8 @@ class DatasetJSONReader(DataReaderInterface):
     def to_parquet(self, file_path: str) -> str:
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".parquet")
         df = self._raw_dataset_from_file(file_path)
-
-        # convert to pd dataframe for parquet export.
-        # TODO: implement custom parquet conversion for SQLite.
-        records = df.to_dict("records")
-        pandas_df = pd.DataFrame(records)
-        pandas_df.to_parquet(temp_file.name)
-
-        return len(df), temp_file.name
+        df.to_parquet(temp_file.name)
+        return len(df.index), temp_file.name
 
     def read(self, data):
         pass

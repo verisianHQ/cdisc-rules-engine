@@ -13,7 +13,7 @@ from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.models.dataset_types import DatasetTypes
 from cdisc_rules_engine.services.data_readers import DataReaderFactory
 from cdisc_rules_engine.services.data_services import BaseDataService
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset
 
 
 class DummyDataService(BaseDataService):
@@ -57,14 +57,15 @@ class DummyDataService(BaseDataService):
                 return dataset
         return None
 
-    def get_dataset(self, dataset_name: str, **params) -> SQLiteDataset:
+    def get_dataset(self, dataset_name: str, **params) -> PandasDataset:
         dataset: Optional[DummyDataset] = self.get_dataset_data(dataset_name)
         if dataset is not None:
-            df: SQLiteDataset = dataset.data
+            df: pd.DataFrame = dataset.data
             df = df.applymap(lambda x: x.decode("utf-8") if isinstance(x, bytes) else x)
-            return df
+            result = PandasDataset(df)
+            return result
         else:
-            return SQLiteDataset.from_dict({})
+            return PandasDataset.from_dict({})
 
     def get_raw_dataset_metadata(
         self, dataset_name: str, **kwargs
@@ -81,7 +82,7 @@ class DummyDataService(BaseDataService):
             record_count=dataset_metadata["record_count"][0],
         )
 
-    def get_variables_metadata(self, dataset_name: str, **params) -> SQLiteDataset:
+    def get_variables_metadata(self, dataset_name: str, **params) -> PandasDataset:
         metadata_to_return = {
             "variable_name": [],
             "variable_order_number": [],

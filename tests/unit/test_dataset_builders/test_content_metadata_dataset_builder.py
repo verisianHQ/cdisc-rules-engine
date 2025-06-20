@@ -14,7 +14,7 @@ from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset
 import pandas as pd
 
 test_data = {
@@ -286,7 +286,9 @@ def test_ContentMetadataDatasetBuilder_split_datasets(conditions):
         "dataset_label": "Clinical Global Impressions",
         "record_count": 1,
     }
-    expected = SQLiteDataset.from_dict([expected_output], orient="columns")
+    expected = PandasDataset(
+        pd.DataFrame.from_dict([expected_output], orient="columns")
+    )
     result = ContentMetadataDatasetBuilder(
         rule=rule,
         data_service=DummyDataService(
@@ -311,7 +313,9 @@ def test_ContentMetadataDatasetBuilder_split_datasets(conditions):
         "dataset_label": "Patient Global Impressions",
         "record_count": 1,
     }
-    expected2 = SQLiteDataset.from_dict([expected_output2], orient="columns")
+    expected2 = PandasDataset(
+        pd.DataFrame.from_dict([expected_output2], orient="columns")
+    )
     result2 = ContentMetadataDatasetBuilder(
         rule=rule,
         data_service=DummyDataService(

@@ -18,7 +18,7 @@ from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset
 import pandas as pd
 import json
 
@@ -366,7 +366,9 @@ def test_ContentDatasetBuilder_split_datasets(conditions):
             "27": 14,
         },
     }
-    expected = SQLiteDataset.from_dict(expected_output, orient="columns")
+    expected_df = pd.DataFrame.from_dict(expected_output, orient="columns")
+    expected_df.index = pd.RangeIndex(start=0, stop=len(expected_df), step=1)
+    expected = PandasDataset(expected_df)
     result = ContentsDatasetBuilder(
         rule=rule,
         data_service=DummyDataService(

@@ -27,7 +27,7 @@ from cdisc_rules_engine.utilities.utils import (
 from .base_data_service import BaseDataService, cached_dataset
 from cdisc_rules_engine.enums.dataformat_types import DataFormatTypes
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
-from cdisc_rules_engine.models.dataset import SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset
 import re
 
 
@@ -58,7 +58,7 @@ class LocalDataService(BaseDataService):
                 cache_service=cache_service,
                 reader_factory=DataReaderFactory(
                     dataset_implementation=kwargs.get(
-                        "dataset_implementation", SQLiteDataset
+                        "dataset_implementation", PandasDataset
                     )
                 ),
                 config=config,

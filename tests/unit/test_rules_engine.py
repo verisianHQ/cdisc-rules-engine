@@ -23,8 +23,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
     DictionaryTypes,
 )
 from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
-from cdisc_rules_engine.models.dataset import SQLiteDataset
-from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
+from cdisc_rules_engine.models.dataset import PandasDataset
 
 
 def test_get_schema():
@@ -67,21 +66,22 @@ def test_get_schema():
 
 
 def test_validate_rule_invalid_suffix(
-    mock_ae_record_rule_equal_to_suffix: dict, db_config
+    mock_ae_record_rule_equal_to_suffix: dict,
 ):
     """
     Unit test for function validate_rule.
     Test the case when we are checking a string suffix.
     Dataset has 2 strings: valid and invalid.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "AESTDY": [
-                "valid-test",
-                "test-invalid",
-            ],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [
+                    "valid-test",
+                    "test-invalid",
+                ],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -114,21 +114,22 @@ def test_validate_rule_invalid_suffix(
 
 
 def test_validate_rule_invalid_prefix(
-    mock_record_rule_equal_to_string_prefix: dict, db_config
+    mock_record_rule_equal_to_string_prefix: dict,
 ):
     """
     Unit test for function validate_rule.
     Test the case when we are checking a string prefix.
     Dataset has 2 strings: valid and invalid.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "AESTDY": [
-                "test-valid",
-                "invalid-test",
-            ],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [
+                    "test-valid",
+                    "invalid-test",
+                ],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -162,7 +163,7 @@ def test_validate_rule_invalid_prefix(
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset_class")
 def test_validate_rule_cross_dataset_check(
-    mock_get_dataset_class, dataset_rule_equal_to: dict, db_config
+    mock_get_dataset_class, dataset_rule_equal_to: dict
 ):
     """
     The test checks that a rule can be executed for several datasets.
@@ -171,63 +172,65 @@ def test_validate_rule_cross_dataset_check(
     whose STUDYID and SUBJECTID present in the 2nd dataset.
     """
     # create datasets
-    ec_dataset = SQLiteDataset.from_dict(
-        {
-            "ECSEQ": [
-                "1",
-                "2",
-                "3",
-                "4",
-            ],
-            "ECSTDY": [
-                4,
-                5,
-                6,
-                7,
-            ],
-            "STUDYID": [
-                "1",
-                "2",
-                "1",
-                "2",
-            ],
-            "USUBJID": [
-                "CDISC001",
-                "CDISC001",
-                "CDISC002",
-                "CDISC002",
-            ],
-        },
-        db_config,
+    ec_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECSEQ": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                ],
+                "ECSTDY": [
+                    4,
+                    5,
+                    6,
+                    7,
+                ],
+                "STUDYID": [
+                    "1",
+                    "2",
+                    "1",
+                    "2",
+                ],
+                "USUBJID": [
+                    "CDISC001",
+                    "CDISC001",
+                    "CDISC002",
+                    "CDISC002",
+                ],
+            }
+        )
     )
-    ae_dataset = SQLiteDataset.from_dict(
-        {
-            "AESEQ": [
-                "1",
-                "2",
-                "3",
-                "4",
-            ],
-            "AESTDY": [
-                4,
-                5,
-                16,
-                17,
-            ],
-            "STUDYID": [
-                "1",
-                "2",
-                "1",
-                "2",
-            ],
-            "USUBJID": [
-                "CDISC001",
-                "CDISC001",
-                "CDISC002",
-                "CDISC002",
-            ],
-        },
-        db_config,
+    ae_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESEQ": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                ],
+                "AESTDY": [
+                    4,
+                    5,
+                    16,
+                    17,
+                ],
+                "STUDYID": [
+                    "1",
+                    "2",
+                    "1",
+                    "2",
+                ],
+                "USUBJID": [
+                    "CDISC001",
+                    "CDISC001",
+                    "CDISC002",
+                    "CDISC002",
+                ],
+            }
+        )
     )
     mock_get_dataset_class.return_value = None
     # mock blob storage call
@@ -283,9 +286,7 @@ def test_validate_rule_cross_dataset_check(
         ]
 
 
-def test_validate_one_to_one_rel_across_datasets(
-    dataset_rule_one_to_one_related: dict, db_config
-):
+def test_validate_one_to_one_rel_across_datasets(dataset_rule_one_to_one_related: dict):
     """
     The test checks validation of one-to-one relationship
     across two datasets.
@@ -304,47 +305,49 @@ def test_validate_one_to_one_rel_across_datasets(
             full_path=os.path.join("path", "ae.xpt"),
         ),
     ]
-    ae_dataset = SQLiteDataset.from_dict(
-        {
-            "STUDYID": [
-                101,
-                201,
-                300,
-                101,
-            ],
-            "DOMAIN": [
-                "AE",
-                "DI",
-                "EC",
-                "AE",
-            ],
-            "VISITNUM": [
-                1,
-                2,
-                1,
-                3,
-            ],
-        },
-        db_config,
+    ae_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": [
+                    101,
+                    201,
+                    300,
+                    101,
+                ],
+                "DOMAIN": [
+                    "AE",
+                    "DI",
+                    "EC",
+                    "AE",
+                ],
+                "VISITNUM": [
+                    1,
+                    2,
+                    1,
+                    3,
+                ],
+            }
+        )
     )
     # this dataset violates one-to-one relationship and should flag an error
-    ec_dataset = SQLiteDataset.from_dict(
-        {
-            "STUDYID": [
-                101,
-                201,
-                300,
-                101,
-            ],
-            "VISITNUM": [
-                1,
-                2,
-                1,
-                3,
-            ],
-            "VISIT": ["surgery", "treatment", "consulting", "consulting"],
-        },
-        db_config,
+    ec_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": [
+                    101,
+                    201,
+                    300,
+                    101,
+                ],
+                "VISITNUM": [
+                    1,
+                    2,
+                    1,
+                    3,
+                ],
+                "VISIT": ["surgery", "treatment", "consulting", "consulting"],
+            }
+        )
     )
     path_to_dataset_map: dict = {
         os.path.join("path", "ae.xpt"): ae_dataset,
@@ -377,18 +380,19 @@ def test_validate_one_to_one_rel_across_datasets(
         ]
 
 
-def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict, db_config):
+def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict):
     """
     The test checks the rules validation for a single dataset.
     In this case the rules does not have "datasets" key
     and datasets map is also empty.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "ECCOOLVAR": [20, 100, 10, 34],
-            "AESTDY": [1, 2, 40, 50],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECCOOLVAR": [20, 100, 10, 34],
+                "AESTDY": [1, 2, 40, 50],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -421,19 +425,20 @@ def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict, db_
         ]
 
 
-def test_validate_rule_equal_length(dataset_rule_has_equal_length: dict, db_config):
+def test_validate_rule_equal_length(dataset_rule_has_equal_length: dict):
     """
     The test checks validation of column length.
     The case when rule needs to find records whose length is
     equal to a desired value.
     For example, check all ECCOOLVAR columns whose length is equal to 5.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "ECCOOLVAR": ["first_string", "equal"],
-            "AESTDY": ["pokemon", "test"],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECCOOLVAR": ["first_string", "equal"],
+                "AESTDY": ["pokemon", "test"],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -465,9 +470,7 @@ def test_validate_rule_equal_length(dataset_rule_has_equal_length: dict, db_conf
         ]
 
 
-def test_validate_is_contained_by_distinct(
-    mock_rule_distinct_operation: dict, db_config
-):
+def test_validate_is_contained_by_distinct(mock_rule_distinct_operation: dict):
     datasets = [
         SDTMDatasetMetadata(
             name="DM",
@@ -482,10 +485,10 @@ def test_validate_is_contained_by_distinct(
             full_path=os.path.join("path", "ae.xpt"),
         ),
     ]
-    ae_dataset = SQLiteDataset.from_dict({"AESTDY": [1, 2, 3, 5000]}, db_config)
+    ae_dataset = PandasDataset(pd.DataFrame.from_dict({"AESTDY": [1, 2, 3, 5000]}))
 
-    dm_dataset = SQLiteDataset.from_dict(
-        {"USUBJID": [1, 2, 2, 3, 4, 5, 5, 3, 3, 3]}, db_config
+    dm_dataset = PandasDataset(
+        pd.DataFrame.from_dict({"USUBJID": [1, 2, 2, 3, 4, 5, 5, 3, 3, 3]})
     )
 
     path_to_dataset_map: dict = {
@@ -515,21 +518,20 @@ def test_validate_is_contained_by_distinct(
         ]
 
 
-def test_validate_rule_not_equal_length(
-    dataset_rule_has_not_equal_length: dict, db_config
-):
+def test_validate_rule_not_equal_length(dataset_rule_has_not_equal_length: dict):
     """
     The test checks validation of column length.
     The case when rule needs to find records whose length is
     not equal to a desired value.
     For example, check all ECCOOLVAR columns whose length is not equal to 5.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "ECCOOLVAR": ["first_string", "valid"],
-            "AESTDY": ["pokemon", "test"],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECCOOLVAR": ["first_string", "valid"],
+                "AESTDY": ["pokemon", "test"],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -565,15 +567,14 @@ def test_validate_rule_not_equal_length(
         ]
 
 
-def test_validate_rule_multiple_conditions(
-    dataset_rule_multiple_conditions: dict, db_config
-):
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "ECCOOLVAR": ["first_string", "valid", "cool"],
-            "AESTDY": ["pokemon", "test", "item"],
-        },
-        db_config,
+def test_validate_rule_multiple_conditions(dataset_rule_multiple_conditions: dict):
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECCOOLVAR": ["first_string", "valid", "cool"],
+                "AESTDY": ["pokemon", "test", "item"],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -608,14 +609,14 @@ def test_validate_rule_multiple_conditions(
         ]
 
 
-def test_validate_record_rule_numbers_separated_by_dash_pattern(db_config):
+def test_validate_record_rule_numbers_separated_by_dash_pattern():
     """
     The test checks matching "{number}-{number}" pattern.
     """
     number_number_pattern: str = r"^\d+\-\d+$"
     rule: dict = get_matches_regex_pattern_rule(number_number_pattern)
-    dataset_mock = SQLiteDataset.from_dict(
-        {"AESTDY": ["5-5", "10-10", "test"]}, db_config
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict({"AESTDY": ["5-5", "10-10", "test"]})
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -648,14 +649,14 @@ def test_validate_record_rule_numbers_separated_by_dash_pattern(db_config):
         ]
 
 
-def test_validate_record_rule_semi_colon_delimited_pattern(db_config):
+def test_validate_record_rule_semi_colon_delimited_pattern():
     """
     The test checks matching semi-colon delimited pattern.
     """
     semi_colon_delimited_pattern: str = "[^,]*;[^,]*"
     rule: dict = get_matches_regex_pattern_rule(semi_colon_delimited_pattern)
-    dataset_mock = SQLiteDataset.from_dict(
-        {"AESTDY": ["5;5", "alex;alex", "test"]}, db_config
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict({"AESTDY": ["5;5", "alex;alex", "test"]})
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -688,7 +689,7 @@ def test_validate_record_rule_semi_colon_delimited_pattern(db_config):
         ]
 
 
-def test_validate_record_rule_no_letters_numbers_underscores(db_config):
+def test_validate_record_rule_no_letters_numbers_underscores():
     """
     The test checks that we can match a pattern like:
     A string contains characters other than letters, numbers or underscores.
@@ -696,8 +697,8 @@ def test_validate_record_rule_no_letters_numbers_underscores(db_config):
     # checks that string contains characters other than letters, numbers or underscores
     does_not_contain_pattern: str = "^((?![a-zA-Z0-9_]).)*$"
     rule: dict = get_matches_regex_pattern_rule(does_not_contain_pattern)
-    dataset_mock = SQLiteDataset.from_dict(
-        {"AESTDY": ["[.*)]#@", "alex", "|>.§!"]}, db_config
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict({"AESTDY": ["[.*)]#@", "alex", "|>.§!"]})
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -734,26 +735,25 @@ def test_validate_record_rule_no_letters_numbers_underscores(db_config):
     "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset_metadata",
 )
 def test_validate_dataset_metadata(
-    mock_get_dataset_metadata: MagicMock,
-    dataset_metadata_not_equal_to_rule: dict,
-    db_config,
+    mock_get_dataset_metadata: MagicMock, dataset_metadata_not_equal_to_rule: dict
 ):
     """
     Unit test that checks dataset metadata validation.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "dataset_name": [
-                "AE",
-            ],
-            "dataset_size": [
-                5,
-            ],
-            "dataset_label": [
-                "Adverse Events",
-            ],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "dataset_name": [
+                    "AE",
+                ],
+                "dataset_size": [
+                    5,
+                ],
+                "dataset_label": [
+                    "Adverse Events",
+                ],
+            }
+        )
     )
     mock_get_dataset_metadata.return_value = dataset_mock
 
@@ -787,25 +787,25 @@ def test_validate_dataset_metadata(
 def test_validate_dataset_metadata_wrong_metadata(
     mock_get_dataset_metadata: MagicMock,
     dataset_metadata_not_equal_to_rule: dict,
-    db_config,
 ):
     """
     Unit test that checks dataset metadata validation.
     Test the case when dataset contains the wrong data.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "dataset_name": [
-                "AD",
-            ],
-            "dataset_size": [
-                7,
-            ],
-            "dataset_label": [
-                "Events",
-            ],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "dataset_name": [
+                    "AD",
+                ],
+                "dataset_size": [
+                    7,
+                ],
+                "dataset_label": [
+                    "Events",
+                ],
+            }
+        )
     )
     mock_get_dataset_metadata.return_value = dataset_mock
 
@@ -847,19 +847,20 @@ def test_validate_dataset_metadata_wrong_metadata(
     "cdisc_rules_engine.services.data_services.LocalDataService.get_variables_metadata",
 )
 def test_validate_variable_metadata(
-    mock_get_variables_metadata: MagicMock, variables_metadata_rule: dict, db_config
+    mock_get_variables_metadata: MagicMock, variables_metadata_rule: dict
 ):
     """
     Unit test that checks variable metadata validation.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "variable_name": ["STUDYID", "DOMAIN"],
-            "variable_size": [5, 20],
-            "variable_label": ["Study Identifier", "Domain Name"],
-            "variable_data_type": ["Char", "Char"],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "variable_name": ["STUDYID", "DOMAIN"],
+                "variable_size": [5, 20],
+                "variable_label": ["Study Identifier", "Domain Name"],
+                "variable_data_type": ["Char", "Char"],
+            }
+        )
     )
     mock_get_variables_metadata.return_value = dataset_mock
 
@@ -914,23 +915,24 @@ def test_validate_variable_metadata(
     "cdisc_rules_engine.services.data_services.LocalDataService.get_variables_metadata",
 )
 def test_validate_variable_metadata_wrong_metadata(
-    mock_get_variables_metadata: MagicMock, variables_metadata_rule: dict, db_config
+    mock_get_variables_metadata: MagicMock, variables_metadata_rule: dict
 ):
     """
     Unit test that checks variable metadata validation.
     Test the case when variable metadata is wrong.
     """
-    dataset_mock = SQLiteDataset.from_dict(
-        {
-            "variable_name": ["longer than eight", "longer than eight as well"],
-            "variable_size": [5, 20],
-            "variable_label": [
-                "Study Identifier Very Long Longer than 40",
-                "Long Long Label Very Long Longer than 40 chars",
-            ],
-            "variable_data_type": ["Char", "Char"],
-        },
-        db_config,
+    dataset_mock = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "variable_name": ["longer than eight", "longer than eight as well"],
+                "variable_size": [5, 20],
+                "variable_label": [
+                    "Study Identifier Very Long Longer than 40",
+                    "Long Long Label Very Long Longer than 40 chars",
+                ],
+                "variable_data_type": ["Char", "Char"],
+            }
+        )
     )
     mock_get_variables_metadata.return_value = dataset_mock
 
@@ -982,7 +984,7 @@ def test_validate_variable_metadata_wrong_metadata(
 @patch(
     "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
 )
-def test_rule_with_domain_prefix_replacement(mock_get_dataset: MagicMock, db_config):
+def test_rule_with_domain_prefix_replacement(mock_get_dataset: MagicMock):
     rule = {
         "core_id": "TEST1",
         "standards": [],
@@ -1010,7 +1012,7 @@ def test_rule_with_domain_prefix_replacement(mock_get_dataset: MagicMock, db_con
             }
         ],
     }
-    df = SQLiteDataset.from_dict({"AESTDY": [11, 12, 40, 59, 59]}, db_config)
+    df = PandasDataset(pd.DataFrame.from_dict({"AESTDY": [11, 12, 40, 59, 59]}))
     mock_get_dataset.return_value = df
     dataset_metadata = SDTMDatasetMetadata(
         first_record={"DOMAIN": "AE"}, filename="bundle", full_path="study/bundle"
@@ -1101,29 +1103,30 @@ def test_validate_domain_presence(
     assert actual_validation_result == expected_validation_result
 
 
-def test_validate_single_dataset(dataset_rule_equal_to_error_objects: dict, db_config):
+def test_validate_single_dataset(dataset_rule_equal_to_error_objects: dict):
     """
     Unit test for validate_single_dataset function.
     """
-    df = SQLiteDataset.from_dict(
-        {
-            "AESTDY": ["test", "alex", "alex", "test", "test"],
-            "USUBJID": [
-                1,
-                2,
-                2,
-                1,
-                3,
-            ],
-            "AESEQ": [
-                1,
-                2,
-                3,
-                4,
-                5,
-            ],
-        },
-        db_config,
+    df = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": ["test", "alex", "alex", "test", "test"],
+                "USUBJID": [
+                    1,
+                    2,
+                    2,
+                    1,
+                    3,
+                ],
+                "AESEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -1184,32 +1187,33 @@ def test_validate_single_dataset(dataset_rule_equal_to_error_objects: dict, db_c
 
 
 def test_validate_single_dataset_not_equal_to(
-    dataset_rule_not_equal_to_error_objects: dict, db_config
+    dataset_rule_not_equal_to_error_objects: dict,
 ):
     """
     Unit test for validate_single_dataset function.
     Checks the case when all rule conditions are wrapped
     into "not" block.
     """
-    df = SQLiteDataset.from_dict(
-        {
-            "AESTDY": ["test", "alex", "alex", "test", "test"],
-            "USUBJID": [
-                1,
-                2,
-                2,
-                1,
-                3,
-            ],
-            "AESEQ": [
-                1,
-                2,
-                3,
-                4,
-                5,
-            ],
-        },
-        db_config,
+    df = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": ["test", "alex", "alex", "test", "test"],
+                "USUBJID": [
+                    1,
+                    2,
+                    2,
+                    1,
+                    3,
+                ],
+                "AESEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -1271,17 +1275,21 @@ def test_validate_single_dataset_not_equal_to(
                     "define_dataset_location": "ae.xpt",
                 }
             ],
-            {
-                "dataset_name": [
-                    "AE",
-                ],
-                "dataset_label": [
-                    "Adverse Events",
-                ],
-                "dataset_location": [
-                    "te.xpt",
-                ],
-            },
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "dataset_name": [
+                            "AE",
+                        ],
+                        "dataset_label": [
+                            "Adverse Events",
+                        ],
+                        "dataset_location": [
+                            "te.xpt",
+                        ],
+                    }
+                )
+            ),
             [
                 {
                     "executionStatus": "execution_error",
@@ -1307,17 +1315,21 @@ def test_validate_single_dataset_not_equal_to(
                     "define_dataset_location": "ae.xpt",
                 }
             ],
-            {
-                "dataset_name": [
-                    "AE",
-                ],
-                "dataset_label": [
-                    "Adverse Events",
-                ],
-                "dataset_location": [
-                    "ae.xpt",
-                ],
-            },
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "dataset_name": [
+                            "AE",
+                        ],
+                        "dataset_label": [
+                            "Adverse Events",
+                        ],
+                        "dataset_location": [
+                            "ae.xpt",
+                        ],
+                    }
+                )
+            ),
             [
                 {
                     "domain": "AE",
@@ -1343,18 +1355,15 @@ def test_validate_dataset_metadata_against_define_xml(
     mock_get_define_xml_metadata_for_domain: MagicMock,
     define_xml_validation_rule: dict,
     define_xml_metadata: dict,
-    dataset_mock: dict,
+    dataset_mock: PandasDataset,
     expected_validation_result: List[dict],
-    db_config,
 ):
     """
     Unit test for Define XML validation.
     Creates an invalid dataset and validates it against Define XML.
     """
     mock_get_define_xml_metadata_for_domain.return_value = define_xml_metadata
-    mock_get_dataset_metadata.return_value = SQLiteDataset.from_dict(
-        dataset_mock, db_config
-    )
+    mock_get_dataset_metadata.return_value = dataset_mock
 
     dataset_metadata = SDTMDatasetMetadata(
         name="AE",
@@ -1385,19 +1394,23 @@ def test_validate_dataset_metadata_against_define_xml(
                     "define_variable_data_type": "Char",
                 }
             ],
-            {
-                "variable_name": [
-                    "TEST",
-                ],
-                "variable_label": [
-                    "TEST Label",
-                ],
-                "variable_size": [
-                    30,
-                ],
-                "variable_role": ["VAR ROLE"],
-                "variable_data_type": ["Char"],
-            },
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "variable_name": [
+                            "TEST",
+                        ],
+                        "variable_label": [
+                            "TEST Label",
+                        ],
+                        "variable_size": [
+                            30,
+                        ],
+                        "variable_role": ["VAR ROLE"],
+                        "variable_data_type": ["Char"],
+                    }
+                )
+            ),
             [
                 {
                     "domain": "AE",
@@ -1424,19 +1437,23 @@ def test_validate_dataset_metadata_against_define_xml(
                     "define_variable_data_type": "Char",
                 }
             ],
-            {
-                "variable_name": [
-                    "TEST",
-                ],
-                "variable_label": [
-                    "TEST Label",
-                ],
-                "variable_size": [
-                    30,
-                ],
-                "variable_role": ["VAR ROLE"],
-                "variable_data_type": ["Char"],
-            },
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "variable_name": [
+                            "TEST",
+                        ],
+                        "variable_label": [
+                            "TEST Label",
+                        ],
+                        "variable_size": [
+                            30,
+                        ],
+                        "variable_role": ["VAR ROLE"],
+                        "variable_data_type": ["Char"],
+                    }
+                )
+            ),
             [
                 {
                     "domain": "AE",
@@ -1467,18 +1484,15 @@ def test_validate_variable_metadata_against_define_xml(
     mock_get_define_xml_variables_metadata: MagicMock,
     define_xml_variable_validation_rule: dict,
     variable_metadata: dict,
-    dataset_mock: dict,
+    dataset_mock: PandasDataset,
     expected_validation_result: List[dict],
-    db_config,
 ):
     """
     Unit test for Define XML validation.
     Creates an invalid dataset and validates it against Define XML.
     """
     mock_get_define_xml_variables_metadata.return_value = variable_metadata
-    mock_get_variables_metadata.return_value = SQLiteDataset.from_dict(
-        dataset_mock, db_config
-    )
+    mock_get_variables_metadata.return_value = dataset_mock
     dataset_metadata = SDTMDatasetMetadata(
         name="AE",
         first_record={"DOMAIN": "AE"},
@@ -1501,7 +1515,6 @@ def test_validate_variable_metadata_against_define_xml(
 def test_validate_value_level_metadata_against_define_xml(
     mock_get_define_xml_value_level_metadata,
     define_xml_value_level_metadata_validation_rule: dict,
-    db_config,
 ):
     def check_length_func(row):
         return len(row["AETERM"]) < 10
@@ -1509,24 +1522,25 @@ def test_validate_value_level_metadata_against_define_xml(
     def filter_func(row):
         return row["FILTER"] == "SHORT"
 
-    df = SQLiteDataset.from_dict(
-        {
-            "FILTER": ["LONG", "SHORT", "SHORT", "SHORT"],
-            "AETERM": ["A" * 200, "A" * 200, "A" * 5, "A" * 15],
-            "USUBJID": [
-                4,
-                5,
-                5,
-                5,
-            ],
-            "AESEQ": [
-                1,
-                2,
-                3,
-                4,
-            ],
-        },
-        db_config,
+    df = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "FILTER": ["LONG", "SHORT", "SHORT", "SHORT"],
+                "AETERM": ["A" * 200, "A" * 200, "A" * 5, "A" * 15],
+                "USUBJID": [
+                    4,
+                    5,
+                    5,
+                    5,
+                ],
+                "AESEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                ],
+            }
+        )
     )
     mock_get_define_xml_value_level_metadata.return_value = [
         {
@@ -1642,7 +1656,6 @@ def test_validate_split_dataset_contents(
     include_split_datasets: bool,
     exclude: List[str],
     result: List[dict],
-    db_config,
 ):
     """
     Unit test for validating contents of a split dataset.
@@ -1654,51 +1667,53 @@ def test_validate_split_dataset_contents(
     dataset_rule_equal_to_error_objects["domains"]["Exclude"] = exclude
 
     # create two dataframes
-    first_dataset_part: SQLiteDataset = SQLiteDataset.from_dict(
-        {
-            "AESTDY": [
-                "test",
-                "alex",
-                "50",
-                "test",
-            ],
-            "USUBJID": [
-                1,
-                1,
-                1,
-                1,
-            ],
-            "SEQ": [
-                1,
-                2,
-                3,
-                4,
-            ],
-        },
-        db_config,
+    first_dataset_part: PandasDataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [
+                    "test",
+                    "alex",
+                    "50",
+                    "test",
+                ],
+                "USUBJID": [
+                    1,
+                    1,
+                    1,
+                    1,
+                ],
+                "SEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                ],
+            }
+        )
     )
-    second_dataset_part: SQLiteDataset = SQLiteDataset.from_dict(
-        {
-            "AESTDY": [
-                "100",
-                "alex",
-                "Nic",
-                "test",
-            ],
-            "USUBJID": [
-                2,
-                2,
-                2,
-                2,
-            ],
-            "SEQ": [
-                1,
-                2,
-                3,
-                4,
-            ],
-        },
-        db_config,
+    second_dataset_part: PandasDataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [
+                    "100",
+                    "alex",
+                    "Nic",
+                    "test",
+                ],
+                "USUBJID": [
+                    2,
+                    2,
+                    2,
+                    2,
+                ],
+                "SEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                ],
+            }
+        )
     )
 
     # mock blob storage call and execute the validation
@@ -1736,45 +1751,46 @@ def test_validate_split_dataset_metadata(
     mock_get_dataset_metadata: MagicMock,
     mock_async_get_datasets: MagicMock,
     dataset_metadata_not_equal_to_rule: dict,
-    db_config,
 ):
     """
     Unit test for validating metadata of a split dataset.
     """
     # create two dataframes
-    first_dataset_part: SQLiteDataset = SQLiteDataset.from_dict(
-        {
-            "dataset_size": [
-                5,
-            ],
-            "dataset_location": [
-                "ec_2.xpt",
-            ],
-            "dataset_name": [
-                "EC",
-            ],
-            "dataset_label": [
-                "EC Label",
-            ],
-        },
-        db_config,
+    first_dataset_part: PandasDataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "dataset_size": [
+                    5,
+                ],
+                "dataset_location": [
+                    "ec_2.xpt",
+                ],
+                "dataset_name": [
+                    "EC",
+                ],
+                "dataset_label": [
+                    "EC Label",
+                ],
+            }
+        )
     )
-    second_dataset_part: SQLiteDataset = SQLiteDataset.from_dict(
-        {
-            "dataset_size": [
-                10,
-            ],
-            "dataset_location": [
-                "ec_1.xpt",
-            ],
-            "dataset_name": [
-                "EC",
-            ],
-            "dataset_label": [
-                "EC Label",
-            ],
-        },
-        db_config,
+    second_dataset_part: PandasDataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "dataset_size": [
+                    10,
+                ],
+                "dataset_location": [
+                    "ec_1.xpt",
+                ],
+                "dataset_name": [
+                    "EC",
+                ],
+                "dataset_label": [
+                    "EC Label",
+                ],
+            }
+        )
     )
 
     # mock blob storage call and execute the validation
@@ -1821,31 +1837,33 @@ def test_validate_split_dataset_metadata(
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService._async_get_datasets")
 def test_validate_split_dataset_variables_metadata(
-    mock_async_get_datasets: MagicMock, variables_metadata_rule: dict, db_config
+    mock_async_get_datasets: MagicMock, variables_metadata_rule: dict
 ):
     """
     Unit test for validating variables metadata of a split dataset.
     """
-    first_dataset_part = SQLiteDataset.from_dict(  # this part should flag an error
-        {
-            "variable_name": ["STUDYIDLONG", "DOMAINLONG"],
-            "variable_size": [5, 20],
-            "variable_label": [
-                "Study Identifier Study Identifier Very Long",
-                "Domain Name Domain Name Very Long",
-            ],
-            "variable_data_type": ["Char", "Char"],
-        },
-        db_config,
+    first_dataset_part = PandasDataset(
+        pd.DataFrame.from_dict(  # this part should flag an error
+            {
+                "variable_name": ["STUDYIDLONG", "DOMAINLONG"],
+                "variable_size": [5, 20],
+                "variable_label": [
+                    "Study Identifier Study Identifier Very Long",
+                    "Domain Name Domain Name Very Long",
+                ],
+                "variable_data_type": ["Char", "Char"],
+            }
+        )
     )
-    second_dataset_part = SQLiteDataset.from_dict(
-        {
-            "variable_name": ["STUDYID", "DOMAIN"],
-            "variable_size": [5, 20],
-            "variable_label": ["Study Identifier", "Domain Name"],
-            "variable_data_type": ["Char", "Char"],
-        },
-        db_config,
+    second_dataset_part = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "variable_name": ["STUDYID", "DOMAIN"],
+                "variable_size": [5, 20],
+                "variable_label": ["Study Identifier", "Domain Name"],
+                "variable_data_type": ["Char", "Char"],
+            }
+        )
     )
 
     mock_async_get_datasets.return_value = [
@@ -1899,69 +1917,70 @@ def test_validate_split_dataset_variables_metadata(
 def test_validate_record_in_parent_domain(
     mock_get_dataset_class,
     dataset_rule_record_in_parent_domain_equal_to: dict,
-    db_config,
 ):
     """
     Unit test for validating value of a column in parent domain.
     """
-    ec_dataset = SQLiteDataset.from_dict(
-        {
-            "USUBJID": ["CDISC001", "CDISC005", "CDISC005", "CDISC005", "CDISC005"],
-            "DOMAIN": [
-                "EC",
-                "AE",
-                "EC",
-                "EC",
-                "EC",
-            ],
-            "ECPRESP": [
-                "A",
-                "Y",
-                "Y",
-                "Y",
-                "B",
-            ],
-            "ECSEQ": [
-                1,
-                2,
-                3,
-                4,
-                5,
-            ],
-            "ECNUM": [
-                1,
-                2,
-                3,
-                4,
-                5,
-            ],
-        },
-        db_config,
+    ec_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "USUBJID": ["CDISC001", "CDISC005", "CDISC005", "CDISC005", "CDISC005"],
+                "DOMAIN": [
+                    "EC",
+                    "AE",
+                    "EC",
+                    "EC",
+                    "EC",
+                ],
+                "ECPRESP": [
+                    "A",
+                    "Y",
+                    "Y",
+                    "Y",
+                    "B",
+                ],
+                "ECSEQ": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ],
+                "ECNUM": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                ],
+            }
+        )
     )
-    suppec_dataset = SQLiteDataset.from_dict(
-        {
-            "USUBJID": [
-                "CDISC005",
-                "CDISC005",
-            ],
-            "RDOMAIN": [
-                "EC",
-                "EC",
-            ],
-            "QNAM": [
-                "ECREASOC",
-                "ECREASOS",
-            ],
-            "IDVAR": [
-                "ECSEQ",
-                "ECSEQ",
-            ],
-            "IDVARVAL": [
-                "4.0",
-                "5.0",
-            ],
-        },
-        db_config,
+    suppec_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "USUBJID": [
+                    "CDISC005",
+                    "CDISC005",
+                ],
+                "RDOMAIN": [
+                    "EC",
+                    "EC",
+                ],
+                "QNAM": [
+                    "ECREASOC",
+                    "ECREASOS",
+                ],
+                "IDVAR": [
+                    "ECSEQ",
+                    "ECSEQ",
+                ],
+                "IDVARVAL": [
+                    "4.0",
+                    "5.0",
+                ],
+            }
+        )
     )
     path_to_dataset_map: dict = {
         os.path.join("path", "ec.xpt"): ec_dataset,
@@ -2015,33 +2034,32 @@ def test_validate_record_in_parent_domain(
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset_class")
 def test_validate_additional_columns(
-    mock_get_dataset_class,
-    dataset_rule_inconsistent_enumerated_columns: dict,
-    db_config,
+    mock_get_dataset_class, dataset_rule_inconsistent_enumerated_columns: dict
 ):
     """
     Unit test for validating additional columns like TSVAL1, TSVAL2.
     """
     mock_get_dataset_class.return_value = None
-    dataset = SQLiteDataset.from_dict(
-        {
-            "USUBJID": [
-                1,
-                1,
-                1,
-                1,
-            ],
-            "TSVAL": [
-                "value",
-                None,
-                "another value",
-                None,
-            ],  # original column may be empty
-            "TSVAL1": ["value", None, "value", "value"],  # invalid column
-            "TSVAL2": ["value 2", "value 2", "value 2", None],  # invalid column
-            "TSVAL3": ["value 3", "value 3", None, "value 3"],
-        },
-        db_config,
+    dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "USUBJID": [
+                    1,
+                    1,
+                    1,
+                    1,
+                ],
+                "TSVAL": [
+                    "value",
+                    None,
+                    "another value",
+                    None,
+                ],  # original column may be empty
+                "TSVAL1": ["value", None, "value", "value"],  # invalid column
+                "TSVAL2": ["value 2", "value 2", "value 2", None],  # invalid column
+                "TSVAL3": ["value 3", "value 3", None, "value 3"],
+            }
+        )
     )
     with patch(
         "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -2094,7 +2112,6 @@ def test_validate_dataset_contents_against_define_and_library_variable_metadata(
     mock_get_dataset: MagicMock,
     mock_get_define_xml_contents: MagicMock,
     rule_check_dataset_against_library_and_define: dict,
-    db_config,
 ):
     """
     Test for validating dataset contents against define and library metadata.
@@ -2141,13 +2158,14 @@ def test_validate_dataset_contents_against_define_and_library_variable_metadata(
     mock_get_define_xml_contents.return_value = contents
 
     # mock dataset download to return DataFrame with empty values
-    mock_get_dataset.return_value = SQLiteDataset.from_dict(
-        {
-            "AELNKID": ["test", None, "alex"],
-            "AESEV": [None, None, "test"],
-            "AESER": ["1", "2", None],
-        },
-        db_config,
+    mock_get_dataset.return_value = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AELNKID": ["test", None, "alex"],
+                "AESEV": [None, None, "test"],
+                "AESER": ["1", "2", None],
+            }
+        )
     )
     mock_get_dataset_class.return_value = "EVENTS"
 
@@ -2208,49 +2226,50 @@ def test_validate_single_dataset_operation_dataset_larger_than_target_dataset(
     mock_get_dataset_class: MagicMock,
     mock_get_dataset: MagicMock,
     rule_distinct_operation_is_not_contained_by: dict,
-    db_config,
 ):
     """
     Unit test for the rules engine that ensures that
     if the operation result is longer than the target dataset
     the validation is being performed correctly.
     """
-    target_dataset = SQLiteDataset.from_dict(
-        {
-            "STUDYID": [
-                "CDISCPILOT01",
-            ],
-            "DOMAIN": [
-                "IE",
-            ],
-            "USUBJID": [
-                "CDISC015",
-            ],
-            "IESEQ": [
-                1,
-            ],
-            "IETEST": [
-                "Matching value",
-            ],
-        },
-        db_config,
+    target_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": [
+                    "CDISCPILOT01",
+                ],
+                "DOMAIN": [
+                    "IE",
+                ],
+                "USUBJID": [
+                    "CDISC015",
+                ],
+                "IESEQ": [
+                    1,
+                ],
+                "IETEST": [
+                    "Matching value",
+                ],
+            }
+        )
     )
-    operation_result_dataset = SQLiteDataset.from_dict(
-        {
-            "STUDYID": [
-                "CDISCPILOT01",
-                "CDISCPILOT01",
-            ],
-            "DOMAIN": [
-                "TI",
-                "TI",
-            ],
-            "IETEST": [
-                "Not a match",
-                "Matching value",
-            ],
-        },
-        db_config,
+    operation_result_dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "STUDYID": [
+                    "CDISCPILOT01",
+                    "CDISCPILOT01",
+                ],
+                "DOMAIN": [
+                    "TI",
+                    "TI",
+                ],
+                "IETEST": [
+                    "Not a match",
+                    "Matching value",
+                ],
+            }
+        )
     )
 
     path_to_dataset_map: dict = {
@@ -2302,7 +2321,6 @@ def test_validate_extract_metadata_operation(
     mock_get_dataset_metadata: MagicMock,
     mock_get_dataset: MagicMock,
     rule_equal_to_with_extract_metadata_operation: dict,
-    db_config,
 ):
     """
     Unit test for validating extract_metadata operation.
@@ -2310,37 +2328,38 @@ def test_validate_extract_metadata_operation(
     value of RDOMAIN equals characters 5 and 6 of the dataset name.
     """
     # mock download of dataset metadata
-    mock_get_dataset_metadata.return_value = SQLiteDataset.from_dict(
-        {
-            "dataset_name": [
-                "SUPPEC",
-            ],
-        },
-        db_config,
+    mock_get_dataset_metadata.return_value = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "dataset_name": [
+                    "SUPPEC",
+                ],
+            }
+        )
     )
 
     # create a dataset
-    dataset = SQLiteDataset.from_dict(
-        {
-            "RDOMAIN": [
-                "EC",
-                "EC",
-                "EC",
-            ],
-            "IDVAR": [
-                "ECSEQ",
-                "ECSEQ",
-                "ECSEQ",
-            ],
-            "IDVARVAL": [
-                1,
-                2,
-                3,
-            ],
-        },
-        db_config,
+    dataset = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "RDOMAIN": [
+                    "EC",
+                    "EC",
+                    "EC",
+                ],
+                "IDVAR": [
+                    "ECSEQ",
+                    "ECSEQ",
+                    "ECSEQ",
+                ],
+                "IDVARVAL": [
+                    1,
+                    2,
+                    3,
+                ],
+            }
+        )
     )
-
     mock_get_dataset.return_value = dataset
     dataset_metadata = SDTMDatasetMetadata(
         name="SUPPEC",
@@ -2400,25 +2419,25 @@ def test_dataset_references_invalid_whodrug_terms(
     mock_get_dataset: MagicMock,
     rule_dataset_references_invalid_whodrug_terms: dict,
     installed_whodrug_dictionaries: dict,
-    db_config,
 ):
     """
     Unit test for validate_single_dataset function.
     Checks the case when a dataset references invalid whodrug term.
     """
     # create a dataset where 2 rows reference invalid terms
-    invalid_df = SQLiteDataset.from_dict(
-        {
-            "DOMAIN": [
-                "AE",
-                "AE",
-                "AE",
-                "AE",
-            ],
-            "AETERM": ["A", "B", "B", "B"],
-            "AEINA": ["A", "A01", "A01AC", "A01AD"],
-        },
-        db_config,
+    invalid_df = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "DOMAIN": [
+                    "AE",
+                    "AE",
+                    "AE",
+                    "AE",
+                ],
+                "AETERM": ["A", "B", "B", "B"],
+                "AEINA": ["A", "A01", "A01AC", "A01AD"],
+            }
+        )
     )
     mock_get_dataset.return_value = invalid_df
     cache_service = installed_whodrug_dictionaries["cache_service"]
@@ -2490,40 +2509,40 @@ def test_validate_variables_order_against_library_metadata(
     mock_get_variables_metadata: MagicMock,
     mock_get_dataset: MagicMock,
     rule_validate_columns_order_against_library_metadata: dict,
-    db_config,
 ):
     """
     The test validates order of dataset columns against the library metadata.
     """
     # mock dataset download
-    dataset_df = SQLiteDataset.from_dict(
-        {
-            "DOMAIN": [
-                "AE",
-                "AE",
-            ],
-            "AESEQ": [
-                1,
-                2,
-            ],
-            "STUDYID": [
-                "TEST_STUDY",
-                "TEST_STUDY",
-            ],
-            "AETERM": [
-                "test",
-                "test",
-            ],
-        },
-        db_config,
+    dataset_df = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "DOMAIN": [
+                    "AE",
+                    "AE",
+                ],
+                "AESEQ": [
+                    1,
+                    2,
+                ],
+                "STUDYID": [
+                    "TEST_STUDY",
+                    "TEST_STUDY",
+                ],
+                "AETERM": [
+                    "test",
+                    "test",
+                ],
+            }
+        )
     )
     mock_get_dataset.return_value = dataset_df
 
     standard: str = "sdtmig"
     standard_version: str = "3-1-2"
 
-    mock_get_variables_metadata.return_value = SQLiteDataset.from_dict(
-        {"data": {"variable_name": dataset_df.columns}}, db_config
+    mock_get_variables_metadata.return_value = pd.DataFrame.from_dict(
+        {"data": {"variable_name": dataset_df.columns.tolist()}}
     )
 
     mock_get_dataset_class.return_value = "EVENTS"
