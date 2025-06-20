@@ -87,7 +87,7 @@ def test_validate_rule_single_dataset_check(dataset_rule_greater_than: dict, db_
             "ECCOOLVAR": [20, 100, 10, 34],
             "AESTDY": [1, 2, 40, 50],
         },
-        db_config,
+        db_config
     )
     with patch(
         "cdisc_rules_engine.services.data_services.USDMDataService.get_dataset",

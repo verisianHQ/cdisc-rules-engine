@@ -92,9 +92,9 @@ def test_contents_define_variables_dataset_builder(
     expected,
 ):
     mock_get_dataset.return_value = dataset_implementation.from_dict(content)
-    mock_get_define_xml_variables_metadata.return_value = (
-        dataset_implementation.from_dict(variables_metadata).to_records(index=False)
-    )
+    mock_get_define_xml_variables_metadata.return_value = dataset_implementation.from_dict(
+        variables_metadata
+    ).to_records(index=False)
     result = ContentsDefineVariablesDatasetBuilder(
         rule=None,
         data_service=LocalDataService(MagicMock(), MagicMock(), MagicMock()),

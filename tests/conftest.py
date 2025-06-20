@@ -33,7 +33,6 @@ whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug
 # DATABASE CONFIG FUNCTIONS
 # =====================================================
 
-
 @pytest.fixture(scope="function")
 def db_config():
     """Create a fresh database config for each test function."""
@@ -47,10 +46,8 @@ def db_config():
 @pytest.fixture(scope="function")
 def dataset_factory(db_config):
     """Factory for creating SQLiteDataset instances with the test database."""
-
     def create_dataset(data_dict):
         return SQLiteDataset.from_dict(data_dict, db_config)
-
     return create_dataset
 
 
@@ -68,7 +65,7 @@ def module_db_config():
     """Create a database config shared within a module."""
     config = SQLiteDatabaseConfig()
     config.initialise(in_memory=True)
-
+    
     def cleanup_tables():
         """Clean all data but keep table structure."""
         with config.get_connection() as conn:
@@ -78,10 +75,10 @@ def module_db_config():
             cursor.execute("DELETE FROM dataset_columns")
             cursor.execute("DELETE FROM datasets")
             conn.commit()
-
+    
     # Store cleanup function on config for access in tests
     config.cleanup_tables = cleanup_tables
-
+    
     yield config
     config.close_all()
 
@@ -94,7 +91,7 @@ def shared_db_config():
     """
     config = SQLiteDatabaseConfig()
     config.initialise(in_memory=True)
-
+    
     def cleanup():
         with config.get_connection() as conn:
             cursor = conn.cursor()
@@ -102,7 +99,7 @@ def shared_db_config():
             cursor.execute("DELETE FROM dataset_columns")
             cursor.execute("DELETE FROM datasets")
             conn.commit()
-
+    
     config.cleanup = cleanup
     yield config
     config.close_all()
@@ -114,10 +111,9 @@ def auto_cleanup_shared_db(request, shared_db_config):
     Automatically cleanup shared database before tests that use it.
     Only runs for tests that use shared_db_config fixture.
     """
-    if "shared_db_config" in request.fixturenames:
+    if 'shared_db_config' in request.fixturenames:
         shared_db_config.cleanup()
     yield
-
 
 def pytest_collection_modifyitems(config, items):
     run_regression_tests = config.getoption("-m") == "regression"
@@ -170,6 +166,7 @@ def get_matches_regex_pattern_rule(pattern: str) -> dict:
             }
         ],
     }
+
 
 
 # =====================================================
@@ -1325,9 +1322,7 @@ def operation_params() -> OperationParams:
         core_id="test_id",
         operation_id="operation_id",
         operation_name="operation_name",
-        dataframe=SQLiteDataset.from_dict(
-            {}, SQLiteDatabaseConfig().initialise(in_memory=True)
-        ),
+        dataframe=SQLiteDataset.from_dict({}, SQLiteDatabaseConfig().initialise(in_memory=True)),
         target="target",
         domain="domain",
         dataset_path="dataset_path",

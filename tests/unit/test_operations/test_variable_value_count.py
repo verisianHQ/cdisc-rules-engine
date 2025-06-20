@@ -30,13 +30,16 @@ def test_variable_value_count(
     dataset_path = os.path.join("study", "bundle", "blah")
     datasets_map = {
         "AE": SQLiteDataset.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}, db_config
+            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
         "EX": SQLiteDataset.from_dict(
-            {"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}, db_config
+            {"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
         "AE2": SQLiteDataset.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}, db_config
+            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]},
+            db_config
         ),
     }
 
@@ -68,9 +71,7 @@ def test_variable_value_count(
         )
     )
     mock_data_service.concat_split_datasets.side_effect = (
-        lambda func, files: SQLiteDataset(database_config=db_config).concat(
-            [func(f) for f in files]
-        )
+        lambda func, files: SQLiteDataset(database_config=db_config).concat([func(f) for f in files])
     )
     operation_params.datasets = datasets
     operation_params.original_target = target

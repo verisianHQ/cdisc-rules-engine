@@ -18,7 +18,7 @@ def test_valid_whodrug_references(
     installed_whodrug_dictionaries: dict,
     operation_params: OperationParams,
     dataset_type,
-    db_config,
+    db_config
 ):
     """
     Unit test for valid_whodrug_references function.
@@ -37,7 +37,7 @@ def test_valid_whodrug_references(
             ],
             "AEINA": ["A", "A01", "A01AC", "A01AD"],
         },
-        db_config,
+        db_config
     )
 
     operation_params.dataframe = invalid_df

@@ -45,7 +45,7 @@ class DummyDataset(SDTMDatasetMetadata):
             ]
             self.data = SQLiteDataset.from_dict(
                 dataset_data.get("records", {}),
-                SQLiteDatabaseConfig().initialise(in_memory=True),
+                SQLiteDatabaseConfig().initialise(in_memory=True)
             )
 
             self.record_count = self.data.__len__()

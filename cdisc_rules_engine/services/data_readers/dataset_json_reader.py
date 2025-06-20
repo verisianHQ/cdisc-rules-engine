@@ -38,7 +38,7 @@ class DatasetJSONReader(DataReaderInterface):
         columns = [item["name"] for item in datasetjson.get("columns", [])]
         rows = datasetjson.get("rows", [])
         records = []
-
+        
         for row in rows:
             # Create a dictionary for each row
             record = {}
@@ -46,12 +46,12 @@ class DatasetJSONReader(DataReaderInterface):
                 if idx < len(row):
                     value = row[idx]
                     if isinstance(value, float):
-                        value = round(value, 15)  # 15-rounded float
+                        value = round(value, 15) # 15-rounded float
                     record[col] = value
                 else:
                     record[col] = None
             records.append(record)
-
+        
         return records
 
     def _raw_dataset_from_file(self, file_path) -> SQLiteDataset:
@@ -59,10 +59,10 @@ class DatasetJSONReader(DataReaderInterface):
         schema = self.get_schema()
         datasetjson = self.read_json_file(file_path)
         jsonschema.validate(datasetjson, schema)
-
+        
         records = self._prepare_records_from_dataset_json(datasetjson)
         columns = [item["name"] for item in datasetjson.get("columns", [])]
-
+        
         df = self.dataset_implementation.from_records(
             records,
             database_config=self.database_config,
@@ -75,7 +75,7 @@ class DatasetJSONReader(DataReaderInterface):
             df = self._raw_dataset_from_file(file_path)
             return df
         except jsonschema.exceptions.ValidationError:
-            database_config = getattr(self, "database_config", None)
+            database_config = getattr(self, 'database_config', None)
             if not database_config:
                 raise ValueError("database_config is required for SQLiteDataset")
             return self.dataset_implementation(database_config=database_config)
@@ -83,13 +83,13 @@ class DatasetJSONReader(DataReaderInterface):
     def to_parquet(self, file_path: str) -> str:
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".parquet")
         df = self._raw_dataset_from_file(file_path)
-
+        
         # convert to pd dataframe for parquet export.
         # TODO: implement custom parquet conversion for SQLite.
-        records = df.to_dict("records")
+        records = df.to_dict('records')
         pandas_df = pd.DataFrame(records)
         pandas_df.to_parquet(temp_file.name)
-
+        
         return len(df), temp_file.name
 
     def read(self, data):

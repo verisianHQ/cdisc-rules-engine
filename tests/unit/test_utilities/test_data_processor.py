@@ -13,7 +13,6 @@ from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.enums.join_types import JoinTypes
 import numpy as np
 
-
 @pytest.mark.parametrize(
     "data_dict",
     [
@@ -22,7 +21,7 @@ import numpy as np
             "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
             "IDVARVAL": [1, 2, 1, 3],
         },
-        {"RSUBJID": [1, 4, 6000]},
+        {"RSUBJID": [1, 4, 6000]}
     ],
 )
 def test_preprocess_relationship_dataset(data_dict, db_config):
@@ -40,7 +39,7 @@ def test_preprocess_relationship_dataset(data_dict, db_config):
             "STUDYID": [101, 201, 300],
             "AESEQ": [1, 2, 3],
         },
-        db_config,
+        db_config
     )
     ec = SQLiteDataset.from_dict(
         {
@@ -48,7 +47,7 @@ def test_preprocess_relationship_dataset(data_dict, db_config):
             "STUDYID": [201, 101],
             "ECSEQ": [2, 1],
         },
-        db_config,
+        db_config
     )
     dm = SQLiteDataset.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, db_config)
     data = [SQLiteDataset.from_dict(_dict, db_config) for _dict in data_dict]
@@ -147,7 +146,7 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 3,
             ],
         },
-        db_config,
+        db_config
     )
     right_dataset = dataset_implementation.from_dict(
         {
@@ -182,7 +181,7 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 "3.0",
             ],
         },
-        db_config,
+        db_config
     )
 
     # call the tested function and check the results
@@ -247,15 +246,13 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation, db_confi
                 3.0,
             ],
         },
-        db_config,
+        db_config
     )
     assert merged_df.equals(expected_df)
 
 
 @pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
-def test_merge_datasets_on_string_relationship_columns(
-    dataset_implementation, db_config
-):
+def test_merge_datasets_on_string_relationship_columns(dataset_implementation, db_config):
     """
     Unit test for DataProcessor.merge_datasets_on_relationship_columns method.
     Test the case when the columns that describe the relation
@@ -280,7 +277,7 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IC",
             ],
         },
-        db_config,
+        db_config
     )
     right_dataset = dataset_implementation.from_dict(
         {
@@ -315,7 +312,7 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IC",
             ],
         },
-        db_config,
+        db_config
     )
 
     # call the tested function and check the results
@@ -379,7 +376,7 @@ def test_merge_datasets_on_string_relationship_columns(
                 "CDISC_IC",
             ],
         },
-        db_config,
+        db_config
     )
     assert merged_df.equals(expected_df)
 
@@ -418,7 +415,7 @@ def test_merge_datasets_on_string_relationship_columns(
                     1,
                     2,
                 ],
-            },
+            }
         ),
         (
             JoinTypes.LEFT,
@@ -503,7 +500,7 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_conf
                 "SAMPLE_3",
             ],
         },
-        db_config,
+        db_config
     )
     right_dataset: SQLiteDataset = SQLiteDataset.from_dict(
         {
@@ -524,7 +521,7 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, exp_df: dict, db_conf
                 2,
             ],
         },
-        db_config,
+        db_config
     )
 
     # call the tested function and check the results

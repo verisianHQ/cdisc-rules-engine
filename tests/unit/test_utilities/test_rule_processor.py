@@ -346,7 +346,13 @@ def test_rule_applies_to_domain_split_datasets(
     ],
 )
 def test_rule_applies_to_class(
-    mock_data_service, datasets, rule_metadata, data, class_name, outcome, db_config
+    mock_data_service,
+    datasets,
+    rule_metadata,
+    data,
+    class_name,
+    outcome,
+    db_config
 ):
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     dataset_mock = SQLiteDataset.from_dict(data, db_config)
@@ -473,7 +479,7 @@ def test_perform_rule_operation(mock_data_service, dataset_implementation, db_co
     }
     df = dataset_implementation.from_dict(
         {"AESTDY": [11, 12, 40, 59, 59], "DOMAIN": ["AE", "AE", "AE", "AE", "AE"]},
-        db_config,
+        db_config
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -564,7 +570,7 @@ def test_perform_rule_operation_with_grouping(
             "AESEQ": [1, 2, 3, 4],
             "DOMAIN": ["AE", "AE", "AE", "AE"],
         },
-        db_config,
+        db_config
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -676,7 +682,7 @@ def test_perform_rule_operation_with_multi_key_grouping(
             "DOMAIN": ["AE", "AE", "AE", "AE", "AE", "AE"],
             "STUDYID": ["A", "A", "A", "A", "B", "B"],
         },
-        db_config,
+        db_config
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     with patch(
@@ -730,7 +736,8 @@ def test_perform_rule_operation_with_null_operations(
         "operations": None,
     }
     df = dataset_implementation.from_dict(
-        {"AESTDY": [11, 12, 40, 59], "USUBJID": [1, 200, 1, 200]}, db_config
+        {"AESTDY": [11, 12, 40, 59], "USUBJID": [1, 200, 1, 200]},
+        db_config
     )
     processor = RuleProcessor(mock_data_service, InMemoryCacheService())
     new_data = processor.perform_rule_operations(
@@ -754,7 +761,7 @@ def test_perform_extract_metadata_operation(
     mock_get_dataset_metadata: MagicMock,
     dataset_implementation,
     rule_equal_to_with_extract_metadata_operation: dict,
-    db_config,
+    db_config
 ):
     """
     Unit test for extract_metadata operation.
@@ -768,7 +775,7 @@ def test_perform_extract_metadata_operation(
                 "SUPPEC",
             ],
         },
-        db_config,
+        db_config
     )
 
     # call rule processor
@@ -790,7 +797,7 @@ def test_perform_extract_metadata_operation(
                 3,
             ],
         },
-        db_config,
+        db_config
     )
 
     mock = MagicMock()
@@ -801,7 +808,7 @@ def test_perform_extract_metadata_operation(
                 "SUPPEC",
             ],
         },
-        db_config,
+        db_config
     )
     processor = RuleProcessor(mock, InMemoryCacheService())
     dataset_after_operation = processor.perform_rule_operations(
