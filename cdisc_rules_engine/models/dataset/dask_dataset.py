@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import re
 import dask
-from typing import List, Union
+from typing import List, Union, Optional, Tuple
 
 DEFAULT_NUM_PARTITIONS = 4
 dask.config.set({"dataframe.convert-string": False})
@@ -375,3 +375,272 @@ class DaskDataset(PandasDataset):
         mask = computed_data[column].isin(values)
         filtered_df = computed_data[mask]
         return filtered_df
+
+    def unique(self, column: Optional[str] = None):
+        """Return unique values of Series or DataFrame column."""
+        if column is not None:
+            return self._data[column].unique().compute()
+        # If called on series-like data
+        if len(self._data.columns) == 1:
+            return self._data.iloc[:, 0].unique().compute()
+        raise ValueError("Must specify column for DataFrame with multiple columns")
+
+    def squeeze(self, axis=None):
+        """Squeeze 1 dimensional axis objects into scalars."""
+        result = self._data.compute().squeeze(axis=axis)
+        if isinstance(result, (pd.Series, pd.DataFrame)):
+            return self.__class__(dd.from_pandas(result, npartitions=DEFAULT_NUM_PARTITIONS))
+        return result  # scalar
+
+    def duplicated(self, subset=None, keep='first'):
+        """Return boolean Series denoting duplicate rows."""
+        # We gotta compute first because dask doesn't support duplicated directly
+        return self._data.compute().duplicated(subset=subset, keep=keep)
+
+    def isna(self):
+        """Detect missing values."""
+        result = self._data.isna()
+        return self.__class__(result)
+
+    def notna(self):
+        """Detect non-missing values."""
+        result = self._data.notna()
+        return self.__class__(result)
+
+    def head(self, n=5):
+        """Return the first n rows."""
+        result = self._data.head(n, npartitions=-1)
+        return self.__class__(result)
+
+    def tail(self, n=5):
+        """Return the last n rows."""
+        result = self._data.tail(n, compute=False)
+        return self.__class__(result)
+
+    def nunique(self, axis=0, dropna=True):
+        """Count distinct observations."""
+        if axis == 0:
+            # For each column
+            result = {}
+            for col in self._data.columns:
+                result[col] = self._data[col].nunique(dropna=dropna).compute()
+            return pd.Series(result)
+        else:
+            # Row-wise nunique needs compute
+            return self._data.compute().nunique(axis=axis, dropna=dropna)
+
+    def agg(self, func, axis=0, *args, **kwargs):
+        """Aggregate using one or more operations."""
+        result = self._data.agg(func, axis=axis, *args, **kwargs)
+        if isinstance(result, dd.DataFrame):
+            return self.__class__(result)
+        elif isinstance(result, dd.Series):
+            return result.compute()
+        return result
+
+    def select_dtypes(self, include=None, exclude=None):
+        """Return a subset of the DataFrame's columns based on the column dtypes."""
+        # Dask doesn't have select_dtypes, need to compute dtypes first
+        dtypes = self._data.dtypes
+        columns = []
+        
+        for col, dtype in dtypes.items():
+            if include is not None:
+                if isinstance(include, list):
+                    if any(dtype == t or pd.api.types.is_dtype_equal(dtype, t) for t in include):
+                        columns.append(col)
+                else:
+                    if dtype == include or pd.api.types.is_dtype_equal(dtype, include):
+                        columns.append(col)
+            
+            if exclude is not None:
+                if isinstance(exclude, list):
+                    if any(dtype == t or pd.api.types.is_dtype_equal(dtype, t) for t in exclude):
+                        if col in columns:
+                            columns.remove(col)
+                else:
+                    if dtype == exclude or pd.api.types.is_dtype_equal(dtype, exclude):
+                        if col in columns:
+                            columns.remove(col)
+        
+        if include is None and exclude is not None:
+            columns = [col for col in self._data.columns if col not in columns]
+        
+        return self.__class__(self._data[columns])
+
+    def cumsum(self, axis=None, skipna=True, *args, **kwargs):
+        """Return cumulative sum."""
+        result = self._data.cumsum(axis=axis, skipna=skipna)
+        return self.__class__(result)
+
+    def to_frame(self, name=None):
+        """Convert Series to DataFrame."""
+        if isinstance(self._data, dd.Series):
+            result = self._data.to_frame(name=name)
+            return self.__class__(result)
+        return self  # Already a DataFrame
+
+    def describe(self, percentiles=None, include=None, exclude=None):
+        """Generate descriptive statistics."""
+        result = self._data.describe(percentiles=percentiles, include=include, exclude=exclude)
+        return self.__class__(result.compute() if isinstance(result, dd.DataFrame) else result)
+
+    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
+        """Return a Series containing counts of unique values."""
+        if len(self._data.columns) == 1:
+            result = self._data.iloc[:, 0].value_counts(
+                normalize=normalise, sort=sort, ascending=ascending, bins=bins, dropna=dropna
+            )
+            return result.compute()
+        raise ValueError("value_counts() only works on single columns")
+
+    def shift(self, periods=1, freq=None, axis=0, fill_value=None):
+        """Shift index by desired number of periods."""
+        result = self._data.shift(periods=periods, freq=freq, axis=axis)
+        return self.__class__(result)
+
+    @property
+    def shape(self) -> Tuple[int, int]:
+        """Return a tuple representing the dimensionality of the dataset."""
+        rows = self._data.shape[0]
+        if not isinstance(rows, int):
+            rows = rows.compute()
+        cols = len(self._data.columns)
+        return (rows, cols)
+
+    @property
+    def dtypes(self):
+        """Return the dtypes in the dataset."""
+        return self._data.dtypes
+
+    @property
+    def values(self):
+        """Return a Numpy representation of the data."""
+        return self._data.compute().values
+
+    @property
+    def str(self):
+        """Vectorised string functions for Series and Index."""
+        class StringAccessor:
+            def __init__(self, data):
+                self._data = data
+            
+            def __getitem__(self, key):
+                return self._data[key].str
+            
+            def __getattr__(self, item):
+                if isinstance(self._data, dd.DataFrame):
+                    raise AttributeError("Can only use .str accessor with string values!")
+                return getattr(self._data.str, item)
+        
+        return StringAccessor(self._data)
+
+    @property
+    def dt(self):
+        """Accessor object for datetime-like properties."""
+        class DatetimeAccessor:
+            def __init__(self, data):
+                self._data = data
+            
+            def __getitem__(self, key):
+                return self._data[key].dt
+            
+            def __getattr__(self, item):
+                if isinstance(self._data, dd.DataFrame):
+                    raise AttributeError("Can only use .dt accessor with datetimelike values!")
+                return getattr(self._data.dt, item)
+        
+        return DatetimeAccessor(self._data)
+
+    def isin(self, values):
+        """Check whether each element is contained in values."""
+        values_set = set(values)
+
+        def partition_isin(partition):
+            return partition.isin(values_set)
+
+        result = self._data.map_partitions(partition_isin)
+        return self.__class__(result)
+
+    def map(self, mapper, na_action=None):
+        """Map values using an input mapping or function."""
+        if len(self._data.columns) == 1:
+            # Map on single column
+            result = self._data.iloc[:, 0].map(mapper, na_action=na_action, 
+                                              meta=self._data.iloc[:, 0]._meta)
+            return result.compute()
+        else:
+            # For DataFrame, apply map to each column
+            result = self._data.map_partitions(
+                lambda df: df.apply(lambda x: x.map(mapper, na_action=na_action))
+            )
+            return self.__class__(result)
+
+    def to_parquet(self, path=None, **kwargs):
+        """Write a DataFrame to the parquet format."""
+        return self._data.to_parquet(path, **kwargs)
+
+    def eq(self, other, axis='columns', level=None):
+        """Get Equal to of dataframe and other, element-wise."""
+        result = self._data.eq(other)
+        return self.__class__(result)
+
+    def ne(self, other, axis='columns', level=None):
+        """Get Not equal to of dataframe and other, element-wise."""
+        result = self._data.ne(other)
+        return self.__class__(result)
+
+    def lt(self, other, axis='columns', level=None):
+        """Get Less than of dataframe and other, element-wise."""
+        result = self._data.lt(other)
+        return self.__class__(result)
+
+    def le(self, other, axis='columns', level=None):
+        """Get Less than or equal to of dataframe and other, element-wise."""
+        result = self._data.le(other)
+        return self.__class__(result)
+
+    def gt(self, other, axis='columns', level=None):
+        """Get Greater than of dataframe and other, element-wise."""
+        result = self._data.gt(other)
+        return self.__class__(result)
+
+    def ge(self, other, axis='columns', level=None):
+        """Get Greater than or equal to of dataframe and other, element-wise."""
+        result = self._data.ge(other)
+        return self.__class__(result)
+
+    def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
+        """Return whether any element is True."""
+        result = self._data.any(axis=axis, skipna=skipna)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def all(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
+        """Return whether all elements are True."""
+        result = self._data.all(axis=axis, skipna=skipna)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+        """Return the sum of the values."""
+        result = self._data.sum(axis=axis, skipna=skipna, min_count=min_count)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def mean(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
+        """Return the mean of the values."""
+        result = self._data.mean(axis=axis, skipna=skipna)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
+        """Return sample standard deviation."""
+        result = self._data.std(axis=axis, skipna=skipna, ddof=ddof)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def max(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
+        """Return the maximum of the values."""
+        result = self._data.max(axis=axis, skipna=skipna)
+        return result.compute() if hasattr(result, 'compute') else result
+
+    def round(self, decimals=0, *args, **kwargs):
+        """Round to a variable number of decimal places."""
+        result = self._data.round(decimals)
+        return self.__class__(result)

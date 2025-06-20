@@ -1,7 +1,7 @@
 import uuid
 
 from abc import ABC, abstractmethod
-from typing import List, Union, Dict, Any, Iterator, Tuple
+from typing import List, Union, Dict, Any, Iterator, Tuple, Optional
 
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 
@@ -29,6 +29,11 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
     @abstractmethod
     def execute_sql(self, sql_code: str, args: tuple) -> Any:
+        """Execute SQL code with parameters."""
+        pass
+
+    @abstractmethod
+    def execute_many(self, sql_code: str, args: tuple) -> Any:
         """Execute SQL code with parameters."""
         pass
 
@@ -808,6 +813,177 @@ class SQLDatasetBase(DatasetInterface, ABC):
             return {row[0]: row[1] for row in self.iterrows()}
 
         return {} if orient != "records" else []
+
+    @abstractmethod
+    def unique(self, column: Optional[str] = None):
+        """Return unique values of Series or DataFrame column."""
+        pass
+    
+    @abstractmethod
+    def duplicated(self, subset=None, keep='first'):
+        """Return boolean Series denoting duplicate rows."""
+        pass
+    
+    @abstractmethod
+    def nunique(self, axis=0, dropna=True):
+        """Count distinct observations."""
+        pass
+    
+    @abstractmethod
+    def cumsum(self, axis=None, skipna=True, *args, **kwargs):
+        """Return cumulative sum."""
+        pass
+    
+    @abstractmethod
+    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
+        """Return a Series containing counts of unique values."""
+        pass
+    
+    @abstractmethod
+    def shift(self, periods=1, freq=None, axis=0, fill_value=None):
+        """Shift index by desired number of periods."""
+        pass
+
+    def squeeze(self, axis=None):
+        """Squeeze 1 dimensional axis objects into scalars."""
+        if len(self.columns) == 1 and len(self) == 1:
+            # Single value
+            return self._get_column(self.columns[0])[0]
+        elif len(self.columns) == 1:
+            # Single column, return as list
+            return self._get_column(self.columns[0])
+        return self  # Can't squeeze
+
+    def isna(self):
+        """Detect missing values."""
+        new_dataset_id = str(uuid.uuid4())
+        
+        cursor = self.execute_sql(
+            f"""
+            SELECT row_num, data FROM dataset_records
+            WHERE dataset_id = {self._get_placeholder()}
+            ORDER BY row_num
+            """, (self.dataset_id,)
+        )
+        
+        records = []
+        for row in self.fetch_all(cursor):
+            data = self._parse_json(row['data'])
+            null_checks = {}
+            for col in self.columns:
+                null_checks[col] = data.get(col) is None
+            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
+        
+        if hasattr(self, 'execute_many'):
+            self.execute_many(
+                f"""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                VALUES ({self._get_placeholder()}, {self._get_placeholder()}, {self._get_placeholder()})
+                """, records
+            )
+        
+        return self.__class__(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns
+        )
+
+    def notna(self):
+        """Detect non-missing values."""
+        new_dataset_id = str(uuid.uuid4())
+        
+        cursor = self.execute_sql(
+            f"""
+            SELECT row_num, data FROM dataset_records
+            WHERE dataset_id = {self._get_placeholder()}
+            ORDER BY row_num
+            """, (self.dataset_id,)
+        )
+        
+        records = []
+        for row in self.fetch_all(cursor):
+            data = self._parse_json(row['data'])
+            null_checks = {}
+            for col in self.columns:
+                null_checks[col] = data.get(col) is not None
+            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
+        
+        if hasattr(self, 'execute_many'):
+            self.execute_many(
+                f"""
+                INSERT INTO dataset_records (dataset_id, row_num, data)
+                VALUES ({self._get_placeholder()}, {self._get_placeholder()}, {self._get_placeholder()})
+                """, records
+            )
+        
+        return self.__class__(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns
+        )
+
+    def head(self, n=5):
+        """Return the first n rows."""
+        new_dataset_id = str(uuid.uuid4())
+        
+        self.execute_sql(
+            f"""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT {self._get_placeholder()}, row_num, data
+            FROM dataset_records
+            WHERE dataset_id = {self._get_placeholder()}
+            ORDER BY row_num
+            LIMIT {n}
+            """, (new_dataset_id, self.dataset_id)
+        )
+        
+        return self.__class__(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns
+        )
+
+    def tail(self, n=5):
+        """Return the last n rows."""
+        new_dataset_id = str(uuid.uuid4())
+        
+        self.execute_sql(
+            f"""
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT {self._get_placeholder()}, 
+                   ROW_NUMBER() OVER (ORDER BY row_num) - 1 as row_num,
+                   data
+            FROM (
+                SELECT row_num, data
+                FROM dataset_records
+                WHERE dataset_id = {self._get_placeholder()}
+                ORDER BY row_num DESC
+                LIMIT {n}
+            ) t
+            ORDER BY row_num
+            """, (new_dataset_id, self.dataset_id)
+        )
+        
+        return self.__class__(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns
+        )
+
+    def to_frame(self, name=None):
+        """Convert Series to DataFrame - SQL datasets are always frame-like."""
+        if len(self.columns) == 1:
+            if name:
+                return self.rename(columns={self.columns[0]: name})
+        return self
+
+    def select_dtypes(self, include=None, exclude=None):
+        """Return a subset of columns based on inferred dtypes."""
+        return self
+
+    def describe(self, percentiles=None, include=None, exclude=None):
+        """Generate descriptive statistics."""
+        raise NotImplementedError("describe() must be implemented by subclass")
 
     # ========== Groupby operations ==========
 

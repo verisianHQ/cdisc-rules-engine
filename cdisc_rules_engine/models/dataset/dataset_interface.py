@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, List
+from typing import Union, List, Any, Optional, Dict, Tuple, Callable
 
 
 class DatasetInterface(ABC):
@@ -250,3 +250,234 @@ class DatasetInterface(ABC):
         """
         Convert the dataset to a dictionary.
         """
+
+    @abstractmethod
+    def unique(self, column: Optional[str] = None):
+        """
+        Return unique values of Series or DataFrame column.
+        If column is None and called on Series-like data, return unique values.
+        """
+        pass
+
+    @abstractmethod
+    def squeeze(self, axis=None):
+        """
+        Squeeze 1 dimensional axis objects into scalars.
+        """
+        pass
+
+    @abstractmethod
+    def duplicated(self, subset=None, keep='first'):
+        """
+        Return boolean Series denoting duplicate rows.
+        """
+        pass
+
+    @abstractmethod
+    def isna(self):
+        """
+        Detect missing values.
+        """
+        pass
+
+    @abstractmethod
+    def notna(self):
+        """
+        Detect non-missing values.
+        """
+        pass
+
+    @abstractmethod
+    def head(self, n=5):
+        """
+        Return the first n rows.
+        """
+        pass
+
+    @abstractmethod
+    def tail(self, n=5):
+        """
+        Return the last n rows.
+        """
+        pass
+
+    @abstractmethod
+    def nunique(self, axis=0, dropna=True):
+        """
+        Count distinct observations.
+        """
+        pass
+
+    @abstractmethod
+    def agg(self, func, axis=0, *args, **kwargs):
+        """
+        Aggregate using one or more operations.
+        """
+        pass
+
+    @abstractmethod
+    def select_dtypes(self, include=None, exclude=None):
+        """
+        Return a subset of the DataFrame's columns based on the column dtypes.
+        """
+        pass
+
+    @abstractmethod
+    def cumsum(self, axis=None, skipna=True, *args, **kwargs):
+        """
+        Return cumulative sum.
+        """
+        pass
+
+    @abstractmethod
+    def to_frame(self, name=None):
+        """
+        Convert Series to DataFrame.
+        """
+        pass
+
+    @abstractmethod
+    def describe(self, percentiles=None, include=None, exclude=None):
+        """
+        Generate descriptive statistics.
+        """
+        pass
+
+    @abstractmethod
+    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
+        """
+        Return a Series containing counts of unique values.
+        """
+        pass
+
+    @abstractmethod
+    def shift(self, periods=1, freq=None, axis=0, fill_value=None):
+        """
+        Shift index by desired number of periods.
+        """
+        pass
+
+    @property
+    @abstractmethod
+    def shape(self) -> Tuple[int, int]:
+        """Return a tuple representing the dimensionality of the dataset."""
+        pass
+
+    @property
+    @abstractmethod
+    def dtypes(self):
+        """Return the dtypes in the dataset."""
+        pass
+
+    @property
+    @abstractmethod
+    def values(self):
+        """Return a representation of the data."""
+        pass
+
+    @property
+    @abstractmethod
+    def str(self):
+        """Vectorised string functions for Series and Index."""
+        pass
+
+    @property
+    @abstractmethod
+    def dt(self):
+        """Accessor object for datetime-like properties."""
+        pass
+
+    @abstractmethod
+    def isin(self, values):
+        """Check whether each element is contained in values."""
+        pass
+
+    @abstractmethod
+    def at(self, row_label, col_label):
+        """Access a single value for a row/column label pair."""
+        pass
+
+    @abstractmethod
+    def iloc(self, row_indexer, col_indexer=None):
+        """Purely integer-location based indexing for selection by position."""
+        pass
+
+    @abstractmethod
+    def map(self, mapper, na_action=None):
+        """Map values using an input mapping or function."""
+        pass
+
+    @abstractmethod
+    def to_parquet(self, path=None, **kwargs):
+        """Write a DataFrame to the parquet format."""
+        pass
+
+    @abstractmethod
+    def assign(self, **kwargs):
+        """Assign new columns to a DataFrame."""
+        pass
+
+    @abstractmethod
+    def eq(self, other, axis='columns', level=None):
+        """Get Equal to of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def ne(self, other, axis='columns', level=None):
+        """Get Not equal to of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def lt(self, other, axis='columns', level=None):
+        """Get Less than of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def le(self, other, axis='columns', level=None):
+        """Get Less than or equal to of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def gt(self, other, axis='columns', level=None):
+        """Get Greater than of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def ge(self, other, axis='columns', level=None):
+        """Get Greater than or equal to of dataframe and other, element-wise."""
+        pass
+
+    @abstractmethod
+    def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
+        """Return whether any element is True."""
+        pass
+
+    @abstractmethod
+    def all(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
+        """Return whether all elements are True."""
+        pass
+
+    @abstractmethod
+    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+        """Return the sum of the values."""
+        pass
+
+    @abstractmethod
+    def mean(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
+        """Return the mean of the values."""
+        pass
+
+    @abstractmethod
+    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
+        """Return sample standard deviation."""
+        pass
+
+    @abstractmethod
+    def max(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
+        """Return the maximum of the values."""
+        pass
+
+    @abstractmethod
+    def round(self, decimals=0, *args, **kwargs):
+        """Round to a variable number of decimal places."""
+        pass
