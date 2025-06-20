@@ -43,7 +43,7 @@ class DummyDataset(SDTMDatasetMetadata):
             ]
             self.data = pd.DataFrame.from_dict(dataset_data.get("records", {}))
 
-            self.record_count = self.data.__len__()
+            self.record_count = len(self.data.index)
 
     def get_metadata(self):
         return {
