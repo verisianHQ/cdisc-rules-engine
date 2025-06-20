@@ -51,7 +51,7 @@ from cdisc_rules_engine.models.dataset import SQLiteDataset
                 ],
                 "define_vlm_length": [1],
                 "define_vlm_mandatory": ["Yes"],
-            }
+            },
         )
     ],
 )
