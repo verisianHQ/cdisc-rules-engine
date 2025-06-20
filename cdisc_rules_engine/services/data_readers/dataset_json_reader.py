@@ -1,4 +1,3 @@
-import jsonschema.exceptions
 import pandas as pd
 import os
 import json
@@ -6,21 +5,13 @@ import jsonschema
 from cdisc_rules_engine.interfaces import (
     DataReaderInterface,
 )
-from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
-from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
+
+from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
+from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 import tempfile
 
 
 class DatasetJSONReader(DataReaderInterface):
-    def __init__(self, database_path: str = None):
-        if not database_path:
-            self.database_config = SQLiteDatabaseConfig()
-            self.database_config.initialise(in_memory=True)
-        else:
-            self.database_config = SQLiteDatabaseConfig()
-            self.database_config.initialise(database_path=database_path)
-        self.dataset_implementation = SQLiteDataset
-
     def get_schema(self) -> dict:
         with open(
             os.path.join("resources", "schema", "dataset.schema.json")
@@ -54,7 +45,7 @@ class DatasetJSONReader(DataReaderInterface):
 
         return records
 
-    def _raw_dataset_from_file(self, file_path) -> SQLiteDataset:
+    def _raw_dataset_from_file(self, file_path) -> PandasDataset:
         # Load Dataset-JSON Schema
         schema = self.get_schema()
         datasetjson = self.read_json_file(file_path)
@@ -65,7 +56,6 @@ class DatasetJSONReader(DataReaderInterface):
 
         df = self.dataset_implementation.from_records(
             records,
-            database_config=self.database_config,
             columns=columns,
         )
         return df
@@ -73,12 +63,14 @@ class DatasetJSONReader(DataReaderInterface):
     def from_file(self, file_path):
         try:
             df = self._raw_dataset_from_file(file_path)
-            return df
+            if self.dataset_implementation == PandasDataset:
+                return PandasDataset(df)
+            else:
+                return DaskDataset(
+                    dd.from_pandas(df, npartitions=4), length=len(df.index)
+                )
         except jsonschema.exceptions.ValidationError:
-            database_config = getattr(self, "database_config", None)
-            if not database_config:
-                raise ValueError("database_config is required for SQLiteDataset")
-            return self.dataset_implementation(database_config=database_config)
+            return PandasDataset(pd.DataFrame())
 
     def to_parquet(self, file_path: str) -> str:
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".parquet")

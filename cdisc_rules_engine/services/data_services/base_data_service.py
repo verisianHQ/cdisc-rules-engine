@@ -1,5 +1,4 @@
 import asyncio
-import tempfile
 from abc import ABC
 from functools import wraps, partial
 from typing import Callable, List, Optional, Iterable, Iterator
@@ -18,9 +17,6 @@ from cdisc_rules_engine.constants.classes import (
     EVENTS,
     INTERVENTIONS,
     RELATIONSHIP,
-)
-from cdisc_rules_engine.config.databases.sqlite_database_config import (
-    SQLiteDatabaseConfig,
 )
 from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
 from cdisc_rules_engine.models.dataset_types import DatasetTypes
@@ -108,14 +104,6 @@ class BaseDataService(DataServiceInterface, ABC):
         self.dataset_implementation = kwargs.get(
             "dataset_implementation", SQLiteDataset
         )
-
-        self.sqlite_config = SQLiteDatabaseConfig()
-        # create a temporary database file
-        self.db_file = tempfile.NamedTemporaryFile(delete=False, suffix=".db")
-        self.sqlite_config.initialise(self.db_file.name)
-
-        # create necessary tables
-        self._create_database_schema()
 
     def get_dataset_by_type(
         self, dataset_name: str, dataset_type: str, **params
@@ -343,50 +331,3 @@ class BaseDataService(DataServiceInterface, ABC):
                 lambda name: function_to_call(dataset_name=name, **kwargs),
                 dataset_names,
             )
-
-    def _create_database_schema(self):
-        """Create the necessary database tables for SQLite datasets."""
-        with self.sqlite_config.get_connection() as conn:
-            # Create datasets table
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS datasets (
-                    dataset_id TEXT PRIMARY KEY,
-                    dataset_name TEXT UNIQUE,
-                    metadata TEXT DEFAULT '{}'
-                )
-            """
-            )
-
-            # Create dataset_records table
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS dataset_records (
-                    record_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    dataset_id TEXT,
-                    row_num INTEGER,
-                    data TEXT,
-                    FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id)
-                )
-            """
-            )
-
-            # Create dataset_columns table
-            conn.execute(
-                """
-                CREATE TABLE IF NOT EXISTS dataset_columns (
-                    dataset_id TEXT,
-                    column_name TEXT,
-                    column_index INTEGER,
-                    FOREIGN KEY (dataset_id) REFERENCES datasets(dataset_id)
-                )
-            """
-            )
-
-            conn.commit()
-
-    def cleanup(self):
-        """Clean up database resources."""
-        self.sqlite_config.close_all()
-        if hasattr(self, "db_file"):
-            os.unlink(self.db_file.name)

@@ -2,7 +2,7 @@ from __future__ import annotations
 import asyncio
 from typing import Iterable, List, Optional, Set, TYPE_CHECKING
 
-from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 import pandas as pd
