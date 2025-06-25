@@ -52,11 +52,15 @@ class PandasDataset(DatasetInterface):
 
     @classmethod
     def from_dict(cls, data: dict, **kwargs):
+        if "database_config" in kwargs.keys():
+            kwargs.pop("database_config")
         dataframe = pd.DataFrame.from_dict(data, **kwargs)
         return cls(dataframe)
 
     @classmethod
     def from_records(cls, data: List[dict], **kwargs):
+        if "database_config" in kwargs.keys():
+            kwargs.pop("database_config")
         dataframe = pd.DataFrame.from_records(data, **kwargs)
         return cls(dataframe)
 
@@ -298,7 +302,7 @@ class PandasDataset(DatasetInterface):
             return self.__class__(result)
         return result  # scalar
 
-    def duplicated(self, subset=None, keep='first'):
+    def duplicated(self, subset=None, keep="first"):
         """Return boolean Series denoting duplicate rows."""
         return self._data.duplicated(subset=subset, keep=keep)
 
@@ -350,23 +354,33 @@ class PandasDataset(DatasetInterface):
 
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""
-        result = self._data.describe(percentiles=percentiles, include=include, exclude=exclude)
+        result = self._data.describe(
+            percentiles=percentiles, include=include, exclude=exclude
+        )
         return self.__class__(result)
 
-    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
+    def value_counts(
+        self, normalise=False, sort=True, ascending=False, bins=None, dropna=True
+    ):
         """Return a Series containing counts of unique values."""
         if len(self._data.columns) == 1:
             result = self._data.iloc[:, 0].value_counts(
-                normalize=normalise, sort=sort, ascending=ascending, bins=bins, dropna=dropna
+                normalize=normalise,
+                sort=sort,
+                ascending=ascending,
+                bins=bins,
+                dropna=dropna,
             )
             return pd.Series(result)
         raise ValueError("value_counts() only works on single columns")
 
     def shift(self, periods=1, freq=None, axis=0, fill_value=None):
         """Shift index by desired number of periods."""
-        result = self._data.shift(periods=periods, freq=freq, axis=axis, fill_value=fill_value)
+        result = self._data.shift(
+            periods=periods, freq=freq, axis=axis, fill_value=fill_value
+        )
         return self.__class__(result)
-    
+
     @property
     def shape(self) -> Tuple[int, int]:
         """Return a tuple representing the dimensionality of the dataset."""
@@ -385,38 +399,44 @@ class PandasDataset(DatasetInterface):
     @property
     def str(self):
         """Vectorised string functions for Series and Index."""
+
         # For DataFrame, we need to handle column selection
         class StringAccessor:
             def __init__(self, data):
                 self._data = data
-            
+
             def __getitem__(self, key):
                 return self._data[key].str
-            
+
             def __getattr__(self, item):
                 # If accessing on entire DataFrame, raise error
                 if isinstance(self._data, pd.DataFrame):
-                    raise AttributeError("Can only use .str accessor with string values!")
+                    raise AttributeError(
+                        "Can only use .str accessor with string values!"
+                    )
                 return getattr(self._data.str, item)
-        
+
         return StringAccessor(self._data)
 
     @property
     def dt(self):
         """Accessor object for datetime-like properties."""
+
         # Similar to str accessor
         class DatetimeAccessor:
             def __init__(self, data):
                 self._data = data
-            
+
             def __getitem__(self, key):
                 return self._data[key].dt
-            
+
             def __getattr__(self, item):
                 if isinstance(self._data, pd.DataFrame):
-                    raise AttributeError("Can only use .dt accessor with datetimelike values!")
+                    raise AttributeError(
+                        "Can only use .dt accessor with datetimelike values!"
+                    )
                 return getattr(self._data.dt, item)
-        
+
         return DatetimeAccessor(self._data)
 
     def isin(self, values):
@@ -430,7 +450,7 @@ class PandasDataset(DatasetInterface):
             result = self._data.iloc[row_indexer]
         else:
             result = self._data.iloc[row_indexer, col_indexer]
-        
+
         if isinstance(result, (pd.DataFrame, pd.Series)):
             return self.__class__(result)
         return result
@@ -455,72 +475,100 @@ class PandasDataset(DatasetInterface):
         result = self._data.assign(**kwargs)
         return self.__class__(result)
 
-    def eq(self, other, axis='columns', level=None):
+    def eq(self, other, axis="columns", level=None):
         """Get Equal to of dataframe and other, element-wise."""
         result = self._data.eq(other, axis=axis, level=level)
         return self.__class__(result)
 
-    def ne(self, other, axis='columns', level=None):
+    def ne(self, other, axis="columns", level=None):
         """Get Not equal to of dataframe and other, element-wise."""
         result = self._data.ne(other, axis=axis, level=level)
         return self.__class__(result)
 
-    def lt(self, other, axis='columns', level=None):
+    def lt(self, other, axis="columns", level=None):
         """Get Less than of dataframe and other, element-wise."""
         result = self._data.lt(other, axis=axis, level=level)
         return self.__class__(result)
 
-    def le(self, other, axis='columns', level=None):
+    def le(self, other, axis="columns", level=None):
         """Get Less than or equal to of dataframe and other, element-wise."""
         result = self._data.le(other, axis=axis, level=level)
         return self.__class__(result)
 
-    def gt(self, other, axis='columns', level=None):
+    def gt(self, other, axis="columns", level=None):
         """Get Greater than of dataframe and other, element-wise."""
         result = self._data.gt(other, axis=axis, level=level)
         return self.__class__(result)
 
-    def ge(self, other, axis='columns', level=None):
+    def ge(self, other, axis="columns", level=None):
         """Get Greater than or equal to of dataframe and other, element-wise."""
         result = self._data.ge(other, axis=axis, level=level)
         return self.__class__(result)
 
     def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether any element is True."""
-        return self._data.any(axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs)
+        return self._data.any(
+            axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs
+        )
 
     def all(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether all elements are True."""
-        return self._data.all(axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs)
+        return self._data.all(
+            axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs
+        )
 
-    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+    def sum(
+        self,
+        axis=None,
+        skipna=True,
+        level=None,
+        numeric_only=None,
+        min_count=0,
+        **kwargs,
+    ):
         """Return the sum of the values."""
-        result = self._data.sum(axis=axis, skipna=skipna, level=level, 
-                                numeric_only=numeric_only, min_count=min_count, **kwargs)
+        result = self._data.sum(
+            axis=axis,
+            skipna=skipna,
+            level=level,
+            numeric_only=numeric_only,
+            min_count=min_count,
+            **kwargs,
+        )
         if isinstance(result, pd.Series):
             return result
         return result
 
     def mean(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the mean of the values."""
-        result = self._data.mean(axis=axis, skipna=skipna, level=level, 
-                                 numeric_only=numeric_only, **kwargs)
+        result = self._data.mean(
+            axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs
+        )
         if isinstance(result, pd.Series):
             return result
         return result
 
-    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
+    def std(
+        self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs
+    ):
         """Return sample standard deviation."""
-        result = self._data.std(axis=axis, skipna=skipna, level=level, 
-                                ddof=ddof, numeric_only=numeric_only, **kwargs)
+        result = self._data.std(
+            axis=axis,
+            skipna=skipna,
+            level=level,
+            ddof=ddof,
+            numeric_only=numeric_only,
+            **kwargs,
+        )
         if isinstance(result, pd.Series):
             return result
         return result
 
     def max(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the maximum of the values."""
-        result = self._data.max(axis=axis, skipna=skipna, level=level, 
-                                numeric_only=numeric_only, **kwargs)
+        result = self._data.max(
+            axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs
+        )
         if isinstance(result, pd.Series):
             return result
         return result

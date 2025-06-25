@@ -1,12 +1,9 @@
 import json
 import numpy as np
-import pyarrow as pa
-import pyarrow.parquet as pq
-import tempfile
 import uuid
 
 from math import isnan
-from typing import List, Dict, Any, Union, Optional
+from typing import List, Dict, Any, Union, Optional, Tuple
 
 from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase
 from cdisc_rules_engine.config.databases.sqlite_database_config import (
@@ -856,58 +853,63 @@ class SQLiteDataset(SQLDatasetBase):
 
     def to_records(self, index=True, column_dtypes=None, index_dtypes=None):
         """Convert SQLiteDataset to a numpy structured array."""
-        
+
         # first get all records
         records = []
-        
+
         with self.database_config.get_connection() as conn:
-            cursor = conn.execute("""
+            cursor = conn.execute(
+                """
                 SELECT row_num, data FROM dataset_records
                 WHERE dataset_id = ?
                 ORDER BY row_num
-            """, (self.dataset_id,))
-            
+            """,
+                (self.dataset_id,),
+            )
+
             for row in cursor.fetchall():
-                row_num = row['row_num']
-                data = json.loads(row['data'])
-                
+                row_num = row["row_num"]
+                data = json.loads(row["data"])
+
                 if index:
                     # include the row number
-                    record_tuple = (row_num,) + tuple(data.get(col) for col in self._columns)
+                    record_tuple = (row_num,) + tuple(
+                        data.get(col) for col in self._columns
+                    )
                 else:
                     # just the data values
                     record_tuple = tuple(data.get(col) for col in self._columns)
-                
+
                 records.append(record_tuple)
-        
+
         # create dtype for structured array
         if index:
             dtype_list = [("index", index_dtypes or "i8")]  # default to int64 for index
         else:
             dtype_list = []
-        
+
         # add column dtypes
         for col in self._columns:
             if column_dtypes and col in column_dtypes:
                 dtype_list.append((col, column_dtypes[col]))
             else:
                 # infer dtype from first non-null value
-                dtype = 'O'  # default to object
+                dtype = "O"  # default to object
                 for record in records:
                     idx = len(dtype_list) if index else len(dtype_list)
                     val = record[idx] if len(record) > idx else None
                     if val is not None:
                         if isinstance(val, (int, np.integer)):
-                            dtype = 'i8'
+                            dtype = "i8"
                         elif isinstance(val, (float, np.floating)):
-                            dtype = 'f8'
+                            dtype = "f8"
                         elif isinstance(val, bool):
-                            dtype = 'bool'
+                            dtype = "bool"
                         else:
-                            dtype = 'O'  # object for strings and others
+                            dtype = "O"  # object for strings and others
                         break
                 dtype_list.append((col, dtype))
-        
+
         # create structured array
         if records:
             return np.recarray(records, dtype=dtype_list)
@@ -920,18 +922,23 @@ class SQLiteDataset(SQLDatasetBase):
             if len(self.columns) == 1:
                 column = self.columns[0]
             else:
-                raise ValueError("Must specify column for DataFrame with multiple columns")
-        
+                raise ValueError(
+                    "Must specify column for DataFrame with multiple columns"
+                )
+
         json_extract = self._get_json_extract_expr(column)
-        cursor = self.execute_sql(f"""
+        cursor = self.execute_sql(
+            f"""
             SELECT DISTINCT {json_extract} as value
             FROM dataset_records
             WHERE dataset_id = ?
               AND {json_extract} IS NOT NULL
             ORDER BY value
-        """, (self.dataset_id,))
-        
-        return [row['value'] for row in self.fetch_all(cursor)]
+        """,
+            (self.dataset_id,),
+        )
+
+        return [row["value"] for row in self.fetch_all(cursor)]
 
     def squeeze(self, axis=None):
         """Squeeze 1 dimensional axis objects into scalars."""
@@ -943,18 +950,19 @@ class SQLiteDataset(SQLDatasetBase):
             return self._get_column(self.columns[0])
         return self  # Can't squeeze
 
-    def duplicated(self, subset=None, keep='first'):
+    def duplicated(self, subset=None, keep="first"):
         """Return boolean Series denoting duplicate rows."""
         if subset is None:
             subset = self.columns
         elif isinstance(subset, str):
             subset = [subset]
-        
+
         # Build grouping expression
-        group_cols = ', '.join([self._get_json_extract_expr(col) for col in subset])
-        
+        group_cols = ", ".join([self._get_json_extract_expr(col) for col in subset])
+
         # Use window function to identify duplicates
-        cursor = self.execute_sql(f"""
+        cursor = self.execute_sql(
+            f"""
             WITH dup_counts AS (
                 SELECT 
                     record_id,
@@ -975,95 +983,117 @@ class SQLiteDataset(SQLDatasetBase):
                 END as is_dup
             FROM dup_counts
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
-        return [bool(row['is_dup']) for row in self.fetch_all(cursor)]
+        """,
+            (self.dataset_id,),
+        )
+
+        return [bool(row["is_dup"]) for row in self.fetch_all(cursor)]
 
     def isna(self):
         """Detect missing values."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         # Create dataset with boolean values for null checks
-        cursor = self.execute_sql(f"""
+        cursor = self.execute_sql(
+            f"""
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is None
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
-        
-        self.execute_many("""
+            records.append(
+                (new_dataset_id, row["row_num"], self._serialise_json(null_checks))
+            )
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def notna(self):
         """Detect non-missing values."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         # Create dataset with boolean values for non-null checks
-        cursor = self.execute_sql(f"""
+        cursor = self.execute_sql(
+            f"""
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is not None
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
-        
-        self.execute_many("""
+            records.append(
+                (new_dataset_id, row["row_num"], self._serialise_json(null_checks))
+            )
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def head(self, n=5):
         """Return the first n rows."""
         new_dataset_id = str(uuid.uuid4())
-        
-        self.execute_sql(f"""
+
+        self.execute_sql(
+            f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, row_num, data
             FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
             LIMIT ?
-        """, (new_dataset_id, self.dataset_id, n))
-        
+        """,
+            (new_dataset_id, self.dataset_id, n),
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def tail(self, n=5):
         """Return the last n rows."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         # SQLite doesn't have LIMIT with OFFSET from end, so we need a subquery
-        self.execute_sql(f"""
+        self.execute_sql(
+            f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, 
                    ROW_NUMBER() OVER (ORDER BY row_num) - 1 as row_num,
@@ -1076,12 +1106,14 @@ class SQLiteDataset(SQLDatasetBase):
                 LIMIT ?
             ) t
             ORDER BY row_num
-        """, (new_dataset_id, self.dataset_id, n))
-        
+        """,
+            (new_dataset_id, self.dataset_id, n),
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def nunique(self, axis=0, dropna=True):
@@ -1090,19 +1122,25 @@ class SQLiteDataset(SQLDatasetBase):
             result = {}
             for col in self.columns:
                 if dropna:
-                    cursor = self.execute_sql(f"""
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT COUNT(DISTINCT json_extract(data, '$.{col}')) as cnt
                         FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, '$.{col}') IS NOT NULL
-                    """, (self.dataset_id,))
+                    """,
+                        (self.dataset_id,),
+                    )
                 else:
-                    cursor = self.execute_sql(f"""
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT COUNT(DISTINCT json_extract(data, '$.{col}')) as cnt
                         FROM dataset_records
                         WHERE dataset_id = ?
-                    """, (self.dataset_id,))
-                result[col] = cursor.fetchone()['cnt']
+                    """,
+                        (self.dataset_id,),
+                    )
+                result[col] = cursor.fetchone()["cnt"]
             return result
         else:  # Row-wise - count unique values per row
             results = []
@@ -1117,7 +1155,7 @@ class SQLiteDataset(SQLDatasetBase):
         """Aggregate using one or more operations."""
         if isinstance(func, str):
             # Single function for all columns
-            if func in ['sum', 'mean', 'min', 'max', 'count', 'std']:
+            if func in ["sum", "mean", "min", "max", "count", "std"]:
                 func_dict = {col: func for col in self.columns}
                 return self._execute_aggregation([], func_dict)
         elif isinstance(func, dict):
@@ -1131,85 +1169,112 @@ class SQLiteDataset(SQLDatasetBase):
         """Return a subset of columns based on inferred dtypes."""
         # For SQLite, we need to infer types from actual data
         selected_columns = []
-        
+
         for col in self.columns:
             # Sample some values to determine type
-            cursor = self.execute_sql(f"""
+            cursor = self.execute_sql(
+                f"""
                 SELECT json_extract(data, '$.{col}') as value
                 FROM dataset_records
                 WHERE dataset_id = ?
                   AND json_extract(data, '$.{col}') IS NOT NULL
                 LIMIT 10
-            """, (self.dataset_id,))
-            
-            values = [row['value'] for row in self.fetch_all(cursor)]
+            """,
+                (self.dataset_id,),
+            )
+
+            values = [row["value"] for row in self.fetch_all(cursor)]
             if not values:
                 continue
-                
+
             # Infer type from values
-            is_numeric = all(isinstance(v, (int, float)) or 
-                            (isinstance(v, str) and v.replace('.', '').replace('-', '').isdigit()) 
-                            for v in values)
-            
+            is_numeric = all(
+                isinstance(v, (int, float))
+                or (
+                    isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit()
+                )
+                for v in values
+            )
+
             if include:
                 include_list = include if isinstance(include, list) else [include]
-                if is_numeric and any(t in ['number', 'numeric', float, int] for t in include_list):
+                if is_numeric and any(
+                    t in ["number", "numeric", float, int] for t in include_list
+                ):
                     selected_columns.append(col)
-                elif not is_numeric and any(t in ['object', str, 'string'] for t in include_list):
+                elif not is_numeric and any(
+                    t in ["object", str, "string"] for t in include_list
+                ):
                     selected_columns.append(col)
             elif exclude:
                 exclude_list = exclude if isinstance(exclude, list) else [exclude]
-                if is_numeric and not any(t in ['number', 'numeric', float, int] for t in exclude_list):
+                if is_numeric and not any(
+                    t in ["number", "numeric", float, int] for t in exclude_list
+                ):
                     selected_columns.append(col)
-                elif not is_numeric and not any(t in ['object', str, 'string'] for t in exclude_list):
+                elif not is_numeric and not any(
+                    t in ["object", str, "string"] for t in exclude_list
+                ):
                     selected_columns.append(col)
             else:
                 selected_columns.append(col)
-        
+
         return self._get_columns(selected_columns)
 
     def cumsum(self, axis=None, skipna=True, *args, **kwargs):
         """Return cumulative sum."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         if axis == 0 or axis is None:  # Column-wise cumsum
             # Build cumulative sum expressions for each numeric column
             cumsum_exprs = []
             for col in self.columns:
                 if skipna:
-                    cumsum_exprs.append(f"""
+                    cumsum_exprs.append(
+                        f"""
                         SUM(CAST(json_extract(data, '$.{col}') AS REAL)) 
                         OVER (ORDER BY row_num ROWS UNBOUNDED PRECEDING) as {col}
-                    """)
+                    """
+                    )
                 else:
                     # Non-skipna version would need more complex logic
-                    cumsum_exprs.append(f"""
+                    cumsum_exprs.append(
+                        f"""
                         SUM(CAST(json_extract(data, '$.{col}') AS REAL)) 
                         OVER (ORDER BY row_num ROWS UNBOUNDED PRECEDING) as {col}
-                    """)
-            
+                    """
+                    )
+
             # Build the new records with cumulative sums
-            cursor = self.execute_sql(f"""
+            cursor = self.execute_sql(
+                f"""
                 SELECT row_num, {', '.join(cumsum_exprs)}
                 FROM dataset_records
                 WHERE dataset_id = ?
                 ORDER BY row_num
-            """, (self.dataset_id,))
-            
+            """,
+                (self.dataset_id,),
+            )
+
             records = []
             for row in self.fetch_all(cursor):
                 data = {col: row[col] for col in self.columns}
-                records.append((new_dataset_id, row['row_num'], self._serialise_json(data)))
-            
-            self.execute_many("""
+                records.append(
+                    (new_dataset_id, row["row_num"], self._serialise_json(data))
+                )
+
+            self.execute_many(
+                """
                 INSERT INTO dataset_records (dataset_id, row_num, data)
                 VALUES (?, ?, ?)
-            """, records)
-            
+            """,
+                records,
+            )
+
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
-                columns=self.columns
+                columns=self.columns,
             )
         else:
             raise NotImplementedError("Row-wise cumsum not implemented")
@@ -1227,86 +1292,103 @@ class SQLiteDataset(SQLDatasetBase):
         # Get numeric columns
         numeric_cols = []
         for col in self.columns:
-            cursor = self.execute_sql(f"""
+            cursor = self.execute_sql(
+                f"""
                 SELECT json_extract(data, '$.{col}') as value
                 FROM dataset_records
                 WHERE dataset_id = ?
                   AND json_extract(data, '$.{col}') IS NOT NULL
                 LIMIT 1
-            """, (self.dataset_id,))
-            
+            """,
+                (self.dataset_id,),
+            )
+
             row = self.fetch_one(cursor)
-            if row and isinstance(row['value'], (int, float)):
+            if row and isinstance(row["value"], (int, float)):
                 numeric_cols.append(col)
-        
+
         if not numeric_cols:
             return SQLiteDataset(database_config=self.database_config)
-        
+
         # Calculate statistics for each numeric column
         stats_data = []
-        stat_names = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max']
-        
+        stat_names = ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
+
         for stat in stat_names:
-            row_data = {'': stat}  # First column is the statistic name
-            
+            row_data = {"": stat}  # First column is the statistic name
+
             for col in numeric_cols:
-                if stat == 'count':
-                    cursor = self.execute_sql(f"""
+                if stat == "count":
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT COUNT(json_extract(data, '$.{col}')) as val
                         FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, '$.{col}') IS NOT NULL
-                    """, (self.dataset_id,))
-                elif stat == 'mean':
-                    cursor = self.execute_sql(f"""
+                    """,
+                        (self.dataset_id,),
+                    )
+                elif stat == "mean":
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT AVG(CAST(json_extract(data, '$.{col}') AS REAL)) as val
                         FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, '$.{col}') IS NOT NULL
-                    """, (self.dataset_id,))
-                elif stat == 'min':
-                    cursor = self.execute_sql(f"""
+                    """,
+                        (self.dataset_id,),
+                    )
+                elif stat == "min":
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT MIN(CAST(json_extract(data, '$.{col}') AS REAL)) as val
                         FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, '$.{col}') IS NOT NULL
-                    """, (self.dataset_id,))
-                elif stat == 'max':
-                    cursor = self.execute_sql(f"""
+                    """,
+                        (self.dataset_id,),
+                    )
+                elif stat == "max":
+                    cursor = self.execute_sql(
+                        f"""
                         SELECT MAX(CAST(json_extract(data, '$.{col}') AS REAL)) as val
                         FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, '$.{col}') IS NOT NULL
-                    """, (self.dataset_id,))
+                    """,
+                        (self.dataset_id,),
+                    )
                 else:
                     # TODO: for percentiles and std, we'd need more complex calculations
                     # Simplified version here
                     row_data[col] = 0.0
                     continue
-                
+
                 result = self.fetch_one(cursor)
-                row_data[col] = result['val'] if result else 0.0
-            
+                row_data[col] = result["val"] if result else 0.0
+
             stats_data.append(row_data)
-        
+
         return SQLiteDataset.from_records(
-            stats_data,
-            database_config=self.database_config
+            stats_data, database_config=self.database_config
         )
 
-    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
+    def value_counts(
+        self, normalise=False, sort=True, ascending=False, bins=None, dropna=True
+    ):
         """Return a Series containing counts of unique values."""
         if len(self.columns) != 1:
             raise ValueError("value_counts() only works on single columns")
-        
+
         col = self.columns[0]
-        
+
         if dropna:
             where_clause = f"AND json_extract(data, '$.{col}') IS NOT NULL"
         else:
             where_clause = ""
-        
-        cursor = self.execute_sql(f"""
+
+        cursor = self.execute_sql(
+            f"""
             SELECT json_extract(data, '$.{col}') as value, 
                    COUNT(*) as count
             FROM dataset_records
@@ -1314,65 +1396,80 @@ class SQLiteDataset(SQLDatasetBase):
               {where_clause}
             GROUP BY value
             {'ORDER BY count ' + ('ASC' if ascending else 'DESC') if sort else ''}
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         results = self.fetch_all(cursor)
-        
+
         if normalise:
-            total = sum(r['count'] for r in results)
-            return {r['value']: r['count'] / total for r in results}
+            total = sum(r["count"] for r in results)
+            return {r["value"]: r["count"] / total for r in results}
         else:
-            return {r['value']: r['count'] for r in results}
+            return {r["value"]: r["count"] for r in results}
 
     def shift(self, periods=1, freq=None, axis=0, fill_value=None):
         """Shift index by desired number of periods."""
         new_dataset_id = str(uuid.uuid4())
-        
-        if axis == 0: # Shift rows
+
+        if axis == 0:  # Shift rows
             # Use LAG/LEAD window functions
             if periods > 0:
                 # Shift forward (LAG)
-                cursor = self.execute_sql(f"""
+                cursor = self.execute_sql(
+                    f"""
                     SELECT 
                         row_num,
                         LAG(data, ?) OVER (ORDER BY row_num) as shifted_data
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """, (periods, self.dataset_id))
+                """,
+                    (periods, self.dataset_id),
+                )
             else:
                 # Shift backward (LEAD)
-                cursor = self.execute_sql(f"""
+                cursor = self.execute_sql(
+                    f"""
                     SELECT 
                         row_num,
                         LEAD(data, ?) OVER (ORDER BY row_num) as shifted_data
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """, (-periods, self.dataset_id))
-            
+                """,
+                    (-periods, self.dataset_id),
+                )
+
             records = []
             for row in self.fetch_all(cursor):
-                if row['shifted_data'] is None:
+                if row["shifted_data"] is None:
                     # Fill with fill_value
                     if fill_value is not None:
                         data = {col: fill_value for col in self.columns}
                     else:
                         data = {col: None for col in self.columns}
-                    records.append((new_dataset_id, row['row_num'], self._serialise_json(data)))
+                    records.append(
+                        (new_dataset_id, row["row_num"], self._serialise_json(data))
+                    )
                 else:
-                    records.append((new_dataset_id, row['row_num'], row['shifted_data']))
-            
-            self.execute_many("""
+                    records.append(
+                        (new_dataset_id, row["row_num"], row["shifted_data"])
+                    )
+
+            self.execute_many(
+                """
                 INSERT INTO dataset_records (dataset_id, row_num, data)
                 VALUES (?, ?, ?)
-            """, records)
-            
+            """,
+                records,
+            )
+
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=self.columns,
-                length=self._length
+                length=self._length,
             )
         else:
             raise NotImplementedError("Column-wise shift not implemented")
@@ -1389,24 +1486,33 @@ class SQLiteDataset(SQLDatasetBase):
         dtype_dict = {}
         for col in self.columns:
             # Sample first non-null value
-            cursor = self.execute_sql("""
+            cursor = self.execute_sql(
+                """
                 SELECT json_extract(data, ?) as value
                 FROM dataset_records
                 WHERE dataset_id = ?
                   AND json_extract(data, ?) IS NOT NULL
                 LIMIT 10
-            """, (f'$.{col}', self.dataset_id, f'$.{col}'))
-            
-            values = [row['value'] for row in self.fetch_all(cursor)]
+            """,
+                (f"$.{col}", self.dataset_id, f"$.{col}"),
+            )
+
+            values = [row["value"] for row in self.fetch_all(cursor)]
             if not values:
-                dtype_dict[col] = 'object'
+                dtype_dict[col] = "object"
             elif all(isinstance(v, bool) for v in values):
-                dtype_dict[col] = 'bool'
-            elif all(isinstance(v, (int, float)) or (isinstance(v, str) and v.replace('.', '').replace('-', '').isdigit()) for v in values):
-                dtype_dict[col] = 'float64'
+                dtype_dict[col] = "bool"
+            elif all(
+                isinstance(v, (int, float))
+                or (
+                    isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit()
+                )
+                for v in values
+            ):
+                dtype_dict[col] = "float64"
             else:
-                dtype_dict[col] = 'object'
-        
+                dtype_dict[col] = "object"
+
         return dtype_dict
 
     @property
@@ -1421,115 +1527,135 @@ class SQLiteDataset(SQLDatasetBase):
     @property
     def str(self):
         """Vectorised string functions for Series and Index."""
+
         class StringAccessor:
             def __init__(self, dataset, column=None):
                 self.dataset = dataset
                 self.column = column
-            
+
             def __getitem__(self, key):
                 return StringAccessor(self.dataset, key)
-            
+
             def upper(self):
                 if self.column is None:
                     raise ValueError("Must specify column for string operations")
                 new_dataset_id = str(uuid.uuid4())
-                
-                cursor = self.dataset.execute_sql("""
+
+                cursor = self.dataset.execute_sql(
+                    """
                     SELECT row_num, data FROM dataset_records
                     WHERE dataset_id = ?
-                """, (self.dataset.dataset_id,))
-                
+                """,
+                    (self.dataset.dataset_id,),
+                )
+
                 records = []
                 for row in self.dataset.fetch_all(cursor):
-                    data = json.loads(row['data'])
+                    data = json.loads(row["data"])
                     if self.column in data and isinstance(data[self.column], str):
                         data[self.column] = data[self.column].upper()
-                    records.append((new_dataset_id, row['row_num'], json.dumps(data)))
-                
-                self.dataset.execute_many("""
+                    records.append((new_dataset_id, row["row_num"], json.dumps(data)))
+
+                self.dataset.execute_many(
+                    """
                     INSERT INTO dataset_records (dataset_id, row_num, data)
                     VALUES (?, ?, ?)
-                """, records)
-                
+                """,
+                    records,
+                )
+
                 return SQLiteDataset(
                     dataset_id=new_dataset_id,
                     database_config=self.dataset.database_config,
-                    columns=self.dataset.columns
+                    columns=self.dataset.columns,
                 )
-            
+
             def lower(self):
                 if self.column is None:
                     raise ValueError("Must specify column for string operations")
                 new_dataset_id = str(uuid.uuid4())
-                
-                cursor = self.dataset.execute_sql("""
+
+                cursor = self.dataset.execute_sql(
+                    """
                     SELECT row_num, data FROM dataset_records
                     WHERE dataset_id = ?
-                """, (self.dataset.dataset_id,))
-                
+                """,
+                    (self.dataset.dataset_id,),
+                )
+
                 records = []
                 for row in self.dataset.fetch_all(cursor):
-                    data = json.loads(row['data'])
+                    data = json.loads(row["data"])
                     if self.column in data and isinstance(data[self.column], str):
                         data[self.column] = data[self.column].lower()
-                    records.append((new_dataset_id, row['row_num'], json.dumps(data)))
-                
-                self.dataset.execute_many("""
+                    records.append((new_dataset_id, row["row_num"], json.dumps(data)))
+
+                self.dataset.execute_many(
+                    """
                     INSERT INTO dataset_records (dataset_id, row_num, data)
                     VALUES (?, ?, ?)
-                """, records)
-                
+                """,
+                    records,
+                )
+
                 return SQLiteDataset(
                     dataset_id=new_dataset_id,
                     database_config=self.dataset.database_config,
-                    columns=self.dataset.columns
+                    columns=self.dataset.columns,
                 )
-            
+
             def contains(self, pattern):
                 if self.column is None:
                     raise ValueError("Must specify column for string operations")
-                
+
                 results = []
-                cursor = self.dataset.execute_sql("""
+                cursor = self.dataset.execute_sql(
+                    """
                     SELECT json_extract(data, ?) as value
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """, (f'$.{self.column}', self.dataset.dataset_id))
-                
+                """,
+                    (f"$.{self.column}", self.dataset.dataset_id),
+                )
+
                 for row in self.dataset.fetch_all(cursor):
-                    val = row['value']
+                    val = row["value"]
                     results.append(pattern in str(val) if val is not None else False)
-                
+
                 return results
-        
+
         return StringAccessor(self)
 
     @property
     def dt(self):
         """Accessor object for datetime-like properties."""
+
         class DatetimeAccessor:
             def __init__(self, dataset, column=None):
                 self.dataset = dataset
                 self.column = column
-            
+
             def __getitem__(self, key):
                 return DatetimeAccessor(self.dataset, key)
-            
+
             def year(self):
                 if self.column is None:
                     raise ValueError("Must specify column for datetime operations")
-                
+
                 results = []
-                cursor = self.dataset.execute_sql("""
+                cursor = self.dataset.execute_sql(
+                    """
                     SELECT json_extract(data, ?) as value
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """, (f'$.{self.column}', self.dataset.dataset_id))
-                
+                """,
+                    (f"$.{self.column}", self.dataset.dataset_id),
+                )
+
                 for row in self.dataset.fetch_all(cursor):
-                    val = row['value']
+                    val = row["value"]
                     if val and isinstance(val, str) and len(val) >= 4:
                         try:
                             results.append(int(val[:4]))
@@ -1537,51 +1663,62 @@ class SQLiteDataset(SQLDatasetBase):
                             results.append(None)
                     else:
                         results.append(None)
-                
+
                 return results
-        
+
         return DatetimeAccessor(self)
 
     def isin(self, values):
         """Check whether each element is contained in values."""
         new_dataset_id = str(uuid.uuid4())
         values_set = set(values)
-        
-        cursor = self.execute_sql("""
+
+        cursor = self.execute_sql(
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             isin_data = {}
             for col in self.columns:
                 isin_data[col] = data.get(col) in values_set
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(isin_data)))
-        
-        self.execute_many("""
+            records.append(
+                (new_dataset_id, row["row_num"], self._serialise_json(isin_data))
+            )
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def at(self, row_label, col_label):
         """Access a single value for a row/column label pair."""
-        cursor = self.execute_sql("""
+        cursor = self.execute_sql(
+            """
             SELECT json_extract(data, ?) as value
             FROM dataset_records
             WHERE dataset_id = ? AND row_num = ?
-        """, (f'$.{col_label}', self.dataset_id, row_label))
-        
+        """,
+            (f"$.{col_label}", self.dataset_id, row_label),
+        )
+
         result = self.fetch_one(cursor)
-        return result['value'] if result else None
+        return result["value"] if result else None
 
     def iloc(self, row_indexer, col_indexer=None):
         """Purely integer-location based indexing for selection by position."""
@@ -1610,7 +1747,7 @@ class SQLiteDataset(SQLDatasetBase):
                 rows = list(range(start, stop, step))
             else:
                 rows = list(row_indexer)
-            
+
             if col_indexer is None:
                 # All columns
                 return self._get_rows_by_indices(rows)
@@ -1622,16 +1759,17 @@ class SQLiteDataset(SQLDatasetBase):
                     cols = [self.columns[col_indexer]]
                 else:
                     cols = [self.columns[i] for i in col_indexer]
-                
+
                 dataset = self._get_rows_by_indices(rows)
                 return dataset._get_columns(cols)
 
     def _get_rows_by_indices(self, indices):
         """Get multiple rows by their indices."""
         new_dataset_id = str(uuid.uuid4())
-        
-        placeholders = ', '.join(['?' for _ in indices])
-        self.execute_sql(f"""
+
+        placeholders = ", ".join(["?" for _ in indices])
+        self.execute_sql(
+            f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, 
                    ROW_NUMBER() OVER (ORDER BY row_num) - 1,
@@ -1639,34 +1777,39 @@ class SQLiteDataset(SQLDatasetBase):
             FROM dataset_records
             WHERE dataset_id = ? AND row_num IN ({placeholders})
             ORDER BY row_num
-        """, (new_dataset_id, self.dataset_id, *indices))
-        
+        """,
+            (new_dataset_id, self.dataset_id, *indices),
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def map(self, mapper, na_action=None):
         """Map values using an input mapping or function."""
         if len(self.columns) != 1:
             raise ValueError("map() only works on single columns")
-        
+
         col = self.columns[0]
         new_dataset_id = str(uuid.uuid4())
-        
-        cursor = self.execute_sql("""
+
+        cursor = self.execute_sql(
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             val = data.get(col)
-            
-            if na_action == 'ignore' and val is None:
+
+            if na_action == "ignore" and val is None:
                 new_val = None
             elif callable(mapper):
                 new_val = mapper(val)
@@ -1674,19 +1817,22 @@ class SQLiteDataset(SQLDatasetBase):
                 new_val = mapper.get(val, val)
             else:
                 new_val = val
-            
+
             data[col] = new_val
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(data)))
-        
-        self.execute_many("""
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(data)))
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
     def to_parquet(self, path=None, **kwargs):
@@ -1694,14 +1840,14 @@ class SQLiteDataset(SQLDatasetBase):
         # Convert to pandas first, then to parquet
         # TODO: implement parquet sqlite conversion without pandas
         import pandas as pd
-        
+
         # Get all data
         data = []
         for _, row_data in self.iterrows():
             data.append(row_data)
-        
-        df = pd.DataFrame(data) # i know i know
-        
+
+        df = pd.DataFrame(data)  # i know i know
+
         if path:
             df.to_parquet(path, **kwargs)
         else:
@@ -1710,15 +1856,18 @@ class SQLiteDataset(SQLDatasetBase):
     def assign(self, **kwargs):
         """Assign new columns to dataset."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         # First copy existing data
-        self.execute_sql("""
+        self.execute_sql(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, row_num, data
             FROM dataset_records
             WHERE dataset_id = ?
-        """, (new_dataset_id, self.dataset_id))
-        
+        """,
+            (new_dataset_id, self.dataset_id),
+        )
+
         # Now add new columns
         new_columns = list(self.columns)
         for col_name, col_values in kwargs.items():
@@ -1727,125 +1876,139 @@ class SQLiteDataset(SQLDatasetBase):
                 values_list = []
                 for _, row_data in self.iterrows():
                     values_list.append(col_values(row_data))
-            elif hasattr(col_values, '__iter__') and not isinstance(col_values, str):
+            elif hasattr(col_values, "__iter__") and not isinstance(col_values, str):
                 values_list = list(col_values)
             else:
                 # Single value for all rows
                 values_list = [col_values] * len(self)
-            
+
             # Update each row
             for idx, value in enumerate(values_list):
-                self.execute_sql("""
+                self.execute_sql(
+                    """
                     UPDATE dataset_records
                     SET data = json_set(data, ?, json(?))
                     WHERE dataset_id = ? AND row_num = ?
-                """, (f'$.{col_name}', json.dumps(value), new_dataset_id, idx))
-            
+                """,
+                    (f"$.{col_name}", json.dumps(value), new_dataset_id, idx),
+                )
+
             if col_name not in new_columns:
                 new_columns.append(col_name)
-        
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=new_columns
+            columns=new_columns,
         )
 
     def _comparison_op(self, other, op):
         """Generic comparison operation."""
         new_dataset_id = str(uuid.uuid4())
-        
-        cursor = self.execute_sql("""
+
+        cursor = self.execute_sql(
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             result_data = {}
-            
+
             for col in self.columns:
                 val = data.get(col)
                 if isinstance(other, dict):
                     other_val = other.get(col, other)
                 else:
                     other_val = other
-                
-                if op == 'eq':
+
+                if op == "eq":
                     result_data[col] = val == other_val
-                elif op == 'ne':
+                elif op == "ne":
                     result_data[col] = val != other_val
-                elif op == 'lt':
+                elif op == "lt":
                     try:
                         result_data[col] = val < other_val
                     except:
                         result_data[col] = False
-                elif op == 'le':
+                elif op == "le":
                     try:
                         result_data[col] = val <= other_val
                     except:
                         result_data[col] = False
-                elif op == 'gt':
+                elif op == "gt":
                     try:
                         result_data[col] = val > other_val
                     except:
                         result_data[col] = False
-                elif op == 'ge':
+                elif op == "ge":
                     try:
                         result_data[col] = val >= other_val
                     except:
                         result_data[col] = False
-            
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(result_data)))
-        
-        self.execute_many("""
+
+            records.append(
+                (new_dataset_id, row["row_num"], self._serialise_json(result_data))
+            )
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
 
-    def eq(self, other, axis='columns', level=None):
+    def eq(self, other, axis="columns", level=None):
         """Get Equal to of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'eq')
+        return self._comparison_op(other, "eq")
 
-    def ne(self, other, axis='columns', level=None):
+    def ne(self, other, axis="columns", level=None):
         """Get Not equal to of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'ne')
+        return self._comparison_op(other, "ne")
 
-    def lt(self, other, axis='columns', level=None):
+    def lt(self, other, axis="columns", level=None):
         """Get Less than of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'lt')
+        return self._comparison_op(other, "lt")
 
-    def le(self, other, axis='columns', level=None):
+    def le(self, other, axis="columns", level=None):
         """Get Less than or equal to of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'le')
+        return self._comparison_op(other, "le")
 
-    def gt(self, other, axis='columns', level=None):
+    def gt(self, other, axis="columns", level=None):
         """Get Greater than of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'gt')
+        return self._comparison_op(other, "gt")
 
-    def ge(self, other, axis='columns', level=None):
+    def ge(self, other, axis="columns", level=None):
         """Get Greater than or equal to of dataframe and other, element-wise."""
-        return self._comparison_op(other, 'ge')
+        return self._comparison_op(other, "ge")
 
     def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether any element is True."""
         if axis == 0:  # Column-wise
             result = {}
             for col in self.columns:
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT EXISTS(
                         SELECT 1 FROM dataset_records
                         WHERE dataset_id = ?
                           AND json_extract(data, ?) = 1
                     )
-                """, (self.dataset_id, f'$.{col}'))
+                """,
+                    (self.dataset_id, f"$.{col}"),
+                )
                 result[col] = bool(cursor.fetchone()[0])
             return result
         else:  # Row-wise
@@ -1859,14 +2022,17 @@ class SQLiteDataset(SQLDatasetBase):
         if axis == 0:  # Column-wise
             result = {}
             for col in self.columns:
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT NOT EXISTS(
                         SELECT 1 FROM dataset_records
                         WHERE dataset_id = ?
                           AND (json_extract(data, ?) = 0 
                                OR json_extract(data, ?) IS NULL)
                     )
-                """, (self.dataset_id, f'$.{col}', f'$.{col}'))
+                """,
+                    (self.dataset_id, f"$.{col}", f"$.{col}"),
+                )
                 result[col] = bool(cursor.fetchone()[0])
             return result
         else:  # Row-wise
@@ -1879,24 +2045,36 @@ class SQLiteDataset(SQLDatasetBase):
                     results.append(all(bool(v) for v in row_data.values()))
             return results
 
-    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+    def sum(
+        self,
+        axis=None,
+        skipna=True,
+        level=None,
+        numeric_only=None,
+        min_count=0,
+        **kwargs,
+    ):
         """Return the sum of the values."""
         if axis == 0 or axis is None:  # Column-wise
             result = {}
             for col in self.columns:
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT SUM(CAST(json_extract(data, ?) AS REAL)) as sum_val
                     FROM dataset_records
                     WHERE dataset_id = ?
                       AND json_extract(data, ?) IS NOT NULL
-                """, (f'$.{col}', self.dataset_id, f'$.{col}'))
-                result[col] = cursor.fetchone()['sum_val'] or 0
+                """,
+                    (f"$.{col}", self.dataset_id, f"$.{col}"),
+                )
+                result[col] = cursor.fetchone()["sum_val"] or 0
             return result
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [v for v in row_data.values() 
-                               if isinstance(v, (int, float))]
+                numeric_vals = [
+                    v for v in row_data.values() if isinstance(v, (int, float))
+                ]
                 results.append(sum(numeric_vals) if numeric_vals else 0)
             return results
 
@@ -1905,43 +2083,59 @@ class SQLiteDataset(SQLDatasetBase):
         if axis == 0 or axis is None:  # Column-wise
             result = {}
             for col in self.columns:
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT AVG(CAST(json_extract(data, ?) AS REAL)) as avg_val
                     FROM dataset_records
                     WHERE dataset_id = ?
                       AND json_extract(data, ?) IS NOT NULL
-                """, (f'$.{col}', self.dataset_id, f'$.{col}'))
-                result[col] = cursor.fetchone()['avg_val']
+                """,
+                    (f"$.{col}", self.dataset_id, f"$.{col}"),
+                )
+                result[col] = cursor.fetchone()["avg_val"]
             return result
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [v for v in row_data.values() 
-                               if isinstance(v, (int, float))]
-                results.append(sum(numeric_vals) / len(numeric_vals) if numeric_vals else None)
+                numeric_vals = [
+                    v for v in row_data.values() if isinstance(v, (int, float))
+                ]
+                results.append(
+                    sum(numeric_vals) / len(numeric_vals) if numeric_vals else None
+                )
             return results
 
-    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
+    def std(
+        self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs
+    ):
         """Return sample standard deviation."""
         # SQLite doesn't have built-in STDDEV, so we calculate manually
         if axis == 0 or axis is None:  # Column-wise
             result = {}
             for col in self.columns:
                 # Get values
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT json_extract(data, ?) as value
                     FROM dataset_records
                     WHERE dataset_id = ?
                       AND json_extract(data, ?) IS NOT NULL
-                """, (f'$.{col}', self.dataset_id, f'$.{col}'))
-                
-                values = [float(row['value']) for row in self.fetch_all(cursor) 
-                         if row['value'] is not None]
-                
+                """,
+                    (f"$.{col}", self.dataset_id, f"$.{col}"),
+                )
+
+                values = [
+                    float(row["value"])
+                    for row in self.fetch_all(cursor)
+                    if row["value"] is not None
+                ]
+
                 if len(values) > ddof:
                     mean_val = sum(values) / len(values)
-                    variance = sum((x - mean_val) ** 2 for x in values) / (len(values) - ddof)
-                    result[col] = variance ** 0.5
+                    variance = sum((x - mean_val) ** 2 for x in values) / (
+                        len(values) - ddof
+                    )
+                    result[col] = variance**0.5
                 else:
                     result[col] = None
             return result
@@ -1949,12 +2143,15 @@ class SQLiteDataset(SQLDatasetBase):
             # Row-wise std
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [v for v in row_data.values() 
-                               if isinstance(v, (int, float))]
+                numeric_vals = [
+                    v for v in row_data.values() if isinstance(v, (int, float))
+                ]
                 if len(numeric_vals) > ddof:
                     mean_val = sum(numeric_vals) / len(numeric_vals)
-                    variance = sum((x - mean_val) ** 2 for x in numeric_vals) / (len(numeric_vals) - ddof)
-                    results.append(variance ** 0.5)
+                    variance = sum((x - mean_val) ** 2 for x in numeric_vals) / (
+                        len(numeric_vals) - ddof
+                    )
+                    results.append(variance**0.5)
                 else:
                     results.append(None)
             return results
@@ -1965,36 +2162,43 @@ class SQLiteDataset(SQLDatasetBase):
         if axis == 0 or axis is None:  # Column-wise
             result = {}
             for col in self.columns:
-                cursor = self.execute_sql("""
+                cursor = self.execute_sql(
+                    """
                     SELECT MAX(CAST(json_extract(data, ?) AS REAL)) as max_val
                     FROM dataset_records
                     WHERE dataset_id = ?
                       AND json_extract(data, ?) IS NOT NULL
-                """, (f'$.{col}', self.dataset_id, f'$.{col}'))
-                result[col] = cursor.fetchone()['max_val']
+                """,
+                    (f"$.{col}", self.dataset_id, f"$.{col}"),
+                )
+                result[col] = cursor.fetchone()["max_val"]
             return result
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [v for v in row_data.values() 
-                               if isinstance(v, (int, float))]
+                numeric_vals = [
+                    v for v in row_data.values() if isinstance(v, (int, float))
+                ]
                 results.append(max(numeric_vals) if numeric_vals else None)
             return results
 
     def round(self, decimals=0, *args, **kwargs):
         """Round to a variable number of decimal places."""
         new_dataset_id = str(uuid.uuid4())
-        
-        cursor = self.execute_sql("""
+
+        cursor = self.execute_sql(
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """, (self.dataset_id,))
-        
+        """,
+            (self.dataset_id,),
+        )
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
-            
+            data = self._parse_json(row["data"])
+
             for col in self.columns:
                 val = data.get(col)
                 if isinstance(val, (int, float)):
@@ -2003,17 +2207,19 @@ class SQLiteDataset(SQLDatasetBase):
                     else:
                         dec = decimals
                     data[col] = round(val, dec)
-            
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(data)))
-        
-        self.execute_many("""
+
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(data)))
+
+        self.execute_many(
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             VALUES (?, ?, ?)
-        """, records)
-        
+        """,
+            records,
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
-            columns=self.columns
+            columns=self.columns,
         )
-    
