@@ -285,11 +285,12 @@ class SQLDatasetBase(DatasetInterface, ABC):
             )
 
         records = []
-        columns_set = set()
+        columns_list = []
 
         if data:
             for col, values in data.items():
-                columns_set.add(col)
+                if col not in columns_list:
+                    columns_list.append(col)
 
                 if hasattr(values, "tolist"):
                     values = values.tolist()
@@ -308,7 +309,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if records:
             dataset._insert_records(records)
 
-        dataset.columns = list(columns_set)
+        dataset.columns = columns_list
 
         if not isinstance(dataset, cls):
             raise RuntimeError(
