@@ -69,8 +69,8 @@ class DataProcessor:
         # Get unique RDOMAINS and corresponding ID Var
         reference_data = {}
         if "RDOMAIN" in dataset:
-            rdomains = dataset["RDOMAIN"].unique()
-            idvar_column_values = self.get_column_values(dataset, "IDVAR").unique()
+            rdomains = dataset.unique("RDOMAIN")
+            idvar_column_values = dataset.unique("IDVAR")
             reference_data = self.async_get_reference_data(
                 dataset_path, dataset_metadata, idvar_column_values, rdomains
             )
@@ -87,13 +87,17 @@ class DataProcessor:
     def get_column_values(self, dataset, column):
         if column in dataset:
             return dataset[column]
-        return pd.Series([])
+        return []
 
-    def get_columns(self, dataset, columns):
+    def get_columns(self, dataset: DatasetInterface, columns: Iterable[str]):
         column_data = {}
         for column in columns:
             if column in dataset:
-                column_data[column] = dataset[column].values
+                col = dataset[column]
+                if isinstance(col, pd.Series):
+                    column_data[column] = dataset[column].values
+                elif isinstance(col, list):
+                    column_data[column] = dataset[column]
         return column_data
 
     def get_column_data(
@@ -566,11 +570,7 @@ class DataProcessor:
                 DummyDataService._replace_nans_in_numeric_cols_with_none(result)
                 result.data.loc[
                     result[f"_merge_{right_dataset_domain_name}"] == "left_only",
-                    result.columns.symmetric_difference(
-                        left_dataset.columns.union(
-                            [f"_merge_{right_dataset_domain_name}"]
-                        )
-                    ),
+                    list(set(result.columns) ^ set(left_dataset.columns + [f"_merge_{right_dataset_domain_name}"]))
                 ] = None
         return result
 

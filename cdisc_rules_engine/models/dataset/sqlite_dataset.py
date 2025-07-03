@@ -62,6 +62,31 @@ class SQLiteDataset(SQLDatasetBase):
             return dict(row) if row else None
         return None
 
+    def __getitem__(self, item: Union[str, List[str]]):
+        """Get column(s) from dataset."""
+        if isinstance(item, str):
+            cursor = self.execute_sql(
+                """
+                SELECT json_extract(data, ?) as value
+                FROM dataset_records
+                WHERE dataset_id = ?
+                ORDER BY row_num
+            """,
+                (f"$.{item}", self.dataset_id),
+            )
+            
+            return [row["value"] for row in self.fetch_all(cursor)]
+        
+        elif isinstance(item, list):
+            return self._columns(item)
+        
+        else:
+            raise TypeError(f"Unsupported key type: {type(item)}")
+
+    def __contains__(self, item: str) -> bool:
+        """Check if column exists in dataset."""
+        return item in self._columns
+
     def _create_dataset_entry(self):
         """Register dataset in metadata table."""
         self.execute_sql(
@@ -143,7 +168,7 @@ class SQLiteDataset(SQLDatasetBase):
             UPDATE dataset_records
             SET data = json_set(data, ?, json(?))
             WHERE dataset_id = ?
-        """,
+            """,
             (f"$.{column}", json.dumps(value), self.dataset_id),
         )
 
@@ -960,7 +985,7 @@ class SQLiteDataset(SQLDatasetBase):
             return np.recarray([], dtype=dtype_list)
 
     def unique(self, column: Optional[str] = None):
-        """Return unique values of Series or DataFrame column."""
+        """Return unique values of a column."""
         if column is None:
             if len(self.columns) == 1:
                 column = self.columns[0]
@@ -1559,9 +1584,8 @@ class SQLiteDataset(SQLDatasetBase):
         return dtype_dict
 
     @property
-    def values(self):
-        """Return array representation of the data."""
-        # Return as list of lists
+    def values(self) -> List[list]:
+        """Return array representation (list of lists) of the data."""
         result = []
         for _, row_data in self.iterrows():
             result.append([row_data.get(col) for col in self.columns])
@@ -2339,4 +2363,3 @@ class SQLiteDataset(SQLDatasetBase):
             database_config=self.database_config,
             columns=self.columns,
         )
-
