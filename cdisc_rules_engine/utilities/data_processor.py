@@ -570,7 +570,11 @@ class DataProcessor:
                 DummyDataService._replace_nans_in_numeric_cols_with_none(result)
                 result.data.loc[
                     result[f"_merge_{right_dataset_domain_name}"] == "left_only",
-                    list(set(result.columns) ^ set(left_dataset.columns + [f"_merge_{right_dataset_domain_name}"])),
+                    result.columns.symmetric_difference(
+                        left_dataset.columns.union(
+                            [f"_merge_{right_dataset_domain_name}"]
+                        )
+                    ),
                 ] = None
         return result
 
