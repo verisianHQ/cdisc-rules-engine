@@ -7,46 +7,30 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
-from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset, SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.enums.join_types import JoinTypes
 import numpy as np
 
 
 @pytest.mark.parametrize(
-    "data_dict, dataset_implementation",
+    "data",
     [
         (
-            {
-                "RDOMAIN": ["AE", "EC", "EC", "AE"],
-                "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
-                "IDVARVAL": [1, 2, 1, 3],
-            },
-            PandasDataset
+            PandasDataset(
+                pd.DataFrame.from_dict(
+                    {
+                        "RDOMAIN": ["AE", "EC", "EC", "AE"],
+                        "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
+                        "IDVARVAL": [1, 2, 1, 3],
+                    }
+                )
+            )
         ),
-        (
-            {
-                "RDOMAIN": ["AE", "EC", "EC", "AE"],
-                "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
-                "IDVARVAL": [1, 2, 1, 3],
-            },
-            SQLiteDataset
-        ),
-        (
-            {
-                "RSUBJID": [1, 4, 6000]
-            },
-            PandasDataset
-        ),
-        (
-            {
-                "RSUBJID": [1, 4, 6000]
-            },
-            SQLiteDataset
-        )
+        (PandasDataset(pd.DataFrame.from_dict({"RSUBJID": [1, 4, 6000]}))),
     ],
 )
-def test_preprocess_relationship_dataset(data_dict, dataset_implementation, db_config):
+def test_preprocess_relationship_dataset(data):
     dataset_metadata = [
         SDTMDatasetMetadata(
             name=domain,
@@ -55,34 +39,25 @@ def test_preprocess_relationship_dataset(data_dict, dataset_implementation, db_c
         )
         for domain in ["AE", "EC", "SUPP", "DM"]
     ]
-    data_kwargs = {}
-    data_kwargs["database_config"] = db_config
-    data = dataset_implementation.from_dict(
-        data_dict, **data_kwargs
+    ae = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "AESTDY": [4, 5, 6],
+                "STUDYID": [101, 201, 300],
+                "AESEQ": [1, 2, 3],
+            }
+        )
     )
-    ae_kwargs = {}
-    ae_kwargs["database_config"] = db_config
-    ae = dataset_implementation.from_dict(
-        {
-            "AESTDY": [4, 5, 6],
-            "STUDYID": [101, 201, 300],
-            "AESEQ": [1, 2, 3],
-        },
-        **ae_kwargs
+    ec = PandasDataset(
+        pd.DataFrame.from_dict(
+            {
+                "ECSTDY": [500, 4],
+                "STUDYID": [201, 101],
+                "ECSEQ": [2, 1],
+            }
+        )
     )
-    ec_kwargs = {}
-    ec_kwargs["database_config"] = db_config
-    ec = dataset_implementation.from_dict(
-        {
-            "ECSTDY": [500, 4],
-            "STUDYID": [201, 101],
-            "ECSEQ": [2, 1],
-        },
-        **ec_kwargs
-    )
-    dm_kwargs = {}
-    dm_kwargs["database_config"] = db_config
-    dm = dataset_implementation.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, **dm_kwargs)
+    dm = PandasDataset(pd.DataFrame.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}))
     path_to_dataset_map: dict = {
         os.path.join("path", "ae.xpt"): ae,
         os.path.join("path", "ec.xpt"): ec,

@@ -19,15 +19,8 @@ class PandasDataset(DatasetInterface):
         self._data = data
 
     @property
-    def values(self):
-        result = []
-        for _, row_data in self.iterrows():
-            result.append([row_data.get(col) for col in self.columns])
-        return result
-
-    @property
-    def columns(self) -> List:
-        return self._data.columns.to_list()
+    def columns(self):
+        return self._data.columns
 
     @columns.setter
     def columns(self, columns):

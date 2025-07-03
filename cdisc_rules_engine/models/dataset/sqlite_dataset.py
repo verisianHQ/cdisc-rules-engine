@@ -62,31 +62,6 @@ class SQLiteDataset(SQLDatasetBase):
             return dict(row) if row else None
         return None
 
-    def __getitem__(self, item: Union[str, List[str]]):
-        """Get column(s) from dataset."""
-        if isinstance(item, str):
-            cursor = self.execute_sql(
-                """
-                SELECT json_extract(data, ?) as value
-                FROM dataset_records
-                WHERE dataset_id = ?
-                ORDER BY row_num
-            """,
-                (f"$.{item}", self.dataset_id),
-            )
-            
-            return [row["value"] for row in self.fetch_all(cursor)]
-        
-        elif isinstance(item, list):
-            return self._columns(item)
-        
-        else:
-            raise TypeError(f"Unsupported key type: {type(item)}")
-
-    def __contains__(self, item: str) -> bool:
-        """Check if column exists in dataset."""
-        return item in self._columns
-
     def _create_dataset_entry(self):
         """Register dataset in metadata table."""
         self.execute_sql(
@@ -168,7 +143,7 @@ class SQLiteDataset(SQLDatasetBase):
             UPDATE dataset_records
             SET data = json_set(data, ?, json(?))
             WHERE dataset_id = ?
-            """,
+        """,
             (f"$.{column}", json.dumps(value), self.dataset_id),
         )
 
@@ -193,9 +168,9 @@ class SQLiteDataset(SQLDatasetBase):
             dataset_id=new_dataset_id,
             database_config=self.database_config,
             columns=column_names,
-            length=self._length
+            length=self._length,
         )
-        
+
         return new_dataset
 
     def rename(self, index=None, columns=None, inplace=True):
@@ -300,22 +275,22 @@ class SQLiteDataset(SQLDatasetBase):
             cols_to_drop = columns or labels
             if isinstance(cols_to_drop, str):
                 cols_to_drop = [cols_to_drop]
-            
+
             if errors == "raise":
                 for col in cols_to_drop:
                     if col not in self._columns:
                         raise KeyError(f"Column '{col}' not found")
-            
+
             new_dataset_id = str(uuid.uuid4())
 
             remaining_cols = [c for c in self._columns if c not in cols_to_drop]
-            
+
             json_build_parts = []
             for col in remaining_cols:
                 json_build_parts.append(f"'{col}', json_extract(data, '$.{col}')")
-            
+
             json_build_expr = f"json_object({', '.join(json_build_parts)})"
-            
+
             self.execute_sql(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -326,21 +301,21 @@ class SQLiteDataset(SQLDatasetBase):
                 """,
                 (new_dataset_id, self.dataset_id),
             )
-            
+
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=remaining_cols,
-                length=self._length
+                length=self._length,
             )
-            
+
         else:
             if isinstance(labels, int):
                 labels = [labels]
-            
+
             new_dataset_id = str(uuid.uuid4())
-            
-            placeholders = ', '.join(['?' for _ in labels])
+
+            placeholders = ", ".join(["?" for _ in labels])
             self.execute_sql(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -353,21 +328,23 @@ class SQLiteDataset(SQLDatasetBase):
                 """,
                 (new_dataset_id, self.dataset_id, *labels),
             )
-            
+
             cursor = self.execute_sql(
                 "SELECT COUNT(*) FROM dataset_records WHERE dataset_id = ?",
-                (new_dataset_id,)
+                (new_dataset_id,),
             )
             new_length = cursor.fetchone()[0]
-            
+
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=self._columns,
-                length=new_length
+                length=new_length,
             )
 
-    def concat(self, other: Union["SQLiteDataset", List["SQLiteDataset"]], axis=0, **kwargs):
+    def concat(
+        self, other: Union["SQLiteDataset", List["SQLiteDataset"]], axis=0, **kwargs
+    ):
         """Concatenate datasets."""
         if axis == 0:  # vertical concat
             datasets = [other] if not isinstance(other, list) else other
@@ -404,7 +381,7 @@ class SQLiteDataset(SQLDatasetBase):
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=self._columns,
-                length=offset
+                length=offset,
             )
         else:  # horizontal concat
             datasets = [other] if not isinstance(other, list) else other
@@ -468,7 +445,7 @@ class SQLiteDataset(SQLDatasetBase):
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=all_columns,
-                length=len(self)
+                length=len(self),
             )
 
     def merge(self, other: type["SQLDatasetBase"], on=None, how="inner", **kwargs):
@@ -536,20 +513,20 @@ class SQLiteDataset(SQLDatasetBase):
             elif how == "left":
                 on_list = on if isinstance(on, list) else [on] if on else []
                 right_only_cols = [col for col in other.columns if col not in on_list]
-                
+
                 json_build_parts = []
-                
+
                 for col in self.columns:
                     json_build_parts.append(f"'{col}', json_extract(a.data, '$.{col}')")
-                
+
                 for col in right_only_cols:
                     json_build_parts.append(
                         f"'{col}', CASE WHEN b.data IS NULL THEN NULL "
                         f"ELSE json_extract(b.data, '$.{col}') END"
                     )
-                
+
                 json_build_expr = f"json_object({', '.join(json_build_parts)})"
-                
+
                 conn.execute(
                     f"""
                     INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -583,7 +560,7 @@ class SQLiteDataset(SQLDatasetBase):
 
             cursor = conn.execute(
                 "SELECT COUNT(*) FROM dataset_records WHERE dataset_id = ?",
-                (new_dataset_id,)
+                (new_dataset_id,),
             )
             row_count = cursor.fetchone()[0]
 
@@ -595,7 +572,7 @@ class SQLiteDataset(SQLDatasetBase):
             dataset_id=new_dataset_id,
             database_config=self.database_config,
             columns=merged_columns,
-            length=row_count
+            length=row_count,
         )
 
     def _build_order_clause(self, columns: List[str], ascending: bool) -> str:
@@ -711,7 +688,7 @@ class SQLiteDataset(SQLDatasetBase):
                 (self.dataset_id,),
             )
             conn.commit()
-        
+
         return self
 
     def fillna(
@@ -985,7 +962,7 @@ class SQLiteDataset(SQLDatasetBase):
             return np.recarray([], dtype=dtype_list)
 
     def unique(self, column: Optional[str] = None):
-        """Return unique values of a column."""
+        """Return unique values of Series or DataFrame column."""
         if column is None:
             if len(self.columns) == 1:
                 column = self.columns[0]
@@ -1584,8 +1561,9 @@ class SQLiteDataset(SQLDatasetBase):
         return dtype_dict
 
     @property
-    def values(self) -> List[list]:
-        """Return array representation (list of lists) of the data."""
+    def values(self):
+        """Return array representation of the data."""
+        # Return as list of lists
         result = []
         for _, row_data in self.iterrows():
             result.append([row_data.get(col) for col in self.columns])
@@ -1833,18 +1811,19 @@ class SQLiteDataset(SQLDatasetBase):
     def _get_rows_by_indices(self, indices):
         """Get multiple rows by their indices."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         if not indices:
             # Return empty dataset
             return SQLiteDataset(
                 dataset_id=new_dataset_id,
                 database_config=self.database_config,
                 columns=self.columns,
-                length=0
+                length=0,
             )
-        
-        placeholders = ', '.join(['?' for _ in indices])
-        self.execute_sql(f"""
+
+        placeholders = ", ".join(["?" for _ in indices])
+        self.execute_sql(
+            f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, 
                 ROW_NUMBER() OVER (ORDER BY row_num) - 1,
@@ -1852,13 +1831,15 @@ class SQLiteDataset(SQLDatasetBase):
             FROM dataset_records
             WHERE dataset_id = ? AND row_num IN ({placeholders})
             ORDER BY row_num
-        """, (new_dataset_id, self.dataset_id, *indices))
-        
+        """,
+            (new_dataset_id, self.dataset_id, *indices),
+        )
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
             columns=self.columns,
-            length=len(indices)
+            length=len(indices),
         )
 
     def map(self, mapper, na_action=None):
@@ -2301,7 +2282,7 @@ class SQLiteDataset(SQLDatasetBase):
     def astype(self, dtype, **kwargs):
         """Convert column dtypes."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         cursor = self.execute_sql(
             """
             SELECT row_num, data FROM dataset_records
@@ -2310,11 +2291,11 @@ class SQLiteDataset(SQLDatasetBase):
         """,
             (self.dataset_id,),
         )
-        
+
         records = []
         for row in self.fetch_all(cursor):
             data = self._parse_json(row["data"])
-            
+
             if isinstance(dtype, dict):
                 # fifferent types for different columns
                 for col, target_type in dtype.items():
@@ -2347,9 +2328,9 @@ class SQLiteDataset(SQLDatasetBase):
                         except (ValueError, TypeError):
                             # keep original value if conversion fails
                             pass
-            
+
             records.append((new_dataset_id, row["row_num"], self._serialise_json(data)))
-        
+
         self.execute_many(
             """
             INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -2357,7 +2338,7 @@ class SQLiteDataset(SQLDatasetBase):
         """,
             records,
         )
-        
+
         return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
