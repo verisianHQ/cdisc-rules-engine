@@ -2,6 +2,7 @@ import json
 import numpy as np
 import uuid
 
+from enum import Enum
 from math import isnan
 from typing import List, Dict, Any, Union, Optional, Tuple
 
@@ -10,6 +11,13 @@ from cdisc_rules_engine.config.databases.sqlite_database_config import (
     SQLiteDatabaseConfig,
 )
 
+class MergeMap(Enum, str):
+    """Mapped SQL commands for different merges."""
+    INNER = "INNER JOIN"
+    LEFT = "LEFT JOIN"
+    RIGHT = "RIGHT JOIN"
+    OUTER = "LEFT JOIN" # SQLite doesn't have FULL OUTER, simulate with UNION
+    CROSS = "CROSS JOIN"
 
 class SQLiteDataset(SQLDatasetBase):
     """SQLite-backed dataset implementation."""
@@ -164,14 +172,12 @@ class SQLiteDataset(SQLDatasetBase):
             (new_dataset_id, self.dataset_id),
         )
 
-        new_dataset = SQLiteDataset(
+        return SQLiteDataset(
             dataset_id=new_dataset_id,
             database_config=self.database_config,
             columns=column_names,
             length=self._length,
         )
-
-        return new_dataset
 
     def rename(self, index=None, columns=None, inplace=True):
         """Rename columns."""
@@ -269,7 +275,7 @@ class SQLiteDataset(SQLDatasetBase):
 
     # ========== Factory methods ==========
 
-    def drop(self, labels=None, axis=0, columns=None, errors="raise"):
+    def drop(self, labels: str = None, axis=0, columns: str = None, errors="raise") -> "SQLiteDataset":
         """Drop rows or columns."""
         if axis == 1 or columns:  # drop columns
             cols_to_drop = columns or labels
@@ -344,7 +350,7 @@ class SQLiteDataset(SQLDatasetBase):
 
     def concat(
         self, other: Union["SQLiteDataset", List["SQLiteDataset"]], axis=0, **kwargs
-    ):
+    ) -> "SQLiteDataset":
         """Concatenate datasets."""
         if axis == 0:  # vertical concat
             datasets = [other] if not isinstance(other, list) else other
@@ -448,17 +454,9 @@ class SQLiteDataset(SQLDatasetBase):
                 length=len(self),
             )
 
-    def merge(self, other: type["SQLDatasetBase"], on=None, how="inner", **kwargs):
+    def merge(self, other: type["SQLDatasetBase"], on=None, how=MergeMap.INNER.value, **kwargs):
         """Merge datasets using sql join."""
-        join_type_map = {
-            "inner": "INNER JOIN",
-            "left": "LEFT JOIN",
-            "right": "RIGHT JOIN",
-            "outer": "LEFT JOIN",  # SQLite doesn't have FULL OUTER, simulate with UNION
-            "cross": "CROSS JOIN",
-        }
-
-        join_type = join_type_map.get(how, "INNER JOIN")
+        join_type = MergeMap[how.upper()].value
         new_dataset_id = str(uuid.uuid4())
 
         if on:
@@ -474,7 +472,7 @@ class SQLiteDataset(SQLDatasetBase):
             join_conditions = "1=1"
 
         with self.database_config.get_connection() as conn:
-            if how == "outer":
+            if how == MergeMap.OUTER.name:
                 # Simulate FULL OUTER JOIN with UNION
                 conn.execute(
                     f"""
@@ -510,7 +508,7 @@ class SQLiteDataset(SQLDatasetBase):
                         other.dataset_id,
                     ),
                 )
-            elif how == "left":
+            elif how == MergeMap.LEFT.name:
                 on_list = on if isinstance(on, list) else [on] if on else []
                 right_only_cols = [col for col in other.columns if col not in on_list]
 
@@ -2317,13 +2315,13 @@ class SQLiteDataset(SQLDatasetBase):
                 for col in self.columns:
                     if col in data and data[col] is not None:
                         try:
-                            if dtype == int or dtype is int:
+                            if dtype is int:
                                 data[col] = int(data[col])
-                            elif dtype == float or dtype is float:
+                            elif dtype is float:
                                 data[col] = float(data[col])
-                            elif dtype == str or dtype is str:
+                            elif dtype is str:
                                 data[col] = str(data[col])
-                            elif dtype == bool or dtype is bool:
+                            elif dtype is bool:
                                 data[col] = bool(data[col])
                         except (ValueError, TypeError):
                             # keep original value if conversion fails
