@@ -82,7 +82,6 @@ class DatasetPreprocessor:
             for file_info in file_infos:
                 filename = get_dataset_name_from_details(file_info)
                 other_dataset: DatasetInterface = self._download_dataset(filename)
-                print(filename)
                 referenced_targets = set(
                     [
                         target.replace(f"{domain_name}.", "")

@@ -44,8 +44,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
     no datasets are provided in the rule.
     Expected behaviour is the original dataset returned.
     """
-    data_kwargs = {"database_config": db_config}
-    dataset = dataset_implementation.from_dict(data_dict, **data_kwargs)
+    dataset = dataset_implementation.from_dict(data_dict, **{"database_config": db_config})
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
