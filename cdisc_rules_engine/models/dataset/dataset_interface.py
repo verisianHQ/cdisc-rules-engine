@@ -481,3 +481,8 @@ class DatasetInterface(ABC):
     def round(self, decimals=0, *args, **kwargs):
         """Round to a variable number of decimal places."""
         pass
+
+    @abstractmethod
+    def astype(self, dtype, copy=True, errors='raise', **kwargs):
+        """Cast columns to a specified dtype."""
+        pass
