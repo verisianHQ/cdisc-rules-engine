@@ -1,8 +1,10 @@
+from typing import Union
 from unittest.mock import MagicMock, patch
 import os
 import pandas as pd
 import pytest
 
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
@@ -20,14 +22,10 @@ from cdisc_rules_engine.models.library_metadata_container import (
 from cdisc_rules_engine.models.dataset import PandasDataset
 
 
-def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict):
-    """
-    Unit test for preprocess method. Checks the case when
-    no datasets are provided in the rule.
-    Expected behaviour is the original dataset returned.
-    """
-    dataset = PandasDataset(
-        pd.DataFrame.from_dict(
+@pytest.mark.parametrize(
+    "data_dict",
+    [
+        (
             {
                 "USUBJID": ["CDISC01", "CDISC01", "CDISC01"],
                 "AESEQ": [
@@ -37,7 +35,17 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
                 ],
             }
         )
-    )
+    ],
+)
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict, data_dict, dataset_implementation, db_config):
+    """
+    Unit test for preprocess method. Checks the case when
+    no datasets are provided in the rule.
+    Expected behaviour is the original dataset returned.
+    """
+    data_kwargs = {"database_config": db_config}
+    dataset = dataset_implementation.from_dict(data_dict, **data_kwargs)
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
@@ -46,10 +54,10 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: PandasDataset = preprocessor.preprocess(
+    preprocessed_dataset: Union[PandasDataset, SQLiteDataset] = preprocessor.preprocess(
         dataset_rule_equal_to_error_objects, datasets
     )
-    assert preprocessed_dataset.data.equals(dataset.data)
+    assert preprocessed_dataset.to_frame().equals(dataset.to_frame())
 
 
 @pytest.mark.parametrize(

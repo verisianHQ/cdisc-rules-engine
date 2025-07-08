@@ -473,12 +473,12 @@ class DaskDataset(PandasDataset):
         result = self._data.cumsum(axis=axis, skipna=skipna)
         return self.__class__(result)
 
-    def to_frame(self, name=None):
+    def to_frame(self, name=None) -> pd.DataFrame:
         """Convert Series to DataFrame."""
         if isinstance(self._data, dd.Series):
             result = self._data.to_frame(name=name)
             return self.__class__(result)
-        return self  # Already a DataFrame
+        return self._data  # Already a DataFrame
 
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""
