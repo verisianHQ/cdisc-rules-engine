@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, List, Any, Optional, Dict, Tuple, Callable
+from typing import List, Optional, Tuple, Union
 
 
 class DatasetInterface(ABC):
@@ -90,7 +90,7 @@ class DatasetInterface(ABC):
         """
 
     @abstractmethod
-    def merge(self, other: "DatasetInterface", **kwargs):
+    def merge(self, other: "DatasetInterface", on: list = None, **kwargs):
         """
         merge two datasets
         """

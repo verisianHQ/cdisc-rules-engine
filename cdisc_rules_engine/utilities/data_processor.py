@@ -278,36 +278,58 @@ class DataProcessor:
         Uses full join to merge given datasets on the
         columns that describe their relation.
         """
-        # right dataset holds column names of left dataset.
-        # all values in the column are the same
-        if (
-            right_dataset[column_with_names].str.strip().eq("").all()
-            and right_dataset[column_with_values].str.strip().eq("").all()
-        ):
+        names_col = right_dataset[column_with_names]
+        values_col = right_dataset[column_with_values]
+        
+        names_all_empty = all(str(v).strip() == "" for v in right_dataset[column_with_names])
+        values_all_empty = all(str(v).strip() == "" for v in right_dataset[column_with_values])
+        
+        if names_all_empty and values_all_empty:
             return left_dataset.merge(
-                other=right_dataset.data,
-                left_on=left_dataset_match_keys,
-                right_on=right_dataset_match_keys,
+                other=right_dataset,
+                on=left_dataset_match_keys if left_dataset_match_keys else None,
                 how="outer",
-                suffixes=("", f".{right_dataset_domain_name}"),
             )
-        left_ds_col_name: str = right_dataset[column_with_names][0]
-
+        
+        # Get first value from column
+        left_ds_col_name: str = names_col[0] if isinstance(names_col, list) else names_col.iloc[0]
+        
         # convert numeric columns to one data type to avoid merging errors
-        # there is no point in converting string cols since their data type is the same
         DataProcessor.cast_numeric_cols_to_same_data_type(
             right_dataset, column_with_values, left_dataset, left_ds_col_name
         )
-        left_dataset_match_keys.append(left_ds_col_name)
-        right_dataset_match_keys.append(column_with_values)
-
-        return left_dataset.merge(
-            other=right_dataset.data,
-            left_on=left_dataset_match_keys,
-            right_on=right_dataset_match_keys,
+        
+        left_keys = left_dataset_match_keys.copy()
+        right_keys = right_dataset_match_keys.copy()
+        
+        left_keys.append(left_ds_col_name)
+        right_keys.append(column_with_values)
+        
+        # First rename the IDVARVAL column to AESEQ so we can join on it
+        right_dataset_renamed = right_dataset.rename(columns={column_with_values: left_ds_col_name}, inplace=False)
+        
+        # Add suffix to all columns except the join key
+        renamed_cols = {}
+        for col in right_dataset_renamed.columns:
+            if col != left_ds_col_name and col not in left_keys:
+                renamed_cols[col] = f"{col}.{right_dataset_domain_name}"
+        
+        if renamed_cols:
+            right_dataset_renamed = right_dataset_renamed.rename(columns=renamed_cols, inplace=False)
+        
+        # Now merge on the common column
+        result = left_dataset.merge(
+            other=right_dataset_renamed,
+            on=left_keys,
             how="outer",
-            suffixes=("", f".{right_dataset_domain_name}"),
         )
+        
+        # Rename the original USUBJID column if it exists
+        if "USUBJID" in result.columns and f"USUBJID.{right_dataset_domain_name}" not in result.columns:
+            # The USUBJID column needs the suffix
+            result = result.rename(columns={f"USUBJID.{right_dataset_domain_name}": f"USUBJID.{right_dataset_domain_name}"}, inplace=False)
+            
+        return result
 
     @staticmethod
     def filter_if_present(df: DatasetInterface, col: str, filter_value):
@@ -604,7 +626,6 @@ class DataProcessor:
             left_dataset[left_dataset_column] = ["1", "2", "3", "4", ]
             right_dataset[right_dataset_column] = [1, 2, 3, 4, ]
         """
-        # check if both columns are numeric
         left_is_numeric: bool = DataProcessor.column_contains_numeric(
             left_dataset[left_dataset_column]
         )
@@ -612,18 +633,29 @@ class DataProcessor:
             right_dataset[right_dataset_column]
         )
         if left_is_numeric and right_is_numeric:
-            # convert to float
-            right_dataset[right_dataset_column] = right_dataset[
-                right_dataset_column
-            ].astype(float)
-            left_dataset[left_dataset_column] = left_dataset[
-                left_dataset_column
-            ].astype(float)
+            left_dataset[left_dataset_column] = [float(v) for v in left_dataset[left_dataset_column]]
+            right_dataset[right_dataset_column] = [float(v) for v in right_dataset[right_dataset_column]]
 
     @staticmethod
-    def column_contains_numeric(column: pd.Series) -> bool:
-        if not pd.api.types.is_numeric_dtype(column):
-            return column.str.replace(".", "").str.isdigit().all()
+    def column_contains_numeric(column: list) -> bool:
+        """
+            Check if a column contains numeric values.
+        """
+        if not column:  # empty list
+            return False
+        
+        for val in column:
+            if val is None:
+                continue
+            if isinstance(val, (int, float)):
+                continue
+            if isinstance(val, str):
+                try:
+                    float(val)
+                except ValueError:
+                    return False
+            else:
+                return False
         return True
 
     @staticmethod

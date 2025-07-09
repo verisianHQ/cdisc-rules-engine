@@ -2,22 +2,14 @@ import json
 import numpy as np
 import uuid
 
-from enum import Enum
 from math import isnan
 from typing import List, Dict, Any, Union, Optional, Tuple
 
-from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase
+from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase, MergeMap
 from cdisc_rules_engine.config.databases.sqlite_database_config import (
     SQLiteDatabaseConfig,
 )
 
-class MergeMap(Enum, str):
-    """Mapped SQL commands for different merges."""
-    INNER = "INNER JOIN"
-    LEFT = "LEFT JOIN"
-    RIGHT = "RIGHT JOIN"
-    OUTER = "LEFT JOIN" # SQLite doesn't have FULL OUTER, simulate with UNION
-    CROSS = "CROSS JOIN"
 
 class SQLiteDataset(SQLDatasetBase):
     """SQLite-backed dataset implementation."""
