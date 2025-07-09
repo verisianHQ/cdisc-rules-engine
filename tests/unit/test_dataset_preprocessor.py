@@ -237,7 +237,7 @@ def test_preprocess(
     dataset_implementation: DatasetInterface,
     join_type: str,
     data_dict: dict,
-    db_config: SQLiteDatabaseConfig,
+    dataset_kwargs: dict[str, SQLiteDatabaseConfig],
 ):
     """
     Unit test for preprocess method. Checks the case when
@@ -281,7 +281,7 @@ def test_preprocess(
                 "CDISC003",
             ],
         },
-        **{"database_config": db_config},
+        **dataset_kwargs,
     )
     ae_dataset = dataset_implementation.from_dict(
         {
@@ -310,7 +310,7 @@ def test_preprocess(
                 "CDISC002",
             ],
         },
-        **{"database_config": db_config},
+        **dataset_kwargs,
     )
     ts_dataset = dataset_implementation.from_dict(
         {
@@ -331,7 +331,7 @@ def test_preprocess(
                 "CDISC001",
             ],
         },
-        **{"database_config": db_config},
+        **dataset_kwargs,
     )
 
     # mock blob storage call
@@ -362,7 +362,7 @@ def test_preprocess(
             SDTMDatasetMetadata(first_record={"DOMAIN": "TS"}, filename="ts.xpt"),
         ],
     )
-    expected_dataset = dataset_implementation.from_dict(data_dict, **{"database_config": db_config})
+    expected_dataset = dataset_implementation.from_dict(data_dict, **dataset_kwargs)
     assert preprocessed_dataset.equals(expected_dataset)
 
 
