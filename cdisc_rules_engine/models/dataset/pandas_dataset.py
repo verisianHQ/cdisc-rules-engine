@@ -195,7 +195,7 @@ class PandasDataset(DatasetInterface):
         new_data = self._data.copy()
         return self.__class__(new_data)
 
-    def equals(self, other_dataset: DatasetInterface) -> bool:
+    def equals(self, other_dataset: pd.DataFrame) -> bool:
         return self._data.equals(other_dataset.data)
 
     def get_error_rows(self, results) -> "pd.Dataframe":
