@@ -58,13 +58,9 @@ class Rule:
                 executable_rule["operations"] = rule_metadata.get("Operations")
 
             if "Match_Datasets" in rule_metadata:
-                executable_rule["datasets"] = cls.parse_datasets(
-                    rule_metadata.get("Match_Datasets")
-                )
+                executable_rule["datasets"] = cls.parse_datasets(rule_metadata.get("Match_Datasets"))
             if "Output_Variables" in rule_metadata.get("Outcome", {}):
-                executable_rule["output_variables"] = rule_metadata.get("Outcome", {})[
-                    "Output_Variables"
-                ]
+                executable_rule["output_variables"] = rule_metadata.get("Outcome", {})["Output_Variables"]
             return executable_rule
         else:
             return rule_metadata
@@ -172,11 +168,7 @@ class Rule:
             join_data = {
                 "domain_name": data.get("Name"),
                 "match_key": [
-                    (
-                        key
-                        if isinstance(key, str)
-                        else {k.lower(): v for k, v in key.items()}
-                    )
+                    (key if isinstance(key, str) else {k.lower(): v for k, v in key.items()})
                     for key in data.get("Keys", [])
                 ],
                 "wildcard": data.get("Wildcard", "**"),

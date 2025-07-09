@@ -21,9 +21,7 @@ class DaskDataset(PandasDataset):
         self._data = data
         self.length = length
         if columns and self._data.empty:
-            self._data = dd.from_pandas(
-                pd.DataFrame(columns=columns), npartitions=DEFAULT_NUM_PARTITIONS
-            )
+            self._data = dd.from_pandas(pd.DataFrame(columns=columns), npartitions=DEFAULT_NUM_PARTITIONS)
 
     @property
     def data(self):
@@ -58,10 +56,7 @@ class DaskDataset(PandasDataset):
             False
             not in np.concatenate(
                 self._data.groupby(group, sort=False)[column]
-                .apply(
-                    lambda partition: sorted(partition.sort_index().values)
-                    == partition.sort_index().values
-                )
+                .apply(lambda partition: sorted(partition.sort_index().values) == partition.sort_index().values)
                 .compute()
                 .values
             )
@@ -173,11 +168,7 @@ class DaskDataset(PandasDataset):
 
     def groupby(self, by: List[str], **kwargs):
         invalid_kwargs = ["as_index"]
-        return self.__class__(
-            self._data.groupby(
-                by, **self._remove_invalid_kwargs(invalid_kwargs, kwargs)
-            )
-        )
+        return self.__class__(self._data.groupby(by, **self._remove_invalid_kwargs(invalid_kwargs, kwargs)))
 
     def get_grouped_size(self, by, **kwargs):
         if isinstance(self._data, pd.DataFrame):
@@ -205,9 +196,7 @@ class DaskDataset(PandasDataset):
         """
         Drop specified labels from rows or columns.
         """
-        self._data = self._data.drop(
-            labels=labels, axis=axis, columns=columns, errors=errors
-        )
+        self._data = self._data.drop(labels=labels, axis=axis, columns=columns, errors=errors)
         return self
 
     def melt(
@@ -244,11 +233,7 @@ class DaskDataset(PandasDataset):
             if column not in other_dataset:
                 return False
             is_equal = (
-                is_equal
-                and self[column]
-                .reset_index(drop=True)
-                .eq(other_dataset[column].reset_index(drop=True))
-                .all()
+                is_equal and self[column].reset_index(drop=True).eq(other_dataset[column].reset_index(drop=True)).all()
             )
         return is_equal
 
@@ -261,9 +246,7 @@ class DaskDataset(PandasDataset):
         data_with_results = self.data.set_index("computed_index", sorted=True)
         data_with_results["results"] = results
         data_with_results = data_with_results.fillna(value={"results": False})
-        return data_with_results[data_with_results["results"]].head(
-            1000, npartitions=-1
-        )
+        return data_with_results[data_with_results["results"]].head(1000, npartitions=-1)
 
     @classmethod
     def cartesian_product(cls, left, right):
@@ -310,9 +293,7 @@ class DaskDataset(PandasDataset):
 
     def filter(self, **kwargs):
         columns_regex = kwargs.get("regex")
-        columns_subset = [
-            column for column in self.columns if re.match(columns_regex, column)
-        ]
+        columns_subset = [column for column in self.columns if re.match(columns_regex, column)]
         new_data = self._data[columns_subset]
         return self.__class__(new_data)
 
@@ -368,7 +349,7 @@ class DaskDataset(PandasDataset):
             return partition.isin(values_set)
 
         result = self._data.map_partitions(partition_isin)
-        return result
+        return self.__class__(result)
 
     def filter_by_value(self, column, values):
         computed_data = self._data.compute()
@@ -392,7 +373,7 @@ class DaskDataset(PandasDataset):
             return self.__class__(dd.from_pandas(result, npartitions=DEFAULT_NUM_PARTITIONS))
         return result  # scalar
 
-    def duplicated(self, subset=None, keep='first'):
+    def duplicated(self, subset=None, keep="first"):
         """Return boolean Series denoting duplicate rows."""
         # We gotta compute first because dask doesn't support duplicated directly
         return self._data.compute().duplicated(subset=subset, keep=keep)
@@ -438,12 +419,12 @@ class DaskDataset(PandasDataset):
             return result.compute()
         return result
 
-    def select_dtypes(self, include=None, exclude=None):
+    def select_dtypes(self, include=None, exclude=None):  # noqa: C901
         """Return a subset of the DataFrame's columns based on the column dtypes."""
         # Dask doesn't have select_dtypes, need to compute dtypes first
         dtypes = self._data.dtypes
         columns = []
-        
+
         for col, dtype in dtypes.items():
             if include is not None:
                 if isinstance(include, list):
@@ -452,7 +433,7 @@ class DaskDataset(PandasDataset):
                 else:
                     if dtype == include or pd.api.types.is_dtype_equal(dtype, include):
                         columns.append(col)
-            
+
             if exclude is not None:
                 if isinstance(exclude, list):
                     if any(dtype == t or pd.api.types.is_dtype_equal(dtype, t) for t in exclude):
@@ -462,10 +443,10 @@ class DaskDataset(PandasDataset):
                     if dtype == exclude or pd.api.types.is_dtype_equal(dtype, exclude):
                         if col in columns:
                             columns.remove(col)
-        
+
         if include is None and exclude is not None:
             columns = [col for col in self._data.columns if col not in columns]
-        
+
         return self.__class__(self._data[columns])
 
     def cumsum(self, axis=None, skipna=True, *args, **kwargs):
@@ -489,7 +470,11 @@ class DaskDataset(PandasDataset):
         """Return a Series containing counts of unique values."""
         if len(self._data.columns) == 1:
             result = self._data.iloc[:, 0].value_counts(
-                normalize=normalise, sort=sort, ascending=ascending, bins=bins, dropna=dropna
+                normalize=normalise,
+                sort=sort,
+                ascending=ascending,
+                bins=bins,
+                dropna=dropna,
             )
             return result.compute()
         raise ValueError("value_counts() only works on single columns")
@@ -521,91 +506,80 @@ class DaskDataset(PandasDataset):
     @property
     def str(self):
         """Vectorised string functions for Series and Index."""
+
         class StringAccessor:
             def __init__(self, data):
                 self._data = data
-            
+
             def __getitem__(self, key):
                 return self._data[key].str
-            
+
             def __getattr__(self, item):
                 if isinstance(self._data, dd.DataFrame):
                     raise AttributeError("Can only use .str accessor with string values!")
                 return getattr(self._data.str, item)
-        
+
         return StringAccessor(self._data)
 
     @property
     def dt(self):
         """Accessor object for datetime-like properties."""
+
         class DatetimeAccessor:
             def __init__(self, data):
                 self._data = data
-            
+
             def __getitem__(self, key):
                 return self._data[key].dt
-            
+
             def __getattr__(self, item):
                 if isinstance(self._data, dd.DataFrame):
                     raise AttributeError("Can only use .dt accessor with datetimelike values!")
                 return getattr(self._data.dt, item)
-        
+
         return DatetimeAccessor(self._data)
-
-    def isin(self, values):
-        """Check whether each element is contained in values."""
-        values_set = set(values)
-
-        def partition_isin(partition):
-            return partition.isin(values_set)
-
-        result = self._data.map_partitions(partition_isin)
-        return self.__class__(result)
 
     def map(self, mapper, na_action=None):
         """Map values using an input mapping or function."""
         if len(self._data.columns) == 1:
             # Map on single column
-            result = self._data.iloc[:, 0].map(mapper, na_action=na_action, 
-                                              meta=self._data.iloc[:, 0]._meta)
+            result = self._data.iloc[:, 0].map(mapper, na_action=na_action, meta=self._data.iloc[:, 0]._meta)
             return result.compute()
         else:
             # For DataFrame, apply map to each column
-            result = self._data.map_partitions(
-                lambda df: df.apply(lambda x: x.map(mapper, na_action=na_action))
-            )
+            result = self._data.map_partitions(lambda df: df.apply(lambda x: x.map(mapper, na_action=na_action)))
             return self.__class__(result)
 
     def to_parquet(self, path=None, **kwargs):
         """Write a DataFrame to the parquet format."""
         return self._data.to_parquet(path, **kwargs)
 
-    def eq(self, other, axis='columns', level=None):
+    def eq(self, other, axis="columns", level=None):
         """Get Equal to of dataframe and other, element-wise."""
         result = self._data.eq(other)
         return self.__class__(result)
 
-    def ne(self, other, axis='columns', level=None):
+    def ne(self, other, axis="columns", level=None):
         """Get Not equal to of dataframe and other, element-wise."""
         result = self._data.ne(other)
         return self.__class__(result)
 
-    def lt(self, other, axis='columns', level=None):
+    def lt(self, other, axis="columns", level=None):
         """Get Less than of dataframe and other, element-wise."""
         result = self._data.lt(other)
         return self.__class__(result)
 
-    def le(self, other, axis='columns', level=None):
+    def le(self, other, axis="columns", level=None):
         """Get Less than or equal to of dataframe and other, element-wise."""
         result = self._data.le(other)
         return self.__class__(result)
 
-    def gt(self, other, axis='columns', level=None):
+    def gt(self, other, axis="columns", level=None):
         """Get Greater than of dataframe and other, element-wise."""
         result = self._data.gt(other)
         return self.__class__(result)
 
-    def ge(self, other, axis='columns', level=None):
+    def ge(self, other, axis="columns", level=None):
         """Get Greater than or equal to of dataframe and other, element-wise."""
         result = self._data.ge(other)
         return self.__class__(result)
@@ -613,32 +587,40 @@ class DaskDataset(PandasDataset):
     def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether any element is True."""
         result = self._data.any(axis=axis, skipna=skipna)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
     def all(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether all elements are True."""
         result = self._data.all(axis=axis, skipna=skipna)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
-    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+    def sum(
+        self,
+        axis=None,
+        skipna=True,
+        level=None,
+        numeric_only=None,
+        min_count=0,
+        **kwargs,
+    ):
         """Return the sum of the values."""
         result = self._data.sum(axis=axis, skipna=skipna, min_count=min_count)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
     def mean(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the mean of the values."""
         result = self._data.mean(axis=axis, skipna=skipna)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
     def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
         """Return sample standard deviation."""
         result = self._data.std(axis=axis, skipna=skipna, ddof=ddof)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
     def max(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the maximum of the values."""
         result = self._data.max(axis=axis, skipna=skipna)
-        return result.compute() if hasattr(result, 'compute') else result
+        return result.compute() if hasattr(result, "compute") else result
 
     def round(self, decimals=0, *args, **kwargs):
         """Round to a variable number of decimal places."""

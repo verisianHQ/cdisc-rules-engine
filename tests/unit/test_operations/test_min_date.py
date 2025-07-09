@@ -35,9 +35,7 @@ def test_minimum(data, expected, operation_params: OperationParams, dataset_type
     data_service = DataServiceFactory(config, cache).get_data_service()
     operation_params.dataframe = dataset_type.from_dict(data)
     operation_params.target = "dates"
-    result = MinDate(
-        operation_params, dataset_type.from_dict(data), cache, data_service
-    ).execute()
+    result = MinDate(operation_params, dataset_type.from_dict(data), cache, data_service).execute()
     assert operation_params.operation_id in result
     for val in result[operation_params.operation_id]:
         assert val == expected

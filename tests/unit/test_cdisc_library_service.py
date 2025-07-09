@@ -11,16 +11,12 @@ from cdisc_rules_engine.config import config
 from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
 
 
-@patch(
-    "cdisc_rules_engine.services.cdisc_library_service.CDISCLibraryClient.get_sdtmig"
-)
+@patch("cdisc_rules_engine.services.cdisc_library_service.CDISCLibraryClient.get_sdtmig")
 def test_get_standard_details(mock_get_sdtmig: MagicMock):
     """
     Unit test for get_standard_details method.
     """
-    with open(
-        f"{os.path.dirname(__file__)}/../resources/mock_library_responses/get_sdtmig_response.json"
-    ) as file:
+    with open(f"{os.path.dirname(__file__)}/../resources/mock_library_responses/get_sdtmig_response.json") as file:
         mock_sdtmig_details: dict = json.loads(file.read())
     mock_get_sdtmig.return_value = mock_sdtmig_details
 

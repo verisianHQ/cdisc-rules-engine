@@ -49,9 +49,7 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
         ),
     ],
 )
-def test_day_data_calculation(
-    data, dataset_type, expected, mock_data_service, operation_params: OperationParams
-):
+def test_day_data_calculation(data, dataset_type, expected, mock_data_service, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     datasets_map = {
@@ -79,19 +77,13 @@ def test_day_data_calculation(
             }
         )
     ]
-    mock_data_service.get_dataset.side_effect = (
-        lambda *args, **kwargs: datasets_map.get(
-            args.split("/")[-1]
-            if args
-            else kwargs.get("dataset_name", "").split("/")[-1]
-        )
+    mock_data_service.get_dataset.side_effect = lambda *args, **kwargs: datasets_map.get(
+        args.split("/")[-1] if args else kwargs.get("dataset_name", "").split("/")[-1]
     )
     operation_params.datasets = datasets
     operation_params.dataframe = PandasDataset.from_dict(data)
     operation_params.target = "values"
-    result = DayDataValidator(
-        operation_params, PandasDataset.from_dict(data), cache, mock_data_service
-    ).execute()
+    result = DayDataValidator(operation_params, PandasDataset.from_dict(data), cache, mock_data_service).execute()
     assert operation_params.operation_id in result
     for i, val in enumerate(result[operation_params.operation_id]):
         assert val == expected[i]

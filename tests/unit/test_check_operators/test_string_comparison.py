@@ -27,9 +27,7 @@ from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 def test_equals_string_part(data, comparator, regex, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.equals_string_part(
-        {"target": "target", "comparator": comparator, "regex": regex}
-    )
+    result = dataframe_type.equals_string_part({"target": "target", "comparator": comparator, "regex": regex})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -107,9 +105,7 @@ def test_ends_with(data, comparator, dataset_type, expected_result):
 def test_has_equal_length(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.has_equal_length(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.has_equal_length({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -139,9 +135,7 @@ def test_has_equal_length(data, comparator, dataset_type, expected_result):
 def test_has_not_equal_length(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.has_not_equal_length(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.has_not_equal_length({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -201,9 +195,7 @@ def test_longer_than(data, comparator, dataset_type, expected_result):
 def test_longer_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.longer_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.longer_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -263,9 +255,7 @@ def test_shorter_than(data, comparator, dataset_type, expected_result):
 def test_shorter_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.shorter_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.shorter_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -312,7 +302,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": ["word", "TEST"],
             },
-            "w.*",
+            r"w.*",
             2,
             PandasDataset,
             [True, False],
@@ -321,7 +311,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             2,
             DaskDataset,
             [False, False],
@@ -330,7 +320,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [True, False],
@@ -339,7 +329,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [True, False],
@@ -348,7 +338,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [False, False],
@@ -357,7 +347,7 @@ def test_non_empty(data, dataset_type, expected_result):
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [False, False],
@@ -367,9 +357,7 @@ def test_non_empty(data, dataset_type, expected_result):
 def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.prefix_matches_regex(
-        {"target": "target", "comparator": comparator, "prefix": prefix}
-    )
+    result = dataframe_type.prefix_matches_regex({"target": "target", "comparator": comparator, "prefix": prefix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -380,7 +368,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": ["WORD", "test"],
             },
-            "es.*",
+            r"es.*",
             3,
             DaskDataset,
             [False, True],
@@ -389,7 +377,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             3,
             PandasDataset,
             [False, False],
@@ -398,7 +386,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [True, False],
@@ -407,7 +395,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [True, False],
@@ -416,7 +404,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [True, True],
@@ -425,7 +413,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [True, True],
@@ -435,9 +423,7 @@ def test_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_r
 def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.suffix_matches_regex(
-        {"target": "target", "comparator": comparator, "suffix": suffix}
-    )
+    result = dataframe_type.suffix_matches_regex({"target": "target", "comparator": comparator, "suffix": suffix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -448,7 +434,7 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": ["WORD", "test"],
             },
-            ".*",
+            r".*",
             3,
             PandasDataset,
             [False, False],
@@ -457,7 +443,7 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             3,
             DaskDataset,
             [True, True],
@@ -466,7 +452,7 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [False, False],
@@ -475,7 +461,7 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [False, False],
@@ -484,7 +470,7 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [False, False],
@@ -493,21 +479,17 @@ def test_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_r
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [False, False],
         ),
     ],
 )
-def test_not_suffix_matches_regex(
-    data, comparator, suffix, dataset_type, expected_result
-):
+def test_not_suffix_matches_regex(data, comparator, suffix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.not_suffix_matches_regex(
-        {"target": "target", "comparator": comparator, "suffix": suffix}
-    )
+    result = dataframe_type.not_suffix_matches_regex({"target": "target", "comparator": comparator, "suffix": suffix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -518,7 +500,7 @@ def test_not_suffix_matches_regex(
             {
                 "target": ["word", "TEST"],
             },
-            ".*",
+            r".*",
             2,
             DaskDataset,
             [False, False],
@@ -527,7 +509,7 @@ def test_not_suffix_matches_regex(
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             2,
             PandasDataset,
             [True, True],
@@ -536,7 +518,7 @@ def test_not_suffix_matches_regex(
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [False, False],
@@ -545,7 +527,7 @@ def test_not_suffix_matches_regex(
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [False, False],
@@ -554,7 +536,7 @@ def test_not_suffix_matches_regex(
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             PandasDataset,
             [True, True],
@@ -563,21 +545,17 @@ def test_not_suffix_matches_regex(
             {
                 "target": [-25, 3.14],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             2,
             DaskDataset,
             [True, True],
         ),
     ],
 )
-def test_not_prefix_matches_regex(
-    data, comparator, prefix, dataset_type, expected_result
-):
+def test_not_prefix_matches_regex(data, comparator, prefix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.not_prefix_matches_regex(
-        {"target": "target", "comparator": comparator, "prefix": prefix}
-    )
+    result = dataframe_type.not_prefix_matches_regex({"target": "target", "comparator": comparator, "prefix": prefix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -588,7 +566,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": ["word", "TEST"],
             },
-            ".*",
+            r".*",
             DaskDataset,
             [True, True],
         ),
@@ -596,7 +574,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             PandasDataset,
             [False, False],
         ),
@@ -604,7 +582,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             PandasDataset,
             [True, False],
         ),
@@ -612,7 +590,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             DaskDataset,
             [True, False],
         ),
@@ -620,7 +598,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": [-25, 3.14],
             },
-            "^-?[1-9]{1}\d*$",  # noqa: W605
+            r"^-?[1-9]{1}\d*$",
             PandasDataset,
             [True, False],
         ),
@@ -628,7 +606,7 @@ def test_not_prefix_matches_regex(
             {
                 "target": [-25, 3.14],
             },
-            "^-?[1-9]{1}\d*$",  # noqa: W605
+            r"^-?[1-9]{1}\d*$",
             DaskDataset,
             [True, False],
         ),
@@ -637,9 +615,7 @@ def test_not_prefix_matches_regex(
 def test_matches_regex(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.matches_regex(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.matches_regex({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -650,7 +626,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": ["word", "TEST"],
             },
-            ".*",
+            r".*",
             DaskDataset,
             [False, False],
         ),
@@ -658,7 +634,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": ["word", "TEST"],
             },
-            "[0-9].*",
+            r"[0-9].*",
             PandasDataset,
             [True, True],
         ),
@@ -666,7 +642,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             PandasDataset,
             [False, False],
         ),
@@ -674,7 +650,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": [224, None],
             },
-            "^[1-9]{1}\d*$",  # noqa: W605
+            r"^[1-9]{1}\d*$",
             DaskDataset,
             [False, False],
         ),
@@ -682,7 +658,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": [-25, 3.14],
             },
-            "^-?[1-9]{1}\d*$",  # noqa: W605
+            r"^-?[1-9]{1}\d*$",
             PandasDataset,
             [False, True],
         ),
@@ -690,7 +666,7 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
             {
                 "target": [-25, 3.14],
             },
-            "^-?[1-9]{1}\d*$",  # noqa: W605
+            r"^-?[1-9]{1}\d*$",
             DaskDataset,
             [False, True],
         ),
@@ -699,7 +675,5 @@ def test_matches_regex(data, comparator, dataset_type, expected_result):
 def test_not_matches_regex(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.not_matches_regex(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.not_matches_regex({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))

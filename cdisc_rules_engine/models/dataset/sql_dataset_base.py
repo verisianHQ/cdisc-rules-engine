@@ -1,9 +1,20 @@
 import uuid
 
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import List, Union, Dict, Any, Iterator, Tuple, Optional
 
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+
+
+class MergeMap(Enum):
+    """Mapped SQL commands for different merges."""
+
+    INNER = "INNER JOIN"
+    LEFT = "LEFT JOIN"
+    RIGHT = "RIGHT JOIN"
+    OUTER = "LEFT JOIN"
+    CROSS = "CROSS JOIN"
 
 
 class SQLDatasetBase(DatasetInterface, ABC):
@@ -138,9 +149,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         pass
 
     @abstractmethod
-    def concat(
-        self, other: Union["SQLDatasetBase", List["SQLDatasetBase"]], axis=0, **kwargs
-    ):
+    def concat(self, other: Union["SQLDatasetBase", List["SQLDatasetBase"]], axis=0, **kwargs):
         """Concatenate datasets."""
         pass
 
@@ -155,9 +164,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         pass
 
     @abstractmethod
-    def is_column_sorted_within(
-        self, group: Union[str, List[str]], column: str
-    ) -> bool:
+    def is_column_sorted_within(self, group: Union[str, List[str]], column: str) -> bool:
         """Check if column is sorted within groups."""
         pass
 
@@ -198,9 +205,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
                 """,
                 (self.dataset_id,),
             )
-            self._data = [
-                self._parse_json(row["data"]) for row in self.fetch_all(cursor)
-            ]
+            self._data = [self._parse_json(row["data"]) for row in self.fetch_all(cursor)]
         return self._data
 
     @property
@@ -215,8 +220,8 @@ class SQLDatasetBase(DatasetInterface, ABC):
             # first try metadata table
             cursor = self.execute_sql(
                 f"""
-                SELECT column_name 
-                FROM dataset_columns 
+                SELECT column_name
+                FROM dataset_columns
                 WHERE dataset_id = {self._get_placeholder()}
                 ORDER BY column_index
             """,
@@ -262,7 +267,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
             placeholders = ", ".join([self._get_placeholder()] * 3)
             self.execute_sql(
                 f"""
-                INSERT INTO dataset_columns 
+                INSERT INTO dataset_columns
                 (dataset_id, column_name, column_index)
                 VALUES ({placeholders})
             """,
@@ -272,7 +277,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     # ========== Factory methods ==========
 
     @classmethod
-    def from_dict(cls, data: dict, database_config=None, **kwargs):
+    def from_dict(cls, data: dict, database_config=None, **kwargs):  # noqa: C901
         """Create dataset from dictionary."""
         if not database_config:
             raise ValueError("database_config is required")
@@ -280,22 +285,19 @@ class SQLDatasetBase(DatasetInterface, ABC):
         dataset = cls(database_config=database_config)
 
         if not hasattr(dataset, "dataset_id"):
-            raise RuntimeError(
-                f"Failed to create valid dataset instance of class {cls}"
-            )
+            raise RuntimeError(f"Failed to create valid dataset instance of class {cls}")
 
         records = []
-        columns_set = set()
+        columns_list = []
 
         if data:
             for col, values in data.items():
-                columns_set.add(col)
+                if col not in columns_list:
+                    columns_list.append(col)
 
                 if hasattr(values, "tolist"):
                     values = values.tolist()
-                elif hasattr(values, "__iter__") and not isinstance(
-                    values, (str, dict)
-                ):
+                elif hasattr(values, "__iter__") and not isinstance(values, (str, dict)):
                     values = list(values)
                 elif not isinstance(values, list):
                     values = [values]
@@ -308,12 +310,10 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if records:
             dataset._insert_records(records)
 
-        dataset.columns = list(columns_set)
+        dataset.columns = columns_list
 
         if not isinstance(dataset, cls):
-            raise RuntimeError(
-                f"Dataset is not an instance of {cls}, got {type(dataset)}"
-            )
+            raise RuntimeError(f"Dataset is not an instance of {cls}, got {type(dataset)}")
 
         return dataset
 
@@ -325,9 +325,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
         provided_columns = kwargs.pop("columns", None)
 
-        dataset = cls(
-            database_config=database_config, columns=provided_columns, **kwargs
-        )
+        dataset = cls(database_config=database_config, columns=provided_columns, **kwargs)
 
         if data:
             dataset._insert_records(data)
@@ -357,9 +355,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return isinstance(data, (list, tuple)) or hasattr(data, "__iter__")
 
     @classmethod
-    def cartesian_product(
-        cls, left: "SQLDatasetBase", right: "SQLDatasetBase"
-    ) -> "SQLDatasetBase":
+    def cartesian_product(cls, left: "SQLDatasetBase", right: "SQLDatasetBase") -> "SQLDatasetBase":
         """Create cartesian product of two datasets."""
         return left.merge(right, how="cross")
 
@@ -407,9 +403,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
                 (self.dataset_id,),
             )
             result = self.fetch_one(cursor)
-            self._length = (
-                result[0] if isinstance(result, tuple) else result.get("count", 0)
-            )
+            self._length = result[0] if isinstance(result, tuple) else result.get("count", 0)
         return self._length or 0
 
     def __contains__(self, item: str) -> bool:
@@ -444,8 +438,8 @@ class SQLDatasetBase(DatasetInterface, ABC):
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT {placeholders.split(', ')[0]}, row_num - {placeholders.split(', ')[1]}, data
             FROM dataset_records
-            WHERE dataset_id = {placeholders.split(', ')[2]} 
-              AND row_num >= {placeholders.split(', ')[3]} 
+            WHERE dataset_id = {placeholders.split(', ')[2]}
+              AND row_num >= {placeholders.split(', ')[3]}
               AND row_num < {placeholders.split(', ')[4]}
             ORDER BY row_num
         """,
@@ -550,9 +544,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
                     new_row = id_data.copy()
                     new_row[var_name] = var
                     new_row[value_name] = row_data[var]
-                    insert_values.append(
-                        (new_dataset_id, row_num, self._serialise_json(new_row))
-                    )
+                    insert_values.append((new_dataset_id, row_num, self._serialise_json(new_row)))
                     row_num += 1
 
         # bulk insert - handled by subclass
@@ -621,9 +613,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         error_rows = []
         for idx, (row_num, row_data) in enumerate(self.iterrows()):
             if idx < len(results) and results[idx]:
-                error_rows.append(
-                    (new_dataset_id, len(error_rows), self._serialise_json(row_data))
-                )
+                error_rows.append((new_dataset_id, len(error_rows), self._serialise_json(row_data)))
 
         if error_rows:
             self._bulk_insert_error_rows(error_rows[:1000])  # limit to 1000
@@ -664,7 +654,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
             self.execute_sql(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
-                SELECT {self._get_placeholder()}, 
+                SELECT {self._get_placeholder()},
                        ROW_NUMBER() OVER (ORDER BY row_num) - 1,
                        data
                 FROM dataset_records
@@ -721,7 +711,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
         return {}
 
-    def sort_values(self, by: Union[str, List[str]], ascending=True, **kwargs):
+    def sort_values(self, by: Union[str, List[str]], ascending=True, **kwargs) -> "SQLDatasetBase":
         """Sort dataset by columns."""
         if isinstance(by, str):
             by = [by]
@@ -756,9 +746,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if isinstance(by, str):
             by = [by]
 
-        group_cols = ", ".join(
-            [f"{self._get_json_extract_expr(col)} as {col}" for col in by]
-        )
+        group_cols = ", ".join([f"{self._get_json_extract_expr(col)} as {col}" for col in by])
         group_by = ", ".join([self._get_json_extract_expr(col) for col in by])
 
         cursor = self.execute_sql(
@@ -778,18 +766,16 @@ class SQLDatasetBase(DatasetInterface, ABC):
             record["size"] = row["size"]
             records.append(record)
 
-        return self.__class__.from_records(
-            records, database_config=self.database_config
-        )
+        return self.__class__.from_records(records, database_config=self.database_config)
 
     def to_dict(self, orient="records"):
         """Export to dictionary format."""
         if orient == "records":
             cursor = self.execute_sql(
                 f"""
-                SELECT data 
-                FROM dataset_records 
-                WHERE dataset_id = {self._get_placeholder()} 
+                SELECT data
+                FROM dataset_records
+                WHERE dataset_id = {self._get_placeholder()}
                 ORDER BY row_num
             """,
                 (self.dataset_id,),
@@ -818,27 +804,27 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def unique(self, column: Optional[str] = None):
         """Return unique values of Series or DataFrame column."""
         pass
-    
+
     @abstractmethod
-    def duplicated(self, subset=None, keep='first'):
+    def duplicated(self, subset=None, keep="first"):
         """Return boolean Series denoting duplicate rows."""
         pass
-    
+
     @abstractmethod
     def nunique(self, axis=0, dropna=True):
         """Count distinct observations."""
         pass
-    
+
     @abstractmethod
     def cumsum(self, axis=None, skipna=True, *args, **kwargs):
         """Return cumulative sum."""
         pass
-    
+
     @abstractmethod
     def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
         """Return a Series containing counts of unique values."""
         pass
-    
+
     @abstractmethod
     def shift(self, periods=1, freq=None, axis=0, fill_value=None):
         """Shift index by desired number of periods."""
@@ -857,75 +843,71 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def isna(self):
         """Detect missing values."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         cursor = self.execute_sql(
             f"""
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = {self._get_placeholder()}
             ORDER BY row_num
-            """, (self.dataset_id,)
+            """,
+            (self.dataset_id,),
         )
-        
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is None
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
-        
-        if hasattr(self, 'execute_many'):
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(null_checks)))
+
+        if hasattr(self, "execute_many"):
             self.execute_many(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
                 VALUES ({self._get_placeholder()}, {self._get_placeholder()}, {self._get_placeholder()})
-                """, records
+                """,
+                records,
             )
-        
-        return self.__class__(
-            dataset_id=new_dataset_id,
-            database_config=self.database_config,
-            columns=self.columns
-        )
+
+        return self.__class__(dataset_id=new_dataset_id, database_config=self.database_config, columns=self.columns)
 
     def notna(self):
         """Detect non-missing values."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         cursor = self.execute_sql(
             f"""
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = {self._get_placeholder()}
             ORDER BY row_num
-            """, (self.dataset_id,)
+            """,
+            (self.dataset_id,),
         )
-        
+
         records = []
         for row in self.fetch_all(cursor):
-            data = self._parse_json(row['data'])
+            data = self._parse_json(row["data"])
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is not None
-            records.append((new_dataset_id, row['row_num'], self._serialise_json(null_checks)))
-        
-        if hasattr(self, 'execute_many'):
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(null_checks)))
+
+        if hasattr(self, "execute_many"):
             self.execute_many(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
                 VALUES ({self._get_placeholder()}, {self._get_placeholder()}, {self._get_placeholder()})
-                """, records
+                """,
+                records,
             )
-        
-        return self.__class__(
-            dataset_id=new_dataset_id,
-            database_config=self.database_config,
-            columns=self.columns
-        )
+
+        return self.__class__(dataset_id=new_dataset_id, database_config=self.database_config, columns=self.columns)
 
     def head(self, n=5):
         """Return the first n rows."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         self.execute_sql(
             f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
@@ -934,23 +916,20 @@ class SQLDatasetBase(DatasetInterface, ABC):
             WHERE dataset_id = {self._get_placeholder()}
             ORDER BY row_num
             LIMIT {n}
-            """, (new_dataset_id, self.dataset_id)
+            """,
+            (new_dataset_id, self.dataset_id),
         )
-        
-        return self.__class__(
-            dataset_id=new_dataset_id,
-            database_config=self.database_config,
-            columns=self.columns
-        )
+
+        return self.__class__(dataset_id=new_dataset_id, database_config=self.database_config, columns=self.columns)
 
     def tail(self, n=5):
         """Return the last n rows."""
         new_dataset_id = str(uuid.uuid4())
-        
+
         self.execute_sql(
             f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
-            SELECT {self._get_placeholder()}, 
+            SELECT {self._get_placeholder()},
                    ROW_NUMBER() OVER (ORDER BY row_num) - 1 as row_num,
                    data
             FROM (
@@ -961,14 +940,11 @@ class SQLDatasetBase(DatasetInterface, ABC):
                 LIMIT {n}
             ) t
             ORDER BY row_num
-            """, (new_dataset_id, self.dataset_id)
+            """,
+            (new_dataset_id, self.dataset_id),
         )
-        
-        return self.__class__(
-            dataset_id=new_dataset_id,
-            database_config=self.database_config,
-            columns=self.columns
-        )
+
+        return self.__class__(dataset_id=new_dataset_id, database_config=self.database_config, columns=self.columns)
 
     def to_frame(self, name=None):
         """Convert Series to DataFrame - SQL datasets are always frame-like."""
@@ -984,6 +960,118 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""
         raise NotImplementedError("describe() must be implemented by subclass")
+
+    def astype(self, dtype, copy=True, errors="raise", **kwargs):  # noqa: C901
+        """Cast columns to a specified dtype."""
+        new_dataset_id = str(uuid.uuid4())
+
+        if isinstance(dtype, dict):
+            dtype_map = dtype
+        else:
+            dtype_map = {col: dtype for col in self.columns}
+
+        def convert_value(value, target_type):
+            """Convert a single value to the target type."""
+            if value is None:
+                return None
+
+            try:
+                if hasattr(target_type, "type"):
+                    return target_type.type(value).item()
+
+                if target_type == int or target_type is int or str(target_type) == "int64":
+                    return int(float(value))  # Convert through float to handle "1.0" -> 1
+                elif target_type == float or target_type is float or str(target_type) == "float64":
+                    return float(value)
+                elif target_type == str or target_type is str or str(target_type) == "object":
+                    return str(value)
+                elif target_type == bool or target_type is bool or str(target_type) == "bool":
+                    if isinstance(value, bool):
+                        return value
+                    if isinstance(value, (int, float)):
+                        return bool(value)
+                    if isinstance(value, str):
+                        return value.lower() in ("true", "t", "yes", "y", "1")
+                    return bool(value)
+                else:
+                    return target_type(value)
+
+            except (ValueError, TypeError) as e:
+                if errors == "raise":
+                    raise TypeError(f"Cannot cast {value} from {type(value)} to {target_type}: {e}")
+                else:
+                    return value
+
+        # Process records in batches for efficiency
+        batch_size = 1000
+        offset = 0
+
+        self.execute_sql(
+            """
+            SELECT row_num, data FROM dataset_records
+            WHERE dataset_id = ?
+            ORDER BY row_num
+            LIMIT ? OFFSET ?
+            """,
+            (self.dataset_id, batch_size, offset),
+        )
+
+        batch = self.fetch_all()
+        if not batch:
+            return None
+
+        records = []
+        for row in batch:
+            row_num = row["row_num"]
+            data = self._parse_json(row["data"])
+
+            for col, target_type in dtype_map.items():
+                if col in data:
+                    data[col] = convert_value(data[col], target_type)
+
+            records.append((new_dataset_id, row_num, self._serialise_json(data)))
+
+        self.execute_many(
+            """
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            VALUES (?, ?, ?)
+            """,
+            records,
+        )
+
+        offset += batch_size
+
+        return self.__class__(
+            dataset_id=new_dataset_id, database_config=self.database_config, columns=self.columns, length=self._length
+        )
+
+    def _convert_column_type(self, column: str, dtype, errors="raise"):
+        """
+        Convenience method to convert a single column to a specified type.
+        """
+        return self.astype({column: dtype}, errors=errors)
+
+    def _normalise_dtype(self, dtype):
+        """
+        Normalise dtype strings to python types.
+        """
+        dtype_mapping = {
+            "int": int,
+            "int32": int,
+            "int64": int,
+            "float": float,
+            "float32": float,
+            "float64": float,
+            "str": str,
+            "string": str,
+            "object": str,
+            "bool": bool,
+            "boolean": bool,
+        }
+
+        if isinstance(dtype, str):
+            return dtype_mapping.get(dtype.lower(), dtype)
+        return dtype
 
     # ========== Groupby operations ==========
 

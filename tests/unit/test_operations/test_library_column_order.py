@@ -316,15 +316,11 @@ def test_get_column_order_from_library(
 
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_metadata, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata, model_metadata=model_metadata)
     mock_dataset_class = Mock()
     mock_dataset_class.name = "Events"
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     data_service.get_dataset_class = Mock(return_value=mock_dataset_class)
     operation = LibraryColumnOrder(
         operation_params,

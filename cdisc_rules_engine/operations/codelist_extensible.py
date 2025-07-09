@@ -13,9 +13,7 @@ class CodelistExtensible(BaseOperation):
         if "define_XML_merged_CT" in ct_packages:
             ct_package_data = ct_packages["define_XML_merged_CT"]
         else:
-            ct_package_data = next(
-                (pkg for name, pkg in ct_packages.items() if name != "extensible")
-            )
+            ct_package_data = next((pkg for name, pkg in ct_packages.items() if name != "extensible"))
         code_obj = ct_package_data["submission_lookup"].get(codelist, None)
         if code_obj is None:
             raise MissingDataError(f"Codelist '{codelist}' not found in metadata")

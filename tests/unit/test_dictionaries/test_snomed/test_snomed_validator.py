@@ -16,9 +16,7 @@ from cdisc_rules_engine.models.dictionaries.snomed.validator import SNOMEDValida
 )
 def test_is_valid_code(term: str, expected_outcome):
     terms_dictionary = {
-        "T123": SNOMEDTerm(
-            concept_id="T123", preferred_term="test_term", full_name="test_term (full)"
-        ),
+        "T123": SNOMEDTerm(concept_id="T123", preferred_term="test_term", full_name="test_term (full)"),
         "C123": SNOMEDTerm(
             concept_id="C123",
             preferred_term="test_concept",
@@ -46,9 +44,7 @@ def test_is_valid_code(term: str, expected_outcome):
 )
 def test_is_valid_code_term_pair(row: dict, expected_outcome: bool):
     terms_dictionary = {
-        "T123": SNOMEDTerm(
-            concept_id="T123", preferred_term="test_term", full_name="test_term (full)"
-        ),
+        "T123": SNOMEDTerm(concept_id="T123", preferred_term="test_term", full_name="test_term (full)"),
         "C123": SNOMEDTerm(
             concept_id="C123",
             preferred_term="test_concept",

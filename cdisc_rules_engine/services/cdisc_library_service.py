@@ -18,9 +18,7 @@ from cdisc_rules_engine.utilities.utils import (
 class CDISCLibraryService:
     def __init__(self, api_key, cache_service_obj):
         self._api_key = api_key
-        self._client = CDISCLibraryClient(
-            self._api_key, base_api_url="https://api.library.cdisc.org/api"
-        )
+        self._client = CDISCLibraryClient(self._api_key, base_api_url="https://api.library.cdisc.org/api")
         self.cache = cache_service_obj
 
     def cache_library_json(self, uri: str) -> dict:
@@ -126,11 +124,7 @@ class CDISCLibraryService:
         """
         standards = []
         data = self._client.get_api_json(LibraryEndpoints.DATA_ANALYSIS.value)
-        igs = [
-            ig
-            for ig in data.get("_links", {}).get("adam", [])
-            if ig.get("type") == "Implementation Guide"
-        ]
+        igs = [ig for ig in data.get("_links", {}).get("adam", []) if ig.get("type") == "Implementation Guide"]
         standards.extend(igs)
         return standards
 
@@ -190,9 +184,7 @@ class CDISCLibraryService:
                     }
         return codelist_map
 
-    def get_variable_codelists_map(
-        self, standard_type: str, version: str, subversion: str = None
-    ) -> dict:
+    def get_variable_codelists_map(self, standard_type: str, version: str, subversion: str = None) -> dict:
         """
         Generates a map of variables -> codelists based on standard type and version
         The variables in a standard document have a "codelist"
@@ -213,19 +205,13 @@ class CDISCLibraryService:
             "tig": self._get_therapeutic_ig_codelists,
         }
         data: dict = self._get_standard(standard_type, version, subversion)
-        terms = standard_codelist_function_map.get(
-            standard_type, self._get_tabulation_ig_codelists
-        )(data)
+        terms = standard_codelist_function_map.get(standard_type, self._get_tabulation_ig_codelists)(data)
         return {
-            "name": get_variable_codelist_map_cache_key(
-                standard_type, version, subversion
-            ),
+            "name": get_variable_codelist_map_cache_key(standard_type, version, subversion),
             **terms,
         }
 
-    def get_variables_details(
-        self, standard_type: str, version: str, substandard: str = None
-    ) -> dict:
+    def get_variables_details(self, standard_type: str, version: str, substandard: str = None) -> dict:
         """
         Returns a map of variable name -> details.
         Input:
@@ -251,13 +237,9 @@ class CDISCLibraryService:
         standard_data: dict = self._get_standard(standard_type, version, substandard)
         if substandard:
             standard_type = f"{standard_type}/{substandard}"
-        return self._extract_variables_details_from_standard(
-            standard_data, standard_type
-        )
+        return self._extract_variables_details_from_standard(standard_data, standard_type)
 
-    def get_standard_details(
-        self, standard_type: str, version: str, substandard: str = None
-    ) -> dict:
+    def get_standard_details(self, standard_type: str, version: str, substandard: str = None) -> dict:
         """
         Accepts standard type and version and returns details of a standard like:
         {
@@ -294,9 +276,7 @@ class CDISCLibraryService:
         }
         """
         standard_data: dict = self._get_standard(standard_type, version, substandard)
-        domains: Set[str] = self._extract_domain_names_from_tabulation_standard(
-            standard_data
-        )
+        domains: Set[str] = self._extract_domain_names_from_tabulation_standard(standard_data)
         if domains:
             standard_data["domains"] = domains
         return standard_data
@@ -329,9 +309,7 @@ class CDISCLibraryService:
         model_data["standard_type"] = standard_type
         return model_data
 
-    def _get_standard(
-        self, standard_type: str, version: str, substandard: str = None
-    ) -> dict:
+    def _get_standard(self, standard_type: str, version: str, substandard: str = None) -> dict:
         """
         Requests a standard definition from the library.
         Internal method, not for usage in the client code.
@@ -344,9 +322,7 @@ class CDISCLibraryService:
             "tig": lambda: self._client.get_tig(version, substandard),
         }
         # default to sdtmig if no function is found
-        return standard_get_function_map.get(
-            standard_type, lambda: self._client.get_sdtmig(version)
-        )()
+        return standard_get_function_map.get(standard_type, lambda: self._client.get_sdtmig(version))()
 
     def _get_model(self, standard_type: str, model_version: str) -> dict:
         """
@@ -363,9 +339,7 @@ class CDISCLibraryService:
         )
         return function_to_call()
 
-    def _extract_variables_details_from_standard(
-        self, standard_data: dict, standard_name: str
-    ) -> dict:
+    def _extract_variables_details_from_standard(self, standard_data: dict, standard_name: str) -> dict:
         output = {}
         keys = {
             "sdtmig": {
@@ -436,9 +410,7 @@ class CDISCLibraryService:
                     codelists = variable["_links"].get("codelist", [])
                     ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                     if ccodes:
-                        terms[variable.get("name")] = (
-                            terms.get(variable.get("name"), []) + ccodes
-                        )
+                        terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         model = data["_links"].get("model")
         model_terms = {}
         if model:
@@ -466,9 +438,7 @@ class CDISCLibraryService:
                     codelists = variable["_links"].get("codelist", [])
                     ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                     if ccodes:
-                        terms[variable.get("name")] = (
-                            terms.get(variable.get("name"), []) + ccodes
-                        )
+                        terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         model = data["_links"].get("model")
         model_terms = {}
         if model:
@@ -494,9 +464,7 @@ class CDISCLibraryService:
                     codelists = variable["_links"].get("codelist", [])
                     ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                     if ccodes:
-                        terms[variable.get("name")] = (
-                            terms.get(variable.get("name"), []) + ccodes
-                        )
+                        terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         return terms
 
     def _get_therapeutic_ig_codelists(self, data: dict):  # noqa
@@ -517,42 +485,30 @@ class CDISCLibraryService:
                 for varset in structure.get("analysisVariableSets", []):
                     for variable in varset.get("analysisVariables", []):
                         codelists = variable["_links"].get("codelist", [])
-                        ccodes = [
-                            codelist["href"].split("/")[-1] for codelist in codelists
-                        ]
+                        ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                         if ccodes:
-                            terms[variable.get("name")] = (
-                                terms.get(variable.get("name"), []) + ccodes
-                            )
+                            terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         elif standard in ("sdtm", "send"):
             for cls in data.get("classes", []):
                 for variable in cls.get("classVariables", []):
                     codelists = variable["_links"].get("codelist", [])
                     ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                     if ccodes:
-                        terms[variable.get("name")] = (
-                            terms.get(variable.get("name"), []) + ccodes
-                        )
+                        terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
             for dataset in data.get("datasets", []):
                 for variable in dataset.get("datasetVariables", []):
                     codelists = variable["_links"].get("codelist", [])
                     ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                     if ccodes:
-                        terms[variable.get("name")] = (
-                            terms.get(variable.get("name"), []) + ccodes
-                        )
+                        terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         elif standard == "cdash":
             for cls in data.get("classes", []):
                 for dataset in cls.get("domains", []):
                     for variable in dataset.get("fields", []):
                         codelists = variable["_links"].get("codelist", [])
-                        ccodes = [
-                            codelist["href"].split("/")[-1] for codelist in codelists
-                        ]
+                        ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                         if ccodes:
-                            terms[variable.get("name")] = (
-                                terms.get(variable.get("name"), []) + ccodes
-                            )
+                            terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         # get model from tig substandard and merge with tig codelists
         model = data["_links"].get("model")
         model_terms = {}
@@ -586,18 +542,14 @@ class CDISCLibraryService:
                 codelists = variable["_links"].get("codelist", [])
                 ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                 if ccodes:
-                    terms[variable.get("name")] = (
-                        terms.get(variable.get("name"), []) + ccodes
-                    )
+                    terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
 
         for dataset in data.get("datasets", []):
             for variable in dataset.get("datasetVariables", []):
                 codelists = variable["_links"].get("codelist", [])
                 ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                 if ccodes:
-                    terms[variable.get("name")] = (
-                        terms.get(variable.get("name"), []) + ccodes
-                    )
+                    terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         return terms
 
     def _get_collection_model_codelists(self, data: dict) -> dict:
@@ -615,18 +567,14 @@ class CDISCLibraryService:
                 codelists = variable["_links"].get("codelist", [])
                 ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                 if ccodes:
-                    terms[variable.get("name")] = (
-                        terms.get(variable.get("name"), []) + ccodes
-                    )
+                    terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
 
         for dataset in data.get("domains", []):
             for variable in dataset.get("fields", []):
                 codelists = variable["_links"].get("codelist", [])
                 ccodes = [codelist["href"].split("/")[-1] for codelist in codelists]
                 if ccodes:
-                    terms[variable.get("name")] = (
-                        terms.get(variable.get("name"), []) + ccodes
-                    )
+                    terms[variable.get("name")] = terms.get(variable.get("name"), []) + ccodes
         return terms
 
     def _merge_codelist_maps(self, initial: dict, new_map: dict) -> dict:
@@ -643,9 +591,7 @@ class CDISCLibraryService:
                 result[key] = new_map[key]
         return result
 
-    def _extract_domain_names_from_tabulation_standard(
-        self, standard_data: dict
-    ) -> Set[str]:
+    def _extract_domain_names_from_tabulation_standard(self, standard_data: dict) -> Set[str]:
         """
         Accepts tabulation standard data and extracts domain names.
         Input example:

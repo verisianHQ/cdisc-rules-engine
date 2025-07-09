@@ -30,9 +30,5 @@ class CacheServiceFactory(FactoryInterface):
     def get_service(self, name: str = None, **kwargs) -> CacheServiceInterface:
         service_name = name or self.cache_service_name
         if service_name in self._registered_services_map:
-            return self._registered_services_map.get(service_name).get_instance(
-                config=self.config, **kwargs
-            )
-        raise ValueError(
-            f"Service name must be in" f"  {list(self._registered_services_map.keys())}"
-        )
+            return self._registered_services_map.get(service_name).get_instance(config=self.config, **kwargs)
+        raise ValueError(f"Service name must be in" f"  {list(self._registered_services_map.keys())}")

@@ -120,13 +120,9 @@ def test_get_column_order_from_library(operation_params: OperationParams, datase
 
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_metadata, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata, model_metadata=model_metadata)
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     operation = LibraryModelColumnOrder(
         operation_params,
         operation_params.dataframe,
@@ -264,9 +260,7 @@ def test_get_findings_class_column_order_from_library(
 
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_metadata, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata, model_metadata=model_metadata)
     # execute operation
     data_service = LocalDataService(
         cache_service=cache,

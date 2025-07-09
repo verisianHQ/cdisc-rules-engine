@@ -20,12 +20,8 @@ test_define_file_path: Path = resources_path.joinpath("test_defineV22-SDTM.xml")
 
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
-@patch(
-    "cdisc_rules_engine.services.data_services.LocalDataService.get_variables_metadata"
-)
-@patch(
-    "cdisc_rules_engine.services.data_services.LocalDataService.get_define_xml_contents"
-)
+@patch("cdisc_rules_engine.services.data_services.LocalDataService.get_variables_metadata")
+@patch("cdisc_rules_engine.services.data_services.LocalDataService.get_define_xml_contents")
 @patch(
     "cdisc_rules_engine.dataset_builders.variables_metadata_with_define_and_library_dataset_builder"
     ".VariablesMetadataWithDefineAndLibraryDatasetBuilder.get_library_variables_metadata"
@@ -204,8 +200,7 @@ def test_build_combined_metadata(
         assert pd.isna(row["variable_name"]) or row["variable_name"] == ""
         assert row["variable_has_empty_values"]
     library_only_rows = result[
-        (result["library_variable_name"].notna())
-        & (result["variable_name"].isna() | (result["variable_name"] == ""))
+        (result["library_variable_name"].notna()) & (result["variable_name"].isna() | (result["variable_name"] == ""))
     ]
     assert not library_only_rows.empty
     aeseq_lib_row = result[result["library_variable_name"] == "AESEQ"].iloc[0]
@@ -224,19 +219,14 @@ def test_build_combined_metadata(
     mandatory_vars = result[result["define_variable_mandatory"] == "Yes"]
     assert not mandatory_vars.empty
     assert all(
-        mandatory_vars["define_variable_name"].isin(
-            ["STUDYID", "USUBJID", "AETERM", "DOMAIN", "AESEQ", "AEDECOD"]
-        )
+        mandatory_vars["define_variable_name"].isin(["STUDYID", "USUBJID", "AETERM", "DOMAIN", "AESEQ", "AEDECOD"])
     )
     empty_value_vars = result[result["variable_has_empty_values"]]
     assert not empty_value_vars.empty
     assert "USUBJID" in empty_value_vars["variable_name"].values
     assert "AETERM" in empty_value_vars["variable_name"].values
     numeric_vars = result[result["define_variable_data_type"] == "integer"]
-    assert all(
-        var in ["AESEQ", "AESTDY", "AEENDY"]
-        for var in numeric_vars["define_variable_name"]
-    )
+    assert all(var in ["AESEQ", "AESTDY", "AEENDY"] for var in numeric_vars["define_variable_name"])
     non_empty_vars = ["STUDYID"]
     for _, row in result.iterrows():
         if row["variable_name"] in non_empty_vars:

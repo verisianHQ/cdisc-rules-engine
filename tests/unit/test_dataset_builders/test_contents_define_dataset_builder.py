@@ -830,9 +830,7 @@ def test_contents_define_dataset_builder(dataset_path):
         rule_processor=RuleProcessor(mock_data_service, InMemoryCacheService()),
         data_processor=None,
         dataset_path=dataset_path,
-        datasets=[
-            SDTMDatasetMetadata(**dataset) for dataset in dataset_metadata.values()
-        ],
+        datasets=[SDTMDatasetMetadata(**dataset) for dataset in dataset_metadata.values()],
         dataset_metadata=SDTMDatasetMetadata(**dataset_metadata[dataset_path]),
         define_xml_path=None,
         standard="sdtmig",

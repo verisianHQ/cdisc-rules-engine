@@ -337,9 +337,7 @@ def test_variable_metadata_with_library_metadata_dataset_builder_variable_only_i
             },
         ],
     }
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_data, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_data, model_metadata=model_metadata)
     result = VariablesMetadataWithLibraryMetadataDatasetBuilder(
         rule=None,
         data_service=LocalDataService(MagicMock(), MagicMock(), MagicMock()),

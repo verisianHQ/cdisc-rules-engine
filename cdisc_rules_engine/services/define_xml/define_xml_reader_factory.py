@@ -46,9 +46,7 @@ class DefineXMLReaderFactory:
         Inits a DefineXMLReader object from file.
         """
         logger.info(f"Reading Define-XML from file name. filename={filename}")
-        define_xml_reader_class: type = cls._get_define_xml_reader(
-            ElementTree.parse(filename).getroot()
-        )
+        define_xml_reader_class: type = cls._get_define_xml_reader(ElementTree.parse(filename).getroot())
         reader: BaseDefineXMLReader = define_xml_reader_class()
         reader._odm_loader.open_odm_document(filename)
         return reader
@@ -65,12 +63,8 @@ class DefineXMLReaderFactory:
         Inits a DefineXMLReader object from file contents.
         """
         logger.info("Reading Define-XML from file contents")
-        define_xml_reader_class: type = cls._get_define_xml_reader(
-            ElementTree.fromstring(file_contents)
-        )
-        reader: BaseDefineXMLReader = define_xml_reader_class(
-            cache_service_obj, study_id, data_bundle_id
-        )
+        define_xml_reader_class: type = cls._get_define_xml_reader(ElementTree.fromstring(file_contents))
+        reader: BaseDefineXMLReader = define_xml_reader_class(cache_service_obj, study_id, data_bundle_id)
         reader._odm_loader.load_odm_string(file_contents)
         return reader
 
@@ -104,20 +98,14 @@ class DefineXMLReaderFactory:
         return define_xml_reader
 
     @classmethod
-    def get_define_xml_reader(
-        cls, dataset_path: str, define_xml_path: str, data_service, cache
-    ):
+    def get_define_xml_reader(cls, dataset_path: str, define_xml_path: str, data_service, cache):
         directory_path = get_directory_path(dataset_path)
         if define_xml_path is None:
             define_xml_path: str = os.path.join(
                 directory_path,
                 DEFINE_XML_FILE_NAME,
             )
-        define_xml_contents: bytes = data_service.get_define_xml_contents(
-            dataset_name=define_xml_path
-        )
-        define_xml_reader = DefineXMLReaderFactory.from_file_contents(
-            define_xml_contents, cache_service_obj=cache
-        )
+        define_xml_contents: bytes = data_service.get_define_xml_contents(dataset_name=define_xml_path)
+        define_xml_reader = DefineXMLReaderFactory.from_file_contents(define_xml_contents, cache_service_obj=cache)
 
         return define_xml_reader

@@ -49,9 +49,7 @@ class ValidCodelistDates(BaseOperation):
         applicable_package_types = (
             set(f"{t.lower()}ct" for t in self.params.ct_package_types)
             if self.params.ct_package_types
-            else standard_to_package_type_mapping.get(
-                self.params.standard.lower(), set()
-            )
+            else standard_to_package_type_mapping.get(self.params.standard.lower(), set())
         )
         return package_type in applicable_package_types
 

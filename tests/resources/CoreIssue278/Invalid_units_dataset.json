@@ -1,5 +1,6 @@
 {
-    "datasets": [{
+  "datasets": [
+    {
       "filename": "pp.xpt",
       "label": "PP",
       "domain": "PP",
@@ -36,11 +37,12 @@
         }
       ],
       "records": {
-        "STUDYID": [ "TEST", "TEST", "TEST", "TEST", "TEST" ],
-        "DOMAIN": ["PP", "PP", "PP", "PP", "PP" ],
+        "STUDYID": ["TEST", "TEST", "TEST", "TEST", "TEST"],
+        "DOMAIN": ["PP", "PP", "PP", "PP", "PP"],
         "USUBJID": ["A", "B", "B", "BB", "BB"],
-        "PPTESTCD": [ "W", "DW", "W", "W", "W"],
+        "PPTESTCD": ["W", "DW", "W", "W", "W"],
         "PPORRESU": ["m/l", "cm/l", "cm/kg", "ml/g", "cm/g"]
       }
-    }]}
-    
+    }
+  ]
+}

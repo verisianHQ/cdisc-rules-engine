@@ -54,16 +54,12 @@ def cached_dataset(dataset_type: str):
             instance: BaseDataService = args[0]
             dataset_name: str = kwargs["dataset_name"]
             logger.info(
-                f"Downloading dataset from storage. dataset_name={dataset_name},"
-                f" wrapped function={func.__name__}"
+                f"Downloading dataset from storage. dataset_name={dataset_name}," f" wrapped function={func.__name__}"
             )
             cache_key: str = get_dataset_cache_key_from_path(dataset_name, dataset_type)
             cache_data = instance.cache_service.get_dataset(cache_key)
             if cache_data is not None:
-                logger.info(
-                    f'Dataset "{dataset_name}" was found in cache.'
-                    f" cache_key={cache_key}"
-                )
+                logger.info(f'Dataset "{dataset_name}" was found in cache.' f" cache_key={cache_key}")
                 dataset = cache_data
             else:
                 dataset = func(*args, **kwargs)
@@ -101,13 +97,9 @@ class BaseDataService(DataServiceInterface, ABC):
         self.version = (kwargs.get("standard_version") or "").replace(".", "-")
         self.standard_substandard = kwargs.get("standard_substandard")
         self.library_metadata = kwargs.get("library_metadata")
-        self.dataset_implementation = kwargs.get(
-            "dataset_implementation", PandasDataset
-        )
+        self.dataset_implementation = kwargs.get("dataset_implementation", PandasDataset)
 
-    def get_dataset_by_type(
-        self, dataset_name: str, dataset_type: str, **params
-    ) -> DatasetInterface:
+    def get_dataset_by_type(self, dataset_name: str, dataset_type: str, **params) -> DatasetInterface:
         """
         Generic function to return dataset based on the type.
         dataset_type param can be: contents, metadata, variables_metadata.
@@ -117,9 +109,7 @@ class BaseDataService(DataServiceInterface, ABC):
             DatasetTypes.METADATA.value: self.get_dataset_metadata,
             DatasetTypes.VARIABLES_METADATA.value: self.get_variables_metadata,
         }
-        return dataset_type_to_function_map[dataset_type](
-            dataset_name=dataset_name, **params
-        )
+        return dataset_type_to_function_map[dataset_type](dataset_name=dataset_name, **params)
 
     def concat_split_datasets(
         self,
@@ -173,20 +163,14 @@ class BaseDataService(DataServiceInterface, ABC):
             name = class_data.get("name")
             if name:
                 return convert_library_class_name_to_ct_class(name)
-        return self._handle_special_cases(
-            dataset, dataset_metadata, file_path, datasets
-        )
+        return self._handle_special_cases(dataset, dataset_metadata, file_path, datasets)
 
     @cached_dataset(DatasetTypes.METADATA.value)
-    def get_dataset_metadata(
-        self, dataset_name: str, size_unit: str = None, **params
-    ) -> DatasetInterface:
+    def get_dataset_metadata(self, dataset_name: str, size_unit: str = None, **params) -> DatasetInterface:
         """
         Gets metadata of a dataset and returns it as a DataFrame.
         """
-        dataset_metadata = self.get_raw_dataset_metadata(
-            dataset_name=dataset_name, **params
-        )
+        dataset_metadata = self.get_raw_dataset_metadata(dataset_name=dataset_name, **params)
         metadata_to_return: dict = {
             "dataset_size": [dataset_metadata.file_size],
             "dataset_location": [dataset_metadata.filename],
@@ -214,9 +198,7 @@ class BaseDataService(DataServiceInterface, ABC):
                 return FINDINGS_ABOUT
             return FINDINGS
         if self._is_associated_persons(dataset):
-            return self._get_associated_persons_inherit_class(
-                file_path, datasets, dataset_metadata.domain
-            )
+            return self._get_associated_persons_inherit_class(file_path, datasets, dataset_metadata.domain)
         return None
 
     def _is_associated_persons(self, dataset) -> bool:
@@ -225,9 +207,7 @@ class BaseDataService(DataServiceInterface, ABC):
         """
         return "APID" in dataset
 
-    def _get_associated_persons_inherit_class(
-        self, file_path, datasets: Iterable[SDTMDatasetMetadata], domain: str
-    ):
+    def _get_associated_persons_inherit_class(self, file_path, datasets: Iterable[SDTMDatasetMetadata], domain: str):
         """
         Check with inherit class AP-- belongs to.
         """
@@ -294,9 +274,7 @@ class BaseDataService(DataServiceInterface, ABC):
         dataset[numeric_columns] = dataset.data[numeric_columns].replace({np.nan: None})
 
     @staticmethod
-    def _replace_nans_in_specified_cols_with_none(
-        dataset: DatasetInterface, column_names: Iterable
-    ):
+    def _replace_nans_in_specified_cols_with_none(dataset: DatasetInterface, column_names: Iterable):
         """
         Replaces NaN in specified columns with None.
         """
@@ -304,16 +282,12 @@ class BaseDataService(DataServiceInterface, ABC):
             column_names = dataset.data[column_names].columns
         dataset.data = dataset.data.replace(np.nan, {col: None for col in column_names})
 
-    async def _async_get_dataset(
-        self, function_to_call: Callable, dataset_name: str, **kwargs
-    ) -> DatasetInterface:
+    async def _async_get_dataset(self, function_to_call: Callable, dataset_name: str, **kwargs) -> DatasetInterface:
         """
         Asynchronously executes passed function_to_call.
         """
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(
-            None, partial(function_to_call, dataset_name=dataset_name, **kwargs)
-        )
+        return await loop.run_in_executor(None, partial(function_to_call, dataset_name=dataset_name, **kwargs))
 
     def _async_get_datasets(
         self, function_to_call: Callable, dataset_names: List[str], **kwargs

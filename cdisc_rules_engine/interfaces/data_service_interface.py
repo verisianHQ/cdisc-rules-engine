@@ -18,9 +18,7 @@ class DataServiceInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def get_instance(
-        cls, cache_service: CacheServiceInterface, config, **kwargs
-    ) -> "DataServiceInterface":
+    def get_instance(cls, cache_service: CacheServiceInterface, config, **kwargs) -> "DataServiceInterface":
         """
         Creates an instance of data service
         """
@@ -44,9 +42,7 @@ class DataServiceInterface(ABC):
         """
 
     @abstractmethod
-    def get_raw_dataset_metadata(
-        self, dataset_name: str, **kwargs
-    ) -> SDTMDatasetMetadata:
+    def get_raw_dataset_metadata(self, dataset_name: str, **kwargs) -> SDTMDatasetMetadata:
         """
         Gets dataset metadata and returns it as DatasetMetadata instance.
         """
@@ -58,9 +54,7 @@ class DataServiceInterface(ABC):
         """
 
     @abstractmethod
-    def get_dataset_by_type(
-        self, dataset_name: str, dataset_type: str, **params
-    ) -> DatasetInterface:
+    def get_dataset_by_type(self, dataset_name: str, dataset_type: str, **params) -> DatasetInterface:
         """
         Generic function to return dataset based on the type.
         dataset_type param can be: contents, metadata, variables_metadata.
@@ -71,7 +65,7 @@ class DataServiceInterface(ABC):
         self,
         func_to_call: Callable,
         datasets_metadata: Iterable[DatasetMetadata],
-        **kwargs
+        **kwargs,
     ):
         """
         Accepts a list of split dataset filenames,

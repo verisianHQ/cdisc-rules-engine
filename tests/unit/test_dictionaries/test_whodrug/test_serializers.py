@@ -14,10 +14,7 @@ def test_serializer_data():
     dd = DrugDictionary.from_txt_line("000001010016N  001      01 854METHYLDOPA      ")
     dd_data = DrugDictionarySerializer(dd).data
     assert dd_data == {"code": dd.code, "type": dd.type, "drugName": dd.drugName}
-    atc = AtcText.from_txt_line(
-        "A02AD  4COMBINATIONS AND COMPLEXES OF ALUMINIUM,"
-        " CALCIUM AND MAGNESIUM COMPOUNDS"
-    )
+    atc = AtcText.from_txt_line("A02AD  4COMBINATIONS AND COMPLEXES OF ALUMINIUM," " CALCIUM AND MAGNESIUM COMPOUNDS")
     atc_data = AtcTextSerializer(atc).data
     assert atc_data == {
         "code": atc.code,

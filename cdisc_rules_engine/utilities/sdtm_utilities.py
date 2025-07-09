@@ -18,9 +18,7 @@ from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from typing import Iterable, Tuple, List, Optional
 
 
-def get_class_and_domain_metadata(
-    standard_details: dict, domain: str
-) -> Tuple[dict, dict]:
+def get_class_and_domain_metadata(standard_details: dict, domain: str) -> Tuple[dict, dict]:
     """
     Extracts metadata of a certain class and domain
     from given standards details.
@@ -37,9 +35,7 @@ def get_class_and_domain_metadata(
     """
     # Get domain and class details for domain.
     for c in standard_details.get("classes"):
-        domain_details = search_in_list_of_dicts(
-            c.get("datasets", []), lambda item: item["name"] == domain
-        )
+        domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
         if domain_details:
             return c, domain_details
     return {}, {}
@@ -118,22 +114,14 @@ def get_variables_metadata_from_standard(  # noqa
                 variables_metadata.append(var)
         if not is_custom:
             # non-custom domains pull from implementation guide as well
-            class_details, domain_details = get_class_and_domain_metadata(
-                standard_details, domain
-            )
+            class_details, domain_details = get_class_and_domain_metadata(standard_details, domain)
             variables_metadata.extend(domain_details.get("datasetVariables"))
             for var in variables_metadata:
                 if "ordinal" in var:
                     var["order_number"] = var.pop("ordinal")
             variables_metadata.sort(key=lambda item: int(item["order_number"]))
-            class_name = convert_library_class_name_to_ct_class(
-                class_details.get("name")
-            )
-            if (
-                class_name in DETECTABLE_CLASSES
-                and model_details
-                and include_model_variables
-            ):
+            class_name = convert_library_class_name_to_ct_class(class_details.get("name"))
+            if class_name in DETECTABLE_CLASSES and model_details and include_model_variables:
                 existing_variables = set([var["name"] for var in variables_metadata])
                 (
                     identifiers_metadata,
@@ -158,16 +146,13 @@ def get_variables_metadata_from_standard(  # noqa
                     new_timing_vars = [
                         timing_var
                         for timing_var in timing_metadata
-                        if timing_var["name"].replace("--", domain)
-                        not in existing_variables
+                        if timing_var["name"].replace("--", domain) not in existing_variables
                     ]
                     variables_metadata = variables_metadata + new_timing_vars
     return variables_metadata
 
 
-def get_allowed_class_variables(
-    model_details: dict, class_details: dict
-) -> Tuple[List[dict], List[dict], List[dict]]:
+def get_allowed_class_variables(model_details: dict, class_details: dict) -> Tuple[List[dict], List[dict], List[dict]]:
     """
     Get the variables allowed from the model for a given class.
 
@@ -193,9 +178,7 @@ def get_allowed_class_variables(
         # Appear in the list after the --TEST variable
         findings_class_metadata: dict = get_class_metadata(model_details, FINDINGS)
         findings_class_variables = findings_class_metadata["classVariables"]
-        FAsort_key = (
-            "ordinal" if "ordinal" in findings_class_variables[0] else "order_number"
-        )
+        FAsort_key = "ordinal" if "ordinal" in findings_class_variables[0] else "order_number"
         findings_class_variables.sort(key=lambda item: item[FAsort_key])
         test_index = len(findings_class_variables) - 1
         for i, v in enumerate(findings_class_variables):
@@ -208,12 +191,8 @@ def get_allowed_class_variables(
                 )
                 break
     if class_name in DETECTABLE_CLASSES:
-        gen_obs_class_metadata: dict = get_class_metadata(
-            model_details, GENERAL_OBSERVATIONS_CLASS
-        )
-        identifiers_metadata, timing_metadata = group_class_variables_by_role(
-            gen_obs_class_metadata["classVariables"]
-        )
+        gen_obs_class_metadata: dict = get_class_metadata(model_details, GENERAL_OBSERVATIONS_CLASS)
+        identifiers_metadata, timing_metadata = group_class_variables_by_role(gen_obs_class_metadata["classVariables"])
 
         def standardize_order_number(var):
             if "ordinal" in var:
@@ -255,13 +234,10 @@ def get_class_metadata(
     """
     class_metadata: Optional[dict] = search_in_list_of_dicts(
         model_details.get("classes", []),
-        lambda item: convert_library_class_name_to_ct_class(item["name"])
-        == dataset_class,
+        lambda item: convert_library_class_name_to_ct_class(item["name"]) == dataset_class,
     )
     if not class_metadata:
-        raise ValueError(
-            f"Class metadata is not found in CDISC Library. " f"class={dataset_class}"
-        )
+        raise ValueError(f"Class metadata is not found in CDISC Library. " f"class={dataset_class}")
     return class_metadata
 
 
@@ -337,15 +313,11 @@ def get_variables_metadata_from_standard_model(
 
     if domain_details:
         # Domain found in the model
-        class_name = convert_library_class_name_to_ct_class(
-            domain_details["_links"]["parentClass"]["title"]
-        )
+        class_name = convert_library_class_name_to_ct_class(domain_details["_links"]["parentClass"]["title"])
         class_details = get_class_metadata(model_details, class_name)
         variables_metadata = domain_details.get("datasetVariables", [])
         if variables_metadata:
-            sort_key = (
-                "ordinal" if "ordinal" in variables_metadata[0] else "order_number"
-            )
+            sort_key = "ordinal" if "ordinal" in variables_metadata[0] else "order_number"
             variables_metadata.sort(key=lambda item: item[sort_key])
     else:
         # Domain not found in the model. Detect class name from data
@@ -353,9 +325,7 @@ def get_variables_metadata_from_standard_model(
             datasets,
             lambda item: domain == (item.domain or item.name),
         )
-        class_name = data_service.get_dataset_class(
-            dataframe, dataset_path, datasets, domain_details
-        )
+        class_name = data_service.get_dataset_class(dataframe, dataset_path, datasets, domain_details)
         class_name = convert_library_class_name_to_ct_class(class_name)
         class_details = get_class_metadata(model_details, class_name)
 
@@ -396,15 +366,12 @@ def get_all_model_wildcard_variables(model_details: dict):
     }
 
 
-def add_variable_wildcards(
-    model_details: dict, variables: list[str], domain: str, wildcard: str
-):
+def add_variable_wildcards(model_details: dict, variables: list[str], domain: str, wildcard: str):
     all_model_wildcard_variables = get_all_model_wildcard_variables(model_details)
     return {
         variable: (
             variable.replace(domain, wildcard, 1)
-            if variable.startswith(domain)
-            and variable.replace(domain, "--", 1) in all_model_wildcard_variables
+            if variable.startswith(domain) and variable.replace(domain, "--", 1) in all_model_wildcard_variables
             else variable
         )
         for variable in variables

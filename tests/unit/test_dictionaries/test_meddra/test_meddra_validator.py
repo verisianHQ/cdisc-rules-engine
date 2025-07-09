@@ -35,9 +35,7 @@ import pytest
         ("LLT_TERM", "SOC", f"--{MedDRAVariables.LLT.value}", False),
     ],
 )
-def test_is_valid_term_case_sensitive(
-    term: str, term_type: str, variable: str, expected_outcome
-):
+def test_is_valid_term_case_sensitive(term: str, term_type: str, variable: str, expected_outcome):
     terms_dictionary = {
         TermTypes.SOC.value: {"A32": MedDRATerm({"term": "soc_term"})},
         TermTypes.PT.value: {"1234": MedDRATerm({"term": "ABCD"})},
@@ -76,9 +74,7 @@ def test_is_valid_term_case_sensitive(
         ("LLT_TERM", "SOC", f"--{MedDRAVariables.LLT.value}", False),
     ],
 )
-def test_is_valid_term_case_insensitive(
-    term: str, term_type: str, variable: str, expected_outcome
-):
+def test_is_valid_term_case_insensitive(term: str, term_type: str, variable: str, expected_outcome):
     terms_dictionary = {
         TermTypes.SOC.value: {"A32": MedDRATerm({"term": "soc_term"})},
         TermTypes.PT.value: {"1234": MedDRATerm({"term": "ABCD"})},
@@ -88,9 +84,7 @@ def test_is_valid_term_case_insensitive(
     }
 
     assert (
-        MedDRAValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            term, term_type, variable
-        )
+        MedDRAValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(term, term_type, variable)
         == expected_outcome
     )
 
@@ -104,9 +98,7 @@ def test_is_valid_term_case_insensitive(
         ("soc_term", "SOC", f"--{MedDRAVariables.SOC.value}", False),
     ],
 )
-def test_is_valid_code_case_sensitive(
-    term: str, term_type: str, variable: str, expected_outcome
-):
+def test_is_valid_code_case_sensitive(term: str, term_type: str, variable: str, expected_outcome):
     terms_dictionary = {
         TermTypes.SOC.value: {"A32": MedDRATerm({"term": "soc_term"})},
         TermTypes.PT.value: {"1234": MedDRATerm({"term": "ABCD"})},
@@ -133,6 +125,4 @@ def test_is_valid_term_throws_error_on_invalid_variable():
     }
 
     with pytest.raises(InvalidDictionaryVariable):
-        MedDRAValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            "AAA", "TEST", "--INVALID_VARIABLE"
-        )
+        MedDRAValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term("AAA", "TEST", "--INVALID_VARIABLE")

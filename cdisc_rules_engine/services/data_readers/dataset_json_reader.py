@@ -15,9 +15,7 @@ import tempfile
 
 class DatasetJSONReader(DataReaderInterface):
     def get_schema(self) -> dict:
-        with open(
-            os.path.join("resources", "schema", "dataset.schema.json")
-        ) as schemajson:
+        with open(os.path.join("resources", "schema", "dataset.schema.json")) as schemajson:
             schema = schemajson.read()
         return json.loads(schema)
 
@@ -45,9 +43,7 @@ class DatasetJSONReader(DataReaderInterface):
             if self.dataset_implementation == PandasDataset:
                 return PandasDataset(df)
             else:
-                return DaskDataset(
-                    dd.from_pandas(df, npartitions=4), length=len(df.index)
-                )
+                return DaskDataset(dd.from_pandas(df, npartitions=4), length=len(df.index))
         except jsonschema.exceptions.ValidationError:
             return PandasDataset(pd.DataFrame())
 

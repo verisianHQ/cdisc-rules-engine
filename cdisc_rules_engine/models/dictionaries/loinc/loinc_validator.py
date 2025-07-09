@@ -22,9 +22,7 @@ class LoincValidator(BaseDictionaryValidator):
         self.term_dictionary = kwargs.get("terms")
         self.terms_factory = LoincTermsFactory(self.data_service)
 
-    def is_valid_term(
-        self, term: str, term_type: str = "", variable: str = "", codes=[], **kwargs
-    ) -> bool:
+    def is_valid_term(self, term: str, term_type: str = "", variable: str = "", codes=[], **kwargs) -> bool:
         """
         Method to identify whether a term is valid based on its term type.
 
@@ -40,9 +38,7 @@ class LoincValidator(BaseDictionaryValidator):
         """
         return self.is_valid_code(term, term_type, variable, **kwargs)
 
-    def is_valid_code(
-        self, code: str, term_type: str = "", variable: str = "", codes=[], **kwargs
-    ) -> bool:
+    def is_valid_code(self, code: str, term_type: str = "", variable: str = "", codes=[], **kwargs) -> bool:
         """
         Method to identify whether a term is valid based on its term type.
 

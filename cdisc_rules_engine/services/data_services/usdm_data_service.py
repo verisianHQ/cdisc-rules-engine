@@ -36,17 +36,13 @@ class USDMDataService(BaseDataService):
         config: ConfigInterface,
         **kwargs,
     ):
-        super(USDMDataService, self).__init__(
-            cache_service, reader_factory, config, **kwargs
-        )
+        super(USDMDataService, self).__init__(cache_service, reader_factory, config, **kwargs)
         self.dataset_path: str = kwargs.get("dataset_path", "")
 
         with open(os.path.join("resources", "schema", "USDM.yaml")) as entity_dict:
             self.entity_dict: dict = safe_load(entity_dict)
 
-        self.json = self._reader_factory.get_service("USDM").from_file(
-            self.dataset_path
-        )
+        self.json = self._reader_factory.get_service("USDM").from_file(self.dataset_path)
 
         self.dataset_content_index: dict = self.__get_datasets_content_index(
             dataset_name="USDM_content_index", json=self.json
@@ -63,9 +59,7 @@ class USDMDataService(BaseDataService):
             service = cls(
                 cache_service=cache_service,
                 reader_factory=DataReaderFactory(
-                    dataset_implementation=kwargs.get(
-                        "dataset_implementation", PandasDataset
-                    )
+                    dataset_implementation=kwargs.get("dataset_implementation", PandasDataset)
                 ),
                 config=config,
                 **kwargs,
@@ -91,9 +85,7 @@ class USDMDataService(BaseDataService):
         return self.__get_dataset(dataset_name)
 
     @cached_dataset(DatasetTypes.RAW_METADATA.value)
-    def get_raw_dataset_metadata(
-        self, dataset_name: str, **kwargs
-    ) -> SDTMDatasetMetadata:
+    def get_raw_dataset_metadata(self, dataset_name: str, **kwargs) -> SDTMDatasetMetadata:
         """
         Returns dataset metadata as DatasetMetadata instance.
         """
@@ -103,9 +95,7 @@ class USDMDataService(BaseDataService):
             name=dataset_name,
             first_record={"DOMAIN": domain},
             label=domain,
-            modification_date=datetime.fromtimestamp(
-                os.path.getmtime(self.dataset_path)
-            ).isoformat(),
+            modification_date=datetime.fromtimestamp(os.path.getmtime(self.dataset_path)).isoformat(),
             filename=extract_file_name_from_path_string(dataset_name),
             full_path=dataset_name,
             file_size=0,
@@ -119,21 +109,15 @@ class USDMDataService(BaseDataService):
         """
         metadata: dict = self.read_metadata(dataset_name)
         contents_metadata: dict = metadata["contents_metadata"]
-        metadata_to_return: VariableMetadataContainer = VariableMetadataContainer(
-            contents_metadata
-        )
-        return self._reader_factory.dataset_implementation.from_dict(
-            metadata_to_return.to_representation()
-        )
+        metadata_to_return: VariableMetadataContainer = VariableMetadataContainer(contents_metadata)
+        return self._reader_factory.dataset_implementation.from_dict(metadata_to_return.to_representation())
 
     @cached_dataset(DatasetTypes.CONTENTS.value)
     def get_define_xml_contents(self, dataset_name: str) -> bytes:
         """
         Reads local define xml file as bytes
         """
-        raise NotImplementedError(
-            "Can't use 'get_define_xml_contents' in USDMDataService!"
-        )
+        raise NotImplementedError("Can't use 'get_define_xml_contents' in USDMDataService!")
 
     def read_metadata(self, dataset_name: str) -> dict:
         np_json_type_map: dict = {"O": "string", "float64": "float"}
@@ -151,20 +135,14 @@ class USDMDataService(BaseDataService):
             "variable_names": dataset.columns.values.tolist(),
             "variable_formats": empty(dataset.data.shape[1], dtype=str).tolist(),
             "variable_name_to_label_map": dict(zip(dataset.data, dataset.data)),
-            "variable_name_to_data_type_map": dict(
-                zip(dataset.data, dataset.data.dtypes.map(np_json_type_map))
-            ),
-            "variable_name_to_size_map": dict(
-                zip(dataset.data, measurer(dataset.data.values.astype(str)).max(axis=0))
-            ),
+            "variable_name_to_data_type_map": dict(zip(dataset.data, dataset.data.dtypes.map(np_json_type_map))),
+            "variable_name_to_size_map": dict(zip(dataset.data, measurer(dataset.data.values.astype(str)).max(axis=0))),
             "number_of_variables": len(dataset.columns.values.tolist()),
             "dataset_label": dataset_name,
             "dataset_length": len(dataset),
             "domain": dataset_name,
             "dataset_name": dataset_name,
-            "dataset_modification_date": datetime.fromtimestamp(
-                os.path.getmtime(self.dataset_path)
-            ).isoformat(),
+            "dataset_modification_date": datetime.fromtimestamp(os.path.getmtime(self.dataset_path)).isoformat(),
         }
 
         return {
@@ -178,9 +156,7 @@ class USDMDataService(BaseDataService):
     def get_datasets(self) -> List[dict]:
         datasets = []
         for dataset in self.dataset_content_index:
-            dataset_metadata: SDTMDatasetMetadata = self.get_raw_dataset_metadata(
-                dataset_name=dataset["dataset_name"]
-            )
+            dataset_metadata: SDTMDatasetMetadata = self.get_raw_dataset_metadata(dataset_name=dataset["dataset_name"])
             datasets.append(dataset_metadata)
         return datasets
 
@@ -198,9 +174,7 @@ class USDMDataService(BaseDataService):
         if type(node) is dict:
             flattened = {}
             for key, value in node.items():
-                flattened[f"{parent}{key}"] = (
-                    (len(value) > 0) if type(value) in (dict, list) else value
-                )
+                flattened[f"{parent}{key}"] = (len(value) > 0) if type(value) in (dict, list) else value
                 if type(value) is dict:
                     flattened |= self.__get_record_data(value, f"{parent}{key}.")
         else:
@@ -209,20 +183,14 @@ class USDMDataService(BaseDataService):
 
     @staticmethod
     def __get_parent(node) -> DatumInContext:
-        return (
-            node.context if node.context and type(node.context.value) is list else node
-        )
+        return node.context if node.context and type(node.context.value) is list else node
 
     @staticmethod
     def __get_closest_non_list_ancestor(node) -> DatumInContext:
-        return (
-            node.context.context if type(node.context.value) is list else node.context
-        )
+        return node.context.context if type(node.context.value) is list else node.context
 
     def __get_record_metadata(self, node) -> dict:
-        closest_non_list_ancestor = USDMDataService.__get_closest_non_list_ancestor(
-            node
-        )
+        closest_non_list_ancestor = USDMDataService.__get_closest_non_list_ancestor(node)
         record = {
             "parent_entity": self.__get_entity_name(
                 closest_non_list_ancestor.value,
@@ -246,9 +214,7 @@ class USDMDataService(BaseDataService):
         for dataset_path in dataset_paths:
             nodes = [match for match in parse(dataset_path["path"]).find(self.json)]
             if len(nodes) != 1:
-                raise Exception(
-                    f"Multiple objects found with path: {dataset_path['path']}"
-                )
+                raise Exception(f"Multiple objects found with path: {dataset_path['path']}")
             node = nodes[0]
             if dataset_path["type"] == "reference":
                 node.value = self.__find_definition(self.json, node.value)
@@ -256,10 +222,7 @@ class USDMDataService(BaseDataService):
             else:
                 node.type = "definition"
             all_nodes.append(node)
-        records = [
-            self.__get_record_metadata(node) | self.__get_record_data(node.value)
-            for node in all_nodes
-        ]
+        records = [self.__get_record_metadata(node) | self.__get_record_data(node.value) for node in all_nodes]
         return self._reader_factory.dataset_implementation.from_records(records)
 
     def __find_definition(self, json, id: str):
@@ -272,11 +235,7 @@ class USDMDataService(BaseDataService):
 
     def __get_entity_name(self, value, parent: DatumInContext):
         if type(value) is dict:
-            api_type = (
-                value.get("instanceType")
-                if "instanceType" in value
-                else f"{parent.path}"
-            )
+            api_type = value.get("instanceType") if "instanceType" in value else f"{parent.path}"
         else:
             # primitive types
             api_type = value.__class__.__name__
@@ -284,9 +243,7 @@ class USDMDataService(BaseDataService):
         if isinstance(mapped_entity, str):
             return mapped_entity
         else:
-            closest_non_list_ancestor = USDMDataService.__get_closest_non_list_ancestor(
-                parent
-            )
+            closest_non_list_ancestor = USDMDataService.__get_closest_non_list_ancestor(parent)
             return mapped_entity.get(
                 self.__get_entity_name(
                     closest_non_list_ancestor.value,
@@ -303,10 +260,7 @@ class USDMDataService(BaseDataService):
         content_path: str,
     ):
         ty = "definition"
-        if type(child_value) is str and (
-            f"{parent_node.path}".endswith("Id")
-            or f"{parent_node.path}".endswith("Ids")
-        ):
+        if type(child_value) is str and (f"{parent_node.path}".endswith("Id") or f"{parent_node.path}".endswith("Ids")):
             definition = self.__find_definition(json, child_value)
             if definition:
                 child_value = definition
@@ -340,15 +294,11 @@ class USDMDataService(BaseDataService):
                     ):
                         metadata.append(metadatum)
             else:
-                if metadatum := self.__read_metadata(
-                    json, node, node.value, USDMDataService.__get_full_path(node)
-                ):
+                if metadatum := self.__read_metadata(json, node, node.value, USDMDataService.__get_full_path(node)):
                     metadata.append(metadatum)
         dataset_dict = {}
         for path in metadata:
-            dataset_dict.setdefault(path["entity"], []).append(
-                {"path": path["path"], "type": path["type"]}
-            )
+            dataset_dict.setdefault(path["entity"], []).append({"path": path["path"], "type": path["type"]})
         return [
             {
                 "dataset_name": self.__get_dataset_name_from_domain(key),
@@ -366,11 +316,7 @@ class USDMDataService(BaseDataService):
 
     @staticmethod
     def is_valid_data(dataset_paths: Sequence[str]):
-        if (
-            dataset_paths
-            and len(dataset_paths) == 1
-            and dataset_paths[0].lower().endswith(".json")
-        ):
+        if dataset_paths and len(dataset_paths) == 1 and dataset_paths[0].lower().endswith(".json"):
             with open(dataset_paths[0]) as fp:
                 json = load(fp)
                 return "study" in json and "datasetJSONVersion" not in json

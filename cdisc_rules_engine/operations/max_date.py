@@ -12,7 +12,5 @@ class MaxDate(BaseOperation):
             else:
                 result = max_date.isoformat()
         else:
-            result = self.params.dataframe.groupby(
-                self.params.grouping, as_index=False
-            ).data.max()
+            result = self.params.dataframe.groupby(self.params.grouping, as_index=False).data.max()
         return result

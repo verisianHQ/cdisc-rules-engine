@@ -28,9 +28,7 @@ class ParentLibraryModelColumnOrder(LibraryModelColumnOrder):
                     rdomain,
                     self._get_parent_variable_names_list(domain_to_datasets, rdomain),
                 )
-                for rdomain in self.params.dataframe.get(
-                    "RDOMAIN", [None] * len(self.params.dataframe)
-                )
+                for rdomain in self.params.dataframe.get("RDOMAIN", [None] * len(self.params.dataframe))
             )
         )
 
@@ -47,7 +45,5 @@ class ParentLibraryModelColumnOrder(LibraryModelColumnOrder):
                 f"Operation get_parent_model_column_order requires parent Domain "
                 f"{rdomain} but Domain not found in datasets"
             )
-        parent_dataframe = self.data_service.get_dataset(
-            dataset_name=parent_datasets[0].filename
-        )
+        parent_dataframe = self.data_service.get_dataset(dataset_name=parent_datasets[0].filename)
         return self._get_variable_names_list(rdomain, parent_dataframe)

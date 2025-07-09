@@ -10,9 +10,7 @@ from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTy
 class MedDRACodeReferencesValidator(BaseOperation):
     def _execute_operation(self):
         # get metadata
-        meddra_path = self.params.external_dictionaries.get_dictionary_path(
-            DictionaryTypes.MEDDRA.value
-        )
+        meddra_path = self.params.external_dictionaries.get_dictionary_path(DictionaryTypes.MEDDRA.value)
         if not meddra_path:
             raise ValueError("Can't execute the operation, no meddra path provided")
         code_variables = [
@@ -22,9 +20,7 @@ class MedDRACodeReferencesValidator(BaseOperation):
             MedDRAVariables.PTCD.value,
             MedDRAVariables.LLTCD.value,
         ]
-        code_strings = [
-            f"{self.params.domain}{variable}" for variable in code_variables
-        ]
+        code_strings = [f"{self.params.domain}{variable}" for variable in code_variables]
         cache_key = f"meddra_valid_code_hierarchies_{meddra_path}"
         valid_code_hierarchies = self.cache.get(cache_key)
         if not valid_code_hierarchies:
@@ -32,8 +28,6 @@ class MedDRACodeReferencesValidator(BaseOperation):
             valid_code_hierarchies = MedDRATerm.get_code_hierarchies(terms)
             self.cache.add(cache_key, valid_code_hierarchies)
         column = str(uuid4()) + "_codes"
-        self.params.dataframe[column] = self.params.dataframe[code_strings].agg(
-            "/".join, axis=1
-        )
+        self.params.dataframe[column] = self.params.dataframe[code_strings].agg("/".join, axis=1)
         result = self.params.dataframe[column].isin(valid_code_hierarchies)
         return self.evaluation_dataset.convert_to_series(result)

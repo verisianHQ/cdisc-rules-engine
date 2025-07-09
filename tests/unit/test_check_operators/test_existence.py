@@ -33,9 +33,7 @@ def test_exists(target, dataset_type, expected_result):
         "non_nested_value": ["h", "i", "j"],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df, "column_prefix_map": {"--": "va"}}).exists(
-        {"target": target}
-    )
+    result = DataframeType({"value": df, "column_prefix_map": {"--": "va"}}).exists({"target": target})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -68,7 +66,5 @@ def test_not_exists(target, dataset_type, expected_result):
         "non_nested_value": ["h", "i", "j"],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df, "column_prefix_map": {"--": "va"}}).not_exists(
-        {"target": target}
-    )
+    result = DataframeType({"value": df, "column_prefix_map": {"--": "va"}}).not_exists({"target": target})
     assert result.equals(df.convert_to_series(expected_result))

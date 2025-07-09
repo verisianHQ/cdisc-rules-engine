@@ -74,9 +74,7 @@
       {
         "name": "variable_name",
         "operator": "not_contains_all",
-        "value": [
-          "$permissible_variables"
-        ]
+        "value": ["$permissible_variables"]
       },
       {
         "name": "variable_name",
@@ -106,14 +104,10 @@
   },
   "Scope": {
     "Classes": {
-      "Include": [
-        "ALL"
-      ]
+      "Include": ["ALL"]
     },
     "Domains": {
-      "Include": [
-        "ALL"
-      ]
+      "Include": ["ALL"]
     }
   },
   "Sensitivity": "Record",

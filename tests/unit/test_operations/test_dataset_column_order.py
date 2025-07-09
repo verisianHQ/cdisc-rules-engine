@@ -34,9 +34,7 @@ def test_get_column_order_from_dataset(operation_params: OperationParams, datase
             ],
         }
     )
-    operation = DatasetColumnOrder(
-        operation_params, operation_params.dataframe, MagicMock(), MagicMock()
-    )
+    operation = DatasetColumnOrder(operation_params, operation_params.dataframe, MagicMock(), MagicMock())
     result: pd.DataFrame = operation.execute()
     expected: pd.Series = pd.Series(
         [

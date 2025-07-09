@@ -542,9 +542,7 @@ def test_get_model_filtered_variables(
 
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_metadata, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata, model_metadata=model_metadata)
     # execute operation
     data_service = LocalDataService(
         cache_service=cache,
@@ -556,9 +554,7 @@ def test_get_model_filtered_variables(
     )
 
     expected_class = (
-        EVENTS
-        if model_metadata["datasets"][0]["_links"]["parentClass"]["title"] == "Events"
-        else FINDINGS_ABOUT
+        EVENTS if model_metadata["datasets"][0]["_links"]["parentClass"]["title"] == "Events" else FINDINGS_ABOUT
     )
 
     """
@@ -571,9 +567,7 @@ def test_get_model_filtered_variables(
 
     data_service.get_raw_dataset_metadata = mock_get_raw_metadata
 
-    with patch.object(
-        LocalDataService, "get_dataset_class", return_value=expected_class
-    ):
+    with patch.object(LocalDataService, "get_dataset_class", return_value=expected_class):
         operation = LibraryModelVariablesFilter(
             operation_params,
             operation_params.dataframe,

@@ -6,9 +6,7 @@ from cdisc_rules_engine.services.data_services.local_data_service import (
 )
 
 
-@patch(
-    "cdisc_rules_engine.models.dictionaries.snomed.terms_factory.SNOMEDTermsFactory._request_concepts"
-)
+@patch("cdisc_rules_engine.models.dictionaries.snomed.terms_factory.SNOMEDTermsFactory._request_concepts")
 def test_install(mock_request_concepts):
     mock_response = {
         "items": [
@@ -48,9 +46,7 @@ def test_install(mock_request_concepts):
         ]
     }
     mock_request_concepts.return_value = mock_response
-    storage_service = LocalDataService.get_instance(
-        cache_service=MagicMock(), config=MagicMock()
-    )
+    storage_service = LocalDataService.get_instance(cache_service=MagicMock(), config=MagicMock())
     factory = AbstractTermsFactory(storage_service).get_service(
         DictionaryTypes.SNOMED.value, edition="SNOMEDCT-US", version="2024-09-01"
     )

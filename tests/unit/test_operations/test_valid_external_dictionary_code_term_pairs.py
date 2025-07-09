@@ -20,9 +20,7 @@ from unittest import mock
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_valid_external_dictionary_code_term_pairs(
-    mock_data_service, operation_params: OperationParams, dataset_type
-):
+def test_valid_external_dictionary_code_term_pairs(mock_data_service, operation_params: OperationParams, dataset_type):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     medrt_path = "medrt"
@@ -32,14 +30,10 @@ def test_valid_external_dictionary_code_term_pairs(
     operation_params.target = "AECOD"
     operation_params.external_dictionary_term_variable = "AEDECOD"
 
-    data = dataset_type.from_dict(
-        {"AECOD": ["T1234", "T134", "T155"], "AEDECOD": ["A", "B", "B"]}
-    )
+    data = dataset_type.from_dict({"AECOD": ["T1234", "T134", "T155"], "AEDECOD": ["A", "B", "B"]})
 
     operation_params.dataframe = data
-    operation_params.external_dictionaries = ExternalDictionariesContainer(
-        {DictionaryTypes.MEDRT.value: medrt_path}
-    )
+    operation_params.external_dictionaries = ExternalDictionariesContainer({DictionaryTypes.MEDRT.value: medrt_path})
     terms_dictionary = ExternalDictionary(
         {
             "T1234": MEDRTTerm(code="T1234", id=1, name="A"),

@@ -12,9 +12,7 @@ import pytest
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_get_study_domains_with_duplicates(
-    operation_params: OperationParams, dataset_type
-):
+def test_get_study_domains_with_duplicates(operation_params: OperationParams, dataset_type):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -25,18 +23,14 @@ def test_get_study_domains_with_duplicates(
         {"filename": "tv.xpt", "first_record": {"DOMAIN": "TV"}},
     ]
     operation_params.datasets = [SDTMDatasetMetadata(**dataset) for dataset in datasets]
-    result = StudyDomains(
-        operation_params, dataset_type.from_dict({"A": [1, 2, 3]}), cache, data_service
-    ).execute()
+    result = StudyDomains(operation_params, dataset_type.from_dict({"A": [1, 2, 3]}), cache, data_service).execute()
     assert operation_params.operation_id in result
     for val in result[operation_params.operation_id]:
         assert sorted(val) == ["AE", "DM", "TV"]
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_get_study_domains_with_missing_domains(
-    operation_params: OperationParams, dataset_type
-):
+def test_get_study_domains_with_missing_domains(operation_params: OperationParams, dataset_type):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -47,9 +41,7 @@ def test_get_study_domains_with_missing_domains(
         {"filename": "tv.xpt", "first_record": {"DOMAIN": "TV"}},
     ]
     operation_params.datasets = [SDTMDatasetMetadata(**dataset) for dataset in datasets]
-    result = StudyDomains(
-        operation_params, dataset_type.from_dict({"A": [1, 2, 3]}), cache, data_service
-    ).execute()
+    result = StudyDomains(operation_params, dataset_type.from_dict({"A": [1, 2, 3]}), cache, data_service).execute()
     assert operation_params.operation_id in result
     for val in result[operation_params.operation_id]:
         assert sorted(val) == ["", "AE", "DM", "TV"]
