@@ -32,9 +32,7 @@ class WhoDrugTermsFactory(TermsFactoryInterface):
         }
 
     def get_version(self, directory_path: str) -> str:
-        if not self.__data_service.has_all_files(
-            directory_path, [WhodrugFileNames.VERSION.value]
-        ):
+        if not self.__data_service.has_all_files(directory_path, [WhodrugFileNames.VERSION.value]):
             raise MissingDataError(message="WhoDrug version file missing")
         file_path = get_dictionary_path(directory_path, WhodrugFileNames.VERSION.value)
         with self.__data_service.read_data(file_path) as file_data:
@@ -64,8 +62,7 @@ class WhoDrugTermsFactory(TermsFactoryInterface):
         files_required = list(self.__file_name_model_map.keys())
         if not self.__data_service.has_all_files(directory_path, files_required):
             raise ValueError(
-                f"Insufficient files in directory {directory_path}."
-                f"Check that all of ({files_required}) exist"
+                f"Insufficient files in directory {directory_path}." f"Check that all of ({files_required}) exist"
             )
 
         try:
@@ -76,14 +73,10 @@ class WhoDrugTermsFactory(TermsFactoryInterface):
         code_to_term_map = defaultdict(dict)
         for dictionary_filename in self.__file_name_model_map:
             file_path: str = get_dictionary_path(directory_path, dictionary_filename)
-            self.__create_term_objects_from_file(
-                code_to_term_map, dictionary_filename, file_path
-            )
+            self.__create_term_objects_from_file(code_to_term_map, dictionary_filename, file_path)
         return ExternalDictionary(terms=code_to_term_map, version=version)
 
-    def __create_term_objects_from_file(
-        self, code_to_term_map: defaultdict, dictionary_filename: str, file_path: str
-    ):
+    def __create_term_objects_from_file(self, code_to_term_map: defaultdict, dictionary_filename: str, file_path: str):
         """
         Creates a list of term objects for each line of the file.
         code_to_term_map is changed by reference.
@@ -93,7 +86,5 @@ class WhoDrugTermsFactory(TermsFactoryInterface):
         with self.__data_service.read_data(file_path) as file:
             # create a term object for each line and append it to the mapping
             for bytes_line in file:
-                term_obj: BaseWhoDrugTerm = model_class.from_txt_line(
-                    decode_line(bytes_line)
-                )
+                term_obj: BaseWhoDrugTerm = model_class.from_txt_line(decode_line(bytes_line))
                 code_to_term_map[term_obj.type][term_obj.get_identifier()] = term_obj

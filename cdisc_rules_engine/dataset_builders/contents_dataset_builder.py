@@ -15,19 +15,12 @@ class ContentsDatasetBuilder(BaseDatasetBuilder):
         """
         Returns the contents of a file as a dataframe for evaluation.
         """
-        return self.data_service.get_dataset(
-            dataset_name=dataset_name, datasets=self.datasets
-        )
+        return self.data_service.get_dataset(dataset_name=dataset_name, datasets=self.datasets)
 
     def get_dataset(self, **kwargs):
         dataset = super().get_dataset(**kwargs)
         length = sum(
-            [
-                dataset.record_count
-                for dataset in get_corresponding_datasets(
-                    self.datasets, self.dataset_metadata
-                )
-            ]
+            [dataset.record_count for dataset in get_corresponding_datasets(self.datasets, self.dataset_metadata)]
         )
         dataset.length = length
         return dataset

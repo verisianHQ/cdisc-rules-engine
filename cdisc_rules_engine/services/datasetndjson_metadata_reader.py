@@ -25,9 +25,7 @@ class DatasetNDJSONMetadataReader:
         Extracts metadata from .ndjson file.
         """
         # Load Dataset-NDJSON Schema
-        with open(
-            os.path.join("resources", "schema", "dataset-ndjson-schema.json")
-        ) as schemandjson:
+        with open(os.path.join("resources", "schema", "dataset-ndjson-schema.json")) as schemandjson:
             schema = schemandjson.read()
         schema = json.loads(schema)
 
@@ -44,48 +42,33 @@ class DatasetNDJSONMetadataReader:
 
             self._first_record = self._extract_first_record(metadatandjson, datandjson)
             self._metadata_container = {
-                "variable_labels": [
-                    item["label"] for item in metadatandjson["columns"]
-                ],
+                "variable_labels": [item["label"] for item in metadatandjson["columns"]],
                 "variable_names": [item["name"] for item in metadatandjson["columns"]],
-                "variable_formats": [
-                    item.get("displayFormat", "") for item in metadatandjson["columns"]
-                ],
-                "variable_name_to_label_map": {
-                    item["name"]: item["label"] for item in metadatandjson["columns"]
-                },
+                "variable_formats": [item.get("displayFormat", "") for item in metadatandjson["columns"]],
+                "variable_name_to_label_map": {item["name"]: item["label"] for item in metadatandjson["columns"]},
                 "variable_name_to_data_type_map": {
                     item["name"]: item["dataType"] for item in metadatandjson["columns"]
                 },
                 "variable_name_to_size_map": {
-                    item["name"]: item.get("length", None)
-                    for item in metadatandjson["columns"]
+                    item["name"]: item.get("length", None) for item in metadatandjson["columns"]
                 },
                 "number_of_variables": len(metadatandjson["columns"]),
                 "dataset_label": metadatandjson.get("label"),
                 "dataset_length": metadatandjson.get("records"),
                 "first_record": self._first_record,
                 "dataset_name": metadatandjson.get("name"),
-                "dataset_modification_date": metadatandjson[
-                    "datasetJSONCreationDateTime"
-                ],
+                "dataset_modification_date": metadatandjson["datasetJSONCreationDateTime"],
             }
 
             self._convert_variable_types()
 
-            self._metadata_container["adam_info"] = self._extract_adam_info(
-                self._metadata_container["variable_names"]
-            )
-            logger.info(
-                f"Extracted dataset metadata. metadata={self._metadata_container}"
-            )
+            self._metadata_container["adam_info"] = self._extract_adam_info(self._metadata_container["variable_names"])
+            logger.info(f"Extracted dataset metadata. metadata={self._metadata_container}")
 
             return self._metadata_container
 
         except jsonschema.exceptions.ValidationError:
-            logger.warning(
-                f"{str(self._file_path)} is not compliant with Dataset-NDJSON schema"
-            )
+            logger.warning(f"{str(self._file_path)} is not compliant with Dataset-NDJSON schema")
             return {
                 "variable_labels": [],
                 "variable_names": [],
@@ -109,10 +92,7 @@ class DatasetNDJSONMetadataReader:
                     [
                         dict(
                             zip(
-                                [
-                                    col["name"]
-                                    for col in metadatandjson.get("columns", [])
-                                ],
+                                [col["name"] for col in metadatandjson.get("columns", [])],
                                 datandjson,
                             )
                         )
@@ -142,12 +122,8 @@ class DatasetNDJSONMetadataReader:
             "time": "Char",
             "URI": "Char",
         }
-        for key, value in self._metadata_container[
-            "variable_name_to_data_type_map"
-        ].items():
-            self._metadata_container["variable_name_to_data_type_map"][key] = (
-                rule_author_type_map[value]
-            )
+        for key, value in self._metadata_container["variable_name_to_data_type_map"].items():
+            self._metadata_container["variable_name_to_data_type_map"][key] = rule_author_type_map[value]
 
     def _to_dict(self) -> dict:
         """

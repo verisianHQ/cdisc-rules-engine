@@ -31,16 +31,13 @@ class DatasetXPTMetadataReader:
         """
         Extracts metadata from binary contents of .xpt file.
         """
-        dataset, metadata = pyreadstat.read_xport(
-            self._file_path, row_limit=self.row_limit
-        )
+        dataset, metadata = pyreadstat.read_xport(self._file_path, row_limit=self.row_limit)
         self._first_record = self._extract_first_record(dataset)
         self._metadata_container = {
             "variable_labels": list(metadata.column_labels),
             "variable_names": list(metadata.column_names),
             "variable_formats": [
-                "" if data_type == "NULL" else data_type
-                for data_type in metadata.original_variable_types.values()
+                "" if data_type == "NULL" else data_type for data_type in metadata.original_variable_types.values()
             ],
             "variable_name_to_label_map": metadata.column_names_to_labels,
             "variable_name_to_data_type_map": metadata.readstat_variable_types,
@@ -54,13 +51,9 @@ class DatasetXPTMetadataReader:
         }
 
         if self._estimate_dataset_length:
-            self._metadata_container["dataset_length"] = (
-                self._calculate_dataset_length()
-            )
+            self._metadata_container["dataset_length"] = self._calculate_dataset_length()
         self._convert_variable_types()
-        self._metadata_container["adam_info"] = self._extract_adam_info(
-            self._metadata_container["variable_names"]
-        )
+        self._metadata_container["adam_info"] = self._extract_adam_info(self._metadata_container["variable_names"])
         logger.info(f"Extracted dataset metadata. metadata={self._metadata_container}")
         return self._metadata_container
 
@@ -140,12 +133,8 @@ class DatasetXPTMetadataReader:
             "Character": "Char",
             "Numeric": "Num",
         }
-        for key, value in self._metadata_container[
-            "variable_name_to_data_type_map"
-        ].items():
-            self._metadata_container["variable_name_to_data_type_map"][key] = (
-                rule_author_type_map[value]
-            )
+        for key, value in self._metadata_container["variable_name_to_data_type_map"].items():
+            self._metadata_container["variable_name_to_data_type_map"][key] = rule_author_type_map[value]
 
     def _to_dict(self) -> dict:
         """

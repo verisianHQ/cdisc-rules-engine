@@ -24,9 +24,7 @@ class MedDRATermsFactory(TermsFactoryInterface):
         self.data_service = data_service
 
     def get_version(self, directory_path: str) -> str:
-        if not self.data_service.has_all_files(
-            directory_path, [MeddraFileNames.VERSION.value]
-        ):
+        if not self.data_service.has_all_files(directory_path, [MeddraFileNames.VERSION.value]):
             raise MissingDataError(message="MedDRA version file missing")
         file_path = get_dictionary_path(directory_path, MeddraFileNames.VERSION.value)
         with self.data_service.read_data(file_path) as file_data:
@@ -113,9 +111,7 @@ class MedDRATermsFactory(TermsFactoryInterface):
                 data[value.code] = value
         return data
 
-    def update_relationship_data(
-        self, directory_path: str, file_name: str, data: dict
-    ) -> dict:
+    def update_relationship_data(self, directory_path: str, file_name: str, data: dict) -> dict:
         """
         Iterates over lines in a relationship file, and sets the
         parent relationship on the appropriate term

@@ -37,31 +37,11 @@
         }
       ],
       "records": {
-        "STUDYID": [
-          "TEST",
-          "TEST",
-          "TEST"
-        ],
-        "DOMAIN": [
-          "AE",
-          "AE",
-          "AE"
-        ],
-        "USUBJID": [
-          "A",
-          "B",
-          "B"
-        ],
-        "AEDUR": [
-          "",
-          "Test",
-          ""
-        ],
-        "AETERM": [
-          "adsfasdf",
-          "Test",
-          "adfadfa"
-        ]
+        "STUDYID": ["TEST", "TEST", "TEST"],
+        "DOMAIN": ["AE", "AE", "AE"],
+        "USUBJID": ["A", "B", "B"],
+        "AEDUR": ["", "Test", ""],
+        "AETERM": ["adsfasdf", "Test", "adfadfa"]
       }
     }
   ]

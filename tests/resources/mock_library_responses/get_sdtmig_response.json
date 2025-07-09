@@ -174,9 +174,7 @@
               "ordinal": "2",
               "role": "Identifier",
               "simpleDatatype": "Char",
-              "valueList": [
-                "DM"
-              ]
+              "valueList": ["DM"]
             }
           ],
           "description": "A special-purpose domain that includes a set of essential standard variables that describe each subject in a clinical study. It is the parent domain for all other observations for human clinical subjects. (Source: CDISC Controlled Terminology, DOMAIN, C49572, 2018-06-29)",
@@ -280,9 +278,7 @@
               "ordinal": "2",
               "role": "Identifier",
               "simpleDatatype": "Char",
-              "valueList": [
-                "CO"
-              ]
+              "valueList": ["CO"]
             }
           ],
           "description": "A special-purpose domain that contains comments that may be collected alongside other data. (Source: CDISC Controlled Terminology, DOMAIN, C49569, 2018-06-29)",
@@ -386,9 +382,7 @@
               "ordinal": "2",
               "role": "Identifier",
               "simpleDatatype": "Char",
-              "valueList": [
-                "SE"
-              ]
+              "valueList": ["SE"]
             }
           ],
           "description": "A special-purpose domain that contains the actual order of elements followed by the subject, together with the start date/time and end date/time for each element. (Source: CDISC Controlled Terminology, DOMAIN, C49616, 2018-06-29)",
@@ -492,9 +486,7 @@
               "ordinal": "2",
               "role": "Identifier",
               "simpleDatatype": "Char",
-              "valueList": [
-                "SV"
-              ]
+              "valueList": ["SV"]
             }
           ],
           "description": "A special-purpose domain that contains the actual start and end data/time for each visit of each individual subject. (Source: CDISC Controlled Terminology, DOMAIN, C49617, 2018-06-29)",

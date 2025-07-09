@@ -21,9 +21,7 @@ def test_is_valid_term_case_sensitive(term: str, expected_outcome):
         "C123": MEDRTConcept(code="C123", id=1, name="test_concept"),
     }
     assert (
-        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            term, "", "", case_sensitive=True
-        )
+        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(term, "", "", case_sensitive=True)
         == expected_outcome
     )
 
@@ -43,9 +41,7 @@ def test_is_valid_term_case_insensitive(term: str, expected_outcome):
         "C123": MEDRTConcept(code="C123", id=1, name="test_concept"),
     }
     assert (
-        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            term, "", "", case_sensitive=False
-        )
+        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(term, "", "", case_sensitive=False)
         == expected_outcome
     )
 
@@ -62,12 +58,7 @@ def test_is_valid_code(term: str, expected_outcome):
         "T123": MEDRTTerm(code="T123", id=1, name="test_term"),
         "C123": MEDRTConcept(code="C123", id=1, name="test_concept"),
     }
-    assert (
-        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code(
-            term, "", ""
-        )
-        == expected_outcome
-    )
+    assert MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code(term, "", "") == expected_outcome
 
 
 @pytest.mark.parametrize(
@@ -86,8 +77,6 @@ def test_is_valid_code_term_pair(row: dict, expected_outcome: bool):
         "C444": MEDRTConcept(code="C444", id=1, name="test_concept", synonyms=["T123"]),
     }
     assert (
-        MEDRTValidator(
-            terms=ExternalDictionary(terms_dictionary)
-        ).is_valid_code_term_pair(row, "term", "code")
+        MEDRTValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code_term_pair(row, "term", "code")
         == expected_outcome
     )

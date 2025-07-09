@@ -37,8 +37,6 @@ def test_meddra_term_references_validator(
     operation_params.dataframe = invalid_df
     operation_params.domain = "AE"
     operation_params.meddra_path = installed_meddra_dictionaries["meddra_path"]
-    result = MedDRATermReferencesValidator(
-        operation_params, invalid_df, cache, data_service
-    ).execute()
+    result = MedDRATermReferencesValidator(operation_params, invalid_df, cache, data_service).execute()
     assert operation_params.operation_id in result
     assert result[operation_params.operation_id].equals(pd.Series([False, False, True]))

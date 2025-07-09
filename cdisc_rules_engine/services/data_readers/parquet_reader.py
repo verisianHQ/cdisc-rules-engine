@@ -25,13 +25,9 @@ class ParquetReader(DataReaderInterface):
             PandasDataset: self._read_pandas,
             DaskDataset: self._read_dask,
         }
-        return type_to_reader_map.get(self.dataset_implementation, self._read_pandas)(
-            file_path
-        )
+        return type_to_reader_map.get(self.dataset_implementation, self._read_pandas)(file_path)
 
-    def _format_floats(
-        self, dataframe: Union[pd.DataFrame, dd.DataFrame]
-    ) -> Union[pd.DataFrame, dd.DataFrame]:
+    def _format_floats(self, dataframe: Union[pd.DataFrame, dd.DataFrame]) -> Union[pd.DataFrame, dd.DataFrame]:
         return dataframe.applymap(lambda x: round(x, 15) if isinstance(x, float) else x)
 
     def _read_dask(self, file_path):

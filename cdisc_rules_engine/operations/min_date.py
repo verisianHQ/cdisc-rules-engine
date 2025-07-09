@@ -12,7 +12,5 @@ class MinDate(BaseOperation):
             else:
                 result = min_date.isoformat()
         else:
-            result = self.params.dataframe.groupby(
-                self.params.grouping, as_index=False
-            ).min()
+            result = self.params.dataframe.groupby(self.params.grouping, as_index=False).min()
         return result

@@ -8,10 +8,7 @@ class VariableIsNull(BaseOperation):
         if self.params.target.startswith("define_variable"):
             # Handle checks against define metadata
             target_column = self.evaluation_dataset[self.params.target]
-            result = [
-                self._is_target_variable_null(dataframe, value)
-                for value in target_column
-            ]
+            result = [self._is_target_variable_null(dataframe, value) for value in target_column]
             return self.data_service.dataset_implementation().convert_to_series(result)
         else:
             target_variable = self.params.target.replace("--", self.params.domain, 1)

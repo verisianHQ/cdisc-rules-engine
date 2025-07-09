@@ -87,9 +87,7 @@ def test_is_in(data, check_values, expected_result):
     df = pandas.DataFrame.from_dict(data)
     vlm = ValueLevelMetadata()
     vlm.item = Mock(Name="TEST")
-    vlm.check_values = [
-        CheckValue(_content=check_value) for check_value in check_values
-    ]
+    vlm.check_values = [CheckValue(_content=check_value) for check_value in check_values]
     partial_function = vlm.is_in()
     assert partial_function(df.iloc[0]) == expected_result
 
@@ -106,8 +104,6 @@ def test_is_not_in(data, check_values, expected_result):
     df = pandas.DataFrame.from_dict(data)
     vlm = ValueLevelMetadata()
     vlm.item = Mock(Name="TEST")
-    vlm.check_values = [
-        CheckValue(_content=check_value) for check_value in check_values
-    ]
+    vlm.check_values = [CheckValue(_content=check_value) for check_value in check_values]
     partial_function = vlm.is_not_in()
     assert partial_function(df.iloc[0]) == expected_result

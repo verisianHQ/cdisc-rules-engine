@@ -9,15 +9,8 @@ class Mean(BaseOperation):
         else:
             if isinstance(self.params.dataframe, DaskDataset):
                 dask_df = self.params.dataframe.data
-                result_df = (
-                    dask_df.groupby(self.params.grouping)[self.params.target]
-                    .mean()
-                    .compute()
-                    .reset_index()
-                )
+                result_df = dask_df.groupby(self.params.grouping)[self.params.target].mean().compute().reset_index()
                 return result_df
             else:
-                result = self.params.dataframe.groupby(
-                    self.params.grouping, as_index=False
-                )[self.params.target].mean()
+                result = self.params.dataframe.groupby(self.params.grouping, as_index=False)[self.params.target].mean()
         return result

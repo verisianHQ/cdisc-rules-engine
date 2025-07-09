@@ -46,9 +46,7 @@ def test_prefix_is_contained_by(dataset_type, target, prefix_length, expected_re
         (DaskDataset, "var2", 2, [False, True, True]),
     ],
 )
-def test_prefix_is_not_contained_by(
-    dataset_type, target, prefix_length, expected_result
-):
+def test_prefix_is_not_contained_by(dataset_type, target, prefix_length, expected_result):
     data = {
         "var1": ["AETEST", "AETESTCD", "LBTEST"],
         "var2": ["AETEST", "AFTESTCD", "RRTEST"],
@@ -114,9 +112,7 @@ def test_suffix_is_contained_by(dataset_type, target, suffix_length, expected_re
         (DaskDataset, "var2", 2, [False, False, True]),
     ],
 )
-def test_suffix_is_not_contained_by(
-    dataset_type, target, suffix_length, expected_result
-):
+def test_suffix_is_not_contained_by(dataset_type, target, suffix_length, expected_result):
     data = {
         "var1": ["AETEST", "AETESTCD", "LBTEGG"],
         "var2": ["AETEST", "AFTESTCD", "RRTELE"],

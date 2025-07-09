@@ -45,9 +45,7 @@ class DatasetPreprocessor:
         self._data_service = data_service
         self._rule_processor = RuleProcessor(self._data_service, cache_service)
 
-    def preprocess(
-        self, rule: dict, datasets: Iterable[SDTMDatasetMetadata]
-    ) -> DatasetInterface:
+    def preprocess(self, rule: dict, datasets: Iterable[SDTMDatasetMetadata]) -> DatasetInterface:
         """
         Preprocesses the dataset by merging it with the
         datasets from the provided rule.
@@ -86,16 +84,11 @@ class DatasetPreprocessor:
                     [
                         target.replace(f"{domain_name}.", "")
                         for target in rule_targets
-                        if isinstance(target, str)
-                        and target.startswith(f"{domain_name}.")
+                        if isinstance(target, str) and target.startswith(f"{domain_name}.")
                     ]
                 )
                 other_dataset.columns = [
-                    (
-                        f"{domain_name}.{column}"
-                        if column in referenced_targets
-                        else column
-                    )
+                    (f"{domain_name}.{column}" if column in referenced_targets else column)
                     for column in other_dataset.columns
                 ]
                 result = self._merge_datasets(
@@ -113,9 +106,7 @@ class DatasetPreprocessor:
 
     def _download_dataset(self, filename: str) -> DatasetInterface:
         return self._data_service.get_dataset(
-            dataset_name=os.path.join(
-                os.path.dirname(self._dataset_metadata.full_path), filename
-            )
+            dataset_name=os.path.join(os.path.dirname(self._dataset_metadata.full_path), filename)
         )
 
     def _merge_datasets(
@@ -131,9 +122,7 @@ class DatasetPreprocessor:
         Identifies dataset type and merges based on it.
         """
         # replace -- pattern in match keys for each domain
-        match_keys: List[Union[str, dict]] = right_dataset_domain_details.get(
-            "match_key"
-        )
+        match_keys: List[Union[str, dict]] = right_dataset_domain_details.get("match_key")
         left_dataset_match_keys = replace_pattern_in_list_of_strings(
             get_sided_match_keys(match_keys=match_keys, side="left"),
             "--",
@@ -177,8 +166,6 @@ class DatasetPreprocessor:
                 left_dataset_match_keys=left_dataset_match_keys,
                 right_dataset_match_keys=right_dataset_match_keys,
                 right_dataset_domain_name=right_dataset_domain_name,
-                join_type=JoinTypes(
-                    right_dataset_domain_details.get("join_type", "inner")
-                ),
+                join_type=JoinTypes(right_dataset_domain_details.get("join_type", "inner")),
             )
         return result

@@ -93,9 +93,7 @@ def test_invalid_date(data, dataset_type, expected_result):
 def test_date_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.date_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.date_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -170,9 +168,7 @@ def test_date_equal_to(data, comparator, dataset_type, expected_result):
         ),
     ],
 )
-def test_date_equal_to_date_components(
-    data, comparator, date_component, dataset_type, expected_result
-):
+def test_date_equal_to_date_components(data, comparator, date_component, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.date_equal_to(
@@ -224,9 +220,7 @@ def test_date_equal_to_date_components(
 def test_date_less_than(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.date_less_than(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.date_less_than({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -301,9 +295,7 @@ def test_date_less_than(data, comparator, dataset_type, expected_result):
         ),
     ],
 )
-def test_date_less_than_date_components(
-    data, comparator, date_component, dataset_type, expected_result
-):
+def test_date_less_than_date_components(data, comparator, date_component, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.date_less_than(
@@ -355,9 +347,7 @@ def test_date_less_than_date_components(
 def test_date_less_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.date_less_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.date_less_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -432,9 +422,7 @@ def test_date_less_than_or_equal_to(data, comparator, dataset_type, expected_res
         ),
     ],
 )
-def test_date_less_than_or_equal_to_date_components(
-    data, comparator, date_component, dataset_type, expected_result
-):
+def test_date_less_than_or_equal_to_date_components(data, comparator, date_component, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.date_less_than_or_equal_to(
@@ -486,9 +474,7 @@ def test_date_less_than_or_equal_to_date_components(
 def test_date_greater_than(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.date_greater_than(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.date_greater_than({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -563,9 +549,7 @@ def test_date_greater_than(data, comparator, dataset_type, expected_result):
         ),
     ],
 )
-def test_date_greater_than_date_components(
-    data, comparator, date_component, dataset_type, expected_result
-):
+def test_date_greater_than_date_components(data, comparator, date_component, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.date_greater_than(
@@ -617,9 +601,7 @@ def test_date_greater_than_date_components(
 def test_date_greater_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.date_greater_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.date_greater_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -694,9 +676,7 @@ def test_date_greater_than_or_equal_to(data, comparator, dataset_type, expected_
         ),
     ],
 )
-def test_date_greater_than_or_equal_to_date_components(
-    data, comparator, date_component, dataset_type, expected_result
-):
+def test_date_greater_than_or_equal_to_date_components(data, comparator, date_component, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.date_greater_than_or_equal_to(
@@ -721,9 +701,7 @@ def test_is_complete_date(target, dataset_type, expected_result):
     }
     df = dataset_type.from_dict(data)
     assert (
-        DataframeType({"value": df})
-        .is_complete_date({"target": target})
-        .equals(df.convert_to_series(expected_result))
+        DataframeType({"value": df}).is_complete_date({"target": target}).equals(df.convert_to_series(expected_result))
     )
 
 

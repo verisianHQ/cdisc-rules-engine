@@ -126,9 +126,7 @@ class BaseOperation:
         else:
             # Handle single results
 
-            self.evaluation_dataset[self.params.operation_id] = (
-                self.evaluation_dataset.get_series_from_value(result)
-            )
+            self.evaluation_dataset[self.params.operation_id] = self.evaluation_dataset.get_series_from_value(result)
             return self.evaluation_dataset
 
     def _handle_grouped_result(self, result):
@@ -139,18 +137,12 @@ class BaseOperation:
         grouping_columns = self._get_grouping_columns()
         target_columns = grouping_columns + [self.params.operation_id]
         result = result.reset_index()
-        merged = self.evaluation_dataset.merge(
-            result[target_columns], on=grouping_columns, how="left"
-        )
-        self.data_service._replace_nans_in_specified_cols_with_none(
-            merged, [self.params.operation_id]
-        )
+        merged = self.evaluation_dataset.merge(result[target_columns], on=grouping_columns, how="left")
+        self.data_service._replace_nans_in_specified_cols_with_none(merged, [self.params.operation_id])
         return self.evaluation_dataset.__class__(merged.data)
 
     def _handle_dictionary_result(self, result):
-        self.evaluation_dataset[self.params.operation_id] = [result] * len(
-            self.evaluation_dataset
-        )
+        self.evaluation_dataset[self.params.operation_id] = [result] * len(self.evaluation_dataset)
         return self.evaluation_dataset
 
     def _filter_data(self, data):
@@ -166,8 +158,7 @@ class BaseOperation:
             columns={
                 v: self.params.grouping_aliases[i]
                 for i, v in enumerate(self.params.grouping)
-                if 0 <= i < len(self.params.grouping_aliases)
-                and self.params.grouping_aliases[i] != v
+                if 0 <= i < len(self.params.grouping_aliases) and self.params.grouping_aliases[i] != v
             }
         )
 
@@ -176,11 +167,7 @@ class BaseOperation:
             self.params.grouping
             if not self.params.grouping_aliases
             else [
-                (
-                    self.params.grouping_aliases[i]
-                    if 0 <= i < len(self.params.grouping_aliases)
-                    else v
-                )
+                (self.params.grouping_aliases[i] if 0 <= i < len(self.params.grouping_aliases) else v)
                 for i, v in enumerate(self.params.grouping)
             ]
         )
@@ -214,27 +201,19 @@ class BaseOperation:
             return variable_metadata[PERMISSIBILITY_KEY]
         elif variable_name in REQUIRED_MODEL_VARIABLES:
             return REQUIRED
-        elif variable_name.replace("--", self.params.domain) == SEQ_VARIABLE.replace(
-            "--", self.params.domain
-        ):
+        elif variable_name.replace("--", self.params.domain) == SEQ_VARIABLE.replace("--", self.params.domain):
             return REQUIRED
 
         return PERMISSIBLE
 
     def _get_variable_names_list(self, domain, dataframe):
         # get variables metadata from the standard model
-        variables_metadata: List[dict] = (
-            self._get_variables_metadata_from_standard_model(domain, dataframe)
-        )
+        variables_metadata: List[dict] = self._get_variables_metadata_from_standard_model(domain, dataframe)
         # create a list of variable names in accordance to the "ordinal" key
-        variable_names_list = self._replace_variable_wildcards(
-            variables_metadata, domain
-        )
+        variable_names_list = self._replace_variable_wildcards(variables_metadata, domain)
         return list(OrderedDict.fromkeys(variable_names_list))
 
-    def _get_variables_metadata_from_standard_model(
-        self, domain, dataframe
-    ) -> List[dict]:
+    def _get_variables_metadata_from_standard_model(self, domain, dataframe) -> List[dict]:
         """
         Gets variables metadata for the given class and domain from cache.
         The cache stores CDISC Library metadata.

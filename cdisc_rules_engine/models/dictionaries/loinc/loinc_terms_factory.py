@@ -30,9 +30,7 @@ class LoincTermsFactory(TermsFactoryInterface):
         Create LOINC dictionary terms from files in directory.
         """
         if not self.data_service.has_all_files(directory_path, [self.term_file_path]):
-            raise MissingDataError(
-                message="Loinc dictionary install missing required file: Loinc.csv"
-            )
+            raise MissingDataError(message="Loinc dictionary install missing required file: Loinc.csv")
 
         file_path = get_dictionary_path(directory_path, self.term_file_path)
         data = {}
@@ -44,9 +42,7 @@ class LoincTermsFactory(TermsFactoryInterface):
                     text_line = decode_line(bytes_line)
                     values = next(csv.reader(StringIO(text_line)))
                     if len(values) < 9:
-                        return MissingDataError(
-                            message="Loinc term found without required fields provided"
-                        )
+                        return MissingDataError(message="Loinc term found without required fields provided")
                     term = LoincTerm(
                         loinc_num=values[0].strip().strip('"'),
                         component=values[1].strip().strip('"'),
@@ -60,9 +56,7 @@ class LoincTermsFactory(TermsFactoryInterface):
                     version_last_updated = values[8].strip().strip('"')
                     if version_last_updated:
                         try:
-                            current_version = max(
-                                current_version, float(version_last_updated)
-                            )
+                            current_version = max(current_version, float(version_last_updated))
                         except ValueError:
                             pass
                     data[term.loinc_num] = term

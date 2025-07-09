@@ -18,9 +18,7 @@ class DefineDictionaryVersionValidator(BaseOperation):
         of provided when initiating validation.
         """
         if self.params.external_dictionary_type not in DictionaryTypes.values():
-            raise UnsupportedDictionaryType(
-                f"{self.params.external_dictionary_type} is not supported by the engine"
-            )
+            raise UnsupportedDictionaryType(f"{self.params.external_dictionary_type} is not supported by the engine")
 
         validator_type = DICTIONARY_VALIDATORS.get(self.params.external_dictionary_type)
         if not validator_type:
@@ -40,9 +38,7 @@ class DefineDictionaryVersionValidator(BaseOperation):
             dataset_name=os.path.join(self.params.directory_path, DEFINE_XML_FILE_NAME)
         )
         define_reader = DefineXMLReaderFactory.from_file_contents(define_contents)
-        define_dictionary_version = define_reader.get_external_dictionary_version(
-            self.params.external_dictionary_type
-        )
+        define_dictionary_version = define_reader.get_external_dictionary_version(self.params.external_dictionary_type)
         dictionary_version = validator.get_dictionary_version()
 
         return dictionary_version == define_dictionary_version

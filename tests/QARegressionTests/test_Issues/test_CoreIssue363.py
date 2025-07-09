@@ -16,18 +16,14 @@ class TestCoreIssue363(unittest.TestCase):
         )
 
         # Load data from JSON file
-        with open(
-            os.path.join("tests", "resources", "CoreIssue363", "CG0022.json"), "r"
-        ) as file:
+        with open(os.path.join("tests", "resources", "CoreIssue363", "CG0022.json"), "r") as file:
             data = json.load(file)
 
         # Send the POST request
         response = requests.post(url, json=data)
 
         # Check the response status code
-        self.assertEqual(
-            response.status_code, 200, "POST request failed with status code"
-        )
+        self.assertEqual(response.status_code, 200, "POST request failed with status code")
 
         # Retrieve the response data as a dictionary
         response_data = response.json()

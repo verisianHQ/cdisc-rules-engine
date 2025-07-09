@@ -23,22 +23,14 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
         ("COOLVAR", {}, PandasDataset),
     ],
 )
-def test_variable_value_count(
-    target, expected, dataset_type, mock_data_service, operation_params: OperationParams
-):
+def test_variable_value_count(target, expected, dataset_type, mock_data_service, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     dataset_path = os.path.join("study", "bundle", "blah")
     datasets_map = {
-        "AE": dataset_type.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
-        ),
-        "EX": dataset_type.from_dict(
-            {"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
-        ),
-        "AE2": dataset_type.from_dict(
-            {"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}
-        ),
+        "AE": dataset_type.from_dict({"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}),
+        "EX": dataset_type.from_dict({"STUDYID": [4, 8, 12], "EXSEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}),
+        "AE2": dataset_type.from_dict({"STUDYID": [4, 7, 9], "AESEQ": [1, 2, 3], "DOMAIN": [12, 6, 1]}),
     }
 
     datasets = [
@@ -63,13 +55,11 @@ def test_variable_value_count(
             {"domain": "AE", "filename": "AE2"},
         ]
     ]
-    mock_data_service.get_dataset.side_effect = (
-        lambda *args, **kwargs: datasets_map.get(
-            os.path.split(args[0].filename if args else kwargs["dataset_name"])[-1]
-        )
+    mock_data_service.get_dataset.side_effect = lambda *args, **kwargs: datasets_map.get(
+        os.path.split(args[0].filename if args else kwargs["dataset_name"])[-1]
     )
-    mock_data_service.concat_split_datasets.side_effect = (
-        lambda func, files: dataset_type().concat([func(f) for f in files])
+    mock_data_service.concat_split_datasets.side_effect = lambda func, files: dataset_type().concat(
+        [func(f) for f in files]
     )
     operation_params.datasets = datasets
     operation_params.original_target = target

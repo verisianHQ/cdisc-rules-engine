@@ -34,17 +34,11 @@ class ExternalDictionariesContainer:
 
     def get_dictionary_path(self, dictionary_type: str) -> str:
         if not self.is_valid_external_dictionary(dictionary_type):
-            raise UnsupportedDictionaryType(
-                f"{dictionary_type} is not supported by the engine"
-            )
+            raise UnsupportedDictionaryType(f"{dictionary_type} is not supported by the engine")
         return self.dictionary_path_mapping.get(dictionary_type)
 
-    def get_dictionary_validator_class(
-        self, dictionary_type: str
-    ) -> BaseDictionaryValidator:
+    def get_dictionary_validator_class(self, dictionary_type: str) -> BaseDictionaryValidator:
         validator_type = DICTIONARY_VALIDATORS.get(dictionary_type)
         if not validator_type:
-            raise UnsupportedDictionaryType(
-                f"{dictionary_type} has no associated dictionary validator "
-            )
+            raise UnsupportedDictionaryType(f"{dictionary_type} has no associated dictionary validator ")
         return validator_type

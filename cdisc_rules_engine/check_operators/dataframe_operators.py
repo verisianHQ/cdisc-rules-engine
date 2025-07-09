@@ -40,10 +40,7 @@ def log_operator_execution(func):
             logger.info(f"Completed check operator: {func.__name__}")
             return result
         except Exception as e:
-            logger.error(
-                f"Error in {func.__name__}: {str(e)}, "
-                f"traceback: {traceback.format_exc()}"
-            )
+            logger.error(f"Error in {func.__name__}: {str(e)}, " f"traceback: {traceback.format_exc()}")
             error_message = str(e)
             if isinstance(e, TypeError) and (
                 "NoneType" in error_message
@@ -119,9 +116,7 @@ class DataframeType(BaseType):
 
     @log_operator_execution
     def is_column_of_iterables(self, column):
-        return self.value.is_series(column) and (
-            isinstance(column.iloc[0], list) or isinstance(column.iloc[0], set)
-        )
+        return self.value.is_series(column) and (isinstance(column.iloc[0], list) or isinstance(column.iloc[0], set))
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -160,9 +155,7 @@ class DataframeType(BaseType):
         equal_to       Populated   "" or null  False
         equal_to       Populated   Populated   A == B
         """
-        comparison_data = (
-            comparator if comparator not in row or value_is_literal else row[comparator]
-        )
+        comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
         target_values = row[target]
         target_is_empty = pd.isna(target_values)
         if not target_is_empty and isinstance(row[target], str):
@@ -195,31 +188,19 @@ class DataframeType(BaseType):
         not_equal_to   Populated   "" or null  True
         not_equal_to   Populated   Populated   A != B
         """
-        comparison_data = (
-            comparator if comparator not in row or value_is_literal else row[comparator]
-        )
+        comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
         target_is_empty = pd.isna(row[target])
         if isinstance(row[target], str) and (
-            not target_is_empty.any()
-            if hasattr(target_is_empty, "any")
-            else not target_is_empty
+            not target_is_empty.any() if hasattr(target_is_empty, "any") else not target_is_empty
         ):
             target_is_empty = row[target] == ""
         comp_is_empty = pd.isna(comparison_data)
         if isinstance(comparison_data, str) and (
-            not comp_is_empty.any()
-            if hasattr(comp_is_empty, "any")
-            else not comp_is_empty
+            not comp_is_empty.any() if hasattr(comp_is_empty, "any") else not comp_is_empty
         ):
             comp_is_empty = comparison_data == ""
-        target_is_empty_scalar = (
-            target_is_empty.any()
-            if hasattr(target_is_empty, "any")
-            else target_is_empty
-        )
-        comp_is_empty_scalar = (
-            comp_is_empty.any() if hasattr(comp_is_empty, "any") else comp_is_empty
-        )
+        target_is_empty_scalar = target_is_empty.any() if hasattr(target_is_empty, "any") else target_is_empty
+        comp_is_empty_scalar = comp_is_empty.any() if hasattr(comp_is_empty, "any") else comp_is_empty
         if target_is_empty_scalar and comp_is_empty_scalar:
             return False
         if target_is_empty_scalar or comp_is_empty_scalar:
@@ -256,9 +237,7 @@ class DataframeType(BaseType):
             else other_value.get("comparator")
         )
         return self.value.apply(
-            lambda row: self._check_equality(
-                row, target, comparator, value_is_literal, case_insensitive=True
-            ),
+            lambda row: self._check_equality(row, target, comparator, value_is_literal, case_insensitive=True),
             axis=1,
         )
 
@@ -273,9 +252,7 @@ class DataframeType(BaseType):
             else other_value.get("comparator")
         )
         return self.value.apply(
-            lambda row: self._check_inequality(
-                row, target, comparator, value_is_literal, case_insensitive=True
-            ),
+            lambda row: self._check_inequality(row, target, comparator, value_is_literal, case_insensitive=True),
             axis=1,
         )
 
@@ -290,9 +267,7 @@ class DataframeType(BaseType):
             else other_value.get("comparator")
         )
         return self.value.apply(
-            lambda row: self._check_inequality(
-                row, target, comparator, value_is_literal
-            ),
+            lambda row: self._check_inequality(row, target, comparator, value_is_literal),
             axis=1,
         )
 
@@ -311,9 +286,7 @@ class DataframeType(BaseType):
         )
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         suffix: int = self.replace_prefix(other_value.get("suffix"))
-        return self._check_equality_of_string_part(
-            target, comparison_data, "suffix", suffix
-        )
+        return self._check_equality_of_string_part(target, comparison_data, "suffix", suffix)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -341,9 +314,7 @@ class DataframeType(BaseType):
         else:
             comparison_data = self.get_comparator_data(comparator, value_is_literal)
         prefix: int = self.replace_prefix(other_value.get("prefix"))
-        return self._check_equality_of_string_part(
-            target, comparison_data, "prefix", prefix
-        )
+        return self._check_equality_of_string_part(target, comparison_data, "prefix", prefix)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -368,9 +339,7 @@ class DataframeType(BaseType):
         )
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         prefix_length: int = other_value.get("prefix")
-        series_to_validate = self._get_string_part_series(
-            "prefix", prefix_length, target
-        )
+        series_to_validate = self._get_string_part_series("prefix", prefix_length, target)
         return self._value_is_contained_by(series_to_validate, comparison_data)
 
     @log_operator_execution
@@ -393,9 +362,7 @@ class DataframeType(BaseType):
         )
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         suffix_length: int = other_value.get("suffix")
-        series_to_validate = self._get_string_part_series(
-            "suffix", suffix_length, target
-        )
+        series_to_validate = self._get_string_part_series("suffix", suffix_length, target)
         return self._value_is_contained_by(series_to_validate, comparison_data)
 
     @log_operator_execution
@@ -436,9 +403,7 @@ class DataframeType(BaseType):
         """
         Checks if the given string part is equal to comparison data.
         """
-        series_to_validate = self._get_string_part_series(
-            part_to_validate, length, target
-        )
+        series_to_validate = self._get_string_part_series(part_to_validate, length, target)
         return series_to_validate.eq(comparison_data).astype(bool)
 
     def _where_less_than(self, target, comparison):
@@ -535,9 +500,7 @@ class DataframeType(BaseType):
             else other_value.get("comparator")
         )
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        if self.is_column_of_iterables(self.value[target]) or isinstance(
-            comparison_data, str
-        ):
+        if self.is_column_of_iterables(self.value[target]) or isinstance(comparison_data, str):
             results = vectorized_is_in(comparison_data, self.value[target])
         elif self.value.is_series(comparison_data):
             results = self._series_is_in(self.value[target], comparison_data)
@@ -567,18 +530,14 @@ class DataframeType(BaseType):
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         comparison_data = self.convert_string_data_to_lower(comparison_data)
         if self.is_column_of_iterables(self.value[target]):
-            results = vectorized_case_insensitive_is_in(
-                comparison_data, self.value[target]
-            )
+            results = vectorized_case_insensitive_is_in(comparison_data, self.value[target])
         elif self.value.is_series(comparison_data):
             results = self._series_is_in(
                 self.convert_string_data_to_lower(self.value[target]),
                 self.convert_string_data_to_lower(comparison_data),
             )
         else:
-            results = vectorized_case_insensitive_is_in(
-                comparison_data.lower(), self.value[target]
-            )
+            results = vectorized_case_insensitive_is_in(comparison_data.lower(), self.value[target])
         return self.value.convert_to_series(results)
 
     @log_operator_execution
@@ -620,9 +579,7 @@ class DataframeType(BaseType):
             comparator = self.replace_prefix(comparator)
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         if self.is_column_of_iterables(comparison_data):
-            results = vectorized_case_insensitive_is_in(
-                self.value[target].str.lower(), comparison_data
-            )
+            results = vectorized_case_insensitive_is_in(self.value[target].str.lower(), comparison_data)
             return self.value.convert_to_series(results)
         elif self.value.is_series(comparison_data):
             results = self.value[target].str.lower().isin(comparison_data.str.lower())
@@ -641,9 +598,7 @@ class DataframeType(BaseType):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
         prefix = other_value.get("prefix")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & converted_strings.astype(str).map(
             lambda x: re.search(comparator, x[:prefix]) is not None
         )
@@ -655,9 +610,7 @@ class DataframeType(BaseType):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
         prefix = other_value.get("prefix")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & ~converted_strings.astype(str).map(
             lambda x: re.search(comparator, x[:prefix]) is not None
         )
@@ -669,9 +622,7 @@ class DataframeType(BaseType):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
         suffix = other_value.get("suffix")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & converted_strings.astype(str).map(
             lambda x: re.search(comparator, x[-suffix:]) is not None
         )
@@ -683,9 +634,7 @@ class DataframeType(BaseType):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
         suffix = other_value.get("suffix")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & ~converted_strings.astype(str).map(
             lambda x: re.search(comparator, x[-suffix:]) is not None
         )
@@ -696,12 +645,8 @@ class DataframeType(BaseType):
     def matches_regex(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
-        results = converted_strings.notna() & converted_strings.astype(str).str.match(
-            comparator
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
+        results = converted_strings.notna() & converted_strings.astype(str).str.match(comparator)
         return results
 
     @log_operator_execution
@@ -709,12 +654,8 @@ class DataframeType(BaseType):
     def not_matches_regex(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
-        converted_strings = self.value[target].map(
-            lambda x: self._custom_str_conversion(x)
-        )
-        results = converted_strings.notna() & ~converted_strings.astype(str).str.match(
-            comparator
-        )
+        converted_strings = self.value[target].map(lambda x: self._custom_str_conversion(x))
+        results = converted_strings.notna() & ~converted_strings.astype(str).str.match(comparator)
         return results
 
     @log_operator_execution
@@ -788,12 +729,7 @@ class DataframeType(BaseType):
             if is_integer_dtype(comparison_data):
                 results = self.value[target].str.len().eq(comparison_data).astype(bool)
             else:
-                results = (
-                    self.value[target]
-                    .str.len()
-                    .eq(comparison_data.str.len())
-                    .astype(bool)
-                )
+                results = self.value[target].str.len().eq(comparison_data.str.len()).astype(bool)
         else:
             results = self.value[target].str.len().eq(comparator).astype(bool)
         return results
@@ -875,11 +811,7 @@ class DataframeType(BaseType):
         grouped_target = ordered_df.groupby(comparator)[target]
         # validate all targets except the last one
         results = grouped_target.apply(lambda x: x[:-1]).apply(
-            lambda x: (
-                pd.isna(x).all()
-                if isinstance(x, (pd.Series, list))
-                else (x in NULL_FLAVORS or pd.isna(x))
-            )
+            lambda x: (pd.isna(x).all() if isinstance(x, (pd.Series, list)) else (x in NULL_FLAVORS or pd.isna(x)))
         )
         if isinstance(self.value, DaskDataset) and self.value.is_series(results):
             results = results.compute()
@@ -905,11 +837,7 @@ class DataframeType(BaseType):
         grouped_target = ordered_df.groupby(comparator)[target]
         # validate all targets except the last one
         results = ~grouped_target.apply(lambda x: x[:-1]).apply(
-            lambda x: (
-                pd.isna(x).all()
-                if isinstance(x, (pd.Series, list))
-                else (x in NULL_FLAVORS or pd.isna(x))
-            )
+            lambda x: (pd.isna(x).all() if isinstance(x, (pd.Series, list)) else (x in NULL_FLAVORS or pd.isna(x)))
         )
         if isinstance(self.value, DaskDataset) and self.value.is_series(results):
             computed_results = results.compute()
@@ -929,9 +857,7 @@ class DataframeType(BaseType):
         else:
             comparator = self.replace_prefix(comparator)
             values = self.value[comparator].unique()
-        return self.value.convert_to_series(
-            set(values).issubset(set(self.value[target].unique()))
-        )
+        return self.value.convert_to_series(set(values).issubset(set(self.value[target].unique())))
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -962,9 +888,7 @@ class DataframeType(BaseType):
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         component = other_value.get("date_component")
         results = np.where(
-            vectorized_compare_dates(
-                component, self.value[target], comparison_data, operator
-            ),
+            vectorized_compare_dates(component, self.value[target], comparison_data, operator),
             True,
             False,
         )
@@ -1093,22 +1017,16 @@ class DataframeType(BaseType):
         else:
             comparator = self.replace_prefix(comparator)
         # remove repeating rows
-        df_without_duplicates: DatasetInterface = self.value[
-            [target, comparator]
-        ].drop_duplicates()
+        df_without_duplicates: DatasetInterface = self.value[[target, comparator]].drop_duplicates()
         # we need to check if ANY of the columns (target or comparator) is duplicated
         duplicated_comparator = df_without_duplicates[comparator].duplicated(keep=False)
         duplicated_target = df_without_duplicates[target].duplicated(keep=False)
         result = self.value.convert_to_series([False] * len(self.value))
         if duplicated_comparator.any():
-            duplicated_comparator_values = set(
-                df_without_duplicates[duplicated_comparator][comparator]
-            )
+            duplicated_comparator_values = set(df_without_duplicates[duplicated_comparator][comparator])
             result += self.value[comparator].isin(duplicated_comparator_values)
         if duplicated_target.any():
-            duplicated_target_values = set(
-                df_without_duplicates[duplicated_target][target]
-            )
+            duplicated_target_values = set(df_without_duplicates[duplicated_target][target])
             result += self.value[target].isin(duplicated_target_values)
         return result
 
@@ -1164,9 +1082,7 @@ class DataframeType(BaseType):
             )
         results = pd.Series(False, index=self.value.index)
         results = self.value.apply(
-            lambda row: self.detect_reference(
-                row, value_column, target, context, row[within_column]
-            ),
+            lambda row: self.detect_reference(row, value_column, target, context, row[within_column]),
             axis=1,
         )
 
@@ -1182,9 +1098,7 @@ class DataframeType(BaseType):
     def non_conformant_value_data_type(self, other_value):
         results = False
         for vlm in self.value_level_metadata:
-            results |= self.value.apply(
-                lambda row: vlm["filter"](row) and not vlm["type_check"](row), axis=1
-            )
+            results |= self.value.apply(lambda row: vlm["filter"](row) and not vlm["type_check"](row), axis=1)
         return self.value.convert_to_series(results.values)
 
     @log_operator_execution
@@ -1192,9 +1106,7 @@ class DataframeType(BaseType):
     def non_conformant_value_length(self, other_value):
         results = False
         for vlm in self.value_level_metadata:
-            results |= self.value.apply(
-                lambda row: vlm["filter"](row) and not vlm["length_check"](row), axis=1
-            )
+            results |= self.value.apply(lambda row: vlm["filter"](row) and not vlm["length_check"](row), axis=1)
         return self.value.convert_to_series(results)
 
     @log_operator_execution
@@ -1214,9 +1126,7 @@ class DataframeType(BaseType):
     def conformant_value_length(self, other_value):
         results = False
         for vlm in self.value_level_metadata:
-            results |= self.value.apply(
-                lambda row: vlm["filter"](row) and vlm["length_check"](row), axis=1
-            )
+            results |= self.value.apply(lambda row: vlm["filter"](row) and vlm["length_check"](row), axis=1)
         return self.value.convert_to_series(results)
 
     @log_operator_execution
@@ -1236,11 +1146,7 @@ class DataframeType(BaseType):
         target_columns = [target, comparator, group_by_column, order_by_column]
         ordered_df = self.value[target_columns].sort_values(by=[order_by_column])
         grouped_df = ordered_df.groupby(group_by_column)
-        results = grouped_df.apply(
-            lambda x: self.compare_target_with_comparator_next_row(
-                x, target, comparator
-            )
-        )
+        results = grouped_df.apply(lambda x: self.compare_target_with_comparator_next_row(x, target, comparator))
         return self.value.convert_to_series(results.explode().tolist())
 
     @log_operator_execution
@@ -1248,9 +1154,7 @@ class DataframeType(BaseType):
     def does_not_have_next_corresponding_record(self, other_value: dict):
         return ~self.has_next_corresponding_record(other_value)
 
-    def compare_target_with_comparator_next_row(
-        self, df: DatasetInterface, target: str, comparator: str
-    ):
+    def compare_target_with_comparator_next_row(self, df: DatasetInterface, target: str, comparator: str):
         """
         Compares current row of a target with the next row of comparator.
         We can't
@@ -1286,15 +1190,11 @@ class DataframeType(BaseType):
         group_by_column = self.replace_prefix(other_value.get("within"))
         grouped = self.value.groupby([group_by_column, target])
         meta = (target, bool)
-        results = grouped.apply(
-            lambda x: self.validate_series_length(x, target, min_count), meta=meta
-        )
+        results = grouped.apply(lambda x: self.validate_series_length(x, target, min_count), meta=meta)
         uuid = str(uuid4())
         return self.value.merge(results.rename(uuid), on=target)[uuid]
 
-    def validate_series_length(
-        self, data: DatasetInterface, target: str, min_length: int
-    ):
+    def validate_series_length(self, data: DatasetInterface, target: str, min_length: int):
         return len(data) > min_length
 
     @log_operator_execution
@@ -1302,9 +1202,7 @@ class DataframeType(BaseType):
     def not_present_on_multiple_rows_within(self, other_value: dict):
         return ~self.present_on_multiple_rows_within(other_value)
 
-    def detect_reference(
-        self, row, value_column, target_column, context=None, within_value=None
-    ):
+    def detect_reference(self, row, value_column, target_column, context=None, within_value=None):
         if within_value is not None:
             if context:
                 target_data = (
@@ -1313,18 +1211,12 @@ class DataframeType(BaseType):
                     .get(row[target_column], pd.Series([]).values)
                 )
             else:
-                target_data = self.relationship_data.get(within_value, {}).get(
-                    row[target_column], pd.Series([]).values
-                )
+                target_data = self.relationship_data.get(within_value, {}).get(row[target_column], pd.Series([]).values)
         else:
             if context:
-                target_data = self.relationship_data.get(row[context], {}).get(
-                    row[target_column], pd.Series([]).values
-                )
+                target_data = self.relationship_data.get(row[context], {}).get(row[target_column], pd.Series([]).values)
             else:
-                target_data = self.relationship_data.get(
-                    row[target_column], pd.Series([]).values
-                )
+                target_data = self.relationship_data.get(row[target_column], pd.Series([]).values)
         value = str(row[value_column])
         target_data_str = [str(x) for x in target_data]
         return value in target_data_str
@@ -1346,15 +1238,11 @@ class DataframeType(BaseType):
         pattern = rf"^{re.escape(variable_name)}(\d*)$"
         matching_columns = [col for col in df.columns if re.match(pattern, col)]
         if not matching_columns:
-            return pd.Series(
-                [False] * len(df)
-            )  # Return a series of False values if no matching columns
+            return pd.Series([False] * len(df))  # Return a series of False values if no matching columns
         sorted_columns = sorted(matching_columns, key=lambda x: (len(x), x))
 
         def check_inconsistency(row):
-            prev_populated = (
-                pd.notna(row[sorted_columns[0]]) and row[sorted_columns[0]] != ""
-            )
+            prev_populated = pd.notna(row[sorted_columns[0]]) and row[sorted_columns[0]] != ""
             for i in range(1, len(sorted_columns)):
                 curr_col = sorted_columns[i]
                 curr_value = row[curr_col]
@@ -1382,13 +1270,9 @@ class DataframeType(BaseType):
 
     def next_column_exists_and_previous_is_null(self, row) -> bool:
         row.reset_index(drop=True, inplace=True)
-        for index in row[
-            row.isin(NULL_FLAVORS) | pd.isna(row)
-        ].index:  # leaving null values only
+        for index in row[row.isin(NULL_FLAVORS) | pd.isna(row)].index:  # leaving null values only
             next_position: int = index + 1
-            if next_position < len(row) and not (
-                pd.isna(row[next_position]) or row[next_position] in NULL_FLAVORS
-            ):
+            if next_position < len(row) and not (pd.isna(row[next_position]) or row[next_position] in NULL_FLAVORS):
                 return True
         return False
 
@@ -1399,13 +1283,9 @@ class DataframeType(BaseType):
             # Check for generic versions of variables (i.e --DECOD)
             for key in self.column_prefix_map:
                 if column_name.startswith(self.column_prefix_map[key]):
-                    generic_column_name = column_name.replace(
-                        self.column_prefix_map[key], key, 1
-                    )
+                    generic_column_name = column_name.replace(self.column_prefix_map[key], key, 1)
                     if generic_column_name in self.column_codelist_map:
-                        return codelist in self.column_codelist_map.get(
-                            generic_column_name
-                        )
+                        return codelist in self.column_codelist_map.get(generic_column_name)
         return True
 
     @log_operator_execution
@@ -1436,11 +1316,7 @@ class DataframeType(BaseType):
         sort_order_bool: bool = sort_order == "asc"
         return (
             self.value[target]
-            .eq(
-                self.value[target].sort_values(
-                    ascending=sort_order_bool, ignore_index=True
-                )
-            )
+            .eq(self.value[target].sort_values(ascending=sort_order_bool, ignore_index=True))
             .astype(bool)
         )
 
@@ -1459,10 +1335,7 @@ class DataframeType(BaseType):
         target: str = self.replace_prefix(other_value.get("target"))
         reference_count_column: str = self.replace_prefix(other_value.get("comparator"))
         result = np.where(
-            vectorized_get_dict_key(
-                self.value[reference_count_column], self.value[target]
-            )
-            > 1,
+            vectorized_get_dict_key(self.value[reference_count_column], self.value[target]) > 1,
             True,
             False,
         )
@@ -1502,9 +1375,7 @@ class DataframeType(BaseType):
         is_sorted = pd.Series(True, index=group.index)
 
         for i in range(len(comparator_values) - 1):
-            if is_valid_date(comparator_values[i]) and is_valid_date(
-                comparator_values[i + 1]
-            ):
+            if is_valid_date(comparator_values[i]) and is_valid_date(comparator_values[i + 1]):
                 date1, prec1 = parse_date(comparator_values[i])
                 date2, prec2 = parse_date(comparator_values[i + 1])
                 if prec1 != prec2:
@@ -1537,9 +1408,7 @@ class DataframeType(BaseType):
             grouped_df = sorted_df.groupby(within)
 
             # Check basic sort order, remove multiindex from series
-            basic_sort_check = grouped_df.apply(
-                lambda x: self.check_basic_sort_order(x, target, comparator, ascending)
-            )
+            basic_sort_check = grouped_df.apply(lambda x: self.check_basic_sort_order(x, target, comparator, ascending))
             if pandas:
                 basic_sort_check = basic_sort_check.reset_index(level=0, drop=True)
             else:
@@ -1547,9 +1416,7 @@ class DataframeType(BaseType):
             result = result & basic_sort_check
 
             # Check date overlaps, remove multiindex from series
-            date_overlap_check = grouped_df.apply(
-                lambda x: self.check_date_overlaps(x, target, comparator)
-            )
+            date_overlap_check = grouped_df.apply(lambda x: self.check_date_overlaps(x, target, comparator))
             if pandas:
                 date_overlap_check = date_overlap_check.reset_index(level=0, drop=True)
             else:
@@ -1582,9 +1449,7 @@ class DataframeType(BaseType):
         result: False
         """
         target = self.replace_prefix(other_value.get("target"))
-        comparator = other_value.get(
-            "comparator"
-        )  # Assumes the comparator is a value not a column
+        comparator = other_value.get("comparator")  # Assumes the comparator is a value not a column
         metadata_column = self.replace_prefix(other_value.get("metadata"))
         result = np.where(
             vectorized_get_dict_key(self.value[metadata_column], target) == comparator,
@@ -1605,16 +1470,8 @@ class DataframeType(BaseType):
         comparator: str = self.replace_prefix(other_value.get("comparator"))
 
         def check_shared_elements(row):
-            target_set = (
-                set(row[target])
-                if isinstance(row[target], (list, set))
-                else {row[target]}
-            )
-            comparator_set = (
-                set(row[comparator])
-                if isinstance(row[comparator], (list, set))
-                else {row[comparator]}
-            )
+            target_set = set(row[target]) if isinstance(row[target], (list, set)) else {row[target]}
+            comparator_set = set(row[comparator]) if isinstance(row[comparator], (list, set)) else {row[comparator]}
             return bool(target_set.intersection(comparator_set))
 
         return self.value.apply(check_shared_elements, axis=1).any()
@@ -1626,16 +1483,8 @@ class DataframeType(BaseType):
         comparator: str = self.replace_prefix(other_value.get("comparator"))
 
         def check_exactly_one_shared_element(row):
-            target_set = (
-                set(row[target])
-                if isinstance(row[target], (list, set))
-                else {row[target]}
-            )
-            comparator_set = (
-                set(row[comparator])
-                if isinstance(row[comparator], (list, set))
-                else {row[comparator]}
-            )
+            target_set = set(row[target]) if isinstance(row[target], (list, set)) else {row[target]}
+            comparator_set = set(row[comparator]) if isinstance(row[comparator], (list, set)) else {row[comparator]}
             return len(target_set.intersection(comparator_set)) == 1
 
         return self.value.apply(check_exactly_one_shared_element, axis=1).any()
@@ -1647,16 +1496,8 @@ class DataframeType(BaseType):
         comparator: str = self.replace_prefix(other_value.get("comparator"))
 
         def check_no_shared_elements(row):
-            target_set = (
-                set(row[target])
-                if isinstance(row[target], (list, set))
-                else {row[target]}
-            )
-            comparator_set = (
-                set(row[comparator])
-                if isinstance(row[comparator], (list, set))
-                else {row[comparator]}
-            )
+            target_set = set(row[target]) if isinstance(row[target], (list, set)) else {row[target]}
+            comparator_set = set(row[comparator]) if isinstance(row[comparator], (list, set)) else {row[comparator]}
             return len(target_set.intersection(comparator_set)) == 0
 
         return self.value.apply(check_no_shared_elements, axis=1).all()
@@ -1687,9 +1528,7 @@ class DataframeType(BaseType):
         else:
             results = self.value.apply(check_order, axis=1)
         if missing_columns:
-            logger.info(
-                f"Columns not found in comparator list {comparator}: {', '.join(sorted(missing_columns))}"
-            )
+            logger.info(f"Columns not found in comparator list {comparator}: {', '.join(sorted(missing_columns))}")
         return results
 
     @log_operator_execution

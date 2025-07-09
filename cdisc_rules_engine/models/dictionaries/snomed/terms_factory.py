@@ -15,10 +15,7 @@ class SNOMEDTermsFactory(TermsFactoryInterface):
         self.edition = kwargs.get("edition")
         self.version = kwargs.get("version")
         self.term_limit = 100
-        self.base_url = (
-            kwargs.get("base_url")
-            or "https://snowstorm.snomedtools.org/snowstorm/snomed-ct/"
-        )
+        self.base_url = kwargs.get("base_url") or "https://snowstorm.snomedtools.org/snowstorm/snomed-ct/"
 
     def install_terms(self, directory_path: str, **kwargs) -> ExternalDictionary:
         if "concepts" not in kwargs:
@@ -45,9 +42,7 @@ class SNOMEDTermsFactory(TermsFactoryInterface):
         error_msg = response.json().get("message")
         raise MissingDataError(error_msg)
 
-    def _get_concepts(
-        self, published: bool = True, concept_ids: list[str] = []
-    ) -> list[SNOMEDTerm]:
+    def _get_concepts(self, published: bool = True, concept_ids: list[str] = []) -> list[SNOMEDTerm]:
         branch_name = quote(self.get_version(), safe="")
         is_published_flag = "true" if published else "false"
         concepts_string = "&conceptIds=".join(concept_ids)

@@ -9,9 +9,7 @@ class DatasetMetadataSerializer(BaseSerializer):
     def __init__(self, metadata: Iterable[SDTMDatasetMetadata]):
         self.__metadata = metadata
         if not self.is_valid:
-            raise InvalidDatasetFormat(
-                f"Given dataset metadata is invalid: {self.__metadata}"
-            )
+            raise InvalidDatasetFormat(f"Given dataset metadata is invalid: {self.__metadata}")
 
     @property
     def data(self) -> List[dict]:
@@ -39,10 +37,7 @@ class DatasetMetadataSerializer(BaseSerializer):
                 and isinstance(metadata_obj.modification_date, str)
                 and isinstance(metadata_obj.filename, str)
                 and isinstance(metadata_obj.full_path, str)
-                and (
-                    isinstance(metadata_obj.file_size, int)
-                    or isinstance(metadata_obj.file_size, float)
-                )
+                and (isinstance(metadata_obj.file_size, int) or isinstance(metadata_obj.file_size, float))
                 and isinstance(metadata_obj.record_count, int)
             ):
                 return False

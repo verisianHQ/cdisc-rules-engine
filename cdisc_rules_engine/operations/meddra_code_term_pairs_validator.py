@@ -13,9 +13,7 @@ from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTy
 class MedDRACodeTermPairsValidator(BaseOperation):
     def _execute_operation(self):
         # get metadata
-        meddra_path = self.params.external_dictionaries.get_dictionary_path(
-            DictionaryTypes.MEDDRA.value
-        )
+        meddra_path = self.params.external_dictionaries.get_dictionary_path(DictionaryTypes.MEDDRA.value)
         if not meddra_path:
             raise ValueError("Can't execute the operation, no whodrug path provided")
         term_type, columns = self._get_columns_by_meddra_variable_name()
@@ -26,9 +24,7 @@ class MedDRACodeTermPairsValidator(BaseOperation):
             valid_code_term_pairs = MedDRATerm.get_code_term_pairs(terms)
             self.cache.add(cache_key, valid_code_term_pairs)
         column = str(uuid4()) + "_pairs"
-        self.params.dataframe[
-            column
-        ] = self.data_service.dataset_implementation().convert_to_series(
+        self.params.dataframe[column] = self.data_service.dataset_implementation().convert_to_series(
             list(
                 zip(
                     self.params.dataframe[columns[0]],

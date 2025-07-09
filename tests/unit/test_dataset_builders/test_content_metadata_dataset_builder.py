@@ -286,14 +286,10 @@ def test_ContentMetadataDatasetBuilder_split_datasets(conditions):
         "dataset_label": "Clinical Global Impressions",
         "record_count": 1,
     }
-    expected = PandasDataset(
-        pd.DataFrame.from_dict([expected_output], orient="columns")
-    )
+    expected = PandasDataset(pd.DataFrame.from_dict([expected_output], orient="columns"))
     result = ContentMetadataDatasetBuilder(
         rule=rule,
-        data_service=DummyDataService(
-            MagicMock(), MagicMock(), MagicMock(), data=datasets
-        ),
+        data_service=DummyDataService(MagicMock(), MagicMock(), MagicMock(), data=datasets),
         cache_service=None,
         rule_processor=processor,
         data_processor=None,
@@ -313,14 +309,10 @@ def test_ContentMetadataDatasetBuilder_split_datasets(conditions):
         "dataset_label": "Patient Global Impressions",
         "record_count": 1,
     }
-    expected2 = PandasDataset(
-        pd.DataFrame.from_dict([expected_output2], orient="columns")
-    )
+    expected2 = PandasDataset(pd.DataFrame.from_dict([expected_output2], orient="columns"))
     result2 = ContentMetadataDatasetBuilder(
         rule=rule,
-        data_service=DummyDataService(
-            MagicMock(), MagicMock(), MagicMock(), data=datasets
-        ),
+        data_service=DummyDataService(MagicMock(), MagicMock(), MagicMock(), data=datasets),
         cache_service=None,
         rule_processor=processor,
         data_processor=None,

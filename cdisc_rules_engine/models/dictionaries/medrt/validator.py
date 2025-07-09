@@ -33,9 +33,7 @@ class MEDRTValidator(BaseDictionaryValidator):
                     return True
             return False
 
-    def is_valid_code(
-        self, code: str, term_type: str, variable: str, codes=[], **kwargs
-    ) -> bool:
+    def is_valid_code(self, code: str, term_type: str, variable: str, codes=[], **kwargs) -> bool:
         term_dictionary = self.get_term_dictionary()
         case_sensitive_check = kwargs.get("case_sensitive")
         if case_sensitive_check:

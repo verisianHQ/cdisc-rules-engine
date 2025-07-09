@@ -14,13 +14,9 @@ def test_read_metadata():
     Unit test for function read.
     Loads test .ndjson file and extracts metadata.
     """
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_adam_dataset.ndjson"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_adam_dataset.ndjson"
 
-    reader = DatasetNDJSONMetadataReader(
-        test_dataset_path, file_name="test_adam_dataset.ndjson"
-    )
+    reader = DatasetNDJSONMetadataReader(test_dataset_path, file_name="test_adam_dataset.ndjson")
     metadata: dict = reader.read()
     assert metadata["adam_info"] == {
         "categorization_scheme": {

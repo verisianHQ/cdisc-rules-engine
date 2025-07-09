@@ -15,11 +15,7 @@ mock_datasets = [
     return_value=mock_datasets,
 )
 def test_is_split_dataset_from_file(mock_get_corresponding_datasets):
-    result = (
-        SDTMDatasetMetadata(
-            filename="SS11.xpt", first_record={"DOMAIN": "SS"}
-        ).is_split,
-    )
+    result = (SDTMDatasetMetadata(filename="SS11.xpt", first_record={"DOMAIN": "SS"}).is_split,)
     assert result
 
 
@@ -40,9 +36,7 @@ datasets_tests = [
 @pytest.mark.parametrize("mock_dataset, expected", datasets_tests)
 def test_is_supp_dataset(mock_dataset, expected):
     result = SDTMDatasetMetadata(**mock_dataset).is_supp
-    assert (
-        result == expected
-    ), f"Expected {expected} but got {result} for datasets {mock_datasets}"
+    assert result == expected, f"Expected {expected} but got {result} for datasets {mock_datasets}"
 
 
 datasets = [
@@ -91,9 +85,7 @@ domain_test_cases = [
 
 @pytest.mark.parametrize("domain, expected_datasets", domain_test_cases)
 def test_get_corresponding_datasets(domain, expected_datasets):
-    result_datasets = get_corresponding_datasets(
-        datasets, SDTMDatasetMetadata(first_record={"DOMAIN": domain})
-    )
+    result_datasets = get_corresponding_datasets(datasets, SDTMDatasetMetadata(first_record={"DOMAIN": domain}))
     assert result_datasets == [
         SDTMDatasetMetadata(**dataset) for dataset in expected_datasets
     ], f"The function should return only datasets matching the '{domain}' domain"

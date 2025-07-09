@@ -79,9 +79,7 @@ def test_inconsistent_enumerated_columns(dataset_type, data, expected_result):
             "target": "TSVAL",
         }
     )
-    assert (
-        result.tolist() == expected_result
-    ), f"Expected {expected_result}, got {result.tolist()}"
+    assert result.tolist() == expected_result, f"Expected {expected_result}, got {result.tolist()}"
 
 
 @pytest.mark.parametrize(
@@ -115,18 +113,12 @@ def test_inconsistent_enumerated_columns(dataset_type, data, expected_result):
         ),
     ],
 )
-def test_inconsistent_enumerated_columns_edge_cases(
-    dataset_type, data, expected_result
-):
+def test_inconsistent_enumerated_columns_edge_cases(dataset_type, data, expected_result):
     df = dataset_type.from_dict(data)
     result = DataframeType({"value": df}).inconsistent_enumerated_columns(
         {
             "target": "TSVAL",
         }
     )
-    assert isinstance(
-        result, pd.Series
-    ), f"Expected pandas Series result, got {type(result)}"
-    assert (
-        result.tolist() == expected_result
-    ), f"Expected {expected_result}, got {result.tolist()}"
+    assert isinstance(result, pd.Series), f"Expected pandas Series result, got {type(result)}"
+    assert result.tolist() == expected_result, f"Expected {expected_result}, got {result.tolist()}"

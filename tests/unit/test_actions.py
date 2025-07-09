@@ -79,9 +79,7 @@ def test_targeted_error_object_with_dataset_sensitivity():
     }
     df = pd.DataFrame.from_dict({"TEST": [1, 2, 3, 4]})
     variable = DatasetVariable(df)
-    action = COREActions(
-        [], variable, SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}), dummy_rule
-    )
+    action = COREActions([], variable, SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}), dummy_rule)
     targets = set(dummy_rule["output_variables"])
     result = action.generate_targeted_error_object(targets, df, "TEST greater than 0")
     assert len(result.errors) == 1
@@ -103,9 +101,7 @@ def test_empty_sequential():
         ],
         "output_variables": ["TV"],
     }
-    df = pd.DataFrame.from_dict(
-        {"TVSEQ": [2, 4, 6, None, "", 8], "TV": [1, 3, 5, 7, 9, "8"]}
-    )
+    df = pd.DataFrame.from_dict({"TVSEQ": [2, 4, 6, None, "", 8], "TV": [1, 3, 5, 7, 9, "8"]})
     variable = DatasetVariable(df)
     dataset_metadata = SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}, filename="tv")
     action = COREActions(
@@ -155,9 +151,7 @@ def test_json_serializable_value(data):
         }
     )
     variable = DatasetVariable(df)
-    action = COREActions(
-        [], variable, SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}), dummy_rule
-    )
+    action = COREActions([], variable, SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}), dummy_rule)
     targets = set(dummy_rule["output_variables"])
     result = action.generate_targeted_error_object(targets, df, "TVSEQ greater than 2")
     # Ensure json dumps does not throw an error
@@ -196,18 +190,12 @@ def test_nan_handling_in_error_object():
 
     # create expected DataFrame with NaN values replaced by 'null'
     expected_df = df.copy()
-    expected_df["NAN_VAL"] = expected_df["NAN_VAL"].apply(
-        lambda x: "null" if pd.isna(x) else x
-    )
+    expected_df["NAN_VAL"] = expected_df["NAN_VAL"].apply(lambda x: "null" if pd.isna(x) else x)
     expected_df["NAN_LIST"] = expected_df["NAN_LIST"].apply(
-        lambda x: (
-            "null" if isinstance(x, list) and any(pd.isna(val) for val in x) else x
-        )
+        lambda x: ("null" if isinstance(x, list) and any(pd.isna(val) for val in x) else x)
     )
     variable = DatasetVariable(df)
-    dataset_metadata = SDTMDatasetMetadata(
-        first_record={"DOMAIN": "TV"}, filename="test.xpt"
-    )
+    dataset_metadata = SDTMDatasetMetadata(first_record={"DOMAIN": "TV"}, filename="test.xpt")
     action = COREActions([], variable, dataset_metadata, dummy_rule)
 
     for i in range(len(df)):
@@ -215,20 +203,10 @@ def test_nan_handling_in_error_object():
         result = action._create_error_object(row, df)
         expected_val = expected_df["NAN_VAL"].iloc[i]
         expected_list = expected_df["NAN_LIST"].iloc[i]
-        assert (
-            result.value["NAN_VAL"] == expected_val
-        ), f"Row {i}: NAN_VAL does not match expected"
-        assert (
-            result.value["NAN_LIST"] == expected_list
-        ), f"Row {i}: NAN_LIST does not match expected"
+        assert result.value["NAN_VAL"] == expected_val, f"Row {i}: NAN_VAL does not match expected"
+        assert result.value["NAN_LIST"] == expected_list, f"Row {i}: NAN_LIST does not match expected"
 
-    all_results = action.generate_targeted_error_object(
-        set(dummy_rule["output_variables"]), df, "Testing NaN handling"
-    )
+    all_results = action.generate_targeted_error_object(set(dummy_rule["output_variables"]), df, "Testing NaN handling")
     json_output = json.dumps(all_results.to_representation())
-    assert (
-        '"NAN_VAL": "null"' in json_output
-    ), "Missing null value for NAN_VAL in output"
-    assert (
-        '"NAN_LIST": "null"' in json_output
-    ), "Missing null value for NAN_LIST in output"
+    assert '"NAN_VAL": "null"' in json_output, "Missing null value for NAN_VAL in output"
+    assert '"NAN_LIST": "null"' in json_output, "Missing null value for NAN_LIST in output"

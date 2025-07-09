@@ -157,10 +157,7 @@ class OperationsFactory(FactoryInterface):
             "library_metadata",
         }
         if not required_args.issubset(kwargs.keys()):
-            raise ValueError(
-                f"One of the following required key word arguments is missing: "
-                f"{required_args}"
-            )
+            raise ValueError(f"One of the following required key word arguments is missing: " f"{required_args}")
         if name in self._operations_map:
             return self._operations_map.get(name)(
                 kwargs.get("operation_params"),
@@ -170,6 +167,5 @@ class OperationsFactory(FactoryInterface):
                 kwargs.get("library_metadata"),
             )
         raise ValueError(
-            f"Operation name must be in  {list(self._operations_map.keys())}, "
-            f"given operation name is {name}"
+            f"Operation name must be in {list(self._operations_map.keys())}, " f"given operation name is {name}"
         )

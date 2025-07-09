@@ -39,9 +39,7 @@ class VariablesMetadataWithDefineAndLibraryDatasetBuilder(BaseDatasetBuilder):
         content_metadata: DatasetInterface = self.data_service.get_variables_metadata(
             dataset_name=self.dataset_path, datasets=self.datasets, drop_duplicates=True
         )
-        define_metadata: DatasetInterface = self.dataset_implementation.from_records(
-            variable_metadata
-        )
+        define_metadata: DatasetInterface = self.dataset_implementation.from_records(variable_metadata)
         library_metadata: DatasetInterface = self.get_library_variables_metadata()
         dataset_contents = self.get_dataset_contents()
 
@@ -62,11 +60,7 @@ class VariablesMetadataWithDefineAndLibraryDatasetBuilder(BaseDatasetBuilder):
 
         final_dataframe["variable_has_empty_values"] = final_dataframe.apply(
             lambda row: self.variable_has_null_values(
-                (
-                    row["variable_name"]
-                    if row["variable_name"] != ""
-                    else row["library_variable_name"]
-                ),
+                (row["variable_name"] if row["variable_name"] != "" else row["library_variable_name"]),
                 dataset_contents,
             ),
             axis=1,
@@ -74,9 +68,7 @@ class VariablesMetadataWithDefineAndLibraryDatasetBuilder(BaseDatasetBuilder):
 
         return final_dataframe
 
-    def variable_has_null_values(
-        self, variable: str, content: DatasetInterface
-    ) -> bool:
+    def variable_has_null_values(self, variable: str, content: DatasetInterface) -> bool:
         if variable not in content:
             return True
         series = content[variable]

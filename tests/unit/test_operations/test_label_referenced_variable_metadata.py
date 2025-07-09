@@ -16,10 +16,8 @@ import pytest
 from unittest.mock import Mock, patch
 
 
-@pytest.mark.parametrize("dataset_type", [(PandasDataset)])
-def test_get_label_referenced_variable_metadata(
-    operation_params: OperationParams, dataset_type
-):
+@pytest.mark.parametrize("dataset_type", [PandasDataset])
+def test_get_label_referenced_variable_metadata(operation_params: OperationParams, dataset_type):
     model_metadata = {
         "datasets": [
             {
@@ -172,15 +170,11 @@ def test_get_label_referenced_variable_metadata(
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
 
-    library_metadata = LibraryMetadataContainer(
-        standard_metadata=standard_metadata, model_metadata=model_metadata
-    )
+    library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata, model_metadata=model_metadata)
     mock_dataset_class = Mock()
     mock_dataset_class.name = "Events"
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     data_service.get_dataset_class = Mock(return_value=mock_dataset_class)
     operation = LabelReferencedVariableMetadata(
         operation_params,
@@ -210,14 +204,10 @@ def test_get_label_referenced_variable_metadata(
 
     assert result.columns.to_list() == expected_columns
     assert (
-        result.data[result["$label_referenced_variable_label"] == "TEST AE"][
-            "$label_referenced_variable_name"
-        ].values
+        result.data[result["$label_referenced_variable_label"] == "TEST AE"]["$label_referenced_variable_name"].values
         == "AETEST"
     )
     assert (
-        result.data[result["$label_referenced_variable_label"] == "NEW AE"][
-            "$label_referenced_variable_name"
-        ].values
+        result.data[result["$label_referenced_variable_label"] == "NEW AE"]["$label_referenced_variable_name"].values
         == "AENEW"
     )

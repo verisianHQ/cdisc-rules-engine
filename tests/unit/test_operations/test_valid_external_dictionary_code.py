@@ -17,9 +17,7 @@ import pytest
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_valid_external_dictionary_code_with_meddra(
-    mock_data_service, operation_params: OperationParams, dataset_type
-):
+def test_valid_external_dictionary_code_with_meddra(mock_data_service, operation_params: OperationParams, dataset_type):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     meddra_path = "meddra"
@@ -35,9 +33,7 @@ def test_valid_external_dictionary_code_with_meddra(
     )
 
     operation_params.dataframe = data
-    operation_params.external_dictionaries = ExternalDictionariesContainer(
-        {DictionaryTypes.MEDDRA.value: meddra_path}
-    )
+    operation_params.external_dictionaries = ExternalDictionariesContainer({DictionaryTypes.MEDDRA.value: meddra_path})
     terms_dictionary = {
         TermTypes.PT.value: {
             "1234": MedDRATerm({"term": "A"}),

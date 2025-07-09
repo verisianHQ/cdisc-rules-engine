@@ -46,9 +46,16 @@ class PandasDataset(DatasetInterface):
     def at(self):
         return self._data.at
 
-    @property
-    def iloc(self):
-        return self._data.iloc
+    def iloc(self, row_indexer, col_indexer=None):
+        """Purely integer-location based indexing for selection by position."""
+        if col_indexer is None:
+            result = self._data.iloc[row_indexer]
+        else:
+            result = self._data.iloc[row_indexer, col_indexer]
+
+        if isinstance(result, (pd.DataFrame, pd.Series)):
+            return self.__class__(result)
+        return result
 
     @classmethod
     def from_dict(cls, data: dict, **kwargs):
@@ -64,9 +71,7 @@ class PandasDataset(DatasetInterface):
         dataframe = pd.DataFrame.from_records(data, **kwargs)
         return cls(dataframe)
 
-    def __getitem__(
-        self, item: Union[str, List[str]]
-    ) -> Union[pd.Series, pd.DataFrame]:
+    def __getitem__(self, item: Union[str, List[str]]) -> Union[pd.Series, pd.DataFrame]:
         return self._data[item]
 
     def __setitem__(self, key, value: pd.Series):
@@ -89,13 +94,7 @@ class PandasDataset(DatasetInterface):
         return grouped_data.size()
 
     def is_column_sorted_within(self, group, column):
-        return (
-            False
-            not in self.groupby(group)[column]
-            .apply(list)
-            .map(lambda x: sorted(x) == x)
-            .values
-        )
+        return False not in self.groupby(group)[column].apply(list).map(lambda x: sorted(x) == x).values
 
     def concat(self, other: Union[DatasetInterface, List[DatasetInterface]], **kwargs):
         if isinstance(other, list):
@@ -134,9 +133,7 @@ class PandasDataset(DatasetInterface):
         """
         Drop specified labels from rows or columns.
         """
-        self._data = self._data.drop(
-            labels=labels, axis=axis, columns=columns, errors=errors
-        )
+        self._data = self._data.drop(labels=labels, axis=axis, columns=columns, errors=errors)
         return self
 
     def melt(
@@ -235,9 +232,7 @@ class PandasDataset(DatasetInterface):
         """
         Drop duplicate rows from the dataset.
         """
-        new_data = self._data.drop_duplicates(
-            subset=subset, keep=keep, inplace=inplace, **kwargs
-        )
+        new_data = self._data.drop_duplicates(subset=subset, keep=keep, inplace=inplace, **kwargs)
         return self.__class__(new_data)
 
     def replace(self, to_replace, value, **kwargs):
@@ -354,14 +349,10 @@ class PandasDataset(DatasetInterface):
 
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""
-        result = self._data.describe(
-            percentiles=percentiles, include=include, exclude=exclude
-        )
+        result = self._data.describe(percentiles=percentiles, include=include, exclude=exclude)
         return self.__class__(result)
 
-    def value_counts(
-        self, normalise=False, sort=True, ascending=False, bins=None, dropna=True
-    ):
+    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
         """Return a Series containing counts of unique values."""
         if len(self._data.columns) == 1:
             result = self._data.iloc[:, 0].value_counts(
@@ -376,9 +367,7 @@ class PandasDataset(DatasetInterface):
 
     def shift(self, periods=1, freq=None, axis=0, fill_value=None):
         """Shift index by desired number of periods."""
-        result = self._data.shift(
-            periods=periods, freq=freq, axis=axis, fill_value=fill_value
-        )
+        result = self._data.shift(periods=periods, freq=freq, axis=axis, fill_value=fill_value)
         return self.__class__(result)
 
     @property
@@ -411,9 +400,7 @@ class PandasDataset(DatasetInterface):
             def __getattr__(self, item):
                 # If accessing on entire DataFrame, raise error
                 if isinstance(self._data, pd.DataFrame):
-                    raise AttributeError(
-                        "Can only use .str accessor with string values!"
-                    )
+                    raise AttributeError("Can only use .str accessor with string values!")
                 return getattr(self._data.str, item)
 
         return StringAccessor(self._data)
@@ -432,9 +419,7 @@ class PandasDataset(DatasetInterface):
 
             def __getattr__(self, item):
                 if isinstance(self._data, pd.DataFrame):
-                    raise AttributeError(
-                        "Can only use .dt accessor with datetimelike values!"
-                    )
+                    raise AttributeError("Can only use .dt accessor with datetimelike values!")
                 return getattr(self._data.dt, item)
 
         return DatetimeAccessor(self._data)
@@ -443,17 +428,6 @@ class PandasDataset(DatasetInterface):
         """Check whether each element is contained in values."""
         result = self._data.isin(values)
         return self.__class__(result)
-
-    def iloc(self, row_indexer, col_indexer=None):
-        """Purely integer-location based indexing for selection by position."""
-        if col_indexer is None:
-            result = self._data.iloc[row_indexer]
-        else:
-            result = self._data.iloc[row_indexer, col_indexer]
-
-        if isinstance(result, (pd.DataFrame, pd.Series)):
-            return self.__class__(result)
-        return result
 
     def map(self, mapper, na_action=None):
         """Map values using an input mapping or function."""
@@ -507,15 +481,11 @@ class PandasDataset(DatasetInterface):
 
     def any(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether any element is True."""
-        return self._data.any(
-            axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs
-        )
+        return self._data.any(axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs)
 
     def all(self, axis=0, bool_only=None, skipna=True, level=None, **kwargs):
         """Return whether all elements are True."""
-        return self._data.all(
-            axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs
-        )
+        return self._data.all(axis=axis, bool_only=bool_only, skipna=skipna, level=level, **kwargs)
 
     def sum(
         self,
@@ -541,16 +511,12 @@ class PandasDataset(DatasetInterface):
 
     def mean(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the mean of the values."""
-        result = self._data.mean(
-            axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs
-        )
+        result = self._data.mean(axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs)
         if isinstance(result, pd.Series):
             return result
         return result
 
-    def std(
-        self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs
-    ):
+    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
         """Return sample standard deviation."""
         result = self._data.std(
             axis=axis,
@@ -566,9 +532,7 @@ class PandasDataset(DatasetInterface):
 
     def max(self, axis=None, skipna=True, level=None, numeric_only=None, **kwargs):
         """Return the maximum of the values."""
-        result = self._data.max(
-            axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs
-        )
+        result = self._data.max(axis=axis, skipna=skipna, level=level, numeric_only=numeric_only, **kwargs)
         if isinstance(result, pd.Series):
             return result
         return result

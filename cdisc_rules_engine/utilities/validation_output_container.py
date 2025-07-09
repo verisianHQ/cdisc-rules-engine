@@ -4,9 +4,7 @@ class ValidationOutputContainer:
 
     def add_output(self, validation_id, message):
         if validation_id in self.validation_output:
-            self.validation_output[validation_id] = self.validation_output[
-                validation_id
-            ] + [message]
+            self.validation_output[validation_id] = self.validation_output[validation_id] + [message]
         else:
             self.validation_output[validation_id] = [message]
 
