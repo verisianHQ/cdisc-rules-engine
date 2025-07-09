@@ -22,6 +22,8 @@ setuptools~=75.6.0
 cachetools==5.5.0
 Pympler==1.1
 psutil==6.1.1
+dask[dataframe]==2024.6.0
+dask[array]==2024.6.0
 pyreadstat==1.2.7
 fastparquet==2024.2.0
 psycopg2==2.9.10

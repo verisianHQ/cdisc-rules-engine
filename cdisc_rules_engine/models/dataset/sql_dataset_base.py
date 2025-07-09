@@ -1,9 +1,19 @@
 import uuid
 
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import List, Union, Dict, Any, Iterator, Tuple, Optional
 
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+
+
+class MergeMap(Enum):
+    """Mapped SQL commands for different merges."""
+    INNER = "INNER JOIN"
+    LEFT = "LEFT JOIN"
+    RIGHT = "RIGHT JOIN"
+    OUTER = "LEFT JOIN"
+    CROSS = "CROSS JOIN"
 
 
 class SQLDatasetBase(DatasetInterface, ABC):
@@ -722,7 +732,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
 
         return {}
 
-    def sort_values(self, by: Union[str, List[str]], ascending=True, **kwargs):
+    def sort_values(self, by: Union[str, List[str]], ascending=True, **kwargs) -> "SQLDatasetBase":
         """Sort dataset by columns."""
         if isinstance(by, str):
             by = [by]

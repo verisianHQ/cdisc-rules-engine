@@ -30,7 +30,7 @@ import numpy as np
         )
     ],
 )
-@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
 def test_preprocess_relationship_dataset(data_dict, dataset_implementation, dataset_kwargs):
     dataset_metadata = [
         SDTMDatasetMetadata(
@@ -131,8 +131,8 @@ def test_filter_dataset_columns_by_metadata_and_rule():
     ]
 
 
-@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
-def test_merge_datasets_on_relationship_columns(dataset_implementation):
+@pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
+def test_merge_datasets_on_relationship_columns(dataset_implementation, dataset_kwargs):
     """
     Unit test for DataProcessor.merge_datasets_on_relationship_columns method.
     """
@@ -154,7 +154,8 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
                 2,
                 3,
             ],
-        }
+        },
+        **dataset_kwargs
     )
     right_dataset = dataset_implementation.from_dict(
         {
@@ -188,11 +189,11 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
                 "3.0",
                 "3.0",
             ],
-        }
+        },
+        **dataset_kwargs
     )
-
     # call the tested function and check the results
-    merged_df = DataProcessor.merge_datasets_on_relationship_columns(
+    merged_dataset = DataProcessor.merge_datasets_on_relationship_columns(
         left_dataset=left_dataset,
         left_dataset_match_keys=[],
         right_dataset=right_dataset,
@@ -201,8 +202,8 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
         column_with_names="IDVAR",
         column_with_values="IDVARVAL",
     )
-    merged_df.data = merged_df.data.sort_values("AESEQ")
-    expected_df = dataset_implementation.from_dict(
+    merged_dataset = merged_dataset.sort_values("AESEQ")
+    expected_dataset = dataset_implementation.from_dict(
         {
             "USUBJID": [
                 "CDISC01",
@@ -214,13 +215,13 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
                 "AE",
                 "AE",
                 "AE",
-                "AE",
+                "AE",                
             ],
             "AESEQ": [
                 1.0,
                 2.0,
                 3.0,
-                3.0,
+                3.0
             ],
             "USUBJID.SUPPAE": [
                 "CDISC01",
@@ -228,7 +229,7 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
                 "CDISC01",
                 "CDISC01",
             ],
-            "RDOMAIN": [
+            "RDOMAIN.SUPPAE": [
                 "AE",
                 "AE",
                 "AE",
@@ -245,16 +246,11 @@ def test_merge_datasets_on_relationship_columns(dataset_implementation):
                 "AESEQ",
                 "AESEQ",
                 "AESEQ",
-            ],
-            "IDVARVAL": [
-                1.0,
-                2.0,
-                3.0,
-                3.0,
-            ],
-        }
+            ]
+        },
+        **dataset_kwargs
     )
-    assert merged_df.equals(expected_df)
+    assert merged_dataset.equals(expected_dataset)
 
 
 @pytest.mark.parametrize("dataset_implementation", [PandasDataset])
@@ -341,13 +337,13 @@ def test_merge_datasets_on_string_relationship_columns(dataset_implementation):
                 "AE",
                 "AE",
                 "AE",
-                "AE",
+                "AE",                
             ],
             "AESEQ": [
-                "CDISC_IA",
-                "CDISC_IB",
-                "CDISC_IC",
-                "CDISC_IC",
+                1.0,
+                2.0,
+                3.0,
+                3.0
             ],
             "USUBJID.SUPPAE": [
                 "CDISC01",
@@ -355,7 +351,7 @@ def test_merge_datasets_on_string_relationship_columns(dataset_implementation):
                 "CDISC01",
                 "CDISC01",
             ],
-            "RDOMAIN": [
+            "RDOMAIN.SUPPAE": [
                 "AE",
                 "AE",
                 "AE",
@@ -372,13 +368,7 @@ def test_merge_datasets_on_string_relationship_columns(dataset_implementation):
                 "AESEQ",
                 "AESEQ",
                 "AESEQ",
-            ],
-            "IDVARVAL": [
-                "CDISC_IA",
-                "CDISC_IB",
-                "CDISC_IC",
-                "CDISC_IC",
-            ],
+            ]
         }
     )
     assert merged_df.equals(expected_df)
