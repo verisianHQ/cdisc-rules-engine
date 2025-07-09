@@ -7,46 +7,31 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
-from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset, SQLiteDataset
+from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset, SQLiteDataset, DatasetInterface
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.enums.join_types import JoinTypes
 import numpy as np
 
 
 @pytest.mark.parametrize(
-    "data_dict, dataset_implementation",
+    "data_dict",
     [
         (
             {
                 "RDOMAIN": ["AE", "EC", "EC", "AE"],
                 "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
                 "IDVARVAL": [1, 2, 1, 3],
-            },
-            PandasDataset
-        ),
-        (
-            {
-                "RDOMAIN": ["AE", "EC", "EC", "AE"],
-                "IDVAR": ["AESEQ", "ECSEQ", "ECSEQ", "AESEQ"],
-                "IDVARVAL": [1, 2, 1, 3],
-            },
-            SQLiteDataset
+            }
         ),
         (
             {
                 "RSUBJID": [1, 4, 6000]
-            },
-            PandasDataset
-        ),
-        (
-            {
-                "RSUBJID": [1, 4, 6000]
-            },
-            SQLiteDataset
+            }
         )
     ],
 )
-def test_preprocess_relationship_dataset(data_dict, dataset_implementation, db_config):
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+def test_preprocess_relationship_dataset(data_dict, dataset_implementation, dataset_kwargs):
     dataset_metadata = [
         SDTMDatasetMetadata(
             name=domain,
@@ -55,38 +40,26 @@ def test_preprocess_relationship_dataset(data_dict, dataset_implementation, db_c
         )
         for domain in ["AE", "EC", "SUPP", "DM"]
     ]
-    data_kwargs = {}
-    data_kwargs["database_config"] = db_config
     data = dataset_implementation.from_dict(
-        data_dict, **data_kwargs
-
-
-
-
+        data_dict, **dataset_kwargs
     )
-    ae_kwargs = {}
-    ae_kwargs["database_config"] = db_config
     ae = dataset_implementation.from_dict(
         {
             "AESTDY": [4, 5, 6],
             "STUDYID": [101, 201, 300],
             "AESEQ": [1, 2, 3],
         },
-        **ae_kwargs
+        **dataset_kwargs
     )
-    ec_kwargs = {}
-    ec_kwargs["database_config"] = db_config
     ec = dataset_implementation.from_dict(
         {
             "ECSTDY": [500, 4],
             "STUDYID": [201, 101],
             "ECSEQ": [2, 1],
         },
-        **ec_kwargs
+        **dataset_kwargs
     )
-    dm_kwargs = {}
-    dm_kwargs["database_config"] = db_config
-    dm = dataset_implementation.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, **dm_kwargs)
+    dm = dataset_implementation.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, **dataset_kwargs)
     path_to_dataset_map: dict = {
         os.path.join("path", "ae.xpt"): ae,
         os.path.join("path", "ec.xpt"): ec,
@@ -561,7 +534,7 @@ def test_merge_datasets_on_join_type(join_type: JoinTypes, expected_df: PandasDa
     )
 
     # call the tested function and check the results
-    merged_df: PandasDataset = DataProcessor.merge_sdtm_datasets(
+    merged_df: DatasetInterface = DataProcessor.merge_sdtm_datasets(
         left_dataset=left_dataset,
         left_dataset_match_keys=["USUBJID", "BEREFID"],
         right_dataset=right_dataset,

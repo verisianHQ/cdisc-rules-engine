@@ -28,20 +28,28 @@ from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 meddra_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/meddra"
 whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug"
 
-
 # =====================================================
 # DATABASE CONFIG FUNCTIONS
 # =====================================================
 
 
 @pytest.fixture(scope="function")
+def dataset_kwargs():
+    """
+    Accessor for all dataset instantiating kwargs needed by all dataset implementations.
+    Current kwargs:
+    - SQLiteDataset -> db_config()
+    """
+    yield {
+        "database_config": db_config()
+    }
+
+
 def db_config():
     """Create a fresh database config for each test function."""
     config = SQLiteDatabaseConfig()
     config.initialise(in_memory=True)
-    yield config
-    # Cleanup after test
-    config.close_all()
+    return config
 
 
 @pytest.fixture(scope="function")

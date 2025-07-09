@@ -285,11 +285,12 @@ class SQLDatasetBase(DatasetInterface, ABC):
             )
 
         records = []
-        columns_set = set()
+        columns_list = []
 
         if data:
             for col, values in data.items():
-                columns_set.add(col)
+                if col not in columns_list:
+                    columns_list.append(col)
 
                 if hasattr(values, "tolist"):
                     values = values.tolist()
@@ -308,7 +309,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         if records:
             dataset._insert_records(records)
 
-        dataset.columns = list(columns_set)
+        dataset.columns = columns_list
 
         if not isinstance(dataset, cls):
             raise RuntimeError(
@@ -984,6 +985,123 @@ class SQLDatasetBase(DatasetInterface, ABC):
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""
         raise NotImplementedError("describe() must be implemented by subclass")
+
+    def astype(self, dtype, copy=True, errors='raise', **kwargs):
+        """Cast columns to a specified dtype."""
+        new_dataset_id = str(uuid.uuid4())
+        
+        if isinstance(dtype, dict):
+            dtype_map = dtype
+        else:
+            dtype_map = {col: dtype for col in self.columns}
+        
+        def convert_value(value, target_type):
+            """Convert a single value to the target type."""
+            if value is None:
+                return None
+                
+            try:
+                if hasattr(target_type, 'type'):
+                    return target_type.type(value).item()
+                
+                if target_type == int or target_type is int or str(target_type) == 'int64':
+                    return int(float(value))  # Convert through float to handle "1.0" -> 1
+                elif target_type == float or target_type is float or str(target_type) == 'float64':
+                    return float(value)
+                elif target_type == str or target_type is str or str(target_type) == 'object':
+                    return str(value)
+                elif target_type == bool or target_type is bool or str(target_type) == 'bool':
+                    if isinstance(value, bool):
+                        return value
+                    if isinstance(value, (int, float)):
+                        return bool(value)
+                    if isinstance(value, str):
+                        return value.lower() in ('true', 't', 'yes', 'y', '1')
+                    return bool(value)
+                else:
+                    return target_type(value)
+                    
+            except (ValueError, TypeError) as e:
+                if errors == 'raise':
+                    raise TypeError(f"Cannot cast {value} from {type(value)} to {target_type}: {e}")
+                else:
+                    return value
+        
+        # Process records in batches for efficiency
+        batch_size = 1000
+        offset = 0
+        
+        self.execute_sql(
+            """
+            SELECT row_num, data FROM dataset_records
+            WHERE dataset_id = ?
+            ORDER BY row_num
+            LIMIT ? OFFSET ?
+            """,
+            (self.dataset_id, batch_size, offset)
+        )
+        
+        batch = self.fetch_all()
+        if not batch:
+            return None
+            
+        records = []
+        for row in batch:
+            row_num = row['row_num']
+            data = self._parse_json(row['data'])
+            
+            for col, target_type in dtype_map.items():
+                if col in data:
+                    data[col] = convert_value(data[col], target_type)
+            
+            records.append((new_dataset_id, row_num, self._serialise_json(data)))
+        
+        self.execute_many(
+            """
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            VALUES (?, ?, ?)
+            """,
+            records
+        )
+        
+        offset += batch_size
+        
+        return self.__class__(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns,
+            length=self._length
+        )
+
+
+    def _convert_column_type(self, column: str, dtype, errors='raise'):
+        """
+        Convenience method to convert a single column to a specified type.
+        """
+        return self.astype({column: dtype}, errors=errors)
+
+
+    def _normalise_dtype(self, dtype):
+        """
+        Normalise dtype strings to python types.
+        """
+        dtype_mapping = {
+            'int': int,
+            'int32': int,
+            'int64': int,
+            'float': float,
+            'float32': float,
+            'float64': float,
+            'str': str,
+            'string': str,
+            'object': str,
+            'bool': bool,
+            'boolean': bool,
+        }
+        
+        if isinstance(dtype, str):
+            return dtype_mapping.get(dtype.lower(), dtype)
+        return dtype
 
     # ========== Groupby operations ==========
 
