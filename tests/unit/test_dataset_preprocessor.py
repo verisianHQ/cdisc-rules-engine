@@ -41,14 +41,14 @@ def test_preprocess_no_datasets_in_rule(
     dataset_rule_equal_to_error_objects: dict,
     data_dict: dict,
     dataset_implementation: DatasetInterface,
-    db_config: SQLiteDatabaseConfig,
+    dataset_kwargs: dict[str, SQLiteDatabaseConfig],
 ):
     """
     Unit test for preprocess method. Checks the case when
     no datasets are provided in the rule.
     Expected behaviour is the original dataset returned.
     """
-    dataset = dataset_implementation.from_dict(data_dict, **{"database_config": db_config})
+    dataset = dataset_implementation.from_dict(data_dict, **dataset_kwargs)
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
