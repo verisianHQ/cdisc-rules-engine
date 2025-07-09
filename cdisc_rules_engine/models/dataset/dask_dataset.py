@@ -90,6 +90,8 @@ class DaskDataset(PandasDataset):
 
     @classmethod
     def from_dict(cls, data: dict, **kwargs):
+        if "database_config" in kwargs.keys():
+            kwargs.pop("database_config")
         dataframe = dd.from_dict(data, npartitions=DEFAULT_NUM_PARTITIONS, **kwargs)
         return cls(dataframe)
 

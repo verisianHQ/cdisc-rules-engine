@@ -1,5 +1,8 @@
+from unittest.mock import MagicMock
 from cdisc_rules_engine.config.config import ConfigService
+from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
 from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -13,25 +16,31 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
 
 
 @pytest.mark.parametrize(
-    "target, standard, standard_version, expected_result, dataset_type",
+    "target, standard, standard_version, expected_result",
     [
         (
             {"STUDYID", "DOMAIN"},
             "sdtmig",
             "3-1-2",
             {"STUDYID", "DOMAIN"},
-            PandasDataset,
         ),
-        ({"STUDYID", "DOMAIN"}, "sdtmig", "3-1-2", {"STUDYID", "DOMAIN"}, DaskDataset),
+        (
+            {"STUDYID", "DOMAIN"},
+            "sdtmig",
+            "3-1-2",
+            {"STUDYID", "DOMAIN"},
+        ),
     ],
 )
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
 def test_get_variable_names_for_given_standard(
-    target,
-    standard,
-    standard_version,
-    expected_result,
-    dataset_type,
-    mock_data_service,
+    target: set,
+    standard: str,
+    standard_version: str,
+    expected_result: set,
+    dataset_implementation: DatasetInterface,
+    dataset_kwargs: dict[str, SQLiteDatabaseConfig],
+    mock_data_service: MagicMock,
     operation_params: OperationParams,
 ):
     config = ConfigService()
@@ -46,9 +55,9 @@ def test_get_variable_names_for_given_standard(
     )
     dataset_path = "study/bundle/blah"
     datasets_map = {
-        "AE": dataset_type.from_dict({"STUDYID": [4, 7, 9], "DOMAIN": [12, 6, 1]}),
-        "EX": dataset_type.from_dict({"STUDYID": [4, 8, 12], "DOMAIN": [12, 6, 1]}),
-        "AE2": dataset_type.from_dict({"STUDYID": [4, 7, 9], "DOMAIN": [12, 6, 1]}),
+        "AE": dataset_implementation.from_dict({"STUDYID": [4, 7, 9], "DOMAIN": [12, 6, 1]}, **dataset_kwargs),
+        "EX": dataset_implementation.from_dict({"STUDYID": [4, 8, 12], "DOMAIN": [12, 6, 1]}, **dataset_kwargs),
+        "AE2": dataset_implementation.from_dict({"STUDYID": [4, 7, 9], "DOMAIN": [12, 6, 1]}, **dataset_kwargs),
     }
 
     datasets = [
