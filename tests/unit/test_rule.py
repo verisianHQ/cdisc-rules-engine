@@ -140,15 +140,7 @@ def test_parse_datasets(match_datasets, expected_result):
             },
         ),
         (
-            {
-                "all": [
-                    {
-                        "not": {
-                            "any": [{"operator": "test", "name": "IDVAR", "value": 5}]
-                        }
-                    }
-                ]
-            },
+            {"all": [{"not": {"any": [{"operator": "test", "name": "IDVAR", "value": 5}]}}]},
             {
                 "all": [
                     {

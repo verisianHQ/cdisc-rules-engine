@@ -49,9 +49,7 @@ def test_references_correct_codelist(target, comparator, dataset_type, expected_
     }
     dft = DataframeType({"value": df, "column_codelist_map": column_codelist_map})
 
-    result = dft.references_correct_codelist(
-        {"target": target, "comparator": comparator}
-    )
+    result = dft.references_correct_codelist({"target": target, "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -84,9 +82,7 @@ def test_references_correct_codelist(target, comparator, dataset_type, expected_
         ),
     ],
 )
-def test_does_not_reference_correct_codelist(
-    target, comparator, dataset_type, expected_result
-):
+def test_does_not_reference_correct_codelist(target, comparator, dataset_type, expected_result):
     data = {
         "define_variable_name": ["TEST", "COOLVAR", "ANOTHERVAR"],
         "define_variable_controlled_terms": ["C123", "C456", "C789"],
@@ -102,7 +98,5 @@ def test_does_not_reference_correct_codelist(
     }
     dft = DataframeType({"value": df, "column_codelist_map": column_codelist_map})
 
-    result = dft.does_not_reference_correct_codelist(
-        {"target": target, "comparator": comparator}
-    )
+    result = dft.does_not_reference_correct_codelist({"target": target, "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))

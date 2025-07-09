@@ -21,9 +21,7 @@ def test_conformant_value_length(dataset_type):
 
     vlm = [{"filter": filter_func, "length_check": length_check}]
 
-    result = DataframeType(
-        {"value": df, "value_level_metadata": vlm}
-    ).conformant_value_length({})
+    result = DataframeType({"value": df, "value_level_metadata": vlm}).conformant_value_length({})
     assert result.equals(df.convert_to_series([True, False, False]))
 
 
@@ -43,9 +41,7 @@ def test_conformant_value_data_type(dataset_type):
 
     vlm = [{"filter": filter_func, "type_check": type_check}]
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "value_level_metadata": vlm}
-    ).conformant_value_data_type({})
+    result = DataframeType({"value": df, "value_level_metadata": vlm}).conformant_value_data_type({})
     assert result.equals(df.convert_to_series([True, True, False]))
 
 

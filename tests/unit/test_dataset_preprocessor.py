@@ -1,4 +1,3 @@
-from typing import Union
 from unittest.mock import MagicMock, patch
 import os
 import pandas as pd
@@ -24,24 +23,32 @@ from cdisc_rules_engine.models.library_metadata_container import (
 from cdisc_rules_engine.models.dataset import PandasDataset
 
 
-def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict):
+@pytest.mark.parametrize(
+    "data_dict",
+    [
+        {
+            "USUBJID": ["CDISC01", "CDISC01", "CDISC01"],
+            "AESEQ": [
+                1,
+                2,
+                3,
+            ],
+        }
+    ],
+)
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+def test_preprocess_no_datasets_in_rule(
+    dataset_rule_equal_to_error_objects: dict,
+    data_dict: dict,
+    dataset_implementation: DatasetInterface,
+    dataset_kwargs: dict[str, SQLiteDatabaseConfig],
+):
     """
     Unit test for preprocess method. Checks the case when
     no datasets are provided in the rule.
     Expected behaviour is the original dataset returned.
     """
-    dataset = PandasDataset(
-        pd.DataFrame.from_dict(
-            {
-                "USUBJID": ["CDISC01", "CDISC01", "CDISC01"],
-                "AESEQ": [
-                    1,
-                    2,
-                    3,
-                ],
-            }
-        )
-    )
+    dataset = dataset_implementation.from_dict(data_dict, **dataset_kwargs)
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
@@ -50,10 +57,9 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: PandasDataset = preprocessor.preprocess(
-        dataset_rule_equal_to_error_objects, datasets
-    )
-    assert preprocessed_dataset.data.equals(dataset.data)
+    preprocessed_dataset = preprocessor.preprocess(dataset_rule_equal_to_error_objects, datasets)
+    assert preprocessed_dataset.equals(dataset)
+
 
 @pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
 @pytest.mark.parametrize(
@@ -94,8 +100,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
                     31,
                     74,
                 ],
-            }
-            
+            },
         ),
         # (
         #     "inner",
@@ -275,58 +280,58 @@ def test_preprocess(
                 "CDISC002",
                 "CDISC003",
             ],
-        }
-        , **{"database_config": db_config}
+        },
+        **{"database_config": db_config},
     )
     ae_dataset = dataset_implementation.from_dict(
-            {
-                "AESEQ": [
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                ],
-                "AESTDY": [
-                    4,
-                    5,
-                    16,
-                    17,
-                ],
-                "STUDYID": [
-                    "1",
-                    "2",
-                    "1",
-                    "2",
-                ],
-                "USUBJID": [
-                    "CDISC001",
-                    "CDISC001",
-                    "CDISC002",
-                    "CDISC002",
-                ],
-            }
-        , **{"database_config": db_config}
+        {
+            "AESEQ": [
+                "1",
+                "2",
+                "3",
+                "4",
+            ],
+            "AESTDY": [
+                4,
+                5,
+                16,
+                17,
+            ],
+            "STUDYID": [
+                "1",
+                "2",
+                "1",
+                "2",
+            ],
+            "USUBJID": [
+                "CDISC001",
+                "CDISC001",
+                "CDISC002",
+                "CDISC002",
+            ],
+        },
+        **{"database_config": db_config},
     )
     ts_dataset = dataset_implementation.from_dict(
-            {
-                "TSSEQ": [
-                    "1",
-                    "2",
-                ],
-                "TSSTDY": [
-                    31,
-                    74,
-                ],
-                "STUDYID": [
-                    "1",
-                    "2",
-                ],
-                "USUBJID": [
-                    "CDISC001",
-                    "CDISC001",
-                ],
-            }
-        , **{"database_config": db_config}
+        {
+            "TSSEQ": [
+                "1",
+                "2",
+            ],
+            "TSSTDY": [
+                31,
+                74,
+            ],
+            "STUDYID": [
+                "1",
+                "2",
+            ],
+            "USUBJID": [
+                "CDISC001",
+                "CDISC001",
+            ],
+        },
+        **{"database_config": db_config},
     )
 
     # mock blob storage call
@@ -334,14 +339,10 @@ def test_preprocess(
         os.path.join("path", "ae.xpt"): ae_dataset,
         os.path.join("path", "ts.xpt"): ts_dataset,
     }
-    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[
-        dataset_name
-    ]
+    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[dataset_name]
 
     # call preprocessor
-    dataset_rule_equal_to["datasets"].append(
-        {"domain_name": "TS", "match_key": ["STUDYID", "USUBJID"]}
-    )
+    dataset_rule_equal_to["datasets"].append({"domain_name": "TS", "match_key": ["STUDYID", "USUBJID"]})
 
     if join_type:
         for ds in dataset_rule_equal_to["datasets"]:
@@ -350,9 +351,7 @@ def test_preprocess(
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
         ec_dataset,
-        SDTMDatasetMetadata(
-            first_record={"DOMAIN": "EC"}, full_path=os.path.join("path", "ec.xpt")
-        ),
+        SDTMDatasetMetadata(first_record={"DOMAIN": "EC"}, full_path=os.path.join("path", "ec.xpt")),
         data_service,
         InMemoryCacheService(),
     )
@@ -443,17 +442,13 @@ def test_preprocess_relationship_dataset(
         os.path.join("path", "ec.xpt"): ec_dataset,
         os.path.join("path", "suppec.xpt"): suppec_dataset,
     }
-    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[
-        dataset_name
-    ]
+    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[dataset_name]
 
     # call preprocessor
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
         ec_dataset,
-        SDTMDatasetMetadata(
-            first_record={"DOMAIN": "EC"}, full_path=os.path.join("path", "ec.xpt")
-        ),
+        SDTMDatasetMetadata(first_record={"DOMAIN": "EC"}, full_path=os.path.join("path", "ec.xpt")),
         data_service,
         InMemoryCacheService(),
     )
@@ -461,9 +456,7 @@ def test_preprocess_relationship_dataset(
         dataset_rule_record_in_parent_domain_equal_to,
         [
             SDTMDatasetMetadata(first_record={"DOMAIN": "EC"}, filename="ec.xpt"),
-            SDTMDatasetMetadata(
-                name="SUPPEC", first_record={"RDOMAIN": "EC"}, filename="suppec.xpt"
-            ),
+            SDTMDatasetMetadata(name="SUPPEC", first_record={"RDOMAIN": "EC"}, filename="suppec.xpt"),
         ],
     )
     expected_dataset = PandasDataset(
@@ -604,9 +597,7 @@ def test_preprocess_relationship_dataset(
     ],
 )
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
-def test_preprocess_relrec_dataset(
-    mock_get_dataset: MagicMock, relrec: dict, expected: dict
-):
+def test_preprocess_relrec_dataset(mock_get_dataset: MagicMock, relrec: dict, expected: dict):
     """
     Unit test for preprocess method. Checks the case when
     we are merging datasets using relrec.
@@ -716,16 +707,12 @@ def test_preprocess_relrec_dataset(
         os.path.join("path", "ae.xpt"): ae_dataset,
         os.path.join("path", "relrec.xpt"): relrec_dataset,
     }
-    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[
-        dataset_name
-    ]
+    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[dataset_name]
 
     # call preprocessor
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
-    sdtm_utilities.get_all_model_wildcard_variables = MagicMock(
-        return_value=["--SEQ", "--STDY"]
-    )
+    sdtm_utilities.get_all_model_wildcard_variables = MagicMock(return_value=["--SEQ", "--STDY"])
     # execute operation
     data_service = LocalDataService.get_instance(
         cache_service=cache,
@@ -800,9 +787,7 @@ def test_preprocess_with_merge_comparison(
         os.path.join("study_id", "data_bundle_id", "ae.xpt"): match_dataset,
         os.path.join("study_id", "data_bundle_id", "ec.xpt"): target_dataset,
     }
-    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[
-        dataset_name
-    ]
+    mock_get_dataset.side_effect = lambda dataset_name: path_to_dataset_map[dataset_name]
 
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
@@ -882,11 +867,7 @@ def test_preprocess_supp_with_blank_idvar_idvarval(mock_get_dataset):
             }
         ),
     }
-    datasets = [
-        SDTMDatasetMetadata(
-            name="SUPPAE", first_record={"RDOMAIN": "AE"}, filename="suppae.xpt"
-        )
-    ]
+    datasets = [SDTMDatasetMetadata(name="SUPPAE", first_record={"RDOMAIN": "AE"}, filename="suppae.xpt")]
     result = preprocessor.preprocess(rule, datasets)
     assert len(result.data) == 2
     assert "QNAM" in result.data.columns

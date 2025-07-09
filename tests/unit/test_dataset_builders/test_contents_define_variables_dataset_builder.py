@@ -77,8 +77,7 @@ from cdisc_rules_engine.models.dataset import PandasDataset
     ],
 )
 @patch(
-    "cdisc_rules_engine.dataset_builders.base_dataset_builder."
-    + "BaseDatasetBuilder.get_define_xml_variables_metadata"
+    "cdisc_rules_engine.dataset_builders.base_dataset_builder." + "BaseDatasetBuilder.get_define_xml_variables_metadata"
 )
 @patch(
     "cdisc_rules_engine.services.data_services.LocalDataService.get_dataset",
@@ -92,9 +91,9 @@ def test_contents_define_variables_dataset_builder(
     expected,
 ):
     mock_get_dataset.return_value = dataset_implementation.from_dict(content)
-    mock_get_define_xml_variables_metadata.return_value = pd.DataFrame.from_dict(
-        variables_metadata
-    ).to_records(index=False)
+    mock_get_define_xml_variables_metadata.return_value = pd.DataFrame.from_dict(variables_metadata).to_records(
+        index=False
+    )
     result = ContentsDefineVariablesDatasetBuilder(
         rule=None,
         data_service=LocalDataService(MagicMock(), MagicMock(), MagicMock()),

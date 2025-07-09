@@ -55,9 +55,7 @@ def test_less_than(data, comparator, dataset_type, expected_result):
 def test_less_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.less_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.less_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -112,7 +110,5 @@ def test_greater_than(data, comparator, dataset_type, expected_result):
 def test_greater_than_or_equal_to(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.greater_than_or_equal_to(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.greater_than_or_equal_to({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))

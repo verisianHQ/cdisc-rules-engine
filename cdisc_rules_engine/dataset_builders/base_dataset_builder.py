@@ -70,9 +70,7 @@ class BaseDatasetBuilder:
             # A content check is any check that is not in the list of rule types
             dataset: DatasetInterface = self.data_service.concat_split_datasets(
                 func_to_call=self.build_split_datasets,
-                datasets_metadata=get_corresponding_datasets(
-                    self.datasets, self.dataset_metadata
-                ),
+                datasets_metadata=get_corresponding_datasets(self.datasets, self.dataset_metadata),
                 **kwargs,
             )
         else:
@@ -88,9 +86,7 @@ class BaseDatasetBuilder:
             # A content check is any check that is not in the list of rule types
             dataset: DatasetInterface = self.data_service.concat_split_datasets(
                 func_to_call=self.data_service.get_dataset,
-                datasets_metadata=get_corresponding_datasets(
-                    self.datasets, self.dataset_metadata
-                ),
+                datasets_metadata=get_corresponding_datasets(self.datasets, self.dataset_metadata),
                 **kwargs,
             )
         else:
@@ -99,9 +95,7 @@ class BaseDatasetBuilder:
             dataset = tag_source(dataset, self.dataset_metadata)
         return dataset
 
-    def get_define_xml_item_group_metadata_for_dataset(
-        self, dataset_metadata: SDTMDatasetMetadata
-    ) -> List[dict]:
+    def get_define_xml_item_group_metadata_for_dataset(self, dataset_metadata: SDTMDatasetMetadata) -> List[dict]:
         """
         Gets Define XML item group metadata
         returns a list of dictionaries containing the following keys:
@@ -118,9 +112,7 @@ class BaseDatasetBuilder:
         define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.dataset_path, self.define_xml_path, self.data_service, self.cache
         )
-        return define_xml_reader.extract_dataset_metadata(
-            dataset_metadata["dataset_name"]
-        )
+        return define_xml_reader.extract_dataset_metadata(dataset_metadata["dataset_name"])
 
     def get_define_xml_item_group_metadata_for_domain(self, domain: str) -> List[dict]:
         """
@@ -148,9 +140,7 @@ class BaseDatasetBuilder:
         define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.dataset_path, self.define_xml_path, self.data_service, self.cache
         )
-        return define_xml_reader.extract_variables_metadata(
-            domain_name=self.dataset_metadata.domain
-        )
+        return define_xml_reader.extract_variables_metadata(domain_name=self.dataset_metadata.domain)
 
     def get_define_xml_value_level_metadata(self) -> List[dict]:
         """
@@ -159,9 +149,7 @@ class BaseDatasetBuilder:
         define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.dataset_path, self.define_xml_path, self.data_service, self.cache
         )
-        return define_xml_reader.extract_value_level_metadata(
-            domain_name=self.dataset_metadata.domain
-        )
+        return define_xml_reader.extract_value_level_metadata(domain_name=self.dataset_metadata.domain)
 
     @staticmethod
     def add_row_number(dataframe: DatasetInterface) -> None:

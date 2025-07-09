@@ -33,9 +33,7 @@ class ContentsDefineDatasetBuilder(BaseDatasetBuilder):
         """
         Returns the contents of a file as a dataframe for evaluation.
         """
-        data_contents_df = self.data_service.get_dataset(
-            dataset_name=dataset_name, datasets=self.datasets
-        )
+        data_contents_df = self.data_service.get_dataset(dataset_name=dataset_name, datasets=self.datasets)
         # Build dataset metadata dataframe
         size_unit: str = self.rule_processor.get_size_unit_from_rule(self.rule)
         dataset_metadata = self.data_service.get_dataset_metadata(
@@ -44,8 +42,6 @@ class ContentsDefineDatasetBuilder(BaseDatasetBuilder):
         # Build define xml dataframe
         define = self.get_define_xml_item_group_metadata_for_dataset(dataset_metadata)
         # Horizontally concat the data frames
-        filled = self.dataset_implementation.from_records(
-            [dataset_metadata | define] * data_contents_df.length
-        )
+        filled = self.dataset_implementation.from_records([dataset_metadata | define] * data_contents_df.length)
         concat = data_contents_df.concat(filled, axis=1)
         return concat

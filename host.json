@@ -22,7 +22,7 @@
   "applicationInsights": {
     "sampling": {
       "isEnabled": false,
-      "maxTelemetryItemsPerSecond" : 5
+      "maxTelemetryItemsPerSecond": 5
     }
   }
 }

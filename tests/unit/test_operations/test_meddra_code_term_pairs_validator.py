@@ -33,8 +33,6 @@ def test_meddra_code_term_pairs_validator(
     operation_params.domain = "AE"
     operation_params.target = "AELLT"
     operation_params.meddra_path = installed_meddra_dictionaries["meddra_path"]
-    result = MedDRACodeTermPairsValidator(
-        operation_params, invalid_df, cache, data_service
-    ).execute()
+    result = MedDRACodeTermPairsValidator(operation_params, invalid_df, cache, data_service).execute()
     assert operation_params.operation_id in result
     assert result[operation_params.operation_id].equals(pd.Series([False, False, True]))

@@ -26,9 +26,7 @@ def test_CG0019():
         + " -dp "
         + os.path.join("tests", "resources", "CoreIssue747", "Datasets.json")
         + " -dxp "
-        + os.path.join(
-            "tests", "resources", "CoreIssue747", "define_CG0019_split_and_supp.xml"
-        )
+        + os.path.join("tests", "resources", "CoreIssue747", "define_CG0019_split_and_supp.xml")
     )
 
     # Construct the command
@@ -58,9 +56,7 @@ def test_CG0019():
     # Remove None values using list comprehension
     coreid_values = [value for value in coreid_values if value is not None]
     dataset_values = [value for value in dataset_values if value is not None]
-    rule_status_column_values = [
-        value for value in rule_status_column_values if value is not None
-    ]
+    rule_status_column_values = [value for value in rule_status_column_values if value is not None]
 
     # Perform the assertion
     assert process.returncode == 0, f"Process failed with error: {stderr.decode()}"

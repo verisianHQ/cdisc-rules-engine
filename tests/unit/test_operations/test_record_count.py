@@ -41,9 +41,7 @@ def test_record_count_operation(operation_params: OperationParams, dataset_type)
             ],
         }
     )
-    operation = RecordCount(
-        operation_params, operation_params.dataframe, MagicMock(), MagicMock()
-    )
+    operation = RecordCount(operation_params, operation_params.dataframe, MagicMock(), MagicMock())
     result: PandasDataset = operation.execute()
     expected: pd.Series = pd.Series(
         [
@@ -99,9 +97,7 @@ def test_record_count_operation(operation_params: OperationParams, dataset_type)
         ),
     ],
 )
-def test_filtered_record_count(
-    data, expected, filter, operation_params: OperationParams
-):
+def test_filtered_record_count(data, expected, filter, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -194,9 +190,7 @@ def test_multi_filter_record_count(data, expected, operation_params: OperationPa
         ),
     ],
 )
-def test_grouped_record_count(
-    data, expected, grouping_aliases, operation_params: OperationParams
-):
+def test_grouped_record_count(data, expected, grouping_aliases, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -204,9 +198,7 @@ def test_grouped_record_count(
     operation_params.grouping = ["STUDYID"]
     operation_params.grouping_aliases = grouping_aliases
     result = RecordCount(operation_params, data, cache, data_service).execute()
-    grouping_column = "".join(
-        operation_params.grouping_aliases or operation_params.grouping
-    )
+    grouping_column = "".join(operation_params.grouping_aliases or operation_params.grouping)
     expected = expected.data.replace(np.nan, None)
     assert operation_params.operation_id in result
     assert grouping_column in result
@@ -306,9 +298,7 @@ def test_grouped_record_count(
         ),
     ],
 )
-def test_multi_group_record_count(
-    data, expected, grouping_aliases, operation_params: OperationParams
-):
+def test_multi_group_record_count(data, expected, grouping_aliases, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -372,9 +362,7 @@ def test_multi_group_record_count(
         ),
     ],
 )
-def test_filtered_grouped_record_count(
-    data, expected, grouping_aliases, operation_params: OperationParams
-):
+def test_filtered_grouped_record_count(data, expected, grouping_aliases, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     data_service = DataServiceFactory(config, cache).get_data_service()
@@ -383,9 +371,7 @@ def test_filtered_grouped_record_count(
     operation_params.filter = {"STUDYID": "CDISC01"}
     operation_params.grouping_aliases = grouping_aliases
     result = RecordCount(operation_params, data, cache, data_service).execute()
-    grouping_column = "".join(
-        operation_params.grouping_aliases or operation_params.grouping
-    )
+    grouping_column = "".join(operation_params.grouping_aliases or operation_params.grouping)
     expected = expected.data.replace(np.nan, None)
     assert operation_params.operation_id in result
     assert grouping_column in result

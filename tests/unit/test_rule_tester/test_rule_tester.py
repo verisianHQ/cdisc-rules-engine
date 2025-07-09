@@ -3,9 +3,7 @@ from unittest.mock import patch
 
 from scripts.run_validation import run_single_rule_validation
 
-test_define_file_path: str = (
-    f"{path.dirname(__file__)}/../../resources/test_defineV22-SDTM.xml"
-)
+test_define_file_path: str = f"{path.dirname(__file__)}/../../resources/test_defineV22-SDTM.xml"
 
 
 @patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
@@ -239,9 +237,7 @@ def test_rule_with_define_xml(define_xml_variable_validation_rule: dict):
 
     with open(test_define_file_path, "r") as file:
         contents: str = file.read()
-        data = run_single_rule_validation(
-            datasets, rule=define_xml_variable_validation_rule, define_xml=contents
-        )
+        data = run_single_rule_validation(datasets, rule=define_xml_variable_validation_rule, define_xml=contents)
         assert "AE" in data
         assert len(data["AE"]) == 1
         assert len(data["AE"][0]["errors"]) > 0

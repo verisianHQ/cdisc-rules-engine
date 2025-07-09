@@ -80,14 +80,14 @@ class SQLiteDatabaseConfig:
 
             cursor.execute(
                 """
-                CREATE INDEX IF NOT EXISTS idx_dataset_records_dataset_row 
+                CREATE INDEX IF NOT EXISTS idx_dataset_records_dataset_row
                 ON dataset_records(dataset_id, row_num)
             """
             )
 
             cursor.execute(
                 """
-                CREATE INDEX IF NOT EXISTS idx_dataset_columns_dataset 
+                CREATE INDEX IF NOT EXISTS idx_dataset_columns_dataset
                 ON dataset_columns(dataset_id)
             """
             )
@@ -96,11 +96,7 @@ class SQLiteDatabaseConfig:
 
     def _get_thread_connection(self) -> sqlite3.Connection:
         """Get or create a connection for the current thread."""
-        if (
-            self._is_in_memory
-            and hasattr(self._local, "connection")
-            and self._local.connection
-        ):
+        if self._is_in_memory and hasattr(self._local, "connection") and self._local.connection:
             try:
                 self._local.connection.execute("SELECT 1")
             except sqlite3.ProgrammingError:
@@ -111,9 +107,7 @@ class SQLiteDatabaseConfig:
                 raise RuntimeError("Database not initialised. Call initialise() first.")
 
             # create a new connection for this thread
-            self._local.connection = sqlite3.connect(
-                self._database_path, **self._connection_params
-            )
+            self._local.connection = sqlite3.connect(self._database_path, **self._connection_params)
 
             # enable row factory for dict-like access
             self._local.connection.row_factory = sqlite3.Row
@@ -130,7 +124,7 @@ class SQLiteDatabaseConfig:
 
         cursor.execute(
             """
-            SELECT name FROM sqlite_master 
+            SELECT name FROM sqlite_master
             WHERE type='table' AND name='datasets'
         """
         )
@@ -175,14 +169,14 @@ class SQLiteDatabaseConfig:
 
             cursor.execute(
                 """
-                CREATE INDEX IF NOT EXISTS idx_dataset_records_dataset_row 
+                CREATE INDEX IF NOT EXISTS idx_dataset_records_dataset_row
                 ON dataset_records(dataset_id, row_num)
             """
             )
 
             cursor.execute(
                 """
-                CREATE INDEX IF NOT EXISTS idx_dataset_columns_dataset 
+                CREATE INDEX IF NOT EXISTS idx_dataset_columns_dataset
                 ON dataset_columns(dataset_id)
             """
             )

@@ -34,9 +34,7 @@ class DatasetMetadataDefineDatasetBuilder(BaseDatasetBuilder):
         # 2. Build dataset dataframe
         dataset_df = self._get_dataset_dataframe()
         if define_df.empty or dataset_df.empty:
-            raise ValueError(
-                "DatasetMetadataDefineDatasetBuilder: Define or Dataset metadata is empty."
-            )
+            raise ValueError("DatasetMetadataDefineDatasetBuilder: Define or Dataset metadata is empty.")
         # 3. Merge the two data frames
         merged = dataset_df.merge(
             define_df.data,
@@ -49,13 +47,9 @@ class DatasetMetadataDefineDatasetBuilder(BaseDatasetBuilder):
         # 5. remove unused rows, replace rows with target row
         merged_cleaned = merged.dropna(subset=["dataset_name"])
         dataset_filename = (
-            os.path.basename(self.dataset_metadata.full_path).lower()
-            if self.dataset_metadata.full_path
-            else None
+            os.path.basename(self.dataset_metadata.full_path).lower() if self.dataset_metadata.full_path else None
         )
-        matching_row = merged_cleaned[
-            merged_cleaned["dataset_location"].str.lower() == dataset_filename
-        ]
+        matching_row = merged_cleaned[merged_cleaned["dataset_location"].str.lower() == dataset_filename]
         for column in merged.columns:
             merged[column] = matching_row[column].iloc[0]
         return merged
@@ -92,18 +86,12 @@ class DatasetMetadataDefineDatasetBuilder(BaseDatasetBuilder):
             datasets = self.dataset_implementation()
             for dataset in self.datasets:
                 try:
-                    ds_metadata = self.data_service.get_dataset_metadata(
-                        dataset.filename
-                    )
+                    ds_metadata = self.data_service.get_dataset_metadata(dataset.filename)
                     ds_metadata.data["dataset_domain"] = dataset.domain
                 except Exception as e:
                     logger.trace(e)
                     logger.error(f"Error: {e}. Error message: {str(e)}")
-                datasets.data = (
-                    ds_metadata.data
-                    if datasets.data.empty
-                    else datasets.data.append(ds_metadata.data)
-                )
+                datasets.data = ds_metadata.data if datasets.data.empty else datasets.data.append(ds_metadata.data)
 
             if datasets.data.empty or len(datasets.data) == 0:
                 dataset_df = self.dataset_implementation(columns=dataset_col_order)

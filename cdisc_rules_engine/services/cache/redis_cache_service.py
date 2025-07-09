@@ -26,9 +26,7 @@ class RedisCacheService(CacheServiceInterface):
         return cls._instance
 
     def __init__(self, host_name: str, access_key: str, port: int, ssl: bool):
-        self.client = redis.Redis(
-            host=host_name, port=port, db=0, password=access_key, ssl=ssl
-        )
+        self.client = redis.Redis(host=host_name, port=port, db=0, password=access_key, ssl=ssl)
 
     def add(self, cache_key, data):
         data = pickle.dumps(data)
@@ -41,10 +39,7 @@ class RedisCacheService(CacheServiceInterface):
         pop_cache_key: bool = False,
         prefix: str = "",
     ):
-        logger.info(
-            f"Saving batch to Redis cache. items={items},"
-            f" cache_key_name={cache_key_name}"
-        )
+        logger.info(f"Saving batch to Redis cache. items={items}, " f"cache_key_name={cache_key_name}")
         with self.client.pipeline() as pipe:
             for item in items:
                 cache_key: str = item.get(cache_key_name)
@@ -53,13 +48,9 @@ class RedisCacheService(CacheServiceInterface):
                         item.pop(cache_key_name)
                     pipe.set(prefix + cache_key, pickle.dumps(item))
                 else:
-                    logger.error(
-                        f"Unable to save item: {item}. Missing key: {cache_key_name}"
-                    )
+                    logger.error(f"Unable to save item: {item}. Missing key: {cache_key_name}")
             response: list = pipe.execute()
-        logger.info(
-            f"Successfully saved batch to Redis cache. Redis response = {response}"
-        )
+        logger.info(f"Successfully saved batch to Redis cache. Redis response = {response}")
 
     def get(self, cache_key):
         cached_data = self.client.get(cache_key)
@@ -69,9 +60,7 @@ class RedisCacheService(CacheServiceInterface):
             return None
 
     def get_all(self, cache_keys: List[str]):
-        return [
-            pickle.loads(cached_data) for cached_data in self.client.mget(cache_keys)
-        ]
+        return [pickle.loads(cached_data) for cached_data in self.client.mget(cache_keys)]
 
     def get_all_by_prefix(self, prefix):
         keys = [key for key in self.client.scan_iter(match=f"{prefix}*")]
@@ -91,9 +80,7 @@ class RedisCacheService(CacheServiceInterface):
             self.client.delete(key)
 
     def filter_cache(self, prefix: str) -> dict:
-        keys = [
-            key.decode("utf-8") for key in self.client.scan_iter(match=f"{prefix}*")
-        ]
+        keys = [key.decode("utf-8") for key in self.client.scan_iter(match=f"{prefix}*")]
         key_value_pairs = zip(keys, self.client.mget(keys))
         return {key: pickle.loads(value) for key, value in key_value_pairs}
 

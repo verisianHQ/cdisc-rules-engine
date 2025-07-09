@@ -56,19 +56,13 @@ def test_valid_whodrug_references(
     operation_params.target = "AEINA"
     operation_params.domain = "AE"
     operation_params.whodrug_path = installed_whodrug_dictionaries["whodrug_path"]
-    result = WhodrugHierarchyValidator(
-        operation_params, invalid_df, cache, data_service
-    ).execute()
+    result = WhodrugHierarchyValidator(operation_params, invalid_df, cache, data_service).execute()
     assert operation_params.operation_id in result
-    assert result[operation_params.operation_id].equals(
-        pd.Series([True, True, False, False])
-    )
+    assert result[operation_params.operation_id].equals(pd.Series([True, True, False, False]))
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_get_code_hierarchies(
-    tmp_path, operation_params: OperationParams, dataset_type
-):
+def test_get_code_hierarchies(tmp_path, operation_params: OperationParams, dataset_type):
     """
     Unit test for WhoDrugHierarchyValidator.get_code_hierarchies method.
     """
@@ -97,9 +91,7 @@ def test_get_code_hierarchies(
     # run the factory
     factory = WhoDrugTermsFactory(data_service)
     terms: dict = factory.install_terms(str(tmp_path))
-    operation = WhodrugHierarchyValidator(
-        operation_params, dataset_type(), cache, data_service
-    )
+    operation = WhodrugHierarchyValidator(operation_params, dataset_type(), cache, data_service)
     valid_hierarchies = operation.get_code_hierarchies(terms)
     assert valid_hierarchies == {
         "ALDOMET [METHYLDOPA]/STOMATOLOGICAL PREPARATIONS/C02AB",

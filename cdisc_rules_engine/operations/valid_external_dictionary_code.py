@@ -5,10 +5,8 @@ from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
 class ValidExternalDictionaryCode(BaseOperation):
     def _execute_operation(self):
         if not isinstance(self.params.dataframe, DaskDataset):
-            validator_type = (
-                self.params.external_dictionaries.get_dictionary_validator_class(
-                    self.params.external_dictionary_type
-                )
+            validator_type = self.params.external_dictionaries.get_dictionary_validator_class(
+                self.params.external_dictionary_type
             )
             validator = validator_type(
                 cache_service=self.cache,
@@ -31,17 +29,13 @@ class ValidExternalDictionaryCode(BaseOperation):
         # and use it in a map function
         target_col = self.params.target
         operation_id = self.params.operation_id
-        validator_type = (
-            self.params.external_dictionaries.get_dictionary_validator_class(
-                self.params.external_dictionary_type
-            )
+        validator_type = self.params.external_dictionaries.get_dictionary_validator_class(
+            self.params.external_dictionary_type
         )
         validator = validator_type(
             cache_service=self.cache,
             data_service=self.data_service,
-            dictionary_path=self.params.external_dictionaries.get_dictionary_path(
-                self.params.external_dictionary_type
-            ),
+            dictionary_path=self.params.external_dictionaries.get_dictionary_path(self.params.external_dictionary_type),
         )
         unique_codes = self.params.dataframe[target_col].unique()
         validation_dict = {}

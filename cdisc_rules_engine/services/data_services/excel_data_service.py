@@ -35,9 +35,7 @@ class ExcelDataService(BaseDataService):
         config: ConfigInterface,
         **kwargs,
     ):
-        super(ExcelDataService, self).__init__(
-            cache_service, reader_factory, config, **kwargs
-        )
+        super(ExcelDataService, self).__init__(cache_service, reader_factory, config, **kwargs)
         self.dataset_path: str = kwargs.get("dataset_path", "")
 
     @classmethod
@@ -51,9 +49,7 @@ class ExcelDataService(BaseDataService):
             service = cls(
                 cache_service=cache_service,
                 reader_factory=DataReaderFactory(
-                    dataset_implementation=kwargs.get(
-                        "dataset_implementation", PandasDataset
-                    )
+                    dataset_implementation=kwargs.get("dataset_implementation", PandasDataset)
                 ),
                 config=config,
                 **kwargs,
@@ -83,9 +79,7 @@ class ExcelDataService(BaseDataService):
             "Number": float,
             "String": str,
         }
-        header = pd.read_excel(
-            self.dataset_path, sheet_name=dataset_name, header=None, nrows=3
-        )
+        header = pd.read_excel(self.dataset_path, sheet_name=dataset_name, header=None, nrows=3)
         dtypes = dict(zip(header.iloc[0].tolist(), header.iloc[2].tolist()))
         dtypes = {key: dtype_mapping.get(value, str) for key, value in dtypes.items()}
         dataframe = pd.read_excel(
@@ -99,26 +93,18 @@ class ExcelDataService(BaseDataService):
         return dataset
 
     @cached_dataset(DatasetTypes.RAW_METADATA.value)
-    def get_raw_dataset_metadata(
-        self, dataset_name: str, **kwargs
-    ) -> SDTMDatasetMetadata:
+    def get_raw_dataset_metadata(self, dataset_name: str, **kwargs) -> SDTMDatasetMetadata:
         """
         Returns dataset metadata as DatasetMetadata instance.
         """
-        datasets_worksheet = pd.read_excel(
-            self.dataset_path, sheet_name=DATASETS_SHEET_NAME
-        )
-        metadata = datasets_worksheet[
-            datasets_worksheet[DATASET_FILENAME_COLUMN] == dataset_name
-        ]
+        datasets_worksheet = pd.read_excel(self.dataset_path, sheet_name=DATASETS_SHEET_NAME)
+        metadata = datasets_worksheet[datasets_worksheet[DATASET_FILENAME_COLUMN] == dataset_name]
         dataset = self.get_dataset(dataset_name=dataset_name)
         return SDTMDatasetMetadata(
             name=dataset_name.split(".")[0].upper(),
             first_record=(dataset.data.iloc[0].to_dict() if not dataset.empty else {}),
             label=metadata[DATASET_LABEL_COLUMN].iloc[0] if not metadata.empty else "",
-            modification_date=datetime.fromtimestamp(
-                os.path.getmtime(self.dataset_path)
-            ).isoformat(),
+            modification_date=datetime.fromtimestamp(os.path.getmtime(self.dataset_path)).isoformat(),
             filename=dataset_name,
             full_path=dataset_name,
             file_size=0,
@@ -130,20 +116,14 @@ class ExcelDataService(BaseDataService):
         """
         Gets dataset from blob storage and returns metadata of a certain variable.
         """
-        dataframe = pd.read_excel(
-            self.dataset_path, sheet_name=dataset_name, header=None, nrows=4
-        )
+        dataframe = pd.read_excel(self.dataset_path, sheet_name=dataset_name, header=None, nrows=4)
         metadata_to_return: VariableMetadataContainer = VariableMetadataContainer(
             {
                 "variable_names": dataframe.iloc[0].tolist(),
                 "variable_labels": dataframe.iloc[1].tolist(),
                 "variable_formats": [""] * dataframe.shape[1],
-                "variable_name_to_label_map": dict(
-                    zip(dataframe.iloc[0].tolist(), dataframe.iloc[1].tolist())
-                ),
-                "variable_name_to_data_type_map": dict(
-                    zip(dataframe.iloc[0].tolist(), dataframe.iloc[2].tolist())
-                ),
+                "variable_name_to_label_map": dict(zip(dataframe.iloc[0].tolist(), dataframe.iloc[1].tolist())),
+                "variable_name_to_data_type_map": dict(zip(dataframe.iloc[0].tolist(), dataframe.iloc[2].tolist())),
                 "variable_name_to_size_map": dict(
                     zip(
                         dataframe.iloc[0].tolist(),
@@ -153,9 +133,7 @@ class ExcelDataService(BaseDataService):
                 "number_of_variables": dataframe.shape[1],
             }
         )
-        return self._reader_factory.dataset_implementation.from_dict(
-            metadata_to_return.to_representation()
-        )
+        return self._reader_factory.dataset_implementation.from_dict(metadata_to_return.to_representation())
 
     @cached_dataset(DatasetTypes.CONTENTS.value)
     def get_define_xml_contents(self, dataset_name: str) -> bytes:
@@ -197,8 +175,4 @@ class ExcelDataService(BaseDataService):
 
     @staticmethod
     def is_valid_data(dataset_paths: Sequence[str]):
-        return (
-            dataset_paths
-            and len(dataset_paths) == 1
-            and dataset_paths[0].lower().endswith(".xlsx")
-        )
+        return dataset_paths and len(dataset_paths) == 1 and dataset_paths[0].lower().endswith(".xlsx")

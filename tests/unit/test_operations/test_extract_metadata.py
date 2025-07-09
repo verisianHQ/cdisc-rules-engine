@@ -10,13 +10,9 @@ import pytest
 
 
 @pytest.mark.parametrize("dataset_type", [(PandasDataset), (DaskDataset)])
-def test_extract_metadata_get_dataset_name(
-    operation_params: OperationParams, dataset_type
-):
+def test_extract_metadata_get_dataset_name(operation_params: OperationParams, dataset_type):
     mock_data_service = Mock(LocalDataService)
-    mock_data_service.get_dataset_metadata.return_value = pd.DataFrame.from_dict(
-        {"dataset_name": ["AE"]}
-    )
+    mock_data_service.get_dataset_metadata.return_value = pd.DataFrame.from_dict({"dataset_name": ["AE"]})
     operation_params.dataframe = dataset_type.from_dict(
         {
             "STUDYID": [
@@ -34,9 +30,7 @@ def test_extract_metadata_get_dataset_name(
     operation_params.target = "dataset_name"
     cache = InMemoryCacheService.get_instance()
     # execute operation
-    operation = ExtractMetadata(
-        operation_params, operation_params.dataframe, cache, mock_data_service
-    )
+    operation = ExtractMetadata(operation_params, operation_params.dataframe, cache, mock_data_service)
     result: pd.DataFrame = operation.execute()
     assert operation_params.operation_id in result
     for item in result[operation_params.operation_id]:

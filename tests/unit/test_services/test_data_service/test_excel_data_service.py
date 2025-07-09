@@ -56,12 +56,8 @@ def test_get_dataset_metadata(expected_result):
     dataset_path = f"{os.path.dirname(__file__)}/../../../resources/test_datasets.xlsx"
     cache_mock = MagicMock()
     cache_mock.get_dataset.return_value = None
-    data_service = ExcelDataService(
-        cache_mock, MagicMock(), MagicMock(), dataset_path=dataset_path
-    )
-    metadata = data_service.get_dataset_metadata(
-        dataset_name=expected_result["dataset_location"]
-    )
+    data_service = ExcelDataService(cache_mock, MagicMock(), MagicMock(), dataset_path=dataset_path)
+    metadata = data_service.get_dataset_metadata(dataset_name=expected_result["dataset_location"])
     assert metadata["dataset_label"][0] == expected_result["dataset_label"]
     assert metadata["dataset_name"][0] == expected_result["dataset_name"]
     assert metadata["dataset_size"][0] == expected_result["dataset_size"]

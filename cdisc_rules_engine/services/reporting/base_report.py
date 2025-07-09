@@ -51,10 +51,7 @@ class BaseReport(ABC):
             if validation_result.execution_status == "success":
                 for result in validation_result.results or []:
                     dataset = result.get("dataset")
-                    if (
-                        result.get("errors")
-                        and result.get("executionStatus") == "success"
-                    ):
+                    if result.get("errors") and result.get("executionStatus") == "success":
                         summary_item = {
                             "dataset": dataset,
                             "core_id": validation_result.id,
@@ -69,31 +66,19 @@ class BaseReport(ABC):
 
         return sorted(
             summary_data,
-            key=lambda x: (
-                (x[0], x[1])
-                if (self._item_type == "list")
-                else (x["dataset"], x["core_id"])
-            ),
+            key=lambda x: ((x[0], x[1]) if (self._item_type == "list") else (x["dataset"], x["core_id"])),
         )
 
     def get_detailed_data(self, excel=False) -> List[List]:
         detailed_data = []
         for validation_result in self._results:
-            detailed_data = detailed_data + self._generate_error_details(
-                validation_result, excel
-            )
+            detailed_data = detailed_data + self._generate_error_details(validation_result, excel)
         return sorted(
             detailed_data,
-            key=lambda x: (
-                (x[0], x[3])
-                if (self._item_type == "list")
-                else (x["core_id"], x["dataset"])
-            ),
+            key=lambda x: ((x[0], x[3]) if (self._item_type == "list") else (x["core_id"], x["dataset"])),
         )
 
-    def _generate_error_details(
-        self, validation_result: RuleValidationResult, excel
-    ) -> List[List]:
+    def _generate_error_details(self, validation_result: RuleValidationResult, excel) -> List[List]:
         """
         Generates the Issue details data that goes into the excel export.
         Each row is represented by a list or a dict containing the following
@@ -124,10 +109,7 @@ class BaseReport(ABC):
                         "row": error.get("row", ""),
                         "SEQ": error.get("SEQ", ""),
                     }
-                    values = [
-                        str(error.get("value", {}).get(variable))
-                        for variable in variables
-                    ]
+                    values = [str(error.get("value", {}).get(variable)) for variable in variables]
                     processed_values = self.process_values(values, excel)
                     if self._item_type == "list":
                         error_item["variables"] = ", ".join(variables)
@@ -175,8 +157,7 @@ class BaseReport(ABC):
                 "message": validation_result.message,
                 "status": (
                     ExecutionStatus.SUCCESS.value.upper()
-                    if validation_result.execution_status
-                    == ExecutionStatus.SUCCESS.value
+                    if validation_result.execution_status == ExecutionStatus.SUCCESS.value
                     else ExecutionStatus.SKIPPED.value.upper()
                 ),
             }

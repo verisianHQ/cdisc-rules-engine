@@ -6,9 +6,7 @@ from cdisc_rules_engine.services.data_readers.dataset_json_reader import (
 
 
 def test_from_file():
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
 
     reader = DatasetJSONReader()
     dataframe = reader.from_file(test_dataset_path)

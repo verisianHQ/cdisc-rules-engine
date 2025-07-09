@@ -14,8 +14,7 @@ class TestValidate(unittest.TestCase):
         latest_excel_files = [
             file
             for file in excel_files
-            if os.path.getctime(file)
-            == max(os.path.getctime(file) for file in excel_files)
+            if os.path.getctime(file) == max(os.path.getctime(file) for file in excel_files)
         ]
 
         if not latest_excel_files:
@@ -464,7 +463,7 @@ class TestValidate(unittest.TestCase):
             f"-s sdtmig "
             f"-v 3.4 "
             f"-dv 2.1 "
-            f"-dxp {os.path.join('tests', 'resources','define.xml')} "
+            f"-dxp {os.path.join('tests', 'resources', 'define.xml')} "
             f"-l error"
         )
         exit_code, stdout, stderr = run_command(args, True)
@@ -485,7 +484,7 @@ class TestValidate(unittest.TestCase):
             f"-s sdtmig "
             f"-v 3.4 "
             f"-dv 2.1 "
-            f"-dxp {os.path.join('tests', 'resources','define.xml')} "
+            f"-dxp {os.path.join('tests', 'resources', 'define.xml')} "
             f"-l error"
         )
         exit_code, stdout, stderr = run_command(args, True)
@@ -572,8 +571,8 @@ class TestValidate(unittest.TestCase):
             f"-s sendig "
             f"-v 3.1 "
             f"-dv 2.1 "
-            f"-lr {os.path.join('tests','resources','CoreIssue295','SEND4.json')} "
-            f"-dp {os.path.join('tests','resources','CoreIssue295','dm.json')} "
+            f"-lr {os.path.join('tests', 'resources', 'CoreIssue295', 'SEND4.json')} "
+            f"-dp {os.path.join('tests', 'resources', 'CoreIssue295', 'dm.json')} "
             f"-vx no"
         )
         exit_code, stdout, stderr = run_command(args, True)
@@ -585,8 +584,8 @@ class TestValidate(unittest.TestCase):
             f"-s sendig "
             f"-v 3.1 "
             f"-dv 2.1 "
-            f"-lr {os.path.join('tests','resources','CoreIssue295','SEND4.json')} "
-            f"-dp {os.path.join('tests','resources','CoreIssue295','dm.json')} "
+            f"-lr {os.path.join('tests', 'resources', 'CoreIssue295', 'SEND4.json')} "
+            f"-dp {os.path.join('tests', 'resources', 'CoreIssue295', 'dm.json')} "
             f"-vx y"
         )
         exit_code, stdout, stderr = run_command(args, True)

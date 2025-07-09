@@ -32,9 +32,7 @@ class InMemoryCacheService(CacheServiceInterface):
         self.cache = LRUCache(maxsize=self.max_size, getsizeof=asizeof.asizeof)
         self.max_dataset_cache_size = psutil.virtual_memory().available * 0.5
         self.dataset_cache_lock = Lock()
-        self.dataset_cache = LRUCache(
-            maxsize=self.max_dataset_cache_size, getsizeof=get_data_size
-        )
+        self.dataset_cache = LRUCache(maxsize=self.max_dataset_cache_size, getsizeof=get_data_size)
 
     def add(self, cache_key, data):
         if get_data_size(data) > self.max_size:
@@ -94,9 +92,7 @@ class InMemoryCacheService(CacheServiceInterface):
 
     def clear_all(self, prefix: str = None):
         if prefix:
-            keys_to_remove = [
-                key for key in self.cache.keys() if key.startswith(prefix)
-            ]
+            keys_to_remove = [key for key in self.cache.keys() if key.startswith(prefix)]
             for key in keys_to_remove:
                 self.clear(key)
         else:

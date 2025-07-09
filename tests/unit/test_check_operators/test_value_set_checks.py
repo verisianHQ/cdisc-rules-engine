@@ -25,9 +25,9 @@ def test_is_unique_set(target, comparator, dataset_type, expected_result):
         "ARF": [1, 2, 3, 4],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": "AR"}}
-    ).is_unique_set({"target": target, "comparator": comparator})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": "AR"}}).is_unique_set(
+        {"target": target, "comparator": comparator}
+    )
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -52,9 +52,9 @@ def test_is_not_unique_set(target, comparator, dataset_type, expected_result):
         "ARF": [1, 2, 3, 4],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": "AR"}}
-    ).is_not_unique_set({"target": target, "comparator": comparator})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": "AR"}}).is_not_unique_set(
+        {"target": target, "comparator": comparator}
+    )
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -70,9 +70,7 @@ def test_is_not_unique_set(target, comparator, dataset_type, expected_result):
 def test_is_ordered_set(target, comparator, dataset_type, expected_result):
     data = {"USUBJID": [1, 2, 1, 2], "UNORDERED": [3, 1, 2, 2], "SESEQ": [1, 1, 2, 2]}
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df}).is_ordered_set(
-        {"target": target, "comparator": comparator}
-    )
+    result = DataframeType({"value": df}).is_ordered_set({"target": target, "comparator": comparator})
     assert result == expected_result
 
 
@@ -88,9 +86,7 @@ def test_is_ordered_set(target, comparator, dataset_type, expected_result):
 def test_is_not_ordered_set(target, comparator, dataset_type, expected_result):
     data = {"USUBJID": [1, 2, 1, 2], "UNORDERED": [3, 1, 2, 2], "SESEQ": [1, 1, 2, 2]}
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df}).is_not_ordered_set(
-        {"target": target, "comparator": comparator}
-    )
+    result = DataframeType({"value": df}).is_not_ordered_set({"target": target, "comparator": comparator})
     assert result == expected_result
 
 
@@ -102,9 +98,7 @@ def test_is_not_ordered_set(target, comparator, dataset_type, expected_result):
         ("STRESU", ["TESTCD", "METHOD"], PandasDataset, [False, False, False, False]),
     ],
 )
-def test_is_inconsistent_across_dataset(
-    target, comparator, dataset_type, expected_result
-):
+def test_is_inconsistent_across_dataset(target, comparator, dataset_type, expected_result):
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
         "BGSTRESU": ["kg", "kg", "g", "mg"],
@@ -114,9 +108,9 @@ def test_is_inconsistent_across_dataset(
         "STRESU": ["mg", "mg", "g", "kg"],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": ""}}
-    ).is_inconsistent_across_dataset({"target": target, "comparator": comparator})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": ""}}).is_inconsistent_across_dataset(
+        {"target": target, "comparator": comparator}
+    )
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -128,9 +122,7 @@ def test_is_inconsistent_across_dataset(
         ("STRESU", ["TESTCD", "METHOD"], DaskDataset, [False, False, False, False]),
     ],
 )
-def test_is_inconsistent_across_dataset_dask(
-    target, comparator, dataset_type, expected_result
-):
+def test_is_inconsistent_across_dataset_dask(target, comparator, dataset_type, expected_result):
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
         "BGSTRESU": ["kg", "kg", "g", "mg"],
@@ -140,9 +132,9 @@ def test_is_inconsistent_across_dataset_dask(
         "STRESU": ["mg", "mg", "g", "kg"],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": ""}}
-    ).is_inconsistent_across_dataset({"target": target, "comparator": comparator})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": ""}}).is_inconsistent_across_dataset(
+        {"target": target, "comparator": comparator}
+    )
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -152,24 +144,22 @@ def test_is_inconsistent_across_dataset_dask(
         ("BGSTRESU", "USUBJID", PandasDataset, [False, False, True, True]),
     ],
 )
-def test_is_inconsistent_across_dataset_with_nulls(
-    target, comparator, dataset_type, expected_result
-):
+def test_is_inconsistent_across_dataset_with_nulls(target, comparator, dataset_type, expected_result):
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
         "BGSTRESU": ["kg", "kg", None, "g"],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": ""}}
-    ).is_inconsistent_across_dataset({"target": target, "comparator": comparator})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": ""}}).is_inconsistent_across_dataset(
+        {"target": target, "comparator": comparator}
+    )
     assert result.equals(df.convert_to_series(expected_result))
 
 
 def test_is_inconsistent_across_dataset_empty_dataset():
     data = {"USUBJID": [], "BGSTRESU": []}
     df = PandasDataset.from_dict(data)
-    result = DataframeType(
-        {"value": df, "column_prefix_map": {"--": ""}}
-    ).is_inconsistent_across_dataset({"target": "BGSTRESU", "comparator": "USUBJID"})
+    result = DataframeType({"value": df, "column_prefix_map": {"--": ""}}).is_inconsistent_across_dataset(
+        {"target": "BGSTRESU", "comparator": "USUBJID"}
+    )
     assert len(result) == 0

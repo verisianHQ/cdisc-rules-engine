@@ -67,12 +67,8 @@ def test_get_raw_dataset_metadata():
     USDMDataService._instance = None
     cache = MagicMock()
     cache.get_dataset.return_value = None
-    data_service = USDMDataService.get_instance(
-        config=ConfigService(), cache_service=cache, dataset_path=dataset_path
-    )
-    data = data_service.get_raw_dataset_metadata(
-        dataset_name=os.path.join(dataset_path, "Code.json")
-    )
+    data_service = USDMDataService.get_instance(config=ConfigService(), cache_service=cache, dataset_path=dataset_path)
+    data = data_service.get_raw_dataset_metadata(dataset_name=os.path.join(dataset_path, "Code.json"))
     assert data.record_count == 117
 
 
@@ -135,9 +131,7 @@ def test_get_variables_metdata():
     data_service = USDMDataService.get_instance(
         config=ConfigService(), cache_service=mock_cache, dataset_path=dataset_path
     )
-    data = data_service.get_variables_metadata(
-        dataset_name=os.path.join(dataset_path, "StudyIdentifier.json")
-    )
+    data = data_service.get_variables_metadata(dataset_name=os.path.join(dataset_path, "StudyIdentifier.json"))
     assert isinstance(data, PandasDataset)
     expected_keys = [
         "variable_name",

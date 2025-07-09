@@ -14,9 +14,7 @@ def test_read_metadata():
     Unit test for function read.
     Loads test .json file and extracts metadata.
     """
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
 
     reader = DatasetJSONMetadataReader(test_dataset_path, file_name="test_dataset.json")
     metadata: dict = reader.read()
@@ -25,16 +23,11 @@ def test_read_metadata():
     assert metadata["first_record"]["DOMAIN"] == "EX", "Test file has been changed"
     assert metadata["dataset_label"] == "Exposure", "Test file has been changed"
     assert metadata["number_of_variables"] == 18, "Test file has been changed"
-    assert (
-        metadata["dataset_modification_date"] == "2025-01-28T22:06:12"
-    ), "Test file has been changed"
+    assert metadata["dataset_modification_date"] == "2025-01-28T22:06:12", "Test file has been changed"
     assert isinstance(metadata["variable_labels"], list)
     assert isinstance(metadata["variable_names"], list)
     assert isinstance(metadata["variable_name_to_data_type_map"], dict)
-    assert any(
-        val in ["Char", "Num"]
-        for val in metadata["variable_name_to_data_type_map"].values()
-    )
+    assert any(val in ["Char", "Num"] for val in metadata["variable_name_to_data_type_map"].values())
     assert any(
         val not in ["string", "double", "Character", "Numeric"]
         for val in metadata["variable_name_to_data_type_map"].values()
@@ -48,9 +41,7 @@ def test_read_metadata_with_variable_formats():
     Unit test for function read.
     Loads test .json file and extracts metadata.
     """
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_dataset.json"
 
     reader = DatasetJSONMetadataReader(test_dataset_path, file_name="test_dataset.json")
     metadata: dict = reader.read()

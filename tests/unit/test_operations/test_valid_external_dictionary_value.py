@@ -35,9 +35,7 @@ def test_valid_external_dictionary_value_with_meddra(
     )
 
     operation_params.dataframe = data
-    operation_params.external_dictionaries = ExternalDictionariesContainer(
-        {DictionaryTypes.MEDDRA.value: meddra_path}
-    )
+    operation_params.external_dictionaries = ExternalDictionariesContainer({DictionaryTypes.MEDDRA.value: meddra_path})
     terms_dictionary = {
         TermTypes.PT.value: {
             "1234": MedDRATerm({"term": "A"}),

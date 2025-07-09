@@ -14,13 +14,9 @@ def test_read_metadata():
     Unit test for function read.
     Loads test .json file and extracts metadata.
     """
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_adam_dataset.json"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_adam_dataset.json"
 
-    reader = DatasetJSONMetadataReader(
-        test_dataset_path, file_name="test_adam_dataset.json"
-    )
+    reader = DatasetJSONMetadataReader(test_dataset_path, file_name="test_adam_dataset.json")
     metadata: dict = reader.read()
     assert metadata["adam_info"] == {
         "categorization_scheme": {

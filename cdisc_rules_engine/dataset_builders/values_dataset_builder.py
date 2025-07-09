@@ -13,9 +13,7 @@ class ValuesDatasetBuilder(BaseDatasetBuilder):
         "variable_value"
         ...,
         """
-        data_contents_df: DatasetInterface = self.data_service.get_dataset(
-            dataset_name=self.dataset_path
-        )
+        data_contents_df: DatasetInterface = self.data_service.get_dataset(dataset_name=self.dataset_path)
         self.add_row_number(data_contents_df)
         values_df: DatasetInterface = data_contents_df.melt(
             id_vars="row_number",

@@ -103,9 +103,7 @@ def test_missing_codelist(operation_params):
         MagicMock(),
         library_metadata,
     )
-    with pytest.raises(
-        MissingDataError, match="Codelist 'CL_NONEXISTENT' not found in metadata"
-    ):
+    with pytest.raises(MissingDataError, match="Codelist 'CL_NONEXISTENT' not found in metadata"):
         operation._execute_operation()
 
 

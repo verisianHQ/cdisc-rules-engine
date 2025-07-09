@@ -49,6 +49,5 @@ class DataReaderFactory(FactoryInterface):
         if service_name in self._reader_map:
             return self._reader_map[service_name](self.dataset_implementation)
         raise ValueError(
-            f"Service name must be in {list(self._reader_map.keys())}, "
-            f"given service name is {service_name}"
+            f"Service name must be in {list(self._reader_map.keys())}, " f"given service name is {service_name}"
         )

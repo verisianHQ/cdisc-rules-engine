@@ -49,9 +49,7 @@ def test_contains(data, comparator, dataset_type, expected_result):
 def test_contains_case_insensitive(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.contains_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.contains_case_insensitive({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -75,9 +73,7 @@ def test_contains_case_insensitive(data, comparator, dataset_type, expected_resu
 def test_does_not_contain(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.does_not_contain(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.does_not_contain({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -98,14 +94,10 @@ def test_does_not_contain(data, comparator, dataset_type, expected_result):
         ),
     ],
 )
-def test_does_not_contain_case_insensitive(
-    data, comparator, dataset_type, expected_result
-):
+def test_does_not_contain_case_insensitive(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.does_not_contain_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.does_not_contain_case_insensitive({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -129,9 +121,7 @@ def test_does_not_contain_case_insensitive(
 def test_contains_all(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.contains_all(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.contains_all({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -155,9 +145,7 @@ def test_contains_all(data, comparator, dataset_type, expected_result):
 def test_not_contains_all(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.not_contains_all(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.not_contains_all({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -199,9 +187,7 @@ def test_not_contains_all(data, comparator, dataset_type, expected_result):
 def test_is_contained_by(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.is_contained_by(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.is_contained_by({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -237,9 +223,7 @@ def test_is_contained_by(data, comparator, dataset_type, expected_result):
 def test_is_not_contained_by(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.is_not_contained_by(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.is_not_contained_by({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -272,14 +256,10 @@ def test_is_not_contained_by(data, comparator, dataset_type, expected_result):
         ),
     ],
 )
-def test_is_contained_by_case_insensitive(
-    data, comparator, dataset_type, expected_result
-):
+def test_is_contained_by_case_insensitive(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.is_contained_by_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.is_contained_by_case_insensitive({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -312,12 +292,8 @@ def test_is_contained_by_case_insensitive(
         ),
     ],
 )
-def test_is_not_contained_by_case_insensitive(
-    data, comparator, dataset_type, expected_result
-):
+def test_is_not_contained_by_case_insensitive(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_operator = DataframeType({"value": df})
-    result = dataframe_operator.is_not_contained_by_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_operator.is_not_contained_by_case_insensitive({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))

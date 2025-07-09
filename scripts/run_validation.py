@@ -51,9 +51,7 @@ from warnings import simplefilter
 import os
 from cdisc_rules_engine.constants.cache_constants import PUBLISHED_CT_PACKAGES
 
-simplefilter(
-    action="ignore", category=FutureWarning
-)  # Suppress warnings coming from numpy
+simplefilter(action="ignore", category=FutureWarning)  # Suppress warnings coming from numpy
 """
 Sync manager used to manage instances of the cache between processes.
 Cache types are registered to this manager, and only one instance of the
@@ -72,9 +70,7 @@ def validate_single_rule(
     library_metadata: LibraryMetadataContainer,
     rule: dict = None,
 ):
-    rule["conditions"] = ConditionCompositeFactory.get_condition_composite(
-        rule["conditions"]
-    )
+    rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
     max_dataset_size = max(datasets, key=lambda x: x.file_size).file_size
     # call rule engine
     engine = RulesEngine(
@@ -141,16 +137,12 @@ def run_validation(args: Validation_args):
     ).get_data_service(args.dataset_paths)
     # install dictionaries if needed
     dictionary_versions = fill_cache_with_dictionaries(shared_cache, args, data_service)
-    large_dataset_validation: bool = (
-        data_service.dataset_implementation != PandasDataset
-    )
+    large_dataset_validation: bool = data_service.dataset_implementation != PandasDataset
     datasets = data_service.get_datasets()
     created_files = []
     if large_dataset_validation and data_service.standard != "usdm":
         # convert all files to parquet temp files
-        engine_logger.warning(
-            "Large datasets must use parquet format, converting all datasets to parquet"
-        )
+        engine_logger.warning("Large datasets must use parquet format, converting all datasets to parquet")
         for dataset in datasets:
             file_path = dataset.full_path
             if file_path.endswith(".parquet"):
@@ -164,15 +156,11 @@ def run_validation(args: Validation_args):
     start = time.time()
     results = []
     # instantiate logger in each child process to maintain log level
-    initializer = partial(
-        initialize_logger, engine_logger.disabled, engine_logger._logger.level
-    )
+    initializer = partial(initialize_logger, engine_logger.disabled, engine_logger._logger.level)
     # run each rule in a separate process
     with Pool(args.pool_size, initializer=initializer) as pool:
         validation_results: Iterable[RuleValidationResult] = pool.imap_unordered(
-            partial(
-                validate_single_rule, shared_cache, datasets, args, library_metadata
-            ),
+            partial(validate_single_rule, shared_cache, datasets, args, library_metadata),
             rules,
         )
         progress_handler: Callable = get_progress_displayer(args)
@@ -181,9 +169,7 @@ def run_validation(args: Validation_args):
     # build all desired reports
     end = time.time()
     elapsed_time = end - start
-    reporting_factory = ReportFactory(
-        datasets, results, elapsed_time, args, data_service
-    )
+    reporting_factory = ReportFactory(datasets, results, elapsed_time, args, data_service)
     reporting_services: List[BaseReport] = reporting_factory.get_report_services()
     for reporting_service in reporting_services:
         reporting_service.write_report(
@@ -209,9 +195,7 @@ def run_single_rule_validation(
 ) -> dict:
     datasets = [DummyDataset(dataset_data) for dataset_data in datasets]
     cache = cache or InMemoryCacheService()
-    standard_details_cache_key = get_standard_details_cache_key(
-        standard, standard_version, standard_substandard
-    )
+    standard_details_cache_key = get_standard_details_cache_key(standard, standard_version, standard_substandard)
     variable_details_cache_key = get_library_variables_metadata_cache_key(
         standard, standard_version, standard_substandard
     )
@@ -221,9 +205,7 @@ def run_single_rule_validation(
         model_metadata = cache.get(model_cache_key)
     else:
         model_metadata = {}
-    variable_codelist_cache_key = get_variable_codelist_map_cache_key(
-        standard, standard_version, standard_substandard
-    )
+    variable_codelist_cache_key = get_variable_codelist_map_cache_key(standard, standard_version, standard_substandard)
 
     ct_package_metadata = {}
     for codelist in codelists:
@@ -239,9 +221,7 @@ def run_single_rule_validation(
     )
     if not standard and not standard_version and rule:
         standard = rule.get("Authorities")[0].get("Standards")[0].get("Name").lower()
-        standard_substandard = (
-            rule.get("Authorities")[0].get("Standards")[0].get("Substandard", None)
-        )
+        standard_substandard = rule.get("Authorities")[0].get("Standards")[0].get("Substandard", None)
         if standard_substandard is not None:
             standard_substandard = standard_substandard.lower()
         standard_version = rule.get("Authorities")[0].get("Standards")[0].get("Version")

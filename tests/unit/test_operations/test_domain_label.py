@@ -54,9 +54,7 @@ def test_get_domain_label_from_library(dataset_type, operation_params: Operation
     cache = InMemoryCacheService.get_instance()
     library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata)
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     operation = DomainLabel(
         operation_params,
         operation_params.dataframe,
@@ -121,9 +119,7 @@ def test_get_domain_label_from_library_domain_not_found(
     # execute operation
     library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata)
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     operation = DomainLabel(
         operation_params,
         operation_params.dataframe,
@@ -187,9 +183,7 @@ def test_get_domain_label_from_library_domain_missing_label(
     # execute operation
     library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata)
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     operation = DomainLabel(
         operation_params,
         operation_params.dataframe,

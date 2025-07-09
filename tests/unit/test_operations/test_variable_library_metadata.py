@@ -52,12 +52,8 @@ def test_get_variable_metadata_for_given_standard(
         {"first_record": {"DOMAIN": "EX"}, "filename": "EX"},
         {"first_record": {"DOMAIN": "DM"}, "filename": "DM2"},
     ]
-    mock_data_service.get_dataset.side_effect = lambda name: datasets_map.get(
-        name.split("/")[-1]
-    )
-    mock_data_service.concat_split_datasets.side_effect = lambda func, files: pd.concat(
-        [func(f) for f in files]
-    )
+    mock_data_service.get_dataset.side_effect = lambda name: datasets_map.get(name.split("/")[-1])
+    mock_data_service.concat_split_datasets.side_effect = lambda func, files: pd.concat([func(f) for f in files])
     operation_params.target = target
     operation_params.datasets = datasets
     operation_params.dataset_path = dataset_path

@@ -31,9 +31,7 @@ def test_process_supp():
         )
     )
     processed_dataset = DataProcessor.process_supp(supp_dataset)
-    assert all(
-        column in processed_dataset.data.columns for column in ["X", "Y", "Z"]
-    ), "New "
+    assert all(column in processed_dataset.data.columns for column in ["X", "Y", "Z"]), "New "
     "columns based on QNAM should be added."
     pd.testing.assert_series_equal(
         processed_dataset.data["X"],
@@ -57,9 +55,7 @@ def test_process_supp():
 
 @patch.object(LocalDataService, "check_filepath", return_value=False)
 @patch.object(LocalDataService, "_async_get_datasets")
-def test_merge_pivot_supp_dataset(
-    mock_async_get_datasets, mock_check_filepath, data_service
-):
+def test_merge_pivot_supp_dataset(mock_async_get_datasets, mock_check_filepath, data_service):
     # Setup example datasets
     parent_dataset = PandasDataset(
         pd.DataFrame(
@@ -118,8 +114,6 @@ def test_merge_pivot_supp_dataset(
             }
         )
     )
-    pdt.assert_frame_equal(
-        merged_dataset.data, expected_dataset.data, check_dtype=False
-    )
+    pdt.assert_frame_equal(merged_dataset.data, expected_dataset.data, check_dtype=False)
     assert len(merged_dataset.data) == len(parent_dataset.data), "The"
     " length of the merged dataset should match the parent dataset."

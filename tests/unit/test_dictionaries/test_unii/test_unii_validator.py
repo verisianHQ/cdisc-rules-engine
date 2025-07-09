@@ -21,9 +21,7 @@ def test_is_valid_term_case_sensitive(term: str, expected_outcome):
         "C123": UNIITerm(unii="C123", display_name="test_concept"),
     }
     assert (
-        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            term, "", "", case_sensitive=True
-        )
+        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(term, "", "", case_sensitive=True)
         == expected_outcome
     )
 
@@ -43,9 +41,7 @@ def test_is_valid_term_case_insensitive(term: str, expected_outcome):
         "C123": UNIITerm(unii="C123", display_name="test_concept"),
     }
     assert (
-        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(
-            term, "", "", case_sensitive=False
-        )
+        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_term(term, "", "", case_sensitive=False)
         == expected_outcome
     )
 
@@ -62,12 +58,7 @@ def test_is_valid_code(term: str, expected_outcome):
         "T123": UNIITerm(unii="T123", display_name="test_term"),
         "C123": UNIITerm(unii="C123", display_name="test_concept"),
     }
-    assert (
-        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code(
-            term, "", ""
-        )
-        == expected_outcome
-    )
+    assert UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code(term, "", "") == expected_outcome
 
 
 @pytest.mark.parametrize(
@@ -86,8 +77,6 @@ def test_is_valid_code_term_pair(row: dict, expected_outcome: bool):
         "C444": UNIITerm(unii="C444", display_name="test_concept"),
     }
     assert (
-        UNIIValidator(
-            terms=ExternalDictionary(terms_dictionary)
-        ).is_valid_code_term_pair(row, "term", "code")
+        UNIIValidator(terms=ExternalDictionary(terms_dictionary)).is_valid_code_term_pair(row, "term", "code")
         == expected_outcome
     )

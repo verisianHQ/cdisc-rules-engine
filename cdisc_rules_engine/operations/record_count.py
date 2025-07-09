@@ -21,9 +21,7 @@ class RecordCount(BaseOperation):
             result = len(filtered)
         if self.params.grouping:
             self.params.target = "size"
-            group_df = self.params.dataframe.get_grouped_size(
-                self.params.grouping, as_index=False
-            )
+            group_df = self.params.dataframe.get_grouped_size(self.params.grouping, as_index=False)
             if filtered is not None:
                 group_df = (
                     group_df[self.params.grouping]

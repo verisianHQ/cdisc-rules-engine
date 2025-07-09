@@ -8,9 +8,7 @@ from openpyxl.styles import Alignment
 
 def excel_workbook_to_stream(wb):
     stream = None
-    tmp = NamedTemporaryFile(
-        delete=False
-    )  # create tmp file, we'll controll when to delete it
+    tmp = NamedTemporaryFile(delete=False)  # create tmp file, we'll controll when to delete it
     # close, NamedTemporaryFile() already opended it, we need it closed for wb.save()
     # or we'll get permission denied errors
     tmp.close()
@@ -30,14 +28,10 @@ def excel_update_worksheet(ws, rows, align_params=None, fill_empty_rows=False):
                 ws.cell(row=row_num, column=col_num).fill = openpyxl.styles.PatternFill(
                     start_color="ccffff", end_color="ccffff", fill_type="solid"
                 )
-                ws.cell(row=row_num, column=col_num).alignment = Alignment(
-                    **align_params
-                )
+                ws.cell(row=row_num, column=col_num).alignment = Alignment(**align_params)
             else:
                 ws.cell(row=row_num, column=col_num).value = col_data
-                ws.cell(row=row_num, column=col_num).alignment = Alignment(
-                    **align_params
-                )
+                ws.cell(row=row_num, column=col_num).alignment = Alignment(**align_params)
 
 
 def excel_open_workbook(template_buffer):

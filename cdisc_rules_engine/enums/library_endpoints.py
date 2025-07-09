@@ -17,9 +17,7 @@ class LibraryEndpoints(BaseEnum):
         Returns a list of complete TIG endpoint paths for all versions.
         """
         base_path = "/mdr/integrated/tig"
-        versions = [
-            v.strip() for v in cls.TIG.value.split("/")[-1].split(";") if v.strip()
-        ]
+        versions = [v.strip() for v in cls.TIG.value.split("/")[-1].split(";") if v.strip()]
         endpoints = []
         for version in versions:
             endpoints.append(f"{base_path}/{version}")

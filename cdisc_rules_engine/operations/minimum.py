@@ -6,7 +6,5 @@ class Minimum(BaseOperation):
         if not self.params.grouping:
             result = self.params.dataframe[self.params.target].min()
         else:
-            result = self.params.dataframe.groupby(
-                self.params.grouping, as_index=False
-            ).data.min()
+            result = self.params.dataframe.groupby(self.params.grouping, as_index=False).data.min()
         return result

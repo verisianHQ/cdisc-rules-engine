@@ -68,30 +68,20 @@ class MedDRAValidator(BaseDictionaryValidator):
         case_sensitive_check = kwargs.get("case_sensitive")
         term_type = term_type.lower()
         if term_type not in TermTypes.values():
-            raise InvalidDictionaryVariable(
-                f"{term_type} does not correspond to a MedDRA term type"
-            )
+            raise InvalidDictionaryVariable(f"{term_type} does not correspond to a MedDRA term type")
 
         if variable in self.code_variables:
             return term in term_dictionary.get(term_type, {})
 
         all_terms = term_dictionary.get(term_type, {}).values()
         if case_sensitive_check:
-            valid_terms = [
-                meddra_term for meddra_term in all_terms if term == meddra_term.term
-            ]
+            valid_terms = [meddra_term for meddra_term in all_terms if term == meddra_term.term]
         else:
-            valid_terms = [
-                meddra_term
-                for meddra_term in all_terms
-                if term.lower() == meddra_term.term.lower()
-            ]
+            valid_terms = [meddra_term for meddra_term in all_terms if term.lower() == meddra_term.term.lower()]
 
         return len(valid_terms) > 0
 
-    def is_valid_code(
-        self, code: str, term_type: str, variable: str, codes=[], **kwargs
-    ) -> bool:
+    def is_valid_code(self, code: str, term_type: str, variable: str, codes=[], **kwargs) -> bool:
         """
         Method to identify whether a term is valid based on its term type.
 
@@ -120,8 +110,6 @@ class MedDRAValidator(BaseDictionaryValidator):
         term_dictionary = self.get_term_dictionary()
         term_type = term_type.lower()
         if term_type not in TermTypes.values():
-            raise InvalidDictionaryVariable(
-                f"{term_type} does not correspond to a MedDRA term type"
-            )
+            raise InvalidDictionaryVariable(f"{term_type} does not correspond to a MedDRA term type")
 
         return code in term_dictionary.get(term_type, {})

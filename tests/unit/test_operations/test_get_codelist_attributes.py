@@ -175,9 +175,7 @@ def test_get_codelist_attributes(
         library_metadata.set_ct_package_metadata(cp, pkg)
 
     # 3.0 execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
 
     operation = CodeListAttributes(
         operation_params,

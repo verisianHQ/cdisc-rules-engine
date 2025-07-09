@@ -105,12 +105,8 @@ class MEDRTTermsFactory(TermsFactoryInterface):
         return ""
 
     def _get_dictionary_path(self, directory_path: str) -> str:
-        file_path = self.data_service.get_file_matching_pattern(
-            directory_path, self.term_file_regex
-        )
+        file_path = self.data_service.get_file_matching_pattern(directory_path, self.term_file_regex)
         if not file_path:
-            raise MissingDataError(
-                message="MEDRT dictionary install missing required core xml file."
-            )
+            raise MissingDataError(message="MEDRT dictionary install missing required core xml file.")
 
         return get_dictionary_path(directory_path, file_path)

@@ -11,9 +11,7 @@ dictionary_path = f"{os.path.dirname(__file__)}/../../../resources/dictionaries/
 
 def test_install():
     storage_service = LocalDataService.get_instance(cache_service=MagicMock())
-    factory = AbstractTermsFactory(storage_service).get_service(
-        DictionaryTypes.LOINC.value
-    )
+    factory = AbstractTermsFactory(storage_service).get_service(DictionaryTypes.LOINC.value)
     dictionary = factory.install_terms(dictionary_path)
     assert dictionary.version == "2.74"
     items = dictionary.items()

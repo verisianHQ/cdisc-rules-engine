@@ -21,10 +21,7 @@ class DummyDataset(SDTMDatasetMetadata):
                 first_record=dataset_data.first_record,
             )
         else:
-            self.name = (
-                dataset_data.get("name")
-                or dataset_data.get("filename").split(".")[0].upper()
-            )
+            self.name = dataset_data.get("name") or dataset_data.get("filename").split(".")[0].upper()
             self.label = dataset_data.get("label")
             self.file_size = dataset_data.get("file_size") or 0
             self.filename = dataset_data.get("filename")
@@ -33,14 +30,10 @@ class DummyDataset(SDTMDatasetMetadata):
                 self.first_record = dataset_data.first_record
             else:
                 self.first_record = {
-                    name: next(iter(val), None)
-                    for name, val in dataset_data.get("records", {}).items()
+                    name: next(iter(val), None) for name, val in dataset_data.get("records", {}).items()
                 }
             self.modification_date = datetime.now().isoformat()
-            self.variables = [
-                DummyVariable(variable_data)
-                for variable_data in dataset_data.get("variables", [])
-            ]
+            self.variables = [DummyVariable(variable_data) for variable_data in dataset_data.get("variables", [])]
             self.data = pd.DataFrame.from_dict(dataset_data.get("records", {}))
 
             self.record_count = len(self.data.index)

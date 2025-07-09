@@ -4,9 +4,7 @@ from cdisc_rules_engine.services.data_readers.xpt_reader import XPTReader
 
 
 def test_read():
-    test_dataset_path: str = (
-        f"{os.path.dirname(__file__)}/../resources/test_dataset.xpt"
-    )
+    test_dataset_path: str = f"{os.path.dirname(__file__)}/../resources/test_dataset.xpt"
     with open(test_dataset_path, "rb") as f:
         data = f.read()
 

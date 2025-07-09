@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union, List, Any, Optional, Dict, Tuple, Callable
+from typing import List, Optional, Tuple, Union
 
 
 class DatasetInterface(ABC):
@@ -82,15 +82,13 @@ class DatasetInterface(ABC):
         """
 
     @abstractmethod
-    def concat(
-        self, other: Union["DatasetInterface", List["DatasetInterface"]], **kwargs
-    ):
+    def concat(self, other: Union["DatasetInterface", List["DatasetInterface"]], **kwargs):
         """
         Concat two datasets
         """
 
     @abstractmethod
-    def merge(self, other: "DatasetInterface", **kwargs):
+    def merge(self, other: "DatasetInterface", on: list = None, **kwargs):
         """
         merge two datasets
         """
@@ -267,7 +265,7 @@ class DatasetInterface(ABC):
         pass
 
     @abstractmethod
-    def duplicated(self, subset=None, keep='first'):
+    def duplicated(self, subset=None, keep="first"):
         """
         Return boolean Series denoting duplicate rows.
         """
@@ -418,32 +416,32 @@ class DatasetInterface(ABC):
         pass
 
     @abstractmethod
-    def eq(self, other, axis='columns', level=None):
+    def eq(self, other, axis="columns", level=None):
         """Get Equal to of dataframe and other, element-wise."""
         pass
 
     @abstractmethod
-    def ne(self, other, axis='columns', level=None):
+    def ne(self, other, axis="columns", level=None):
         """Get Not equal to of dataframe and other, element-wise."""
         pass
 
     @abstractmethod
-    def lt(self, other, axis='columns', level=None):
+    def lt(self, other, axis="columns", level=None):
         """Get Less than of dataframe and other, element-wise."""
         pass
 
     @abstractmethod
-    def le(self, other, axis='columns', level=None):
+    def le(self, other, axis="columns", level=None):
         """Get Less than or equal to of dataframe and other, element-wise."""
         pass
 
     @abstractmethod
-    def gt(self, other, axis='columns', level=None):
+    def gt(self, other, axis="columns", level=None):
         """Get Greater than of dataframe and other, element-wise."""
         pass
 
     @abstractmethod
-    def ge(self, other, axis='columns', level=None):
+    def ge(self, other, axis="columns", level=None):
         """Get Greater than or equal to of dataframe and other, element-wise."""
         pass
 
@@ -458,7 +456,15 @@ class DatasetInterface(ABC):
         pass
 
     @abstractmethod
-    def sum(self, axis=None, skipna=True, level=None, numeric_only=None, min_count=0, **kwargs):
+    def sum(
+        self,
+        axis=None,
+        skipna=True,
+        level=None,
+        numeric_only=None,
+        min_count=0,
+        **kwargs,
+    ):
         """Return the sum of the values."""
         pass
 
@@ -480,4 +486,9 @@ class DatasetInterface(ABC):
     @abstractmethod
     def round(self, decimals=0, *args, **kwargs):
         """Round to a variable number of decimal places."""
+        pass
+
+    @abstractmethod
+    def astype(self, dtype, copy=True, errors="raise", **kwargs):
+        """Cast columns to a specified dtype."""
         pass

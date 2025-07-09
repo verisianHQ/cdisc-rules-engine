@@ -106,9 +106,7 @@ def test_missing_codelist(operation_params, mock_metadata):
         library_metadata,
     )
 
-    with pytest.raises(
-        MissingDataError, match="Codelist 'NONEXISTENT' not found in metadata"
-    ):
+    with pytest.raises(MissingDataError, match="Codelist 'NONEXISTENT' not found in metadata"):
         operation._execute_operation()
 
 
@@ -126,9 +124,7 @@ def test_missing_codelists_parameter(operation_params, mock_metadata):
         library_metadata,
     )
 
-    with pytest.raises(
-        MissingDataError, match="Codelists operation parameter not provided"
-    ):
+    with pytest.raises(MissingDataError, match="Codelists operation parameter not provided"):
         operation._execute_operation()
 
 

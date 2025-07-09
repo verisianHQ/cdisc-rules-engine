@@ -151,6 +151,4 @@ def test_contents_define_vlm_dataset_builder(
             "define_vlm_mandatory",
         ]
         for column in columns_to_check:
-            assert (
-                result.data[column].compute() == expected_df.data[column].compute()
-            ).all()
+            assert (result.data[column].compute() == expected_df.data[column].compute()).all()

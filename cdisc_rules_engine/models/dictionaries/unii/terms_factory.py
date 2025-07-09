@@ -29,9 +29,7 @@ class UNIITermsFactory(TermsFactoryInterface):
         """
         Create LOINC dictionary terms from files in directory.
         """
-        file_path = self.data_service.get_file_matching_pattern(
-            directory_path, self.term_file_path_pattern
-        )
+        file_path = self.data_service.get_file_matching_pattern(directory_path, self.term_file_path_pattern)
         if not file_path:
             raise MissingDataError(
                 message=f"UNII dictionary install missing file matching pattern {self.term_file_path_pattern}"
@@ -51,9 +49,7 @@ class UNIITermsFactory(TermsFactoryInterface):
         return ExternalDictionary(data, str(current_version))
 
     def get_version(self, directory_path) -> str:
-        file_path = self.data_service.get_file_matching_pattern(
-            directory_path, self.term_file_path_pattern
-        )
+        file_path = self.data_service.get_file_matching_pattern(directory_path, self.term_file_path_pattern)
         if not file_path:
             raise MissingDataError(
                 message=f"UNII dictionary install missing file matching pattern {self.term_file_path_pattern}"

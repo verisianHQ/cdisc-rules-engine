@@ -96,9 +96,7 @@ def test_domain_is_custom(
     cache = InMemoryCacheService.get_instance()
     library_metadata = LibraryMetadataContainer(standard_metadata=standard_metadata)
     # execute operation
-    data_service = LocalDataService.get_instance(
-        cache_service=cache, config=ConfigService()
-    )
+    data_service = LocalDataService.get_instance(cache_service=cache, config=ConfigService())
     operation = DomainIsCustom(
         operation_params,
         operation_params.dataframe,
@@ -107,6 +105,4 @@ def test_domain_is_custom(
         library_metadata,
     )
     result = operation.execute()
-    assert result[operation_params.operation_id].equals(
-        dataframe.convert_to_series([expected, expected, expected])
-    )
+    assert result[operation_params.operation_id].equals(dataframe.convert_to_series([expected, expected, expected]))
