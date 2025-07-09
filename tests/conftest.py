@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from typing import Generator
 from unittest.mock import MagicMock
 
 from cdisc_rules_engine.models.dataset import PandasDataset, SQLiteDataset
@@ -35,7 +36,7 @@ whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug
 
 
 @pytest.fixture(scope="function")
-def db_config():
+def db_config() -> Generator[SQLiteDatabaseConfig, None, None]:
     """Create a fresh database config for each test function."""
     config = SQLiteDatabaseConfig()
     config.initialise(in_memory=True)

@@ -1,8 +1,12 @@
+from typing import Union
 from unittest.mock import MagicMock, patch
 import os
 import pandas as pd
 import pytest
 
+from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
@@ -51,207 +55,87 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
     )
     assert preprocessed_dataset.data.equals(dataset.data)
 
-
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
 @pytest.mark.parametrize(
-    "join_type, expected_dataset",
+    "join_type, data_dict",
     [
         (
             None,
-            PandasDataset(
-                pd.DataFrame.from_dict(
-                    {
-                        "ECSEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "ECSTDY": [
-                            4,
-                            5,
-                        ],
-                        "STUDYID": [
-                            "1",
-                            "2",
-                        ],
-                        "USUBJID": [
-                            "CDISC001",
-                            "CDISC001",
-                        ],
-                        "AESEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "AESTDY": [
-                            4,
-                            5,
-                        ],
-                        "TSSEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "TSSTDY": [
-                            31,
-                            74,
-                        ],
-                    }
-                )
-            ),
+            {
+                "ECSEQ": [
+                    "1",
+                    "2",
+                ],
+                "ECSTDY": [
+                    4,
+                    5,
+                ],
+                "STUDYID": [
+                    "1",
+                    "2",
+                ],
+                "USUBJID": [
+                    "CDISC001",
+                    "CDISC001",
+                ],
+                "AESEQ": [
+                    "1",
+                    "2",
+                ],
+                "AESTDY": [
+                    4,
+                    5,
+                ],
+                "TSSEQ": [
+                    "1",
+                    "2",
+                ],
+                "TSSTDY": [
+                    31,
+                    74,
+                ],
+            }
+            
         ),
         (
             "inner",
-            PandasDataset(
-                pd.DataFrame.from_dict(
-                    {
-                        "ECSEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "ECSTDY": [
-                            4,
-                            5,
-                        ],
-                        "STUDYID": [
-                            "1",
-                            "2",
-                        ],
-                        "USUBJID": [
-                            "CDISC001",
-                            "CDISC001",
-                        ],
-                        "AESEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "AESTDY": [
-                            4,
-                            5,
-                        ],
-                        "TSSEQ": [
-                            "1",
-                            "2",
-                        ],
-                        "TSSTDY": [
-                            31,
-                            74,
-                        ],
-                    }
-                )
-            ),
+            {
+                "ECSEQ": [
+                    "1",
+                    "2",
+                ],
+                "ECSTDY": [
+                    4,
+                    5,
+                ],
+                "STUDYID": [
+                    "1",
+                    "2",
+                ],
+                "USUBJID": [
+                    "CDISC001",
+                    "CDISC001",
+                ],
+                "AESEQ": [
+                    "1",
+                    "2",
+                ],
+                "AESTDY": [
+                    4,
+                    5,
+                ],
+                "TSSEQ": [
+                    "1",
+                    "2",
+                ],
+                "TSSTDY": [
+                    31,
+                    74,
+                ],
+            }
         ),
         (
             "left",
-            PandasDataset(
-                pd.DataFrame(
-                    {
-                        "ECSEQ": [
-                            "1",
-                            "2",
-                            "3",
-                            "4",
-                            "5",
-                        ],
-                        "ECSTDY": [
-                            4,
-                            5,
-                            6,
-                            7,
-                            8,
-                        ],
-                        "STUDYID": [
-                            "1",
-                            "2",
-                            "1",
-                            "2",
-                            "3",
-                        ],
-                        "USUBJID": [
-                            "CDISC001",
-                            "CDISC001",
-                            "CDISC002",
-                            "CDISC002",
-                            "CDISC003",
-                        ],
-                        "AESEQ": [
-                            "1",
-                            "2",
-                            "3",
-                            "4",
-                            None,
-                        ],
-                        "AESTDY": pd.Series(
-                            [
-                                4,
-                                5,
-                                16,
-                                17,
-                                None,
-                            ],
-                            dtype="object",
-                        ),
-                        "_merge_AE": pd.Categorical(
-                            [
-                                "both",
-                                "both",
-                                "both",
-                                "both",
-                                "left_only",
-                            ],
-                            categories=["left_only", "right_only", "both"],
-                            ordered=False,
-                        ),
-                        "TSSEQ": [
-                            "1",
-                            "2",
-                            None,
-                            None,
-                            None,
-                        ],
-                        "TSSTDY": pd.Series(
-                            [
-                                31,
-                                74,
-                                None,
-                                None,
-                                None,
-                            ],
-                            dtype="object",
-                        ),
-                        "_merge_TS": pd.Categorical(
-                            [
-                                "both",
-                                "both",
-                                "left_only",
-                                "left_only",
-                                "left_only",
-                            ],
-                            categories=["left_only", "right_only", "both"],
-                            ordered=False,
-                        ),
-                    }
-                ),
-            ),
-        ),
-    ],
-)
-@patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
-def test_preprocess(
-    mock_get_dataset: MagicMock,
-    dataset_rule_equal_to: dict,
-    join_type: str,
-    expected_dataset: pd.DataFrame,
-):
-    """
-    Unit test for preprocess method. Checks the case when
-    we are merging 3 datasets. Expected behavior depends
-    on join_type:
-    - If None or "inner", expected behavior is a dataset
-      with rows from all 3 datasets filtered by match keys.
-    - If "left", expected behavior is a dataset with rows
-    from the first dataset with rows added from the
-    other 2 datasets when there are matching key values.
-    """
-    # create datasets
-    ec_dataset = PandasDataset(
-        pd.DataFrame.from_dict(
             {
                 "ECSEQ": [
                     "1",
@@ -281,11 +165,120 @@ def test_preprocess(
                     "CDISC002",
                     "CDISC003",
                 ],
+                "AESEQ": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    None,
+                ],
+                "AESTDY": pd.Series(
+                    [
+                        4,
+                        5,
+                        16,
+                        17,
+                        None,
+                    ],
+                    dtype="object",
+                ),
+                "_merge_AE": pd.Categorical(
+                    [
+                        "both",
+                        "both",
+                        "both",
+                        "both",
+                        "left_only",
+                    ],
+                    categories=["left_only", "right_only", "both"],
+                    ordered=False,
+                ),
+                "TSSEQ": [
+                    "1",
+                    "2",
+                    None,
+                    None,
+                    None,
+                ],
+                "TSSTDY": pd.Series(
+                    [
+                        31,
+                        74,
+                        None,
+                        None,
+                        None,
+                    ],
+                    dtype="object",
+                ),
+                "_merge_TS": pd.Categorical(
+                    [
+                        "both",
+                        "both",
+                        "left_only",
+                        "left_only",
+                        "left_only",
+                    ],
+                    categories=["left_only", "right_only", "both"],
+                    ordered=False,
+                ),
             }
-        )
+        ),
+    ],
+)
+@patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
+def test_preprocess(
+    mock_get_dataset: MagicMock,
+    dataset_rule_equal_to: dict,
+    dataset_implementation:Union[PandasDataset, SQLiteDataset],
+    join_type: str,
+    data_dict: dict,
+    db_config: SQLiteDatabaseConfig,
+):
+    """
+    Unit test for preprocess method. Checks the case when
+    we are merging 3 datasets. Expected behavior depends
+    on join_type:
+    - If None or "inner", expected behavior is a dataset
+      with rows from all 3 datasets filtered by match keys.
+    - If "left", expected behavior is a dataset with rows
+    from the first dataset with rows added from the
+    other 2 datasets when there are matching key values.
+    """
+    # create datasets
+    ec_dataset = dataset_implementation.from_dict(
+        {
+            "ECSEQ": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+            ],
+            "ECSTDY": [
+                4,
+                5,
+                6,
+                7,
+                8,
+            ],
+            "STUDYID": [
+                "1",
+                "2",
+                "1",
+                "2",
+                "3",
+            ],
+            "USUBJID": [
+                "CDISC001",
+                "CDISC001",
+                "CDISC002",
+                "CDISC002",
+                "CDISC003",
+            ],
+        }
+        , **{"database_config": db_config}
     )
-    ae_dataset = PandasDataset(
-        pd.DataFrame.from_dict(
+    ae_dataset = dataset_implementation.from_dict(
             {
                 "AESEQ": [
                     "1",
@@ -312,10 +305,9 @@ def test_preprocess(
                     "CDISC002",
                 ],
             }
-        )
+        , **{"database_config": db_config}
     )
-    ts_dataset = PandasDataset(
-        pd.DataFrame.from_dict(
+    ts_dataset = dataset_implementation.from_dict(
             {
                 "TSSEQ": [
                     "1",
@@ -334,7 +326,7 @@ def test_preprocess(
                     "CDISC001",
                 ],
             }
-        )
+        , **{"database_config": db_config}
     )
 
     # mock blob storage call
@@ -364,14 +356,15 @@ def test_preprocess(
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: pd.DataFrame = preprocessor.preprocess(
+    preprocessed_dataset: DatasetInterface = preprocessor.preprocess(
         dataset_rule_equal_to,
         [
             SDTMDatasetMetadata(first_record={"DOMAIN": "AE"}, filename="ae.xpt"),
             SDTMDatasetMetadata(first_record={"DOMAIN": "TS"}, filename="ts.xpt"),
         ],
     )
-    assert preprocessed_dataset.data.equals(expected_dataset.data)
+    expected_dataset = dataset_implementation.from_dict(data_dict, **{"database_config": db_config})
+    assert preprocessed_dataset.equals(expected_dataset)
 
 
 @patch("cdisc_rules_engine.services.data_services.LocalDataService.get_dataset")
