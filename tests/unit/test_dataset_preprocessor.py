@@ -56,7 +56,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
     preprocessed_dataset: Union[PandasDataset, SQLiteDataset] = preprocessor.preprocess(
         dataset_rule_equal_to_error_objects, datasets
     )
-    assert preprocessed_dataset.to_frame().equals(dataset.to_frame())
+    assert preprocessed_dataset.equals(dataset)
 
 
 @pytest.mark.parametrize(

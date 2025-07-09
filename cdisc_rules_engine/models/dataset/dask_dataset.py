@@ -238,7 +238,7 @@ class DaskDataset(PandasDataset):
         new_data = self._data.copy()
         return self.__class__(new_data)
 
-    def equals(self, other_dataset):
+    def equals(self, other_dataset) -> bool:
         is_equal = True
         for column in self.data:
             if column not in other_dataset:
