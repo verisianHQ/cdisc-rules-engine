@@ -51,14 +51,14 @@ class PandasDataset(DatasetInterface):
         return self._data.iloc
 
     @classmethod
-    def from_dict(cls, data: dict, **kwargs):
+    def from_dict(cls, data: dict, **kwargs) -> "PandasDataset":
         if "database_config" in kwargs.keys():
             kwargs.pop("database_config")
         dataframe = pd.DataFrame.from_dict(data, **kwargs)
         return cls(dataframe)
 
     @classmethod
-    def from_records(cls, data: List[dict], **kwargs):
+    def from_records(cls, data: List[dict], **kwargs) -> "PandasDataset":
         if "database_config" in kwargs.keys():
             kwargs.pop("database_config")
         dataframe = pd.DataFrame.from_records(data, **kwargs)

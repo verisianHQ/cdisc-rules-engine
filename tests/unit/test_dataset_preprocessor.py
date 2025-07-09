@@ -229,7 +229,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
 def test_preprocess(
     mock_get_dataset: MagicMock,
     dataset_rule_equal_to: dict,
-    dataset_implementation:Union[PandasDataset, SQLiteDataset],
+    dataset_implementation: DatasetInterface,
     join_type: str,
     data_dict: dict,
     db_config: SQLiteDatabaseConfig,

@@ -94,12 +94,12 @@ class DaskDataset(PandasDataset):
         return self.length
 
     @classmethod
-    def from_dict(cls, data: dict, **kwargs):
+    def from_dict(cls, data: dict, **kwargs) -> "DaskDataset":
         dataframe = dd.from_dict(data, npartitions=DEFAULT_NUM_PARTITIONS, **kwargs)
         return cls(dataframe)
 
     @classmethod
-    def from_records(cls, data: List[dict], **kwargs):
+    def from_records(cls, data: List[dict], **kwargs) -> "DaskDataset":
         data = pd.DataFrame.from_records(data, **kwargs)
         dataframe = dd.from_pandas(data, npartitions=DEFAULT_NUM_PARTITIONS)
         return cls(dataframe)

@@ -272,7 +272,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
     # ========== Factory methods ==========
 
     @classmethod
-    def from_dict(cls, data: dict, database_config=None, **kwargs):
+    def from_dict(cls, data: dict, database_config=None, **kwargs) -> "SQLDatasetBase":
         """Create dataset from dictionary."""
         if not database_config:
             raise ValueError("database_config is required")
@@ -318,7 +318,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         return dataset
 
     @classmethod
-    def from_records(cls, data: List[dict], database_config=None, **kwargs):
+    def from_records(cls, data: List[dict], database_config=None, **kwargs) -> "SQLDatasetBase":
         """Create dataset from list of records."""
         if not database_config:
             raise ValueError("database_config is required")
