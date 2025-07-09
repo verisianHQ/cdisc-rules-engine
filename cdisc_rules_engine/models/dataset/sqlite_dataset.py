@@ -5,7 +5,9 @@ import uuid
 from math import isnan
 from typing import List, Dict, Any, Union, Optional, Tuple
 
-from cdisc_rules_engine.models.dataset.sql_dataset_base import SQLDatasetBase, MergeMap
+import pandas as pd
+
+from cdisc_rules_engine.models.dataset.sql_dataset_base import MergeMap, SQLDatasetBase
 from cdisc_rules_engine.config.databases.sqlite_database_config import (
     SQLiteDatabaseConfig,
 )
@@ -1286,13 +1288,13 @@ class SQLiteDataset(SQLDatasetBase):
         else:
             raise NotImplementedError("Row-wise cumsum not implemented")
 
-    def to_frame(self, name=None):
+    def to_frame(self, name=None) -> pd.DataFrame:
         """Convert Series to DataFrame - SQLite datasets are always frame-like."""
         if len(self.columns) == 1:
             # Already single column, just rename if needed
             if name:
                 return self.rename(columns={self.columns[0]: name})
-        return self
+        return pd.DataFrame(self.to_dict(orient="records"))
 
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""

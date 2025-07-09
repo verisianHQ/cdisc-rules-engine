@@ -192,7 +192,7 @@ class PandasDataset(DatasetInterface):
         new_data = self._data.copy()
         return self.__class__(new_data)
 
-    def equals(self, other_dataset: DatasetInterface):
+    def equals(self, other_dataset: pd.DataFrame) -> bool:
         return self._data.equals(other_dataset.data)
 
     def get_error_rows(self, results) -> "pd.Dataframe":
@@ -340,12 +340,12 @@ class PandasDataset(DatasetInterface):
         result = self._data.cumsum(axis=axis, skipna=skipna, *args, **kwargs)
         return self.__class__(result)
 
-    def to_frame(self, name=None):
+    def to_frame(self, name=None) -> pd.DataFrame:
         """Convert Series to DataFrame."""
         if isinstance(self._data, pd.Series):
             result = self._data.to_frame(name=name)
             return self.__class__(result)
-        return self  # Already a DataFrame
+        return self._data  # Already a DataFrame
 
     def describe(self, percentiles=None, include=None, exclude=None):
         """Generate descriptive statistics."""

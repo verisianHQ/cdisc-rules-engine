@@ -3,6 +3,9 @@ import os
 import pandas as pd
 import pytest
 
+from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
@@ -20,24 +23,32 @@ from cdisc_rules_engine.models.library_metadata_container import (
 from cdisc_rules_engine.models.dataset import PandasDataset
 
 
-def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict):
+@pytest.mark.parametrize(
+    "data_dict",
+    [
+        {
+            "USUBJID": ["CDISC01", "CDISC01", "CDISC01"],
+            "AESEQ": [
+                1,
+                2,
+                3,
+            ],
+        }
+    ],
+)
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+def test_preprocess_no_datasets_in_rule(
+    dataset_rule_equal_to_error_objects: dict,
+    data_dict: dict,
+    dataset_implementation: DatasetInterface,
+    dataset_kwargs: dict[str, SQLiteDatabaseConfig],
+):
     """
     Unit test for preprocess method. Checks the case when
     no datasets are provided in the rule.
-    Expected behaviour is the original dataset returned. trigger.
+    Expected behaviour is the original dataset returned.
     """
-    dataset = PandasDataset(
-        pd.DataFrame.from_dict(
-            {
-                "USUBJID": ["CDISC01", "CDISC01", "CDISC01"],
-                "AESEQ": [
-                    1,
-                    2,
-                    3,
-                ],
-            }
-        )
-    )
+    dataset = dataset_implementation.from_dict(data_dict, **dataset_kwargs)
     datasets = [SDTMDatasetMetadata(name="AE")]
     data_service = LocalDataService(MagicMock(), MagicMock(), MagicMock())
     preprocessor = DatasetPreprocessor(
@@ -46,8 +57,8 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: PandasDataset = preprocessor.preprocess(dataset_rule_equal_to_error_objects, datasets)
-    assert preprocessed_dataset.data.equals(dataset.data)
+    preprocessed_dataset = preprocessor.preprocess(dataset_rule_equal_to_error_objects, datasets)
+    assert preprocessed_dataset.equals(dataset)
 
 
 @pytest.mark.parametrize(
