@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import pytest
 
+from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
@@ -38,7 +40,11 @@ from cdisc_rules_engine.models.dataset import PandasDataset
     ],
 )
 @pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
-def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dict, data_dict, dataset_implementation, db_config):
+def test_preprocess_no_datasets_in_rule(
+    dataset_rule_equal_to_error_objects: dict, 
+    data_dict: dict, 
+    dataset_implementation: DatasetInterface, 
+    db_config: SQLiteDatabaseConfig):
     """
     Unit test for preprocess method. Checks the case when
     no datasets are provided in the rule.
@@ -53,7 +59,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: Union[PandasDataset, SQLiteDataset] = preprocessor.preprocess(
+    preprocessed_dataset: DatasetInterface = preprocessor.preprocess(
         dataset_rule_equal_to_error_objects, datasets
     )
     assert preprocessed_dataset.equals(dataset)
