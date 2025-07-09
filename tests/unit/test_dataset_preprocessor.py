@@ -57,7 +57,7 @@ def test_preprocess_no_datasets_in_rule(
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: DatasetInterface = preprocessor.preprocess(dataset_rule_equal_to_error_objects, datasets)
+    preprocessed_dataset = preprocessor.preprocess(dataset_rule_equal_to_error_objects, datasets)
     assert preprocessed_dataset.equals(dataset)
 
 
