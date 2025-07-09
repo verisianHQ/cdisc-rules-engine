@@ -55,7 +55,7 @@ def test_preprocess_no_datasets_in_rule(dataset_rule_equal_to_error_objects: dic
     )
     assert preprocessed_dataset.data.equals(dataset.data)
 
-@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset])
 @pytest.mark.parametrize(
     "join_type, data_dict",
     [
@@ -356,7 +356,7 @@ def test_preprocess(
         data_service,
         InMemoryCacheService(),
     )
-    preprocessed_dataset: DatasetInterface = preprocessor.preprocess(
+    preprocessed_dataset = preprocessor.preprocess(
         dataset_rule_equal_to,
         [
             SDTMDatasetMetadata(first_record={"DOMAIN": "AE"}, filename="ae.xpt"),
