@@ -25,19 +25,12 @@ class VariableCount(BaseOperation):
         datasets_with_unique_domains = list(
             {dataset.unsplit_name: dataset for dataset in self.params.datasets}.values()
         )
-        coroutines = [
-            self._get_dataset_variable_count(dataset)
-            for dataset in datasets_with_unique_domains
-        ]
+        coroutines = [self._get_dataset_variable_count(dataset) for dataset in datasets_with_unique_domains]
         dataset_variable_value_counts: List[int] = await asyncio.gather(*coroutines)
         return sum(dataset_variable_value_counts)
 
-    async def _get_dataset_variable_count(
-        self, dataset: SDTMDatasetMetadata
-    ) -> Counter:
-        data: pd.DataFrame = self.data_service.get_dataset(
-            dataset_name=dataset.full_path
-        )
+    async def _get_dataset_variable_count(self, dataset: SDTMDatasetMetadata) -> Counter:
+        data: pd.DataFrame = self.data_service.get_dataset(dataset_name=dataset.full_path)
         target_variable = (
             self.params.original_target.replace("--", dataset.domain, 1)
             if dataset.domain

@@ -25,9 +25,7 @@ class DatasetJSONMetadataReader:
         Extracts metadata from .json file.
         """
         # Load Dataset-JSON Schema
-        with open(
-            os.path.join("resources", "schema", "dataset.schema.json")
-        ) as schemajson:
+        with open(os.path.join("resources", "schema", "dataset.schema.json")) as schemajson:
             schema = schemajson.read()
         schema = json.loads(schema)
 
@@ -41,18 +39,11 @@ class DatasetJSONMetadataReader:
             self._metadata_container = {
                 "variable_labels": [item["label"] for item in datasetjson["columns"]],
                 "variable_names": [item["name"] for item in datasetjson["columns"]],
-                "variable_formats": [
-                    item.get("displayFormat", "") for item in datasetjson["columns"]
-                ],
-                "variable_name_to_label_map": {
-                    item["name"]: item["label"] for item in datasetjson["columns"]
-                },
-                "variable_name_to_data_type_map": {
-                    item["name"]: item["dataType"] for item in datasetjson["columns"]
-                },
+                "variable_formats": [item.get("displayFormat", "") for item in datasetjson["columns"]],
+                "variable_name_to_label_map": {item["name"]: item["label"] for item in datasetjson["columns"]},
+                "variable_name_to_data_type_map": {item["name"]: item["dataType"] for item in datasetjson["columns"]},
                 "variable_name_to_size_map": {
-                    item["name"]: item.get("length", None)
-                    for item in datasetjson["columns"]
+                    item["name"]: item.get("length", None) for item in datasetjson["columns"]
                 },
                 "number_of_variables": len(datasetjson["columns"]),
                 "dataset_label": datasetjson.get("label"),
@@ -64,19 +55,13 @@ class DatasetJSONMetadataReader:
 
             self._convert_variable_types()
 
-            self._metadata_container["adam_info"] = self._extract_adam_info(
-                self._metadata_container["variable_names"]
-            )
-            logger.info(
-                f"Extracted dataset metadata. metadata={self._metadata_container}"
-            )
+            self._metadata_container["adam_info"] = self._extract_adam_info(self._metadata_container["variable_names"])
+            logger.info(f"Extracted dataset metadata. metadata={self._metadata_container}")
 
             return self._metadata_container
 
         except jsonschema.exceptions.ValidationError:
-            logger.warning(
-                f"{str(self._file_path)} is not compliant with Dataset-JSON schema"
-            )
+            logger.warning(f"{str(self._file_path)} is not compliant with Dataset-JSON schema")
             return {
                 "variable_labels": [],
                 "variable_names": [],
@@ -124,12 +109,8 @@ class DatasetJSONMetadataReader:
             "time": "Char",
             "URI": "Char",
         }
-        for key, value in self._metadata_container[
-            "variable_name_to_data_type_map"
-        ].items():
-            self._metadata_container["variable_name_to_data_type_map"][key] = (
-                rule_author_type_map[value]
-            )
+        for key, value in self._metadata_container["variable_name_to_data_type_map"].items():
+            self._metadata_container["variable_name_to_data_type_map"][key] = rule_author_type_map[value]
 
     def _to_dict(self) -> dict:
         """

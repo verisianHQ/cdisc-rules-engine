@@ -5,10 +5,8 @@ from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
 class ValidExternalDictionaryCodeTermPair(BaseOperation):
     def _execute_operation(self):
         if not isinstance(self.params.dataframe, DaskDataset):
-            validator_type = (
-                self.params.external_dictionaries.get_dictionary_validator_class(
-                    self.params.external_dictionary_type
-                )
+            validator_type = self.params.external_dictionaries.get_dictionary_validator_class(
+                self.params.external_dictionary_type
             )
             validator = validator_type(
                 cache_service=self.cache,
@@ -32,17 +30,13 @@ class ValidExternalDictionaryCodeTermPair(BaseOperation):
         target_col = self.params.target
         term_var = self.params.external_dictionary_term_variable
         operation_id = self.params.operation_id
-        validator_type = (
-            self.params.external_dictionaries.get_dictionary_validator_class(
-                self.params.external_dictionary_type
-            )
+        validator_type = self.params.external_dictionaries.get_dictionary_validator_class(
+            self.params.external_dictionary_type
         )
         validator = validator_type(
             cache_service=self.cache,
             data_service=self.data_service,
-            dictionary_path=self.params.external_dictionaries.get_dictionary_path(
-                self.params.external_dictionary_type
-            ),
+            dictionary_path=self.params.external_dictionaries.get_dictionary_path(self.params.external_dictionary_type),
         )
         unique_codes = self.params.dataframe[target_col].unique()
         df_computed = self.params.dataframe._data.compute()
@@ -62,9 +56,7 @@ class ValidExternalDictionaryCodeTermPair(BaseOperation):
 
         def validate_pair(df):
             result = df.apply(
-                lambda row: validation_dict.get(
-                    (row[target_col], row[term_var]), False
-                ),
+                lambda row: validation_dict.get((row[target_col], row[term_var]), False),
                 axis=1,
             )
             return result

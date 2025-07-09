@@ -54,47 +54,33 @@ class CachePopulator:
         await asyncio.gather(*coroutines)
 
     async def load_codelists(self, packages: List[str]):
-        coroutines = [
-            self._async_get_codelist_terms_map(package) for package in packages
-        ]
+        coroutines = [self._async_get_codelist_terms_map(package) for package in packages]
         codelist_term_maps = await asyncio.gather(*coroutines)
         self.cache.add_batch(codelist_term_maps, "package")
 
     async def load_available_ct_packages(self):
         packages = self.library_service.get_all_ct_packages()
-        available_packages = [
-            package.get("href", "").split("/")[-1] for package in packages
-        ]
+        available_packages = [package.get("href", "").split("/")[-1] for package in packages]
         self.cache.add(PUBLISHED_CT_PACKAGES, available_packages)
 
-    async def load_standard(
-        self, standard: str, version: str, standard_substandard: str = None
-    ):
+    async def load_standard(self, standard: str, version: str, standard_substandard: str = None):
         if not standard_substandard:
             standards = [{"href": f"/mdr/{standard}/{version}"}]
             variable_codelist_maps = await self._get_variable_codelist_maps(standards)
             self.cache.add_batch(variable_codelist_maps, "name")
         else:
-            standards = [
-                {"href": f"/mdr/integrated/{standard}/{version}/{standard_substandard}"}
-            ]
+            standards = [{"href": f"/mdr/integrated/{standard}/{version}/{standard_substandard}"}]
             variable_codelist_maps = await self._get_variable_codelist_maps(standards)
             self.cache.add_batch(variable_codelist_maps, "name")
         # save details of all standards to cache
-        standards_details: List[dict] = await self._async_get_details_of_all_standards(
-            standards
-        )
+        standards_details: List[dict] = await self._async_get_details_of_all_standards(standards)
         self.cache.add_batch(standards_details, "cache_key", pop_cache_key=True)
 
         # save details of all standard's models to cache
-        standards_models: Iterable[dict] = (
-            await self._async_get_details_of_all_standards_models(standards_details)
-        )
+        standards_models: Iterable[dict] = await self._async_get_details_of_all_standards_models(standards_details)
         self.cache.add_batch(standards_models, "cache_key", pop_cache_key=True)
         # save variables metadata to cache
-        variables_metadata: Iterable[dict] = await self._get_variables_metadata(
-            standards
-        )
+        variables_metadata: Iterable[dict] = await self._get_variables_metadata(standards)
         self.cache.add_batch(variables_metadata, "cache_key", pop_cache_key=True)
 
     async def save_rules_locally(self):
@@ -108,18 +94,12 @@ class CachePopulator:
         rules_by_core_id = {}
 
         rules_directory = self.process_catalogs(rules_lists, rules_directory)
-        rules_directory, rules_by_core_id = self.process_rules_lists(
-            rules_directory, rules_by_core_id, rules_lists
-        )
+        rules_directory, rules_by_core_id = self.process_rules_lists(rules_directory, rules_by_core_id, rules_lists)
 
-        with open(
-            os.path.join(self.cache_path, DefaultFilePaths.RULES_CACHE_FILE.value), "wb"
-        ) as f:
+        with open(os.path.join(self.cache_path, DefaultFilePaths.RULES_CACHE_FILE.value), "wb") as f:
             pickle.dump(rules_by_core_id, f)
 
-        with open(
-            os.path.join(self.cache_path, DefaultFilePaths.RULES_DICTIONARY.value), "wb"
-        ) as f:
+        with open(os.path.join(self.cache_path, DefaultFilePaths.RULES_DICTIONARY.value), "wb") as f:
             pickle.dump(rules_directory, f)
 
     def process_catalogs(self, rules_lists, rules_directory):
@@ -157,10 +137,7 @@ class CachePopulator:
 
                     if std_name and std_version:
                         key = f"{std_name}/{std_version}"
-                        if (
-                            key in rules_directory
-                            and core_id not in rules_directory[key]
-                        ):
+                        if key in rules_directory and core_id not in rules_directory[key]:
                             rules_directory[key].append(core_id)
                         if std_substandard:
                             sub_key = f"{key}/{std_substandard.lower()}"
@@ -180,9 +157,7 @@ class CachePopulator:
         # save codelists to cache as a map of codelist to terms
         codelist_term_maps = await self._get_codelist_term_maps()
         for package in codelist_term_maps:
-            with open(
-                os.path.join(self.cache_path, f"{package['package']}.pkl"), "wb"
-            ) as f:
+            with open(os.path.join(self.cache_path, f"{package['package']}.pkl"), "wb") as f:
                 pickle.dump(package, f)
 
     @staticmethod
@@ -190,12 +165,8 @@ class CachePopulator:
         item.pop("cache_key", None)
         return item
 
-    def _save_standard(
-        self, item_list: List[dict], cache_key: str, path: DefaultFilePaths
-    ):
-        item_dict = {
-            item[cache_key]: self._remove_cache_key(item) for item in item_list
-        }
+    def _save_standard(self, item_list: List[dict], cache_key: str, path: DefaultFilePaths):
+        item_dict = {item[cache_key]: self._remove_cache_key(item) for item in item_list}
         with open(
             os.path.join(self.cache_path, path.value),
             "wb",
@@ -220,9 +191,7 @@ class CachePopulator:
             self._get_variables_metadata(standards),
         ]
         standards_details = await coroutines[0]
-        coroutines.append(
-            self._async_get_details_of_all_standards_models(standards_details)
-        )
+        coroutines.append(self._async_get_details_of_all_standards_models(standards_details))
 
         item_lists = (standards_details, *(await asyncio.gather(*coroutines[1:4])))
         for index, args in enumerate(
@@ -256,10 +225,7 @@ class CachePopulator:
         Requests rules from CDISC Library.
         """
         catalogs = self.library_service.get_all_rule_catalogs()
-        coroutines = [
-            self._async_get_rules_by_catalog(catalog.get("href"))
-            for catalog in catalogs
-        ]
+        coroutines = [self._async_get_rules_by_catalog(catalog.get("href")) for catalog in catalogs]
         rules = await asyncio.gather(*coroutines)
         return rules
 
@@ -267,9 +233,7 @@ class CachePopulator:
         loop = asyncio.get_event_loop()
         standard = catalog_link.split("/")[-2]
         standard_version = catalog_link.split("/")[-1]
-        rules = await loop.run_in_executor(
-            None, self.library_service.get_rules_by_catalog, standard, standard_version
-        )
+        rules = await loop.run_in_executor(None, self.library_service.get_rules_by_catalog, standard, standard_version)
         return rules
 
     async def _get_codelist_term_maps(self) -> List[dict]:
@@ -303,17 +267,14 @@ class CachePopulator:
         """
         packages = self.library_service.get_all_ct_packages()
         coroutines = [
-            self._async_get_codelist_terms_map(package.get("href", "").split("/")[-1])
-            for package in packages
+            self._async_get_codelist_terms_map(package.get("href", "").split("/")[-1]) for package in packages
         ]
         codelist_term_maps = await asyncio.gather(*coroutines)
         return codelist_term_maps
 
     async def _async_get_codelist_terms_map(self, package_version: str) -> dict:
         loop = asyncio.get_event_loop()
-        terms_map: dict = await loop.run_in_executor(
-            None, self.library_service.get_codelist_terms_map, package_version
-        )
+        terms_map: dict = await loop.run_in_executor(None, self.library_service.get_codelist_terms_map, package_version)
         return terms_map
 
     async def _get_variable_codelist_maps(self, standards: List[dict]) -> List[dict]:
@@ -321,17 +282,9 @@ class CachePopulator:
         for standard in standards:
             href_parts = standard.get("href", "").split("/")
             if len(href_parts) >= 5 and href_parts[-4] == "integrated":
-                coroutines.append(
-                    self._async_get_variable_codelist_map(
-                        href_parts[-3], href_parts[-2], href_parts[-1]
-                    )
-                )
+                coroutines.append(self._async_get_variable_codelist_map(href_parts[-3], href_parts[-2], href_parts[-1]))
             else:
-                coroutines.append(
-                    self._async_get_variable_codelist_map(
-                        href_parts[-2], href_parts[-1]
-                    )
-                )
+                coroutines.append(self._async_get_variable_codelist_map(href_parts[-2], href_parts[-1]))
         variable_codelist_maps = await asyncio.gather(*coroutines)
         return variable_codelist_maps
 
@@ -351,9 +304,7 @@ class CachePopulator:
         )
         return variables_map
 
-    async def _async_get_details_of_all_standards(
-        self, standards: List[dict]
-    ) -> List[dict]:
+    async def _async_get_details_of_all_standards(self, standards: List[dict]) -> List[dict]:
         """
         Gets details for each given standard.
         """
@@ -361,15 +312,9 @@ class CachePopulator:
         for standard in standards:
             href_parts = standard.get("href", "").split("/")
             if len(href_parts) >= 5 and href_parts[-4] == "integrated":
-                coroutines.append(
-                    self._async_get_standard_details(
-                        href_parts[-3], href_parts[-2], href_parts[-1]
-                    )
-                )
+                coroutines.append(self._async_get_standard_details(href_parts[-3], href_parts[-2], href_parts[-1]))
             else:
-                coroutines.append(
-                    self._async_get_standard_details(href_parts[-2], href_parts[-1])
-                )
+                coroutines.append(self._async_get_standard_details(href_parts[-2], href_parts[-1]))
         return await asyncio.gather(*coroutines)
 
     async def _async_get_standard_details(
@@ -394,22 +339,15 @@ class CachePopulator:
         )
         return standard_details
 
-    async def _async_get_details_of_all_standards_models(
-        self, standards_details: List[dict]
-    ) -> Iterable[dict]:
+    async def _async_get_details_of_all_standards_models(self, standards_details: List[dict]) -> Iterable[dict]:
         """
         Returns a list of dicts containing model metadata for each standard.
         """
-        coroutines = [
-            self._async_get_details_of_standard_model(standard)
-            for standard in standards_details
-        ]
+        coroutines = [self._async_get_details_of_standard_model(standard) for standard in standards_details]
         standards_models: Iterable[dict] = await asyncio.gather(*coroutines)
         return filter(lambda item: item is not None, standards_models)
 
-    async def _async_get_details_of_standard_model(
-        self, standard_details: dict
-    ) -> Optional[dict]:
+    async def _async_get_details_of_standard_model(self, standard_details: dict) -> Optional[dict]:
         """
         Returns details of a standard model as a dictionary.
         """
@@ -419,9 +357,7 @@ class CachePopulator:
         )
         if not model:
             return
-        model["cache_key"] = get_model_details_cache_key(
-            model["standard_type"], model["version"]
-        )
+        model["cache_key"] = get_model_details_cache_key(model["standard_type"], model["version"])
         return model
 
     async def _get_variables_metadata(self, standards: List[dict]) -> Iterable[dict]:
@@ -432,15 +368,9 @@ class CachePopulator:
         for standard in standards:
             href_parts = standard.get("href", "").split("/")
             if len(href_parts) >= 5 and href_parts[-4] == "integrated":
-                coroutines.append(
-                    self._async_get_variables_metadata(
-                        href_parts[-3], href_parts[-2], href_parts[-1]
-                    )
-                )
+                coroutines.append(self._async_get_variables_metadata(href_parts[-3], href_parts[-2], href_parts[-1]))
             else:
-                coroutines.append(
-                    self._async_get_variables_metadata(href_parts[-2], href_parts[-1])
-                )
+                coroutines.append(self._async_get_variables_metadata(href_parts[-2], href_parts[-1]))
         metadata = await asyncio.gather(*coroutines)
         return filter(lambda item: item is not None, metadata)
 
@@ -481,9 +411,7 @@ class CachePopulator:
                 if file.endswith((".json", ".yml", ".yaml")):
                     rule_files.append(os.path.join(self.custom_rules_directory, file))
             if not rule_files:
-                raise ValueError(
-                    f"No rule files found in {self.custom_rules_directory}"
-                )
+                raise ValueError(f"No rule files found in {self.custom_rules_directory}")
         elif self.custom_rule_path:
             for path in self.custom_rule_path:
                 if os.path.isfile(path) and path.endswith((".json", ".yml", ".yaml")):
@@ -492,17 +420,13 @@ class CachePopulator:
                 print(f"Warning: {path} is not a valid file. Skipping.")
         else:
             raise ValueError("Invalid directory or path specified")
-        custom_rules_file = os.path.join(
-            self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value
-        )
+        custom_rules_file = os.path.join(self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value)
         existing_rules = {}
 
         if os.path.exists(custom_rules_file):
             with open(custom_rules_file, "rb") as f:
                 existing_rules = pickle.load(f)
-        skipped, added = self.parse_and_save_custom_rules(
-            rule_files, existing_rules, custom_rules_file
-        )
+        skipped, added = self.parse_and_save_custom_rules(rule_files, existing_rules, custom_rules_file)
         if added:
             print(f"Added {len(added)} rules: {', '.join(added)}")
         else:
@@ -524,9 +448,7 @@ class CachePopulator:
                 rule_dict = load_and_parse_rule(rule_file)
                 core_id = rule_dict["core_id"]
                 if core_id in existing_rules and not allow_updates:
-                    print(
-                        f"Rule {core_id} already exists. Use update_custom_rule to update it."
-                    )
+                    print(f"Rule {core_id} already exists. Use update_custom_rule to update it.")
                     skipped_rules.append(core_id)
                     continue
                 existing_rules[core_id] = rule_dict
@@ -547,9 +469,7 @@ class CachePopulator:
             rule_files = [self.update_custom_rule]
         else:
             raise ValueError(f"{self.update_custom_rule} is an invalid file")
-        custom_rules_file = os.path.join(
-            self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value
-        )
+        custom_rules_file = os.path.join(self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value)
         existing_rules = {}
         if os.path.exists(custom_rules_file):
             with open(custom_rules_file, "rb") as f:
@@ -568,9 +488,7 @@ class CachePopulator:
         """
         if not self.remove_custom_rules:
             raise ValueError("No rules specified for removal")
-        custom_rules_file = os.path.join(
-            self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value
-        )
+        custom_rules_file = os.path.join(self.cache_path, DefaultFilePaths.CUSTOM_RULES_CACHE_FILE.value)
         if not os.path.exists(custom_rules_file):
             raise ValueError("No custom rules cache found. Nothing to remove.")
 
@@ -581,9 +499,7 @@ class CachePopulator:
             removed_rules = list(existing_rules.keys())
             existing_rules = {}
         else:
-            rule_ids_to_remove = [
-                rule_id.strip() for rule_id in self.remove_custom_rules.split(",")
-            ]
+            rule_ids_to_remove = [rule_id.strip() for rule_id in self.remove_custom_rules.split(",")]
             for rule_id in rule_ids_to_remove:
                 if rule_id in existing_rules:
                     del existing_rules[rule_id]
@@ -608,17 +524,13 @@ class CachePopulator:
             raise ValueError("Custom standard must be a dictionary")
 
         # Load existing standards if available
-        custom_standards_file = os.path.join(
-            self.cache_path, "custom_rules_dictionary.pkl"
-        )
+        custom_standards_file = os.path.join(self.cache_path, "custom_rules_dictionary.pkl")
         custom_rules_dictionary = {}
 
         if os.path.exists(custom_standards_file):
             with open(custom_standards_file, "rb") as f:
                 custom_rules_dictionary = pickle.load(f)
-            print(
-                f"Loaded existing custom standards dictionary with {len(custom_rules_dictionary)} entries"
-            )
+            print(f"Loaded existing custom standards dictionary with {len(custom_rules_dictionary)} entries")
 
         # Update the dictionary with new standard(s)
         updated_count = 0
@@ -636,9 +548,7 @@ class CachePopulator:
             pickle.dump(custom_rules_dictionary, f)
 
         if updated_count > 0 and new_count > 0:
-            print(
-                f"Updated {updated_count} existing standards and added {new_count} new standards"
-            )
+            print(f"Updated {updated_count} existing standards and added {new_count} new standards")
         elif updated_count > 0:
             print(f"Updated {updated_count} existing standards")
         else:
@@ -650,9 +560,7 @@ class CachePopulator:
             return
 
         # Load the existing dictionary
-        custom_standards_file = os.path.join(
-            self.cache_path, "custom_rules_dictionary.pkl"
-        )
+        custom_standards_file = os.path.join(self.cache_path, "custom_rules_dictionary.pkl")
         if not os.path.exists(custom_standards_file):
             print(f"No custom standards file found at {custom_standards_file}")
             return
@@ -674,6 +582,4 @@ class CachePopulator:
         with open(custom_standards_file, "wb") as f:
             pickle.dump(custom_rules_dictionary, f)
 
-        print(
-            f"Removed {removed_count} standards. Remaining standards: {len(custom_rules_dictionary)}"
-        )
+        print(f"Removed {removed_count} standards. Remaining standards: {len(custom_rules_dictionary)}")

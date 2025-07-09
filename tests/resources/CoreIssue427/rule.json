@@ -194,25 +194,15 @@
   "Description": "A value for Description of Planned Arm (ARM) must have a unique value for Planned Arm Code (ARMCD) with the domain.",
   "Outcome": {
     "Message": "Inconsistent value for ARM",
-    "Output_Variables": [
-      "ARMCD",
-      "ARM"
-    ]
+    "Output_Variables": ["ARMCD", "ARM"]
   },
   "Sensitivity": "Record",
   "Scope": {
     "Classes": {
-      "Include": [
-        "TRIAL DESIGN",
-        "SPECIAL PURPOSE"
-      ]
+      "Include": ["TRIAL DESIGN", "SPECIAL PURPOSE"]
     },
     "Domains": {
-      "Include": [
-        "TA",
-        "TV",
-        "DM"
-      ]
+      "Include": ["TA", "TV", "DM"]
     }
   },
   "Executability": "Fully Executable",

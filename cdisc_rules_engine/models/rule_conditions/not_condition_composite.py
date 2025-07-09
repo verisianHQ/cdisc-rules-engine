@@ -43,9 +43,7 @@ class NotConditionComposite(ConditionInterface):
         return self._condition_composite.items()
 
     def add_conditions_for_targets(self, targets: List[str]):
-        self._condition_composite = (
-            self._condition_composite.add_conditions_for_targets(targets)
-        )
+        self._condition_composite = self._condition_composite.add_conditions_for_targets(targets)
         return self
 
     def copy(self) -> "NotConditionComposite":

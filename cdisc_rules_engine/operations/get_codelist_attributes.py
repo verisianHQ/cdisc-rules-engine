@@ -45,9 +45,7 @@ class CodeListAttributes(BaseOperation):
 
         # 2.0 build codelist from cache
         # -------------------------------------------------------------------
-        ct_cache = self._get_ct_from_library_metadata(
-            ct_key=ct_name, ct_val=ct_attribute
-        )
+        ct_cache = self._get_ct_from_library_metadata(ct_key=ct_name, ct_val=ct_attribute)
 
         # 3.0 get dataset records
         # -------------------------------------------------------------------
@@ -78,10 +76,7 @@ class CodeListAttributes(BaseOperation):
         ct_term_maps = (
             []
             if ct_packages is None
-            else [
-                self.library_metadata.get_ct_package_metadata(package) or {}
-                for package in ct_packages
-            ]
+            else [self.library_metadata.get_ct_package_metadata(package) or {} for package in ct_packages]
         )
 
         # convert codelist to dataframe
@@ -119,8 +114,7 @@ class CodeListAttributes(BaseOperation):
         df[ct_key] = df.data.apply(
             lambda row: (
                 "sdtmct-" + row[ct_version]
-                if row[ct_target] is not None
-                and row[ct_target] in ("CDISC", "CDISC CT")
+                if row[ct_target] is not None and row[ct_target] in ("CDISC", "CDISC CT")
                 else row[ct_target] + "-" + row[ct_version]
             ),
             axis=1,

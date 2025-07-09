@@ -22,9 +22,7 @@ class TestCoreIssue287(unittest.TestCase):
             "-r",
             os.path.join("tests", "resources", "CoreIssue287", "is_null_rule.json"),
             "-dp",
-            os.path.join(
-                "tests", "resources", "CoreIssue287", "dur_is_null_dataset.json"
-            ),
+            os.path.join("tests", "resources", "CoreIssue287", "dur_is_null_dataset.json"),
             "-dxp",
             os.path.join("tests", "resources", "CoreIssue287", "define.xml"),
         ]
@@ -45,10 +43,7 @@ class TestCoreIssue287(unittest.TestCase):
 
         # Assertion for variable(s) column
         variables_column = sheet["H"]
-        assert (
-            variables_column[1].value
-            == "$variable_is_null, define_variable_has_no_data, define_variable_name"
-        )
+        assert variables_column[1].value == "$variable_is_null, define_variable_has_no_data, define_variable_name"
 
         # Assertion for Values(s) column
         values_column = sheet["I"]

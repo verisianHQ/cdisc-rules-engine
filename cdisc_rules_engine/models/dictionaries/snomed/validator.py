@@ -29,14 +29,10 @@ class SNOMEDValidator(BaseDictionaryValidator):
 
     def get_term_dictionary(self, concepts=[]):
         if not self.term_dictionary:
-            self.term_dictionary = self.terms_factory.install_terms(
-                self.path, concepts=concepts
-            )
+            self.term_dictionary = self.terms_factory.install_terms(self.path, concepts=concepts)
         return self.term_dictionary
 
-    def is_valid_code(
-        self, code: str, term_type: str, variable: str, codes=[], **kwargs
-    ) -> bool:
+    def is_valid_code(self, code: str, term_type: str, variable: str, codes=[], **kwargs) -> bool:
         term_dictionary = self.get_term_dictionary(concepts=codes)
         case_sensitive_check = kwargs.get("case_sensitive")
         if case_sensitive_check:
@@ -53,7 +49,4 @@ class SNOMEDValidator(BaseDictionaryValidator):
         dictionary_term = term_dictionary.get(code)
         if not dictionary_term:
             return False
-        return (
-            row[term_var] == dictionary_term.preferred_term
-            or row[term_var] == dictionary_term.full_name
-        )
+        return row[term_var] == dictionary_term.preferred_term or row[term_var] == dictionary_term.full_name

@@ -33,7 +33,6 @@ def list_dataset_metadata_handler(dataset_paths: Tuple[str]) -> List[dict]:
     cache_service = CacheServiceFactory(config).get_service()
     data_service = DataServiceFactory(config, cache_service).get_service()
     metadata: List[SDTMDatasetMetadata] = [
-        data_service.get_raw_dataset_metadata(dataset_name=path)
-        for path in dataset_paths
+        data_service.get_raw_dataset_metadata(dataset_name=path) for path in dataset_paths
     ]
     return DatasetMetadataSerializer(metadata).data

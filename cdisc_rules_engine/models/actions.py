@@ -54,14 +54,10 @@ class COREActions(BaseActions):
             self.dataset_metadata.domain,
             self.variable.dataset.columns.tolist(),
         )
-        target_names = self._get_target_names_from_list_values(
-            target_names, rows_with_error
-        )
+        target_names = self._get_target_names_from_list_values(target_names, rows_with_error)
         if self.value_level_metadata:
             target_names = self.extract_target_names_from_value_level_metadata()
-        error_object = self.generate_targeted_error_object(
-            target_names, rows_with_error, message
-        )
+        error_object = self.generate_targeted_error_object(target_names, rows_with_error, message)
         self.output_container.append(error_object.to_representation())
 
     @rule_action(params={"message": FIELD_TEXT})
@@ -120,9 +116,7 @@ class COREActions(BaseActions):
         df_columns: set = set(data)
         targets_in_dataset = targets.intersection(df_columns)
         targets_not_in_dataset = targets.difference(df_columns)
-        all_targets_missing = (
-            len(targets_in_dataset) == 0 and len(targets_not_in_dataset) > 0
-        )
+        all_targets_missing = len(targets_in_dataset) == 0 and len(targets_not_in_dataset) > 0
         if targets_in_dataset:
             errors_df = data[list(targets_in_dataset)]
         else:
@@ -132,14 +126,10 @@ class COREActions(BaseActions):
 
         if self.rule.get("sensitivity") == Sensitivity.DATASET.value:
             # Only generate one error for rules with dataset sensitivity
-            missing_vars = {
-                target: "Not in dataset" for target in targets_not_in_dataset
-            }
+            missing_vars = {target: "Not in dataset" for target in targets_not_in_dataset}
 
             # Create the initial error
-            error_value = (
-                dict(errors_df.iloc[0].to_dict()) if not all_targets_missing else {}
-            )
+            error_value = dict(errors_df.iloc[0].to_dict()) if not all_targets_missing else {}
 
             # Add missing variables to the error value
             if missing_vars:
@@ -155,9 +145,7 @@ class COREActions(BaseActions):
             errors_list = self._generate_errors_by_target_presence(
                 data, targets_not_in_dataset, all_targets_missing, errors_df
             )
-        elif (
-            self.rule.get("sensitivity") is not None
-        ):  # rule sensitivity is incorrectly defined
+        elif self.rule.get("sensitivity") is not None:  # rule sensitivity is incorrectly defined
             error_entity = ValidationErrorEntity(
                 {
                     "dataset": "N/A",
@@ -188,9 +176,7 @@ class COREActions(BaseActions):
                     if self.dataset_metadata.is_supp
                     else (self.dataset_metadata.domain or self.dataset_metadata.name)
                 ),
-                "dataset": ", ".join(
-                    sorted(set(error._dataset or "" for error in errors_list))
-                ),
+                "dataset": ", ".join(sorted(set(error._dataset or "" for error in errors_list))),
                 "targets": sorted(targets),
                 "errors": errors_list,
                 "message": message.replace("--", self.dataset_metadata.domain or ""),
@@ -223,27 +209,15 @@ class COREActions(BaseActions):
             errors_list = []
             for idx, row in data.iterrows():
                 error = ValidationErrorEntity(
-                    value={
-                        target: "Not in dataset" for target in targets_not_in_dataset
-                    },
+                    value={target: "Not in dataset" for target in targets_not_in_dataset},
                     dataset=self._get_dataset_name(pd.DataFrame([row])),
                     row=int(row.get(SOURCE_ROW_NUMBER, idx + 1)),
-                    usubjid=(
-                        str(row.get("USUBJID"))
-                        if "USUBJID" in row and not pd.isna(row["USUBJID"])
-                        else None
-                    ),
+                    usubjid=(str(row.get("USUBJID")) if "USUBJID" in row and not pd.isna(row["USUBJID"]) else None),
                     sequence=(
                         int(row.get(f"{self.dataset_metadata.domain or ''}SEQ"))
                         if f"{self.dataset_metadata.domain or ''}SEQ" in row
                         and self._sequence_exists(
-                            pd.Series(
-                                {
-                                    idx: row.get(
-                                        f"{self.dataset_metadata.domain or ''}SEQ"
-                                    )
-                                }
-                            ),
+                            pd.Series({idx: row.get(f"{self.dataset_metadata.domain or ''}SEQ")}),
                             idx,
                         )
                         else None
@@ -251,9 +225,7 @@ class COREActions(BaseActions):
                 )
                 errors_list.append(error)
         else:
-            errors_series: pd.Series = errors_df.apply(
-                lambda df_row: self._create_error_object(df_row, data), axis=1
-            )
+            errors_series: pd.Series = errors_df.apply(lambda df_row: self._create_error_object(df_row, data), axis=1)
             errors_list: List[ValidationErrorEntity] = errors_series.tolist()
             if missing_vars:
                 for error in errors_list:
@@ -262,21 +234,13 @@ class COREActions(BaseActions):
 
     def _get_dataset_name(self, data: pd.DataFrame) -> str:
         source_pathnames = data.get(SOURCE_FILENAME, [])
-        source_filenames = [
-            path.basename(source_pathname) for source_pathname in source_pathnames
-        ]
-        source_filename_str = ", ".join(
-            sorted(set(source_filename or "" for source_filename in source_filenames))
-        )
+        source_filenames = [path.basename(source_pathname) for source_pathname in source_pathnames]
+        source_filename_str = ", ".join(sorted(set(source_filename or "" for source_filename in source_filenames)))
         return source_filename_str
 
-    def _create_error_object(
-        self, df_row: pd.Series, data: pd.DataFrame
-    ) -> ValidationErrorEntity:
+    def _create_error_object(self, df_row: pd.Series, data: pd.DataFrame) -> ValidationErrorEntity:
         usubjid: Optional[pd.Series] = data.get("USUBJID")
-        sequence: Optional[pd.Series] = data.get(
-            f"{self.dataset_metadata.domain or ''}SEQ"
-        )
+        sequence: Optional[pd.Series] = data.get(f"{self.dataset_metadata.domain or ''}SEQ")
         source_row_number: Optional[pd.Series] = data.get(SOURCE_ROW_NUMBER)
         source_filename: Optional[pd.Series] = data.get(SOURCE_FILENAME)
         row_dict = df_row.to_dict()
@@ -284,34 +248,20 @@ class COREActions(BaseActions):
         for key, value in row_dict.items():
             if isinstance(value, list):
                 filtered_dict[key] = (
-                    "null"
-                    if any(val in NULL_FLAVORS for val in value) or pd.isna(value).any()
-                    else value
+                    "null" if any(val in NULL_FLAVORS for val in value) or pd.isna(value).any() else value
                 )
             else:
-                filtered_dict[key] = (
-                    "null" if (value in NULL_FLAVORS or pd.isna(value)) else value
-                )
+                filtered_dict[key] = "null" if (value in NULL_FLAVORS or pd.isna(value)) else value
         error_object = ValidationErrorEntity(
-            dataset=(
-                path.basename(source_filename[df_row.name])
-                if isinstance(source_filename, pd.Series)
-                else ""
-            ),
+            dataset=(path.basename(source_filename[df_row.name]) if isinstance(source_filename, pd.Series) else ""),
             row=(
                 int(source_row_number[df_row.name])
                 if isinstance(source_row_number, pd.Series)
                 else (int(df_row.name) + 1)
             ),  # record number should start at 1, not 0
             value=filtered_dict,
-            usubjid=(
-                str(usubjid[df_row.name]) if isinstance(usubjid, pd.Series) else None
-            ),
-            sequence=(
-                int(sequence[df_row.name])
-                if self._sequence_exists(sequence, df_row.name)
-                else None
-            ),
+            usubjid=(str(usubjid[df_row.name]) if isinstance(usubjid, pd.Series) else None),
+            sequence=(int(sequence[df_row.name]) if self._sequence_exists(sequence, df_row.name) else None),
         )
         return error_object
 
@@ -320,8 +270,4 @@ class COREActions(BaseActions):
 
     @staticmethod
     def _sequence_exists(sequence: pd.Series, row_name: Hashable) -> bool:
-        return (
-            isinstance(sequence, pd.Series)
-            and not pd.isnull(sequence[row_name])
-            and not sequence[row_name] == ""
-        )
+        return isinstance(sequence, pd.Series) and not pd.isnull(sequence[row_name]) and not sequence[row_name] == ""

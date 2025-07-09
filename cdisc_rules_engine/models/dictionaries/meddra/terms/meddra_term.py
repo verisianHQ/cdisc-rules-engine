@@ -37,7 +37,5 @@ class MedDRATerm(DictionaryTermInterface):
     def get_code_term_pairs(terms: dict) -> dict:
         code_term_pairs = {}
         for term_type in terms:
-            code_term_pairs[term_type] = set(
-                [(item.code, item.term) for item in terms[term_type].values()]
-            )
+            code_term_pairs[term_type] = set([(item.code, item.term) for item in terms[term_type].values()])
         return code_term_pairs

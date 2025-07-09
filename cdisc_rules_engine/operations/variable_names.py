@@ -7,10 +7,6 @@ class VariableNames(BaseOperation):
         Return the set of variable names for the given standard
         """
         variable_details = self.library_metadata.variables_metadata
-        all_variables = [
-            list(variable_details[dataset].values()) for dataset in variable_details
-        ]
+        all_variables = [list(variable_details[dataset].values()) for dataset in variable_details]
 
-        return set(
-            [variable["name"] for variables in all_variables for variable in variables]
-        )
+        return set([variable["name"] for variables in all_variables for variable in variables])

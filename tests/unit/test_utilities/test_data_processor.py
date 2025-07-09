@@ -9,7 +9,6 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
 from cdisc_rules_engine.models.dataset import (
     PandasDataset,
-    DaskDataset,
     SQLiteDataset,
     DatasetInterface,
 )
@@ -32,9 +31,7 @@ import numpy as np
     ],
 )
 @pytest.mark.parametrize("dataset_implementation", [SQLiteDataset])
-def test_preprocess_relationship_dataset(
-    data_dict, dataset_implementation, dataset_kwargs
-):
+def test_preprocess_relationship_dataset(data_dict, dataset_implementation, dataset_kwargs):
     dataset_metadata = [
         SDTMDatasetMetadata(
             name=domain,
@@ -60,9 +57,7 @@ def test_preprocess_relationship_dataset(
         },
         **dataset_kwargs,
     )
-    dm = dataset_implementation.from_dict(
-        {"USUBJID": [1, 2, 3, 4, 5, 6000]}, **dataset_kwargs
-    )
+    dm = dataset_implementation.from_dict({"USUBJID": [1, 2, 3, 4, 5, 6000]}, **dataset_kwargs)
     path_to_dataset_map: dict = {
         os.path.join("path", "ae.xpt"): ae,
         os.path.join("path", "ec.xpt"): ec,
@@ -74,9 +69,7 @@ def test_preprocess_relationship_dataset(
         side_effect=lambda dataset_name: path_to_dataset_map[dataset_name],
     ):
         data_processor = DataProcessor(cache=InMemoryCacheService())
-        reference_data = data_processor.preprocess_relationship_dataset(
-            "path", data, dataset_metadata
-        )
+        reference_data = data_processor.preprocess_relationship_dataset("path", data, dataset_metadata)
         if "IDVAR" in data:
             idvars = data["IDVAR"]
             domains = data["RDOMAIN"]
@@ -123,10 +116,8 @@ def test_filter_dataset_columns_by_metadata_and_rule():
         "variable_origin_type": "Collected",
         "variable_core_status": "Perm",
     }
-    filtered_columns: List[str] = (
-        DataProcessor.filter_dataset_columns_by_metadata_and_rule(
-            columns, define_metadata, library_metadata, rule
-        )
+    filtered_columns: List[str] = DataProcessor.filter_dataset_columns_by_metadata_and_rule(
+        columns, define_metadata, library_metadata, rule
     )
     assert filtered_columns == [
         "AESEV",

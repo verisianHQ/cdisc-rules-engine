@@ -33,24 +33,17 @@ if TYPE_CHECKING:
 class DataProcessor:
     def __init__(self, data_service=None, cache: CacheServiceInterface = None):
         self.cache = cache or CacheServiceFactory(config).get_cache_service()
-        self.data_service = (
-            data_service or DataServiceFactory(config, self.cache).get_data_service()
-        )
+        self.data_service = data_service or DataServiceFactory(config, self.cache).get_data_service()
         self.dataset_implementation = self.data_service.dataset_implementation
 
     @staticmethod
     async def get_dataset_variables(study_path, dataset, data_service) -> Set:
-        data = data_service.get_dataset(
-            os.path.join(study_path, dataset.get("filename"))
-        )
+        data = data_service.get_dataset(os.path.join(study_path, dataset.get("filename")))
         return set(data.columns)
 
     @staticmethod
     async def get_all_study_variables(study_path, data_service, datasets) -> Set:
-        coroutines = [
-            DataProcessor.get_dataset_variables(study_path, dataset, data_service)
-            for dataset in datasets
-        ]
+        coroutines = [DataProcessor.get_dataset_variables(study_path, dataset, data_service) for dataset in datasets]
         dataset_variables: List[Set] = await asyncio.gather(*coroutines)
         return set().union(*dataset_variables)
 
@@ -76,9 +69,7 @@ class DataProcessor:
             )
         elif "RSUBJID" in dataset:
             # get USUBJID from column in DM dataset
-            reference_data = self.get_column_data(
-                dataset_path, dataset_metadata, ["USUBJID"], "DM"
-            )
+            reference_data = self.get_column_data(dataset_path, dataset_metadata, ["USUBJID"], "DM")
             if "USUBJID" in reference_data.get("DM", {}):
                 reference_data["DM"]["RSUBJID"] = reference_data["DM"]["USUBJID"]
                 del reference_data["DM"]["USUBJID"]
@@ -120,9 +111,7 @@ class DataProcessor:
 
     async def async_get_column_data(self, dataset_path, datasets, columns, domain):
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(
-            None, self.get_column_data, dataset_path, datasets, columns, domain
-        )
+        return await loop.run_in_executor(None, self.get_column_data, dataset_path, datasets, columns, domain)
 
     def async_get_reference_data(
         self,
@@ -131,10 +120,7 @@ class DataProcessor:
         columns,
         domains,
     ):
-        coroutines = [
-            self.async_get_column_data(dataset_path, dataset_metadata, columns, domain)
-            for domain in domains
-        ]
+        coroutines = [self.async_get_column_data(dataset_path, dataset_metadata, columns, domain) for domain in domains]
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         reference_data = {}
@@ -195,9 +181,7 @@ class DataProcessor:
         2. Filters parent dataset by columns of supp dataset
            that describe their relation.
         """
-        parent_dataset = DataProcessor.filter_parent_dataset_by_supp_dataset_rdomain(
-            parent_dataset, supp_dataset
-        )
+        parent_dataset = DataProcessor.filter_parent_dataset_by_supp_dataset_rdomain(parent_dataset, supp_dataset)
         return DataProcessor.filter_dataset_by_nested_columns_of_other_dataset(
             parent_dataset, supp_dataset, column_with_names, column_with_values
         )
@@ -251,12 +235,8 @@ class DataProcessor:
         grouped = other_dataset.groupby(column_with_names, group_keys=False)
 
         def filter_dataset_by_group_values(group) -> DatasetInterface:
-            decimal_group_values: pd.Series = DataProcessor.convert_float_merge_keys(
-                group[column_with_values]
-            )
-            decimal_dataset_values: pd.Series = DataProcessor.convert_float_merge_keys(
-                dataset[group.name]
-            )
+            decimal_group_values: pd.Series = DataProcessor.convert_float_merge_keys(group[column_with_values])
+            decimal_dataset_values: pd.Series = DataProcessor.convert_float_merge_keys(dataset[group.name])
             condition: pd.Series = decimal_dataset_values.isin(decimal_group_values)
             return dataset[condition]
 
@@ -279,56 +259,59 @@ class DataProcessor:
         columns that describe their relation.
         """
         names_col = right_dataset[column_with_names]
-        values_col = right_dataset[column_with_values]
-        
+        # values_col = right_dataset[column_with_values]
+
         names_all_empty = all(str(v).strip() == "" for v in right_dataset[column_with_names])
         values_all_empty = all(str(v).strip() == "" for v in right_dataset[column_with_values])
-        
+
         if names_all_empty and values_all_empty:
             return left_dataset.merge(
                 other=right_dataset,
                 on=left_dataset_match_keys if left_dataset_match_keys else None,
                 how="outer",
             )
-        
+
         # Get first value from column
         left_ds_col_name: str = names_col[0] if isinstance(names_col, list) else names_col.iloc[0]
-        
+
         # convert numeric columns to one data type to avoid merging errors
         DataProcessor.cast_numeric_cols_to_same_data_type(
             right_dataset, column_with_values, left_dataset, left_ds_col_name
         )
-        
+
         left_keys = left_dataset_match_keys.copy()
         right_keys = right_dataset_match_keys.copy()
-        
+
         left_keys.append(left_ds_col_name)
         right_keys.append(column_with_values)
-        
+
         # First rename the IDVARVAL column to AESEQ so we can join on it
         right_dataset_renamed = right_dataset.rename(columns={column_with_values: left_ds_col_name}, inplace=False)
-        
+
         # Add suffix to all columns except the join key
         renamed_cols = {}
         for col in right_dataset_renamed.columns:
             if col != left_ds_col_name and col not in left_keys:
                 renamed_cols[col] = f"{col}.{right_dataset_domain_name}"
-        
+
         if renamed_cols:
             right_dataset_renamed = right_dataset_renamed.rename(columns=renamed_cols, inplace=False)
-        
+
         # Now merge on the common column
         result = left_dataset.merge(
             other=right_dataset_renamed,
             on=left_keys,
             how="outer",
         )
-        
+
         # Rename the original USUBJID column if it exists
         if "USUBJID" in result.columns and f"USUBJID.{right_dataset_domain_name}" not in result.columns:
             # The USUBJID column needs the suffix
-            result = result.rename(columns={f"USUBJID.{right_dataset_domain_name}": f"USUBJID.{right_dataset_domain_name}"}, inplace=False)
-            
+            result = result.rename(
+                columns={f"USUBJID.{right_dataset_domain_name}": f"USUBJID.{right_dataset_domain_name}"},
+                inplace=False,
+            )
+
         return result
 
     @staticmethod
@@ -344,11 +327,7 @@ class DataProcessor:
         except ValueError:
             pass
         return (
-            df.from_dict(
-                df[
-                    DataProcessor.convert_float_merge_keys(df[col]) == str(filter_value)
-                ].to_dict()
-            )
+            df.from_dict(df[DataProcessor.convert_float_merge_keys(df[col]) == str(filter_value)].to_dict())
             if filter_value
             else df
         )
@@ -362,12 +341,8 @@ class DataProcessor:
         Find all relrec records associated with a given domain
         """
         relrec_left = relrec_dataset[relrec_dataset["RDOMAIN"] == domain_name]
-        left_relids_index = pd.MultiIndex.from_arrays(
-            [relrec_left[col] for col in ["USUBJID", "RELID"]]
-        )
-        all_relids_index = pd.MultiIndex.from_arrays(
-            [relrec_dataset[col] for col in ["USUBJID", "RELID"]]
-        )
+        left_relids_index = pd.MultiIndex.from_arrays([relrec_left[col] for col in ["USUBJID", "RELID"]])
+        all_relids_index = pd.MultiIndex.from_arrays([relrec_dataset[col] for col in ["USUBJID", "RELID"]])
         relrec_right = relrec_dataset[all_relids_index.isin(left_relids_index)]
         relrec_right = relrec_right[relrec_right["RDOMAIN"] != domain_name]
         return relrec_left.merge(
@@ -388,17 +363,13 @@ class DataProcessor:
         Given a pair of relrec rows and a left dataset, find the right dataset and join
           the left and right on the criteria given in the relrec pair
         """
-        model_metadata = (
-            dataset_preprocessor._data_service.library_metadata.model_metadata
-        )
+        model_metadata = dataset_preprocessor._data_service.library_metadata.model_metadata
         file_info: SDTMDatasetMetadata = search_in_list_of_dicts(
             datasets, lambda item: item.domain == relrec_row["RDOMAIN_RIGHT"]
         )
         if not file_info:
             return DatasetInterface()
-        right_dataset: DatasetInterface = dataset_preprocessor._download_dataset(
-            file_info.filename
-        )
+        right_dataset: DatasetInterface = dataset_preprocessor._download_dataset(file_info.filename)
         variables_with_wildcards = {
             source: f"RELREC.{target}"
             for (source, target) in add_variable_wildcards(
@@ -410,12 +381,8 @@ class DataProcessor:
         }
         left_subset = left_dataset
         right_subset = right_dataset
-        left_subset = DataProcessor.filter_if_present(
-            left_subset, "USUBJID", relrec_row["USUBJID"]
-        )
-        right_subset = DataProcessor.filter_if_present(
-            right_subset, "USUBJID", relrec_row["USUBJID"]
-        )
+        left_subset = DataProcessor.filter_if_present(left_subset, "USUBJID", relrec_row["USUBJID"])
+        right_subset = DataProcessor.filter_if_present(right_subset, "USUBJID", relrec_row["USUBJID"])
         if relrec_row["IDVARVAL_LEFT"] and relrec_row["IDVARVAL_RIGHT"]:
             left_subset = DataProcessor.filter_if_present(
                 left_subset, relrec_row["IDVAR_LEFT"], relrec_row["IDVARVAL_LEFT"]
@@ -465,15 +432,11 @@ class DataProcessor:
               by the right side
             4. Union the results
         """
-        relrec_for_domain = DataProcessor.filter_relrec_for_domain(
-            left_dataset_domain_name, relrec_dataset
-        )
+        relrec_for_domain = DataProcessor.filter_relrec_for_domain(left_dataset_domain_name, relrec_dataset)
 
         # TODO: FIX
         objs = [
-            DataProcessor.merge_on_relrec_record(
-                relrec_row, left_dataset, datasets, dataset_preprocessor, wildcard
-            )
+            DataProcessor.merge_on_relrec_record(relrec_row, left_dataset, datasets, dataset_preprocessor, wildcard)
             for _, relrec_row in relrec_for_domain.iterrows()
         ]
         result = objs[0].concat(objs[1:], ignore_index=True)
@@ -524,11 +487,7 @@ class DataProcessor:
         dynamic_key = right_dataset["IDVAR"].iloc[0]
 
         # Determine the common keys present in both datasets
-        common_keys = [
-            key
-            for key in static_keys
-            if key in left_dataset.columns and key in right_dataset.columns
-        ]
+        common_keys = [key for key in static_keys if key in left_dataset.columns and key in right_dataset.columns]
         common_keys.append(dynamic_key)
         current_supp = right_dataset.rename(columns={"IDVARVAL": dynamic_key})
         current_supp = current_supp.drop(columns=["IDVAR"])
@@ -547,9 +506,7 @@ class DataProcessor:
             qnam_check = left_dataset.data.dropna(subset=[qnam])
             grouped = qnam_check.groupby(common_keys).size()
             if (grouped > 1).any():
-                raise ValueError(
-                    f"Multiple records with the same QNAM '{qnam}' match a single parent record"
-                )
+                raise ValueError(f"Multiple records with the same QNAM '{qnam}' match a single parent record")
         if dataset_implementation == DaskDataset:
             left_dataset = DaskDataset(left_dataset.data)
         return left_dataset
@@ -581,11 +538,7 @@ class DataProcessor:
             left_on=left_dataset_match_keys,
             right_on=right_dataset_match_keys,
             suffixes=("", f".{right_dataset_domain_name}"),
-            indicator=(
-                False
-                if join_type is JoinTypes.INNER
-                else f"_merge_{right_dataset_domain_name}"
-            ),
+            indicator=(False if join_type is JoinTypes.INNER else f"_merge_{right_dataset_domain_name}"),
         )
         if join_type is JoinTypes.LEFT:
             if "left_only" in result[f"_merge_{right_dataset_domain_name}"].values:
@@ -593,9 +546,7 @@ class DataProcessor:
                 result.data.loc[
                     result[f"_merge_{right_dataset_domain_name}"] == "left_only",
                     result.columns.symmetric_difference(
-                        left_dataset.columns.union(
-                            [f"_merge_{right_dataset_domain_name}"]
-                        )
+                        left_dataset.columns.union([f"_merge_{right_dataset_domain_name}"])
                     ),
                 ] = None
         return result
@@ -626,12 +577,8 @@ class DataProcessor:
             left_dataset[left_dataset_column] = ["1", "2", "3", "4", ]
             right_dataset[right_dataset_column] = [1, 2, 3, 4, ]
         """
-        left_is_numeric: bool = DataProcessor.column_contains_numeric(
-            left_dataset[left_dataset_column]
-        )
-        right_is_numeric: bool = DataProcessor.column_contains_numeric(
-            right_dataset[right_dataset_column]
-        )
+        left_is_numeric: bool = DataProcessor.column_contains_numeric(left_dataset[left_dataset_column])
+        right_is_numeric: bool = DataProcessor.column_contains_numeric(right_dataset[right_dataset_column])
         if left_is_numeric and right_is_numeric:
             left_dataset[left_dataset_column] = [float(v) for v in left_dataset[left_dataset_column]]
             right_dataset[right_dataset_column] = [float(v) for v in right_dataset[right_dataset_column]]
@@ -639,11 +586,11 @@ class DataProcessor:
     @staticmethod
     def column_contains_numeric(column: list) -> bool:
         """
-            Check if a column contains numeric values.
+        Check if a column contains numeric values.
         """
         if not column:  # empty list
             return False
-        
+
         for val in column:
             if val is None:
                 continue
@@ -690,12 +637,10 @@ class DataProcessor:
         )
         if not define_variable_metadata:
             return False
-        equal_origin_type: bool = define_variable_metadata[
-            "define_variable_origin_type"
-        ] == rule.get("variable_origin_type")
-        equal_core_status: bool = library_metadata.get(column, {}).get(
-            "core"
-        ) == rule.get("variable_core_status")
+        equal_origin_type: bool = define_variable_metadata["define_variable_origin_type"] == rule.get(
+            "variable_origin_type"
+        )
+        equal_core_status: bool = library_metadata.get(column, {}).get("core") == rule.get("variable_core_status")
         return equal_core_status and equal_origin_type
 
     @staticmethod

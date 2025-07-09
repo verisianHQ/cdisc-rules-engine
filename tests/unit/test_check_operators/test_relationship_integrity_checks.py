@@ -60,9 +60,7 @@ import pandas as pd
         ),
     ],
 )
-def test_present_on_multiple_rows_within(
-    data, comparator, within, dataset_type, expected_result
-):
+def test_present_on_multiple_rows_within(data, comparator, within, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
     result = dataframe_type.present_on_multiple_rows_within(
@@ -212,9 +210,7 @@ def test_has_same_values(data, dataset_type, expected_result):
 def test_is_not_unique_relationship(data, comparator, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.is_not_unique_relationship(
-        {"target": "target", "comparator": comparator}
-    )
+    result = dataframe_type.is_not_unique_relationship({"target": "target", "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -257,9 +253,7 @@ def test_valid_relationship(data, comparator, context, dataset_type, expected_re
     }
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df, "relationship_data": reference_data})
-    result = dataframe_type.is_valid_relationship(
-        {"target": "target", "comparator": comparator, "context": context}
-    )
+    result = dataframe_type.is_valid_relationship({"target": "target", "comparator": comparator, "context": context})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -292,9 +286,7 @@ def test_valid_relationship(data, comparator, context, dataset_type, expected_re
         ),
     ],
 )
-def test_is_not_valid_relationship(
-    data, comparator, context, dataset_type, expected_result
-):
+def test_is_not_valid_relationship(data, comparator, context, dataset_type, expected_result):
     reference_data = {
         "LB": {
             "TEST": pd.Series([4, 5, 6]).values,
@@ -354,9 +346,7 @@ def test_is_not_valid_relationship(
         ),
     ],
 )
-def test_valid_relationship_with_within(
-    data, comparator, context, within, dataset_type, expected_result
-):
+def test_valid_relationship_with_within(data, comparator, context, within, dataset_type, expected_result):
     reference_data = {
         "SUBJ01": {
             "LB": {
@@ -444,9 +434,7 @@ def test_valid_relationship_with_within(
         ),
     ],
 )
-def test_is_not_valid_relationship_with_within(
-    data, comparator, context, within, dataset_type, expected_result
-):
+def test_is_not_valid_relationship_with_within(data, comparator, context, within, dataset_type, expected_result):
     reference_data = {
         "SUBJ01": {
             "LB": {
@@ -551,9 +539,7 @@ def test_is_not_valid_reference(data, context, dataset_type, expected_result):
     }
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df, "relationship_data": reference_data})
-    result = dataframe_type.is_not_valid_reference(
-        {"target": "target", "context": context}
-    )
+    result = dataframe_type.is_not_valid_reference({"target": "target", "context": context})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -680,16 +666,12 @@ def test_empty_within_except_last_row(dataset_class):
     )
     assert (
         DataframeType({"value": valid_df})
-        .empty_within_except_last_row(
-            {"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"}
-        )
+        .empty_within_except_last_row({"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"})
         .equals(pd.Series({0: False, 1: False, 2: False, 4: False, 5: False, 6: False}))
     )
     assert (
         DataframeType({"value": invalid_df})
-        .empty_within_except_last_row(
-            {"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"}
-        )
+        .empty_within_except_last_row({"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"})
         .equals(pd.Series({0: True, 1: False, 2: False, 4: False, 5: False, 6: False}))
     )
 
@@ -812,23 +794,17 @@ def test_non_empty_within_except_last_row(dataset_class):
     )
     assert (
         not DataframeType({"value": df})
-        .non_empty_within_except_last_row(
-            {"target": "invalid", "comparator": "USUBJID"}
-        )
+        .non_empty_within_except_last_row({"target": "invalid", "comparator": "USUBJID"})
         .equals(pd.Series({0: False, 1: True, 3: False, 4: False}))
     )
     assert (
         DataframeType({"value": valid_df})
-        .non_empty_within_except_last_row(
-            {"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"}
-        )
+        .non_empty_within_except_last_row({"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"})
         .equals(pd.Series({0: True, 1: True, 2: True, 4: True, 5: True, 6: True}))
     )
     assert (
         DataframeType({"value": invalid_df})
-        .non_empty_within_except_last_row(
-            {"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"}
-        )
+        .non_empty_within_except_last_row({"target": "SEENDTC", "ordering": "SESTDTC", "comparator": "USUBJID"})
         .equals(pd.Series({0: False, 1: True, 2: True, 4: True, 5: True, 6: True}))
     )
 
@@ -888,9 +864,7 @@ def test_has_next_corresponding_record(dataset_class):
         "within": "USUBJID",
         "ordering": "SESEQ",
     }
-    result = DataframeType({"value": valid_df}).has_next_corresponding_record(
-        other_value
-    )
+    result = DataframeType({"value": valid_df}).has_next_corresponding_record(other_value)
     assert result.equals(pd.Series([True, True, True, True, True, True, True, True]))
 
     invalid_df = dataset_class.from_dict(
@@ -943,9 +917,7 @@ def test_has_next_corresponding_record(dataset_class):
         "within": "USUBJID",
         "ordering": "SESEQ",
     }
-    result = DataframeType({"value": invalid_df}).has_next_corresponding_record(
-        other_value
-    )
+    result = DataframeType({"value": invalid_df}).has_next_corresponding_record(other_value)
     assert result.equals(pd.Series([False, False, False, True, True, True, True, True]))
 
 
@@ -972,13 +944,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": valid_asc_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_asc_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1008,13 +976,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "DESC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "DESC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": valid_desc_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_desc_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1043,13 +1007,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": valid_asc_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_asc_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1078,13 +1038,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "DESC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "DESC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": valid_desc_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_desc_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1114,13 +1070,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": invalid_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": invalid_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1169,9 +1121,7 @@ def test_target_is_sorted_by(dataset_class):
             {"name": "--ENDTC", "sort_order": "ASC", "null_position": "last"},
         ],
     }
-    result = DataframeType(
-        {"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1220,9 +1170,7 @@ def test_target_is_sorted_by(dataset_class):
             {"name": "--ENDTC", "sort_order": "DESC", "null_position": "last"},
         ],
     }
-    result = DataframeType(
-        {"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1271,9 +1219,7 @@ def test_target_is_sorted_by(dataset_class):
             {"name": "--ENDTC", "sort_order": "DESC", "null_position": "last"},
         ],
     }
-    result = DataframeType(
-        {"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_mul_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1322,9 +1268,9 @@ def test_target_is_sorted_by(dataset_class):
             {"name": "--ENDTC", "sort_order": "ASC", "null_position": "last"},
         ],
     }
-    result = DataframeType(
-        {"value": invalid_mul_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": invalid_mul_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(
+        other_value
+    )
     assert result.equals(
         pd.Series(
             [
@@ -1348,13 +1294,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": valid_na_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": valid_na_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1378,13 +1320,9 @@ def test_target_is_sorted_by(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": invalid_na_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": invalid_na_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1420,13 +1358,9 @@ def test_target_is_sorted_by_datetime(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": datetime_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": datetime_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(other_value)
     assert result.equals(
         pd.Series(
             [
@@ -1470,13 +1404,11 @@ def test_target_is_sorted_by_partial_dates(dataset_class):
     other_value: dict = {
         "target": "--SEQ",
         "within": "USUBJID",
-        "comparator": [
-            {"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}
-        ],
+        "comparator": [{"name": "--STDTC", "sort_order": "ASC", "null_position": "last"}],
     }
-    result = DataframeType(
-        {"value": partial_date_df, "column_prefix_map": {"--": "SE"}}
-    ).target_is_sorted_by(other_value)
+    result = DataframeType({"value": partial_date_df, "column_prefix_map": {"--": "SE"}}).target_is_sorted_by(
+        other_value
+    )
     assert result.equals(
         pd.Series(
             [
@@ -1517,9 +1449,7 @@ def test_is_unique_relationship(target, comparator, dataset_type, expected_resul
         ],
     }
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df}).is_unique_relationship(
-        {"target": target, "comparator": comparator}
-    )
+    result = DataframeType({"value": df}).is_unique_relationship({"target": target, "comparator": comparator})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -1662,9 +1592,7 @@ def test_is_unique_relationship(target, comparator, dataset_type, expected_resul
 )
 def test_is_ordered_by(target, order, dataset_type, data, expected_result):
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df}).is_ordered_by(
-        {"target": target, "order": order}
-    )
+    result = DataframeType({"value": df}).is_ordered_by({"target": target, "order": order})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -1807,9 +1735,7 @@ def test_is_ordered_by(target, order, dataset_type, data, expected_result):
 )
 def test_is_not_ordered_by(target, order, dataset_type, data, expected_result):
     df = dataset_type.from_dict(data)
-    result = DataframeType({"value": df}).is_not_ordered_by(
-        {"target": target, "order": order}
-    )
+    result = DataframeType({"value": df}).is_not_ordered_by({"target": target, "order": order})
     assert result.equals(df.convert_to_series(expected_result))
 
 

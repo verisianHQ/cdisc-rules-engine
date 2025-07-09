@@ -36,9 +36,7 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
         ),
     ],
 )
-def test_variable_is_null(
-    data, expected, mock_data_service, operation_params: OperationParams
-):
+def test_variable_is_null(data, expected, mock_data_service, operation_params: OperationParams):
     config = ConfigService()
     cache = CacheServiceFactory(config).get_cache_service()
     operation_params.dataframe = data
@@ -66,8 +64,6 @@ def test_define_crosscheck_variable_is_null(mock_data_service, operation_params)
     operation_params.target = "define_variable_name"
     mock_data_service.get_dataset.return_value = dataset
     mock_data_service.dataset_implementation = PandasDataset
-    result = VariableIsNull(
-        operation_params, PandasDataset(define_metadata.data), cache, mock_data_service
-    ).execute()
+    result = VariableIsNull(operation_params, PandasDataset(define_metadata.data), cache, mock_data_service).execute()
     assert operation_params.operation_id in result
     assert result[operation_params.operation_id].to_list() == [True, False]

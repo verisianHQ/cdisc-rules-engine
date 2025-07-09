@@ -20,10 +20,6 @@ def test_get_report_services():
     services = factory.get_report_services()
     assert len(services) == 2
     for service in services:
-        is_excel: bool = isinstance(service, ExcelReport) and not isinstance(
-            service, JsonReport
-        )
-        is_json: bool = isinstance(service, JsonReport) and not isinstance(
-            service, ExcelReport
-        )
+        is_excel: bool = isinstance(service, ExcelReport) and not isinstance(service, JsonReport)
+        is_json: bool = isinstance(service, JsonReport) and not isinstance(service, ExcelReport)
         assert is_excel or is_json

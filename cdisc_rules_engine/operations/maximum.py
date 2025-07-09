@@ -6,7 +6,5 @@ class Maximum(BaseOperation):
         if not self.params.grouping:
             result = self.params.dataframe[self.params.target].max()
         else:
-            result = self.params.dataframe.groupby(
-                self.params.grouping, as_index=False
-            ).data.max()
+            result = self.params.dataframe.groupby(self.params.grouping, as_index=False).data.max()
         return result

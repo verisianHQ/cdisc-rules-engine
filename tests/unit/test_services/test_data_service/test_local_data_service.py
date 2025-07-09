@@ -64,9 +64,7 @@ def test_get_dataset(dataset_implementation):
     [PandasDataset],
 )
 def test_get_variables_metdata(dataset_implementation):
-    dataset_path = (
-        f"{os.path.dirname(__file__)}/../../../resources/test_adam_dataset.xpt"
-    )
+    dataset_path = f"{os.path.dirname(__file__)}/../../../resources/test_adam_dataset.xpt"
     mock_cache = MagicMock()
     mock_cache.get_dataset.return_value = None
     data_service = LocalDataService.get_instance(

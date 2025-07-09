@@ -22,9 +22,7 @@ class LoggingServiceFactory(FactoryInterface):
 
     def __init__(self, config: ConfigInterface):
         self._config = config
-        self._default_service_name: str = (
-            config.getValue("LOGGING_SERVICE_TYPE") or "console"
-        )
+        self._default_service_name: str = config.getValue("LOGGING_SERVICE_TYPE") or "console"
 
     @classmethod
     def register_service(cls, name: str, service: Type[LoggerInterface]) -> None:
@@ -34,9 +32,7 @@ class LoggingServiceFactory(FactoryInterface):
 
     def get_service(self, name: str = None, **kwargs) -> "LoggerInterface":
         service_name: str = name or self._default_service_name
-        service_class: Optional[Type[LoggerInterface]] = self.__registered_services.get(
-            service_name
-        )
+        service_class: Optional[Type[LoggerInterface]] = self.__registered_services.get(service_name)
         if not service_class:
             raise ValueError(
                 f"Service name must be in {list(self.__registered_services.keys())}, "

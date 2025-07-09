@@ -13,8 +13,4 @@ class DatasetColumnOrder(BaseOperation):
 
         Length of Series is equal to the length of given dataframe.
         """
-        return [
-            column
-            for column in self.params.dataframe.columns.to_list()
-            if column not in METADATA_COLUMNS
-        ]
+        return [column for column in self.params.dataframe.columns.to_list() if column not in METADATA_COLUMNS]

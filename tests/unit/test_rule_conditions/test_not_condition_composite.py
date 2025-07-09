@@ -38,12 +38,8 @@ def test_to_dict():
     )
     composite.add_conditions("all", [single_condition, single_condition_1])
 
-    not_composite = NotConditionComposite(
-        key=AllowedConditionsKeys.NOT.value, condition_composite=composite
-    )
-    assert not_composite.to_dict() == {
-        AllowedConditionsKeys.NOT.value: composite.to_dict()
-    }
+    not_composite = NotConditionComposite(key=AllowedConditionsKeys.NOT.value, condition_composite=composite)
+    assert not_composite.to_dict() == {AllowedConditionsKeys.NOT.value: composite.to_dict()}
 
 
 def test_values():
@@ -74,9 +70,7 @@ def test_values():
     )
     composite.add_conditions("all", [single_condition, single_condition_1])
 
-    not_composite = NotConditionComposite(
-        key=AllowedConditionsKeys.NOT.value, condition_composite=composite
-    )
+    not_composite = NotConditionComposite(key=AllowedConditionsKeys.NOT.value, condition_composite=composite)
     assert not_composite.values() == [
         single_condition.to_dict(),
         single_condition_1.to_dict(),
@@ -111,9 +105,7 @@ def test_items():
     )
     composite.add_conditions("all", [single_condition, single_condition_1])
 
-    not_composite = NotConditionComposite(
-        key=AllowedConditionsKeys.NOT.value, condition_composite=composite
-    )
+    not_composite = NotConditionComposite(key=AllowedConditionsKeys.NOT.value, condition_composite=composite)
     # "not" is not expected in items() result
     assert not_composite.items() == [
         (

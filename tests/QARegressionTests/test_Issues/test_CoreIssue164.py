@@ -45,9 +45,7 @@ def test_negative_dataset():
     # Remove None values using list comprehension
     record_values = [value for value in record_values if value is not None]
     variables_values = [value for value in variables_values if value is not None]
-    values_column_values = [
-        value for value in values_column_values if value is not None
-    ]
+    values_column_values = [value for value in values_column_values if value is not None]
 
     # Perform the assertion
     # Ensure only two negative values are caught
@@ -108,9 +106,7 @@ def test_positive_dataset():
     # Remove None values using list comprehension
     record_values = [value for value in record_values if value is not None]
     variables_values = [value for value in variables_values if value is not None]
-    values_column_values = [
-        value for value in values_column_values if value is not None
-    ]
+    values_column_values = [value for value in values_column_values if value is not None]
 
     # Perform the assertion
     # Ensure only two negative values are caught

@@ -39,9 +39,6 @@ class ConfigService(ConfigInterface):
 
     def get_dataset_size_threshold(self):
         try:
-            return float(
-                self.getValue("DATASET_SIZE_THRESHOLD")
-                or self._default_dataset_size_threshold
-            )
+            return float(self.getValue("DATASET_SIZE_THRESHOLD") or self._default_dataset_size_threshold)
         except Exception:
             return self._default_dataset_size_threshold

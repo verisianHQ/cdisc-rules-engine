@@ -15,15 +15,9 @@ class DefineCodelists(BaseOperation):
         values = []
         ct_package_data = self.library_metadata._ct_package_metadata.get("extensible")
         if ct_package_data is None:
-            raise MissingDataError(
-                "Parsed Extensible terms not found in library CT metadata"
-            )
+            raise MissingDataError("Parsed Extensible terms not found in library CT metadata")
         if len(codelists) == 1 and codelists[0] == "ALL":
-            return [
-                value
-                for data in ct_package_data.values()
-                for value in data["extended_values"]
-            ]
+            return [value for data in ct_package_data.values() for value in data["extended_values"]]
 
         lookup_map = {name.lower(): name for name in ct_package_data.keys()}
         for codelist in codelists:

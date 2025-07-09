@@ -19,9 +19,7 @@ class ConditionCompositeFactory:
         for key, condition_list in conditions.items():
             # validate the rule structure
             if not AllowedConditionsKeys.contains(key):
-                raise RuleFormatError(
-                    f'Key "{key}" is not allowed in the rule conditions'
-                )
+                raise RuleFormatError(f'Key "{key}" is not allowed in the rule conditions')
 
             if key == AllowedConditionsKeys.NOT.value:
                 # "not" composite wraps a regular composite

@@ -23,9 +23,7 @@ class CodelistTerms(BaseOperation):
             if "define_XML_merged_CT" in ct_packages:
                 ct_package_data = ct_packages["define_XML_merged_CT"]
             else:
-                ct_package_data = next(
-                    (pkg for name, pkg in ct_packages.items() if name != "extensible")
-                )
+                ct_package_data = next((pkg for name, pkg in ct_packages.items() if name != "extensible"))
         except AttributeError as e:
             logger.warning(
                 "CT package data is not populated: %s "
@@ -43,16 +41,10 @@ class CodelistTerms(BaseOperation):
         values = []
 
         for code_obj in codes:
-            values.extend(
-                self._get_codelist_values(
-                    code_obj, ct_package_data, codelist_level, check
-                )
-            )
+            values.extend(self._get_codelist_values(code_obj, ct_package_data, codelist_level, check))
         return values
 
-    def _get_codelist_values(
-        self, code_obj: dict, ct_package_data: dict, codelist_level: str, check: str
-    ) -> list:
+    def _get_codelist_values(self, code_obj: dict, ct_package_data: dict, codelist_level: str, check: str) -> list:
         """Extract values from a codelist based on level and check type."""
         values = []
         codelist_id = code_obj.get("codelist")

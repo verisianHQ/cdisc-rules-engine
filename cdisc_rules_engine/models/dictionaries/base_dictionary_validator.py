@@ -1,7 +1,5 @@
 class BaseDictionaryValidator:
-    def is_valid_term(
-        self, term: str, term_type: str = "", variable: str = "", **kwargs
-    ) -> bool:
+    def is_valid_term(self, term: str, term_type: str = "", variable: str = "", **kwargs) -> bool:
         """
         Method to identify whether a term is valid based on its term type.
 
@@ -20,9 +18,7 @@ class BaseDictionaryValidator:
         """
         raise NotImplementedError
 
-    def is_valid_code(
-        self, code: str, term_type: str = "", variable: str = "", codes=[], **kwargs
-    ) -> bool:
+    def is_valid_code(self, code: str, term_type: str = "", variable: str = "", codes=[], **kwargs) -> bool:
         """
         Method to identify whether a code is valid based on its term type.
 
@@ -65,16 +61,12 @@ class BaseDictionaryValidator:
             return self.term_dictionary
 
         if self.cache_service is None:
-            raise Exception(
-                "External Dictionary validation requires cache access, none found"
-            )
+            raise Exception("External Dictionary validation requires cache access, none found")
 
         terms_dictionary = self.cache_service.get(self.path)
         if not terms_dictionary:
             if self.data_service is None:
-                raise Exception(
-                    "External Dictionary validation requires data service. None found"
-                )
+                raise Exception("External Dictionary validation requires data service. None found")
             terms_dictionary = self.terms_factory.install_terms(self.path)
         self.term_dictionary = terms_dictionary
         self.cache_service.add(self.path, terms_dictionary)

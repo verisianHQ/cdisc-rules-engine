@@ -40,9 +40,7 @@ from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 def test_suffix_equal_to(data, comparator, suffix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.suffix_equal_to(
-        {"target": "target", "comparator": comparator, "suffix": suffix}
-    )
+    result = dataframe_type.suffix_equal_to({"target": "target", "comparator": comparator, "suffix": suffix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -68,9 +66,7 @@ def test_suffix_equal_to(data, comparator, suffix, dataset_type, expected_result
 def test_suffix_not_equal_to(data, comparator, suffix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.suffix_not_equal_to(
-        {"target": "target", "comparator": comparator, "suffix": suffix}
-    )
+    result = dataframe_type.suffix_not_equal_to({"target": "target", "comparator": comparator, "suffix": suffix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -96,9 +92,7 @@ def test_suffix_not_equal_to(data, comparator, suffix, dataset_type, expected_re
 def test_prefix_equal_to(data, comparator, prefix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.prefix_equal_to(
-        {"target": "target", "comparator": comparator, "prefix": prefix}
-    )
+    result = dataframe_type.prefix_equal_to({"target": "target", "comparator": comparator, "prefix": prefix})
     assert result.equals(df.convert_to_series(expected_result))
 
 
@@ -124,7 +118,5 @@ def test_prefix_equal_to(data, comparator, prefix, dataset_type, expected_result
 def test_prefix_not_equal_to(data, comparator, prefix, dataset_type, expected_result):
     df = dataset_type.from_dict(data)
     dataframe_type = DataframeType({"value": df})
-    result = dataframe_type.prefix_not_equal_to(
-        {"target": "target", "comparator": comparator, "prefix": prefix}
-    )
+    result = dataframe_type.prefix_not_equal_to({"target": "target", "comparator": comparator, "prefix": prefix})
     assert result.equals(df.convert_to_series(expected_result))

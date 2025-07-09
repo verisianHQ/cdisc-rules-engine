@@ -74,12 +74,12 @@ class SQLiteDataset(SQLDatasetBase):
             """,
                 (f"$.{item}", self.dataset_id),
             )
-            
+
             return [row["value"] for row in self.fetch_all(cursor)]
-        
+
         elif isinstance(item, list):
             return self._columns(item)
-        
+
         else:
             raise TypeError(f"Unsupported key type: {type(item)}")
 
@@ -91,7 +91,7 @@ class SQLiteDataset(SQLDatasetBase):
         """Register dataset in metadata table."""
         self.execute_sql(
             """
-                INSERT OR IGNORE INTO datasets (dataset_id, table_name) 
+                INSERT OR IGNORE INTO datasets (dataset_id, table_name)
                 VALUES (?, ?)
             """,
             (self.dataset_id, self._table_name),
@@ -102,10 +102,7 @@ class SQLiteDataset(SQLDatasetBase):
         if not records:
             return
 
-        values = [
-            (self.dataset_id, idx, json.dumps(record))
-            for idx, record in enumerate(records)
-        ]
+        values = [(self.dataset_id, idx, json.dumps(record)) for idx, record in enumerate(records)]
 
         self.execute_many(
             """
@@ -342,7 +339,7 @@ class SQLiteDataset(SQLDatasetBase):
             self.execute_sql(
                 f"""
                 INSERT INTO dataset_records (dataset_id, row_num, data)
-                SELECT ?, 
+                SELECT ?,
                     ROW_NUMBER() OVER (ORDER BY row_num) - 1,
                     data
                 FROM dataset_records
@@ -365,9 +362,7 @@ class SQLiteDataset(SQLDatasetBase):
                 length=new_length,
             )
 
-    def concat(
-        self, other: Union["SQLiteDataset", List["SQLiteDataset"]], axis=0, **kwargs
-    ) -> "SQLiteDataset":
+    def concat(self, other: Union["SQLiteDataset", List["SQLiteDataset"]], axis=0, **kwargs) -> "SQLiteDataset":
         """Concatenate datasets."""
         if axis == 0:  # vertical concat
             datasets = [other] if not isinstance(other, list) else other
@@ -427,15 +422,15 @@ class SQLiteDataset(SQLDatasetBase):
                     conn.execute(
                         f"""
                         ALTER TABLE {temp_table}
-                        ADD COLUMN data{i+1} TEXT
+                        ADD COLUMN data{i + 1} TEXT
                     """
                     )
 
                     conn.execute(
                         f"""
                         UPDATE {temp_table}
-                        SET data{i+1} = (
-                            SELECT data FROM dataset_records 
+                        SET data{i + 1} = (
+                            SELECT data FROM dataset_records
                             WHERE dataset_id = ? AND row_num = {temp_table}.row_num
                         )
                     """,
@@ -445,7 +440,7 @@ class SQLiteDataset(SQLDatasetBase):
                 # Merge JSON objects
                 merge_expr = "json(data0)"
                 for i in range(len(datasets)):
-                    merge_expr = f"json_patch({merge_expr}, json(data{i+1}))"
+                    merge_expr = f"json_patch({merge_expr}, json(data{i + 1}))"
 
                 conn.execute(
                     f"""
@@ -480,13 +475,10 @@ class SQLiteDataset(SQLDatasetBase):
             if isinstance(on, str):
                 on = [on]
             join_conditions = " AND ".join(
-                [
-                    f"json_extract(a.data, '$.{col}') = json_extract(b.data, '$.{col}')"
-                    for col in on
-                ]
+                [f"json_extract(a.data, '$.{col}') = json_extract(b.data, '$.{col}')" for col in on]
             )
         else:
-            join_conditions = "1=1"
+            join_conditions = "1 = 1"
 
         with self.database_config.get_connection() as conn:
             if how == MergeMap.OUTER.name:
@@ -494,25 +486,24 @@ class SQLiteDataset(SQLDatasetBase):
                 conn.execute(
                     f"""
                     INSERT INTO dataset_records (dataset_id, row_num, data)
-                    SELECT 
+                    SELECT
                         ?,
                         ROW_NUMBER() OVER (ORDER BY row_num) - 1,
                         json_patch(
-                            COALESCE(json(a_data), '{{}}'), 
-                            COALESCE(json(b_data), '{{}}')
+                            COALESCE(json(a_data), '{{}}'), COALESCE(json(b_data), '{{}}')
                         )
                     FROM (
                         SELECT a.row_num, a.data as a_data, b.data as b_data
                         FROM dataset_records a
-                        LEFT JOIN dataset_records b 
+                        LEFT JOIN dataset_records b
                             ON {join_conditions} AND b.dataset_id = ?
                         WHERE a.dataset_id = ?
-                        
+
                         UNION
-                        
+
                         SELECT b.row_num, a.data as a_data, b.data as b_data
                         FROM dataset_records b
-                        LEFT JOIN dataset_records a 
+                        LEFT JOIN dataset_records a
                             ON {join_conditions} AND a.dataset_id = ?
                         WHERE b.dataset_id = ?
                     ) merged
@@ -536,8 +527,7 @@ class SQLiteDataset(SQLDatasetBase):
 
                 for col in right_only_cols:
                     json_build_parts.append(
-                        f"'{col}', CASE WHEN b.data IS NULL THEN NULL "
-                        f"ELSE json_extract(b.data, '$.{col}') END"
+                        f"'{col}', CASE WHEN b.data IS NULL THEN NULL " f"ELSE json_extract(b.data, '$.{col}') END"
                     )
 
                 json_build_expr = f"json_object({', '.join(json_build_parts)})"
@@ -545,12 +535,12 @@ class SQLiteDataset(SQLDatasetBase):
                 conn.execute(
                     f"""
                     INSERT INTO dataset_records (dataset_id, row_num, data)
-                    SELECT 
+                    SELECT
                         ?,
                         ROW_NUMBER() OVER (ORDER BY a.row_num) - 1,
                         {json_build_expr}
                     FROM dataset_records a
-                    {join_type} dataset_records b 
+                    {join_type} dataset_records b
                         ON {join_conditions} AND b.dataset_id = ?
                     WHERE a.dataset_id = ?
                 """,
@@ -560,12 +550,12 @@ class SQLiteDataset(SQLDatasetBase):
                 conn.execute(
                     f"""
                     INSERT INTO dataset_records (dataset_id, row_num, data)
-                    SELECT 
+                    SELECT
                         ?,
                         ROW_NUMBER() OVER (ORDER BY a.row_num, b.row_num) - 1,
                         json_patch(json(a.data), json(b.data))
                     FROM dataset_records a
-                    {join_type} dataset_records b 
+                    {join_type} dataset_records b
                         ON {join_conditions} AND b.dataset_id = ?
                     WHERE a.dataset_id = ?
                 """,
@@ -602,9 +592,7 @@ class SQLiteDataset(SQLDatasetBase):
             )
         return ", ".join(order_parts)
 
-    def is_column_sorted_within(
-        self, group: Union[str, List[str]], column: str
-    ) -> bool:
+    def is_column_sorted_within(self, group: Union[str, List[str]], column: str) -> bool:
         """Check if column is sorted within groups."""
         if isinstance(group, str):
             group = [group]
@@ -625,7 +613,7 @@ class SQLiteDataset(SQLDatasetBase):
                     FROM dataset_records
                     WHERE dataset_id = ?
                 ) t
-                WHERE prev_val IS NOT NULL 
+                WHERE prev_val IS NOT NULL
                   AND CAST(prev_val AS REAL) > CAST(col_val AS REAL)
             )
         """,
@@ -653,9 +641,7 @@ class SQLiteDataset(SQLDatasetBase):
         else:  # row-wise
             results = []
             for row_num, row_data in self.iterrows():
-                numeric_vals = [
-                    v for v in row_data.values() if isinstance(v, (int, float))
-                ]
+                numeric_vals = [v for v in row_data.values() if isinstance(v, (int, float))]
                 results.append(min(numeric_vals) if numeric_vals else None)
             return results
 
@@ -693,9 +679,9 @@ class SQLiteDataset(SQLDatasetBase):
                 """
                 UPDATE dataset_records
                 SET row_num = (
-                    SELECT COUNT(*) 
-                    FROM dataset_records dr2 
-                    WHERE dr2.dataset_id = dataset_records.dataset_id 
+                    SELECT COUNT(*)
+                    FROM dataset_records dr2
+                    WHERE dr2.dataset_id = dataset_records.dataset_id
                       AND dr2.row_num < dataset_records.row_num
                 )
                 WHERE dataset_id = ?
@@ -775,9 +761,7 @@ class SQLiteDataset(SQLDatasetBase):
 
         return dataset
 
-    def _execute_aggregation(
-        self, groupby_cols: List[str], func_dict: Dict[str, Union[str, List[str]]]
-    ):
+    def _execute_aggregation(self, groupby_cols: List[str], func_dict: Dict[str, Union[str, List[str]]]):  # noqa: C901
         """Execute aggregation query."""
         # build aggregation expressions
         agg_exprs = []
@@ -789,29 +773,19 @@ class SQLiteDataset(SQLDatasetBase):
 
             for func in funcs:
                 if func == "sum":
-                    agg_exprs.append(
-                        f"SUM(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_sum"
-                    )
+                    agg_exprs.append(f"SUM(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_sum")
                     result_cols.append(f"{col}_sum")
                 elif func == "mean" or func == "avg":
-                    agg_exprs.append(
-                        f"AVG(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_mean"
-                    )
+                    agg_exprs.append(f"AVG(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_mean")
                     result_cols.append(f"{col}_mean")
                 elif func == "min":
-                    agg_exprs.append(
-                        f"MIN(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_min"
-                    )
+                    agg_exprs.append(f"MIN(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_min")
                     result_cols.append(f"{col}_min")
                 elif func == "max":
-                    agg_exprs.append(
-                        f"MAX(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_max"
-                    )
+                    agg_exprs.append(f"MAX(CAST(json_extract(data, '$.{col}') AS REAL)) as {col}_max")
                     result_cols.append(f"{col}_max")
                 elif func == "count":
-                    agg_exprs.append(
-                        f"COUNT(json_extract(data, '$.{col}')) as {col}_count"
-                    )
+                    agg_exprs.append(f"COUNT(json_extract(data, '$.{col}')) as {col}_count")
                     result_cols.append(f"{col}_count")
                 elif func == "std":
                     # SQLite doesn't have STDDEV built-in, calculate manually
@@ -825,9 +799,7 @@ class SQLiteDataset(SQLDatasetBase):
 
         # build group by query
         group_by = ", ".join([f"json_extract(data, '$.{col}')" for col in groupby_cols])
-        select_cols = ", ".join(
-            [f"json_extract(data, '$.{col}') as {col}" for col in groupby_cols]
-        )
+        select_cols = ", ".join([f"json_extract(data, '$.{col}') as {col}" for col in groupby_cols])
 
         cursor = self.execute_sql(
             f"""
@@ -878,9 +850,7 @@ class SQLiteDataset(SQLDatasetBase):
 
                     transformed_data = {}
                     for key, value in data.items():
-                        if na_action == "ignore" and (
-                            value is None or (isinstance(value, float) and isnan(value))
-                        ):
+                        if na_action == "ignore" and (value is None or (isinstance(value, float) and isnan(value))):
                             transformed_data[key] = value
                         else:
                             try:
@@ -888,9 +858,7 @@ class SQLiteDataset(SQLDatasetBase):
                             except Exception:
                                 transformed_data[key] = value
 
-                    transformed_records.append(
-                        (new_dataset_id, row_num, json.dumps(transformed_data))
-                    )
+                    transformed_records.append((new_dataset_id, row_num, json.dumps(transformed_data)))
 
                 conn.executemany(
                     """
@@ -911,7 +879,7 @@ class SQLiteDataset(SQLDatasetBase):
             length=self._length,
         )
 
-    def to_records(self, index=True, column_dtypes=None, index_dtypes=None):
+    def to_records(self, index=True, column_dtypes=None, index_dtypes=None):  # noqa: C901
         """Convert SQLiteDataset to a numpy structured array."""
 
         # first get all records
@@ -933,9 +901,7 @@ class SQLiteDataset(SQLDatasetBase):
 
                 if index:
                     # include the row number
-                    record_tuple = (row_num,) + tuple(
-                        data.get(col) for col in self._columns
-                    )
+                    record_tuple = (row_num,) + tuple(data.get(col) for col in self._columns)
                 else:
                     # just the data values
                     record_tuple = tuple(data.get(col) for col in self._columns)
@@ -982,9 +948,7 @@ class SQLiteDataset(SQLDatasetBase):
             if len(self.columns) == 1:
                 column = self.columns[0]
             else:
-                raise ValueError(
-                    "Must specify column for DataFrame with multiple columns"
-                )
+                raise ValueError("Must specify column for DataFrame with multiple columns")
 
         json_extract = self._get_json_extract_expr(column)
         cursor = self.execute_sql(
@@ -1024,7 +988,7 @@ class SQLiteDataset(SQLDatasetBase):
         cursor = self.execute_sql(
             f"""
             WITH dup_counts AS (
-                SELECT 
+                SELECT
                     record_id,
                     row_num,
                     ROW_NUMBER() OVER (PARTITION BY {group_cols} ORDER BY row_num) as rn,
@@ -1032,9 +996,9 @@ class SQLiteDataset(SQLDatasetBase):
                 FROM dataset_records
                 WHERE dataset_id = ?
             )
-            SELECT 
+            SELECT
                 row_num,
-                CASE 
+                CASE
                     WHEN cnt = 1 THEN 0
                     WHEN keep = 'first' AND rn = 1 THEN 0
                     WHEN keep = 'last' AND rn = cnt THEN 0
@@ -1055,11 +1019,11 @@ class SQLiteDataset(SQLDatasetBase):
 
         # Create dataset with boolean values for null checks
         cursor = self.execute_sql(
-            f"""
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """,
+            """,
             (self.dataset_id,),
         )
 
@@ -1069,9 +1033,7 @@ class SQLiteDataset(SQLDatasetBase):
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is None
-            records.append(
-                (new_dataset_id, row["row_num"], self._serialise_json(null_checks))
-            )
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(null_checks)))
 
         self.execute_many(
             """
@@ -1093,11 +1055,11 @@ class SQLiteDataset(SQLDatasetBase):
 
         # Create dataset with boolean values for non-null checks
         cursor = self.execute_sql(
-            f"""
+            """
             SELECT row_num, data FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
-        """,
+            """,
             (self.dataset_id,),
         )
 
@@ -1107,9 +1069,7 @@ class SQLiteDataset(SQLDatasetBase):
             null_checks = {}
             for col in self.columns:
                 null_checks[col] = data.get(col) is not None
-            records.append(
-                (new_dataset_id, row["row_num"], self._serialise_json(null_checks))
-            )
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(null_checks)))
 
         self.execute_many(
             """
@@ -1130,14 +1090,14 @@ class SQLiteDataset(SQLDatasetBase):
         new_dataset_id = str(uuid.uuid4())
 
         self.execute_sql(
-            f"""
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
             SELECT ?, row_num, data
             FROM dataset_records
             WHERE dataset_id = ?
             ORDER BY row_num
             LIMIT ?
-        """,
+            """,
             (new_dataset_id, self.dataset_id, n),
         )
 
@@ -1153,9 +1113,9 @@ class SQLiteDataset(SQLDatasetBase):
 
         # SQLite doesn't have LIMIT with OFFSET from end, so we need a subquery
         self.execute_sql(
-            f"""
+            """
             INSERT INTO dataset_records (dataset_id, row_num, data)
-            SELECT ?, 
+            SELECT ?,
                    ROW_NUMBER() OVER (ORDER BY row_num) - 1 as row_num,
                    data
             FROM (
@@ -1166,7 +1126,7 @@ class SQLiteDataset(SQLDatasetBase):
                 LIMIT ?
             ) t
             ORDER BY row_num
-        """,
+            """,
             (new_dataset_id, self.dataset_id, n),
         )
 
@@ -1249,32 +1209,21 @@ class SQLiteDataset(SQLDatasetBase):
 
             # Infer type from values
             is_numeric = all(
-                isinstance(v, (int, float))
-                or (
-                    isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit()
-                )
+                isinstance(v, (int, float)) or (isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit())
                 for v in values
             )
 
             if include:
                 include_list = include if isinstance(include, list) else [include]
-                if is_numeric and any(
-                    t in ["number", "numeric", float, int] for t in include_list
-                ):
+                if is_numeric and any(t in ["number", "numeric", float, int] for t in include_list):
                     selected_columns.append(col)
-                elif not is_numeric and any(
-                    t in ["object", str, "string"] for t in include_list
-                ):
+                elif not is_numeric and any(t in ["object", str, "string"] for t in include_list):
                     selected_columns.append(col)
             elif exclude:
                 exclude_list = exclude if isinstance(exclude, list) else [exclude]
-                if is_numeric and not any(
-                    t in ["number", "numeric", float, int] for t in exclude_list
-                ):
+                if is_numeric and not any(t in ["number", "numeric", float, int] for t in exclude_list):
                     selected_columns.append(col)
-                elif not is_numeric and not any(
-                    t in ["object", str, "string"] for t in exclude_list
-                ):
+                elif not is_numeric and not any(t in ["object", str, "string"] for t in exclude_list):
                     selected_columns.append(col)
             else:
                 selected_columns.append(col)
@@ -1292,7 +1241,7 @@ class SQLiteDataset(SQLDatasetBase):
                 if skipna:
                     cumsum_exprs.append(
                         f"""
-                        SUM(CAST(json_extract(data, '$.{col}') AS REAL)) 
+                        SUM(CAST(json_extract(data, '$.{col}') AS REAL))
                         OVER (ORDER BY row_num ROWS UNBOUNDED PRECEDING) as {col}
                     """
                     )
@@ -1300,7 +1249,7 @@ class SQLiteDataset(SQLDatasetBase):
                     # Non-skipna version would need more complex logic
                     cumsum_exprs.append(
                         f"""
-                        SUM(CAST(json_extract(data, '$.{col}') AS REAL)) 
+                        SUM(CAST(json_extract(data, '$.{col}') AS REAL))
                         OVER (ORDER BY row_num ROWS UNBOUNDED PRECEDING) as {col}
                     """
                     )
@@ -1319,9 +1268,7 @@ class SQLiteDataset(SQLDatasetBase):
             records = []
             for row in self.fetch_all(cursor):
                 data = {col: row[col] for col in self.columns}
-                records.append(
-                    (new_dataset_id, row["row_num"], self._serialise_json(data))
-                )
+                records.append((new_dataset_id, row["row_num"], self._serialise_json(data)))
 
             self.execute_many(
                 """
@@ -1429,13 +1376,9 @@ class SQLiteDataset(SQLDatasetBase):
 
             stats_data.append(row_data)
 
-        return SQLiteDataset.from_records(
-            stats_data, database_config=self.database_config
-        )
+        return SQLiteDataset.from_records(stats_data, database_config=self.database_config)
 
-    def value_counts(
-        self, normalise=False, sort=True, ascending=False, bins=None, dropna=True
-    ):
+    def value_counts(self, normalise=False, sort=True, ascending=False, bins=None, dropna=True):
         """Return a Series containing counts of unique values."""
         if len(self.columns) != 1:
             raise ValueError("value_counts() only works on single columns")
@@ -1449,7 +1392,7 @@ class SQLiteDataset(SQLDatasetBase):
 
         cursor = self.execute_sql(
             f"""
-            SELECT json_extract(data, '$.{col}') as value, 
+            SELECT json_extract(data, '$.{col}') as value,
                    COUNT(*) as count
             FROM dataset_records
             WHERE dataset_id = ?
@@ -1477,27 +1420,27 @@ class SQLiteDataset(SQLDatasetBase):
             if periods > 0:
                 # Shift forward (LAG)
                 cursor = self.execute_sql(
-                    f"""
-                    SELECT 
+                    """
+                    SELECT
                         row_num,
                         LAG(data, ?) OVER (ORDER BY row_num) as shifted_data
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """,
+                    """,
                     (periods, self.dataset_id),
                 )
             else:
                 # Shift backward (LEAD)
                 cursor = self.execute_sql(
-                    f"""
-                    SELECT 
+                    """
+                    SELECT
                         row_num,
                         LEAD(data, ?) OVER (ORDER BY row_num) as shifted_data
                     FROM dataset_records
                     WHERE dataset_id = ?
                     ORDER BY row_num
-                """,
+                    """,
                     (-periods, self.dataset_id),
                 )
 
@@ -1509,13 +1452,9 @@ class SQLiteDataset(SQLDatasetBase):
                         data = {col: fill_value for col in self.columns}
                     else:
                         data = {col: None for col in self.columns}
-                    records.append(
-                        (new_dataset_id, row["row_num"], self._serialise_json(data))
-                    )
+                    records.append((new_dataset_id, row["row_num"], self._serialise_json(data)))
                 else:
-                    records.append(
-                        (new_dataset_id, row["row_num"], row["shifted_data"])
-                    )
+                    records.append((new_dataset_id, row["row_num"], row["shifted_data"]))
 
             self.execute_many(
                 """
@@ -1563,10 +1502,7 @@ class SQLiteDataset(SQLDatasetBase):
             elif all(isinstance(v, bool) for v in values):
                 dtype_dict[col] = "bool"
             elif all(
-                isinstance(v, (int, float))
-                or (
-                    isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit()
-                )
+                isinstance(v, (int, float)) or (isinstance(v, str) and v.replace(".", "").replace("-", "").isdigit())
                 for v in values
             ):
                 dtype_dict[col] = "float64"
@@ -1585,7 +1521,7 @@ class SQLiteDataset(SQLDatasetBase):
         return result
 
     @property
-    def str(self):
+    def str(self):  # noqa: C901
         """Vectorised string functions for Series and Index."""
 
         class StringAccessor:
@@ -1719,7 +1655,7 @@ class SQLiteDataset(SQLDatasetBase):
                     if val and isinstance(val, str) and len(val) >= 4:
                         try:
                             results.append(int(val[:4]))
-                        except:
+                        except BaseException:
                             results.append(None)
                     else:
                         results.append(None)
@@ -1748,9 +1684,7 @@ class SQLiteDataset(SQLDatasetBase):
             isin_data = {}
             for col in self.columns:
                 isin_data[col] = data.get(col) in values_set
-            records.append(
-                (new_dataset_id, row["row_num"], self._serialise_json(isin_data))
-            )
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(isin_data)))
 
         self.execute_many(
             """
@@ -1840,7 +1774,7 @@ class SQLiteDataset(SQLDatasetBase):
         self.execute_sql(
             f"""
             INSERT INTO dataset_records (dataset_id, row_num, data)
-            SELECT ?, 
+            SELECT ?,
                 ROW_NUMBER() OVER (ORDER BY row_num) - 1,
                 data
             FROM dataset_records
@@ -1972,7 +1906,7 @@ class SQLiteDataset(SQLDatasetBase):
             columns=new_columns,
         )
 
-    def _comparison_op(self, other, op):
+    def _comparison_op(self, other, op):  # noqa: C901
         """Generic comparison operation."""
         new_dataset_id = str(uuid.uuid4())
 
@@ -2004,27 +1938,25 @@ class SQLiteDataset(SQLDatasetBase):
                 elif op == "lt":
                     try:
                         result_data[col] = val < other_val
-                    except:
+                    except BaseException:
                         result_data[col] = False
                 elif op == "le":
                     try:
                         result_data[col] = val <= other_val
-                    except:
+                    except BaseException:
                         result_data[col] = False
                 elif op == "gt":
                     try:
                         result_data[col] = val > other_val
-                    except:
+                    except BaseException:
                         result_data[col] = False
                 elif op == "ge":
                     try:
                         result_data[col] = val >= other_val
-                    except:
+                    except BaseException:
                         result_data[col] = False
 
-            records.append(
-                (new_dataset_id, row["row_num"], self._serialise_json(result_data))
-            )
+            records.append((new_dataset_id, row["row_num"], self._serialise_json(result_data)))
 
         self.execute_many(
             """
@@ -2097,7 +2029,7 @@ class SQLiteDataset(SQLDatasetBase):
                     SELECT NOT EXISTS(
                         SELECT 1 FROM dataset_records
                         WHERE dataset_id = ?
-                          AND (json_extract(data, ?) = 0 
+                          AND (json_extract(data, ?) = 0
                                OR json_extract(data, ?) IS NULL)
                     )
                 """,
@@ -2142,9 +2074,7 @@ class SQLiteDataset(SQLDatasetBase):
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [
-                    v for v in row_data.values() if isinstance(v, (int, float))
-                ]
+                numeric_vals = [v for v in row_data.values() if isinstance(v, (int, float))]
                 results.append(sum(numeric_vals) if numeric_vals else 0)
             return results
 
@@ -2167,17 +2097,11 @@ class SQLiteDataset(SQLDatasetBase):
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [
-                    v for v in row_data.values() if isinstance(v, (int, float))
-                ]
-                results.append(
-                    sum(numeric_vals) / len(numeric_vals) if numeric_vals else None
-                )
+                numeric_vals = [v for v in row_data.values() if isinstance(v, (int, float))]
+                results.append(sum(numeric_vals) / len(numeric_vals) if numeric_vals else None)
             return results
 
-    def std(
-        self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs
-    ):
+    def std(self, axis=None, skipna=True, level=None, ddof=1, numeric_only=None, **kwargs):
         """Return sample standard deviation."""
         # SQLite doesn't have built-in STDDEV, so we calculate manually
         if axis == 0 or axis is None:  # Column-wise
@@ -2194,17 +2118,11 @@ class SQLiteDataset(SQLDatasetBase):
                     (f"$.{col}", self.dataset_id, f"$.{col}"),
                 )
 
-                values = [
-                    float(row["value"])
-                    for row in self.fetch_all(cursor)
-                    if row["value"] is not None
-                ]
+                values = [float(row["value"]) for row in self.fetch_all(cursor) if row["value"] is not None]
 
                 if len(values) > ddof:
                     mean_val = sum(values) / len(values)
-                    variance = sum((x - mean_val) ** 2 for x in values) / (
-                        len(values) - ddof
-                    )
+                    variance = sum((x - mean_val) ** 2 for x in values) / (len(values) - ddof)
                     result[col] = variance**0.5
                 else:
                     result[col] = None
@@ -2213,14 +2131,10 @@ class SQLiteDataset(SQLDatasetBase):
             # Row-wise std
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [
-                    v for v in row_data.values() if isinstance(v, (int, float))
-                ]
+                numeric_vals = [v for v in row_data.values() if isinstance(v, (int, float))]
                 if len(numeric_vals) > ddof:
                     mean_val = sum(numeric_vals) / len(numeric_vals)
-                    variance = sum((x - mean_val) ** 2 for x in numeric_vals) / (
-                        len(numeric_vals) - ddof
-                    )
+                    variance = sum((x - mean_val) ** 2 for x in numeric_vals) / (len(numeric_vals) - ddof)
                     results.append(variance**0.5)
                 else:
                     results.append(None)
@@ -2246,9 +2160,7 @@ class SQLiteDataset(SQLDatasetBase):
         else:  # Row-wise
             results = []
             for _, row_data in self.iterrows():
-                numeric_vals = [
-                    v for v in row_data.values() if isinstance(v, (int, float))
-                ]
+                numeric_vals = [v for v in row_data.values() if isinstance(v, (int, float))]
                 results.append(max(numeric_vals) if numeric_vals else None)
             return results
 
@@ -2294,7 +2206,7 @@ class SQLiteDataset(SQLDatasetBase):
             columns=self.columns,
         )
 
-    def astype(self, dtype, **kwargs):
+    def astype(self, dtype, **kwargs):  # noqa: C901
         """Convert column dtypes."""
         new_dataset_id = str(uuid.uuid4())
 

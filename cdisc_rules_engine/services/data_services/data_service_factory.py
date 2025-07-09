@@ -53,9 +53,7 @@ class DataServiceFactory(FactoryInterface):
         self.max_dataset_size = max_dataset_size
         self.dataset_size_threshold = self.config.get_dataset_size_threshold()
 
-    def get_data_service(
-        self, dataset_paths: Iterable[str] = []
-    ) -> DataServiceInterface:
+    def get_data_service(self, dataset_paths: Iterable[str] = []) -> DataServiceInterface:
         if USDMDataService.is_valid_data(dataset_paths):
             """Get json file tree to dataset data service"""
             return self.get_service(
@@ -69,9 +67,7 @@ class DataServiceFactory(FactoryInterface):
             )
         elif DummyDataService.is_valid_data(dataset_paths):
             """Get dummy data service"""
-            return self.get_dummy_data_service(
-                data=DummyDataService.get_data(dataset_paths)
-            )
+            return self.get_dummy_data_service(data=DummyDataService.get_data(dataset_paths))
         elif ExcelDataService.is_valid_data(dataset_paths):
             """Get Excel file to dataset data service"""
             return self.get_service(

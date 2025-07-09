@@ -40,9 +40,7 @@ def dataset_kwargs():
     Current kwargs:
     - SQLiteDataset -> db_config()
     """
-    yield {
-        "database_config": db_config()
-    }
+    yield {"database_config": db_config()}
 
 
 def db_config():
@@ -142,12 +140,8 @@ def run_regression_tests(request):
 
 def mock_get_dataset(dataset_name):
     dataframe_map = {
-        "ae.xpt": PandasDataset.from_dict(
-            {"AESTDY": [1, 2, 40, 59], "USUBJID": [1, 2, 3, 45]}
-        ),
-        "ec.xpt": PandasDataset.from_dict(
-            {"ECCOOLVAR": [3, 4, 5000, 35], "USUBJID": [1, 2, 3, 45]}
-        ),
+        "ae.xpt": PandasDataset.from_dict({"AESTDY": [1, 2, 40, 59], "USUBJID": [1, 2, 3, 45]}),
+        "ec.xpt": PandasDataset.from_dict({"ECCOOLVAR": [3, 4, 5000, 35], "USUBJID": [1, 2, 3, 45]}),
     }
     return dataframe_map.get(dataset_name.split("/")[-1])
 
@@ -244,9 +238,7 @@ def dataset_rule_multiple_conditions() -> dict:
             {
                 "name": "generate_dataset_error_objects",
                 "params": {
-                    "message": (
-                        "Length of ECCOOLVAR is not equal to 5 " "or ECCOOLVAR == cool."
-                    ),
+                    "message": ("Length of ECCOOLVAR is not equal to 5 " "or ECCOOLVAR == cool."),
                 },
             }
         ],
@@ -919,10 +911,7 @@ def define_xml_variable_validation_rule() -> dict:
             {
                 "name": "generate_dataset_error_objects",
                 "params": {
-                    "message": (
-                        "Variable metadata variable_size "
-                        "does not match define variable size"
-                    ),
+                    "message": ("Variable metadata variable_size " "does not match define variable size"),
                 },
             }
         ],
@@ -956,8 +945,7 @@ def define_xml_value_level_metadata_validation_rule() -> dict:
                 "name": "generate_dataset_error_objects",
                 "params": {
                     "message": (
-                        "Variable data does not match length "
-                        "specified by value level metadata in define.xml"
+                        "Variable data does not match length " "specified by value level metadata in define.xml"
                     ),
                 },
             }
@@ -1076,9 +1064,7 @@ def dataset_rule_inconsistent_enumerated_columns() -> dict:
         "actions": [
             {
                 "name": "generate_dataset_error_objects",
-                "params": {
-                    "message": "Inconsistencies found in enumerated TSVAL columns."
-                },
+                "params": {"message": "Inconsistencies found in enumerated TSVAL columns."},
             }
         ],
     }

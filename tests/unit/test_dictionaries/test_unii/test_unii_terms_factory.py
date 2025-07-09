@@ -10,12 +10,8 @@ dictionary_path = f"{os.path.dirname(__file__)}/../../../resources/dictionaries/
 
 
 def test_install():
-    storage_service = LocalDataService.get_instance(
-        cache_service=MagicMock(), config=MagicMock()
-    )
-    factory = AbstractTermsFactory(storage_service).get_service(
-        DictionaryTypes.UNII.value
-    )
+    storage_service = LocalDataService.get_instance(cache_service=MagicMock(), config=MagicMock())
+    factory = AbstractTermsFactory(storage_service).get_service(DictionaryTypes.UNII.value)
     dictionary = factory.install_terms(dictionary_path)
     assert dictionary.version == "27Sep2024"
     assert len(dictionary.items()) == 9

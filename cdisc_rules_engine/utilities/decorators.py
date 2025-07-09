@@ -21,8 +21,7 @@ def retry_request(retries: int, status_code_ranges: List[int] = None):
             for retry in range(retries):
                 response: Response = func(*args, **kwargs)
                 request_should_be_retried: bool = any(
-                    response.status_code >= code_range
-                    for code_range in status_code_ranges
+                    response.status_code >= code_range for code_range in status_code_ranges
                 )
                 # no need for else.
                 # If should be retied -> loop will go to the next iteration
@@ -47,9 +46,7 @@ def cached(cache_key: str):  # noqa: C901
     Note: It is expected that the instance has a cache_service property.
     """
 
-    def format_cache_key(
-        key: str, args=[], study_id=None, data_bundle_id=None, domain_name=None
-    ):
+    def format_cache_key(key: str, args=[], study_id=None, data_bundle_id=None, domain_name=None):
         """
         If a study_id and data_bundle_id are available,
         cache_key = {study_id}/{data_bundle_id}/key
@@ -71,24 +68,11 @@ def cached(cache_key: str):  # noqa: C901
         def inner(*args, **kwargs):
             instance = args[0]
             data_bundle_id = (
-                instance.data_bundle_id
-                if hasattr(instance, "data_bundle_id")
-                else kwargs.get("data_bundle_id")
+                instance.data_bundle_id if hasattr(instance, "data_bundle_id") else kwargs.get("data_bundle_id")
             )
-            study_id = (
-                instance.study_id
-                if hasattr(instance, "study_id")
-                else kwargs.get("study_id")
-            )
-            domain_name = (
-                instance.domain
-                if hasattr(instance, "domain")
-                else kwargs.get("domain_name")
-            )
-            if (
-                hasattr(instance, "cache_service")
-                and instance.cache_service is not None
-            ):
+            study_id = instance.study_id if hasattr(instance, "study_id") else kwargs.get("study_id")
+            domain_name = instance.domain if hasattr(instance, "domain") else kwargs.get("domain_name")
+            if hasattr(instance, "cache_service") and instance.cache_service is not None:
                 key = format_cache_key(
                     cache_key,
                     args,

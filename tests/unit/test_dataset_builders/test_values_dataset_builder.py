@@ -25,10 +25,6 @@ from cdisc_rules_engine.dataset_builders.values_dataset_builder import (
         ("intervalDatetime", "2023-06/2023-07", None),
     ],
 )
-def test_calculate_variable_value_length(
-    variable_value, variable_data_type: str, expected_value: int
-):
-    result = ValuesDatasetBuilder.calculate_variable_value_length(
-        variable_value, variable_data_type
-    )
+def test_calculate_variable_value_length(variable_value, variable_data_type: str, expected_value: int):
+    result = ValuesDatasetBuilder.calculate_variable_value_length(variable_value, variable_data_type)
     assert result == expected_value

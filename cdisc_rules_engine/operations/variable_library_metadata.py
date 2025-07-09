@@ -10,7 +10,6 @@ class VariableLibraryMetadata(BaseOperation):
         variable_details: dict = self.library_metadata.variables_metadata
         dataset_variable_details = variable_details.get(self.params.domain, {})
         variable_metadata = {
-            key: dataset_variable_details[key].get(self.params.target)
-            for key in dataset_variable_details.keys()
+            key: dataset_variable_details[key].get(self.params.target) for key in dataset_variable_details.keys()
         }
         return variable_metadata
