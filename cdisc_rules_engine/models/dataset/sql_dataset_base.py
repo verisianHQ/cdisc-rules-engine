@@ -145,7 +145,7 @@ class SQLDatasetBase(DatasetInterface, ABC):
         pass
 
     @abstractmethod
-    def merge(self, other: type["SQLDatasetBase"], on=None, how="inner", **kwargs):
+    def merge(self, other: "SQLDatasetBase", on=None, how="inner", **kwargs):
         """Merge datasets using sql join."""
         pass
 

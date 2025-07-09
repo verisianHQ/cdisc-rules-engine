@@ -58,7 +58,7 @@ class DatasetPreprocessor:
 
         rule_targets = self._rule_processor.extract_referenced_variables_from_rule(rule)
         # Get all targets that reference the merge domain.
-        result: DatasetInterface = self._dataset.copy()
+        result = self._dataset.copy()
         for domain_details in rule_datasets:
             domain_name: str = domain_details.get("domain_name")
             if self._is_split_domain(domain_name):
@@ -181,4 +181,6 @@ class DatasetPreprocessor:
                     right_dataset_domain_details.get("join_type", "inner")
                 ),
             )
+        
+        print(f"result dataset in merge_sdtm_datasets: {type(result)}")
         return result

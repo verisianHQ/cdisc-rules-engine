@@ -553,6 +553,9 @@ class DataProcessor:
         right_dataset_domain_name: str,
         join_type: JoinTypes,
     ) -> DatasetInterface:
+        print('left_dataset type:', type(left_dataset))
+        print('right_dataset type:', type(right_dataset))
+        # TODO: FUTURE: Abstract into DatasetInterface
         result = left_dataset.merge(
             right_dataset.data,
             how=join_type.value,
