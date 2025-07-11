@@ -1,9 +1,10 @@
+from collections.abc import Iterable
 import json
 import numpy as np
 import uuid
 
 from math import isnan
-from typing import List, Dict, Any, Union, Optional, Tuple
+from typing import Callable, List, Dict, Any, Union, Optional, Tuple
 
 import pandas as pd
 
@@ -63,6 +64,30 @@ class SQLiteDataset(SQLDatasetBase):
             row = cursor.fetchone()
             return dict(row) if row else None
         return None
+
+    def get_column_values(self, column: str) -> list[Any]:
+        """Get all values for a specific column."""
+        if column == "data":
+            cursor = self.execute_sql(
+                """
+                SELECT json_extract(data, ?) as value
+                FROM dataset_records
+                WHERE dataset_id = ?
+                ORDER BY row_num
+                """,
+                (f"$.{column}", self.dataset_id),
+            )
+        else:
+            print(f"{self.dataset_id}")
+            cursor = self.execute_sql(
+                f"""
+                SELECT {column} as value
+                FROM dataset_records
+                WHERE dataset_id = '{self.dataset_id}'
+                ORDER BY row_num
+                """,
+            )
+        return [row["value"] for row in self.fetch_all(cursor)]
 
     def __getitem__(self, item: Union[str, List[str]]):
         """Get column(s) from dataset."""
@@ -162,12 +187,14 @@ class SQLiteDataset(SQLDatasetBase):
 
     def _set_column_value_all(self, column: str, value: Any):
         """Set all rows in a column to the same value."""
+        if isinstance(value, set):
+            value = list(value)  # SQLite does not support set type
         self.execute_sql(
             """
             UPDATE dataset_records
             SET data = json_set(data, ?, json(?))
             WHERE dataset_id = ?
-        """,
+            """,
             (f"$.{column}", json.dumps(value), self.dataset_id),
         )
 
@@ -1520,6 +1547,7 @@ class SQLiteDataset(SQLDatasetBase):
         result = []
         for _, row_data in self.iterrows():
             result.append([row_data.get(col) for col in self.columns])
+        print("Values:", result)
         return result
 
     @property
@@ -1862,6 +1890,7 @@ class SQLiteDataset(SQLDatasetBase):
     def assign(self, **kwargs):
         """Assign new columns to dataset."""
         new_dataset_id = str(uuid.uuid4())
+        print("kwargs:", kwargs)
 
         # First copy existing data
         self.execute_sql(
@@ -1883,6 +1912,8 @@ class SQLiteDataset(SQLDatasetBase):
                 for _, row_data in self.iterrows():
                     values_list.append(col_values(row_data))
             elif hasattr(col_values, "__iter__") and not isinstance(col_values, str):
+                print("col_values:", col_values)
+                print("list col_values:", list(col_values))
                 values_list = list(col_values)
             else:
                 # Single value for all rows
@@ -1906,6 +1937,57 @@ class SQLiteDataset(SQLDatasetBase):
             dataset_id=new_dataset_id,
             database_config=self.database_config,
             columns=new_columns,
+        )
+
+    def add_column(self, column_name: str, column_type: str, values: Union[Callable, Iterable, Any]) -> "SQLiteDataset":
+        """Add a new column to the dataset."""
+        if column_name in self.columns:
+            raise ValueError(f"Column '{column_name}' already exists in the dataset.")
+
+        # copy over existing data
+        new_dataset_id = str(uuid.uuid4())
+        self.execute_sql(
+            """
+            INSERT INTO dataset_records (dataset_id, row_num, data)
+            SELECT ?, row_num, data
+            FROM dataset_records
+            WHERE dataset_id = ?
+        """,
+            (new_dataset_id, self.dataset_id),
+        )
+
+        # add new column
+        self.execute_sql(
+            f"""
+            ALTER TABLE dataset_records
+            ADD COLUMN {column_name} {column_type}
+            """,
+        )
+
+        # Add new column values
+        if callable(values):
+            values_list = [values(row_data) for _, row_data in self.iterrows()]
+        elif hasattr(values, "__iter__") and not isinstance(values, str):
+            values_list = list(values)
+        else:
+            values_list = [values] * len(self)
+
+        print("values_list:", values_list)
+        for idx, value in enumerate(values_list):
+            print(json.dumps(value))
+            self.execute_sql(
+                f"""
+                UPDATE dataset_records
+                SET {column_name} = ?
+                WHERE dataset_id = ? AND row_num = ?
+                """,
+                (json.dumps(value), new_dataset_id, idx),
+            )
+
+        return SQLiteDataset(
+            dataset_id=new_dataset_id,
+            database_config=self.database_config,
+            columns=self.columns + [column_name],
         )
 
     def _comparison_op(self, other, op):  # noqa: C901
@@ -2273,3 +2355,22 @@ class SQLiteDataset(SQLDatasetBase):
             database_config=self.database_config,
             columns=self.columns,
         )
+
+    # TODO: FUTURE: this makes no sense in SQLite, but is needed for base_operation.py::_handle_operation_result
+    # need to delete in future when above is abstracted
+    def is_series(cls, data) -> bool:
+        """
+        Return true if the data is a series compatible with the underlying dataset
+        """
+        return isinstance(data, pd.Series)
+
+    # TODO: FUTURE: this makes no sense in SQLite, it returns a series object, the equivalent of a column
+    def get_series_from_value(self, value) -> list:
+        """
+        Create a series of a single value
+        """
+        if isinstance(value, set):
+            # If value is a set, convert to list
+            value = list(value)
+            print("Value is a set, converted to list:", value)
+        return [value] * self._length

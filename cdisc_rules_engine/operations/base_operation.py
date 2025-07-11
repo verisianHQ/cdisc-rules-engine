@@ -1,3 +1,4 @@
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.models.operation_params import OperationParams
 from cdisc_rules_engine.constants.permissibility import (
     REQUIRED,
@@ -112,21 +113,39 @@ class BaseOperation:
             raise
 
     def _handle_operation_result(self, result) -> DatasetInterface:
+        print("in _handle_operation_result", type(result))
+        print("result is", result)
         if self.evaluation_dataset.is_series(result):
+            print("is a series")
             self.evaluation_dataset[self.params.operation_id] = result
             return self.evaluation_dataset
         elif self.params.grouping:
+            print("grouing is set, result is grouped")
             return self._handle_grouped_result(result)
         elif isinstance(result, DatasetInterface):
             # Assume that the operation id has been applied and
             # result matches the length of the evaluation dataset.
+            print("result is a DatasetInterface")
             return self.evaluation_dataset.concat(result, axis=1)
         elif isinstance(result, dict):
+            print("result is dictionary")
             return self._handle_dictionary_result(result)
         else:
             # Handle single results
-
-            self.evaluation_dataset[self.params.operation_id] = self.evaluation_dataset.get_series_from_value(result)
+            print("result is a single value or unsupported type")
+            # TODO: ffs, this just adds a column in the DF -> god this is so bad
+            if isinstance(self.evaluation_dataset, SQLiteDataset):
+                self.evaluation_dataset = self.evaluation_dataset.add_column(
+                    column_name=self.params.operation_id,
+                    column_type="TEXT",
+                    values=self.evaluation_dataset.get_series_from_value(result),
+                )
+                print("AWESOME:", self.evaluation_dataset.columns)
+                print("AWESOME:", self.evaluation_dataset.data)
+            else:
+                self.evaluation_dataset[self.params.operation_id] = self.evaluation_dataset.get_series_from_value(
+                    result
+                )
             return self.evaluation_dataset
 
     def _handle_grouped_result(self, result):

@@ -26,7 +26,7 @@ class DatasetInterface(ABC):
 
     @classmethod
     @abstractmethod
-    def from_dict(self, data: dict, **kwargs):
+    def from_dict(self, data: dict, **kwargs) -> "DatasetInterface":
         """
         Create the underlying dataset from provided dictionary data
         """
@@ -122,6 +122,13 @@ class DatasetInterface(ABC):
     def get_series_from_value(self, value):
         """
         Create a series of a single value
+        """
+
+    @abstractmethod
+    def get_column_values(self, column: str) -> List:
+        """
+        Return the values of a column as a list.
+        If the column does not exist, return an empty list.
         """
 
     @abstractmethod

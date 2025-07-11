@@ -1,9 +1,9 @@
 from unittest.mock import MagicMock
 from cdisc_rules_engine.config.config import ConfigService
 from cdisc_rules_engine.config.databases.sqlite_database_config import SQLiteDatabaseConfig
-from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.dataset.sqlite_dataset import SQLiteDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
@@ -32,12 +32,12 @@ from cdisc_rules_engine.services.cache.cache_service_factory import CacheService
         ),
     ],
 )
-@pytest.mark.parametrize("dataset_implementation", [PandasDataset, DaskDataset])
+@pytest.mark.parametrize("dataset_implementation", [PandasDataset, SQLiteDataset])
 def test_get_variable_names_for_given_standard(
-    target: set,
+    target: list[str],
     standard: str,
     standard_version: str,
-    expected_result: set,
+    expected_result: list[str],
     dataset_implementation: DatasetInterface,
     dataset_kwargs: dict[str, SQLiteDatabaseConfig],
     mock_data_service: MagicMock,
@@ -72,13 +72,18 @@ def test_get_variable_names_for_given_standard(
     operation_params.dataset_path = dataset_path
     operation_params.standard = standard
     operation_params.standard_version = standard_version
+    print("\ndatasettype:", datasets_map["AE"])
     result = VariableNames(
-        operation_params,
-        datasets_map["AE"],
-        cache,
+        params=operation_params,
+        original_dataset=datasets_map["AE"],
+        cache_service=cache,
         data_service=mock_data_service,
         library_metadata=library_metadata,
     ).execute()
+    print("\nres:", result)
+    print("\nresdata:", result.data)
+    print("\nres_op:", result.get_column_values(operation_params.operation_id))
     assert operation_params.operation_id in result
     for val in result[operation_params.operation_id]:
+        print(type(val), val)
         assert val == expected_result

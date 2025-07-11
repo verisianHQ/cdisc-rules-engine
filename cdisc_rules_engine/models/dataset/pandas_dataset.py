@@ -74,6 +74,9 @@ class PandasDataset(DatasetInterface):
     def __getitem__(self, item: Union[str, List[str]]) -> Union[pd.Series, pd.DataFrame]:
         return self._data[item]
 
+    def get_column_values(self, column: str) -> List:
+        return self._data[column].tolist() if column in self._data else []
+
     def __setitem__(self, key, value: pd.Series):
         self._data[key] = value
 
@@ -170,10 +173,10 @@ class PandasDataset(DatasetInterface):
             return result
         return pd.Series(result)
 
-    def get_series_from_value(self, result):
-        if hasattr(result, "__iter__"):
-            return pd.Series([result] * len(self._data), index=self._data.index)
-        return pd.Series(result, index=self._data.index)
+    def get_series_from_value(self, value):
+        if hasattr(value, "__iter__"):
+            return pd.Series([value] * len(self._data), index=self._data.index)
+        return pd.Series(value, index=self._data.index)
 
     def _remove_invalid_kwargs(self, invalid_args, kwargs) -> dict:
         for arg in invalid_args:

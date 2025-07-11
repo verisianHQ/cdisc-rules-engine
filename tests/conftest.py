@@ -11,6 +11,7 @@ from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
 
 from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
+from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dictionaries.whodrug import WhoDrugTermsFactory
 from cdisc_rules_engine.models.dictionaries.meddra import MedDRATermsFactory
 from cdisc_rules_engine.models.operation_params import OperationParams
@@ -1319,7 +1320,7 @@ def operation_params() -> OperationParams:
         core_id="test_id",
         operation_id="operation_id",
         operation_name="operation_name",
-        dataframe=PandasDataset.from_dict({}),
+        dataframe=DatasetInterface.from_dict({}),
         target="target",
         domain="domain",
         dataset_path="dataset_path",
