@@ -4,6 +4,7 @@ from cdisc_rules_engine.operations.base_operation import BaseOperation
 from cdisc_rules_engine.exceptions.custom_exceptions import MissingDataError
 
 
+# VERISIAN: SQL REFACTOR COMPLETE
 class CodelistExtensible(BaseOperation):
     def _execute_operation(self) -> pd.Series:
         """
@@ -22,9 +23,7 @@ class CodelistExtensible(BaseOperation):
     def _handle_multiple_versions(self) -> pd.Series:
         ct_versions = self.evaluation_dataset[self.params.ct_version]
         unique_ct_versions = ct_versions.unique()
-        ct_data = self.library_metadata.build_ct_lists(
-            self.params.ct_package_type, unique_ct_versions
-        )
+        ct_data = self.library_metadata.build_ct_lists(self.params.ct_package_type, unique_ct_versions)
         ct_df = self.evaluation_dataset.__class__.from_dict(ct_data)
         if self.params.codelist_code in self.evaluation_dataset.columns:
             is_extensible = self.evaluation_dataset.merge(
@@ -49,9 +48,7 @@ class CodelistExtensible(BaseOperation):
         if "define_XML_merged_CT" in ct_packages:
             ct_package_data = ct_packages["define_XML_merged_CT"]
         else:
-            ct_package_data = next(
-                (pkg for name, pkg in ct_packages.items() if name != "extensible")
-            )
+            ct_package_data = next((pkg for name, pkg in ct_packages.items() if name != "extensible"))
         code_obj = ct_package_data["submission_lookup"].get(codelist, None)
         if code_obj is None:
             raise MissingDataError(f"Codelist '{codelist}' not found in metadata")
