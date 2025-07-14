@@ -6,6 +6,8 @@ from cdisc_rules_engine.models.dataset import PandasDataset
 import pytest
 import sys
 from cdisc_rules_engine.config.config import ConfigService
+from cdisc_rules_engine.config.databases import SQLiteDatabaseConfig
+
 
 from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
@@ -25,6 +27,23 @@ from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 
 meddra_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/meddra"
 whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug"
+
+
+@pytest.fixture(scope="function")
+def dataset_kwargs():
+    """
+    Fixture for all dataset instantiating kwargs needed by all dataset implementations.
+    Current kwargs:
+    - SQLiteDataset -> db_config()
+    """
+    yield {"database_config": db_config()}
+
+
+def db_config():
+    """Create a fresh database config for each test function."""
+    config = SQLiteDatabaseConfig()
+    config.initialise(in_memory=True)
+    return config
 
 
 def pytest_collection_modifyitems(config, items):
@@ -78,6 +97,11 @@ def get_matches_regex_pattern_rule(pattern: str) -> dict:
             }
         ],
     }
+
+
+# =====================================================
+# OTHER FUNCTIONS
+# =====================================================
 
 
 @pytest.fixture
