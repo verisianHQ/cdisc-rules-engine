@@ -49,15 +49,13 @@ class SQLiteDataset(SQLDatasetBase):
     def fetch_all(self) -> List[Optional[dict]]:
         """Fetch all data from cursor."""
         with self.database_config.get_connection() as conn:
-            cursor = conn.cursor()
-            return [dict(row) for row in cursor.fetchall()]
+            return [dict(row) for row in conn.cursor().fetchall()]
         return []
 
     def fetch_one(self) -> Optional[dict]:
         """Fetch one row from cursor."""
         with self.database_config.get_connection() as conn:
-            cursor = conn.cursor()
-            row = cursor.fetchone()
+            row = conn.cursor().fetchone()
             return dict(row) if row else None
         return None
 

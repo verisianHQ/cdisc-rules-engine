@@ -99,11 +99,6 @@ def get_matches_regex_pattern_rule(pattern: str) -> dict:
     }
 
 
-# =====================================================
-# OTHER FUNCTIONS
-# =====================================================
-
-
 @pytest.fixture
 def mock_data_service():
     yield MagicMock()
