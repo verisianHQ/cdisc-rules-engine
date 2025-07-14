@@ -1,20 +1,16 @@
 from cdisc_rules_engine.operations.base_operation import BaseOperation
-from cdisc_rules_engine.utilities.utils import (
-    search_in_list_of_dicts,
-)
 
 
+# VERISIAN: SQL REFACTOR COMPLETE
 class DomainLabel(BaseOperation):
     def _execute_operation(self):
         """
-        Return the domain label for the currently executing domain
+        Return domain label from standard metadata for self.params.domain (currently executing domain).
         """
-        standard_data = self.library_metadata.standard_metadata
-        domain_details = None
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(
-                c.get("datasets", []), lambda item: item["name"] == self.params.domain
-            )
-            if domain_details:
-                return domain_details.get("label", "")
-        return ""
+        name_to_label = {
+            dataset["name"]: dataset["label"]
+            for class_ in self.library_metadata.standard_metadata.get("classes", [])
+            for dataset in class_.get("datasets", [])
+            if dataset.get("label")
+        }
+        return name_to_label.get(self.params.domain, "")
