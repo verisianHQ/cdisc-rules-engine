@@ -24,6 +24,10 @@ class SQLDatasetBase(DatasetInterface, ABC):
         self._columns = columns or []
         self._table_name = table_name or f"dataset_{self.dataset_id.replace('-', '_')}"
         self._length = length
+
+        if not database_config:
+            raise ValueError("database_config is required")
+
         self.database_config = database_config
         self._create_dataset_entry()
 

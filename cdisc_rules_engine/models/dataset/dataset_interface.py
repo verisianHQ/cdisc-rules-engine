@@ -1,3 +1,5 @@
+import pandas as pd
+
 from abc import ABC, abstractmethod
 from typing import Union, List, Optional
 
@@ -5,7 +7,7 @@ from typing import Union, List, Optional
 class DatasetInterface(ABC):
     @property
     @abstractmethod
-    def data(self) -> List[Optional[dict]]:
+    def data(self) -> pd.DataFrame | List[Optional[dict]]:
         """
         Stores the underlying data for the dataset
         """

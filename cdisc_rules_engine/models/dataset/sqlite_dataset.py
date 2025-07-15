@@ -89,7 +89,6 @@ class SQLiteDataset(SQLDatasetBase):
 
         column_defs_str = ", ".join(column_definitions)
 
-        # Create table and insert in one go
         self.execute_sql("DROP TABLE IF EXISTS dataset_records")
         self.execute_sql(f"CREATE TABLE dataset_records ({column_defs_str})")
 
