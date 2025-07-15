@@ -33,7 +33,7 @@ class SQLiteDataset(SQLDatasetBase):
         # create dataset entry in metadata table
         self._create_dataset_entry()
 
-    # ========== SQLite-specific methods ==========
+    # ========== SQLite cursor methods ==========
 
     def execute_sql(self, sql_code: str, args: tuple = ()):
         """Execute sql code on cursor."""
@@ -59,15 +59,7 @@ class SQLiteDataset(SQLDatasetBase):
             return dict(row) if row else None
         return None
 
-    def _create_dataset_entry(self):
-        """Register dataset in metadata table."""
-        self.execute_sql(
-            """
-                INSERT OR IGNORE INTO datasets (dataset_id, table_name)
-                VALUES (?, ?)
-            """,
-            (self.dataset_id, self._table_name),
-        )
+    # ========== SQLite helper methods ==========
 
     def _insert_records(self, records: List[dict]):
         """Bulk insert records into dataset."""
@@ -87,11 +79,95 @@ class SQLiteDataset(SQLDatasetBase):
         placeholders = ", ".join(["?" for _ in all_columns])
         columns_str = ", ".join(all_columns)
 
+        column_definitions = ["dataset_id TEXT", "row_num INTEGER"]
+        for col in data_columns:
+            sample_value = records[0].get(col)
+            if isinstance(sample_value, int):
+                column_definitions.append(f"{col} INTEGER")
+            else:
+                column_definitions.append(f"{col} TEXT")
+
+        column_defs_str = ", ".join(column_definitions)
+
+        # Create table and insert in one go
+        self.execute_sql("DROP TABLE IF EXISTS dataset_records")
+        self.execute_sql(f"CREATE TABLE dataset_records ({column_defs_str})")
+
         self.execute_many(
-            f"""
-            INSERT INTO dataset_records ({columns_str})
-            VALUES ({placeholders})
-            """,
+            f"INSERT INTO dataset_records ({columns_str}) VALUES ({placeholders})",
             values,
         )
         self._length = len(records)
+
+    def _create_dataset_entry(self):
+        """Register dataset in metadata table."""
+        self.execute_sql(
+            """
+                INSERT OR IGNORE INTO datasets (dataset_id, table_name)
+                VALUES (?, ?)
+            """,
+            (self.dataset_id, self._table_name),
+        )
+
+    # ========== SQLiteDataset methods ==========
+
+    @classmethod
+    def from_dict(cls, data: dict, database_config=None, **kwargs) -> "SQLDatasetBase":
+        """Create dataset from dictionary."""
+        if not database_config:
+            raise ValueError("database_config is required")
+
+        dataset = cls(database_config=database_config)
+
+        if not hasattr(dataset, "dataset_id"):
+            raise RuntimeError(
+                f"Failed to create valid dataset instance of class {cls}"
+            )
+
+        records = []
+        columns_list = []
+
+        for col, values in data.items():
+            if col not in columns_list:
+                columns_list.append(col)
+
+            if not isinstance(values, list):
+                values = [values]
+
+            for idx, val in enumerate(values):
+                if idx >= len(records):
+                    records.append({})
+                records[idx][col] = val
+
+        if records:
+            dataset._insert_records(records)
+
+        if not isinstance(dataset, cls):
+            raise RuntimeError(
+                f"Dataset is not an instance of {cls}, got {type(dataset)}"
+            )
+
+        return dataset
+
+    @classmethod
+    def from_records(
+        cls, data: List[dict], database_config=None, **kwargs
+    ) -> "SQLDatasetBase":
+        """Create dataset from list of records."""
+        if not database_config:
+            raise ValueError("database_config is required")
+
+        provided_columns = kwargs.pop("columns", None)
+
+        dataset = cls(
+            database_config=database_config, columns=provided_columns, **kwargs
+        )
+
+        if data:
+            dataset._insert_records(data)
+            if not provided_columns:
+                dataset._columns = list(data[0].keys()) if data else []
+            if dataset._columns:
+                dataset._register_columns(dataset._columns)
+
+        return dataset

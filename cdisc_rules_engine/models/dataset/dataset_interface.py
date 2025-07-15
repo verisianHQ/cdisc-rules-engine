@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import Union, List
+from typing import Union, List, Optional
 
 
 class DatasetInterface(ABC):
     @property
     @abstractmethod
-    def data(self):
+    def data(self) -> List[Optional[dict]]:
         """
         Stores the underlying data for the dataset
         """
