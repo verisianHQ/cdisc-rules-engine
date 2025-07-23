@@ -1,6 +1,8 @@
 import pytest
 import pickle
 
+from cdisc_rules_engine.models.TestDataset import TestDataset, TestVariableMetadata
+
 
 @pytest.fixture
 def get_core_rule(pytestconfig) -> dict:
@@ -42,26 +44,26 @@ def get_sample_lb_rule() -> dict:
 
 
 @pytest.fixture
-def get_sample_lb_dataset() -> dict:
-    return {
-        "filename": "lb.xpt",
-        "label": "Laboratory Test Results",
-        "variables": [
-            {
-                "name": "DOMAIN",
-                "label": "Domain Abbreviation",
-                "type": "Char",
-                "length": 4,
-            },
-            {
-                "name": "LBSEQ",
-                "label": "Sequence Number",
-                "type": "Num",
-                "length": 8,
-            },
+def get_sample_lb_dataset() -> TestDataset:
+    return TestDataset(
+        filename="lb.xpt",
+        label="Laboratory Test Results",
+        variables=[
+            TestVariableMetadata(
+                name="DOMAIN",
+                label="Domain Abbreviation",
+                type="Char",
+                length=4,
+            ),
+            TestVariableMetadata(
+                name="LBSEQ",
+                label="Sequence Number",
+                type="Num",
+                length=8,
+            ),
         ],
-        "records": {
+        records={
             "DOMAIN": ["LB", "LB"],
             "LBSEQ": [1, 2],
         },
-    }
+    )

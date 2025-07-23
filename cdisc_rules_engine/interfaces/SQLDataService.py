@@ -1,15 +1,16 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from cdisc_rules_engine.models.TestDataset import TestDataset
+
 
 class SQLDataService(ABC):
 
-    @abstractmethod
     def __init__(
         self,
-        datasets_path: Path,
-        define_xml_path: Path,
-        terminology_paths: dict,
+        datasets_path: Path = None,
+        define_xml_path: Path = None,
+        terminology_paths: dict = None,
     ):
         """
         Initialize the data service.
@@ -32,7 +33,15 @@ class SQLDataService(ABC):
         self._create_codelist_tables()
 
     @abstractmethod
-    def from_list_of_dict(
+    def from_list_of_testdatasets(cls, test_datasets: list[TestDataset]) -> None:
+        """
+        Constructor for tests, passing in TestDataset
+        and create corresponding SQL tables, setting path to "memory"
+        """
+        pass
+
+    @abstractmethod
+    def from_list_of_dicts(
         cls, data_dicts: dict[str, list[dict]], define_xml_path: Path, terminology_paths: dict
     ) -> None:
         """

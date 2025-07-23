@@ -9,6 +9,9 @@ from cdisc_rules_engine.config import config
 from cdisc_rules_engine.config.config import ConfigService
 from cdisc_rules_engine.dummy_models.dummy_dataset import DummyDataset
 from cdisc_rules_engine.enums.progress_parameter_options import ProgressParameterOptions
+
+# from cdisc_rules_engine.interfaces.PostgresQLDataService import PostgresQLDataService
+from cdisc_rules_engine.models.TestDataset import TestDataset
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
@@ -184,7 +187,7 @@ def sql_run_validation(args: Validation_args):
 # TODO: fix this one first
 # this is the tests entrypoint, CLI enters above where only the args are passed in
 def sql_run_single_rule_validation(
-    datasets,
+    datasets: list[TestDataset],
     rule,
     define_xml: str = None,
     cache: InMemoryCacheService = None,
@@ -193,6 +196,9 @@ def sql_run_single_rule_validation(
     standard_substandard: str = None,
     codelists=[],
 ) -> dict:
+
+    # sql_data_service = PostgresQLDataService.from_list_of_testdatasets(datasets)
+
     # BS, this gets the DataService pushed from tests and ultimately the main command, containing all the standards
     datasets = [DummyDataset(dataset_data) for dataset_data in datasets]
 
