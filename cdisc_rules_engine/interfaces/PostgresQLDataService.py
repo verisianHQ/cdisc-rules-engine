@@ -21,7 +21,13 @@ class PostgresQLDataService(SQLDataService):
         self.metadata_dfs = metadata_dfs
 
     @classmethod
-    def from_list_of_testdatasets(cls, test_datasets: list[TestDataset]) -> None:
+    def from_list_of_testdatasets(
+        cls,
+        test_datasets: list[TestDataset],
+        datasets_path: Path = None,
+        define_xml_path: Path = None,
+        terminology_paths: dict = None,
+    ) -> None:
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables, setting path to "memory"
@@ -49,32 +55,7 @@ class PostgresQLDataService(SQLDataService):
                 mdf = pd.concat([mdf, new_row], ignore_index=True)
             metadata_dfs.append(mdf)
 
-        print(content_dfs)
-        print(metadata_dfs)
-
-        return cls(None, None, None, content_dfs, metadata_dfs)
-
-    @classmethod
-    def from_list_of_dicts(
-        cls, data_dicts: dict[str, list[dict]], define_xml_path: Path, terminology_paths: dict
-    ) -> None:
-        """
-        Constructor for tests, passing in dict
-        (key = dataset name, value = list of row dicts)
-        and create corresponding SQL tables, setting path to "memory"
-        """
-        pass
-
-    @classmethod
-    def from_list_of_records(
-        cls, records: dict[str, dict[str, list[any]]], define_xml_path: Path, terminology_paths: dict
-    ) -> None:
-        """
-        Constructor for tests, passing in dict
-        (key = dataset name, value = dict (key = column name, value = list of values))
-        and create corresponding SQL tables, setting path to "memory"
-        """
-        pass
+        return cls(datasets_path, define_xml_path, terminology_paths, content_dfs, metadata_dfs)
 
     def _create_sql_tables_from_dataset_paths(self) -> None:
         """

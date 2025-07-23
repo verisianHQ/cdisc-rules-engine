@@ -35,30 +35,8 @@ class SQLDataService(ABC):
     @abstractmethod
     def from_list_of_testdatasets(cls, test_datasets: list[TestDataset]) -> None:
         """
-        Constructor for tests, passing in TestDataset
-        and create corresponding SQL tables, setting path to "memory"
-        """
-        pass
-
-    @abstractmethod
-    def from_list_of_dicts(
-        cls, data_dicts: dict[str, list[dict]], define_xml_path: Path, terminology_paths: dict
-    ) -> None:
-        """
-        Constructor for tests, passing in dict
-        (key = dataset name, value = list of row dicts)
-        and create corresponding SQL tables, setting path to "memory"
-        """
-        pass
-
-    @abstractmethod
-    def from_list_of_records(
-        cls, records: dict[str, dict[str, list[any]]], define_xml_path: Path, terminology_paths: dict
-    ) -> None:
-        """
-        Constructor for tests, passing in dict
-        (key = dataset name, value = dict (key = column name, value = list of values))
-        and create corresponding SQL tables, setting path to "memory"
+        Constructor for tests, passing in list of TestDataset
+        and create corresponding SQL tables (content and metadata)
         """
         pass
 
@@ -68,6 +46,11 @@ class SQLDataService(ABC):
         Iterate through dataset files in `self.datasets_path`
         and create corresponding SQL tables.
         """
+        # run XPTReader
+
+        # write contents table to database
+
+        # write dataset and variable metadata tables to database
         pass
 
     @abstractmethod
@@ -75,6 +58,35 @@ class SQLDataService(ABC):
         """
         Read the self.define_xml_path and create corresponding SQL tables.
         """
+        # run DefineXMLReader
+
+        # write table to database
+        pass
+
+    @abstractmethod
+    def _create_standards_tables(self) -> None:
+        """
+        Create all necessary SQL tables for IG standards.
+        """
+        # for each IG type (sdtm, adam) in standards:
+
+        #       query available data model and see which IG metadata tables already exist in the database
+
+        #       for every IG metadata version that is not in the database, run CodelistReader
+
+        #       write table to database
+        pass
+
+    @abstractmethod
+    def _create_codelist_tables(self) -> None:
+        """
+        Create all necessary SQL tables for CDISC codelists.
+        """
+        # query available data model and see which codelist tables already exist in the database
+
+        # for every codelist that is not in the database, run CodelistReader
+
+        # write table to database
         pass
 
     @abstractmethod
@@ -83,18 +95,11 @@ class SQLDataService(ABC):
         Iterate through self.terminology_paths dict
         and create corresponding SQL tables if paths exist.
         """
-        pass
+        # for each terminology in self.terminology_paths:
 
-    @abstractmethod
-    def _create_standards_tables(self) -> None:
-        """
-        Create all necessary SQL tables for IG standards.
-        """
-        pass
+        #       query available data model and see which terminology tables already exist in the database
 
-    @abstractmethod
-    def _create_codelist_tables(self) -> None:
-        """
-        Create all necessary SQL tables for CDISC codelists.
-        """
+        #       for every terminology that is not in the database, run TerminologyReader subclass for terminology
+
+        #       write table to database
         pass
