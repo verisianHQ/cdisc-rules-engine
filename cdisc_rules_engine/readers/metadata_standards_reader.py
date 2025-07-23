@@ -1,4 +1,3 @@
-# metadata_standards_reader.py
 import re
 from typing import List, Dict, Any, Tuple
 from cdisc_rules_engine.readers.base_reader import BaseReader
