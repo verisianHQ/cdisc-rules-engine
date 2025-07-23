@@ -36,9 +36,8 @@ from cdisc_rules_engine.services.data_services import DataServiceFactory
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
-from cdisc_rules_engine.utilities.dataset_preprocessor import DatasetPreprocessor
-from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
 from cdisc_rules_engine.utilities.sql_data_processor import SQLDataProcessor
+from cdisc_rules_engine.utilities.sql_dataset_preprocessor import SQLDatasetPreprocessor
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -240,7 +239,7 @@ class SQLRulesEngine:
                 dataset.columns.tolist(), define_metadata, library_metadata, rule
             )
             rule_copy = deepcopy(rule)
-            updated_conditions = RuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
+            updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
             rule_copy["conditions"].set_conditions(updated_conditions)
             # When duplicating conditions,
             # rule should be copied to prevent updates to concurrent rule executions
@@ -274,14 +273,14 @@ class SQLRulesEngine:
         # Add conditions to rule for all variables if variables: all appears
         # in condition
         rule_copy = deepcopy(rule)
-        updated_conditions = RuleProcessor.duplicate_conditions_for_all_targets(
+        updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
             rule["conditions"], dataset.columns.to_list()
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
         # Adding copy for now to avoid updating cached dataset
         dataset = deepcopy(dataset)
         # preprocess dataset
-        dataset_preprocessor = DatasetPreprocessor(dataset, dataset_metadata, self.data_service, self.cache)
+        dataset_preprocessor = SQLDatasetPreprocessor(dataset, dataset_metadata, self.data_service, self.cache)
         dataset = dataset_preprocessor.preprocess(rule_copy, datasets)
         dataset = self.rule_processor.perform_rule_operations(
             rule_copy,
