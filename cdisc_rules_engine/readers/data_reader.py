@@ -1,3 +1,4 @@
+# data_reader.py
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from cdisc_rules_engine.readers.base_reader import BaseReader
@@ -27,9 +28,10 @@ class DataReader(BaseReader):
 
     SUPPORTED_EXTENSIONS = [".xpt", ".sas7bdat"]
 
-    def __init__(self, file_path: str, variable_metadata_path: Optional[str] = None):
+    def __init__(self, file_path: str, variable_metadata_path: str):
         self.variable_metadata_path = variable_metadata_path
         self.variable_metadata = None
+        self.variable_type_mapping = {}  # Map variable names to types
         super().__init__(file_path)
 
         if self.variable_metadata_path:
@@ -75,8 +77,10 @@ class DataReader(BaseReader):
 
             if self.metadata.standard_type == "ADaM":
                 file_name = "ADAM_METADATA_MODIFIED.xlsx"
-            else:
+            elif self.metadata.standard_type == "SDTM":
                 file_name = "SDTM_METADATA_MODIFIED.xlsx"
+            else:
+                raise ValueError(f"Unsupported standard type: {self.metadata.standard_type}")
 
             if metadata_path.is_dir():
                 metadata_file = metadata_path / file_name
@@ -87,6 +91,11 @@ class DataReader(BaseReader):
                 df = pd.read_excel(metadata_file, sheet_name="VARIABLE_METADATA")
                 domain_df = df[df.iloc[:, 0] == self.metadata.domain]
                 self.variable_metadata = domain_df.iloc[:, 2].tolist()
+                for _, row in domain_df.iterrows():
+                    var_name = row.iloc[2]
+                    var_type = row.iloc[3]
+                    self.variable_type_mapping[var_name] = var_type
+
         except Exception as e:
             print(f"Warning: Could not load variable metadata: {e}")
 
@@ -127,15 +136,23 @@ class DataReader(BaseReader):
         variables = []
 
         for i, (name, _) in enumerate(first_record.items()):
-            var_info = {"name": name, "order": i + 1, "type": self._infer_type(data, name)}
+            var_info = {"name": name, "order": i + 1, "type": self._get_variable_type(name)}
 
             var_info["label"] = None
             variables.append(var_info)
 
         return variables
 
+    def _get_variable_type(self, variable_name: str) -> Optional[str]:
+        """Get variable type from metadata if available, otherwise infer from data."""
+        if variable_name in self.variable_type_mapping:
+            metadata_type = self.variable_type_mapping[variable_name]
+            if metadata_type:
+                return str(metadata_type).lower()
+        return None
+
     def _infer_type(self, data: List[Dict[str, Any]], column: str) -> str:
-        """Infer variable type from sample values."""
+        """Infer variable type from sample values (fallback when metadata not available)."""
         sample_size = min(10, len(data))
         values = [row.get(column) for row in data[:sample_size] if row.get(column) is not None]
 
@@ -165,3 +182,20 @@ class DataReader(BaseReader):
         }
 
         return validation
+
+    def get_variable_info(self) -> Dict[str, Dict[str, Any]]:
+        """Get detailed variable information including metadata."""
+        result = self.read()
+        variable_info = {}
+
+        for var in result["variables"]:
+            var_name = var["name"]
+            info = {
+                "order": var["order"],
+                "type": var["type"],
+                "label": var.get("label"),
+                "from_metadata": var_name in self.variable_type_mapping,
+            }
+            variable_info[var_name] = info
+
+        return variable_info
