@@ -2,7 +2,10 @@ from abc import ABC, abstractmethod
 from csv import DictReader
 import pandas as pd
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Union
+
+
+CHUNKSIZE = 10000
 
 
 class BaseReader(ABC):
@@ -24,7 +27,7 @@ class BaseReader(ABC):
             raise ValueError(f"Path is not a file: {self.file_path}")
 
     @abstractmethod
-    def _extract_metadata(self) -> Dict[str, Any]:
+    def _extract_metadata(self) -> Any:
         """
         Extract metadata from the file name or content.
         Must be implemented by subclasses.
@@ -32,7 +35,7 @@ class BaseReader(ABC):
         pass
 
     @abstractmethod
-    def read(self) -> List[Dict[str, Any]]:
+    def read(self) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
         """
         Read the file and return serialised data.
         Must be implemented by subclasses.
@@ -59,23 +62,3 @@ class BaseReader(ABC):
                     f"Unsupported file type: {self.file_path.suffix}. Supported types are: .csv, .tsv, .xlsx, .xls"
                 )
         return data
-
-    def _read_sas(self) -> List[Dict[str, Any]]:
-        """
-        Common SAS file reading functionality.
-        Used by subclasses to read xpt/sas7bdat files.
-        """
-        try:
-            if self.file_path.suffix == ".xpt":
-                df = pd.read_sas(self.file_path, format="xport", encoding="utf-8")
-            elif self.file_path.suffix == ".sas7bdat":
-                df = pd.read_sas(self.file_path, format="sas7bdat", encoding="utf-8")
-            else:
-                raise ValueError(
-                    f"Unsupported SAS file type: {self.file_path.suffix}. " f"Supported types are: .xpt, .sas7bdat"
-                )
-
-            data = df.where(df.notna(), None).to_dict(orient="records")
-            return data
-        except Exception as e:
-            raise ValueError(f"Error reading SAS file {self.file_path}: {str(e)}")

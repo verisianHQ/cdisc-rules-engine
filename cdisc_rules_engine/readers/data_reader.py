@@ -1,9 +1,11 @@
-# data_reader.py
-from pathlib import Path
-from typing import List, Dict, Any, Optional
-from cdisc_rules_engine.readers.base_reader import BaseReader
 from dataclasses import dataclass
+from typing import List, Dict, Any
+
 import pandas as pd
+from pandas.io.sas.sas7bdat import SAS7BDATReader
+from pandas.io.sas.sas_xport import XportReader
+
+from cdisc_rules_engine.readers.base_reader import BaseReader
 
 
 @dataclass
@@ -13,8 +15,6 @@ class ClinicalDataMetadata:
     domain: str
     standard_type: str
     file_format: str
-    study_id: Optional[str] = None
-    dataset_label: Optional[str] = None
 
 
 class DataReader(BaseReader):
@@ -23,179 +23,127 @@ class DataReader(BaseReader):
     Handles both ADaM and SDTM datasets.
     """
 
+    CHUNKSIZE = 10000
+
     ADAM_DOMAINS = ["adae", "adef", "adsl", "adtte"]
     SDTM_DOMAINS = ["ae", "dm", "ex", "lb", "suppdm", "ta", "td", "te", "ti", "ts", "tv", "xp"]
 
     SUPPORTED_EXTENSIONS = [".xpt", ".sas7bdat"]
 
-    def __init__(self, file_path: str, variable_metadata_path: str):
-        self.variable_metadata_path = variable_metadata_path
-        self.variable_metadata = None
-        self.variable_type_mapping = {}  # Map variable names to types
+    def __init__(self, file_path: str):
         super().__init__(file_path)
 
-        if self.variable_metadata_path:
-            self._load_variable_metadata()
+    def read_metadata(self) -> Dict[str, Any]:
+        """Read only the metadata."""
+        if self.file_path.suffix == ".xpt":
+            reader = XportReader(self.file_path, encoding="utf-8")
+        elif self.file_path.suffix == ".sas7bdat":
+            reader = SAS7BDATReader(self.file_path, encoding="utf-8")
+        else:
+            raise ValueError(f"Unsupported file format: {self.file_path.suffix}")
+
+        try:
+            variable_metadata = self._extract_variable_metadata(reader)
+
+            record_count = self._get_record_count(reader)
+
+            study_id = None
+            try:
+                first_row = next(self._read_chunks(chunksize=1))
+                if first_row and "STUDYID" in first_row[0]:
+                    study_id = str(first_row[0]["STUDYID"])
+            except Exception as e:
+                raise ValueError(f"Failed to read STUDYID from the first row: {e}")
+
+            return {
+                "metadata": {
+                    "name": self.file_path.name,
+                    "domain": self.metadata.domain,
+                    "standard_type": self.metadata.standard_type,
+                    "file_format": self.metadata.file_format,
+                    "study_id": study_id,
+                    "record_count": record_count,
+                    "variable_count": len(variable_metadata),
+                },
+                "variables": variable_metadata,
+            }
+        finally:
+            reader.close()
+
+    def read(self):
+        """Read and stream individual records one chunk at a time."""
+        for chunk in self._read_chunks(chunksize=self.CHUNKSIZE):
+            yield chunk
+
+    def _read_chunks(self, chunksize: int = CHUNKSIZE):
+        """Read the file in chunks."""
+        for chunk in (
+            pd.read_sas(
+                self.file_path,
+                format="xport" if self.file_path.suffix == ".xpt" else "sas7bdat",
+                encoding="utf-8",
+                chunksize=chunksize,
+            )
+            .read()
+            .to_dict(orient="records")
+        ):
+            yield chunk
 
     def _extract_metadata(self) -> ClinicalDataMetadata:
-        """Extract metadata from filename and file content."""
-        if self.file_path.suffix not in self.SUPPORTED_EXTENSIONS:
-            raise ValueError(
-                f"Unsupported file format: {self.file_path.suffix}. "
-                f"Supported formats: {', '.join(self.SUPPORTED_EXTENSIONS)}"
-            )
+        """Extract metadata from the file name or content."""
+        file_name = self.file_path.stem.lower()
+        domain = None
+        standard_type = None
+        file_format = self.file_path.suffix.lower()
 
-        domain = self.file_path.stem.lower()
+        if any(domain in file_name for domain in self.ADAM_DOMAINS):
+            standard_type = "ADaM"
+            domain = next((d for d in self.ADAM_DOMAINS if d in file_name), None)
+        elif any(domain in file_name for domain in self.SDTM_DOMAINS):
+            standard_type = "SDTM"
+            domain = next((d for d in self.SDTM_DOMAINS if d in file_name), None)
 
-        standard_type = "ADaM" if domain in self.ADAM_DOMAINS else "SDTM"
+        if not domain or not standard_type:
+            raise ValueError(f"Unsupported domain or standard type in file name: {file_name}")
 
-        file_format = self.file_path.suffix[1:]
+        return ClinicalDataMetadata(domain=domain, standard_type=standard_type, file_format=file_format)
 
-        metadata = ClinicalDataMetadata(domain=domain.upper(), standard_type=standard_type, file_format=file_format)
-        self._extract_file_metadata(metadata)
-
-        return metadata
-
-    def _extract_file_metadata(self, metadata: ClinicalDataMetadata) -> None:
-        """Extract additional metadata from file content."""
-        try:
-            if self.file_path.suffix == ".xpt":
-                df = pd.read_sas(self.file_path, format="xport", encoding="utf-8", chunksize=1)
-                first_chunk = next(df)
-            else:
-                df = pd.read_sas(self.file_path, format="sas7bdat", encoding="utf-8", chunksize=1)
-                first_chunk = next(df)
-            if "STUDYID" in first_chunk.columns and not first_chunk["STUDYID"].empty:
-                metadata.study_id = str(first_chunk["STUDYID"].iloc[0])
-        except Exception:
-            pass
-
-    def _load_variable_metadata(self) -> None:
-        """Load variable metadata from Excel file."""
-        try:
-            metadata_path = Path(self.variable_metadata_path)
-
-            if self.metadata.standard_type == "ADaM":
-                file_name = "ADAM_METADATA_MODIFIED.xlsx"
-            elif self.metadata.standard_type == "SDTM":
-                file_name = "SDTM_METADATA_MODIFIED.xlsx"
-            else:
-                raise ValueError(f"Unsupported standard type: {self.metadata.standard_type}")
-
-            if metadata_path.is_dir():
-                metadata_file = metadata_path / file_name
-            else:
-                metadata_file = metadata_path
-
-            if metadata_file.exists():
-                df = pd.read_excel(metadata_file, sheet_name="VARIABLE_METADATA")
-                domain_df = df[df.iloc[:, 0] == self.metadata.domain]
-                self.variable_metadata = domain_df.iloc[:, 2].tolist()
-                for _, row in domain_df.iterrows():
-                    var_name = row.iloc[2]
-                    var_type = row.iloc[3]
-                    self.variable_type_mapping[var_name] = var_type
-
-        except Exception as e:
-            print(f"Warning: Could not load variable metadata: {e}")
-
-    def read(self) -> Dict[str, Any]:
-        """Read the clinical data file and return structured data."""
-        raw_data = self._read_sas()
-        variables = self._extract_variables(raw_data)
-        result = {
-            "metadata": {
-                "name": self.file_path.name,
-                "domain": self.metadata.domain,
-                "standard_type": self.metadata.standard_type,
-                "file_format": self.metadata.file_format,
-                "study_id": self.metadata.study_id,
-                "dataset_label": self.metadata.dataset_label,
-                "record_count": len(raw_data),
-                "variable_count": len(variables),
-            },
-            "data": raw_data,
-            "variables": variables,
-        }
-
-        if self.variable_metadata:
-            result["expected_variables"] = self.variable_metadata
-            result["missing_variables"] = [
-                var for var in self.variable_metadata if var not in [v["name"] for v in variables]
-            ]
-            result["unexpected_variables"] = [v["name"] for v in variables if v["name"] not in self.variable_metadata]
-
-        return result
-
-    def _extract_variables(self, data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """Extract variable information from the data."""
-        if not data:
-            return []
-
-        first_record = data[0]
+    def _extract_variable_metadata(self, reader) -> List[Dict[str, Any]]:
+        """Extract variable-level metadata from SAS reader."""
         variables = []
 
-        for i, (name, _) in enumerate(first_record.items()):
-            var_info = {"name": name, "order": i + 1, "type": self._get_variable_type(name)}
-
-            var_info["label"] = None
-            variables.append(var_info)
+        if isinstance(reader, SAS7BDATReader):
+            for col in reader.columns:
+                var_info = {
+                    "col_id": col.col_id,
+                    "name": col.name,
+                    "label": col.label,
+                    "format": col.format,
+                    "ctype": col.ctype,
+                    "length": col.length,
+                }
+                variables.append(var_info)
+        elif isinstance(reader, XportReader):
+            for field in reader.fields:
+                var_info = {
+                    "name": field["name"],
+                    "label": field["label"],
+                    "format": field["nform"],
+                    "type": field["ntype"],
+                    "length": field["field_length"],
+                }
+                variables.append(var_info)
+        else:
+            raise ValueError(f"Unsupported SAS reader type: {type(reader)}")
 
         return variables
 
-    def _get_variable_type(self, variable_name: str) -> Optional[str]:
-        """Get variable type from metadata if available, otherwise infer from data."""
-        if variable_name in self.variable_type_mapping:
-            metadata_type = self.variable_type_mapping[variable_name]
-            if metadata_type:
-                return str(metadata_type).lower()
-        return None
-
-    def _infer_type(self, data: List[Dict[str, Any]], column: str) -> str:
-        """Infer variable type from sample values (fallback when metadata not available)."""
-        sample_size = min(10, len(data))
-        values = [row.get(column) for row in data[:sample_size] if row.get(column) is not None]
-
-        if not values:
-            return "Unknown"
-
-        try:
-            all(float(v) for v in values if v is not None)
-            return "Num"
-        except (ValueError, TypeError):
-            return "Char"
-
-    def validate_against_metadata(self) -> Dict[str, Any]:
-        """Validate the dataset against variable metadata if available."""
-        if not self.variable_metadata:
-            return {"status": "No metadata available for validation"}
-
-        result = self.read()
-
-        validation = {
-            "domain": self.metadata.domain,
-            "expected_variable_count": len(self.variable_metadata),
-            "actual_variable_count": len(result["variables"]),
-            "missing_variables": result.get("missing_variables", []),
-            "unexpected_variables": result.get("unexpected_variables", []),
-            "is_valid": len(result.get("missing_variables", [])) == 0,
-        }
-
-        return validation
-
-    def get_variable_info(self) -> Dict[str, Dict[str, Any]]:
-        """Get detailed variable information including metadata."""
-        result = self.read()
-        variable_info = {}
-
-        for var in result["variables"]:
-            var_name = var["name"]
-            info = {
-                "order": var["order"],
-                "type": var["type"],
-                "label": var.get("label"),
-                "from_metadata": var_name in self.variable_type_mapping,
-            }
-            variable_info[var_name] = info
-
-        return variable_info
+    def _get_record_count(self, reader) -> int:
+        """Get record count without loading all data."""
+        if isinstance(reader, SAS7BDATReader):
+            return reader.row_count
+        else:
+            count = 0
+            for _ in pd.read_sas(self.file_path, format="xport", encoding="utf-8", chunksize=self.CHUNKSIZE).read():
+                count += self.CHUNKSIZE
+            return count
