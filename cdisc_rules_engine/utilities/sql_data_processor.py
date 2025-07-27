@@ -30,7 +30,7 @@ class SQLDataProcessor:
     def __init__(self, data_service=None, cache: CacheServiceInterface = None):
         self.cache = cache or CacheServiceFactory(config).get_cache_service()
         self.data_service = data_service or DataServiceFactory(config, self.cache).get_data_service()
-        self.dataset_implementation = self.data_service.dataset_implementation
+        self.dataset_implementation = PandasDataset
 
     @staticmethod
     def convert_float_merge_keys(series: pd.Series) -> pd.Series:

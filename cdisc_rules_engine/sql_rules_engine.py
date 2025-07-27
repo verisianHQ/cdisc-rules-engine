@@ -18,10 +18,12 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
 from cdisc_rules_engine.interfaces import (
     CacheServiceInterface,
     ConfigInterface,
-    DataServiceInterface,
 )
+from cdisc_rules_engine.interfaces.PostgresQLDataService import PostgresQLDataService
+from cdisc_rules_engine.interfaces.SQLDataService import SQLDataService
 from cdisc_rules_engine.models.actions import COREActions
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.dataset_variable import DatasetVariable
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
@@ -32,7 +34,6 @@ from cdisc_rules_engine.models.validation_error_container import (
 )
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.cache import CacheServiceFactory
-from cdisc_rules_engine.services.data_services import DataServiceFactory
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
@@ -53,87 +54,83 @@ import traceback
 class SQLRulesEngine:
     def __init__(
         self,
-        cache: CacheServiceInterface = None,
-        data_service: DataServiceInterface = None,
+        cache: CacheServiceInterface,
+        data_service: SQLDataService,
         config_obj: ConfigInterface = None,
         external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
         **kwargs,
     ):
+        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
+        self.data_service = data_service
+
         self.config = config_obj or default_config
         self.standard = kwargs.get("standard")
         self.standard_version = (kwargs.get("standard_version") or "").replace(".", "-")
         self.standard_substandard = kwargs.get("standard_substandard") or None
-        self.library_metadata = kwargs.get("library_metadata")
+
+        # TODO: remove eventually
+        self.dataset_implementation = PandasDataset
+        kwargs["dataset_implementation"] = self.dataset_implementation
+
+        # TODO: move into data service
+        self.library_metadata = data_service.library_metadata
         self.max_dataset_size = kwargs.get("max_dataset_size")
         self.dataset_paths = kwargs.get("dataset_paths")
-        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
-        data_service_factory = DataServiceFactory(
-            config=self.config,
-            cache_service=self.cache,
-            standard=self.standard,
-            standard_version=self.standard_version,
-            standard_substandard=self.standard_substandard,
-            library_metadata=self.library_metadata,
-            max_dataset_size=self.max_dataset_size,
-        )
-        self.dataset_implementation = data_service_factory.get_dataset_implementation()
-        kwargs["dataset_implementation"] = self.dataset_implementation
-        self.data_service = data_service or data_service_factory.get_data_service(self.dataset_paths)
-        self.rule_processor = SQLRuleProcessor(
-            self.data_service,
-            self.cache,
-            self.library_metadata,
-        )
-        self.data_processor = SQLDataProcessor(self.data_service, self.cache)
         self.ct_packages = kwargs.get("ct_packages", [])
         self.ct_package = kwargs.get("ct_package")
         self.external_dictionaries = external_dictionaries
         self.define_xml_path: str = kwargs.get("define_xml_path")
         self.validate_xml: bool = kwargs.get("validate_xml")
+        self.data_processor = SQLDataProcessor(self.data_service, self.cache)
+
+        # this stays
+        self.rule_processor = SQLRuleProcessor(
+            self.data_service,
+            self.cache,
+            self.library_metadata,
+        )
 
     def get_schema(self):
         return export_rule_data(DatasetVariable, COREActions)
 
-    def sql_validate_single_rule(self, rule: dict, datasets: Iterable[SDTMDatasetMetadata]):
+    # needs to take the dataservice, then go through the dataset metadata to answer below question
+    def sql_validate_single_rule(self, rule: dict, ds: PostgresQLDataService):
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
-        for dataset_metadata in datasets:
-            if dataset_metadata.unsplit_name in results and "domains" in rule:
+        for dataset_id in ds.content_dfs().keys():
+            cur_domain = ds.get_domain(dataset_id)
+            if "domains" in rule and cur_domain in results:
                 include_split = rule["domains"].get("include_split_datasets", False)
                 if not include_split:
                     continue  # handling split datasets
-            results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
-                rule,
-                datasets,
-                dataset_metadata,
-            )
+            else:
+                results[cur_domain] = self.validate_single_dataset(rule, ds, dataset_id)
         return results
 
-    def validate_single_dataset(
-        self,
-        rule: dict,
-        datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
-    ) -> List[Union[dict, str]]:
+    def validate_single_dataset(self, rule: dict, ds: PostgresQLDataService, dataset_id: str) -> List[Union[dict, str]]:
         """
         This function is an entrypoint to validation process.
         It validates a given rule against datasets.
         """
-        logger.info(
-            f"Validating {dataset_metadata.name}. "
-            f"rule={rule}. dataset_path={dataset_metadata.full_path}. datasets={datasets}."
-        )
+        dataset_path = ds.get_full_path(dataset_id)
+        dataset_domain = ds.get_domain(dataset_id)
+        dataset_rdomain = ds.get_rdomain(dataset_id)
+        dataset_filename = ds.get_filename(dataset_id)
+        logger.info(f"Validating {dataset_id}. " f"rule={rule}. dataset_path={dataset_path}.")
         try:
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
-                dataset_metadata,
-                datasets,
+                ds,
+                dataset_id,
                 self.standard,
                 self.standard_substandard,
             )
             if is_suitable:
+                # TODO: continue here
+                datasets = ""
+                dataset_metadata = ""
                 result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
-                logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
+                logger.info(f"Validated dataset {dataset_id}. Result = {result}")
                 if result:
                     return result
                 else:
@@ -141,19 +138,19 @@ class SQLRulesEngine:
                     return [
                         ValidationErrorContainer(
                             **{
-                                "dataset": dataset_metadata.filename,
-                                "domain": dataset_metadata.domain or dataset_metadata.rdomain,
+                                "dataset": dataset_filename,
+                                "domain": dataset_domain or dataset_rdomain,
                                 "errors": [],
                             }
                         ).to_representation()
                     ]
             else:
-                logger.info(f"Skipped dataset {dataset_metadata.name}. Reason: {reason}")
+                logger.info(f"Skipped dataset {dataset_id}. Reason: {reason}")
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     message=reason,
-                    dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
+                    dataset=dataset_filename,
+                    domain=dataset_domain or dataset_rdomain or "",
                 )
                 return [error_obj.to_representation()]
         except Exception as e:
@@ -167,10 +164,8 @@ class SQLRulesEngine:
             {traceback.format_exc()}
             """
             )
-            error_obj: ValidationErrorContainer = self.handle_validation_exceptions(
-                e, dataset_metadata.full_path, dataset_metadata.full_path
-            )
-            error_obj.domain = dataset_metadata.domain or dataset_metadata.rdomain or ""
+            error_obj: ValidationErrorContainer = self.handle_validation_exceptions(e, dataset_path, dataset_path)
+            error_obj.domain = dataset_domain or dataset_rdomain or ""
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Union
 
 from cdisc_rules_engine.models.TestDataset import TestDataset
 
@@ -25,6 +26,9 @@ class SQLDataService(ABC):
         self.datasets_path = datasets_path
         self.define_xml_path = define_xml_path
         self.terminology_paths = terminology_paths
+
+        # tmp
+        self.library_metadata = None
 
         self._create_sql_tables_from_dataset_paths()
         self._create_definexml_tables()
@@ -102,4 +106,25 @@ class SQLDataService(ABC):
         #       for every terminology that is not in the database, run TerminologyReader subclass for terminology
 
         #       write table to database
+        pass
+
+    @abstractmethod
+    def is_supplemental_dataset(self, dataset_id: str) -> bool:
+        """
+        Check if the dataset is a supplemental dataset.
+        """
+        pass
+
+    @abstractmethod
+    def get_domain(self, dataset_id: str) -> Union[str, None]:
+        """
+        Return dataset domain based on dataset_id.
+        """
+        pass
+
+    @abstractmethod
+    def get_rdomain(self, dataset_id: str) -> Union[str, None]:
+        """
+        Return dataset rdomain based on dataset_id.
+        """
         pass

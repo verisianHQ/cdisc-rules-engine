@@ -1,5 +1,7 @@
 import re
 from typing import Iterable, List, Optional, Set, Union, Tuple
+from cdisc_rules_engine.interfaces.PostgresQLDataService import PostgresQLDataService
+from cdisc_rules_engine.interfaces.SQLDataService import SQLDataService
 from cdisc_rules_engine.interfaces.cache_service_interface import (
     CacheServiceInterface,
 )
@@ -39,25 +41,24 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
     ExternalDictionariesContainer,
 )
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-from cdisc_rules_engine.interfaces.data_service_interface import (
-    DataServiceInterface,
-)
 from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 
 
 class SQLRuleProcessor:
     def __init__(
         self,
-        data_service: DataServiceInterface,
+        data_service: SQLDataService,
         cache: CacheServiceInterface,
         library_metadata: LibraryMetadataContainer = None,
     ):
         self.data_service = data_service
         self.cache = cache
+
+        # TODO: get this from data service
         self.library_metadata = library_metadata
 
     @classmethod
-    def rule_applies_to_domain(cls, dataset_metadata: SDTMDatasetMetadata, rule: dict) -> bool:
+    def rule_applies_to_domain(cls, ds: PostgresQLDataService, dataset_id: str, rule: dict) -> bool:
         """
         Check that rule is applicable to dataset domain
         """
@@ -67,12 +68,12 @@ class SQLRuleProcessor:
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
-        is_included = cls._is_domain_name_included(dataset_metadata, included_domains, include_split_datasets)
-        is_excluded = cls._is_domain_name_excluded(dataset_metadata, excluded_domains)
+        is_included = cls._is_domain_name_included(ds, dataset_id, included_domains, include_split_datasets)
+        is_excluded = cls._is_domain_name_excluded(ds, dataset_id, excluded_domains)
 
         # additional check for split domains based on the flag
         is_excluded, is_included = cls._handle_split_domains(
-            dataset_metadata.is_split,
+            ds.is_split_dataset(dataset_id),
             include_split_datasets,
             is_excluded,
             is_included,
@@ -83,7 +84,8 @@ class SQLRuleProcessor:
     @classmethod
     def _is_domain_name_included(
         cls,
-        dataset_metadata: SDTMDatasetMetadata,
+        ds: PostgresQLDataService,
+        dataset_id: str,
         included_domains: List[str],
         include_split_datasets: bool,
     ) -> bool:
@@ -98,23 +100,20 @@ class SQLRuleProcessor:
          -> domain is not included.
         In other cases domain is included
         """
+        domain_name = ds.get_domain(dataset_id)
         if not included_domains:
-            if include_split_datasets is True and not dataset_metadata.is_split:
+            if include_split_datasets is True and not ds.is_split_dataset(dataset_id):
                 return False
             return True
 
-        if (
-            dataset_metadata.domain in included_domains
-            or dataset_metadata.name in included_domains
-            or ALL_KEYWORD in included_domains
-        ):
+        if domain_name in included_domains or dataset_id in included_domains or ALL_KEYWORD in included_domains:
             return True
-        if cls._domain_matched_ap_or_supp(dataset_metadata, included_domains):
+        if cls._domain_matched_ap_or_supp(ds, dataset_id, included_domains):
             return True
         return False
 
     @classmethod
-    def _is_domain_name_excluded(cls, dataset_metadata: SDTMDatasetMetadata, excluded_domains: List[str]) -> bool:
+    def _is_domain_name_excluded(cls, ds: PostgresQLDataService, dataset_id: str, excluded_domains: List[str]) -> bool:
         """
         If excluded domains are specified,
          and the domain is in the list of excluded domains,
@@ -123,17 +122,19 @@ class SQLRuleProcessor:
 
         In other cases domain is not excluded.
         """
+        dataset_domain = ds.get_domain(dataset_id)
         if not excluded_domains:
             return False
 
         if (
-            dataset_metadata.domain in excluded_domains
-            or dataset_metadata.name in excluded_domains
-            or dataset_metadata.unsplit_name in excluded_domains
+            dataset_domain in excluded_domains
+            # TODO: id should not be relevant, should only be on domains (also check rest of file)
+            or dataset_id in excluded_domains
+            or ds.get_unsplit_name(dataset_id) in excluded_domains
             or ALL_KEYWORD in excluded_domains
         ):
             return True
-        if cls._domain_matched_ap_or_supp(dataset_metadata, excluded_domains):
+        if cls._domain_matched_ap_or_supp(ds, dataset_id, excluded_domains):
             return True
         return False
 
@@ -162,24 +163,27 @@ class SQLRuleProcessor:
         return is_excluded, is_included
 
     @classmethod
-    def _domain_matched_ap_or_supp(cls, dataset_metadata: SDTMDatasetMetadata, domains_to_check: List[str]) -> bool:
+    def _domain_matched_ap_or_supp(
+        cls, ds: PostgresQLDataService, dataset_id: str, domains_to_check: List[str]
+    ) -> bool:
         """
         Check that domain name match with only
         AP / APFA / APRELSUB / SUPP / SQ naming pattern
         """
+        dataset_domain = ds.get_domain(dataset_id)
+        dataset_rdomain = ds.get_rdomain(dataset_id)
         supp_ap_domains = {f"{domain}--" for domain in SUPPLEMENTARY_DOMAINS}
         supp_ap_domains.update({f"{AP_DOMAIN}--", f"{APFA_DOMAIN}--"})
 
         return any(set(domains_to_check).intersection(supp_ap_domains)) and (
-            dataset_metadata.is_supp
-            or is_ap_domain(dataset_metadata.domain or dataset_metadata.rdomain or dataset_metadata.name)
+            ds.is_supplemental_dataset(dataset_id) or is_ap_domain(dataset_domain or dataset_rdomain or dataset_id)
         )
 
     def rule_applies_to_class(
         self,
+        ds: PostgresQLDataService,
+        dataset_id: str,
         rule,
-        datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
     ):
         """
         If included classes are specified and the class
@@ -197,6 +201,7 @@ class SQLRuleProcessor:
         We filter out non-detectable classes here, so that rule authors
         can specify them without it affecting if the rule runs or not.
         """
+        # dataset_full_path = ds.get_full_path(dataset_id)
         classes = rule.get("classes") or {}
         included_classes = classes.get("Include", [])
         excluded_classes = classes.get("Exclude", [])
@@ -205,30 +210,32 @@ class SQLRuleProcessor:
         if included_classes:
             if ALL_KEYWORD in included_classes:
                 return True
-            variables = self.data_service.get_variables_metadata(
-                dataset_name=dataset_metadata.full_path, datasets=datasets
-            ).data.variable_name
-            class_name = self.data_service.get_dataset_class(
-                variables,
-                dataset_metadata.full_path,
-                datasets,
-                dataset_metadata,
-            )
+            # variables = self.data_service.get_variables_metadata(
+            #     dataset_name=dataset_full_path, datasets=datasets
+            # ).data.variable_name
+            # class_name = self.data_service.get_dataset_class(
+            #     variables,
+            #     dataset_full_path,
+            #     datasets,
+            #     dataset_metadata,
+            # )
+            class_name = ds.get_dataset_class(dataset_id)
             if (class_name not in included_classes) and not (
                 class_name == FINDINGS_ABOUT and FINDINGS in included_classes
             ):
                 is_included = False
 
         if excluded_classes:
-            variables = self.data_service.get_variables_metadata(
-                dataset_name=dataset_metadata.full_path, datasets=datasets
-            ).data.variable_name
-            class_name = self.data_service.get_dataset_class(
-                variables,
-                dataset_metadata.full_path,
-                datasets,
-                dataset_metadata,
-            )
+            # variables = self.data_service.get_variables_metadata(
+            #     dataset_name=dataset_full_path, datasets=datasets
+            # ).data.variable_name
+            # class_name = self.data_service.get_dataset_class(
+            #     variables,
+            #     dataset_full_path,
+            #     datasets,
+            #     dataset_metadata,
+            # )
+            class_name = ds.get_dataset_class(dataset_id)
             if class_name and (
                 (class_name in excluded_classes) or (class_name == FINDINGS_ABOUT and FINDINGS in excluded_classes)
             ):
@@ -237,7 +244,8 @@ class SQLRuleProcessor:
 
     def rule_applies_to_use_case(
         self,
-        dataset_metadata: SDTMDatasetMetadata,
+        ds: PostgresQLDataService,
+        dataset_id: str,
         rule: dict,
         standard: str,
         standard_substandard: str,
@@ -252,19 +260,20 @@ class SQLRuleProcessor:
         if substandard not in USE_CASE_DOMAINS:
             return False
 
-        domain_to_check = dataset_metadata.domain
-        if dataset_metadata.is_supp and dataset_metadata.rdomain:
-            domain_to_check = dataset_metadata.rdomain
+        dataset_domain = ds.get_domain(dataset_id)
+        dataset_rdomain = ds.get_rdomain(dataset_id)
+        if ds.is_supplemental_dataset(dataset_id) and dataset_rdomain:
+            dataset_domain = dataset_rdomain
 
         # Handle ADaM datasets with AD prefix
-        if substandard == "ADAM" and domain_to_check.startswith("AD"):
+        if substandard == "ADAM" and dataset_domain.startswith("AD"):
             return "ANALYSIS" in use_cases
 
         allowed_domains = set()
         for use_case in use_cases:
             if use_case in USE_CASE_DOMAINS[substandard]:
                 allowed_domains.update(USE_CASE_DOMAINS[substandard][use_case])
-        if domain_to_check in allowed_domains:
+        if dataset_domain in allowed_domains:
             return True
         return False
 
@@ -526,27 +535,29 @@ class SQLRuleProcessor:
     def is_suitable_for_validation(
         self,
         rule: dict,
-        dataset_metadata: SDTMDatasetMetadata,
-        datasets: Iterable[SDTMDatasetMetadata],
+        ds: PostgresQLDataService,
+        dataset_id: str,
         standard,
         standard_substandard: str,
     ) -> Tuple[bool, str]:
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
-        dataset_name = dataset_metadata.name
+        dataset_name = dataset_id
         if not self.valid_rule_structure(rule):
             reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
+        if not self.rule_applies_to_use_case(ds, dataset_id, rule, standard, standard_substandard):
             reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        if not self.rule_applies_to_domain(dataset_metadata, rule):
+        # TODO
+        if not self.rule_applies_to_domain(ds, dataset_id, rule):
             reason = f"Rule skipped - doesn't apply to domain for " f"rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        if not self.rule_applies_to_class(rule, datasets, dataset_metadata):
+        # TODO
+        if not self.rule_applies_to_class(ds, dataset_id, rule):
             reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
