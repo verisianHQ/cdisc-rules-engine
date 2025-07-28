@@ -1,23 +1,28 @@
-from dataclasses import dataclass
-from contextlib import contextmanager
-from typing import Optional
-import psycopg2.pool
-from psycopg2.extras import RealDictCursor
 import logging
+import psycopg2.pool
+from os import getenv
+
+from contextlib import contextmanager
+from dataclasses import dataclass
+from dotenv import load_dotenv
+from psycopg2.extras import RealDictCursor
+from typing import Optional
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+load_dotenv()
+
 
 @dataclass
 class DatabaseConfig:
-    """Database configuration"""
-
-    host: str = "localhost"
-    port: int = 5432
-    database: str = "postgres"
-    user: str = "postgres"
-    password: str = "postgres"
+    host = getenv("DATABASE_HOST")
+    port = (
+        getenv("DATABASE_PORT") if not isinstance(getenv("DATABASE_PORT"), str) else int(getenv("DATABASE_PORT", 5432))
+    )
+    database = getenv("DATABASE_NAME")
+    user = getenv("DATABASE_USER")
+    password = getenv("DATABASE_PASSWORD")
     min_connections: int = 1
     max_connections: int = 10
 
