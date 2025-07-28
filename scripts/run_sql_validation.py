@@ -217,8 +217,8 @@ def sql_run_single_rule_validation(
     )
     # refactor to get rid of cache - only needs access to the other stuff
     engine = SQLRulesEngine(
-        cache,
         sql_data_service,
+        cache,
         data_service,
         standard=standard,
         standard_version=standard_version,

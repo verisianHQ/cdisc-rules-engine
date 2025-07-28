@@ -1271,6 +1271,7 @@ def get_sample_lb_dataset() -> TestDataset:
         filename="lb.xpt",
         filepath="path/to/lb.xpt",
         name="LB",
+        domain="LB",
         label="Laboratory Test Results",
         variables=[
             TestVariableMetadata(
@@ -1299,6 +1300,7 @@ def get_sample_supp_dataset() -> TestDataset:
         filename="suppdm.xpt",
         filepath="path/to/suppdm.xpt",
         name="SUPPDM",
+        domain="SUPPDM",
         label="Supplemental Demographics Domain",
         variables=[
             TestVariableMetadata(

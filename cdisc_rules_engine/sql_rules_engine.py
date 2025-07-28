@@ -56,8 +56,8 @@ import traceback
 class SQLRulesEngine:
     def __init__(
         self,
+        ds: PostgresQLDataService,
         cache: CacheServiceInterface = None,
-        ds: PostgresQLDataService = None,
         data_service: DataServiceInterface = None,
         config_obj: ConfigInterface = None,
         external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
@@ -96,16 +96,37 @@ class SQLRulesEngine:
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         for dataset_metadata in datasets:
-            # if dataset_metadata.unsplit_name in results and "domains" in rule:
-            #     include_split = rule["domains"].get("include_split_datasets", False)
-            #     if not include_split:
-            #         continue  # handling split datasets
-            # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
-            results[dataset_metadata.domain] = self.validate_single_dataset(
+            # for pp_ds_id in self.ds.pre_processed_dfs.keys():
+            pp_ds_id = dataset_metadata.name
+            sql_dataset_metadata = self.ds.get_dataset_metadata(pp_ds_id)
+
+            is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
-                datasets,
                 dataset_metadata,
+                datasets,
+                self.standard,
+                self.standard_substandard,
             )
+            if is_suitable:
+                # if dataset_metadata.unsplit_name in results and "domains" in rule:
+                #     include_split = rule["domains"].get("include_split_datasets", False)
+                #     if not include_split:
+                #         continue  # handling split datasets
+                # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
+                results[sql_dataset_metadata.domain] = self.validate_single_dataset(
+                    rule,
+                    datasets,
+                    dataset_metadata,
+                )
+            else:
+                logger.info(f"Skipped dataset {sql_dataset_metadata.dataset_name}. Reason: {reason}")
+                error_obj: ValidationErrorContainer = ValidationErrorContainer(
+                    status=ExecutionStatus.SKIPPED.value,
+                    message=reason,
+                    dataset=sql_dataset_metadata.filename,
+                    domain=sql_dataset_metadata.domain or sql_dataset_metadata.rdomain or "",
+                )
+                return [error_obj.to_representation()]
         return results
 
     def validate_single_dataset(
@@ -123,38 +144,21 @@ class SQLRulesEngine:
             f"rule={rule}. dataset_path={dataset_metadata.full_path}. datasets={datasets}."
         )
         try:
-            is_suitable, reason = self.rule_processor.is_suitable_for_validation(
-                rule,
-                dataset_metadata,
-                datasets,
-                self.standard,
-                self.standard_substandard,
-            )
-            if is_suitable:
-                result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
-                logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
-                if result:
-                    return result
-                else:
-                    # No errors were generated, create success error container
-                    return [
-                        ValidationErrorContainer(
-                            **{
-                                "dataset": dataset_metadata.filename,
-                                "domain": dataset_metadata.domain or dataset_metadata.rdomain,
-                                "errors": [],
-                            }
-                        ).to_representation()
-                    ]
+            result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
+            logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
+            if result:
+                return result
             else:
-                logger.info(f"Skipped dataset {dataset_metadata.name}. Reason: {reason}")
-                error_obj: ValidationErrorContainer = ValidationErrorContainer(
-                    status=ExecutionStatus.SKIPPED.value,
-                    message=reason,
-                    dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
-                )
-                return [error_obj.to_representation()]
+                # No errors were generated, create success error container
+                return [
+                    ValidationErrorContainer(
+                        **{
+                            "dataset": dataset_metadata.filename,
+                            "domain": dataset_metadata.domain or dataset_metadata.rdomain,
+                            "errors": [],
+                        }
+                    ).to_representation()
+                ]
         except Exception as e:
             logger.trace(e)
             logger.error(

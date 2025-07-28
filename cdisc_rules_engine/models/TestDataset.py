@@ -13,5 +13,6 @@ class TestDataset(TypedDict):
     filepath: str
     name: str
     label: str
+    domain: str
     variables: List[TestVariableMetadata]
     records: Dict[str, List[Union[str, int]]]
