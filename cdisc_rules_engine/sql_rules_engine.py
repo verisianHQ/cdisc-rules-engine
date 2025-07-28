@@ -20,8 +20,10 @@ from cdisc_rules_engine.interfaces import (
     CacheServiceInterface,
     ConfigInterface,
     DataServiceInterface,
+    PostgresQLDataService,
 )
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
+from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.dataset_variable import DatasetVariable
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
@@ -33,7 +35,6 @@ from cdisc_rules_engine.models.validation_error_container import (
 )
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.cache import CacheServiceFactory
-from cdisc_rules_engine.services.data_services import DataServiceFactory
 
 # from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
 #     DefineXMLReaderFactory,
@@ -56,42 +57,37 @@ class SQLRulesEngine:
     def __init__(
         self,
         cache: CacheServiceInterface = None,
+        ds: PostgresQLDataService = None,
         data_service: DataServiceInterface = None,
         config_obj: ConfigInterface = None,
         external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
         **kwargs,
     ):
         self.config = config_obj or default_config
+        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
+        self.data_service = data_service
+
         self.standard = kwargs.get("standard")
         self.standard_version = (kwargs.get("standard_version") or "").replace(".", "-")
         self.standard_substandard = kwargs.get("standard_substandard") or None
-        self.library_metadata = kwargs.get("library_metadata")
+
+        # TODO: remove eventually
+        self.dataset_implementation = PandasDataset
+        kwargs["dataset_implementation"] = self.dataset_implementation
+
+        # TODO: move into data service
         self.max_dataset_size = kwargs.get("max_dataset_size")
         self.dataset_paths = kwargs.get("dataset_paths")
-        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
-        data_service_factory = DataServiceFactory(
-            config=self.config,
-            cache_service=self.cache,
-            standard=self.standard,
-            standard_version=self.standard_version,
-            standard_substandard=self.standard_substandard,
-            library_metadata=self.library_metadata,
-            max_dataset_size=self.max_dataset_size,
-        )
-        self.dataset_implementation = data_service_factory.get_dataset_implementation()
-        kwargs["dataset_implementation"] = self.dataset_implementation
-        self.data_service = data_service or data_service_factory.get_data_service(self.dataset_paths)
-        self.rule_processor = SQLRuleProcessor(
-            self.data_service,
-            self.cache,
-            self.library_metadata,
-        )
-        self.data_processor = SQLDataProcessor(self.data_service, self.cache)
         self.ct_packages = kwargs.get("ct_packages", [])
         self.ct_package = kwargs.get("ct_package")
         self.external_dictionaries = external_dictionaries
         self.define_xml_path: str = kwargs.get("define_xml_path")
         self.validate_xml: bool = kwargs.get("validate_xml")
+        self.data_processor = SQLDataProcessor(self.data_service, self.cache)
+
+        # this stays
+        self.rule_processor = SQLRuleProcessor(self.data_service, self.cache)
+        self.ds = ds
 
     def get_schema(self):
         return export_rule_data(DatasetVariable, SQLCOREActions)
@@ -100,11 +96,12 @@ class SQLRulesEngine:
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         for dataset_metadata in datasets:
-            if dataset_metadata.unsplit_name in results and "domains" in rule:
-                include_split = rule["domains"].get("include_split_datasets", False)
-                if not include_split:
-                    continue  # handling split datasets
-            results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
+            # if dataset_metadata.unsplit_name in results and "domains" in rule:
+            #     include_split = rule["domains"].get("include_split_datasets", False)
+            #     if not include_split:
+            #         continue  # handling split datasets
+            # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
+            results[dataset_metadata.domain] = self.validate_single_dataset(
                 rule,
                 datasets,
                 dataset_metadata,
@@ -196,7 +193,7 @@ class SQLRulesEngine:
             standard=self.standard,
             standard_version=self.standard_version,
             standard_substandard=self.standard_substandard,
-            library_metadata=self.library_metadata,
+            library_metadata=None,
             dataset_implementation=self.data_service.dataset_implementation,
         )
 
@@ -216,9 +213,9 @@ class SQLRulesEngine:
         # Update rule for certain rule types
         # SPECIAL CASES FOR RULE TYPES ###############################
         # TODO: Handle these special cases better.
-        if self.library_metadata:
-            kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-            kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
+        # if self.library_metadata:
+        #     kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
+        #     kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
         # if rule.get("rule_type") == RuleTypes.DEFINE_ITEM_METADATA_CHECK.value:
         #     if self.library_metadata:
         #         kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map

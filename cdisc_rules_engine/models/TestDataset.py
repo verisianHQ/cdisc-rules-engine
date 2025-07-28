@@ -10,6 +10,8 @@ class TestVariableMetadata(TypedDict):
 
 class TestDataset(TypedDict):
     filename: str
+    filepath: str
+    name: str
     label: str
     variables: List[TestVariableMetadata]
     records: Dict[str, List[Union[str, int]]]

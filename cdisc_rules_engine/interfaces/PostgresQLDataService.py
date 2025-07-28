@@ -1,4 +1,5 @@
 import pandas as pd
+import pandasql as ps
 
 from pathlib import Path
 
@@ -13,12 +14,13 @@ class PostgresQLDataService(SQLDataService):
         datasets_path: Path = None,
         define_xml_path: Path = None,
         terminology_paths: dict = None,
-        content_dfs: list[pd.DataFrame] = None,
-        metadata_dfs: list[pd.DataFrame] = None,
+        data_dfs: dict[str, pd.DataFrame] = None,
+        metadata_df: pd.DataFrame = None,
     ):
         super().__init__(datasets_path, define_xml_path, terminology_paths)
-        self.content_dfs = content_dfs
-        self.metadata_dfs = metadata_dfs
+        self.data_dfs = data_dfs
+        self.metadata_df = metadata_df
+        self.psql = ps.PandaSQL()
 
     @classmethod
     def from_list_of_testdatasets(
@@ -32,19 +34,23 @@ class PostgresQLDataService(SQLDataService):
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables, setting path to "memory"
         """
-        content_dfs = []
-        metadata_dfs = []
+        data_dfs = {}
+        metadata_df = pd.DataFrame()
         for test_dataset in test_datasets:
             # Collect content
-            cdf = pd.DataFrame.from_records(test_dataset["records"])
-            cdf.columns = [col.lower() for col in cdf.columns]
-            content_dfs.append(cdf)
+            ddf = pd.DataFrame.from_records(test_dataset["records"])
+            ddf.columns = [col.lower() for col in ddf.columns]
+            data_dfs[test_dataset["filename"]] = ddf
 
             # Collect variable metadata
-            mdf = pd.DataFrame()
             for test_variable in test_dataset["variables"]:
                 new_row = pd.DataFrame(
                     {
+                        "filename": [test_dataset["filename"]],
+                        "filepath": [test_dataset["filepath"]],
+                        "dataset_id": [test_dataset["name"]],
+                        "dataset_name": [test_dataset["name"]],
+                        "dataset_label": [test_dataset["label"]],
                         "domain": [test_dataset["filename"].split(".")[0].upper()],
                         "name": [test_variable["name"]],
                         "label": [test_variable["label"]],
@@ -52,10 +58,9 @@ class PostgresQLDataService(SQLDataService):
                         "length": [test_variable["length"]],
                     }
                 )
-                mdf = pd.concat([mdf, new_row], ignore_index=True)
-            metadata_dfs.append(mdf)
+                metadata_df = pd.concat([metadata_df, new_row], ignore_index=True)
 
-        return cls(datasets_path, define_xml_path, terminology_paths, content_dfs, metadata_dfs)
+        return cls(datasets_path, define_xml_path, terminology_paths, data_dfs, metadata_df)
 
     def _create_sql_tables_from_dataset_paths(self) -> None:
         """
