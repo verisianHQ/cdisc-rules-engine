@@ -249,5 +249,5 @@ def sql_run_single_rule_validation(
     rule = Rule.from_cdisc_metadata(rule)
 
     # finally we do something useful
-    results = engine.sql_validate_single_rule(rule, sql_data_service, datasets)
+    results = engine.sql_validate_single_rule(rule, sql_data_service)
     return results

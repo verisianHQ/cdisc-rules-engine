@@ -43,7 +43,6 @@ from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
 )
-from cdisc_rules_engine.dataset_builders import builder_factory
 from cdisc_rules_engine.models.external_dictionaries_container import (
     ExternalDictionariesContainer,
 )
@@ -73,7 +72,6 @@ class SQLRulesEngine:
         kwargs["dataset_implementation"] = self.dataset_implementation
 
         # TODO: move into data service
-        self.library_metadata = data_service.library_metadata
         self.max_dataset_size = kwargs.get("max_dataset_size")
         self.dataset_paths = kwargs.get("dataset_paths")
         self.ct_packages = kwargs.get("ct_packages", [])
@@ -84,11 +82,7 @@ class SQLRulesEngine:
         self.data_processor = SQLDataProcessor(self.data_service, self.cache)
 
         # this stays
-        self.rule_processor = SQLRuleProcessor(
-            self.data_service,
-            self.cache,
-            self.library_metadata,
-        )
+        self.rule_processor = SQLRuleProcessor(self.data_service, self.cache)
 
     def get_schema(self):
         return export_rule_data(DatasetVariable, COREActions)
@@ -97,7 +91,7 @@ class SQLRulesEngine:
     def sql_validate_single_rule(self, rule: dict, ds: PostgresQLDataService):
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
-        for dataset_id in ds.content_dfs().keys():
+        for dataset_id in ds.data_dfs().keys():
             cur_domain = ds.get_domain(dataset_id)
             if "domains" in rule and cur_domain in results:
                 include_split = rule["domains"].get("include_split_datasets", False)
@@ -127,9 +121,7 @@ class SQLRulesEngine:
             )
             if is_suitable:
                 # TODO: continue here
-                datasets = ""
-                dataset_metadata = ""
-                result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
+                result: List[Union[dict, str]] = self.validate_rule(rule, ds, dataset_id)
                 logger.info(f"Validated dataset {dataset_id}. Result = {result}")
                 if result:
                     return result
@@ -169,88 +161,97 @@ class SQLRulesEngine:
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 
-    def get_dataset_builder(
-        self,
-        rule: dict,
-        datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
-    ):
-        return builder_factory.get_service(
-            rule.get("rule_type"),
-            rule=rule,
-            data_service=self.data_service,
-            cache_service=self.cache,
-            data_processor=self.data_processor,
-            rule_processor=self.rule_processor,
-            dataset_metadata=dataset_metadata,
-            datasets=datasets,
-            dataset_path=dataset_metadata.full_path,
-            define_xml_path=self.define_xml_path,
-            standard=self.standard,
-            standard_version=self.standard_version,
-            standard_substandard=self.standard_substandard,
-            library_metadata=self.library_metadata,
-            dataset_implementation=self.data_service.dataset_implementation,
-        )
+    # def get_dataset_builder(
+    #     self,
+    #     rule: dict,
+    #     datasets: Iterable[SDTMDatasetMetadata],
+    #     dataset_metadata: SDTMDatasetMetadata,
+    # ):
+    #     return builder_factory.get_service(
+    #         rule.get("rule_type"),
+    #         rule=rule,
+    #         data_service=self.data_service,
+    #         cache_service=self.cache,
+    #         data_processor=self.data_processor,
+    #         rule_processor=self.rule_processor,
+    #         dataset_metadata=dataset_metadata,
+    #         datasets=datasets,
+    #         dataset_path=dataset_metadata.full_path,
+    #         define_xml_path=self.define_xml_path,
+    #         standard=self.standard,
+    #         standard_version=self.standard_version,
+    #         standard_substandard=self.standard_substandard,
+    #         library_metadata=self.library_metadata,
+    #         dataset_implementation=self.data_service.dataset_implementation,
+    #     )
 
     def validate_rule(
         self,
         rule: dict,
-        datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
+        ds: PostgresQLDataService,
+        dataset_id: str,
     ) -> List[Union[dict, str]]:
         """
          This function is an entrypoint for rule validation.
         It defines a rule validator based on its type and calls it.
         """
         kwargs = {}
-        builder = self.get_dataset_builder(rule, datasets, dataset_metadata)
-        dataset = builder.get_dataset()
+        # builder = self.get_dataset_builder(rule, datasets, dataset_metadata)
+        # dataset = builder.get_dataset()
+
+        # TODO: wrong logic, this should be dependent on the rule not whether the library metadata is present
+        # if self.library_metadata:
+        #     kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
+        #     kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
+
         # Update rule for certain rule types
         # SPECIAL CASES FOR RULE TYPES ###############################
         # TODO: Handle these special cases better.
-        if self.library_metadata:
-            kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-            kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
         if rule.get("rule_type") == RuleTypes.DEFINE_ITEM_METADATA_CHECK.value:
-            if self.library_metadata:
-                kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-                kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
+            kwargs["variable_codelist_map"] = (
+                ds.get_variable_codelist_map()
+            )  # self.library_metadata.variable_codelist_map
+            kwargs["codelist_term_maps"] = (
+                ds.get_all_ct_package_metadata()
+            )  # self.library_metadata.get_all_ct_package_metadata()
         elif (
             rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value
             or rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value
         ):
             self.rule_processor.add_comparator_to_rule_conditions(rule, comparator=None, target_prefix="define_")
         elif rule.get("rule_type") == RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value:
-            value_level_metadata: List[dict] = self.get_define_xml_value_level_metadata(
-                dataset_metadata.full_path, dataset_metadata.unsplit_name
-            )
-            kwargs["value_level_metadata"] = value_level_metadata
+            kwargs["value_level_metadata"] = ds.get_define_xml_value_level_metadata()
+            # self.get_define_xml_value_level_metadata(ds.get_full_path(dataset_id), ds.get_unsplit_name(dataset_id))
 
         elif rule.get("rule_type") == RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value:
-            library_metadata: dict = self.library_metadata.variables_metadata.get(dataset_metadata.domain, {})
-            define_metadata: List[dict] = builder.get_define_xml_variables_metadata()
+            ig_variable_metadata = ds.get_ig_variables_metadata(dataset_id)
+            # library_metadata: dict = self.library_metadata.variables_metadata.get(dataset_metadata.domain, {})
+            define_metadata = ds.get_define_xml_variables_metadata(dataset_id)
+            # define_metadata: List[dict] = builder.get_define_xml_variables_metadata()
+            dataset_variables = ds.get_dataset_variables(dataset_id)
             targets: List[str] = self.data_processor.filter_dataset_columns_by_metadata_and_rule(
-                dataset.columns.tolist(), define_metadata, library_metadata, rule
+                dataset_variables, define_metadata, ig_variable_metadata, rule
             )
             rule_copy = deepcopy(rule)
             updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
             rule_copy["conditions"].set_conditions(updated_conditions)
             # When duplicating conditions,
             # rule should be copied to prevent updates to concurrent rule executions
-            return self.execute_rule(rule_copy, dataset, datasets, dataset_metadata, **kwargs)
+            return self.execute_rule(rule_copy, ds, dataset_id, **kwargs)
 
         kwargs["ct_packages"] = list(self.ct_packages)
 
-        logger.info(f"Using dataset build by: {builder.__class__}")
-        return self.execute_rule(rule, dataset, datasets, dataset_metadata, **kwargs)
+        # logger.info(f"Using dataset build by: {builder.__class__}")
+        return self.execute_rule(rule, ds, dataset_id, **kwargs)
 
     def execute_rule(
         self,
         rule: dict,
-        dataset: DatasetInterface,
-        datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
+        ds: PostgresQLDataService,
+        dataset_id: str,
+        # dataset: DatasetInterface,
+        # datasets: Iterable[SDTMDatasetMetadata],
+        # dataset_metadata: SDTMDatasetMetadata,
         value_level_metadata: List[dict] = None,
         variable_codelist_map: dict = None,
         codelist_term_maps: list = None,
@@ -269,20 +270,20 @@ class SQLRulesEngine:
         # in condition
         rule_copy = deepcopy(rule)
         updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
-            rule["conditions"], dataset.columns.to_list()
+            rule["conditions"], ds.get_dataset_variables(dataset_id)
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
         # Adding copy for now to avoid updating cached dataset
-        dataset = deepcopy(dataset)
+        # dataset = deepcopy(dataset)
         # preprocess dataset
-        dataset_preprocessor = SQLDatasetPreprocessor(dataset, dataset_metadata, self.data_service, self.cache)
+        dataset_preprocessor = SQLDatasetPreprocessor(ds, dataset_id, self.cache)
         dataset = dataset_preprocessor.preprocess(rule_copy, datasets)
         dataset = self.rule_processor.perform_rule_operations(
             rule_copy,
             dataset,
-            dataset_metadata.unsplit_name,
+            ds.get_unsplit_name(dataset_id),
             datasets,
-            dataset_metadata.full_path,
+            ds.get_full_path(dataset_id),
             standard=self.standard,
             standard_version=self.standard_version,
             standard_substandard=self.standard_substandard,

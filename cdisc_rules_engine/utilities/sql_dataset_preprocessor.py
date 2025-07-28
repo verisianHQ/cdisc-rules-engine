@@ -1,4 +1,4 @@
-from typing import Iterable, List, Union
+from typing import List, Union
 
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
@@ -7,7 +7,7 @@ from cdisc_rules_engine.enums.join_types import JoinTypes
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.interfaces import (
     CacheServiceInterface,
-    DataServiceInterface,
+    PostgresQLDataService,
 )
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
 from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
@@ -35,70 +35,83 @@ class SQLDatasetPreprocessor:
 
     def __init__(
         self,
-        dataset: DatasetInterface,
-        dataset_metadata: SDTMDatasetMetadata,
-        data_service: DataServiceInterface,
+        data_service: PostgresQLDataService,
+        dataset_id: str,
         cache_service: CacheServiceInterface,
     ):
-        self._dataset: DatasetInterface = dataset
-        self._dataset_metadata: SDTMDatasetMetadata = dataset_metadata
-        self._data_service = data_service
-        self._rule_processor = RuleProcessor(self._data_service, cache_service)
+        # self._dataset: DatasetInterface = dataset
+        # self._dataset_metadata: SDTMDatasetMetadata = dataset_metadata
+        self.ds = data_service
+        self.dataset_id = dataset_id
+        self.rule_processor = RuleProcessor(self.ds, cache_service)
 
-    def preprocess(self, rule: dict, datasets: Iterable[SDTMDatasetMetadata]) -> DatasetInterface:  # noqa
+    def preprocess(self, rule: dict) -> DatasetInterface:  # noqa
         """
         Preprocesses the dataset by merging it with the
         datasets from the provided rule.
         """
         rule_datasets: List[dict] = rule.get("datasets")
         if not rule_datasets:
-            return self._dataset  # nothing to preprocess
+            return None  # nothing to preprocess
 
-        rule_targets = self._rule_processor.extract_referenced_variables_from_rule(rule)
+        rule_targets = self.rule_processor.extract_referenced_variables_from_rule(rule)
         # Get all targets that reference the merge domain.
-        result: DatasetInterface = self._dataset.copy()
+        # result: DatasetInterface = self._dataset.copy()
+        all_dataset_ids = self.ds.get_uploaded_dataset_ids()
         merged_domains = set()
         for domain_details in rule_datasets:
             domain_name: str = domain_details.get("domain_name")
             is_child = bool(domain_details.get("child"))
             # download other datasets from blob storage and merge
             if is_child:
-                file_infos = []
+                parent_ds_ids = []
+                # TODO: refactor this following code with _find_parent_dataset() bc I think it's largely redundant
                 # find parent of SUPP or SQAP dataset
                 if (
                     (domain_name[:4] == "SUPP" or domain_name[:4] == "SQAP")
-                    and self._dataset_metadata.is_supp
-                    and self._dataset_metadata.rdomain
+                    and self.ds.is_supplemental_dataset(self.dataset_id)
+                    and self.ds.get_rdomain(self.dataset_id)
                 ):
-                    if domain_name == "SUPP--" or domain_name == self._dataset_metadata.name:
-                        file_infos: list[SDTMDatasetMetadata] = [
-                            item for item in datasets if (item.domain == self._dataset_metadata.rdomain)
+                    if domain_name == "SUPP--" or domain_name == self.ds.get_domain(self.dataset_id):
+                        # if domain_name == "SUPP--" or domain_name == self._dataset_metadata.name:
+                        parent_ds_ids: list[str] = [
+                            ds_id
+                            for ds_id in all_dataset_ids
+                            if (self.ds.get_domain(ds_id) == self.ds.get_rdomain(self.dataset_id))
                         ]
                 # find parent of other datasets
-                elif domain_name == self._dataset_metadata.domain or domain_name == self._dataset_metadata.name:
-                    file_infos: list[SDTMDatasetMetadata] = self._find_parent_dataset(datasets, domain_details)
+                elif domain_name == self.ds.get_domain(self.dataset_id):
+                    # elif domain_name == self._dataset_metadata.domain or domain_name == self._dataset_metadata.name:
+                    parent_ds_ids: list[str] = self._find_parent_dataset(all_dataset_ids, domain_details)
             else:
                 if self._is_split_domain(domain_name):
                     continue
-                file_infos: list[SDTMDatasetMetadata] = [
-                    item
-                    for item in datasets
+                parent_ds_ids: list[str] = [
+                    ds_id
+                    for ds_id in all_dataset_ids
                     if (
-                        item.domain == domain_name
-                        or item.name == domain_name
-                        or item.unsplit_name == domain_name
+                        self.ds.get_domain(ds_id) == domain_name
+                        or self.ds.get_unsplit_name(ds_id) == domain_name
                         or (
                             domain_name == "SUPP--"
-                            and (not self._dataset_metadata.is_supp)
-                            and item.rdomain == self._dataset_metadata.domain
+                            and (not self.ds.is_supplemental_dataset(self.dataset_id))
+                            and self.ds.get_rdomain(ds_id) == self.ds.get_domain(ds_id)
                         )
+                        # item.domain == domain_name
+                        # or item.name == domain_name
+                        # or item.unsplit_name == domain_name
+                        # or (
+                        #     domain_name == "SUPP--"
+                        #     and (not self._dataset_metadata.is_supp)
+                        #     and item.rdomain == self._dataset_metadata.domain
+                        # )
                     )
                 ]
-            for file_info in file_infos:
-                if file_info.domain in merged_domains:
+            for parents_ds_id in parent_ds_ids:
+                if self.ds.get_domain(parents_ds_id) in merged_domains:
                     continue
-                filename = get_dataset_name_from_details(file_info)
-                other_dataset: DatasetInterface = self._download_dataset(filename)
+                # filename = get_dataset_name_from_details(parents_ds_id)
+                # other_dataset: DatasetInterface = self._download_dataset(filename)
                 referenced_targets = set(
                     [
                         target.replace(f"{domain_name}.", "")
@@ -115,10 +128,10 @@ class SQLDatasetPreprocessor:
                         left_dataset=result,
                         left_dataset_domain_name=self._dataset_metadata.domain,
                         right_dataset=other_dataset,
-                        right_dataset_domain_name=file_info.domain,
+                        right_dataset_domain_name=parents_ds_id.domain,
                         match_keys=domain_details.get("match_key"),
                     )
-                    merged_domains.add(file_info.domain)
+                    merged_domains.add(parents_ds_id.domain)
                 else:
                     result = self._merge_datasets(
                         left_dataset=result,
@@ -130,28 +143,30 @@ class SQLDatasetPreprocessor:
         logger.info(f"Dataset after preprocessing = {result}")
         return result
 
-    def _find_parent_dataset(
-        self, datasets: Iterable[SDTMDatasetMetadata], domain_details: dict
-    ) -> SDTMDatasetMetadata:
+    def _find_parent_dataset(self, all_dataset_ids: list[str], domain_details: dict) -> list[str]:
         matching_datasets = []
-        if "RDOMAIN" in self._dataset.columns:
-            rdomain_column = self._dataset.data["RDOMAIN"]
+        if "RDOMAIN" in self.ds.get_dataset_variables(self.dataset_id):
+            rdomain_column = self.ds.get_col_values_from_data(self.dataset_id)
+            # rdomain_column = self._dataset.data["RDOMAIN"]
             unique_domains = set(rdomain_column.unique())
-            for dataset in datasets:
-                if dataset.domain in unique_domains:
-                    matching_datasets.append(dataset)
+            for ds_id in all_dataset_ids:
+                if self.ds.get_domain(ds_id) in unique_domains:
+                    matching_datasets.append(ds_id)
         else:
             match_keys = domain_details.get("match_key")
-            for dataset in datasets:
-                has_all_match_keys = all(match_key in dataset.first_record for match_key in match_keys)
+            for ds_id in all_dataset_ids:
+                # TODO: replace logic and just get the column names and see if they match
+                has_all_match_keys = all(match_key in self.ds.get_dataset_variables(ds_id) for match_key in match_keys)
+                # has_all_match_keys = all(match_key in dataset.first_record for match_key in match_keys)
                 if has_all_match_keys:
-                    matching_datasets.append(dataset)
+                    matching_datasets.append(ds_id)
         if not matching_datasets:
             logger.warning(f"Child specified in match but no parent datasets found for: {domain_details}")
         return matching_datasets
 
     def _is_split_domain(self, domain: str) -> bool:
-        return domain == self._dataset_metadata.unsplit_name
+        return domain == self.ds.get_unsplit_name(self.dataset_id)
+        # return domain == self._dataset_metadata.unsplit_name
 
     def _download_dataset(self, filename: str) -> DatasetInterface:
         return self._data_service.get_dataset(
@@ -231,7 +246,7 @@ class SQLDatasetPreprocessor:
                 left_dataset=left_dataset,
                 right_dataset=right_dataset,
             )
-        elif self._rule_processor.is_relationship_dataset(right_dataset_domain_name):
+        elif self.rule_processor.is_relationship_dataset(right_dataset_domain_name):
             result: DatasetInterface = DataProcessor.merge_relationship_datasets(
                 left_dataset=left_dataset,
                 left_dataset_match_keys=left_dataset_match_keys,

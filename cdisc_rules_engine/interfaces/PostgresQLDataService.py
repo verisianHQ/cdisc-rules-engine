@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Optional, Union
 import pandas as pd
 import pandasql as ps
@@ -17,12 +18,12 @@ class PostgresQLDataService(SQLDataService):
         datasets_path: Path = None,
         define_xml_path: Path = None,
         terminology_paths: dict = None,
-        content_dfs: dict[pd.DataFrame] = None,
+        data_dfs: dict[str, pd.DataFrame] = None,
         metadata_df: pd.DataFrame = None,
         library_metadata: LibraryMetadataContainer = None,
     ):
         super().__init__(datasets_path, define_xml_path, terminology_paths)
-        self.content_dfs = content_dfs
+        self.data_dfs = data_dfs
         self.metadata_df = metadata_df
         self.library_metadata = library_metadata if library_metadata else LibraryMetadataContainer()
         self.psql = ps.PandaSQL()
@@ -40,13 +41,13 @@ class PostgresQLDataService(SQLDataService):
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables, setting path to "memory"
         """
-        content_dfs = {}
+        data_dfs = {}
         metadata_df = pd.DataFrame()
         for test_dataset in test_datasets:
             # Collect content
-            cdf = pd.DataFrame.from_records(test_dataset["records"])
-            cdf.columns = [col.lower() for col in cdf.columns]
-            content_dfs[test_dataset["filename"]] = cdf
+            ddf = pd.DataFrame.from_records(test_dataset["records"])
+            ddf.columns = [col.lower() for col in ddf.columns]
+            data_dfs[test_dataset["filename"]] = ddf
 
             # Collect variable metadata
             for test_variable in test_dataset["variables"]:
@@ -63,7 +64,7 @@ class PostgresQLDataService(SQLDataService):
                 )
                 metadata_df = pd.concat([metadata_df, new_row], ignore_index=True)
 
-        return cls(datasets_path, define_xml_path, terminology_paths, content_dfs, metadata_df, library_metadata)
+        return cls(datasets_path, define_xml_path, terminology_paths, data_dfs, metadata_df, library_metadata)
 
     def _create_sql_tables_from_dataset_paths(self) -> None:
         """
@@ -114,6 +115,24 @@ class PostgresQLDataService(SQLDataService):
         domain = result_df["domain"].iat[0]
         return domain.startswith(SUPPLEMENTARY_DOMAINS)
 
+    def get_uploaded_domains(self) -> list[str]:
+        metadata_df = self.metadata_df
+        query = "SELECT DISTINCT domain FROM metadata_df"
+        result_df = self._safe_psql(query, {"metadata_df": metadata_df})
+        if result_df.empty:
+            return False
+        domains = result_df["domain"].to_list()
+        return domains
+
+    def get_uploaded_dataset_ids(self) -> list[str]:
+        metadata_df = self.metadata_df
+        query = "SELECT DISTINCT dataset_id FROM metadata_df"
+        result_df = self._safe_psql(query, {"metadata_df": metadata_df})
+        if result_df.empty:
+            return False
+        domains = result_df["dataset_id"].to_list()
+        return domains
+
     # TODO: implement once we get an answer from Sam/Gerry
     def is_split_dataset(self, dataset_id: str) -> bool:
         return False
@@ -137,13 +156,13 @@ class PostgresQLDataService(SQLDataService):
         """
         Return dataset rdomain based on dataset_id.
         """
-        return self._get_val_from_var_from_data(dataset_id, "rdomain")
+        return self._get_first_col_value_from_data(dataset_id, "rdomain")
 
     def get_filename(self, dataset_id: str) -> Union[str, None]:
         """
         Return dataset filename based on dataset_id.
         """
-        return self._get_val_from_var_from_data(dataset_id, "filename")
+        return self._get_first_col_value_from_data(dataset_id, "filename")
 
     def _safe_psql(self, query: str, env: dict) -> pd.DataFrame:
         try:
@@ -165,8 +184,8 @@ class PostgresQLDataService(SQLDataService):
         ret = result_df[col].iat[0]
         return ret
 
-    def _get_val_from_var_from_data(self, dataset_id: str, col: str) -> Union[str, None]:
-        dataset = self.content_dfs.get(dataset_id, None)
+    def _get_first_col_value_from_data(self, dataset_id: str, col: str) -> Union[str, None]:
+        dataset = self.data_dfs.get(dataset_id, None)
         if dataset is None:
             return None
         query = f"""
@@ -178,6 +197,20 @@ class PostgresQLDataService(SQLDataService):
         if result_df.empty:
             return None
         ret = result_df[col].iat[0]
+        return ret
+
+    def get_col_values_from_data(self, dataset_id: str, col: str) -> list[any, None]:
+        dataset = self.data_dfs.get(dataset_id, None)
+        if dataset is None:
+            return None
+        query = f"""
+            SELECT {col}
+            FROM dataset
+        """
+        result_df = self._safe_psql(query, {"dataset": dataset})
+        if result_df.empty:
+            return None
+        ret = result_df[col].to_list()
         return ret
 
     # TODO: once we have a standards data model for the standard metadata,
@@ -222,3 +255,31 @@ class PostgresQLDataService(SQLDataService):
         #     return self._get_associated_persons_inherit_class(file_path, datasets, dataset_metadata.domain)
         # return None
         return ""
+
+    # TODO: resolve this
+    def get_variable_codelist_map(self) -> dict:
+        return {}
+
+    # TODO: resolve this
+    def get_all_ct_package_metadata(self) -> list:
+        return {}
+
+    # TODO: resolve this
+    def get_dataset_variables(self) -> list[str]:
+        return {}
+
+    # TODO: resolve this
+    def get_ig_variables_metadata(self) -> list:
+        return {}
+
+    # TODO: resolve this
+    def get_define_xml_variables_metadata(self, dataset_id: str) -> list[dict]:
+        # fpath = self.get_full_path(dataset_id)
+        # name = self.get_unsplit_name(dataset_id)
+        return [{}]
+
+    # TODO: resolve this
+    def get_define_xml_value_level_metadata(self, dataset_id: str) -> list[dict]:
+        # fpath = self.get_full_path(dataset_id)
+        # name = self.get_unsplit_name(dataset_id)
+        return [{}]
