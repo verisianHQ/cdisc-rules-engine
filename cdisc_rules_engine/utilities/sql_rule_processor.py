@@ -531,7 +531,6 @@ class SQLRuleProcessor:
     def is_suitable_for_validation(
         self,
         rule: dict,
-        dataset_metadata: SDTMDatasetMetadata,
         sql_dataset_metadata: SQLDatasetMetadata,
         datasets: Iterable[SDTMDatasetMetadata],
         standard,

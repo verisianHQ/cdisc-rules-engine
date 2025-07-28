@@ -103,7 +103,6 @@ class SQLRulesEngine:
 
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
-                dataset_metadata,
                 sql_dataset_metadata,
                 datasets,
                 self.standard,
@@ -253,14 +252,13 @@ class SQLRulesEngine:
         kwargs["ct_packages"] = list(self.ct_packages)
 
         logger.info(f"Using dataset build by: {builder.__class__}")
-        return self.execute_rule(rule, dataset, datasets, dataset_metadata, sql_dataset_metadata, **kwargs)
+        return self.execute_rule(rule, dataset, datasets, sql_dataset_metadata, **kwargs)
 
     def execute_rule(
         self,
         rule: dict,
         dataset: DatasetInterface,
         datasets: Iterable[SDTMDatasetMetadata],
-        dataset_metadata: SDTMDatasetMetadata,
         sql_dataset_metadata: SQLDatasetMetadata,
         value_level_metadata: List[dict] = None,
         variable_codelist_map: dict = None,
@@ -315,7 +313,7 @@ class SQLRulesEngine:
             defined_actions=SQLCOREActions(
                 results,
                 variable=dataset_variable,
-                sql_dataset_metadata=dataset_metadata,
+                sql_dataset_metadata=sql_dataset_metadata,
                 rule=rule,
                 value_level_metadata=value_level_metadata,
             ),
