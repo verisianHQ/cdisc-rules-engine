@@ -315,7 +315,7 @@ class SQLRulesEngine:
             defined_actions=SQLCOREActions(
                 results,
                 variable=dataset_variable,
-                dataset_metadata=dataset_metadata,
+                sql_dataset_metadata=dataset_metadata,
                 rule=rule,
                 value_level_metadata=value_level_metadata,
             ),

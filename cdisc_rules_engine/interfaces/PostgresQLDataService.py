@@ -5,6 +5,7 @@ import pandasql as ps
 
 from pathlib import Path
 
+from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
 from cdisc_rules_engine.interfaces.SQLDataService import SQLDataService
 from cdisc_rules_engine.models.TestDataset import TestDataset
 
@@ -17,6 +18,7 @@ class SQLDatasetMetadata:
     dataset_name: str
     dataset_label: str
     domain: str
+    is_supp: bool
     rdomain: str
     variables: list[str]
 
@@ -144,6 +146,7 @@ class PostgresQLDataService(SQLDataService):
             dataset_name=result_df["dataset_name"].iloc[0],
             dataset_label=result_df["dataset_label"].iloc[0],
             domain=result_df["domain"].iloc[0],
+            is_supp=str(result_df["domain"].iloc[0]).startswith(SUPPLEMENTARY_DOMAINS),
             rdomain=self.get_rdomain(result_df["dataset_id"].iloc[0]),
             variables=result_df["name"].to_list(),
         )
