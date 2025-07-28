@@ -57,7 +57,7 @@ class PostgresQLDataService(SQLDataService):
         for test_dataset in test_datasets:
             # Collect content
             ddf = pd.DataFrame.from_records(test_dataset["records"])
-            ddf.columns = [col.lower() for col in ddf.columns]
+            ddf.columns = [col for col in ddf.columns]
             data_dfs[test_dataset["name"]] = ddf
 
             # Collect variable metadata
