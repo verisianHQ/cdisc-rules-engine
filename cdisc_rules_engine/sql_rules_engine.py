@@ -116,9 +116,7 @@ class SQLRulesEngine:
                 #         continue  # handling split datasets
                 # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
                 results[sql_dataset_metadata.domain] = self.validate_single_dataset(
-                    rule,
-                    datasets,
-                    dataset_metadata,
+                    rule, datasets, dataset_metadata, sql_dataset_metadata
                 )
             else:
                 logger.info(f"Skipped dataset {sql_dataset_metadata.dataset_name}. Reason: {reason}")
@@ -147,7 +145,7 @@ class SQLRulesEngine:
             f"rule={rule}. dataset_path={sql_dataset_metadata.filepath}. datasets={self.ds.get_uploaded_dataset_ids()}."
         )
         try:
-            result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
+            result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata, sql_dataset_metadata)
             logger.info(f"Validated dataset {sql_dataset_metadata.dataset_name}. Result = {result}")
             if result:
                 return result
