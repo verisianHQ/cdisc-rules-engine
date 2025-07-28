@@ -253,7 +253,7 @@ class SQLRulesEngine:
         kwargs["ct_packages"] = list(self.ct_packages)
 
         logger.info(f"Using dataset build by: {builder.__class__}")
-        return self.execute_rule(rule, dataset, datasets, dataset_metadata, **kwargs)
+        return self.execute_rule(rule, dataset, datasets, dataset_metadata, sql_dataset_metadata, **kwargs)
 
     def execute_rule(
         self,
@@ -261,6 +261,7 @@ class SQLRulesEngine:
         dataset: DatasetInterface,
         datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
+        sql_dataset_metadata: SQLDatasetMetadata,
         value_level_metadata: List[dict] = None,
         variable_codelist_map: dict = None,
         codelist_term_maps: list = None,
@@ -285,14 +286,15 @@ class SQLRulesEngine:
         # Adding copy for now to avoid updating cached dataset
         dataset = deepcopy(dataset)
         # preprocess dataset
-        dataset_preprocessor = SQLDatasetPreprocessor(dataset, dataset_metadata, self.data_service, self.cache)
+        dataset_preprocessor = SQLDatasetPreprocessor(dataset, sql_dataset_metadata, self.data_service, self.cache)
         dataset = dataset_preprocessor.preprocess(rule_copy, datasets)
         dataset = self.rule_processor.perform_rule_operations(
             rule_copy,
             dataset,
-            dataset_metadata.unsplit_name,
+            # TODO: this used to be: dataset_metadata.unsplit_name, so beware!
+            sql_dataset_metadata.dataset_name,
             datasets,
-            dataset_metadata.full_path,
+            sql_dataset_metadata.filepath,
             standard=self.standard,
             standard_version=self.standard_version,
             standard_substandard=self.standard_substandard,
@@ -301,7 +303,7 @@ class SQLRulesEngine:
         )
         dataset_variable = DatasetVariable(
             dataset,
-            column_prefix_map={"--": dataset_metadata.domain},
+            column_prefix_map={"--": sql_dataset_metadata.domain},
             value_level_metadata=value_level_metadata,
             column_codelist_map=variable_codelist_map,
             codelist_term_maps=codelist_term_maps,

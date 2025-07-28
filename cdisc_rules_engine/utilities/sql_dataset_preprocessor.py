@@ -1,5 +1,6 @@
 from typing import Iterable, List
 
+from cdisc_rules_engine.interfaces.PostgresQLDataService import SQLDatasetMetadata
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 
@@ -27,12 +28,12 @@ class SQLDatasetPreprocessor:
     def __init__(
         self,
         dataset: DatasetInterface,
-        dataset_metadata: SDTMDatasetMetadata,
+        sql_dataset_metadata: SQLDatasetMetadata,
         data_service: DataServiceInterface,
         cache_service: CacheServiceInterface,
     ):
         self._dataset: DatasetInterface = dataset
-        self._dataset_metadata: SDTMDatasetMetadata = dataset_metadata
+        self._sql_dataset_metadata: SDTMDatasetMetadata = sql_dataset_metadata
         self._data_service = data_service
         self._rule_processor = SQLRuleProcessor(self._data_service, cache_service)
 
