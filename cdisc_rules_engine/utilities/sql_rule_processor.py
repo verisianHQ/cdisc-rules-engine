@@ -39,9 +39,6 @@ from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.models.external_dictionaries_container import (
     ExternalDictionariesContainer,
 )
-from cdisc_rules_engine.interfaces.data_service_interface import (
-    DataServiceInterface,
-)
 
 # from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 
@@ -49,11 +46,9 @@ from cdisc_rules_engine.interfaces.data_service_interface import (
 class SQLRuleProcessor:
     def __init__(
         self,
-        data_service: DataServiceInterface,
         cache: CacheServiceInterface,
         library_metadata: LibraryMetadataContainer = None,
     ):
-        self.data_service = data_service
         self.cache = cache
         self.library_metadata = library_metadata
 

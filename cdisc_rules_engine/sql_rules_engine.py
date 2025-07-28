@@ -19,7 +19,6 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
 from cdisc_rules_engine.interfaces import (
     CacheServiceInterface,
     ConfigInterface,
-    DataServiceInterface,
 )
 from cdisc_rules_engine.interfaces.PostgresQLDataService import PostgresQLDataService
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
@@ -56,16 +55,14 @@ import traceback
 class SQLRulesEngine:
     def __init__(
         self,
-        ds: PostgresQLDataService,
+        data_service: PostgresQLDataService,
         cache: CacheServiceInterface = None,
-        data_service: DataServiceInterface = None,
         config_obj: ConfigInterface = None,
         external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
         **kwargs,
     ):
         self.config = config_obj or default_config
         self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
-        self.data_service = data_service
 
         self.standard = kwargs.get("standard")
         self.standard_version = (kwargs.get("standard_version") or "").replace(".", "-")
@@ -83,11 +80,11 @@ class SQLRulesEngine:
         self.external_dictionaries = external_dictionaries
         self.define_xml_path: str = kwargs.get("define_xml_path")
         self.validate_xml: bool = kwargs.get("validate_xml")
-        self.data_processor = SQLDataProcessor(self.data_service, self.cache)
+        self.data_processor = SQLDataProcessor(self.cache)
 
         # this stays
-        self.rule_processor = SQLRuleProcessor(self.data_service, self.cache)
-        self.ds = ds
+        self.rule_processor = SQLRuleProcessor(self.cache)
+        self.data_service = data_service
 
     def get_schema(self):
         return export_rule_data(DatasetVariable, SQLCOREActions)
@@ -96,9 +93,9 @@ class SQLRulesEngine:
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         # for dataset_metadata in datasets:
-        for pp_ds_id in self.ds.pre_processed_dfs.keys():
+        for pp_ds_id in self.data_service.pre_processed_dfs.keys():
             # pp_ds_id = dataset_metadata.name
-            sql_dataset_metadata = self.ds.get_dataset_metadata(pp_ds_id)
+            sql_dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
 
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
@@ -137,7 +134,8 @@ class SQLRulesEngine:
         """
         logger.info(
             f"Validating {sql_dataset_metadata.dataset_name}. "
-            f"rule={rule}. dataset_path={sql_dataset_metadata.filepath}. datasets={self.ds.get_uploaded_dataset_ids()}."
+            f"rule={rule}. dataset_path={sql_dataset_metadata.filepath}. "
+            f"datasets={self.data_service.get_uploaded_dataset_ids()}."
         )
         try:
             result: List[Union[dict, str]] = self.validate_rule(rule, sql_dataset_metadata)
@@ -300,7 +298,7 @@ class SQLRulesEngine:
         # VENMO ENGINE START - this is actually rule-specific, so it belongs here
         #  TODO: pass in dataservice
         validation_dataset = SQLVariable(
-            PandasDataset(self.ds.data_dfs.get(processed_ds_id)),
+            PandasDataset(self.data_service.data_dfs.get(processed_ds_id)),
             column_prefix_map={"--": sql_dataset_metadata.domain},
             value_level_metadata=value_level_metadata,
             column_codelist_map=variable_codelist_map,
