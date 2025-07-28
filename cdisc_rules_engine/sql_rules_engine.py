@@ -6,7 +6,8 @@ from business_rules.engine import run
 import os
 from cdisc_rules_engine.config import config as default_config
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
-from cdisc_rules_engine.enums.rule_types import RuleTypes
+
+# from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.exceptions.custom_exceptions import (
     DatasetNotFoundError,
     DomainNotFoundInDefineXMLError,
@@ -20,22 +21,23 @@ from cdisc_rules_engine.interfaces import (
     ConfigInterface,
     DataServiceInterface,
 )
-from cdisc_rules_engine.models.actions import COREActions
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset_variable import DatasetVariable
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
     ConditionCompositeFactory,
 )
+from cdisc_rules_engine.models.sql_actions import SQLCOREActions
 from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.cache import CacheServiceFactory
 from cdisc_rules_engine.services.data_services import DataServiceFactory
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
-    DefineXMLReaderFactory,
-)
+
+# from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
+#     DefineXMLReaderFactory,
+# )
 from cdisc_rules_engine.utilities.sql_data_processor import SQLDataProcessor
 from cdisc_rules_engine.utilities.sql_dataset_preprocessor import SQLDatasetPreprocessor
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
@@ -92,7 +94,7 @@ class SQLRulesEngine:
         self.validate_xml: bool = kwargs.get("validate_xml")
 
     def get_schema(self):
-        return export_rule_data(DatasetVariable, COREActions)
+        return export_rule_data(DatasetVariable, SQLCOREActions)
 
     def sql_validate_single_rule(self, rule: dict, datasets: Iterable[SDTMDatasetMetadata]):
         results = {}
@@ -217,33 +219,33 @@ class SQLRulesEngine:
         if self.library_metadata:
             kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
             kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
-        if rule.get("rule_type") == RuleTypes.DEFINE_ITEM_METADATA_CHECK.value:
-            if self.library_metadata:
-                kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-                kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
-        elif (
-            rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value
-            or rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value
-        ):
-            self.rule_processor.add_comparator_to_rule_conditions(rule, comparator=None, target_prefix="define_")
-        elif rule.get("rule_type") == RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value:
-            value_level_metadata: List[dict] = self.get_define_xml_value_level_metadata(
-                dataset_metadata.full_path, dataset_metadata.unsplit_name
-            )
-            kwargs["value_level_metadata"] = value_level_metadata
+        # if rule.get("rule_type") == RuleTypes.DEFINE_ITEM_METADATA_CHECK.value:
+        #     if self.library_metadata:
+        #         kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
+        #         kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
+        # elif (
+        #     rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value
+        #     or rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value
+        # ):
+        #     self.rule_processor.add_comparator_to_rule_conditions(rule, comparator=None, target_prefix="define_")
+        # elif rule.get("rule_type") == RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value:
+        #     value_level_metadata: List[dict] = self.get_define_xml_value_level_metadata(
+        #         dataset_metadata.full_path, dataset_metadata.unsplit_name
+        #     )
+        #     kwargs["value_level_metadata"] = value_level_metadata
 
-        elif rule.get("rule_type") == RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value:
-            library_metadata: dict = self.library_metadata.variables_metadata.get(dataset_metadata.domain, {})
-            define_metadata: List[dict] = builder.get_define_xml_variables_metadata()
-            targets: List[str] = self.data_processor.filter_dataset_columns_by_metadata_and_rule(
-                dataset.columns.tolist(), define_metadata, library_metadata, rule
-            )
-            rule_copy = deepcopy(rule)
-            updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
-            rule_copy["conditions"].set_conditions(updated_conditions)
-            # When duplicating conditions,
-            # rule should be copied to prevent updates to concurrent rule executions
-            return self.execute_rule(rule_copy, dataset, datasets, dataset_metadata, **kwargs)
+        # elif rule.get("rule_type") == RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value:
+        #     library_metadata: dict = self.library_metadata.variables_metadata.get(dataset_metadata.domain, {})
+        #     define_metadata: List[dict] = builder.get_define_xml_variables_metadata()
+        #     targets: List[str] = self.data_processor.filter_dataset_columns_by_metadata_and_rule(
+        #         dataset.columns.tolist(), define_metadata, library_metadata, rule
+        #     )
+        #     rule_copy = deepcopy(rule)
+        # updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
+        #     rule_copy["conditions"].set_conditions(updated_conditions)
+        #     # When duplicating conditions,
+        #     # rule should be copied to prevent updates to concurrent rule executions
+        #     return self.execute_rule(rule_copy, dataset, datasets, dataset_metadata, **kwargs)
 
         kwargs["ct_packages"] = list(self.ct_packages)
 
@@ -305,7 +307,7 @@ class SQLRulesEngine:
         run(
             serialize_rule(rule_copy),  # engine expects a JSON serialized dict
             defined_variables=dataset_variable,
-            defined_actions=COREActions(
+            defined_actions=SQLCOREActions(
                 results,
                 variable=dataset_variable,
                 dataset_metadata=dataset_metadata,
@@ -315,14 +317,14 @@ class SQLRulesEngine:
         )
         return results
 
-    def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
-        """
-        Gets Define XML variable metadata and returns it as dataframe.
-        """
-        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
-            dataset_path, self.define_xml_path, self.data_service, self.cache
-        )
-        return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
+    # def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
+    #     """
+    #     Gets Define XML variable metadata and returns it as dataframe.
+    #     """
+    #     define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+    #         dataset_path, self.define_xml_path, self.data_service, self.cache
+    #     )
+    #     return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
 
     def handle_validation_exceptions(self, exception, dataset_path, file_name) -> ValidationErrorContainer:  # noqa
         if isinstance(exception, DatasetNotFoundError):
