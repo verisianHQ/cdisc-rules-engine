@@ -183,7 +183,6 @@ class SQLRulesEngine:
         rule: dict,
         datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
-        sql_dataset_metadata: SQLDatasetMetadata,
     ):
         return builder_factory.get_service(
             rule.get("rule_type"),
@@ -194,7 +193,7 @@ class SQLRulesEngine:
             rule_processor=self.rule_processor,
             dataset_metadata=dataset_metadata,
             datasets=datasets,
-            dataset_path=sql_dataset_metadata.filepath,
+            dataset_path=dataset_metadata.filepath,
             define_xml_path=self.define_xml_path,
             standard=self.standard,
             standard_version=self.standard_version,
@@ -215,7 +214,7 @@ class SQLRulesEngine:
         It defines a rule validator based on its type and calls it.
         """
         kwargs = {}
-        builder = self.get_dataset_builder(rule, datasets, dataset_metadata, sql_dataset_metadata)
+        builder = self.get_dataset_builder(rule, datasets, dataset_metadata)
         dataset = builder.get_dataset()
         # Update rule for certain rule types
         # SPECIAL CASES FOR RULE TYPES ###############################
