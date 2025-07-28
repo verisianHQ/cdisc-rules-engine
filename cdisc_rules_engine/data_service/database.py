@@ -25,7 +25,7 @@ class DatabaseConfig:
 class Database:
     """Database connection management with connection pooling"""
 
-    def __init__(self, config: DatabaseConfig):
+    def __init__(self, config: DatabaseConfig = DatabaseConfig()):
         self.config = config
         self._pool: Optional[psycopg2.pool.SimpleConnectionPool] = None
         self._init_pool()

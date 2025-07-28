@@ -9,10 +9,10 @@ class SQLCompiler:
         """Compile multiple SQL statements into a single execution string"""
         cleaned = [stmt.strip() for stmt in statements if stmt.strip()]
 
-        normalized = []
+        normalised = []
         for stmt in cleaned:
             if not stmt.endswith(";"):
                 stmt += ";"
-            normalized.append(stmt)
+            normalised.append(stmt)
 
-        return "\n".join(normalized)
+        return "\n".join(normalised)
