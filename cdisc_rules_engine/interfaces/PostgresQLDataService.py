@@ -120,6 +120,15 @@ class PostgresQLDataService(SQLDataService):
         """
         pass
 
+    def get_uploaded_dataset_ids(self) -> list[str]:
+        metadata_df = self.metadata_df
+        query = "SELECT DISTINCT dataset_id FROM metadata_df"
+        result_df = self._safe_psql(query, {"metadata_df": metadata_df})
+        if result_df.empty:
+            return False
+        domains = result_df["dataset_id"].to_list()
+        return domains
+
     def get_dataset_metadata(self, dataset_id: str) -> SQLDatasetMetadata:
         metadata_df = self.metadata_df
         query = f"""

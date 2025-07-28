@@ -20,8 +20,8 @@ from cdisc_rules_engine.interfaces import (
     CacheServiceInterface,
     ConfigInterface,
     DataServiceInterface,
-    PostgresQLDataService,
 )
+from cdisc_rules_engine.interfaces.PostgresQLDataService import PostgresQLDataService
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.dataset_variable import DatasetVariable
@@ -50,6 +50,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
     ExternalDictionariesContainer,
 )
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
+from cdisc_rules_engine.interfaces.PostgresQLDataService import SQLDatasetMetadata
 import traceback
 
 
@@ -135,18 +136,19 @@ class SQLRulesEngine:
         rule: dict,
         datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
+        sql_dataset_metadata: SQLDatasetMetadata,
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint to validation process.
         It validates a given rule against datasets.
         """
         logger.info(
-            f"Validating {dataset_metadata.name}. "
-            f"rule={rule}. dataset_path={dataset_metadata.full_path}. datasets={datasets}."
+            f"Validating {sql_dataset_metadata.dataset_name}. "
+            f"rule={rule}. dataset_path={sql_dataset_metadata.filepath}. datasets={self.ds.get_uploaded_dataset_ids()}."
         )
         try:
             result: List[Union[dict, str]] = self.validate_rule(rule, datasets, dataset_metadata)
-            logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
+            logger.info(f"Validated dataset {sql_dataset_metadata.dataset_name}. Result = {result}")
             if result:
                 return result
             else:
@@ -154,8 +156,8 @@ class SQLRulesEngine:
                 return [
                     ValidationErrorContainer(
                         **{
-                            "dataset": dataset_metadata.filename,
-                            "domain": dataset_metadata.domain or dataset_metadata.rdomain,
+                            "dataset": sql_dataset_metadata.filename,
+                            "domain": sql_dataset_metadata.domain or sql_dataset_metadata.rdomain,
                             "errors": [],
                         }
                     ).to_representation()
@@ -172,9 +174,9 @@ class SQLRulesEngine:
             """
             )
             error_obj: ValidationErrorContainer = self.handle_validation_exceptions(
-                e, dataset_metadata.full_path, dataset_metadata.full_path
+                e, sql_dataset_metadata.filepath, sql_dataset_metadata.filepath
             )
-            error_obj.domain = dataset_metadata.domain or dataset_metadata.rdomain or ""
+            error_obj.domain = sql_dataset_metadata.domain or sql_dataset_metadata.rdomain or ""
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 
