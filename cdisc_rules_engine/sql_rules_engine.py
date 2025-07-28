@@ -192,7 +192,7 @@ class SQLRulesEngine:
             rule_processor=self.rule_processor,
             dataset_metadata=dataset_metadata,
             datasets=datasets,
-            dataset_path=dataset_metadata.filepath,
+            dataset_path=dataset_metadata.full_path,
             define_xml_path=self.define_xml_path,
             standard=self.standard,
             standard_version=self.standard_version,
