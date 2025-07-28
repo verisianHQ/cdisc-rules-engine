@@ -103,6 +103,7 @@ class SQLRulesEngine:
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
                 dataset_metadata,
+                sql_dataset_metadata,
                 datasets,
                 self.standard,
                 self.standard_substandard,

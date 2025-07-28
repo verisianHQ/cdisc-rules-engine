@@ -10,7 +10,7 @@ from cdisc_rules_engine.models.TestDataset import TestDataset
 
 
 @dataclass
-class DatasetMetadata:
+class SQLDatasetMetadata:
     filename: str
     filepath: str
     dataset_id: str
@@ -120,7 +120,7 @@ class PostgresQLDataService(SQLDataService):
         """
         pass
 
-    def get_dataset_metadata(self, dataset_id: str) -> DatasetMetadata:
+    def get_dataset_metadata(self, dataset_id: str) -> SQLDatasetMetadata:
         metadata_df = self.metadata_df
         query = f"""
             SELECT *
@@ -128,7 +128,7 @@ class PostgresQLDataService(SQLDataService):
             WHERE dataset_id = '{dataset_id}'
         """
         result_df = self._safe_psql(query, {"metadata_df": metadata_df})
-        return DatasetMetadata(
+        return SQLDatasetMetadata(
             filename=result_df["filename"].iloc[0],
             filepath=result_df["filepath"].iloc[0],
             dataset_id=result_df["dataset_id"].iloc[0],

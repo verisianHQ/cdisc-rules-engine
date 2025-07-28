@@ -1,5 +1,6 @@
 import re
 from typing import Iterable, List, Optional, Set, Tuple
+from cdisc_rules_engine.interfaces.PostgresQLDataService import SQLDatasetMetadata
 from cdisc_rules_engine.interfaces.cache_service_interface import (
     CacheServiceInterface,
 )
@@ -531,13 +532,14 @@ class SQLRuleProcessor:
         self,
         rule: dict,
         dataset_metadata: SDTMDatasetMetadata,
+        sql_dataset_metadata: SQLDatasetMetadata,
         datasets: Iterable[SDTMDatasetMetadata],
         standard,
         standard_substandard: str,
     ) -> Tuple[bool, str]:
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
-        dataset_name = dataset_metadata.name
+        dataset_name = sql_dataset_metadata.dataset_name
         # if not self.valid_rule_structure(rule):
         #     reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
         #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
