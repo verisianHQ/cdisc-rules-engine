@@ -209,6 +209,7 @@ class SQLRulesEngine:
         rule: dict,
         datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
+        sql_dataset_metadata: SQLDatasetMetadata,
     ) -> List[Union[dict, str]]:
         """
          This function is an entrypoint for rule validation.
