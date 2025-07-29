@@ -1,4 +1,8 @@
-CREATE TABLE data_metadata (
+CREATE TABLE IF NOT EXISTS public.data_metadata (
+    -- general fields
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
     -- general dataset metadata
     dataset_filename TEXT NOT NULL,
     dataset_filepath TEXT NOT NULL,
@@ -13,7 +17,7 @@ CREATE TABLE data_metadata (
     dataset_is_split BOOLEAN,
     dataset_unsplit_name TEXT NOT NULL,
     -- handle pre-processed dataset information
-    dataset_preprocessed BOOLEAN,
+    dataset_preprocessed TIMESTAMPTZ,
     -- variable metadata
     var_name TEXT NOT NULL,
     var_label TEXT,
@@ -22,7 +26,7 @@ CREATE TABLE data_metadata (
     var_format TEXT
 );
 
-CREATE INDEX idx_data_metadata_dataset_id ON data_metadata(dataset_id);
-CREATE INDEX idx_data_metadata_dataset_name ON data_metadata(dataset_name);
-CREATE INDEX idx_data_metadata_dataset_domain ON data_metadata(dataset_domain);
-CREATE INDEX idx_data_metadata_var_name ON data_metadata(var_name);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_id ON public.data_metadata(dataset_id);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_name ON public.data_metadata(dataset_name);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_domain ON public.data_metadata(dataset_domain);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_var_name ON public.data_metadata(var_name);
