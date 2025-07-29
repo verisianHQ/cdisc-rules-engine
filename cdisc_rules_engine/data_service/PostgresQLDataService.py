@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Union
 import pandas as pd
 import pandasql as ps
@@ -57,6 +58,7 @@ class PostgresQLDataService(SQLDataService):
         """
         data_dfs = {}
         metadata_df = pd.DataFrame()
+        metadata_rows: list[dict[str, Union[str, int, float]]] = []
 
         # PostgresDB setup
         pgi = PostgresQLInterface()
@@ -65,6 +67,8 @@ class PostgresQLDataService(SQLDataService):
         # create metadata table in postgres
         pgi.execute_sql_file(str(Path(__file__).parent / "schemas" / "clinical_data_metadata_schema.sql"))
 
+        # generate timestamp
+        timestamp = datetime.now().astimezone()
         for test_dataset in test_datasets:
             # Collect content
             ddf = pd.DataFrame.from_records(test_dataset["records"])
@@ -73,6 +77,34 @@ class PostgresQLDataService(SQLDataService):
 
             # Collect variable metadata
             for test_variable in test_dataset["variables"]:
+                name = test_dataset["name"]
+                domain = ddf["DOMAIN"].iloc[0] if "DOMAIN" in ddf.columns else None
+                is_supp = test_dataset["name"].startswith(SUPPLEMENTARY_DOMAINS)
+                rdomain = ddf["RDOMAIN"].iloc[0] if is_supp and "RDOMAIN" in ddf.columns else None
+                unsplit_name = PostgresQLDataService._get_unsplit_name(name, domain, rdomain)
+                is_split = name != unsplit_name
+                metadata_rows.append(
+                    {
+                        "created_at": timestamp,
+                        "updated_at": timestamp,
+                        "dataset_filename": test_dataset["filename"],
+                        "dataset_filepath": test_dataset["filepath"],
+                        "dataset_id": name,
+                        "dataset_name": name,
+                        "dataset_label": test_dataset["label"],
+                        "dataset_domain": domain,
+                        "dataset_is_supp": is_supp,
+                        "dataset_rdomain": rdomain,
+                        "dataset_is_split": is_split,
+                        "dataset_unsplit_name": unsplit_name,
+                        "dataset_preprocessed": None,
+                        "var_name": test_variable["name"],
+                        "var_label": test_variable["label"],
+                        "var_type": test_variable["type"],
+                        "var_length": test_variable["length"],
+                        "var_format": test_variable["format"],
+                    }
+                )
                 new_row = pd.DataFrame(
                     {
                         "filename": [test_dataset["filename"]],
@@ -89,6 +121,10 @@ class PostgresQLDataService(SQLDataService):
                     }
                 )
                 metadata_df = pd.concat([metadata_df, new_row], ignore_index=True)
+
+        # write metadata rows into DB
+        pgi.insert_data(table_name="data_metadata", data=metadata_rows)
+
         pre_processed_dfs = PostgresQLDataService._pre_process_data_dfs(data_dfs)
         return cls(pgi, datasets_path, define_xml_path, terminology_paths, data_dfs, pre_processed_dfs, metadata_df)
 
@@ -168,6 +204,19 @@ class PostgresQLDataService(SQLDataService):
         Return dataset rdomain based on dataset_id.
         """
         return self._get_first_col_value_from_data(dataset_id, "RDOMAIN")
+
+    def _get_unsplit_name(
+        name: str,
+        domain: Union[str, None],
+        rdomain: str,
+    ) -> str:
+        if domain:
+            return domain
+        if name.startswith("SUPP"):
+            return f"SUPP{rdomain}"
+        if name.startswith("SQ"):
+            return f"SQ{rdomain}"
+        return name
 
     def _get_first_col_value_from_data(self, dataset_id: str, col: str) -> Union[str, None]:
         dataset = self.data_dfs.get(dataset_id, None)

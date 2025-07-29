@@ -16,4 +16,4 @@ class TestDataset(TypedDict):
     label: str
     domain: str
     variables: List[TestVariableMetadata]
-    records: Dict[str, List[Union[str, int]]]
+    records: Dict[str, List[Union[str, int, float]]]

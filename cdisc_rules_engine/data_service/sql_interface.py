@@ -120,7 +120,9 @@ class PostgresQLInterface:
         self.execute_sql(create_stmt)
         logger.info(f"Table {table_name} created successfully")
 
-    def insert_data(self, table_name: str, data: Union[Dict[str, Any], List[Dict[str, Any]]]) -> Optional[int]:
+    def insert_data(
+        self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
+    ) -> Optional[int]:
         """Insert Python data into a table"""
         if isinstance(data, dict):
             query, values = self.serialiser.insert_dict(table_name, data)

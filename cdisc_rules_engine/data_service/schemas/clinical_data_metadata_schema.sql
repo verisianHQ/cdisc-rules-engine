@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS public.data_metadata (
     dataset_domain TEXT NOT NULL,
     -- handle supplementary dataset information
     dataset_is_supp BOOLEAN,
-    dataset_rdomain TEXT NOT NULL,
+    dataset_rdomain TEXT,
     -- handle split dataset information
     dataset_is_split BOOLEAN,
     dataset_unsplit_name TEXT NOT NULL,
