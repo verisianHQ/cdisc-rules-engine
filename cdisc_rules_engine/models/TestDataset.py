@@ -6,6 +6,7 @@ class TestVariableMetadata(TypedDict):
     label: str
     type: Literal["Char", "Num"]
     length: int
+    format: str
 
 
 class TestDataset(TypedDict):

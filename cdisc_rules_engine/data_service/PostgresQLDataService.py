@@ -7,6 +7,7 @@ from pathlib import Path
 
 from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
 from cdisc_rules_engine.data_service.SQLDataService import SQLDataService
+from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.TestDataset import TestDataset
 
 
@@ -40,6 +41,10 @@ class PostgresQLDataService(SQLDataService):
         self.metadata_df = metadata_df
         self.psql = ps.PandaSQL()
 
+        # PostgresDB setup
+        self.pg = PostgresQLInterface()
+        self.pg.init_database()
+
     @classmethod
     def from_list_of_testdatasets(
         cls,
@@ -54,6 +59,8 @@ class PostgresQLDataService(SQLDataService):
         """
         data_dfs = {}
         metadata_df = pd.DataFrame()
+        # create metadata table
+
         for test_dataset in test_datasets:
             # Collect content
             ddf = pd.DataFrame.from_records(test_dataset["records"])

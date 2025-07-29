@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 from typing import List, Any, Optional, Union, Dict, Tuple
 
 from cdisc_rules_engine.data_service.database import DatabasePostgres, DatabaseConfigPostgres
@@ -9,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class PostgreSQLInterface:
+class PostgresQLInterface:
     """Main interface for database operations"""
 
     def __init__(self, config: Optional[DatabaseConfigPostgres] = None):
@@ -30,6 +31,9 @@ class PostgreSQLInterface:
                 cursor.execute("SELECT version();")
                 version = cursor.fetchone()
                 logger.info(f"Connected to PostgreSQL: {version}")
+
+            # drop all previously generated analysis tables
+            self.execute_sql_file(str(Path(__file__).parent / "schemas" / "drop_analysis_tables.sql"))
 
         except Exception as e:
             logger.error(f"Failed to initialise database: {e}")
@@ -160,6 +164,20 @@ class PostgreSQLInterface:
                     conn.rollback()
                     logger.error(f"Compiled execution failed: {e}")
                     raise
+
+    def execute_sql_file(self, sql_file_path: str) -> None:
+        """
+        Read a .sql file and execute its contents as a single statement block.
+        """
+        if not self.db:
+            raise RuntimeError("Database not initialised. Call init_database() first.")
+        try:
+            with open(sql_file_path, "r", encoding="utf-8") as file:
+                sql_content = file.read()
+            self.compile_and_execute([sql_content])
+        except Exception as e:
+            logger.error(f"Failed to execute schema file: {e}")
+            raise
 
     def close(self):
         """Close database connections"""
