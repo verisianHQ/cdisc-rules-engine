@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Union
 import pandas as pd
-import pandasql as ps
 
 from pathlib import Path
 
@@ -39,7 +38,6 @@ class PostgresQLDataService(SQLDataService):
         super().__init__(datasets_path, define_xml_path, terminology_paths)
         self.data_dfs = data_dfs
         self.pre_processed_dfs = pre_processed_dfs
-        self.psql = ps.PandaSQL()
         self.pgi = postgres_interface
 
     @classmethod
@@ -189,38 +187,3 @@ class PostgresQLDataService(SQLDataService):
         if name.startswith("SQ"):
             return f"SQ{rdomain}"
         return name
-
-    def _get_first_col_value_from_data(self, dataset_id: str, col: str) -> Union[str, None]:
-        dataset = self.data_dfs.get(dataset_id, None)
-        if dataset is None:
-            return None
-        query = f"""
-            SELECT {col}
-            FROM dataset
-            LIMIT 1
-        """
-        result_df = self._safe_psql(query, {"dataset": dataset})
-        if result_df.empty:
-            return None
-        ret = result_df[col].iat[0]
-        return ret
-
-    def _safe_psql(self, query: str, env: dict) -> pd.DataFrame:
-        try:
-            return self.psql(query, env)
-        except ps.PandaSQLException:
-            return pd.DataFrame()
-
-    def _get_val_from_var_from_metadata(self, dataset_id: str, col: str) -> Union[str, None]:
-        metadata_df = self.metadata_df
-        query = f"""
-            SELECT {col}
-            FROM metadata_df
-            WHERE dataset_id = '{dataset_id}'
-            LIMIT 1
-        """
-        result_df = self._safe_psql(query, {"metadata_df": metadata_df})
-        if result_df.empty:
-            return None
-        ret = result_df[col].iat[0]
-        return ret
