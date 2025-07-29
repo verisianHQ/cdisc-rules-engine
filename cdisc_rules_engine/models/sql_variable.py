@@ -27,7 +27,12 @@ class SQLVariable(BaseVariables):
     # common variables
     @sql_rule_variable(label="GET DATASET")
     def get_dataset(self) -> dict:
-        return {"value": self.dataset, **self.params}
+        return {
+            "df": self.dataset,
+            "validation_dataset_id": self.validation_dataset_id,
+            "sql_data_service": self.sql_data_service,
+            **self.params,
+        }
 
     # TODO: fix when results is serialized into a proper python object
     def get_error_rows(self, results) -> DataFrame:
