@@ -65,7 +65,13 @@ class PostgresQLDataService(SQLDataService):
         # generate timestamp
         timestamp = datetime.now().astimezone()
         for test_dataset in test_datasets:
-            # Collect content
+            # Create schema and table:
+            row_dicts = [
+                dict(zip(test_dataset["records"], values)) for values in zip(*test_dataset["records"].values())
+            ]
+            pgi.create_table_from_data(table_name=test_dataset["name"], data=row_dicts[0])
+            pgi.insert_data(table_name=test_dataset["name"], data=row_dicts)
+
             ddf = pd.DataFrame.from_records(test_dataset["records"])
             ddf.columns = [col for col in ddf.columns]
             data_dfs[test_dataset["name"]] = ddf
