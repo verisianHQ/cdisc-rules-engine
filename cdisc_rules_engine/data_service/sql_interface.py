@@ -1,7 +1,7 @@
 import logging
 from typing import List, Any, Optional, Union, Dict, Tuple
 
-from cdisc_rules_engine.data_service.database import Database, DatabaseConfig
+from cdisc_rules_engine.data_service.database import DatabasePostgres, DatabaseConfigPostgres
 from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
 from cdisc_rules_engine.data_service.sql_compiler import SQLCompiler
 
@@ -9,12 +9,12 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class SQLInterface:
+class PostgreSQLInterface:
     """Main interface for database operations"""
 
-    def __init__(self, config: Optional[DatabaseConfig] = None):
-        self.config = config or DatabaseConfig()
-        self.db: Optional[Database] = None
+    def __init__(self, config: Optional[DatabaseConfigPostgres] = None):
+        self.config = config or DatabaseConfigPostgres()
+        self.db: Optional[DatabasePostgres] = None
         self.serialiser = SQLSerialiser()
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
@@ -22,7 +22,7 @@ class SQLInterface:
     def init_database(self):
         """Initialise the database connection"""
         try:
-            self.db = Database(self.config)
+            self.db = DatabasePostgres(self.config)
             logger.info("Database initialised successfully")
 
             # Test connection

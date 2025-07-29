@@ -6,7 +6,7 @@ import pandasql as ps
 from pathlib import Path
 
 from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
-from cdisc_rules_engine.interfaces.SQLDataService import SQLDataService
+from cdisc_rules_engine.data_service.SQLDataService import SQLDataService
 from cdisc_rules_engine.models.TestDataset import TestDataset
 
 
@@ -74,6 +74,7 @@ class PostgresQLDataService(SQLDataService):
                         "label": [test_variable["label"]],
                         "type": [test_variable["type"]],
                         "length": [test_variable["length"]],
+                        "format": [test_variable["format"]],
                     }
                 )
                 metadata_df = pd.concat([metadata_df, new_row], ignore_index=True)
