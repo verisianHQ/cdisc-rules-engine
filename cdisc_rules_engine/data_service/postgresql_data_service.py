@@ -171,9 +171,9 @@ class PostgresQLDataService(SQLDataService):
             dataset_id=results[0].get("dataset_id"),
             dataset_name=results[0].get("dataset_name"),
             dataset_label=results[0].get("dataset_label"),
-            domain=results[0].get("domain"),
-            is_supp=results[0].get("is_supp"),
-            rdomain=results[0].get("rdomain"),
+            domain=results[0].get("dataset_domain"),
+            is_supp=results[0].get("dataset_is_supp"),
+            rdomain=results[0].get("dataset_rdomain"),
             variables=[res["var_name"] for res in results],
         )
 
