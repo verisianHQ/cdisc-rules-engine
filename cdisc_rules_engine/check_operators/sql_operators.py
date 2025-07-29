@@ -501,32 +501,25 @@ class SQLDataframeType(BaseType):
         results = self._where_greater_than_or_equal_to(target_column, comparison_data)
         return self.validation_df.convert_to_series(results)
 
-    # TODO: this is the first operator for our rule, replace with data service
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def greater_than(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
         is_column = other_value.get("value_is_literal", False)
+        comparator = other_value.get("comparator")
         if not is_column:
-            # compare column against scalar
-            comparator = other_value.get("comparator")
-            query = f"""
-            SELECT
-                id,
-                CASE
-                    WHEN CAST({target} AS NUMERIC) > {comparator} THEN true
-                    ELSE false
-                END AS greater_than
-            FROM {self.validation_dataset_id.lower()};
-            """
-            self.sql_data_service.pgi.execute_sql(query=query)
-            sql_results = self.sql_data_service.pgi.fetch_all()
-            # TODO: remove -1 offset once pandas is out
-            series = pd.Series(data={item["id"] - 1: item["greater_than"] for item in sql_results})
+            subquery = f"WHEN CAST({target} AS NUMERIC) > {comparator} THEN true"
         else:
-            # we are comparing two columns
-            print()
-        return series
+            subquery = f"WHEN CAST({target} AS NUMERIC) > CAST({comparator} AS NUMERIC) THEN true"
+        query = f"""
+                SELECT id, CASE {subquery} ELSE false END AS greater_than
+                FROM {self.validation_dataset_id.lower()};
+            """
+        self.sql_data_service.pgi.execute_sql(query=query)
+        sql_results = self.sql_data_service.pgi.fetch_all()
+        # Construct pandas Series (no -1 offset if id is properly 0-based or 1-based consistently)
+        return_series = pd.Series(data={item["id"] - 1: item["greater_than"] for item in sql_results})
+        return return_series
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
