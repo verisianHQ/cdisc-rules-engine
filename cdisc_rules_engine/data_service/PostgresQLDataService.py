@@ -28,6 +28,7 @@ class PostgresQLDataService(SQLDataService):
 
     def __init__(
         self,
+        postgres_interface: PostgresQLInterface,
         datasets_path: Path = None,
         define_xml_path: Path = None,
         terminology_paths: dict = None,
@@ -40,10 +41,7 @@ class PostgresQLDataService(SQLDataService):
         self.pre_processed_dfs = pre_processed_dfs
         self.metadata_df = metadata_df
         self.psql = ps.PandaSQL()
-
-        # PostgresDB setup
-        self.pg = PostgresQLInterface()
-        self.pg.init_database()
+        self.pgi = postgres_interface
 
     @classmethod
     def from_list_of_testdatasets(
@@ -59,7 +57,13 @@ class PostgresQLDataService(SQLDataService):
         """
         data_dfs = {}
         metadata_df = pd.DataFrame()
-        # create metadata table
+
+        # PostgresDB setup
+        pgi = PostgresQLInterface()
+        pgi.init_database()
+
+        # create metadata table in postgres
+        pgi.execute_sql_file(str(Path(__file__).parent / "schemas" / "clinical_data_metadata_schema.sql"))
 
         for test_dataset in test_datasets:
             # Collect content
@@ -86,7 +90,7 @@ class PostgresQLDataService(SQLDataService):
                 )
                 metadata_df = pd.concat([metadata_df, new_row], ignore_index=True)
         pre_processed_dfs = PostgresQLDataService._pre_process_data_dfs(data_dfs)
-        return cls(datasets_path, define_xml_path, terminology_paths, data_dfs, pre_processed_dfs, metadata_df)
+        return cls(pgi, datasets_path, define_xml_path, terminology_paths, data_dfs, pre_processed_dfs, metadata_df)
 
     def _pre_process_data_dfs(data_dfs: dict[pd.DataFrame]) -> dict[pd.DataFrame]:
         # TODO

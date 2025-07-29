@@ -27,7 +27,7 @@ class PostgresQLInterface:
             logger.info("Database initialised successfully")
 
             # Test connection
-            with self.db.get_cursor() as cursor:
+            with self.db.get_connection_and_cursor() as (_, cursor):
                 cursor.execute("SELECT version();")
                 version = cursor.fetchone()
                 logger.info(f"Connected to PostgreSQL: {version}")
@@ -46,24 +46,23 @@ class PostgresQLInterface:
 
         affected_rows = 0
 
-        with self.db.get_connection() as conn:
-            with self.db.get_cursor() as cursor:
-                try:
-                    cursor.execute(query, params)
-                    affected_rows = cursor.rowcount
+        with self.db.get_connection_and_cursor() as (conn, cursor):
+            try:
+                cursor.execute(query, params)
+                affected_rows = cursor.rowcount
 
-                    if query.strip().upper().startswith("SELECT"):
-                        self._last_results = cursor.fetchall()
+                if query.strip().upper().startswith("SELECT"):
+                    self._last_results = cursor.fetchall()
 
-                    if commit:
-                        conn.commit()
+                if commit:
+                    conn.commit()
 
-                    logger.info(f"Executed query successfully. Affected rows: {affected_rows}")
+                logger.info(f"Executed query successfully. Affected rows: {affected_rows}")
 
-                except Exception as e:
-                    conn.rollback()
-                    logger.error(f"Query execution failed: {e}")
-                    raise
+            except Exception as e:
+                conn.rollback()
+                logger.error(f"Query execution failed: {e}")
+                raise
 
         return affected_rows
 
@@ -79,23 +78,22 @@ class PostgresQLInterface:
 
         affected_rows_list = []
 
-        with self.db.get_connection() as conn:
-            with self.db.get_cursor() as cursor:
-                try:
-                    for i, query in enumerate(queries):
-                        params = params_list[i] if params_list else None
-                        cursor.execute(query, params)
-                        affected_rows_list.append(cursor.rowcount)
+        with self.db.get_connection_and_cursor() as (conn, cursor):
+            try:
+                for i, query in enumerate(queries):
+                    params = params_list[i] if params_list else None
+                    cursor.execute(query, params)
+                    affected_rows_list.append(cursor.rowcount)
 
-                    if commit:
-                        conn.commit()
+                if commit:
+                    conn.commit()
 
-                    logger.info(f"Executed {len(queries)} queries successfully")
+                logger.info(f"Executed {len(queries)} queries successfully")
 
-                except Exception as e:
-                    conn.rollback()
-                    logger.error(f"Batch execution failed: {e}")
-                    raise
+            except Exception as e:
+                conn.rollback()
+                logger.error(f"Batch execution failed: {e}")
+                raise
 
         return affected_rows_list
 
@@ -133,18 +131,17 @@ class PostgresQLInterface:
 
             query, values_list = self.serialiser.insert_many_dicts(table_name, data)
 
-            with self.db.get_connection() as conn:
-                with self.db.get_cursor() as cursor:
-                    try:
-                        cursor.executemany(query, values_list)
-                        affected_rows = cursor.rowcount
-                        conn.commit()
-                        logger.info(f"Inserted {affected_rows} rows into {table_name}")
-                        return affected_rows
-                    except Exception as e:
-                        conn.rollback()
-                        logger.error(f"Insert failed: {e}")
-                        raise
+            with self.db.get_connection_and_cursor() as (conn, cursor):
+                try:
+                    cursor.executemany(query, values_list)
+                    affected_rows = cursor.rowcount
+                    conn.commit()
+                    logger.info(f"Inserted {affected_rows} rows into {table_name}")
+                    return affected_rows
+                except Exception as e:
+                    conn.rollback()
+                    logger.error(f"Insert failed: {e}")
+                    raise
 
     def compile_and_execute(self, statements: List[str], commit: bool = True) -> None:
         """Compile multiple statements and execute as a single query"""
@@ -153,17 +150,16 @@ class PostgresQLInterface:
 
         compiled = self.compiler.compile_statements(statements)
 
-        with self.db.get_connection() as conn:
-            with self.db.get_cursor() as cursor:
-                try:
-                    cursor.execute(compiled)
-                    if commit:
-                        conn.commit()
-                    logger.info("Compiled statements executed successfully")
-                except Exception as e:
-                    conn.rollback()
-                    logger.error(f"Compiled execution failed: {e}")
-                    raise
+        with self.db.get_connection_and_cursor() as (conn, cursor):
+            try:
+                cursor.execute(compiled)
+                if commit:
+                    conn.commit()
+                logger.info("Compiled statements executed successfully")
+            except Exception as e:
+                conn.rollback()
+                logger.error(f"Compiled execution failed: {e}")
+                raise
 
     def execute_sql_file(self, sql_file_path: str) -> None:
         """
