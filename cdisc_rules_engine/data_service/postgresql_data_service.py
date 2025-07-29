@@ -50,7 +50,7 @@ class PostgresQLDataService(SQLDataService):
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
-        and create corresponding SQL tables, setting path to "memory"
+        and create corresponding SQL tables
         """
         data_dfs = {}
         metadata_rows: list[dict[str, Union[str, int, float]]] = []
