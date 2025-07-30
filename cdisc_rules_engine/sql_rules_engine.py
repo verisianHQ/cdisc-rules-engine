@@ -78,11 +78,10 @@ class SQLRulesEngine:
                 self.data_service.ig_specs.get("standard_substandard"),
             )
             if is_suitable:
-                # if dataset_metadata.unsplit_name in results and "domains" in rule:
-                #     include_split = rule["domains"].get("include_split_datasets", False)
-                #     if not include_split:
-                #         continue  # handling split datasets
-                # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
+                if sql_dataset_metadata.unsplit_name in results and "domains" in rule:
+                    include_split = rule["domains"].get("include_split_datasets", False)
+                    if not include_split:
+                        continue  # handling split datasets
                 results[sql_dataset_metadata.unsplit_name] = self.validate_single_dataset(rule, sql_dataset_metadata)
             else:
                 logger.info(f"Skipped dataset {sql_dataset_metadata.dataset_name}. Reason: {reason}")
