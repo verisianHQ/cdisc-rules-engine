@@ -72,7 +72,7 @@ class SQLDataframeType(BaseType):
     name = "dataframe"
 
     def __init__(self, data):
-        self.validation_df: DatasetInterface = data["df"]
+        self.validation_df: DatasetInterface = data.get("df", PandasDataset(data=pd.DataFrame()))
         self.validation_dataset_id: str = data["validation_dataset_id"]
         self.sql_data_service: PostgresQLDataService = data["sql_data_service"]
         self.column_prefix_map = data.get("column_prefix_map", {})
@@ -505,12 +505,12 @@ class SQLDataframeType(BaseType):
     @type_operator(FIELD_DATAFRAME)
     def greater_than(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
-        is_column = other_value.get("value_is_literal", False)
+        comparator_is_column = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
-        if not is_column:
-            subquery = f"WHEN CAST({target} AS NUMERIC) > {comparator} THEN true"
-        else:
+        if comparator_is_column:
             subquery = f"WHEN CAST({target} AS NUMERIC) > CAST({comparator} AS NUMERIC) THEN true"
+        else:
+            subquery = f"WHEN CAST({target} AS NUMERIC) > {comparator} THEN true"
         query = f"""
                 SELECT id, CASE {subquery} ELSE false END AS greater_than
                 FROM {self.validation_dataset_id.lower()};
