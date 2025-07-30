@@ -435,21 +435,6 @@ class SQLDataframeType(BaseType):
         series_to_validate = self._get_string_part_series(part_to_validate, length, target)
         return series_to_validate.eq(comparison_data).astype(bool)
 
-    def _where_less_than(self, target, comparison):
-        return np.where(target < comparison, True, False)
-
-    def _where_greater_than(self, target, comparison):
-        return np.where(target > comparison, True, False)
-
-    def _where_less_than_or_equal_to(self, target, comparison):
-        return np.where(target <= comparison, True, False)
-
-    def _where_greater_than_or_equal_to(self, target, comparison):
-        return np.where(target >= comparison, True, False)
-
-    def _to_numeric(self, target, **kwargs):
-        return pd.to_numeric(target, **kwargs)
-
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def less_than(self, other_value):
@@ -470,7 +455,11 @@ class SQLDataframeType(BaseType):
     def greater_than(self, other_value):
         return self._numeric_comparison(other_value, ">")
 
-    def _numeric_comparison(self, other_value: dict, operator: str):
+    def _numeric_comparison(
+        self,
+        other_value: dict,
+        operator: str,
+    ):
         target = self.replace_prefix(other_value.get("target"))
         comparator_is_column = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
