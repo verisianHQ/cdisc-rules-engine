@@ -35,6 +35,7 @@ class SQLVariable(BaseVariables):
         }
 
     # TODO: fix when results is serialized into a proper python object
+    # (https://docs.google.com/document/d/151PkKjumpIBOysETQd9zXkAzvj1fLmvuRkkD0KyAhsg/edit?tab=t.0)
     def get_error_rows(self, results) -> DataFrame:
         data_with_results = self.dataset.copy()
         data_with_results["results"] = results
