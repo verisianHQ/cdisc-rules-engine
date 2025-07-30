@@ -33,17 +33,9 @@ from cdisc_rules_engine.models.validation_error_container import (
 )
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.cache import CacheServiceFactory
-
-# from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
-#     DefineXMLReaderFactory,
-# )
-from cdisc_rules_engine.utilities.sql_data_processor import SQLDataProcessor
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
-)
-from cdisc_rules_engine.models.external_dictionaries_container import (
-    ExternalDictionariesContainer,
 )
 import traceback
 
@@ -54,20 +46,15 @@ class SQLRulesEngine:
         data_service: PostgresQLDataService,
         cache: CacheServiceInterface = None,
         config_obj: ConfigInterface = None,
-        external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
         **kwargs,
     ):
         self.config = config_obj or default_config
         self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
 
         # TODO: move into data service
-        self.dataset_paths = kwargs.get("dataset_paths")
         self.ct_packages = kwargs.get("ct_packages", [])
         self.ct_package = kwargs.get("ct_package")
-        self.external_dictionaries = external_dictionaries
-        self.define_xml_path: str = kwargs.get("define_xml_path")
         self.validate_xml: bool = kwargs.get("validate_xml")
-        self.data_processor = SQLDataProcessor(self.cache)
 
         # this stays
         self.rule_processor = SQLRuleProcessor(self.cache)
@@ -236,7 +223,6 @@ class SQLRulesEngine:
             standard=self.data_service.ig_specs.get("standard"),
             standard_version=self.data_service.ig_specs.get("standard_version"),
             standard_substandard=self.data_service.ig_specs.get("standard_substandard"),
-            external_dictionaries=self.external_dictionaries,
             ct_packages=ct_packages,
         )
 

@@ -36,9 +36,6 @@ from cdisc_rules_engine.services import logger
 #     search_in_list_of_dicts,
 #     get_dataset_name_from_details,
 # )
-from cdisc_rules_engine.models.external_dictionaries_container import (
-    ExternalDictionariesContainer,
-)
 
 # from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 
@@ -289,7 +286,7 @@ class SQLRuleProcessor:
         standard: str,
         standard_version: str,
         standard_substandard: str,
-        external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
+        # external_dictionaries: ExternalDictionariesContainer = ExternalDictionariesContainer(),
         **kwargs,
     ) -> str:
         """
