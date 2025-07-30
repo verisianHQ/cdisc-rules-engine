@@ -179,7 +179,7 @@ class PostgresQLDataService(SQLDataService):
 
     def _create_table_with_indexes(self, table_name: str, first_chunk: dict) -> None:
         """Create table and add indexes for CDISC variables."""
-        self.pgi.create_table_from_data(table_name, first_chunk, primary_key="USUBJID")
+        self.pgi.create_table_from_data(table_name, first_chunk)
 
         for col in ("USUBJID", "STUDYID", "DOMAIN", "SEQ", "IDVAR", "IDVARVAL"):
             if col in first_chunk:
