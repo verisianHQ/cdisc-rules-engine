@@ -525,7 +525,6 @@ class SQLRuleProcessor:
         self,
         rule: dict,
         sql_dataset_metadata: SQLDatasetMetadata,
-        # datasets: Iterable[SDTMDatasetMetadata],
         standard,
         standard_substandard: str,
     ) -> Tuple[bool, str]:

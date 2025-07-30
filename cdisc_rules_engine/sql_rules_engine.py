@@ -60,10 +60,6 @@ class SQLRulesEngine:
         self.config = config_obj or default_config
         self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
 
-        self.standard = kwargs.get("standard")
-        self.standard_version = (kwargs.get("standard_version") or "").replace(".", "-")
-        self.standard_substandard = kwargs.get("standard_substandard") or None
-
         # TODO: move into data service
         self.dataset_paths = kwargs.get("dataset_paths")
         self.ct_packages = kwargs.get("ct_packages", [])
@@ -91,8 +87,8 @@ class SQLRulesEngine:
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
                 sql_dataset_metadata,
-                self.standard,
-                self.standard_substandard,
+                self.data_service.ig_specs.get("standard"),
+                self.data_service.ig_specs.get("standard_substandard"),
             )
             if is_suitable:
                 # if dataset_metadata.unsplit_name in results and "domains" in rule:
@@ -100,7 +96,7 @@ class SQLRulesEngine:
                 #     if not include_split:
                 #         continue  # handling split datasets
                 # results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
-                results[sql_dataset_metadata.domain] = self.validate_single_dataset(rule, sql_dataset_metadata)
+                results[sql_dataset_metadata.unsplit_name] = self.validate_single_dataset(rule, sql_dataset_metadata)
             else:
                 logger.info(f"Skipped dataset {sql_dataset_metadata.dataset_name}. Reason: {reason}")
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
@@ -237,9 +233,9 @@ class SQLRulesEngine:
         processed_ds_id = self.rule_processor.perform_rule_operations(
             rule_copy,
             sql_dataset_metadata.dataset_id,
-            standard=self.standard,
-            standard_version=self.standard_version,
-            standard_substandard=self.standard_substandard,
+            standard=self.data_service.ig_specs.get("standard"),
+            standard_version=self.data_service.ig_specs.get("standard_version"),
+            standard_substandard=self.data_service.ig_specs.get("standard_substandard"),
             external_dictionaries=self.external_dictionaries,
             ct_packages=ct_packages,
         )
