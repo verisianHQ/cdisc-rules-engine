@@ -46,15 +46,9 @@ class SQLRulesEngine:
         data_service: PostgresQLDataService,
         cache: CacheServiceInterface = None,
         config_obj: ConfigInterface = None,
-        **kwargs,
     ):
         self.config = config_obj or default_config
         self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
-
-        # TODO: move into data service
-        self.ct_packages = kwargs.get("ct_packages", [])
-        self.ct_package = kwargs.get("ct_package")
-        self.validate_xml: bool = kwargs.get("validate_xml")
 
         # this stays
         self.rule_processor = SQLRuleProcessor(self.cache)
