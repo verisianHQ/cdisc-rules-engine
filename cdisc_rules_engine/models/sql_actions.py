@@ -12,7 +12,7 @@ from cdisc_rules_engine.constants.metadata_columns import (
 )
 from cdisc_rules_engine.data_service.postgresql_data_service import SQLDatasetMetadata
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
-from cdisc_rules_engine.models.sql_variable import SQLVariable
+from cdisc_rules_engine.models.sql_variable import PostgresQLBusinessEngineObject
 from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
@@ -24,7 +24,7 @@ class SQLCOREActions(BaseActions):
     def __init__(
         self,
         output_container: list,
-        validation_dataset: SQLVariable,
+        validation_dataset: PostgresQLBusinessEngineObject,
         dataset_metadata: SQLDatasetMetadata,
         rule: dict,
     ):

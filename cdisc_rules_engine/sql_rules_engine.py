@@ -22,7 +22,7 @@ from cdisc_rules_engine.models.rule_conditions.condition_composite_factory impor
     ConditionCompositeFactory,
 )
 from cdisc_rules_engine.models.sql_actions import SQLCOREActions
-from cdisc_rules_engine.models.sql_variable import SQLVariable
+from cdisc_rules_engine.models.sql_variable import PostgresQLBusinessEngineObject
 from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
@@ -40,7 +40,7 @@ class SQLRulesEngine:
         self.data_service = data_service
 
     def get_schema(self):
-        return export_rule_data(SQLVariable, SQLCOREActions)
+        return export_rule_data(PostgresQLBusinessEngineObject, SQLCOREActions)
 
     def sql_validate_single_rule(self, rule: dict):
         results = {}
@@ -206,7 +206,7 @@ class SQLRulesEngine:
 
         # VENMO ENGINE START - this is actually rule-specific, so it belongs here
         #  TODO: pass in dataservice
-        validation_dataset = SQLVariable(
+        validation_dataset = PostgresQLBusinessEngineObject(
             validation_dataset_id=processed_ds_id,
             sql_data_service=self.data_service,
             dataset=PandasDataset(self.data_service.data_dfs.get(processed_ds_id)),

@@ -67,7 +67,7 @@ def log_operator_execution(func):
     return wrapper
 
 
-class SQLDataframeType(BaseType):
+class PostgresQLOperators(BaseType):
 
     name = "dataframe"
 
