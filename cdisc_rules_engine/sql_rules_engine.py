@@ -4,7 +4,6 @@ from typing import List, Union
 from business_rules import export_rule_data
 from business_rules.engine import run
 import os
-from cdisc_rules_engine.config import config as default_config
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService, SQLDatasetMetadata
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 
@@ -17,10 +16,6 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     FailedSchemaValidation,
     DomainNotFoundError,
 )
-from cdisc_rules_engine.interfaces import (
-    CacheServiceInterface,
-    ConfigInterface,
-)
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
@@ -32,7 +27,6 @@ from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
 from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.services.cache import CacheServiceFactory
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -41,18 +35,9 @@ import traceback
 
 
 class SQLRulesEngine:
-    def __init__(
-        self,
-        data_service: PostgresQLDataService,
-        cache: CacheServiceInterface = None,
-        config_obj: ConfigInterface = None,
-    ):
-        self.rule_processor = SQLRuleProcessor(self.cache)
+    def __init__(self, data_service: PostgresQLDataService):
+        self.rule_processor = SQLRuleProcessor()
         self.data_service = data_service
-
-        # what is this???
-        self.config = config_obj or default_config
-        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
 
     def get_schema(self):
         return export_rule_data(SQLVariable, SQLCOREActions)

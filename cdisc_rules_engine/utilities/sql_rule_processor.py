@@ -1,9 +1,6 @@
 import re
 from typing import List, Optional, Set, Tuple
 from cdisc_rules_engine.data_service.postgresql_data_service import SQLDatasetMetadata
-from cdisc_rules_engine.interfaces.cache_service_interface import (
-    CacheServiceInterface,
-)
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
@@ -27,6 +24,8 @@ from cdisc_rules_engine.interfaces import ConditionInterface
 # from cdisc_rules_engine.models.rule_conditions import AllowedConditionsKeys
 # from cdisc_rules_engine.operations import operations_factory
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
+from cdisc_rules_engine.config import config as default_config
 
 # from cdisc_rules_engine.utilities.data_processor import DataProcessor
 # from cdisc_rules_engine.utilities.utils import (
@@ -43,10 +42,9 @@ from cdisc_rules_engine.services import logger
 class SQLRuleProcessor:
     def __init__(
         self,
-        cache: CacheServiceInterface,
         library_metadata: LibraryMetadataContainer = None,
     ):
-        self.cache = cache
+        self.cache = CacheServiceFactory(default_config).get_cache_service()
         self.library_metadata = library_metadata
 
     # @classmethod
