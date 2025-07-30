@@ -151,7 +151,7 @@ class PostgresQLDataService(SQLDataService):
             metadata_info = reader.read_metadata()
 
             domain = metadata_info["metadata"]["domain"]
-            table_name = f"dataset_{domain.lower()}"  # TODO: obvs this naming convention will change
+            table_name = file_path.stem.lower()
 
             logger.info(f"Loading dataset {file_path.name} into table {table_name}")
 
@@ -179,7 +179,7 @@ class PostgresQLDataService(SQLDataService):
 
     def _create_table_with_indexes(self, table_name: str, first_chunk: dict) -> None:
         """Create table and add indexes for CDISC variables."""
-        self.pgi.create_table_from_data(table_name, first_chunk)
+        self.pgi.create_table_from_data(table_name, first_chunk, primary_key="USUBJID")
 
         for col in ("USUBJID", "STUDYID", "DOMAIN", "SEQ", "IDVAR", "IDVARVAL"):
             if col in first_chunk:
@@ -192,7 +192,11 @@ class PostgresQLDataService(SQLDataService):
     ) -> list[dict]:
         """Build metadata rows for all variables in the dataset."""
 
-        # TODO: here is where the preprocessor for is_supp, rdomain, is_split, unsplit_name, etc. could go, wdu think?
+        domain = metadata_info["metadata"]["domain"]
+        is_supp = domain.startswith("SUPP")
+        rdomain = metadata_info["metadata"].get("rdomain", None)
+        unsplit_name = PostgresQLDataService._get_unsplit_name(file_path.stem, domain, rdomain)
+        is_split = file_path.stem != unsplit_name
 
         metadata_rows = []
         for var_info in metadata_info["variables"]:
@@ -205,11 +209,11 @@ class PostgresQLDataService(SQLDataService):
                     "dataset_id": domain,
                     "dataset_name": domain,
                     "dataset_label": metadata_info["metadata"].get("dataset_label", ""),
-                    "dataset_domain": None,  # data_domain
-                    "dataset_is_supp": None,  # is_supp
-                    "dataset_rdomain": None,  # rdomain
-                    "dataset_is_split": None,  # is_split
-                    "dataset_unsplit_name": None,  # unsplit_name
+                    "dataset_domain": domain,
+                    "dataset_is_supp": is_supp,
+                    "dataset_rdomain": rdomain,
+                    "dataset_is_split": is_split,
+                    "dataset_unsplit_name": unsplit_name,
                     "dataset_preprocessed": None,
                     "var_name": var_info.get("name", ""),
                     "var_label": var_info.get("label"),
@@ -271,11 +275,6 @@ class PostgresQLDataService(SQLDataService):
         """
         Create all necessary SQL tables for CDISC codelists.
         """
-        if not self.codelists_path:
-            # TODO: Implement caching system to retrieve previously loaded codelists
-            logger.info("No codelists path provided, will use cached codelists in future implementation")
-            return
-
         if not self.codelists_path.exists():
             logger.warning(f"Codelists path {self.codelists_path} does not exist")
             return
