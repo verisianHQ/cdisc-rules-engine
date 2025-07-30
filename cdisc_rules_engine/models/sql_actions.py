@@ -25,12 +25,12 @@ class SQLCOREActions(BaseActions):
         self,
         output_container: list,
         validation_dataset: SQLVariable,
-        sql_dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: SQLDatasetMetadata,
         rule: dict,
     ):
         self.output_container = output_container
         self.validation_dataset = validation_dataset
-        self.sql_dataset_metadata = sql_dataset_metadata
+        self.dataset_metadata = dataset_metadata
         self.rule = rule
 
     # @rule_action(params={"message": FIELD_TEXT, "target": FIELD_TEXT})
@@ -46,7 +46,7 @@ class SQLCOREActions(BaseActions):
         rows_with_error = self.validation_dataset.get_error_rows(results)
         target_names: Set[str] = SQLRuleProcessor.extract_target_names_from_rule(
             self.rule,
-            self.sql_dataset_metadata.domain,
+            self.dataset_metadata.domain,
             self.validation_dataset.get_columns(),
         )
         target_names = self._get_target_names_from_list_values(target_names, rows_with_error)
@@ -133,7 +133,7 @@ class SQLCOREActions(BaseActions):
             errors_list = [
                 ValidationErrorEntity(
                     value=error_value,
-                    dataset=self.sql_dataset_metadata.dataset_name,
+                    dataset=self.dataset_metadata.dataset_name,
                 )
             ]
         elif self.rule.get("sensitivity") == Sensitivity.RECORD.value:
@@ -152,9 +152,9 @@ class SQLCOREActions(BaseActions):
             )
             return ValidationErrorContainer(
                 domain=(
-                    f"SUPP{self.sql_dataset_metadata.rdomain}"
-                    if self.sql_dataset_metadata.is_supp
-                    else (self.sql_dataset_metadata.domain or self.sql_dataset_metadata.dataset_name)
+                    f"SUPP{self.dataset_metadata.rdomain}"
+                    if self.dataset_metadata.is_supp
+                    else (self.dataset_metadata.domain or self.dataset_metadata.dataset_name)
                 ),
                 targets=sorted(targets),
                 message="Invalid or undefined sensitivity in the rule",
@@ -167,14 +167,14 @@ class SQLCOREActions(BaseActions):
         return ValidationErrorContainer(
             **{
                 "domain": (
-                    f"SUPP{self.sql_dataset_metadata.rdomain}"
-                    if self.sql_dataset_metadata.is_supp
-                    else (self.sql_dataset_metadata.domain or self.sql_dataset_metadata.dataset_name)
+                    f"SUPP{self.dataset_metadata.rdomain}"
+                    if self.dataset_metadata.is_supp
+                    else (self.dataset_metadata.domain or self.dataset_metadata.dataset_name)
                 ),
                 "dataset": ", ".join(sorted(set(error._dataset or "" for error in errors_list))),
                 "targets": sorted(targets),
                 "errors": errors_list,
-                "message": message.replace("--", self.sql_dataset_metadata.domain or ""),
+                "message": message.replace("--", self.dataset_metadata.domain or ""),
             }
         )
 
@@ -235,7 +235,7 @@ class SQLCOREActions(BaseActions):
 
     def _create_error_object(self, df_row: pd.Series, data: pd.DataFrame) -> ValidationErrorEntity:
         usubjid: Optional[pd.Series] = data.get("USUBJID")
-        sequence: Optional[pd.Series] = data.get(f"{self.sql_dataset_metadata.domain or ''}SEQ")
+        sequence: Optional[pd.Series] = data.get(f"{self.dataset_metadata.domain or ''}SEQ")
         source_row_number: Optional[pd.Series] = data.get(SOURCE_ROW_NUMBER)
         source_filename: Optional[pd.Series] = data.get(SOURCE_FILENAME)
         row_dict = df_row.to_dict()

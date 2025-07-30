@@ -48,27 +48,27 @@ class SQLRulesEngine:
 
         # iterate through all pre-processed user datasets
         for pp_ds_id in self.data_service.pre_processed_dfs.keys():
-            sql_dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
+            dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
 
             is_suitable, reason = self.rule_processor.is_suitable_for_validation(
                 rule,
-                sql_dataset_metadata,
+                dataset_metadata,
                 self.data_service.ig_specs.get("standard"),
                 self.data_service.ig_specs.get("standard_substandard"),
             )
             if is_suitable:
-                if sql_dataset_metadata.unsplit_name in results and "domains" in rule:
+                if dataset_metadata.unsplit_name in results and "domains" in rule:
                     include_split = rule["domains"].get("include_split_datasets", False)
                     if not include_split:
                         continue  # handling split datasets
-                results[sql_dataset_metadata.unsplit_name] = self.validate_single_dataset(rule, sql_dataset_metadata)
+                results[dataset_metadata.unsplit_name] = self.validate_single_dataset(rule, dataset_metadata)
             else:
-                logger.info(f"Skipped dataset {sql_dataset_metadata.dataset_name}. Reason: {reason}")
+                logger.info(f"Skipped dataset {dataset_metadata.dataset_name}. Reason: {reason}")
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     message=reason,
-                    dataset=sql_dataset_metadata.filename,
-                    domain=sql_dataset_metadata.domain or sql_dataset_metadata.rdomain or "",
+                    dataset=dataset_metadata.filename,
+                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
                 )
                 return [error_obj.to_representation()]
         return results
@@ -76,20 +76,20 @@ class SQLRulesEngine:
     def validate_single_dataset(
         self,
         rule: dict,
-        sql_dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: SQLDatasetMetadata,
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint to validation process.
         It validates a given rule against datasets.
         """
         logger.info(
-            f"Validating {sql_dataset_metadata.dataset_name}. "
-            f"rule={rule}. dataset_path={sql_dataset_metadata.filepath}. "
+            f"Validating {dataset_metadata.dataset_name}. "
+            f"rule={rule}. dataset_path={dataset_metadata.filepath}. "
             f"datasets={self.data_service.get_uploaded_dataset_ids()}."
         )
         try:
-            result: List[Union[dict, str]] = self.validate_rule(rule, sql_dataset_metadata)
-            logger.info(f"Validated dataset {sql_dataset_metadata.dataset_name}. Result = {result}")
+            result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata)
+            logger.info(f"Validated dataset {dataset_metadata.dataset_name}. Result = {result}")
             if result:
                 return result
             else:
@@ -97,8 +97,8 @@ class SQLRulesEngine:
                 return [
                     ValidationErrorContainer(
                         **{
-                            "dataset": sql_dataset_metadata.filename,
-                            "domain": sql_dataset_metadata.domain or sql_dataset_metadata.rdomain,
+                            "dataset": dataset_metadata.filename,
+                            "domain": dataset_metadata.domain or dataset_metadata.rdomain,
                             "errors": [],
                         }
                     ).to_representation()
@@ -115,16 +115,16 @@ class SQLRulesEngine:
             """
             )
             error_obj: ValidationErrorContainer = self.handle_validation_exceptions(
-                e, sql_dataset_metadata.filepath, sql_dataset_metadata.filepath
+                e, dataset_metadata.filepath, dataset_metadata.filepath
             )
-            error_obj.domain = sql_dataset_metadata.domain or sql_dataset_metadata.rdomain or ""
+            error_obj.domain = dataset_metadata.domain or dataset_metadata.rdomain or ""
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 
     def validate_rule(
         self,
         rule: dict,
-        sql_dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: SQLDatasetMetadata,
     ) -> List[Union[dict, str]]:
         """
          This function is an entrypoint for rule validation.
@@ -165,12 +165,12 @@ class SQLRulesEngine:
         #     return self.execute_rule(rule_copy, datasets, dataset_metadata, **kwargs)
 
         # logger.info(f"Using dataset build by: {builder.__class__}")
-        return self.execute_rule(rule, sql_dataset_metadata)
+        return self.execute_rule(rule, dataset_metadata)
 
     def execute_rule(
         self,
         rule: dict,
-        sql_dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: SQLDatasetMetadata,
         value_level_metadata: List[dict] = [],
         variable_codelist_map: dict = {},
         codelist_term_maps: list = [],
@@ -183,21 +183,21 @@ class SQLRulesEngine:
         rule_copy = deepcopy(rule)
         updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
             rule["conditions"],
-            sql_dataset_metadata.variables,
+            dataset_metadata.variables,
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
 
         # PRE-PROCESSING -> move to ingest!!!!
 
         #   preprocess dataset
-        #   dataset_preprocessor = SQLDatasetPreprocessor(dataset, sql_dataset_metadata, self.data_service, self.cache)
+        #   dataset_preprocessor = SQLDatasetPreprocessor(dataset, dataset_metadata, self.data_service, self.cache)
         #   dataset = dataset_preprocessor.preprocess(rule_copy, datasets)
 
         #  OPERATIONS - these are actually rule-specific, so they belong here
         #  TODO: pass in dataservice
         processed_ds_id = self.rule_processor.perform_rule_operations(
             rule_copy,
-            sql_dataset_metadata.dataset_id,
+            dataset_metadata.dataset_id,
             standard=self.data_service.ig_specs.get("standard"),
             standard_version=self.data_service.ig_specs.get("standard_version"),
             standard_substandard=self.data_service.ig_specs.get("standard_substandard"),
@@ -210,7 +210,7 @@ class SQLRulesEngine:
             validation_dataset_id=processed_ds_id,
             sql_data_service=self.data_service,
             dataset=PandasDataset(self.data_service.data_dfs.get(processed_ds_id)),
-            column_prefix_map={"--": sql_dataset_metadata.domain},
+            column_prefix_map={"--": dataset_metadata.domain},
             value_level_metadata=value_level_metadata,
             column_codelist_map=variable_codelist_map,
             codelist_term_maps=codelist_term_maps,
@@ -220,7 +220,7 @@ class SQLRulesEngine:
             serialize_rule(rule_copy),  # engine expects a JSON serialized dict
             defined_variables=validation_dataset,
             defined_actions=SQLCOREActions(
-                results, validation_dataset=validation_dataset, sql_dataset_metadata=sql_dataset_metadata, rule=rule
+                results, validation_dataset=validation_dataset, dataset_metadata=dataset_metadata, rule=rule
             ),
         )
         return results

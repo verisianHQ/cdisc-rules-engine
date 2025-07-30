@@ -519,13 +519,13 @@ class SQLRuleProcessor:
     def is_suitable_for_validation(
         self,
         rule: dict,
-        sql_dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: SQLDatasetMetadata,
         standard,
         standard_substandard: str,
     ) -> Tuple[bool, str]:
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
-        dataset_name = sql_dataset_metadata.dataset_name
+        dataset_name = dataset_metadata.dataset_name
         # if not self.valid_rule_structure(rule):
         #     reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
         #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
