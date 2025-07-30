@@ -47,12 +47,12 @@ class SQLRulesEngine:
         cache: CacheServiceInterface = None,
         config_obj: ConfigInterface = None,
     ):
-        self.config = config_obj or default_config
-        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
-
-        # this stays
         self.rule_processor = SQLRuleProcessor(self.cache)
         self.data_service = data_service
+
+        # what is this???
+        self.config = config_obj or default_config
+        self.cache = cache or CacheServiceFactory(self.config).get_cache_service()
 
     def get_schema(self):
         return export_rule_data(SQLVariable, SQLCOREActions)
