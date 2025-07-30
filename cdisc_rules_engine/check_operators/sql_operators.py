@@ -453,72 +453,39 @@ class SQLDataframeType(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def less_than(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        target_column = self._to_numeric(self.validation_df[target], errors="coerce")
-        if self.validation_df.is_series(comparison_data):
-            comparison_data = self._to_numeric(comparison_data, errors="coerce")
-        results = self._where_less_than(target_column, comparison_data)
-        return self.validation_df.convert_to_series(results)
+        return self._numeric_comparison(other_value, "<")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def less_than_or_equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        target_column = self._to_numeric(self.validation_df[target], errors="coerce")
-        if self.validation_df.is_series(comparison_data):
-            comparison_data = self._to_numeric(comparison_data, errors="coerce")
-        results = self._where_less_than_or_equal_to(target_column, comparison_data)
-        return self.validation_df.convert_to_series(results)
+        return self._numeric_comparison(other_value, "<=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def greater_than_or_equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        target_column = self._to_numeric(self.validation_df[target], errors="coerce")
-        if self.validation_df.is_series(comparison_data):
-            comparison_data = self._to_numeric(comparison_data, errors="coerce")
-        results = self._where_greater_than_or_equal_to(target_column, comparison_data)
-        return self.validation_df.convert_to_series(results)
+        return self._numeric_comparison(other_value, ">=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def greater_than(self, other_value):
+        return self._numeric_comparison(other_value, ">")
+
+    def _numeric_comparison(self, other_value: dict, operator: str):
         target = self.replace_prefix(other_value.get("target"))
         comparator_is_column = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
         if comparator_is_column:
-            subquery = f"WHEN CAST({target} AS NUMERIC) > CAST({comparator} AS NUMERIC) THEN true"
+            subquery = f"WHEN CAST({target} AS NUMERIC) {operator} CAST({comparator} AS NUMERIC) THEN true"
         else:
-            subquery = f"WHEN CAST({target} AS NUMERIC) > {comparator} THEN true"
+            subquery = f"WHEN CAST({target} AS NUMERIC) {operator} {comparator} THEN true"
         query = f"""
-                SELECT id, CASE {subquery} ELSE false END AS greater_than
+                SELECT id, CASE {subquery} ELSE false END AS numeric_compare
                 FROM {self.validation_dataset_id.lower()};
             """
         self.sql_data_service.pgi.execute_sql(query=query)
         sql_results = self.sql_data_service.pgi.fetch_all()
         # Construct pandas Series (no -1 offset if id is properly 0-based or 1-based consistently)
-        return_series = pd.Series(data={item["id"] - 1: item["greater_than"] for item in sql_results})
+        return_series = pd.Series(data={item["id"] - 1: item["numeric_compare"] for item in sql_results})
         return return_series
 
     @log_operator_execution
