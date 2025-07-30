@@ -189,15 +189,15 @@ class PostgresQLDataService(SQLDataService):
                 )
 
     def _build_metadata_rows(
-        self, file_path: Path, name: str, metadata_info: dict, first_chunk: dict, timestamp: datetime
+        self, file_path: Path, table_name: str, metadata_info: dict, first_chunk: dict, timestamp: datetime
     ) -> list[dict]:
         """Build metadata rows for all variables in the dataset."""
 
         domain = first_chunk.get("DOMAIN", None)
         is_supp = domain.startswith(SUPPLEMENTARY_DOMAINS) if domain is not None else False
         rdomain = first_chunk.get("RDOMAIN", None)
-        unsplit_name = PostgresQLDataService._get_unsplit_name(name, domain, rdomain)
-        is_split = name != unsplit_name
+        unsplit_name = PostgresQLDataService._get_unsplit_name(table_name, domain, rdomain)
+        is_split = table_name != unsplit_name
 
         metadata_rows = []
         for var_info in metadata_info["variables"]:
@@ -207,8 +207,8 @@ class PostgresQLDataService(SQLDataService):
                     "updated_at": timestamp,
                     "dataset_filename": file_path.name,
                     "dataset_filepath": str(file_path),
-                    "dataset_id": domain,
-                    "dataset_name": domain or name,
+                    "dataset_id": table_name,
+                    "dataset_name": table_name,
                     "dataset_label": metadata_info["metadata"].get("dataset_label", ""),
                     "dataset_domain": domain,
                     "dataset_is_supp": is_supp,
