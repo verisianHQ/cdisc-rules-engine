@@ -94,7 +94,7 @@ class PostgresQLDataService(SQLDataService):
 
             ddf = pd.DataFrame.from_records(test_dataset["records"])
             ddf.columns = [col for col in ddf.columns]
-            data_dfs[test_dataset["name"]] = ddf
+            data_dfs[test_dataset["name"].lower()] = ddf
 
             # Collect variable metadata
             for test_variable in test_dataset["variables"]:
@@ -110,7 +110,7 @@ class PostgresQLDataService(SQLDataService):
                         "updated_at": timestamp,
                         "dataset_filename": test_dataset["filename"],
                         "dataset_filepath": test_dataset["filepath"],
-                        "dataset_id": name,
+                        "dataset_id": name.lower(),
                         "dataset_name": name,
                         "dataset_label": test_dataset["label"],
                         "dataset_domain": domain,
@@ -162,7 +162,9 @@ class PostgresQLDataService(SQLDataService):
         row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
         pgi.create_table_from_data(table_name=table_name, data=row_dicts[0])
         pgi.insert_data(table_name=table_name, data=row_dicts)
-        return cls(postgres_interface=pgi, cache=None, ig_specs=None)
+        pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
+        metadata = [{"dataset_id": table_name, "var_name": var} for var in column_data.keys()]
+        return cls(postgres_interface=pgi, cache=DBCache.from_metadata_dict(metadata), ig_specs=None)
 
     def _pre_process_data_dfs(data_dfs: dict[pd.DataFrame]) -> dict[pd.DataFrame]:
         # TODO
