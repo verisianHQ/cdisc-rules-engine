@@ -7,6 +7,7 @@ import logging
 from pathlib import Path
 
 from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
+from cdisc_rules_engine.data_service.db_cache import DBCache
 from cdisc_rules_engine.data_service.sql_data_service import SQLDataService
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.test_dataset import TestDataset
@@ -55,6 +56,10 @@ class PostgresQLDataService(SQLDataService):
         self.data_dfs = data_dfs
         self.pre_processed_dfs = pre_processed_dfs
         self.pgi = postgres_interface
+        # initialize cache
+        self.pgi.execute_sql("SELECT * FROM data_metadata;")
+        data_metadata = self.pgi.fetch_all()
+        self.cache = DBCache(data_metadata)
 
     @classmethod
     def from_list_of_testdatasets(
