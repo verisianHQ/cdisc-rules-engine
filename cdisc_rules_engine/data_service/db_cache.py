@@ -9,16 +9,21 @@ class DBTableCache(TypedDict):
 
 class DBCache:
 
-    def __init__(self, data_metadata: list[str]):
-        self.cache = {}
+    def __init__(self, cache: list[str]):
+        self.cache = cache
 
-        for row in data_metadata:
-            table = row.get("dataset_id")
-            col = row.get("var_name")
-            if table not in self.cache.keys():
-                self.cache[table] = DBTableCache(db_table=table, columns={col: col})
-            else:
-                self.cache.get(table).get("columns")[col] = col
+    @classmethod
+    def from_metadata_dict(cls, data_metadata: list[dict]) -> "DBCache":
+        cache = {}
+        if len(data_metadata) > 0:
+            for row in data_metadata:
+                table = row.get("dataset_id")
+                col = row.get("var_name")
+                if table not in cache.keys():
+                    cache[table] = DBTableCache(db_table=table, columns={col: col})
+                else:
+                    cache.get(table).get("columns")[col] = col
+        return cls(cache)
 
     def get_tables(self) -> dict:
         return {k: v["db_table"] for k, v in self.cache.items()}

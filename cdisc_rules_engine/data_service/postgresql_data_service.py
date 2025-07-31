@@ -41,6 +41,7 @@ class PostgresQLDataService(SQLDataService):
     def __init__(
         self,
         postgres_interface: PostgresQLInterface,
+        cache: DBCache,
         ig_specs: IGSpecification,
         datasets_path: Path = None,
         define_xml_path: Path = None,
@@ -56,10 +57,7 @@ class PostgresQLDataService(SQLDataService):
         self.data_dfs = data_dfs
         self.pre_processed_dfs = pre_processed_dfs
         self.pgi = postgres_interface
-        # initialize cache
-        self.pgi.execute_sql("SELECT * FROM data_metadata;")
-        data_metadata = self.pgi.fetch_all()
-        self.cache = DBCache(data_metadata)
+        self.cache = cache
 
     @classmethod
     def from_list_of_testdatasets(
@@ -132,9 +130,21 @@ class PostgresQLDataService(SQLDataService):
         # write metadata rows into DB
         pgi.insert_data(table_name="data_metadata", data=metadata_rows)
 
+        # initialize cache
+        cache = DBCache.from_metadata_dict(metadata_rows)
+
         pre_processed_dfs = PostgresQLDataService._pre_process_data_dfs(data_dfs)
         return cls(
-            pgi, ig_specs, datasets_path, define_xml_path, None, None, terminology_paths, data_dfs, pre_processed_dfs
+            pgi,
+            cache,
+            ig_specs,
+            datasets_path,
+            define_xml_path,
+            None,
+            None,
+            terminology_paths,
+            data_dfs,
+            pre_processed_dfs,
         )
 
     @classmethod
@@ -152,7 +162,7 @@ class PostgresQLDataService(SQLDataService):
         row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
         pgi.create_table_from_data(table_name=table_name, data=row_dicts[0])
         pgi.insert_data(table_name=table_name, data=row_dicts)
-        return cls(pgi, None)
+        return cls(postgres_interface=pgi, cache=None, ig_specs=None)
 
     def _pre_process_data_dfs(data_dfs: dict[pd.DataFrame]) -> dict[pd.DataFrame]:
         # TODO
