@@ -461,12 +461,8 @@ class PostgresQLOperators(BaseType):
         operator: str,
     ):
         target = self.replace_prefix(other_value.get("target"))
-        comparator_is_column = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
-        if comparator_is_column:
-            subquery = f"WHEN CAST({target} AS NUMERIC) {operator} CAST({comparator} AS NUMERIC) THEN true"
-        else:
-            subquery = f"WHEN CAST({target} AS NUMERIC) {operator} {comparator} THEN true"
+        subquery = f"WHEN CAST({target} AS NUMERIC) {operator} CAST({comparator} AS NUMERIC) THEN true"
         query = f"""
                 SELECT id, CASE {subquery} ELSE false END AS numeric_compare
                 FROM {self.validation_dataset_id.lower()};
