@@ -21,9 +21,12 @@ class SQLSerialiser:
         cls, table_name: str, sample_dict: Dict[str, Any], primary_key: Optional[str] = None
     ) -> str:
         """Generate CREATE TABLE statement from a dictionary"""
+        table_name = table_name.lower()
+        sample_lc = {k.lower(): v for k, v in sample_dict.items()}
+
         columns = []
 
-        for key, value in sample_dict.items():
+        for key, value in sample_lc.items():
             col_type = cls.python_to_sql_type(value)
             col_def = f"{key} {col_type}"
 
@@ -38,7 +41,10 @@ class SQLSerialiser:
     @classmethod
     def insert_dict(cls, table_name: str, data: Dict[str, Any]) -> Tuple[str, List[Any]]:
         """Generate INSERT statement from a dictionary"""
-        columns = list(data.keys())
+        # lowercase the columns:
+        data_lc = {k.lower(): v for k, v in data.items()}
+
+        columns = list(data_lc.keys())
         values = [data[col] for col in columns]
 
         placeholders = ", ".join(["%s"] * len(columns))
@@ -53,14 +59,17 @@ class SQLSerialiser:
         if not data:
             raise ValueError("Data list cannot be empty")
 
-        columns = list(data[0].keys())
+        # lowercase the columns:
+        data_lc = [{k.lower(): v for k, v in d.items()} for d in data]
+
+        columns = [key.lower() for key in list(data_lc[0].keys())]
         columns_str = ", ".join(columns)
         placeholders = ", ".join(["%s"] * len(columns))
 
         query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders})"
 
         values = []
-        for row in data:
+        for row in data_lc:
             row_values = [row.get(col) for col in columns]
             values.append(row_values)
 

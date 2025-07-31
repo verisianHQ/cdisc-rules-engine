@@ -93,15 +93,15 @@ class PostgresQLDataService(SQLDataService):
             pgi.insert_data(table_name=test_dataset["name"], data=row_dicts)
 
             ddf = pd.DataFrame.from_records(test_dataset["records"])
-            ddf.columns = [col for col in ddf.columns]
+            ddf.columns = [col.lower() for col in ddf.columns]
             data_dfs[test_dataset["name"].lower()] = ddf
 
             # Collect variable metadata
             for test_variable in test_dataset["variables"]:
                 name = test_dataset["name"]
-                domain = ddf["DOMAIN"].iloc[0] if "DOMAIN" in ddf.columns else None
+                domain = ddf["domain"].iloc[0] if "domain" in ddf.columns else None
                 is_supp = test_dataset["name"].startswith(SUPPLEMENTARY_DOMAINS)
-                rdomain = ddf["RDOMAIN"].iloc[0] if is_supp and "RDOMAIN" in ddf.columns else None
+                rdomain = ddf["rdomain"].iloc[0] if is_supp and "rdomain" in ddf.columns else None
                 unsplit_name = PostgresQLDataService._get_unsplit_name(name, domain, rdomain)
                 is_split = name != unsplit_name
                 metadata_rows.append(

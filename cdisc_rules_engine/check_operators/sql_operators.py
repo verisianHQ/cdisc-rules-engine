@@ -466,16 +466,20 @@ class PostgresQLOperators(BaseType):
         other_value: dict,
         operator: str,
     ):
-        target_column = other_value.get("target")
-        comparator = other_value.get("comparator")
-        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_exists(
+        target_column = other_value.get("target").lower()
+        comparator = (
+            other_value.get("comparator").lower()
+            if isinstance(other_value.get("comparator"), str)
+            else other_value.get("comparator")
+        )
+        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(
             self.table_id, f"{target_column}{operator}{comparator}"
         )
         if not exists:
             # do operation
-            db_table = self.sql_data_service.cache.get_db_table(self.table_id)
+            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
             subquery = f"""CASE WHEN
-                                CAST({self.replace_prefix(other_value.get("target"))} AS NUMERIC)
+                                CAST({self.replace_prefix(target_column)} AS NUMERIC)
                                     {operator}
                                 CAST({comparator} AS NUMERIC) THEN true"""
             query = f"UPDATE {db_table} SET {db_column} = {subquery} ELSE false END;"
