@@ -455,9 +455,6 @@ class PostgresQLOperators(BaseType):
     def greater_than(self, other_value):
         return self._numeric_comparison(other_value, ">")
 
-    def _get_db_column(self, table_key: str, col1: str, operation: str, col2: str) -> str:
-        return self.sql_data_service.cache.add_db_column(table_key, f"{col1}{operation}{col2}")
-
     def _add_column_query(self, table_name: str, column_name: str, column_type: str) -> str:
         return f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS {column_name} {column_type};"
 
