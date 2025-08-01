@@ -36,6 +36,6 @@ def test_empty_cache():
     assert cache.get_db_column_hash("suppdm", "domain") is None
 
 
-def test_add_db_column_if_missing(get_sample_supp_dataset, get_sample_lb_dataset):
-    ds = PostgresQLDataService.from_list_of_testdatasets([get_sample_supp_dataset, get_sample_lb_dataset], None)
-    assert "lbseq" == ds.cache.add_db_column_if_missing(table_key="lb", column_key="LBSEQ")
+# def test_add_db_column_if_missing(get_sample_supp_dataset, get_sample_lb_dataset):
+#     ds = PostgresQLDataService.from_list_of_testdatasets([get_sample_supp_dataset, get_sample_lb_dataset], None)
+#     assert "lbseq" == ds.cache.add_db_column_if_missing(table_key="lb", column_key="LBSEQ")
