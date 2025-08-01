@@ -60,14 +60,12 @@ class DBCache:
             self.get_db_table_cache(table_key).get("columns")[column_key] = column_hash
             return (False, column_key, column_hash)
 
-    # todo: create test for this
     def add_db_table_if_missing(self, table_key: str, columns: dict[str, str]) -> Tuple[bool, str, str]:
         existing_table_hash = self.get_db_table_hash(table_key)
         if existing_table_hash is not None:
-            return (True, existing_table_hash)
+            return (True, table_key, existing_table_hash)
         else:
             table_hash = generate_hash(table_key)
-            self.cache[table_key] = table_hash
-            self.cache.get(table_key)["columns"] = columns
+            self.cache[table_key] = DBTableCache(db_table=table_key, columns=columns)
             # now comes the tricky part, which is to add columns...
-            return (False, table_hash)
+            return (False, table_key, table_hash)

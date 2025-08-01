@@ -46,3 +46,30 @@ def test_add_db_column_if_missing(get_sample_supp_dataset, get_sample_lb_dataset
     assert not exists
     assert "new_variable" == column_id
     assert column_hash.startswith("v")
+
+
+def test_add_db_table_if_missing(get_sample_lb_dataset):
+    ds = PostgresQLDataService.from_list_of_testdatasets([get_sample_lb_dataset], None)
+    # case exists
+    assert (True, "lb", "lb") == ds.cache.add_db_table_if_missing(table_key="lb", columns={})
+    # case not exists
+    exists, table_key, table_hash = ds.cache.add_db_table_if_missing(
+        table_key="new_table", columns={"old_var": "v_old_hash", "old_var_2": "v_old_hash_2"}
+    )
+    assert not exists
+    assert table_key == "new_table"
+    assert table_hash.startswith("v")
+    assert 2 == len(ds.cache.get_columns("new_table"))
+    assert "v_old_hash_2" == ds.cache.get_columns("new_table").get("old_var_2")
+
+    # column exists new table
+    assert (True, "old_var_2", "v_old_hash_2") == ds.cache.add_db_column_if_missing(
+        table_key="new_table", column_key="old_var_2"
+    )
+    # column does not exist new table
+    (exists, column_id, column_hash) = ds.cache.add_db_column_if_missing(
+        table_key="new_table", column_key="new_variable"
+    )
+    assert not exists
+    assert "new_variable" == column_id
+    assert column_hash.startswith("v")
