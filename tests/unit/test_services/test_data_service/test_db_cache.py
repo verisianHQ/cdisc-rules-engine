@@ -18,12 +18,12 @@ def test_db_cache_initialization(get_sample_supp_dataset, get_sample_lb_dataset)
     assert 3 == len(ds.cache.get_columns("suppdm"))
     assert 2 == len(ds.cache.get_columns("lb"))
 
-    assert "DOMAIN" == ds.cache.get_db_column_hash("suppdm", "DOMAIN")
-    assert "RDOMAIN" == ds.cache.get_db_column_hash("suppdm", "RDOMAIN")
-    assert "LBSEQ" == ds.cache.get_db_column_hash("suppdm", "LBSEQ")
+    assert "domain" == ds.cache.get_db_column_hash("suppdm", "domain")
+    assert "rdomain" == ds.cache.get_db_column_hash("suppdm", "rdomain")
+    assert "lbseq" == ds.cache.get_db_column_hash("suppdm", "lbseq")
 
-    assert "DOMAIN" == ds.cache.get_db_column_hash("lb", "DOMAIN")
-    assert "LBSEQ" == ds.cache.get_db_column_hash("lb", "LBSEQ")
+    assert "domain" == ds.cache.get_db_column_hash("lb", "domain")
+    assert "lbseq" == ds.cache.get_db_column_hash("lb", "lbseq")
 
 
 def test_empty_cache():
