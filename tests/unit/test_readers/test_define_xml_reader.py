@@ -63,7 +63,7 @@ def test_studies_extraction(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "studies" in data
-        assert data["studies"]
+        assert len(data["studies"]) > 0
         study = data["studies"]
         assert "study_id" in study
         assert "study_oid" in study
@@ -81,7 +81,7 @@ def test_metadata_versions_extraction(define_xml_directory):
         data = reader.read()
         assert "metadata_versions" in data
         assert len(data["metadata_versions"]) > 0
-        metadata_version = data["metadata_versions"][0]
+        metadata_version = data["metadata_versions"]
         assert "version_id" in metadata_version
         assert "study_id" in metadata_version
         assert "version_oid" in metadata_version

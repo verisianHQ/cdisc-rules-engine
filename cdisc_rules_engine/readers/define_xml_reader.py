@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Optional, Union
 import logging
 from datetime import datetime
 from dataclasses import dataclass
@@ -61,12 +61,12 @@ class XMLReader(BaseReader):
             logger.error(f"Error extracting metadata: {str(e)}")
             raise
 
-    def read(self) -> Dict[str, List[Dict[str, Any]]]:
+    def read(self) -> Dict[str, Union[List, Dict]]:
         """Read Define-XML file and extract all metadata"""
 
         data = {
             "studies": {},
-            "metadata_versions": [],
+            "metadata_versions": {},
             "datasets": [],
             "variables": [],
             "dataset_variables": [],
@@ -108,7 +108,7 @@ class XMLReader(BaseReader):
         self._id_counters[table_name] += 1
         return self._id_counters[table_name]
 
-    def _process_study(self, study_elem: ET.Element, data: Dict[str, Any]) -> None:
+    def _process_study(self, study_elem: ET.Element, data: Dict[str, Union[List, Dict]]) -> None:
         """Process study element and its children"""
         study_oid = study_elem.get("OID")
 
@@ -129,9 +129,7 @@ class XMLReader(BaseReader):
         for mv in study_elem.findall(".//odm:MetaDataVersion", self.NAMESPACES):
             self._process_metadata_version(mv, study_id, data)
 
-    def _process_metadata_version(
-        self, mv_elem: ET.Element, study_id: int, data: Dict[str, List[Dict[str, Any]]]
-    ) -> None:
+    def _process_metadata_version(self, mv_elem: ET.Element, study_id: int, data: Dict[str, Union[dict, list]]) -> None:
         """Process MetaDataVersion element"""
         version_id = self._get_next_id("metadata_versions")
         version_oid = mv_elem.get("OID")
@@ -149,7 +147,7 @@ class XMLReader(BaseReader):
             "standard_version": mv_elem.get("{%s}StandardVersion" % self.NAMESPACES["def"]),
             "creation_datetime": self.metadata.creation_datetime,
         }
-        data["metadata_versions"].append(version_data)
+        data["metadata_versions"] = version_data
 
         self._process_item_groups(mv_elem, version_id, data)
         self._process_item_defs(mv_elem, version_id, data)
@@ -161,7 +159,7 @@ class XMLReader(BaseReader):
         self._process_documents(mv_elem, version_id, data)
         self._process_analysis_results(mv_elem, version_id, data)
 
-    def _process_item_groups(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_item_groups(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process ItemGroupDef elements (datasets)"""
         for ig in parent.findall(".//odm:ItemGroupDef", self.NAMESPACES):
             dataset_id = self._get_next_id("datasets")
@@ -193,7 +191,7 @@ class XMLReader(BaseReader):
             self._process_item_refs(ig, dataset_id, version_id, data)
 
     def _process_item_refs(
-        self, parent: ET.Element, dataset_id: int, version_id: int, data: Dict[str, List[Dict[str, Any]]]
+        self, parent: ET.Element, dataset_id: int, version_id: int, data: Dict[str, Union[List, Dict]]
     ) -> None:
         """Process ItemRef elements (dataset variables)"""
         for item_ref in parent.findall(".//odm:ItemRef", self.NAMESPACES):
@@ -215,7 +213,7 @@ class XMLReader(BaseReader):
                 }
                 data["dataset_variables"].append(dataset_var_data)
 
-    def _process_item_defs(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_item_defs(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process ItemDef elements (variables)"""
         for item_def in parent.findall(".//odm:ItemDef", self.NAMESPACES):
             variable_id = self._get_next_id("variables")
@@ -264,7 +262,7 @@ class XMLReader(BaseReader):
                 if value_list_oid:
                     self._add_variable_value_list_ref(variable_id, value_list_oid, version_id, data)
 
-    def _process_codelists(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_codelists(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process CodeList elements"""
         for codelist in parent.findall(".//odm:CodeList", self.NAMESPACES):
             codelist_id = self._get_next_id("codelists")
@@ -301,7 +299,7 @@ class XMLReader(BaseReader):
                 }
                 data["codelist_items"].append(item_data)
 
-    def _process_methods(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_methods(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process MethodDef elements"""
         for method in parent.findall(".//odm:MethodDef", self.NAMESPACES):
             method_id = self._get_next_id("methods")
@@ -321,7 +319,7 @@ class XMLReader(BaseReader):
             }
             data["methods"].append(method_data)
 
-    def _process_value_lists(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_value_lists(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process ValueListDef elements"""
         for vl in parent.findall(".//def:ValueListDef", self.NAMESPACES):
             value_list_id = self._get_next_id("value_lists")
@@ -348,9 +346,7 @@ class XMLReader(BaseReader):
                 }
                 data["value_list_items"].append(item_data)
 
-    def _process_where_clauses(
-        self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]
-    ) -> None:
+    def _process_where_clauses(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process WhereClauseDef elements"""
         for wc in parent.findall(".//def:WhereClauseDef", self.NAMESPACES):
             where_clause_id = self._get_next_id("where_clauses")
@@ -378,7 +374,7 @@ class XMLReader(BaseReader):
                 }
                 data["where_clause_conditions"].append(condition_data)
 
-    def _process_comments(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_comments(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process CommentDef elements"""
         for comment in parent.findall(".//def:CommentDef", self.NAMESPACES):
             comment_id = self._get_next_id("comments")
@@ -396,7 +392,7 @@ class XMLReader(BaseReader):
             }
             data["comments"].append(comment_data)
 
-    def _process_documents(self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_documents(self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]) -> None:
         """Process leaf elements (documents)"""
         for leaf in parent.findall(".//def:leaf", self.NAMESPACES):
             document_id = self._get_next_id("documents")
@@ -416,7 +412,7 @@ class XMLReader(BaseReader):
             data["documents"].append(document_data)
 
     def _process_analysis_results(
-        self, parent: ET.Element, version_id: int, data: Dict[str, List[Dict[str, Any]]]
+        self, parent: ET.Element, version_id: int, data: Dict[str, Union[List, Dict]]
     ) -> None:
         """Process AnalysisResult elements (ADaM specific)"""
         for result in parent.findall(".//arm:AnalysisResult", self.NAMESPACES):
@@ -477,7 +473,7 @@ class XMLReader(BaseReader):
             return None
 
     def _add_variable_codelist_ref(
-        self, variable_id: int, codelist_oid: str, version_id: int, data: Dict[str, List[Dict[str, Any]]]
+        self, variable_id: int, codelist_oid: str, version_id: int, data: Dict[str, Union[List, Dict]]
     ) -> None:
         """Add variable-codelist reference"""
         codelist_id = self._oid_to_id_maps["codelists"].get(f"{version_id}:{codelist_oid}")
@@ -490,7 +486,7 @@ class XMLReader(BaseReader):
             data["variable_codelist_refs"].append(ref_data)
 
     def _add_variable_value_list_ref(
-        self, variable_id: int, value_list_oid: str, version_id: int, data: Dict[str, List[Dict[str, Any]]]
+        self, variable_id: int, value_list_oid: str, version_id: int, data: Dict[str, Union[List, Dict]]
     ) -> None:
         """Add variable-value list reference"""
         value_list_id = self._oid_to_id_maps["value_lists"].get(f"{version_id}:{value_list_oid}")
