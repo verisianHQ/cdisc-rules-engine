@@ -11,8 +11,8 @@ def define_xml_directory(resources_directory: Path) -> Path:
     return resources_directory / "define_xml"
 
 
-def get_all_codelist_files(define_xml_directory) -> list[Path]:
-    """Get all codelist files from the directory."""
+def get_all_xml_files(define_xml_directory) -> list[Path]:
+    """Get all xml files from the directory."""
     files = []
     files.extend(define_xml_directory.glob(".xml"))
     return sorted(files)
@@ -22,7 +22,7 @@ def test_xml_reader_init(define_xml_directory):
     """
     Tests that the XMLReader can be initialised with a valid file path.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         assert reader.file_path == define_xml_file
         assert isinstance(reader.metadata, DefineXMLMetadata)
@@ -32,7 +32,7 @@ def test_extract_metadata(define_xml_directory):
     """
     Tests that metadata is correctly extracted from the Define-XML file.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         metadata = reader.metadata
         assert metadata.file_type == "define-xml"
@@ -45,7 +45,7 @@ def test_read_define_xml(define_xml_directory):
     """
     Tests that the read method returns a dictionary of lists of dictionaries.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert isinstance(data, dict)
@@ -59,12 +59,12 @@ def test_studies_extraction(define_xml_directory):
     """
     Tests that the studies table is extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "studies" in data
-        assert len(data["studies"]) > 0
-        study = data["studies"][0]
+        assert data["studies"]
+        study = data["studies"]
         assert "study_id" in study
         assert "study_oid" in study
         assert "study_name" in study
@@ -76,7 +76,7 @@ def test_metadata_versions_extraction(define_xml_directory):
     """
     Tests that the metadata_versions table is extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "metadata_versions" in data
@@ -92,7 +92,7 @@ def test_datasets_extraction(define_xml_directory):
     """
     Tests that the datasets table is extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "datasets" in data
@@ -110,7 +110,7 @@ def test_variables_extraction(define_xml_directory):
     """
     Tests that the variables table is extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "variables" in data
@@ -127,7 +127,7 @@ def test_codelists_extraction(define_xml_directory):
     """
     Tests that the codelists and codelist_items tables are extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "codelists" in data
@@ -148,7 +148,7 @@ def test_methods_extraction(define_xml_directory):
     """
     Tests that the methods table is extracted correctly.
     """
-    for define_xml_file in get_all_codelist_files(define_xml_directory):
+    for define_xml_file in get_all_xml_files(define_xml_directory):
         reader = XMLReader(str(define_xml_file))
         data = reader.read()
         assert "methods" in data

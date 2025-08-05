@@ -65,7 +65,7 @@ class XMLReader(BaseReader):
         """Read Define-XML file and extract all metadata"""
 
         data = {
-            "studies": [],
+            "studies": {},
             "metadata_versions": [],
             "datasets": [],
             "variables": [],
@@ -108,7 +108,7 @@ class XMLReader(BaseReader):
         self._id_counters[table_name] += 1
         return self._id_counters[table_name]
 
-    def _process_study(self, study_elem: ET.Element, data: Dict[str, List[Dict[str, Any]]]) -> None:
+    def _process_study(self, study_elem: ET.Element, data: Dict[str, Any]) -> None:
         """Process study element and its children"""
         study_oid = study_elem.get("OID")
 
@@ -118,15 +118,13 @@ class XMLReader(BaseReader):
         protocol_name = self._get_text(global_vars, "odm:ProtocolName")
 
         study_id = self._get_next_id("studies")
-        data["studies"].append(
-            {
-                "study_id": study_id,
-                "study_oid": study_oid,
-                "study_name": study_name,
-                "study_description": study_description,
-                "protocol_name": protocol_name,
-            }
-        )
+        data["studies"] = {
+            "study_id": study_id,
+            "study_oid": study_oid,
+            "study_name": study_name,
+            "study_description": study_description,
+            "protocol_name": protocol_name,
+        }
 
         for mv in study_elem.findall(".//odm:MetaDataVersion", self.NAMESPACES):
             self._process_metadata_version(mv, study_id, data)
