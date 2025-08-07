@@ -19,6 +19,10 @@ CREATE TABLE IF NOT EXISTS public.data_metadata (
     dataset_unsplit_name TEXT NOT NULL,
     -- handle pre-processed dataset information
     dataset_preprocessed TIMESTAMPTZ,
+    -- preprocessing fields
+    contains_relrec_refs BOOLEAN DEFAULT FALSE,
+    available_relrec_merges TEXT[],
+    preprocessing_stage TEXT DEFAULT 'raw',  -- Values: 'raw', 'split_processed', 'relrec_ready', 'relrec_merged'
     -- variable metadata
     var_name TEXT NOT NULL,
     var_label TEXT,
@@ -31,3 +35,9 @@ CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_id ON public.data_metadata(
 CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_name ON public.data_metadata(dataset_name);
 CREATE INDEX IF NOT EXISTS idx_data_metadata_dataset_domain ON public.data_metadata(dataset_domain);
 CREATE INDEX IF NOT EXISTS idx_data_metadata_var_name ON public.data_metadata(var_name);
+
+CREATE INDEX IF NOT EXISTS idx_data_metadata_preprocessing_stage ON public.data_metadata(preprocessing_stage);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_contains_relrec ON public.data_metadata(contains_relrec_refs);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_is_split ON public.data_metadata(dataset_is_split);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_unsplit_name ON public.data_metadata(dataset_unsplit_name);
+CREATE INDEX IF NOT EXISTS idx_data_metadata_preprocessed ON public.data_metadata(dataset_preprocessed);
