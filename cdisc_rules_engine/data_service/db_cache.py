@@ -11,25 +11,31 @@ class DBTableCache(TypedDict):
 
 class DBCache:
 
-    def __init__(self, cache: list[str]):
+    def __init__(self, cache: list[str], existing_hashes: list[str]):
         self.cache = cache
+        self.existing_hashes = existing_hashes
 
     @classmethod
     def from_metadata_dict(cls, data_metadata: list[dict]) -> "DBCache":
         cache = {}
+        existing_hashes = []
         if len(data_metadata) > 0:
             for row in data_metadata:
                 table = row.get("dataset_id").lower()
                 col = row.get("var_name")
                 if table not in cache.keys():
                     cache[table] = DBTableCache(db_table=table, columns={col: col})
+                    existing_hashes.append(table)
+                    existing_hashes.append(col)
                 else:
                     cache.get(table).get("columns")[col] = col
-        return cls(cache)
+                    existing_hashes.append(col)
+
+        return cls(cache, existing_hashes)
 
     @classmethod
     def empty_cache(cls) -> "DBCache":
-        return cls({})
+        return cls({}, [])
 
     def get_tables(self) -> dict:
         return {k: v["db_table"] for k, v in self.cache.items()}
@@ -56,7 +62,7 @@ class DBCache:
         if existing_column_hash is not None:
             return (True, column_key, existing_column_hash)
         else:
-            column_hash = generate_hash(column_key)
+            column_hash = generate_hash(column_key, self.existing_hashes)
             self.get_db_table_cache(table_key).get("columns")[column_key] = column_hash
             return (False, column_key, column_hash)
 
@@ -65,7 +71,7 @@ class DBCache:
         if existing_table_hash is not None:
             return (True, table_key, existing_table_hash)
         else:
-            table_hash = generate_hash(table_key)
+            table_hash = generate_hash(table_key, self.existing_hashes)
             self.cache[table_key] = DBTableCache(db_table=table_key, columns=columns)
             # now comes the tricky part, which is to add columns...
             return (False, table_key, table_hash)
