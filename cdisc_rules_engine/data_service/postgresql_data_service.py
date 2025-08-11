@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Union, Optional
+from typing import Union, Optional, List, Dict, Any
 import pandas as pd
 import logging
 
@@ -217,6 +217,12 @@ class PostgresQLDataService(SQLDataService):
         )
 
         instance.pre_processed_dfs = PostgresQLDataService._pre_process_data_dfs(data_dfs, pgi, instance.cache)
+
+        validation_errors = instance.data_preprocessor.get_validation_errors()
+        if validation_errors:
+            logger.warning(f"Found {len(validation_errors)} validation errors during preprocessing")
+            for error in validation_errors:
+                logger.warning(f"  {error['type']}: {error['error']}")
 
         return instance
 
@@ -474,7 +480,11 @@ class PostgresQLDataService(SQLDataService):
         datasets = rule_spec.get("datasets", [])
 
         for dataset_spec in datasets:
-            if dataset_spec.get("domain_name") == "RELREC":
+            domain_name = dataset_spec.get("domain_name") or dataset_spec.get("domain")
+
+            if domain_name in ["RELREC", "SUPP--", "SUPPQUAL"] or (
+                domain_name and (domain_name.startswith("CO") or domain_name.startswith("SUPP"))
+            ):
                 merged_dataset_name = self.data_preprocessor.process_rule_driven_merges(rule_spec)
 
                 if merged_dataset_name:
@@ -486,6 +496,45 @@ class PostgresQLDataService(SQLDataService):
     def get_preprocessing_status(self) -> dict:
         """Get the current status of data preprocessing."""
         return self.data_preprocessor.get_preprocessing_status()
+
+    def get_preprocessing_validation_errors(self) -> List[Dict[str, Any]]:
+        """Get validation errors found during preprocessing."""
+        return self.data_preprocessor.get_validation_errors()
+
+    def dataset_needs_preprocessing(self, dataset_id: str) -> bool:
+        """Check if a dataset needs preprocessing based on its characteristics."""
+        query = """
+            SELECT
+                dataset_is_split,
+                dataset_domain,
+                preprocessing_stage
+            FROM public.data_metadata
+            WHERE dataset_id = %s
+            LIMIT 1
+        """
+
+        self.pgi.execute_sql(query, (dataset_id.lower(),))
+        result = self.pgi.fetch_one()
+
+        if not result:
+            return False
+
+        is_split = result["dataset_is_split"]
+        domain = result["dataset_domain"]
+        stage = result["preprocessing_stage"]
+
+        # Needs preprocessing if:
+        # - It's a split dataset that hasn't been processed
+        # - It's a relationship domain (RELREC, CO*, SUPP*) not yet cataloged
+        # - It's in 'raw' stage
+        needs_preprocessing = (
+            (is_split and stage == "raw")
+            or (domain and domain in ["RELREC"] and stage == "raw")
+            or (domain and domain.startswith("CO") and stage == "raw")
+            or (self._is_supp_dataset(dataset_id) and stage == "raw")
+        )
+
+        return needs_preprocessing
 
     def _dataset_exists(self, dataset_name: str) -> bool:
         """Check if a dataset/table exists in the database."""
@@ -504,6 +553,20 @@ class PostgresQLDataService(SQLDataService):
         if results:
             return results[0]
         return False
+
+    def _is_supp_dataset(self, dataset_id: str) -> bool:
+        """Check if a dataset is a SUPP dataset."""
+        query = """
+            SELECT dataset_is_supp
+            FROM public.data_metadata
+            WHERE dataset_id = %s
+            LIMIT 1
+        """
+
+        self.pgi.execute_sql(query, (dataset_id.lower(),))
+        result = self.pgi.fetch_one()
+
+        return result["dataset_is_supp"] if result else False
 
     @staticmethod
     def _get_unsplit_name(
