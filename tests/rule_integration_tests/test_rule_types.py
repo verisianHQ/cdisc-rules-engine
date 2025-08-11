@@ -86,7 +86,6 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
                                     standard=ig_specs["standard"],
                                     standard_version=ig_specs["standard_version"],
                                 )
-                                print(old_results)
                                 # execute rule in SQL engine
                                 # ds = PostgresQLDataService.from_list_of_testdatasets(positive_test_datasets, ig_specs)
                                 # sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule)
@@ -106,7 +105,6 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
                                     standard=ig_specs["standard"],
                                     standard_version=ig_specs["standard_version"],
                                 )
-                                print(old_results)
                                 # execute rule in SQL engine
                                 # ds = PostgresQLDataService.from_list_of_testdatasets(negative_test_datasets, ig_specs)
                                 # sql_results = sql_run_single_rule_validation(data_service=ds, rule=get_sample_lb_rule)

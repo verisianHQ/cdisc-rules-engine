@@ -285,7 +285,7 @@ class PostgresQLDataService(SQLDataService):
 
         return metadata_rows
 
-    def create_definexml_tables(self):
+    def _create_definexml_tables(self):
         """Create tables for Define-XML metadata"""
         if not self.define_xml_path:
             logger.info("No Define-XML path provided.")
