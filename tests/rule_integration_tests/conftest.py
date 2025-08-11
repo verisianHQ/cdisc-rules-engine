@@ -1,5 +1,6 @@
 import pytest
 import pickle
+from ast import literal_eval
 import pandas as pd
 
 
@@ -16,9 +17,27 @@ def get_core_rule(pytestconfig) -> dict:
 @pytest.fixture
 def get_core_rules_df(pytestconfig) -> pd.DataFrame:
     def _call_core_rules_df() -> dict:
-        sdtm = pd.read_csv(str(pytestconfig.rootpath) + "/tests/resources/rules/sdtm_rules.csv")
-        adam = pd.read_csv(str(pytestconfig.rootpath) + "/tests/resources/rules/adam_rules.csv")
-        define = pd.read_csv(str(pytestconfig.rootpath) + "/tests/resources/rules/define_rules.csv")
+        sdtm = pd.read_csv(
+            str(pytestconfig.rootpath) + "/tests/resources/rules/sdtm_rules.csv",
+            converters={
+                "std": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+                "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+            },
+        )
+        adam = pd.read_csv(
+            str(pytestconfig.rootpath) + "/tests/resources/rules/adam_rules.csv",
+            converters={
+                "std": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+                "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+            },
+        )
+        define = pd.read_csv(
+            str(pytestconfig.rootpath) + "/tests/resources/rules/define_rules.csv",
+            converters={
+                "std": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+                "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
+            },
+        )
         return pd.concat([sdtm, adam, define])
 
     return _call_core_rules_df
