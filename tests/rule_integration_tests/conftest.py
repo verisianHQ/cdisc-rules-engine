@@ -38,7 +38,9 @@ def get_core_rules_df(pytestconfig) -> pd.DataFrame:
                 "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
             },
         )
-        return pd.concat([sdtm, adam, define])
+        return_df = pd.concat([sdtm, adam, define]).copy()
+        return_df_sorted = return_df.sort_values(by="Core-ID", ascending=True, na_position="last")
+        return return_df_sorted
 
     return _call_core_rules_df
 
