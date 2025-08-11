@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS public.data_metadata (
     -- preprocessing fields
     contains_relrec_refs BOOLEAN DEFAULT FALSE,
     available_relrec_merges TEXT[],
+    contains_co_refs BOOLEAN DEFAULT FALSE,
+    contains_supp_refs BOOLEAN DEFAULT FALSE,
     preprocessing_stage TEXT DEFAULT 'raw',  -- Values: 'raw', 'split_processed', 'relrec_ready', 'relrec_merged'
     -- variable metadata
     var_name TEXT NOT NULL,

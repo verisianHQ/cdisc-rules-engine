@@ -101,7 +101,7 @@ class DataPreprocessor:
             errors.append({"type": "RELREC", "error": "No RELREC dataset found"})
             return errors
 
-        relrec_table = check_result[0]
+        relrec_table = dict(check_result)["dataset_id"]
 
         errors.extend(self._validate_relrec_schema(relrec_table))
         errors.extend(self._validate_relrec_values(relrec_table))
@@ -179,7 +179,7 @@ class DataPreprocessor:
                 try:
                     self.pgi.execute_sql(parent_check_query, (studyid, usubjid, idvarval))
                     parent_check_result = self.pgi.fetch_one()
-                    if parent_check_result[0] == 0:
+                    if not parent_check_result["exists"]:
                         errors.append(
                             {
                                 "type": "RELREC",
@@ -242,7 +242,8 @@ class DataPreprocessor:
 
                         self.pgi.execute_sql(parent_check, (studyid, usubjid, idvarval))
 
-                        if self.pgi._last_results and self.pgi._last_results[0][0] == 0:
+                        result = self.pgi.fetch_one()
+                        if result and dict(result)["count"] == 0:
                             errors.append(
                                 {
                                     "type": "CO",
@@ -311,7 +312,8 @@ class DataPreprocessor:
 
                         self.pgi.execute_sql(parent_check, (studyid, usubjid, idvarval))
 
-                        if self.pgi._last_results and self.pgi._last_results[0][0] == 0:
+                        result = self.pgi.fetch_one()
+                        if result and dict(result)["count"] == 0:
                             errors.append(
                                 {
                                     "type": "SUPP",
@@ -390,7 +392,7 @@ class DataPreprocessor:
             self.pgi.execute_sql(table_exists_query, (domain,))
             result = self.pgi.fetch_one()
 
-            if not result or not result[0]:
+            if not result or not result["exists"]:
                 for record in domain_records:
                     errors.append(
                         {
@@ -422,7 +424,7 @@ class DataPreprocessor:
                 self.pgi.execute_sql(col_exists_query, (domain, idvar))
                 result = self.pgi.fetch_one()
 
-                if not result or not result[0]:
+                if not result or not dict(result)["exists"]:
                     errors.append(
                         {
                             "type": f"CG0371_{relationship_type}",
@@ -448,7 +450,7 @@ class DataPreprocessor:
                 self.pgi.execute_sql(value_check_query, (record["studyid"], record["usubjid"], record["idvarval"]))
                 result = self.pgi.fetch_one()
 
-                if not result or result[0] == 0:
+                if not result or not dict(result)["count"] == 0:
                     errors.append(
                         {
                             "type": f"CG0371_{relationship_type}",
@@ -754,7 +756,9 @@ class DataPreprocessor:
             """
 
             self.pgi.execute_sql(rdomain_check, (supp_table,))
-            has_rdomain_col = self.pgi.fetch_one()[0]
+            result = self.pgi.fetch_one()
+
+            has_rdomain_col = dict(result)["exists"]
 
             qnam_qval_check = """
                 SELECT column_name
@@ -1226,7 +1230,7 @@ class DataPreprocessor:
         self.pgi.execute_sql(table_check)
         result = self.pgi.fetch_one()
 
-        if not result or not result[0]:
+        if not result or not dict(result)["exists"]:
             return
 
         for error in self._validation_errors:
