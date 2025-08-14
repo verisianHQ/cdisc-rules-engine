@@ -82,7 +82,6 @@ def initialize_regression_dict(row) -> dict:
     }
 
 
-# TODO: read in define.xml
 def check_cases(
     cur_regression: dict,
     case: str,
@@ -101,10 +100,12 @@ def check_cases(
     for test_case_folder_path in test_case_folder_paths:
         try:
             test_case_file_path = find_data_file(test_case_folder_path + "/data")
+            define_xml_file_path = find_define_xml_file_path(test_case_folder_path + "/data")
             # run engine
             engine_regression = {}
             run_regression_on_sample(
                 test_case_file_path,
+                define_xml_file_path,
                 engine_regression,
                 ig_specs,
                 rule,
@@ -122,12 +123,19 @@ def check_cases(
 
 def run_regression_on_sample(
     data_file_path: str,
+    define_xml_file_path: str,
     regression_errors: dict,
     ig_specs: IGSpecification,
     rule,
 ):
     can_process_dataset = False
     data_test_datasets = None
+
+    # handle define-xmls
+    if define_xml_file_path:
+        regression_errors["define_xml_present"] = True
+    else:
+        regression_errors["define_xml_present"] = False
 
     # First phase: reading datasets from SharePoint XLSX
     try:
@@ -159,32 +167,41 @@ def run_regression_on_sample(
 
     # Second phase: running validations if dataset can be processed
     if can_process_dataset:
-        try:
-            # Execute rule in SQL engine
-            ds = PostgresQLDataService.from_list_of_testdatasets(data_test_datasets, ig_specs)
-            regression_errors["datasets_import_sql"] = "SUCCESS"
-            sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule)
-            regression_errors["results_present_sql"] = True
-
-            # Execute in old engine
-            old_results = run_single_rule_validation(
-                data_test_datasets,
-                rule,
-                standard=ig_specs["standard"],
-                standard_version=ig_specs["standard_version"],
-            )
-            regression_errors["dataset_import_old"] = "SUCCESS"
-            regression_errors["results_present_old"] = True
-
-            return sql_results, old_results
-
-        except ValueError as e:
-            if str(e) == "Data list cannot be empty":
-                regression_errors["datasets_import_sql"] = f"datasets_dataset_errors: {str(e)}"
-            else:
-                raise
+        process_dataset(regression_errors, define_xml_file_path, data_test_datasets, ig_specs, rule)
 
     return None, None
+
+
+def process_dataset(
+    regression_errors: list, define_xml_file_path: str, data_test_datasets: list, ig_specs: IGSpecification, rule: dict
+):
+    try:
+        # Execute rule in SQL engine
+        ds = PostgresQLDataService.from_list_of_testdatasets(
+            data_test_datasets, ig_specs, define_xml_path=define_xml_file_path
+        )
+        regression_errors["datasets_import_sql"] = "SUCCESS"
+        sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule)
+        regression_errors["results_present_sql"] = True
+
+        # Execute in old engine
+        old_results = run_single_rule_validation(
+            data_test_datasets,
+            rule,
+            define_xml=define_xml_file_path,
+            standard=ig_specs["standard"],
+            standard_version=ig_specs["standard_version"],
+        )
+        regression_errors["dataset_import_old"] = "SUCCESS"
+        regression_errors["results_present_old"] = True
+
+        return sql_results, old_results
+
+    except ValueError as e:
+        if str(e) == "Data list cannot be empty":
+            regression_errors["datasets_import_sql"] = f"datasets_dataset_errors: {str(e)}"
+        else:
+            raise
 
 
 def get_data_paths_by_rule_id(local_path: str, row: pd.Series, rid: str) -> list[str]:
@@ -345,6 +362,17 @@ def find_data_file(path: str) -> str:
             extension = filename.split(".")[-1].lower()
             if os.path.isfile(full_path) and extension in accepted_extensions:
                 return path + "/" + filename
+    except FileNotFoundError:
+        return ""
+    return ""
+
+
+def find_define_xml_file_path(path: str) -> str:
+    try:
+        for filename in os.listdir(path):
+            full_path = os.path.join(path, filename)
+            if os.path.isfile(full_path) and filename.lower() == "define.xml":
+                return full_path
     except FileNotFoundError:
         return ""
     return ""

@@ -67,7 +67,7 @@ class PostgresQLDataService(SQLDataService):
         test_datasets: list[TestDataset],
         ig_specs: IGSpecification,
         datasets_path: Path = None,
-        define_xml_path: Path = None,
+        define_xml_path: str = "",
         terminology_paths: dict = None,
     ) -> "PostgresQLDataService":
         """
