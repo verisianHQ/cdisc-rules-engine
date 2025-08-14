@@ -97,7 +97,9 @@ def check_cases(
         if os.path.isdir(os.path.join(case_folder_path, name)) and two_digit_pattern.match(name)
     ]
 
+    test_case_regression = []
     for test_case_folder_path in test_case_folder_paths:
+
         try:
             test_case_file_path = find_data_file(test_case_folder_path + "/data")
             define_xml_file_path = find_define_xml_file_path(test_case_folder_path + "/data")
@@ -110,15 +112,24 @@ def check_cases(
                 ig_specs,
                 rule,
             )
-            cur_regression["/".join(test_case_folder_path.split("/")[-5:])] = {
-                "test_case_xslx_file": "/".join(test_case_file_path.split("/")[-7:]),
-                "engine_regression": engine_regression,
-            }
+            test_case_regression.append(
+                {
+                    "/".join(test_case_folder_path.split("/")[-5:]): {
+                        "test_case_xslx_file": "/".join(test_case_file_path.split("/")[-7:]),
+                        "engine_regression": engine_regression,
+                    }
+                }
+            )
         except FileNotFoundError:
-            cur_regression["/".join(test_case_folder_path.split("/")[-5:])] = {
-                "test_case_xslx_file": None,
-                "engine_regression": None,
-            }
+            test_case_regression.append(
+                {
+                    "/".join(test_case_folder_path.split("/")[-5:]): {
+                        "test_case_xslx_file": None,
+                        "engine_regression": None,
+                    }
+                }
+            )
+    cur_regression[f"{case}_regressions"] = test_case_regression
 
 
 def run_regression_on_sample(
