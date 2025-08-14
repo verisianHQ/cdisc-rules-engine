@@ -157,10 +157,10 @@ def data_folder_validation(
             f"in '{pos_neg_folder}'."
         )
     for file in os.scandir(subfolder_data_results_path):
-        if file.is_file() and not file.name.endswith(xlsx_extension):
+        if file.is_file() and not (file.name.endswith(xlsx_extension) or file.name.lower() == "define.xml"):
             error_messages.append(
-                f"{rtype}:{rule_id}: Non-xlsx file found in 'data' folder under '{two_digit_folder}' "
-                f"in '{pos_neg_folder}'."
+                f"{rtype}:{rule_id}: Non-xlsx and non-'define.xml' file found"
+                f"in 'data' folder under '{two_digit_folder}' in '{pos_neg_folder}'."
             )
     for f in os.scandir(subfolder_data_results_path):
         if f.is_dir():
