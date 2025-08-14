@@ -183,8 +183,12 @@ def process_dataset(
         regression_errors["datasets_import_sql"] = "SUCCESS"
         sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule)
         regression_errors["results_present_sql"] = True
+        sql_regression = extract_sql_results_regression(sql_results)
+        regression_errors["results_sql"] = sql_regression
 
         # Execute in old engine
+        if rule.get("core_id") == "CORE-000106":
+            print()
         old_results = run_single_rule_validation(
             data_test_datasets,
             rule,
@@ -194,6 +198,10 @@ def process_dataset(
         )
         regression_errors["dataset_import_old"] = "SUCCESS"
         regression_errors["results_present_old"] = True
+        old_regression = extract_sql_results_regression(old_results)
+        regression_errors["results_old"] = old_regression
+
+        regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
 
         return sql_results, old_results
 
@@ -202,6 +210,77 @@ def process_dataset(
             regression_errors["datasets_import_sql"] = f"datasets_dataset_errors: {str(e)}"
         else:
             raise
+
+
+def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[dict]):
+    comp_regression = {}
+    # compare execution status
+    for o_res in old_results:
+        # find matching dataset/domain entries
+        sql_res = next(
+            (
+                res
+                for res in sql_results
+                if res.get("dataset") == o_res.get("dataset") and res.get("domain") == o_res.get("domain")
+            ),
+            None,
+        )
+        if sql_res is not None:
+            if o_res.get("execution_status") != sql_res.get("execution_status"):
+                comp_regression["execution_status_match"] = False
+            else:
+                comp_regression["execution_status_match"] = True
+                if not o_res.get("number_of_errors") != sql_res.get("number_of_errors"):
+                    comp_regression["number_of_errors_match"] = False
+                else:
+                    comp_regression["number_of_errors_match"] = True
+                    comp_regression["deep_diff"] = compare_error_lists(o_res.get("errors"), sql_res.get("errors"))
+        else:
+            comp_regression["execution_status_match"] = False
+            comp_regression["number_of_errors_match"] = False
+
+    return comp_regression
+
+
+def compare_error_lists(old_errors, sql_errors):
+    set1 = {json.dumps(item, sort_keys=True) for sublist in old_errors for item in sublist}
+    set2 = {json.dumps(item, sort_keys=True) for sublist in sql_errors for item in sublist}
+    diff_serialized = set1.symmetric_difference(set2)
+    return [json.loads(item) for item in diff_serialized]
+
+
+def extract_sql_results_regression(results):
+    res_regression = []
+    for _, res in results.items():
+        domain_res_regression = {
+            "dataset": res[0].get("dataset", ""),
+            "domain": res[0].get("domain", ""),
+            "execution_status": res[0].get("executionStatus", ""),
+            "execution_message": res[0].get("message", ""),
+            "number_errors": len(res[0].get("errors")),
+        }
+        if res[0].get("executionStatus", "") == "execution_error":
+            domain_res_regression["errors"] = (
+                [{"error": error.get("error"), "message": error.get("message")} for error in res[0].get("errors")],
+            )
+        elif res[0].get("executionStatus", "") == "skipped":
+            domain_res_regression["errors"] = []
+        elif res[0].get("executionStatus", "") == "success":
+            domain_res_regression["errors"] = (
+                [
+                    {
+                        "row": error.get("row"),
+                        "SEQ": error.get("SEQ"),
+                        "USUBJID": error.get("USUBJID"),
+                        "value": error.get("value"),
+                    }
+                    for error in res[0].get("errors")
+                ],
+            )
+        else:
+            domain_res_regression["errors"] = [{"error": "unknown execution status"}]
+        res_regression.append(domain_res_regression)
+    return res_regression
 
 
 def get_data_paths_by_rule_id(local_path: str, row: pd.Series, rid: str) -> list[str]:
