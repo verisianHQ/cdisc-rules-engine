@@ -25,7 +25,9 @@ class SQLSerialiser:
             raise ValueError(f"Unsupported type: {type}")
 
     @classmethod
-    def create_table_from_dict(cls, table_name: str, sample: Dict[str, Any], primary_key: Optional[str] = None) -> str:
+    def create_table_query_from_data(
+        cls, table_name: str, sample: Dict[str, Any], primary_key: Optional[str] = None
+    ) -> str:
         """Generate CREATE TABLE statement from a dictionary"""
         columns = []
 
@@ -38,11 +40,14 @@ class SQLSerialiser:
 
             columns.append(col_def)
 
-        columns_sql = ",\n    ".join(columns)
-        return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY, {columns_sql}\n);"
+        if len(columns) > 0:
+            columns_sql = ",\n    ".join(columns)
+            return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY, {columns_sql}\n);"
+        else:
+            return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY \n);"
 
     @classmethod
-    def create_table_from_metadata(
+    def create_table_query_from_data_metadata_dict(
         cls, table_name: str, metadata: Dict[str, Any], primary_key: Optional[str] = None
     ) -> str:
         """Generate CREATE TABLE statement from the dataset metadata."""
@@ -56,8 +61,11 @@ class SQLSerialiser:
 
             columns.append(col_def)
 
-        columns_sql = ",\n    ".join(columns)
-        return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY, {columns_sql}\n);"
+        if len(columns) > 0:
+            columns_sql = ",\n    ".join(columns)
+            return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY, {columns_sql}\n);"
+        else:
+            return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY \n);"
 
     @classmethod
     def insert_dict(cls, table_name: str, data: Dict[str, Any]) -> Tuple[str, List[Any]]:
