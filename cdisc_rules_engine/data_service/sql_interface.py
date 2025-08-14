@@ -116,7 +116,20 @@ class PostgresQLInterface:
         # ensure lowercasing of table names and columns
         sample = data if isinstance(data, dict) else data[0]
 
-        create_stmt = self.serialiser.create_table_from_dict(table_name, sample, primary_key)
+        create_stmt = self.serialiser.create_table_query_from_data(table_name, sample, primary_key)
+
+        self.execute_sql(create_stmt)
+        logger.info(f"Table {table_name} created successfully")
+
+    def create_table_from_data_metadata(
+        self, table_name: str, column_type_dict: dict[str, str], primary_key: Optional[str] = None
+    ) -> None:
+        """Create a table using provided column types"""
+        # ensure lowercasing of table names and columns
+
+        create_stmt = self.serialiser.create_table_query_from_data_metadata_dict(
+            table_name, column_type_dict, primary_key
+        )
 
         self.execute_sql(create_stmt)
         logger.info(f"Table {table_name} created successfully")
@@ -144,7 +157,7 @@ class PostgresQLInterface:
                     return affected_rows
                 except Exception as e:
                     conn.rollback()
-                    logger.error(f"Insert failed: {e}")
+                    logger.error(f"Insert failed: {e} - table name {table_name} for insert data: {str(values_list)}")
                     raise
 
     def compile_and_execute(self, statements: List[str], commit: bool = True) -> None:
