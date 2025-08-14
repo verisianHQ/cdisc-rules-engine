@@ -52,7 +52,6 @@ class SQLSerialiser:
                 col_def = f"{col_name} REAL"
             else:
                 raise ValueError(f"Unsupported SQL column type: {col_type}")
-            # TODO: how do we differentiate between int and float? -> also put this into test_rule_types.py
 
             if col_name == primary_key:
                 col_def += " PRIMARY KEY"

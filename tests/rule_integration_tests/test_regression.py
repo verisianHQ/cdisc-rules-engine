@@ -13,7 +13,6 @@ from scripts.run_validation import run_single_rule_validation
 
 @patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
 def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    two_digit_pattern = re.compile(r"^\d{2}$")
     mock_get_dataset_class.return_value = None
     regression_df = get_core_rules_df()
     local_path = "/Users/verisian/data/CORE/CDISC_Sharepoint_dump_20250806/unitTesting/"
@@ -28,7 +27,7 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
 
     regression_json = []
 
-    for idx, row in regression_df.iterrows():
+    for _, row in regression_df.iterrows():
         cur_core_id = str(row["Core-ID"])
         cur_regression = {
             "core-id": row["Core-ID"] if pd.notna(row["Core-ID"]) and str(row["Core-ID"]).strip() else "unknown",
@@ -92,6 +91,7 @@ def check_cases(
     rule,
     xml_file=None,
 ):
+    two_digit_pattern = re.compile(r"^\d{2}$")
     cur_regression[f"{case}_folder_path"] = "/".join(case_folder_path.split("/")[-5:])
     test_case_folder_paths = [
         case_folder_path + "/" + name
