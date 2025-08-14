@@ -104,11 +104,11 @@ class DataReader(BaseReader):
         for column in cleaned_df.columns:
             column_type = self._column_types.get(column, "unknown")
 
-            if self._is_text_type(column_type):
+            if self._is_numeric_type(column_type):
+                cleaned_df[column] = cleaned_df[column].where(cleaned_df[column].notna(), None)
+            elif self._is_text_type(column_type):
                 cleaned_df[column] = cleaned_df[column].fillna("")
                 cleaned_df[column] = cleaned_df[column].apply(lambda x: "" if pd.isna(x) or x is None else x)
-            elif self._is_numeric_type(column_type):
-                cleaned_df[column] = cleaned_df[column].where(cleaned_df[column].notna(), None)
             else:
                 cleaned_df[column] = cleaned_df[column].where(cleaned_df[column].notna(), None)
 
@@ -121,6 +121,7 @@ class DataReader(BaseReader):
             name = var.get("name", "")
             sas_type = var.get("type", "")
             column_types[name] = sas_type
+            column_types[name.upper()] = sas_type
         return column_types
 
     def _is_text_type(self, sas_type: str) -> bool:

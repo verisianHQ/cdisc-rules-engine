@@ -121,6 +121,15 @@ class PostgresQLInterface:
         self.execute_sql(create_stmt)
         logger.info(f"Table {table_name} created successfully")
 
+    def create_table_from_metadata(
+        self, table_name: str, metadata: Dict[str, Any], primary_key: Optional[str] = None
+    ) -> None:
+        """Create a table from dataset metadata"""
+        create_stmt = self.serialiser.create_table_from_metadata(table_name, metadata, primary_key)
+
+        self.execute_sql(create_stmt)
+        logger.info(f"Table {table_name} created successfully")
+
     def insert_data(
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
     ) -> Optional[int]:

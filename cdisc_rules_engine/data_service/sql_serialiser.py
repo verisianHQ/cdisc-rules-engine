@@ -6,15 +6,23 @@ class SQLSerialiser:
 
     @staticmethod
     def python_to_sql_type(value: Any) -> str:
-        """Map Python types to PostgreSQL types"""
-        if isinstance(value, int):
-            return "INTEGER"
-        elif isinstance(value, float):
+        """Map python types to SQL types."""
+        if isinstance(value, (int, float)):
             return "REAL"
-        elif isinstance(value, bool):
-            return "BOOLEAN"
-        else:
+        elif isinstance(value, str):
             return "TEXT"
+        else:
+            raise ValueError(f"Unsupported type: {type(value)}")
+
+    @staticmethod
+    def sas_to_sql_type(type: str) -> str:
+        """Map sas types to SQL types."""
+        if type in ("char", "s"):
+            return "TEXT"
+        elif type in ("numeric", "d"):
+            return "REAL"
+        else:
+            raise ValueError(f"Unsupported type: {type}")
 
     @classmethod
     def create_table_from_dict(cls, table_name: str, sample: Dict[str, Any], primary_key: Optional[str] = None) -> str:
@@ -26,6 +34,24 @@ class SQLSerialiser:
             col_def = f"{key} {col_type}"
 
             if key == primary_key:
+                col_def += " PRIMARY KEY"
+
+            columns.append(col_def)
+
+        columns_sql = ",\n    ".join(columns)
+        return f"CREATE TABLE IF NOT EXISTS {table_name} (\n id SERIAL PRIMARY KEY, {columns_sql}\n);"
+
+    @classmethod
+    def create_table_from_metadata(
+        cls, table_name: str, metadata: Dict[str, Any], primary_key: Optional[str] = None
+    ) -> str:
+        """Generate CREATE TABLE statement from the dataset metadata."""
+        columns = []
+        variable_metadata = metadata["variables"]
+        for var in variable_metadata:
+            col_def = f"{var['name'].lower()} {cls.sas_to_sql_type(var['type'])}"
+
+            if var["name"] == primary_key:
                 col_def += " PRIMARY KEY"
 
             columns.append(col_def)
