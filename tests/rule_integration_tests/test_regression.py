@@ -1,11 +1,12 @@
 import os
 import re
 import json
+from typing import Tuple
 import pandas as pd
 from unittest.mock import patch
 
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
-from cdisc_rules_engine.models.test_dataset import TestDataset
+from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
@@ -29,25 +30,7 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
 
     for _, row in regression_df.iterrows():
         cur_core_id = str(row["Core-ID"])
-        cur_regression = {
-            "core-id": row["Core-ID"] if pd.notna(row["Core-ID"]) and str(row["Core-ID"]).strip() else "unknown",
-            "cdisc_rule_id": (
-                row["CDISC Rule ID"]
-                if pd.notna(row["CDISC Rule ID"]) and str(row["CDISC Rule ID"]).strip()
-                else "unknown"
-            ),
-            "standard": (
-                row["Standard Name"]
-                if pd.notna(row["Standard Name"]) and str(row["Standard Name"]).strip()
-                else "unknown"
-            ),
-            "executability": (
-                row["Executability"]
-                if pd.notna(row["Executability"]) and str(row["Executability"]).strip()
-                else "unknown"
-            ),
-            "status": row["Status"] if pd.notna(row["Status"]) and str(row["Status"]).strip() else "unknown",
-        }
+        cur_regression = initialize_regression_dict(row)
         if not cur_core_id:
             cur_regression["core_id_is_null"] = True
         else:
@@ -69,7 +52,7 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
                             for case in ["negative", "positive"]:
                                 case_path = p + f"/{case}"
                                 if os.path.exists(case_path):
-                                    check_cases(cur_regression, case, case_path, ig_specs, rule, xml_file=None)
+                                    check_cases(cur_regression, case, case_path, ig_specs, rule)
                                 else:
                                     cur_regression[f"{case}_folder"] = None
 
@@ -83,13 +66,29 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
         json.dump(regression_json, f, ensure_ascii=False, indent=4)
 
 
+def initialize_regression_dict(row) -> dict:
+    return {
+        "core-id": row["Core-ID"] if pd.notna(row["Core-ID"]) and str(row["Core-ID"]).strip() else "unknown",
+        "cdisc_rule_id": (
+            row["CDISC Rule ID"] if pd.notna(row["CDISC Rule ID"]) and str(row["CDISC Rule ID"]).strip() else "unknown"
+        ),
+        "standard": (
+            row["Standard Name"] if pd.notna(row["Standard Name"]) and str(row["Standard Name"]).strip() else "unknown"
+        ),
+        "executability": (
+            row["Executability"] if pd.notna(row["Executability"]) and str(row["Executability"]).strip() else "unknown"
+        ),
+        "status": row["Status"] if pd.notna(row["Status"]) and str(row["Status"]).strip() else "unknown",
+    }
+
+
+# TODO: read in define.xml
 def check_cases(
     cur_regression: dict,
     case: str,
     case_folder_path: str,
     ig_specs: IGSpecification,
     rule,
-    xml_file=None,
 ):
     two_digit_pattern = re.compile(r"^\d{2}$")
     cur_regression[f"{case}_folder_path"] = "/".join(case_folder_path.split("/")[-5:])
@@ -98,7 +97,6 @@ def check_cases(
         for name in os.listdir(case_folder_path)
         if os.path.isdir(os.path.join(case_folder_path, name)) and two_digit_pattern.match(name)
     ]
-    # cur_regression[f"{case}_test_case_paths"] = ["/".join(t.split("/")[-5:]) for t in test_case_folder_paths]
 
     for test_case_folder_path in test_case_folder_paths:
         try:
@@ -127,7 +125,6 @@ def run_regression_on_sample(
     regression_errors: dict,
     ig_specs: IGSpecification,
     rule,
-    xml_file=None,
 ):
     can_process_dataset = False
     data_test_datasets = None
@@ -230,7 +227,6 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
     # Step 1: Read the "Datasets" sheet
     xlsx_data = pd.ExcelFile(path)
     datasets_df = pd.read_excel(xlsx_data, sheet_name="Datasets")
-    col_type_dict = {}
 
     # Step 2: Initialize list to store TestDataset objects
     test_datasets = []
@@ -245,52 +241,10 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
             dataset_df = pd.read_excel(xlsx_data, sheet_name=filename)
 
             # Step 5: Extract variable details (name, label, type, length)
-            variables = []
-            for col in dataset_df.columns:
-                var_name = col  # Name from row 0
-                if col.startswith("Unnamed:"):
-                    continue
-                var_label = str(dataset_df[col].iloc[0])  # Label from row 1
-                var_type = str(dataset_df[col].iloc[1])  # Type from row 2
-                var_length = dataset_df[col].iloc[2]  # Length from row 3
-                var_format = ""  # Format is always empty
-
-                # Create a variable dictionary
-                variables.append(
-                    {"name": var_name, "label": var_label, "type": var_type, "length": var_length, "format": var_format}
-                )
-
-                # collect appropriate column type for SQL
-                col_type_dict[var_name] = var_type
+            variables, col_type_dict = extract_variables(dataset_df)
 
             # Step 6: Extract data (rest of the rows)
-            data = {}
-            for col in dataset_df.columns:
-                if col.startswith("Unnamed:"):
-                    continue
-                column_name = col  # Column name from row 0
-                column_values = dataset_df[col].iloc[3:].tolist()  # All values below row 3
-
-                # Preprocess the column values based on the column type
-                if col_type_dict[column_name].lower() == "num":
-                    try:
-                        column_values = [None if pd.isna(val) else float(val) for val in column_values]
-                    except ValueError as e:
-                        raise ValueError(
-                            f"Error converting column '{column_name}' in table '{filename}' to numeric: {e}"
-                        )
-                elif col_type_dict[column_name].lower() == "char":
-                    try:
-                        column_values = ["" if pd.isna(val) else str(val) for val in column_values]
-                    except ValueError as e:
-                        raise ValueError(
-                            f"Error converting column '{column_name}' in table '{filename}' to string: {e}"
-                        )
-                else:
-                    raise ValueError(f"Unsupported column type: {col_type_dict[column_name]} for rule")
-
-                # Store the column name and its values in the data dictionary
-                data[column_name] = column_values
+            data = extract_data(filename, col_type_dict, dataset_df)
 
             # Step 7: Create a TestDataset object and append it to the list
             test_datasets.append(
@@ -305,6 +259,57 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
             )
 
     return test_datasets
+
+
+def extract_variables(dataset_df: pd.DataFrame) -> Tuple[list[TestVariableMetadata, dict]]:
+    variables = []
+    col_type_dict = {}
+    for col in dataset_df.columns:
+        var_name = col  # Name from row 0
+        if col.startswith("Unnamed:"):
+            continue
+        var_label = str(dataset_df[col].iloc[0])  # Label from row 1
+        var_type = str(dataset_df[col].iloc[1])  # Type from row 2
+        var_length = dataset_df[col].iloc[2]  # Length from row 3
+        var_format = ""  # Format is always empty
+
+        # Create a variable dictionary
+        variables.append(
+            {"name": var_name, "label": var_label, "type": var_type, "length": var_length, "format": var_format}
+        )
+
+        # collect appropriate column type for SQL
+        col_type_dict[var_name] = var_type
+
+    return variables, col_type_dict
+
+
+def extract_data(filename: str, col_type_dict: dict, dataset_df: pd.DataFrame) -> dict:
+    data = {}
+    for col in dataset_df.columns:
+        if col.startswith("Unnamed:"):
+            continue
+        column_name = col  # Column name from row 0
+        column_values = dataset_df[col].iloc[3:].tolist()  # All values below row 3
+
+        # Preprocess the column values based on the column type
+        if col_type_dict[column_name].lower() == "num":
+            try:
+                column_values = [None if pd.isna(val) else float(val) for val in column_values]
+            except ValueError as e:
+                raise ValueError(f"Error converting column '{column_name}' in table '{filename}' to numeric: {e}")
+        elif col_type_dict[column_name].lower() == "char":
+            try:
+                column_values = ["" if pd.isna(val) else str(val) for val in column_values]
+            except ValueError as e:
+                raise ValueError(f"Error converting column '{column_name}' in table '{filename}' to string: {e}")
+        else:
+            raise ValueError(f"Unsupported column type: {col_type_dict[column_name]} for rule")
+
+        # Store the column name and its values in the data dictionary
+        data[column_name] = column_values
+
+    return data
 
 
 def find_dirs(root, target_name, case_insensitive=False) -> list[str]:
