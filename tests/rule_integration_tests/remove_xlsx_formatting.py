@@ -1,3 +1,6 @@
+# this is useful code should we ever need to automatically remove formatting
+# from Excel files in that sharepoint, but we are currently outsourcing that
+# problem to rule maintainers...
 # import pandas as pd
 # import os
 # import warnings
@@ -120,7 +123,8 @@
 
 # remove_formatting_excel_file(
 #     app,
-#     "/Users/verisian/data/CORE/CDISC_Sharepoint_dump_20250806/unitTesting_test/FDA Business Rules/FB5115/negative/data/unit-test-coreid-FB5115-negative.xlsx",
+#     f"/Users/verisian/data/CORE/CDISC_Sharepoint_dump_20250806/unitTesting_test/"
+#     f" FDA Business Rules/FB5115/negative/data/unit-test-coreid-FB5115-negative.xlsx",
 # )
 # for file_path in sdtm_file_paths:
 #     try:

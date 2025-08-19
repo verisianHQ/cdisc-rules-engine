@@ -50,7 +50,6 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
                 else:
                     cur_regression["in_cache"] = True
                     rule_ids = row["rids"]
-                    print("\non rule: " + str(rule_ids) + "\n")
                     for rid in rule_ids:
                         paths = get_data_paths_by_rule_id(local_path, row, rid)
                         if len(paths) == 1:
@@ -61,9 +60,7 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
                             for case in ["negative", "positive"]:
                                 case_path = p + f"/{case}"
                                 if os.path.exists(case_path):
-                                    check_cases(cur_regression, case, case_path, ig_specs, rule)
-
-                            print("\n")
+                                    run_test_cases(cur_regression, case, case_path, ig_specs, rule)
                         elif len(paths) < 1:
                             cur_regression["rule_in_mltple_standards"] = []
                         else:
@@ -92,7 +89,7 @@ def initialize_regression_dict(row) -> dict:
     }
 
 
-def check_cases(
+def run_test_cases(
     cur_regression: dict,
     case: str,
     case_folder_path: str,
@@ -115,7 +112,7 @@ def check_cases(
             define_xml_file_path = find_define_xml_file_path(test_case_folder_path + "/data")
             # run engine
             engine_regression = {}
-            run_regression_on_sample(
+            run_regression_on_test_case(
                 test_case_file_path,
                 define_xml_file_path,
                 engine_regression,
@@ -142,7 +139,7 @@ def check_cases(
     cur_regression[f"{case}_regressions"] = test_case_regression
 
 
-def run_regression_on_sample(
+def run_regression_on_test_case(
     data_file_path: str,
     define_xml_file_path: str,
     regression_errors: dict,
@@ -188,12 +185,12 @@ def run_regression_on_sample(
 
     # Second phase: running validations if dataset can be processed
     if can_process_dataset:
-        process_dataset(regression_errors, define_xml_file_path, data_test_datasets, ig_specs, rule)
+        process_test_case_dataset(regression_errors, define_xml_file_path, data_test_datasets, ig_specs, rule)
 
     return None, None
 
 
-def process_dataset(
+def process_test_case_dataset(
     regression_errors: list, define_xml_file_path: str, data_test_datasets: list, ig_specs: IGSpecification, rule: dict
 ):
     try:
