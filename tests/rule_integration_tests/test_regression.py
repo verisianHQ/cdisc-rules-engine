@@ -31,32 +31,41 @@ def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get
     for _, row in regression_df.iterrows():
         cur_core_id = str(row["Core-ID"])
         cur_regression = initialize_regression_dict(row)
-        if not cur_core_id:
+        if not cur_core_id or cur_core_id == "nan":
             cur_regression["core_id_is_null"] = True
+            cur_regression["core_id_startswith_CORE"] = False
+            cur_regression["in_cache"] = False
+            cur_regression["rule_in_mltple_standards"] = []
         else:
+            cur_regression["core_id_is_null"] = False
             if not cur_core_id.startswith("CORE-"):
                 cur_regression["core_id_startswith_CORE"] = False
                 cur_regression["in_cache"] = False
+                cur_regression["rule_in_mltple_standards"] = []
             else:
+                cur_regression["core_id_startswith_CORE"] = True
                 rule = get_core_rule(cur_core_id)
                 if not rule:
                     cur_regression["in_cache"] = False
                 else:
+                    cur_regression["in_cache"] = True
                     rule_ids = row["rids"]
                     print("\non rule: " + str(rule_ids) + "\n")
                     for rid in rule_ids:
                         paths = get_data_paths_by_rule_id(local_path, row, rid)
                         if len(paths) == 1:
+                            cur_regression["rule_in_mltple_standards"] = []
                             p = paths[0]
+                            cur_regression["sharepoint_source"] = p.split("/")[-2]
 
                             for case in ["negative", "positive"]:
                                 case_path = p + f"/{case}"
                                 if os.path.exists(case_path):
                                     check_cases(cur_regression, case, case_path, ig_specs, rule)
-                                else:
-                                    cur_regression[f"{case}_folder"] = None
 
                             print("\n")
+                        elif len(paths) < 1:
+                            cur_regression["rule_in_mltple_standards"] = []
                         else:
                             cur_regression["rule_in_mltple_standards"] = paths
         regression_json.append(cur_regression)
@@ -79,6 +88,7 @@ def initialize_regression_dict(row) -> dict:
             row["Executability"] if pd.notna(row["Executability"]) and str(row["Executability"]).strip() else "unknown"
         ),
         "status": row["Status"] if pd.notna(row["Status"]) and str(row["Status"]).strip() else "unknown",
+        "standard_source": row["standard_source"],
     }
 
 
@@ -198,8 +208,6 @@ def process_dataset(
         regression_errors["results_sql"] = sql_regression
 
         # Execute in old engine
-        if rule.get("core_id") == "CORE-000106":
-            print()
         old_results = run_single_rule_validation(
             data_test_datasets,
             rule,

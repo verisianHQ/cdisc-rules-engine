@@ -24,6 +24,7 @@ def get_core_rules_df(pytestconfig) -> pd.DataFrame:
                 "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
             },
         )
+        sdtm["standard_source"] = "SDTMIG"
         adam = pd.read_csv(
             str(pytestconfig.rootpath) + "/tests/resources/rules/adam_rules.csv",
             converters={
@@ -31,6 +32,7 @@ def get_core_rules_df(pytestconfig) -> pd.DataFrame:
                 "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
             },
         )
+        adam["standard_source"] = "ADAMIG"
         define = pd.read_csv(
             str(pytestconfig.rootpath) + "/tests/resources/rules/define_rules.csv",
             converters={
@@ -38,6 +40,7 @@ def get_core_rules_df(pytestconfig) -> pd.DataFrame:
                 "rids": lambda s: [] if pd.isna(s) or s == "" else literal_eval(s),
             },
         )
+        define["standard_source"] = "define"
         return_df = pd.concat([sdtm, adam, define]).copy()
         return_df_sorted = return_df.sort_values(by="Core-ID", ascending=True, na_position="last")
         return return_df_sorted
