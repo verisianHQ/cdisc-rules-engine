@@ -8,7 +8,7 @@
 
 ## Rules preparation
 
-- go to rule editor (https://rule-editor.cdisc.org/)
+- go to CDISC rule editor (https://rule-editor.cdisc.org/)
 - remove all filters and get an export
 - put it into: `home + "/data/CORE/rules_dump_20250806.csv`
 - run all_rules_prep.ipynb notebook, using the repo's pyenv as the kernel
