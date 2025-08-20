@@ -53,6 +53,8 @@ class DataPreprocessor:
         self._validation_errors = []
         self._current_run_id = run_id
 
+        self._create_preprocessing_results_table()
+
         results["split_processing"] = self._process_split_datasets()
         results["relrec_catalog"] = self._build_relrec_catalog()
         results["co_catalog"] = self._build_co_catalog()
