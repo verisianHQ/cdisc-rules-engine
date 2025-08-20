@@ -12,7 +12,6 @@ from business_rules.utils import (
     vectorized_case_insensitive_is_in,
     apply_regex,
 )
-from cdisc_rules_engine.check_operators.helpers import vectorized_compare_dates
 
 from cdisc_rules_engine.constants import NULL_FLAVORS
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
@@ -21,7 +20,6 @@ import numpy as np
 import dask.dataframe as dd
 import pandas as pd
 import re
-import operator
 from uuid import uuid4
 from cdisc_rules_engine.models.dataset.dask_dataset import DaskDataset
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
@@ -882,49 +880,6 @@ class PostgresQLOperators(BaseType):
             results = ~vectorized_is_valid_duration(self.validation_df[target], True)
         return self.validation_df.convert_to_series(results)
 
-    def date_comparison(self, other_value, operator):
-        target = self.replace_prefix(other_value.get("target"))
-        comparator = self.replace_prefix(other_value.get("comparator"))
-        value_is_literal: bool = other_value.get("value_is_literal", False)
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        component = other_value.get("date_component")
-        results = np.where(
-            vectorized_compare_dates(component, self.validation_df[target], comparison_data, operator),
-            True,
-            False,
-        )
-        return self.validation_df.convert_to_series(results)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.eq)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_not_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.ne)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_less_than(self, other_value):
-        return self.date_comparison(other_value, operator.lt)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_less_than_or_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.le)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_greater_than_or_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.ge)
-
-    @log_operator_execution
-    @type_operator(FIELD_DATAFRAME)
-    def date_greater_than(self, other_value):
-        return self.date_comparison(other_value, operator.gt)
-
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_incomplete_date(self, other_value):
@@ -1473,3 +1428,123 @@ class PostgresQLOperators(BaseType):
     @type_operator(FIELD_DATAFRAME)
     def is_not_ordered_subset_of(self, other_value: dict):
         return ~self.is_ordered_subset_of(other_value)
+
+    def _date_comparison_sql(self, other_value: dict, operator: str):
+        """
+        Performs date comparison operations in PostgreSQL.
+        Handles date component extraction and comparison.
+        """
+        target_column = other_value.get("target").lower()
+        comparator = other_value.get("comparator")
+        value_is_literal = other_value.get("value_is_literal", False)
+        date_component = other_value.get("date_component")
+
+        if isinstance(comparator, str) and not value_is_literal:
+            comparator = comparator.lower()
+
+        component_suffix = f"_{date_component}" if date_component else ""
+        cache_key = f"{target_column}{operator}{comparator}{component_suffix}"
+
+        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, cache_key)
+
+        if not exists:
+            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
+
+            if date_component:
+                component_map = {
+                    "year": "YEAR",
+                    "month": "MONTH",
+                    "day": "DAY",
+                    "hour": "HOUR",
+                    "minute": "MINUTE",
+                    "second": "SECOND",
+                    "microsecond": "MICROSECONDS",
+                }
+                pg_component = component_map.get(date_component, "EPOCH")
+
+                if value_is_literal:
+                    subquery = f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST('{comparator}' AS TIMESTAMP))
+                        THEN true"""
+                else:
+                    subquery = f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND {self.replace_prefix(comparator)} IS NOT NULL
+                        AND {self.replace_prefix(comparator)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST({self.replace_prefix(comparator)} AS TIMESTAMP))
+                        THEN true"""
+            else:
+                if value_is_literal:
+                    subquery = f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND CAST({self.replace_prefix(target_column)} AS TIMESTAMP)
+                            {operator}
+                        CAST('{comparator}' AS TIMESTAMP)
+                        THEN true"""
+                else:
+                    subquery = f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND {self.replace_prefix(comparator)} IS NOT NULL
+                        AND {self.replace_prefix(comparator)} != ''
+                        AND CAST({self.replace_prefix(target_column)} AS TIMESTAMP)
+                            {operator}
+                        CAST({self.replace_prefix(comparator)} AS TIMESTAMP)
+                        THEN true"""
+
+            query = f"UPDATE {db_table} SET {db_column} = {subquery} ELSE false END;"
+
+            self.sql_data_service.pgi.execute_many(
+                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            )
+
+        db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
+        self.sql_data_service.pgi.execute_sql(f"SELECT id, {db_column} FROM {db_table};")
+        sql_results = self.sql_data_service.pgi.fetch_all()
+
+        return_series = pd.Series(data={item["id"] - 1: item[db_column] for item in sql_results})
+        return return_series
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_equal_to(self, other_value):
+        """Check if target date equals comparator date"""
+        return self._date_comparison_sql(other_value, "=")
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_not_equal_to(self, other_value):
+        """Check if target date does not equal comparator date"""
+        return self._date_comparison_sql(other_value, "!=")
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_less_than(self, other_value):
+        """Check if target date is less than comparator date"""
+        return self._date_comparison_sql(other_value, "<")
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_less_than_or_equal_to(self, other_value):
+        """Check if target date is less than or equal to comparator date"""
+        return self._date_comparison_sql(other_value, "<=")
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_greater_than_or_equal_to(self, other_value):
+        """Check if target date is greater than or equal to comparator date"""
+        return self._date_comparison_sql(other_value, ">=")
+
+    @log_operator_execution
+    @type_operator(FIELD_DATAFRAME)
+    def date_greater_than(self, other_value):
+        """Check if target date is greater than comparator date"""
+        return self._date_comparison_sql(other_value, ">")
