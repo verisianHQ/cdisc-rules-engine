@@ -6,6 +6,8 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Set, Any
 from collections import defaultdict
+import json
+
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.db_cache import DBCache
@@ -28,34 +30,94 @@ class DataPreprocessor:
         self._supp_catalog: Optional[List[Dict]] = None
 
     def preprocess_all(self) -> Dict[str, Any]:
-        """Execute all preprocessing stages in sequence."""
-
+        """Execute all preprocessing stages in sequence and store results."""
         logger.info("Starting data preprocessing pipeline")
 
+        run_id_query = "SELECT gen_random_uuid() as run_id"
+        self.pgi.execute_sql(run_id_query)
+        run_id = self.pgi.fetch_one()["run_id"]
+
+        timestamp = datetime.now().astimezone()
+
         results = {
+            "run_id": str(run_id),
             "split_processing": {},
             "relrec_catalog": {},
             "co_catalog": {},
             "supp_catalog": {},
             "validation_errors": [],
             "metadata_updates": {},
-            "timestamp": datetime.now().astimezone(),
+            "timestamp": timestamp.isoformat(),
         }
 
         self._validation_errors = []
+        self._current_run_id = run_id
 
         results["split_processing"] = self._process_split_datasets()
         results["relrec_catalog"] = self._build_relrec_catalog()
         results["co_catalog"] = self._build_co_catalog()
         results["supp_catalog"] = self._build_supp_catalog()
         results["validation_errors"] = self._validation_errors
-        results["metadata_updates"] = self._update_metadata(results["timestamp"])
+        results["metadata_updates"] = self._update_metadata(timestamp)
+
+        self._store_preprocessing_results(results, run_id, timestamp)
 
         if self._validation_errors:
-            self._log_validation_errors_to_db()
+            self._log_validation_errors_to_db(run_id)
 
         logger.info(f"Data preprocessing pipeline completed with {len(self._validation_errors)} validation errors")
         return results
+
+    def _create_preprocessing_results_table(self) -> None:
+        """Create table to store preprocessing results."""
+        create_table_query = """
+            CREATE TABLE IF NOT EXISTS public.preprocessing_results (
+                id SERIAL PRIMARY KEY,
+                run_id UUID DEFAULT gen_random_uuid(),
+                timestamp TIMESTAMPTZ NOT NULL,
+                stage TEXT NOT NULL,
+                results JSONB NOT NULL,
+                validation_errors JSONB,
+                metadata_updates JSONB,
+                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_preprocessing_results_run_id
+                ON public.preprocessing_results(run_id);
+            CREATE INDEX IF NOT EXISTS idx_preprocessing_results_stage
+                ON public.preprocessing_results(stage);
+            CREATE INDEX IF NOT EXISTS idx_preprocessing_results_timestamp
+                ON public.preprocessing_results(timestamp);
+        """
+
+        self.pgi.execute_sql(create_table_query)
+
+        validation_errors_table = """
+            CREATE TABLE IF NOT EXISTS public.preprocessing_validation_errors (
+                id SERIAL PRIMARY KEY,
+                run_id UUID,
+                validation_type TEXT NOT NULL,
+                source_table TEXT,
+                row_number INTEGER DEFAULT -1,
+                studyid TEXT,
+                usubjid TEXT,
+                rdomain TEXT,
+                idvar TEXT,
+                idvarval TEXT,
+                error_message TEXT NOT NULL,
+                severity TEXT DEFAULT 'ERROR',
+                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_validation_errors_run_id
+                ON public.preprocessing_validation_errors(run_id);
+            CREATE INDEX IF NOT EXISTS idx_validation_errors_type
+                ON public.preprocessing_validation_errors(validation_type);
+            CREATE INDEX IF NOT EXISTS idx_validation_errors_source_table
+                ON public.preprocessing_validation_errors(source_table);
+        """
+
+        self.pgi.execute_sql(validation_errors_table)
 
     def _validate_relationships(self) -> Dict[str, Any]:
         """Validate relationships per CG0371."""
@@ -356,17 +418,47 @@ class DataPreprocessor:
         """
         errors = []
 
-        query = f"""
+        # check if required columns exist
+        structure_check = f"""
             SELECT
-                studyid,
-                usubjid,
-                {rdomain_col} as rdomain,
-                idvar,
-                idvarval
-            FROM public.{table_name}
-            WHERE idvar IS NOT NULL
-            AND idvarval IS NOT NULL
-            AND {rdomain_col} IS NOT NULL
+                NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_schema = 'public'
+                    AND table_name = '{table_name}'
+                    AND column_name IN ('idvar', 'idvarval', '{rdomain_col}')
+                ) as missing_columns
+        """
+
+        self.pgi.execute_sql(structure_check)
+        result = self.pgi.fetch_one()
+
+        if result and result["missing_columns"]:
+            errors.append(
+                {
+                    "type": f"CG0371_{relationship_type}_STRUCTURE",
+                    "table": table_name,
+                    "row_number": -1,  # -1 indicates not a row-level error (e.g. missing columns)
+                    "error": f"Required columns (idvar, idvarval, or {rdomain_col}) missing in {table_name}",
+                }
+            )
+            return errors
+
+        # get records with row numbers
+        query = f"""
+            WITH numbered_records AS (
+                SELECT
+                    ROW_NUMBER() OVER (ORDER BY studyid, usubjid) - 1 as row_num,
+                    studyid,
+                    usubjid,
+                    {rdomain_col} as rdomain,
+                    idvar,
+                    idvarval
+                FROM public.{table_name}
+                WHERE idvar IS NOT NULL
+                AND idvarval IS NOT NULL
+                AND {rdomain_col} IS NOT NULL
+            )
+            SELECT * FROM numbered_records
         """
 
         self.pgi.execute_sql(query)
@@ -398,6 +490,7 @@ class DataPreprocessor:
                         {
                             "type": f"CG0371_{relationship_type}",
                             "table": table_name,
+                            "row_number": record["row_num"],
                             "studyid": record["studyid"],
                             "usubjid": record["usubjid"],
                             "rdomain": record["rdomain"],
@@ -429,6 +522,7 @@ class DataPreprocessor:
                         {
                             "type": f"CG0371_{relationship_type}",
                             "table": table_name,
+                            "row_number": record["row_num"],
                             "studyid": record["studyid"],
                             "usubjid": record["usubjid"],
                             "rdomain": record["rdomain"],
@@ -440,7 +534,7 @@ class DataPreprocessor:
                     continue
 
                 value_check_query = f"""
-                    SELECT COUNT(*)
+                    SELECT COUNT(*) as count
                     FROM public.{domain}
                     WHERE studyid = %s
                     AND usubjid = %s
@@ -450,11 +544,12 @@ class DataPreprocessor:
                 self.pgi.execute_sql(value_check_query, (record["studyid"], record["usubjid"], record["idvarval"]))
                 result = self.pgi.fetch_one()
 
-                if not result or not dict(result)["count"] == 0:
+                if not result or dict(result)["count"] == 0:
                     errors.append(
                         {
                             "type": f"CG0371_{relationship_type}",
                             "table": table_name,
+                            "row_number": record["row_num"],
                             "studyid": record["studyid"],
                             "usubjid": record["usubjid"],
                             "rdomain": record["rdomain"],
@@ -499,6 +594,7 @@ class DataPreprocessor:
         return {
             "groups_processed": processed_count,
             "total_parts_concatenated": sum(g["part_count"] for g in split_groups) if split_groups else 0,
+            "source_tracking_added": True,
         }
 
     def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
@@ -509,12 +605,30 @@ class DataPreprocessor:
 
         union_parts = []
         for part in dataset_parts:
-            union_parts.append(f"SELECT * FROM public.{part}")
+            union_parts.append(
+                f"""
+                SELECT
+                    *,
+                    '{part}' as source_dataset_id,
+                    '{unsplit_name}' as unsplit_dataset_name,
+                    ROW_NUMBER() OVER (PARTITION BY '{part}' ORDER BY
+                        CASE
+                            WHEN EXISTS (SELECT 1 FROM public.{part} WHERE usubjid IS NOT NULL LIMIT 1)
+                            THEN usubjid
+                            ELSE NULL
+                        END,
+                        CASE
+                            WHEN EXISTS (SELECT 1 FROM public.{part} WHERE studyid IS NOT NULL LIMIT 1)
+                            THEN studyid
+                            ELSE NULL
+                        END
+                    ) as source_row_number
+                FROM public.{part}
+            """
+            )
 
         union_query = " UNION ALL ".join(union_parts)
 
-        # we don't know if these columns exist in every dataset
-        # we can't ORDER BY a column that doesn't exist so we use CASE to handle it
         create_query = f"""
             CREATE TABLE IF NOT EXISTS public.{unsplit_name} AS
             WITH concatenated AS (
@@ -522,19 +636,30 @@ class DataPreprocessor:
             )
             SELECT * FROM concatenated
             ORDER BY
-                CASE
-                    WHEN EXISTS (SELECT 1 FROM concatenated WHERE usubjid IS NOT NULL LIMIT 1)
-                    THEN usubjid
-                    ELSE NULL
-                END,
-                CASE
-                    WHEN EXISTS (SELECT 1 FROM concatenated WHERE studyid IS NOT NULL LIMIT 1)
-                    THEN studyid
-                    ELSE NULL
-                END
+                source_dataset_id,
+                source_row_number
         """
 
         self.pgi.execute_sql(create_query)
+
+        index_queries = [
+            f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_dataset
+                ON public.{unsplit_name}(source_dataset_id)
+            """,
+            f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_row
+                ON public.{unsplit_name}(source_row_number)
+            """,
+            f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_unsplit_name
+                ON public.{unsplit_name}(unsplit_dataset_name)
+            """,
+        ]
+
+        for idx_query in index_queries:
+            self.pgi.execute_sql(idx_query)
+
         logger.info(f"Created concatenated dataset: {unsplit_name}")
 
     def _build_relrec_catalog(self) -> Dict[str, Any]:
@@ -562,6 +687,9 @@ class DataPreprocessor:
 
         if validation_errors:
             logger.warning(f"Found {len(validation_errors)} CG0371 validation errors in RELREC")
+            for error in validation_errors:
+                if error.get("row_number", -1) >= 0:
+                    logger.debug(f"Row {error['row_number']}: {error['error']}")
 
         catalog_query = f"""
             CREATE TABLE IF NOT EXISTS public.relrec_catalog AS
@@ -573,6 +701,7 @@ class DataPreprocessor:
                 idvar,
                 idvarval,
                 reltype,
+                ROW_NUMBER() OVER (ORDER BY studyid, usubjid, relid) - 1 as source_row,
                 ROW_NUMBER() OVER (ORDER BY studyid, usubjid, relid) as catalog_id
             FROM public.{relrec_table}
         """
@@ -580,18 +709,10 @@ class DataPreprocessor:
         self.pgi.execute_sql(catalog_query)
 
         index_queries = [
-            """
-                CREATE INDEX IF NOT EXISTS idx_relrec_catalog_rdomain
-                ON public.relrec_catalog(rdomain)
-            """,
-            """
-                CREATE INDEX IF NOT EXISTS idx_relrec_catalog_relid
-                ON public.relrec_catalog(relid)
-            """,
-            """
-                CREATE INDEX IF NOT EXISTS idx_relrec_catalog_studyid_usubjid
-                ON public.relrec_catalog(studyid, usubjid)
-            """,
+            "CREATE INDEX IF NOT EXISTS idx_relrec_catalog_rdomain ON public.relrec_catalog(rdomain)",
+            "CREATE INDEX IF NOT EXISTS idx_relrec_catalog_relid ON public.relrec_catalog(relid)",
+            "CREATE INDEX IF NOT EXISTS idx_relrec_catalog_studyid_usubjid ON public.relrec_catalog(studyid, usubjid)",
+            "CREATE INDEX IF NOT EXISTS idx_relrec_catalog_source_row ON public.relrec_catalog(source_row)",
         ]
 
         for idx_query in index_queries:
@@ -617,6 +738,7 @@ class DataPreprocessor:
             "unique_domains": stats["unique_domains"],
             "total_records": stats["total_records"],
             "validation_errors": len(validation_errors),
+            "row_level_validation": True,
         }
 
     def _build_co_catalog(self) -> Dict[str, Any]:
@@ -1216,28 +1338,19 @@ class DataPreprocessor:
             "total_updated": affected_split + affected_relrec + affected_co + affected_supp,
         }
 
-    def _log_validation_errors_to_db(self) -> None:
-        """Log validation errors to database table if it exists."""
-        table_check = """
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                AND table_name = 'preprocessing_validation_errors'
-            )
-        """
+    def _log_validation_errors_to_db(self, run_id: str = None) -> None:
+        """Log validation errors with row numbers if it exists to database."""
 
-        self.pgi.execute_sql(table_check)
-        result = self.pgi.fetch_one()
-
-        if not result or not dict(result)["exists"]:
+        if not self._validation_errors:
             return
 
         for error in self._validation_errors:
             insert_query = """
                 INSERT INTO public.preprocessing_validation_errors (
+                    run_id,
                     validation_type,
                     source_table,
+                    row_number,
                     studyid,
                     usubjid,
                     rdomain,
@@ -1246,13 +1359,15 @@ class DataPreprocessor:
                     error_message,
                     severity
                 ) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                 )
             """
 
             values = (
+                run_id,
                 error.get("type"),
                 error.get("table"),
+                error.get("row_number", -1),
                 error.get("studyid"),
                 error.get("usubjid"),
                 error.get("rdomain"),
@@ -1265,7 +1380,7 @@ class DataPreprocessor:
             self.pgi.execute_sql(insert_query, values)
 
     def get_preprocessing_status(self) -> Dict[str, Any]:
-        """Get current preprocessing status and statistics."""
+        """Get current preprocessing status, statistics and run history."""
         status_query = """
             SELECT
                 preprocessing_stage,
@@ -1284,8 +1399,24 @@ class DataPreprocessor:
                 stage = result["preprocessing_stage"] or "raw"
                 status[stage] = {"datasets": result["dataset_count"], "variables": result["variable_count"]}
 
+        history_query = """
+            SELECT
+                run_id,
+                timestamp,
+                stage,
+                (SELECT COUNT(*) FROM preprocessing_validation_errors WHERE run_id = pr.run_id) as error_count
+            FROM public.preprocessing_results pr
+            WHERE stage = 'complete'
+            ORDER BY timestamp DESC
+            LIMIT 10
+        """
+
+        self.pgi.execute_sql(history_query)
+        history = self.pgi.fetch_all()
+
         status["cached_merges"] = len(self._merged_datasets_cache)
         status["validation_errors"] = len(self._validation_errors)
+        status["run_history"] = history if history else []
 
         return status
 
@@ -1296,3 +1427,31 @@ class DataPreprocessor:
     def clear_validation_errors(self) -> None:
         """Clear stored validation errors."""
         self._validation_errors = []
+
+    def _store_preprocessing_results(self, results: Dict[str, Any], run_id: str, timestamp: datetime) -> None:
+        """Store preprocessing results in the database."""
+
+        insert_query = """
+            INSERT INTO public.preprocessing_results (
+                run_id, timestamp, stage, results, validation_errors, metadata_updates
+            ) VALUES (
+                %s, %s, %s, %s, %s, %s
+            )
+        """
+
+        self.pgi.execute_sql(
+            insert_query,
+            (
+                run_id,
+                timestamp,
+                "complete",
+                json.dumps(results),
+                json.dumps(results.get("validation_errors", [])),
+                json.dumps(results.get("metadata_updates", {})),
+            ),
+        )
+
+        stages = ["split_processing", "relrec_catalog", "co_catalog", "supp_catalog"]
+        for stage in stages:
+            if stage in results and results[stage]:
+                self.pgi.execute_sql(insert_query, (run_id, timestamp, stage, json.dumps(results[stage]), None, None))
