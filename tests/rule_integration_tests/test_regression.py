@@ -2,6 +2,7 @@ import os
 import re
 import json
 from typing import Tuple
+from dotenv import load_dotenv
 import pandas as pd
 from unittest.mock import patch
 from psycopg2 import errors
@@ -12,12 +13,14 @@ from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
 
+load_dotenv()
+
 
 @patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
 def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
     mock_get_dataset_class.return_value = None
     regression_df = get_core_rules_df()
-    local_path = "/Users/verisian/data/CORE/CDISC_Sharepoint_dump_20250806/unitTesting/"
+    local_path = os.getenv("REGRESSION_PATH")
 
     # set up SQL Engine
     ig_specs = {
