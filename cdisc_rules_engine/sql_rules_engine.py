@@ -258,7 +258,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, KeyError):
-            message = sorted(exception.args[0]) if isinstance(exception.args[0], list) else exception.args[0]
+            message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
                 dataset=os.path.basename(dataset_path),
                 error="Column not found in data",
@@ -266,7 +266,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, DomainNotFoundInDefineXMLError):
-            message = sorted(exception.args[0]) if isinstance(exception.args[0], list) else exception.args[0]
+            message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
                 dataset=os.path.basename(dataset_path),
                 error=DomainNotFoundInDefineXMLError.description,
@@ -274,7 +274,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, VariableMetadataNotFoundError):
-            message = sorted(exception.args[0]) if isinstance(exception.args[0], list) else exception.args[0]
+            message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
                 dataset=os.path.basename(dataset_path),
                 error=VariableMetadataNotFoundError.description,
@@ -283,7 +283,7 @@ class SQLRulesEngine:
             message = "rule execution error"
         elif isinstance(exception, FailedSchemaValidation):
             if self.validate_xml:
-                message = sorted(exception.args[0]) if isinstance(exception.args[0], list) else exception.args[0]
+                message = ", ".join(sorted(exception.args[0].split(", ")))
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     error=FailedSchemaValidation.description,
