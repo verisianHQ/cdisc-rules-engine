@@ -30,8 +30,6 @@ class ValidationErrorEntity(BaseValidationEntity):
         """
         data = {}
         for key, val in self.value.items():
-            if key == "$list_dataset_names":
-                print()
             if isinstance(val, set):
                 data[key] = sorted(list(val))
             elif isinstance(val, list):
