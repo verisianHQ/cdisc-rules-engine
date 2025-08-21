@@ -6,15 +6,23 @@ class SQLSerialiser:
 
     @staticmethod
     def python_to_sql_type(value: Any) -> str:
-        """Map Python types to PostgreSQL types"""
-        if isinstance(value, int):
-            return "INTEGER"
-        elif isinstance(value, float):
+        """Map python types to SQL types."""
+        if isinstance(value, (int, float)):
             return "REAL"
-        elif isinstance(value, bool):
-            return "BOOLEAN"
-        else:
+        elif isinstance(value, str):
             return "TEXT"
+        else:
+            raise ValueError(f"Unsupported type: {type(value)}")
+
+    @staticmethod
+    def sas_to_sql_type(type: str) -> str:
+        """Map sas types to SQL types."""
+        if type in ("char", "s"):
+            return "TEXT"
+        elif type in ("numeric", "d"):
+            return "REAL"
+        else:
+            raise ValueError(f"Unsupported type: {type}")
 
     @classmethod
     def create_table_query_from_data(
@@ -40,20 +48,15 @@ class SQLSerialiser:
 
     @classmethod
     def create_table_query_from_data_metadata_dict(
-        cls, table_name: str, column_type_dict: dict[str, str], primary_key: Optional[str] = None
+        cls, table_name: str, metadata: Dict[str, Any], primary_key: Optional[str] = None
     ) -> str:
-        """Generate CREATE TABLE statement from a metadata dictionary"""
+        """Generate CREATE TABLE statement from the dataset metadata."""
         columns = []
+        variable_metadata = metadata["variables"]
+        for var in variable_metadata:
+            col_def = f"{var['name'].lower()} {cls.sas_to_sql_type(var['type'])}"
 
-        for col_name, col_type in column_type_dict.items():
-            if col_type.lower() == "char":
-                col_def = f"{col_name} TEXT"
-            elif col_type.lower() == "num":
-                col_def = f"{col_name} REAL"
-            else:
-                raise ValueError(f"Unsupported SQL column type: {col_type}")
-
-            if col_name == primary_key:
+            if var["name"] == primary_key:
                 col_def += " PRIMARY KEY"
 
             columns.append(col_def)

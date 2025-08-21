@@ -97,13 +97,13 @@ class PostgresQLInterface:
 
         return affected_rows_list
 
-    def fetch_one(self) -> Optional[Dict[str, Any]]:
+    def fetch_one(self) -> Optional[Any]:
         """Fetch one result from the last query"""
         if self._last_results:
             return self._last_results.pop(0)
         return None
 
-    def fetch_all(self) -> List[Dict[str, Any]]:
+    def fetch_all(self) -> List[Optional[Any]]:
         """Fetch all results from the last query"""
         results = self._last_results.copy()
         self._last_results.clear()
@@ -121,15 +121,11 @@ class PostgresQLInterface:
         self.execute_sql(create_stmt)
         logger.info(f"Table {table_name} created successfully")
 
-    def create_table_from_data_metadata(
-        self, table_name: str, column_type_dict: dict[str, str], primary_key: Optional[str] = None
+    def create_table_from_metadata(
+        self, table_name: str, metadata: Dict[str, Any], primary_key: Optional[str] = None
     ) -> None:
-        """Create a table using provided column types"""
-        # ensure lowercasing of table names and columns
-
-        create_stmt = self.serialiser.create_table_query_from_data_metadata_dict(
-            table_name, column_type_dict, primary_key
-        )
+        """Create a table from dataset metadata"""
+        create_stmt = self.serialiser.create_table_query_from_data_metadata_dict(table_name, metadata, primary_key)
 
         self.execute_sql(create_stmt)
         logger.info(f"Table {table_name} created successfully")
