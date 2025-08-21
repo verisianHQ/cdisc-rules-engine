@@ -10449,8 +10449,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "SCREEN",
-                                            "teenrl": null,
-                                            "tedur": null
+                                            "tedur": null,
+                                            "teenrl": null
                                         }
                                     },
                                     {
@@ -10459,8 +10459,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "PLACEBO",
-                                            "teenrl": "26 weeks after the start of the Element",
-                                            "tedur": "26"
+                                            "tedur": "26",
+                                            "teenrl": "26 weeks after the start of the Element"
                                         }
                                     }
                                 ]
@@ -10510,8 +10510,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "E000",
-                                            "teenrl": null,
-                                            "tedur": "P2W"
+                                            "tedur": "P2W",
+                                            "teenrl": null
                                         }
                                     },
                                     {
@@ -10520,8 +10520,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "E001",
-                                            "teenrl": "XXXX",
-                                            "tedur": "P26W"
+                                            "tedur": "P26W",
+                                            "teenrl": "XXXX"
                                         }
                                     },
                                     {
@@ -10530,8 +10530,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "E002",
-                                            "teenrl": "FIRST DOSE OF METFORMIN",
-                                            "tedur": null
+                                            "tedur": null,
+                                            "teenrl": "FIRST DOSE OF METFORMIN"
                                         }
                                     },
                                     {
@@ -10540,8 +10540,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "etcd": "E003",
-                                            "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE",
-                                            "tedur": "P4W"
+                                            "tedur": "P4W",
+                                            "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE"
                                         }
                                     }
                                 ]
@@ -16485,10 +16485,10 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "ECTPTREF": "1",
                                             "ECELTM": "Not in dataset",
                                             "ECTPT": "Not in dataset",
-                                            "ECTPTNUM": "Not in dataset"
+                                            "ECTPTNUM": "Not in dataset",
+                                            "ECTPTREF": "1"
                                         }
                                     }
                                 ]
@@ -21468,8 +21468,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "MHENTPT": "2021-05-01",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2021-05-01"
                                         }
                                     },
                                     {
@@ -21477,8 +21477,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "MHENTPT": "2021-02-15",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2021-02-15"
                                         }
                                     },
                                     {
@@ -21486,8 +21486,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "MHENTPT": "2015-05-09",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2015-05-09"
                                         }
                                     },
                                     {
@@ -21495,8 +21495,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC004",
                                         "value": {
-                                            "MHENTPT": "2011-06-11",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2011-06-11"
                                         }
                                     },
                                     {
@@ -21504,8 +21504,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "MHENTPT": "2000-06-11",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2000-06-11"
                                         }
                                     },
                                     {
@@ -21513,8 +21513,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC006",
                                         "value": {
-                                            "MHENTPT": "2021-05-01",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2021-05-01"
                                         }
                                     },
                                     {
@@ -21522,8 +21522,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "MHENTPT": "2021-05-02",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2021-05-02"
                                         }
                                     },
                                     {
@@ -21531,8 +21531,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC008",
                                         "value": {
-                                            "MHENTPT": "2021-11-23",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2021-11-23"
                                         }
                                     }
                                 ]
@@ -21584,8 +21584,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "CMENTPT": "2013-08-06",
-                                            "CMENRTPT": null
+                                            "CMENRTPT": null,
+                                            "CMENTPT": "2013-08-06"
                                         }
                                     },
                                     {
@@ -21593,8 +21593,8 @@
                                         "SEQ": 4,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "CMENTPT": "2013-08-06",
-                                            "CMENRTPT": null
+                                            "CMENRTPT": null,
+                                            "CMENTPT": "2013-08-06"
                                         }
                                     },
                                     {
@@ -21602,8 +21602,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": "2014-03-08",
-                                            "CMENRTPT": null
+                                            "CMENRTPT": null,
+                                            "CMENTPT": "2014-03-08"
                                         }
                                     },
                                     {
@@ -21611,8 +21611,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": "2014-03-08",
-                                            "CMENRTPT": null
+                                            "CMENRTPT": null,
+                                            "CMENTPT": "2014-03-08"
                                         }
                                     },
                                     {
@@ -21620,8 +21620,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": "2014-03-08",
-                                            "CMENRTPT": null
+                                            "CMENRTPT": null,
+                                            "CMENTPT": "2014-03-08"
                                         }
                                     }
                                 ]
@@ -25156,9 +25156,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "001",
                                         "value": {
+                                            "AESTDTC": "2005-10",
                                             "AESTDY": 1.0,
-                                            "RFSTDTC": "2022-03-20",
-                                            "AESTDTC": "2005-10"
+                                            "RFSTDTC": "2022-03-20"
                                         }
                                     },
                                     {
@@ -25166,9 +25166,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "002",
                                         "value": {
+                                            "AESTDTC": "2005-10-13T13:05",
                                             "AESTDY": 1.0,
-                                            "RFSTDTC": "2022-03",
-                                            "AESTDTC": "2005-10-13T13:05"
+                                            "RFSTDTC": "2022-03"
                                         }
                                     }
                                 ]
@@ -25183,7 +25183,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DMSTDTC, DMSTDY"
+                                            "message": "DMSTDY, DMSTDTC"
                                         }
                                     ]
                                 ]
@@ -25260,7 +25260,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DMSTDTC, DMSTDY"
+                                            "message": "DMSTDY, DMSTDTC"
                                         }
                                     ]
                                 ]
@@ -25352,8 +25352,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 1.0,
                                             "EXENDTC": "2012-11-30",
+                                            "EXENDY": 1.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25362,8 +25362,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 2.0,
                                             "EXENDTC": "2012-12-01",
+                                            "EXENDY": 2.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25372,8 +25372,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 3.0,
                                             "EXENDTC": "2012-12-02",
+                                            "EXENDY": 3.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25382,8 +25382,8 @@
                                         "SEQ": 4,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 4.0,
                                             "EXENDTC": "2012-12-03",
+                                            "EXENDY": 4.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25392,8 +25392,8 @@
                                         "SEQ": 5,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 5.0,
                                             "EXENDTC": "2012-12-04",
+                                            "EXENDY": 5.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25402,8 +25402,8 @@
                                         "SEQ": 6,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 6.0,
                                             "EXENDTC": "2012-12-05",
+                                            "EXENDY": 6.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25412,8 +25412,8 @@
                                         "SEQ": 7,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 7.0,
                                             "EXENDTC": "2012-12-06",
+                                            "EXENDY": 7.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25422,8 +25422,8 @@
                                         "SEQ": 8,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 8.0,
                                             "EXENDTC": "2012-12-07",
+                                            "EXENDY": 8.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     },
@@ -25432,8 +25432,8 @@
                                         "SEQ": 9,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "EXENDY": 9.0,
                                             "EXENDTC": "2012-12-08",
+                                            "EXENDY": 9.0,
                                             "RFSTDTC": "2012-11"
                                         }
                                     }
@@ -26186,8 +26186,8 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "FTTPTNUM": 30.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 30.0
                                         }
                                     },
                                     {
@@ -26195,8 +26195,8 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "FTTPTNUM": 1.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0
                                         }
                                     },
                                     {
@@ -26204,8 +26204,8 @@
                                         "SEQ": 134,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "FTTPTNUM": 1.0,
-                                            "FTTPT": "60 MIN POST"
+                                            "FTTPT": "60 MIN POST",
+                                            "FTTPTNUM": 1.0
                                         }
                                     }
                                 ]
@@ -26405,9 +26405,9 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
+                                            "VSELTM": "-PT4H",
                                             "VSTPT": "4H PREDOSE",
-                                            "VSTPTNUM": "14",
-                                            "VSELTM": "-PT4H"
+                                            "VSTPTNUM": "14"
                                         }
                                     }
                                 ]
@@ -26459,9 +26459,9 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "FTTPTNUM": 1.0,
                                             "FTELTM": "PT30M",
-                                            "FTTPT": "30 MIN POST"
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0
                                         }
                                     }
                                 ]
@@ -29617,8 +29617,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "VSTPTNUM": 1.0,
-                                            "VSTPT": "Not in dataset"
+                                            "VSTPT": "Not in dataset",
+                                            "VSTPTNUM": 1.0
                                         }
                                     }
                                 ]
@@ -34450,8 +34450,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MIDSDTC": "2012-11-23",
-                                            "MIDS": "Not in dataset"
+                                            "MIDS": "Not in dataset",
+                                            "MIDSDTC": "2012-11-23"
                                         }
                                     }
                                 ]
@@ -34713,8 +34713,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MIDSDTC": "",
-                                            "MIDS": "Not in dataset"
+                                            "MIDS": "Not in dataset",
+                                            "MIDSDTC": ""
                                         }
                                     }
                                 ]
@@ -34960,8 +34960,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MIDSDTC": "2012-11-23",
-                                            "MIDS": "Not in dataset"
+                                            "MIDS": "Not in dataset",
+                                            "MIDSDTC": "2012-11-23"
                                         }
                                     }
                                 ]
@@ -35135,8 +35135,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MIDSDTC": "2012-11-23",
-                                            "MIDS": "Not in dataset"
+                                            "MIDS": "Not in dataset",
+                                            "MIDSDTC": "2012-11-23"
                                         }
                                     }
                                 ]
@@ -35366,8 +35366,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MIDSDTC": "2012-11-23",
-                                            "MIDS": "Not in dataset"
+                                            "MIDS": "Not in dataset",
+                                            "MIDSDTC": "2012-11-23"
                                         }
                                     }
                                 ]
@@ -41413,8 +41413,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "MHSTAT": "Not Done",
-                                            "MHREASND": "Subject's Decision"
+                                            "MHREASND": "Subject's Decision",
+                                            "MHSTAT": "Not Done"
                                         }
                                     },
                                     {
@@ -41422,8 +41422,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "MHSTAT": null,
-                                            "MHREASND": "Subject's Decision"
+                                            "MHREASND": "Subject's Decision",
+                                            "MHSTAT": null
                                         }
                                     }
                                 ]
@@ -42529,8 +42529,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "LBSCAT": "BIOCHEMISTRY",
-                                            "LBCAT": "BIOCHEMISTRY"
+                                            "LBCAT": "BIOCHEMISTRY",
+                                            "LBSCAT": "BIOCHEMISTRY"
                                         }
                                     },
                                     {
@@ -42538,8 +42538,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "LBSCAT": "BIOCHEMISTRY",
-                                            "LBCAT": "BIOCHEMISTRY"
+                                            "LBCAT": "BIOCHEMISTRY",
+                                            "LBSCAT": "BIOCHEMISTRY"
                                         }
                                     },
                                     {
@@ -42547,8 +42547,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "LBSCAT": "BIOCHEMISTRY",
-                                            "LBCAT": "BIOCHEMISTRY"
+                                            "LBCAT": "BIOCHEMISTRY",
+                                            "LBSCAT": "BIOCHEMISTRY"
                                         }
                                     }
                                 ]
@@ -42600,8 +42600,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "123101",
                                         "value": {
-                                            "AESCAT": "TEST CATEGORY",
-                                            "AECAT": "TEST CATEGORY"
+                                            "AECAT": "TEST CATEGORY",
+                                            "AESCAT": "TEST CATEGORY"
                                         }
                                     }
                                 ]
@@ -43964,8 +43964,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "LBTPTREF": null,
-                                            "LBRFTDTC": "2019-03-12T10:00"
+                                            "LBRFTDTC": "2019-03-12T10:00",
+                                            "LBTPTREF": null
                                         }
                                     },
                                     {
@@ -43973,8 +43973,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "LBTPTREF": null,
-                                            "LBRFTDTC": "2019-03-12T10:00"
+                                            "LBRFTDTC": "2019-03-12T10:00",
+                                            "LBTPTREF": null
                                         }
                                     }
                                 ]
@@ -47325,8 +47325,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC009",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "AFTER"
+                                            "PRSTRTPT": "AFTER",
+                                            "PRSTTPT": null
                                         }
                                     },
                                     {
@@ -47334,8 +47334,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC010",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "AFTER"
+                                            "PRSTRTPT": "AFTER",
+                                            "PRSTTPT": null
                                         }
                                     },
                                     {
@@ -47343,8 +47343,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC011",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "AFTER"
+                                            "PRSTRTPT": "AFTER",
+                                            "PRSTTPT": null
                                         }
                                     },
                                     {
@@ -47352,8 +47352,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC012",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "BEFORE"
+                                            "PRSTRTPT": "BEFORE",
+                                            "PRSTTPT": null
                                         }
                                     },
                                     {
@@ -47361,8 +47361,8 @@
                                         "SEQ": 10,
                                         "USUBJID": "CDISC013",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "BEFORE"
+                                            "PRSTRTPT": "BEFORE",
+                                            "PRSTTPT": null
                                         }
                                     },
                                     {
@@ -47370,8 +47370,8 @@
                                         "SEQ": 11,
                                         "USUBJID": "CDISC014",
                                         "value": {
-                                            "PRSTTPT": null,
-                                            "PRSTRTPT": "BEFORE"
+                                            "PRSTRTPT": "BEFORE",
+                                            "PRSTTPT": null
                                         }
                                     }
                                 ]
@@ -48866,8 +48866,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48875,8 +48875,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48884,8 +48884,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48893,8 +48893,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC004",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48902,8 +48902,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48911,8 +48911,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC006",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48920,8 +48920,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     },
                                     {
@@ -48929,8 +48929,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC008",
                                         "value": {
-                                            "MHENTPT": null,
-                                            "MHENRTPT": "ONGOING"
+                                            "MHENRTPT": "ONGOING",
+                                            "MHENTPT": null
                                         }
                                     }
                                 ]
@@ -48982,8 +48982,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     },
                                     {
@@ -48991,8 +48991,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     },
                                     {
@@ -49000,8 +49000,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     },
                                     {
@@ -49009,8 +49009,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     },
                                     {
@@ -49018,8 +49018,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     },
                                     {
@@ -49027,8 +49027,8 @@
                                         "SEQ": 4,
                                         "USUBJID": "CDISC017",
                                         "value": {
-                                            "CMENTPT": null,
-                                            "CMENRTPT": "ONGOING"
+                                            "CMENRTPT": "ONGOING",
+                                            "CMENTPT": null
                                         }
                                     }
                                 ]
@@ -49572,8 +49572,8 @@
                                         "SEQ": 293,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49581,8 +49581,8 @@
                                         "SEQ": 294,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49590,8 +49590,8 @@
                                         "SEQ": 295,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49599,8 +49599,8 @@
                                         "SEQ": 296,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49608,8 +49608,8 @@
                                         "SEQ": 297,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49617,8 +49617,8 @@
                                         "SEQ": 298,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49626,8 +49626,8 @@
                                         "SEQ": 299,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49635,8 +49635,8 @@
                                         "SEQ": 300,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49644,8 +49644,8 @@
                                         "SEQ": 301,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49653,8 +49653,8 @@
                                         "SEQ": 302,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49662,8 +49662,8 @@
                                         "SEQ": 303,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49671,8 +49671,8 @@
                                         "SEQ": 304,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49680,8 +49680,8 @@
                                         "SEQ": 305,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49689,8 +49689,8 @@
                                         "SEQ": 306,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49698,8 +49698,8 @@
                                         "SEQ": 307,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49707,8 +49707,8 @@
                                         "SEQ": 308,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49716,8 +49716,8 @@
                                         "SEQ": 309,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49725,8 +49725,8 @@
                                         "SEQ": 310,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49734,8 +49734,8 @@
                                         "SEQ": 311,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49743,8 +49743,8 @@
                                         "SEQ": 312,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49752,8 +49752,8 @@
                                         "SEQ": 313,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49761,8 +49761,8 @@
                                         "SEQ": 314,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49770,8 +49770,8 @@
                                         "SEQ": 315,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49779,8 +49779,8 @@
                                         "SEQ": 316,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49788,8 +49788,8 @@
                                         "SEQ": 317,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49797,8 +49797,8 @@
                                         "SEQ": 318,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49806,8 +49806,8 @@
                                         "SEQ": 319,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49815,8 +49815,8 @@
                                         "SEQ": 320,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49824,8 +49824,8 @@
                                         "SEQ": 321,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49833,8 +49833,8 @@
                                         "SEQ": 322,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     }
                                 ]
@@ -49851,8 +49851,8 @@
                                         "SEQ": 21,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49860,8 +49860,8 @@
                                         "SEQ": 22,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     }
                                 ]
@@ -49878,8 +49878,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     }
                                 ]
@@ -49904,8 +49904,8 @@
                                         "SEQ": 34,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49913,8 +49913,8 @@
                                         "SEQ": 35,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49922,8 +49922,8 @@
                                         "SEQ": 36,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49931,8 +49931,8 @@
                                         "SEQ": 71,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49940,8 +49940,8 @@
                                         "SEQ": 72,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49949,8 +49949,8 @@
                                         "SEQ": 73,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49958,8 +49958,8 @@
                                         "SEQ": 107,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49967,8 +49967,8 @@
                                         "SEQ": 108,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49976,8 +49976,8 @@
                                         "SEQ": 109,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49985,8 +49985,8 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     },
                                     {
@@ -49994,8 +49994,8 @@
                                         "SEQ": 132,
                                         "USUBJID": "CDISC005",
                                         "value": {
-                                            "VISITNUM": 13.0,
-                                            "VISIT": "WEEK 26"
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
                                         }
                                     }
                                 ]
@@ -58538,8 +58538,8 @@
                                         "USUBJID": "CDISC002",
                                         "value": {
                                             "CMDTC": "2013-05-20",
-                                            "CMENTPT": "2013-05-20",
-                                            "CMENRTPT": "AFTER"
+                                            "CMENRTPT": "AFTER",
+                                            "CMENTPT": "2013-05-20"
                                         }
                                     }
                                 ]
@@ -58556,9 +58556,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "MHENTPT": "2013-05-20",
                                             "MHDTC": "2013-05-20",
-                                            "MHENRTPT": "AFTER"
+                                            "MHENRTPT": "AFTER",
+                                            "MHENTPT": "2013-05-20"
                                         }
                                     },
                                     {
@@ -58566,9 +58566,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC012",
                                         "value": {
-                                            "MHENTPT": "2013-05-03",
                                             "MHDTC": "2013-05-03",
-                                            "MHENRTPT": "AFTER"
+                                            "MHENRTPT": "AFTER",
+                                            "MHENTPT": "2013-05-03"
                                         }
                                     },
                                     {
@@ -58576,9 +58576,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC013",
                                         "value": {
-                                            "MHENTPT": "2013-05-04",
                                             "MHDTC": "2013-05-04",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2013-05-04"
                                         }
                                     }
                                 ]
@@ -60313,9 +60313,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "CEDTC": "2014-10",
                                             "CEDY": 174.0,
-                                            "RFSTDTC": "2012-11-30",
-                                            "CEDTC": "2014-10"
+                                            "RFSTDTC": "2012-11-30"
                                         }
                                     },
                                     {
@@ -60323,9 +60323,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC008",
                                         "value": {
+                                            "CEDTC": "2014-10-31",
                                             "CEDY": 174.0,
-                                            "RFSTDTC": "2012-11",
-                                            "CEDTC": "2014-10-31"
+                                            "RFSTDTC": "2012-11"
                                         }
                                     }
                                 ]
@@ -60484,8 +60484,8 @@
                                         "USUBJID": "123101",
                                         "value": {
                                             "LBDTC": "2005-09",
-                                            "RFSTDTC": "2005-10-13T10:15",
-                                            "LBDY": -15.0
+                                            "LBDY": -15.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
                                         }
                                     },
                                     {
@@ -60494,8 +60494,8 @@
                                         "USUBJID": "123101",
                                         "value": {
                                             "LBDTC": null,
-                                            "RFSTDTC": "2005-10-13T10:15",
-                                            "LBDY": 1.0
+                                            "LBDY": 1.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
                                         }
                                     }
                                 ]
@@ -61324,8 +61324,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "VISITNUM": 100.0,
-                                            "VISIT": "VISIT 1 (WEEK -2)"
+                                            "VISIT": "VISIT 1 (WEEK -2)",
+                                            "VISITNUM": 100.0
                                         }
                                     },
                                     {
@@ -61333,8 +61333,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "VISITNUM": 200.0,
-                                            "VISIT": "VISIT 2 (WEEK 0)"
+                                            "VISIT": "VISIT 2 (WEEK 0)",
+                                            "VISITNUM": 200.0
                                         }
                                     },
                                     {
@@ -61342,8 +61342,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
-                                            "VISITNUM": 300.0,
-                                            "VISIT": "VISIT 3 (WEEK 1)"
+                                            "VISIT": "VISIT 3 (WEEK 1)",
+                                            "VISITNUM": 300.0
                                         }
                                     },
                                     {
@@ -61351,8 +61351,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-002",
                                         "value": {
-                                            "VISITNUM": 100.0,
-                                            "VISIT": "VISIT 1"
+                                            "VISIT": "VISIT 1",
+                                            "VISITNUM": 100.0
                                         }
                                     },
                                     {
@@ -61360,8 +61360,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-002",
                                         "value": {
-                                            "VISITNUM": 200.0,
-                                            "VISIT": "VISIT 2"
+                                            "VISIT": "VISIT 2",
+                                            "VISITNUM": 200.0
                                         }
                                     },
                                     {
@@ -61369,8 +61369,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC-TEST-002",
                                         "value": {
-                                            "VISITNUM": 300.0,
-                                            "VISIT": "VISIT 3"
+                                            "VISIT": "VISIT 3",
+                                            "VISITNUM": 300.0
                                         }
                                     }
                                 ]
@@ -61387,8 +61387,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "VISITNUM": 700.0,
-                                            "VISIT": "VISIT 7 (WEEK 5)"
+                                            "VISIT": "VISIT 7 (WEEK 5)",
+                                            "VISITNUM": 700.0
                                         }
                                     },
                                     {
@@ -61396,8 +61396,8 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "VISITNUM": 700.0,
-                                            "VISIT": "VISIT 8 (WEEK 6)"
+                                            "VISIT": "VISIT 8 (WEEK 6)",
+                                            "VISITNUM": 700.0
                                         }
                                     }
                                 ]
@@ -66360,8 +66360,8 @@
                                         "value": {
                                             "$val_dy": 1,
                                             "LBDTC": "2012-11-30",
-                                            "RFSTDTC": "2012-11-30",
-                                            "LBDY": 2.0
+                                            "LBDY": 2.0,
+                                            "RFSTDTC": "2012-11-30"
                                         }
                                     }
                                 ]
@@ -66484,8 +66484,8 @@
                                         "value": {
                                             "$val_dy": 18,
                                             "FADTC": "2012-12-02",
-                                            "RFSTDTC": "2012-11-15",
-                                            "FADY": 35.0
+                                            "FADY": 35.0,
+                                            "RFSTDTC": "2012-11-15"
                                         }
                                     },
                                     {
@@ -66495,8 +66495,8 @@
                                         "value": {
                                             "$val_dy": 5,
                                             "FADTC": "2013-10-12",
-                                            "RFSTDTC": "2013-10-08",
-                                            "FADY": 3.0
+                                            "FADY": 3.0,
+                                            "RFSTDTC": "2013-10-08"
                                         }
                                     },
                                     {
@@ -66506,8 +66506,8 @@
                                         "value": {
                                             "$val_dy": -34,
                                             "FADTC": "2012-12-02",
-                                            "RFSTDTC": "2013-01-05",
-                                            "FADY": -30.0
+                                            "FADY": -30.0,
+                                            "RFSTDTC": "2013-01-05"
                                         }
                                     },
                                     {
@@ -66517,8 +66517,8 @@
                                         "value": {
                                             "$val_dy": 206,
                                             "FADTC": "2014-12-02",
-                                            "RFSTDTC": "2014-05-11",
-                                            "FADY": 230.0
+                                            "FADY": 230.0,
+                                            "RFSTDTC": "2014-05-11"
                                         }
                                     }
                                 ]
@@ -66537,8 +66537,8 @@
                                         "value": {
                                             "$val_dy": -3,
                                             "IEDTC": "2022-03-17",
-                                            "RFSTDTC": "2022-03-20",
-                                            "IEDY": -4.0
+                                            "IEDY": -4.0,
+                                            "RFSTDTC": "2022-03-20"
                                         }
                                     }
                                 ]
@@ -66557,8 +66557,8 @@
                                         "value": {
                                             "$val_dy": 11,
                                             "LBDTC": "2022-03-30",
-                                            "RFSTDTC": "2022-03-20",
-                                            "LBDY": 2.0
+                                            "LBDY": 2.0,
+                                            "RFSTDTC": "2022-03-20"
                                         }
                                     }
                                 ]
@@ -67560,12 +67560,12 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "mhlb",
                                             "$list_dataset_names": [
-                                                "ex",
                                                 "mhlb",
+                                                "ex",
                                                 "dm"
-                                            ]
+                                            ],
+                                            "dataset_name": "mhlb"
                                         }
                                     }
                                 ]
@@ -67633,11 +67633,11 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "qs1",
                                             "$list_dataset_names": [
-                                                "qsae",
-                                                "qs1"
-                                            ]
+                                                "qs1",
+                                                "qsae"
+                                            ],
+                                            "dataset_name": "qs1"
                                         }
                                     },
                                     {
@@ -67645,11 +67645,11 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "qsae",
                                             "$list_dataset_names": [
-                                                "qsae",
-                                                "qs1"
-                                            ]
+                                                "qs1",
+                                                "qsae"
+                                            ],
+                                            "dataset_name": "qsae"
                                         }
                                     }
                                 ]
@@ -68581,10 +68581,10 @@
                                         "SEQ": 5,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "CMSTDTC": "2013-02-18",
                                             "$val_stdy": 45,
-                                            "RFSTDTC": "2013-01-05",
-                                            "CMSTDY": null
+                                            "CMSTDTC": "2013-02-18",
+                                            "CMSTDY": null,
+                                            "RFSTDTC": "2013-01-05"
                                         }
                                     },
                                     {
@@ -68592,10 +68592,10 @@
                                         "SEQ": 6,
                                         "USUBJID": "CDISC008",
                                         "value": {
-                                            "CMSTDTC": "2013-02-18",
                                             "$val_stdy": -447,
-                                            "RFSTDTC": "2014-05-11",
-                                            "CMSTDY": 45.0
+                                            "CMSTDTC": "2013-02-18",
+                                            "CMSTDY": 45.0,
+                                            "RFSTDTC": "2014-05-11"
                                         }
                                     },
                                     {
@@ -68603,10 +68603,10 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC010",
                                         "value": {
-                                            "CMSTDTC": "2011-07-15",
                                             "$val_stdy": -799,
-                                            "RFSTDTC": "2013-09-21",
-                                            "CMSTDY": -511.0
+                                            "CMSTDTC": "2011-07-15",
+                                            "CMSTDY": -511.0,
+                                            "RFSTDTC": "2013-09-21"
                                         }
                                     }
                                 ]
@@ -68773,10 +68773,10 @@
                                         "SEQ": 2,
                                         "USUBJID": "001",
                                         "value": {
-                                            "AEENDTC": "2022-03-19",
                                             "$val_endy": -1,
-                                            "RFSTDTC": "2022-03-20",
-                                            "AEENDY": -2.0
+                                            "AEENDTC": "2022-03-19",
+                                            "AEENDY": -2.0,
+                                            "RFSTDTC": "2022-03-20"
                                         }
                                     },
                                     {
@@ -68784,10 +68784,10 @@
                                         "SEQ": 1,
                                         "USUBJID": "001",
                                         "value": {
-                                            "AEENDTC": "2022-03-20",
                                             "$val_endy": 1,
-                                            "RFSTDTC": "2022-03-20",
-                                            "AEENDY": 0.0
+                                            "AEENDTC": "2022-03-20",
+                                            "AEENDY": 0.0,
+                                            "RFSTDTC": "2022-03-20"
                                         }
                                     }
                                 ]
@@ -68806,8 +68806,8 @@
                                         "value": {
                                             "$val_endy": 126,
                                             "CMENDTC": "2013-05-10",
-                                            "RFSTDTC": "2013-01-05",
-                                            "CMENDY": null
+                                            "CMENDY": null,
+                                            "RFSTDTC": "2013-01-05"
                                         }
                                     },
                                     {
@@ -68817,8 +68817,8 @@
                                         "value": {
                                             "$val_endy": 10,
                                             "CMENDTC": "2014-05-20",
-                                            "RFSTDTC": "2014-05-11",
-                                            "CMENDY": 11.0
+                                            "CMENDY": 11.0,
+                                            "RFSTDTC": "2014-05-11"
                                         }
                                     },
                                     {
@@ -68828,8 +68828,8 @@
                                         "value": {
                                             "$val_endy": -108,
                                             "CMENDTC": "2013-06-05",
-                                            "RFSTDTC": "2013-09-21",
-                                            "CMENDY": -107.0
+                                            "CMENDY": -107.0,
+                                            "RFSTDTC": "2013-09-21"
                                         }
                                     }
                                 ]
@@ -69815,8 +69815,8 @@
                                         "USUBJID": "CDISC002",
                                         "value": {
                                             "CMDTC": "2013-05-21",
-                                            "CMENTPT": "2013-05-20",
-                                            "CMENRTPT": "WRONG"
+                                            "CMENRTPT": "WRONG",
+                                            "CMENTPT": "2013-05-20"
                                         }
                                     },
                                     {
@@ -69825,8 +69825,8 @@
                                         "USUBJID": "CDISC002",
                                         "value": {
                                             "CMDTC": "2013-05-20T10:31",
-                                            "CMENTPT": "2013-05-20T10:30",
-                                            "CMENRTPT": "WRONG"
+                                            "CMENRTPT": "WRONG",
+                                            "CMENTPT": "2013-05-20T10:30"
                                         }
                                     }
                                 ]
@@ -69843,9 +69843,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC006",
                                         "value": {
-                                            "MHENTPT": "2013-05-19",
                                             "MHDTC": "2013-05-20",
-                                            "MHENRTPT": "WRONG"
+                                            "MHENRTPT": "WRONG",
+                                            "MHENTPT": "2013-05-19"
                                         }
                                     },
                                     {
@@ -69853,9 +69853,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC013",
                                         "value": {
-                                            "MHENTPT": "2013-05-02",
                                             "MHDTC": "2013-05-03",
-                                            "MHENRTPT": null
+                                            "MHENRTPT": null,
+                                            "MHENTPT": "2013-05-02"
                                         }
                                     }
                                 ]
@@ -70341,11 +70341,11 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "CDISCPILOT01",
                                             "domain": "AE",
-                                            "usubjid": "CDISC001",
+                                            "results": true,
+                                            "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "results": true
+                                            "usubjid": "CDISC001"
                                         }
                                     }
                                 ]
@@ -70367,9 +70367,9 @@
                                         "USUBJID": null,
                                         "value": {
                                             "AE": "ae.xpt",
+                                            "results": true,
                                             "source_filename": "ae.xpt",
-                                            "source_row_number": 1,
-                                            "results": true
+                                            "source_row_number": 1
                                         }
                                     }
                                 ]
@@ -70406,33 +70406,33 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "CDISCPILOT01",
-                                            "domain": "DM",
-                                            "usubjid": "CDISC001",
-                                            "subjid": "1115",
-                                            "rfstdtc": "2012-11-30",
-                                            "rfendtc": "2013-01-23",
-                                            "rfxstdtc": "2012-11-30",
-                                            "rfxendtc": "2013-01-23",
-                                            "rficdtc": "2012-11-23",
-                                            "rfpendtc": "2013-05-20",
-                                            "dthdtc": "",
-                                            "dthfl": "",
-                                            "siteid": "701",
-                                            "brthdtc": "1928",
+                                            "actarm": "",
+                                            "actarmcd": "",
+                                            "actarmud": "ASSIGNED, NOT TREATED",
                                             "age": 84.0,
                                             "ageu": "YEARS",
-                                            "sex": "M",
-                                            "race": "WHITE",
-                                            "ethnic": "NOT HISPANIC OR LATINO",
-                                            "armcd": "ZAN_LOW",
                                             "arm": "Zanomaline Low Dose (54 mg)",
-                                            "actarmcd": "",
-                                            "actarm": "",
+                                            "armcd": "ZAN_LOW",
                                             "armnrs": "",
-                                            "actarmud": "ASSIGNED, NOT TREATED",
+                                            "brthdtc": "1928",
                                             "country": "USA",
-                                            "results": true
+                                            "domain": "DM",
+                                            "dthdtc": "",
+                                            "dthfl": "",
+                                            "ethnic": "NOT HISPANIC OR LATINO",
+                                            "race": "WHITE",
+                                            "results": true,
+                                            "rfendtc": "2013-01-23",
+                                            "rficdtc": "2012-11-23",
+                                            "rfpendtc": "2013-05-20",
+                                            "rfstdtc": "2012-11-30",
+                                            "rfxendtc": "2013-01-23",
+                                            "rfxstdtc": "2012-11-30",
+                                            "sex": "M",
+                                            "siteid": "701",
+                                            "studyid": "CDISCPILOT01",
+                                            "subjid": "1115",
+                                            "usubjid": "CDISC001"
                                         }
                                     }
                                 ]
@@ -70449,11 +70449,11 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "CDISCPILOT01",
                                             "domain": "AE",
-                                            "usubjid": "CDISC001",
+                                            "results": true,
+                                            "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "results": true
+                                            "usubjid": "CDISC001"
                                         }
                                     }
                                 ]
@@ -71734,9 +71734,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71744,9 +71744,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71754,9 +71754,9 @@
                                         "SEQ": 122,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71764,9 +71764,9 @@
                                         "SEQ": 123,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71774,9 +71774,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71784,9 +71784,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71794,9 +71794,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST5",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST5"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71804,9 +71804,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71814,9 +71814,9 @@
                                         "SEQ": 392,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "35 MIN POST4",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "35 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -71824,9 +71824,9 @@
                                         "SEQ": 393,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -71834,9 +71834,9 @@
                                         "SEQ": 394,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -71844,9 +71844,9 @@
                                         "SEQ": 395,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 2.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -71854,9 +71854,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71864,9 +71864,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71874,9 +71874,9 @@
                                         "SEQ": 122,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 2.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71884,9 +71884,9 @@
                                         "SEQ": 123,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 2.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71894,9 +71894,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71904,9 +71904,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 3.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71914,9 +71914,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71924,9 +71924,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71934,9 +71934,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71944,9 +71944,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -71954,9 +71954,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 3.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71964,9 +71964,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71974,9 +71974,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71984,9 +71984,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -71994,9 +71994,9 @@
                                         "SEQ": 528,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST5",
                                             "FTTPTNUM": 2.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72004,9 +72004,9 @@
                                         "SEQ": 529,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "31 MIN POST5",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "31 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72014,9 +72014,9 @@
                                         "SEQ": 530,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "32 MIN POST5",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "32 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72024,9 +72024,9 @@
                                         "SEQ": 531,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "33 MIN POST5",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "33 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     }
                                 ]
@@ -72078,9 +72078,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72088,9 +72088,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72098,9 +72098,9 @@
                                         "SEQ": 122,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72108,9 +72108,9 @@
                                         "SEQ": 123,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72118,9 +72118,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72128,9 +72128,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72138,9 +72138,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72148,9 +72148,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72158,9 +72158,9 @@
                                         "SEQ": 392,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72168,9 +72168,9 @@
                                         "SEQ": 393,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72178,9 +72178,9 @@
                                         "SEQ": 394,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72188,9 +72188,9 @@
                                         "SEQ": 395,
                                         "USUBJID": "CDISC001",
                                         "value": {
+                                            "FTTPT": "30 MIN POST4",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST4"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72198,9 +72198,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72208,9 +72208,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72218,9 +72218,9 @@
                                         "SEQ": 122,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72228,9 +72228,9 @@
                                         "SEQ": 123,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72238,9 +72238,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72248,9 +72248,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72258,9 +72258,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72268,9 +72268,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC002",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72278,9 +72278,9 @@
                                         "SEQ": 120,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72288,9 +72288,9 @@
                                         "SEQ": 121,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST1",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST1"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72298,9 +72298,9 @@
                                         "SEQ": 122,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72308,9 +72308,9 @@
                                         "SEQ": 123,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST",
                                             "FTTPTNUM": 1.0,
-                                            "VISITNUM": 2.0,
-                                            "FTTPT": "30 MIN POST"
+                                            "VISITNUM": 2.0
                                         }
                                     },
                                     {
@@ -72318,9 +72318,9 @@
                                         "SEQ": 256,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72328,9 +72328,9 @@
                                         "SEQ": 257,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST2",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST2"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72338,9 +72338,9 @@
                                         "SEQ": 258,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72348,9 +72348,9 @@
                                         "SEQ": 259,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST3",
                                             "FTTPTNUM": 4.0,
-                                            "VISITNUM": 8.0,
-                                            "FTTPT": "30 MIN POST3"
+                                            "VISITNUM": 8.0
                                         }
                                     },
                                     {
@@ -72358,9 +72358,9 @@
                                         "SEQ": 528,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "30 MIN POST5",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "30 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72368,9 +72368,9 @@
                                         "SEQ": 529,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "31 MIN POST5",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "31 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72378,9 +72378,9 @@
                                         "SEQ": 530,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "32 MIN POST5",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "32 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     },
                                     {
@@ -72388,9 +72388,9 @@
                                         "SEQ": 531,
                                         "USUBJID": "CDISC003",
                                         "value": {
+                                            "FTTPT": "33 MIN POST5",
                                             "FTTPTNUM": 10.0,
-                                            "VISITNUM": 201.0,
-                                            "FTTPT": "33 MIN POST5"
+                                            "VISITNUM": 201.0
                                         }
                                     }
                                 ]
@@ -73939,8 +73939,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": null,
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": null,
                                             "CMSTTPT": "2013-05-19"
                                         }
                                     },
@@ -73949,8 +73949,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": "ONGOING",
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": "ONGOING",
                                             "CMSTTPT": "2013-05-10"
                                         }
                                     },
@@ -73959,8 +73959,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": "ONGOING",
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": "ONGOING",
                                             "CMSTTPT": "2013-05-10"
                                         }
                                     },
@@ -73969,8 +73969,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": "POST",
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": "POST",
                                             "CMSTTPT": "2013-05-10"
                                         }
                                     },
@@ -73979,8 +73979,8 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": "UNK",
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": "UNK",
                                             "CMSTTPT": "2013-05-10"
                                         }
                                     }
@@ -73998,8 +73998,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2013-02-18"
                                         }
                                     },
@@ -74008,8 +74008,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC006",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2007-04-20"
                                         }
                                     },
@@ -74018,8 +74018,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2012-05-20"
                                         }
                                     },
@@ -74028,8 +74028,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC012",
                                         "value": {
-                                            "MHSTRTPT": null,
                                             "MHDTC": "2013-05-03",
+                                            "MHSTRTPT": null,
                                             "MHSTTPT": "2013-05-02"
                                         }
                                     },
@@ -74038,8 +74038,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC013",
                                         "value": {
-                                            "MHSTRTPT": null,
                                             "MHDTC": "2013-05-04",
+                                            "MHSTRTPT": null,
                                             "MHSTTPT": "2013-04-04"
                                         }
                                     }
@@ -77247,23 +77247,23 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "ABC",
                                             "domain": "EX",
-                                            "usubjid": "ABC1001",
-                                            "exseq": 1.0,
-                                            "exlnkid": "A2-10110114",
-                                            "extrt": "DRUG X",
                                             "exdose": 3.0,
-                                            "exdostxt": null,
-                                            "exdosu": "mg/kg",
                                             "exdosfrm": "INJECTION",
                                             "exdosfrq": "ONCE",
-                                            "exroute": "SUBCUTANEOUS",
-                                            "exstdtc": "2011-01-14 00:00:00",
+                                            "exdostxt": null,
+                                            "exdosu": "mg/kg",
                                             "exendtc": "2011-01-28 00:00:00",
-                                            "exstdy": 1.0,
                                             "exendy": 15.0,
-                                            "results": true
+                                            "exlnkid": "A2-10110114",
+                                            "exroute": "SUBCUTANEOUS",
+                                            "exseq": 1.0,
+                                            "exstdtc": "2011-01-14 00:00:00",
+                                            "exstdy": 1.0,
+                                            "extrt": "DRUG X",
+                                            "results": true,
+                                            "studyid": "ABC",
+                                            "usubjid": "ABC1001"
                                         }
                                     },
                                     {
@@ -77271,23 +77271,23 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "ABC",
                                             "domain": "EX",
-                                            "usubjid": "ABC2001",
-                                            "exseq": 1.0,
-                                            "exlnkid": "A2-20110114",
-                                            "extrt": "DRUG Z",
                                             "exdose": 500.0,
-                                            "exdostxt": null,
-                                            "exdosu": "mg",
                                             "exdosfrm": "TABLET",
                                             "exdosfrq": "QD",
-                                            "exroute": "ORAL",
-                                            "exstdtc": "2011-01-14 00:00:00",
+                                            "exdostxt": null,
+                                            "exdosu": "mg",
                                             "exendtc": "2011-01-23 00:00:00",
-                                            "exstdy": 1.0,
                                             "exendy": 10.0,
-                                            "results": true
+                                            "exlnkid": "A2-20110114",
+                                            "exroute": "ORAL",
+                                            "exseq": 1.0,
+                                            "exstdtc": "2011-01-14 00:00:00",
+                                            "exstdy": 1.0,
+                                            "extrt": "DRUG Z",
+                                            "results": true,
+                                            "studyid": "ABC",
+                                            "usubjid": "ABC2001"
                                         }
                                     },
                                     {
@@ -77295,23 +77295,23 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "studyid": "ABC",
                                             "domain": "EX",
-                                            "usubjid": "ABC2001",
-                                            "exseq": 2.0,
-                                            "exlnkid": "A2-20110125",
-                                            "extrt": "DRUG Z",
                                             "exdose": 500.0,
-                                            "exdostxt": null,
-                                            "exdosu": "mg",
                                             "exdosfrm": "TABLET",
                                             "exdosfrq": "QD",
-                                            "exroute": "ORAL",
-                                            "exstdtc": "2011-01-25 00:00:00",
+                                            "exdostxt": null,
+                                            "exdosu": "mg",
                                             "exendtc": "2011-01-28 00:00:00",
-                                            "exstdy": 12.0,
                                             "exendy": 15.0,
-                                            "results": true
+                                            "exlnkid": "A2-20110125",
+                                            "exroute": "ORAL",
+                                            "exseq": 2.0,
+                                            "exstdtc": "2011-01-25 00:00:00",
+                                            "exstdy": 12.0,
+                                            "extrt": "DRUG Z",
+                                            "results": true,
+                                            "studyid": "ABC",
+                                            "usubjid": "ABC2001"
                                         }
                                     }
                                 ]
@@ -78460,8 +78460,8 @@
                                         "SEQ": 2,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "CMSTRTPT": null,
                                             "CMDTC": "2013-05-20",
+                                            "CMSTRTPT": null,
                                             "CMSTTPT": "2013-05-20"
                                         }
                                     }
@@ -78479,8 +78479,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2013-05-20"
                                         }
                                     },
@@ -78489,8 +78489,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "MHSTRTPT": "AFTER",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "AFTER",
                                             "MHSTTPT": "2013-05-20"
                                         }
                                     },
@@ -78499,8 +78499,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC006",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2013-05-20"
                                         }
                                     },
@@ -78509,8 +78509,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "MHSTRTPT": "ONGOING",
                                             "MHDTC": "2013-05-20",
+                                            "MHSTRTPT": "ONGOING",
                                             "MHSTTPT": "2013-05-20"
                                         }
                                     },
@@ -78519,8 +78519,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC012",
                                         "value": {
-                                            "MHSTRTPT": "AFTER",
                                             "MHDTC": "2013-05-03",
+                                            "MHSTRTPT": "AFTER",
                                             "MHSTTPT": "2013-05-03"
                                         }
                                     },
@@ -78529,8 +78529,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "CDISC013",
                                         "value": {
-                                            "MHSTRTPT": null,
                                             "MHDTC": "2013-05-04",
+                                            "MHSTRTPT": null,
                                             "MHSTTPT": "2013-05-04"
                                         }
                                     }
