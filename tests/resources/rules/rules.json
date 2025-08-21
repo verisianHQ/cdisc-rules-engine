@@ -4140,7 +4140,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGSTAT, AGOCCUR"
+                      "message": "AGOCCUR, AGSTAT"
                     }
                   ]
                 ]
@@ -4170,7 +4170,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "ECOCCUR, ECSTAT"
+                      "message": "ECSTAT, ECOCCUR"
                     }
                   ]
                 ]
@@ -4185,7 +4185,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4200,7 +4200,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MLSTAT, MLOCCUR"
+                      "message": "MLOCCUR, MLSTAT"
                     }
                   ]
                 ]
@@ -4215,7 +4215,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4260,7 +4260,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "BEOCCUR, BESTAT"
+                      "message": "BESTAT, BEOCCUR"
                     }
                   ]
                 ]
@@ -4290,7 +4290,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DSOCCUR, DSSTAT"
+                      "message": "DSSTAT, DSOCCUR"
                     }
                   ]
                 ]
@@ -4305,7 +4305,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVSTAT, DVOCCUR"
+                      "message": "DVOCCUR, DVSTAT"
                     }
                   ]
                 ]
@@ -4482,7 +4482,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGSTAT, AGOCCUR"
+                      "message": "AGOCCUR, AGSTAT"
                     }
                   ]
                 ]
@@ -4512,7 +4512,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "ECOCCUR, ECSTAT"
+                      "message": "ECSTAT, ECOCCUR"
                     }
                   ]
                 ]
@@ -4527,7 +4527,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4542,7 +4542,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MLSTAT, MLOCCUR"
+                      "message": "MLOCCUR, MLSTAT"
                     }
                   ]
                 ]
@@ -4557,7 +4557,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4602,7 +4602,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "BEOCCUR, BESTAT"
+                      "message": "BESTAT, BEOCCUR"
                     }
                   ]
                 ]
@@ -4632,7 +4632,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DSOCCUR, DSSTAT"
+                      "message": "DSSTAT, DSOCCUR"
                     }
                   ]
                 ]
@@ -4647,7 +4647,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVSTAT, DVOCCUR"
+                      "message": "DVOCCUR, DVSTAT"
                     }
                   ]
                 ]
@@ -4827,7 +4827,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGSTAT, AGOCCUR"
+                      "message": "AGOCCUR, AGSTAT"
                     }
                   ]
                 ]
@@ -4857,7 +4857,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "ECOCCUR, ECSTAT"
+                      "message": "ECSTAT, ECOCCUR"
                     }
                   ]
                 ]
@@ -4872,7 +4872,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4887,7 +4887,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MLSTAT, MLOCCUR"
+                      "message": "MLOCCUR, MLSTAT"
                     }
                   ]
                 ]
@@ -4902,7 +4902,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4947,7 +4947,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "BEOCCUR, BESTAT"
+                      "message": "BESTAT, BEOCCUR"
                     }
                   ]
                 ]
@@ -4977,7 +4977,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DSOCCUR, DSSTAT"
+                      "message": "DSSTAT, DSOCCUR"
                     }
                   ]
                 ]
@@ -4992,7 +4992,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVSTAT, DVOCCUR"
+                      "message": "DVOCCUR, DVSTAT"
                     }
                   ]
                 ]
@@ -5169,7 +5169,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGSTAT, AGOCCUR"
+                      "message": "AGOCCUR, AGSTAT"
                     }
                   ]
                 ]
@@ -5199,7 +5199,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "ECOCCUR, ECSTAT"
+                      "message": "ECSTAT, ECOCCUR"
                     }
                   ]
                 ]
@@ -5214,7 +5214,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -5229,7 +5229,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MLSTAT, MLOCCUR"
+                      "message": "MLOCCUR, MLSTAT"
                     }
                   ]
                 ]
@@ -5244,7 +5244,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -5289,7 +5289,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "BEOCCUR, BESTAT"
+                      "message": "BESTAT, BEOCCUR"
                     }
                   ]
                 ]
@@ -5319,7 +5319,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DSOCCUR, DSSTAT"
+                      "message": "DSSTAT, DSOCCUR"
                     }
                   ]
                 ]
@@ -5334,7 +5334,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVSTAT, DVOCCUR"
+                      "message": "DVOCCUR, DVSTAT"
                     }
                   ]
                 ]
@@ -9748,7 +9748,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "IEORRES, IEDRVFL"
+                      "message": "IEDRVFL, IEORRES"
                     }
                   ]
                 ]
@@ -9922,7 +9922,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESOD, AESHOSP, AESMIE, AESLIFE, AESDISAB, AESCAN, AESCONG, AESDTH"
+                      "message": "AESDTH, AESHOSP, AESDISAB, AESCAN, AESOD, AESLIFE, AESMIE, AESCONG"
                     }
                   ]
                 ]
@@ -9968,7 +9968,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESOD, AESHOSP, AESMIE, AESLIFE, AESDISAB, AESCAN, AESCONG, AESDTH"
+                      "message": "AESDTH, AESHOSP, AESDISAB, AESCAN, AESOD, AESLIFE, AESMIE, AESCONG"
                     }
                   ]
                 ]
@@ -10460,8 +10460,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "SCREEN",
-                        "teenrl": null,
-                        "tedur": null
+                        "tedur": null,
+                        "teenrl": null
                       }
                     },
                     {
@@ -10470,8 +10470,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "PLACEBO",
-                        "teenrl": "26 weeks after the start of the Element",
-                        "tedur": "26"
+                        "tedur": "26",
+                        "teenrl": "26 weeks after the start of the Element"
                       }
                     }
                   ]
@@ -10523,8 +10523,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "E000",
-                        "teenrl": null,
-                        "tedur": "P2W"
+                        "tedur": "P2W",
+                        "teenrl": null
                       }
                     },
                     {
@@ -10533,8 +10533,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "E001",
-                        "teenrl": "XXXX",
-                        "tedur": "P26W"
+                        "tedur": "P26W",
+                        "teenrl": "XXXX"
                       }
                     },
                     {
@@ -10543,8 +10543,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "E002",
-                        "teenrl": "FIRST DOSE OF METFORMIN",
-                        "tedur": null
+                        "tedur": null,
+                        "teenrl": "FIRST DOSE OF METFORMIN"
                       }
                     },
                     {
@@ -10553,8 +10553,8 @@
                       "USUBJID": null,
                       "value": {
                         "etcd": "E003",
-                        "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE",
-                        "tedur": "P4W"
+                        "tedur": "P4W",
+                        "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE"
                       }
                     }
                   ]
@@ -10732,8 +10732,8 @@
                       "SEQ": 1,
                       "USUBJID": "123101",
                       "value": {
-                        "MLELTM": "-PT10M",
-                        "MLTPTREF": null
+                        "MLTPTREF": null,
+                        "MLELTM": "-PT10M"
                       }
                     },
                     {
@@ -10741,8 +10741,8 @@
                       "SEQ": 2,
                       "USUBJID": "123101",
                       "value": {
-                        "MLELTM": "PT1H",
-                        "MLTPTREF": null
+                        "MLTPTREF": null,
+                        "MLELTM": "PT1H"
                       }
                     },
                     {
@@ -10750,8 +10750,8 @@
                       "SEQ": 3,
                       "USUBJID": "123101",
                       "value": {
-                        "MLELTM": "PT2H",
-                        "MLTPTREF": null
+                        "MLTPTREF": null,
+                        "MLELTM": "PT2H"
                       }
                     },
                     {
@@ -10759,8 +10759,8 @@
                       "SEQ": 4,
                       "USUBJID": "123101",
                       "value": {
-                        "MLELTM": "PT24H",
-                        "MLTPTREF": null
+                        "MLTPTREF": null,
+                        "MLELTM": "PT24H"
                       }
                     },
                     {
@@ -10768,8 +10768,8 @@
                       "SEQ": 5,
                       "USUBJID": "123101",
                       "value": {
-                        "MLELTM": "PT48H",
-                        "MLTPTREF": null
+                        "MLTPTREF": null,
+                        "MLELTM": "PT48H"
                       }
                     }
                   ]
@@ -17256,8 +17256,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CESTRTPT": null,
-                        "CESTTPT": "FIRST DOSE"
+                        "CESTTPT": "FIRST DOSE",
+                        "CESTRTPT": null
                       }
                     },
                     {
@@ -17265,8 +17265,8 @@
                       "SEQ": 14,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "CESTRTPT": null,
-                        "CESTTPT": "FIRST DOSE"
+                        "CESTTPT": "FIRST DOSE",
+                        "CESTRTPT": null
                       }
                     },
                     {
@@ -17274,8 +17274,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC011",
                       "value": {
-                        "CESTRTPT": null,
-                        "CESTTPT": "FIRST DOSE"
+                        "CESTTPT": "FIRST DOSE",
+                        "CESTRTPT": null
                       }
                     }
                   ]
@@ -21651,8 +21651,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": "2013-08-06",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2013-08-06"
                       }
                     },
                     {
@@ -21660,8 +21660,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": "2013-08-06",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2013-08-06"
                       }
                     },
                     {
@@ -21669,8 +21669,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     },
                     {
@@ -21678,8 +21678,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     },
                     {
@@ -21687,8 +21687,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     }
                   ]
@@ -25203,7 +25203,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DMSTDTC, RFSTDTC"
+                      "message": "RFSTDTC, DMSTDTC"
                     }
                   ]
                 ]
@@ -25303,7 +25303,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DMSTDTC, RFSTDTC"
+                      "message": "RFSTDTC, DMSTDTC"
                     }
                   ]
                 ]
@@ -25537,7 +25537,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "RFSTDTC, CMENDTC"
+                      "message": "CMENDTC, RFSTDTC"
                     }
                   ]
                 ]
@@ -25574,9 +25574,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMENDY": 151.0,
+                        "CMENDTC": "2013-04",
                         "RFSTDTC": "2012-11-30",
-                        "CMENDTC": "2013-04"
+                        "CMENDY": 151.0
                       }
                     },
                     {
@@ -25584,9 +25584,9 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMENDY": 166.0,
+                        "CMENDTC": "2013----14",
                         "RFSTDTC": "2012-11-30",
-                        "CMENDTC": "2013----14"
+                        "CMENDY": 166.0
                       }
                     }
                   ]
@@ -25695,7 +25695,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "RFSTDTC, CMENDTC"
+                      "message": "CMENDTC, RFSTDTC"
                     }
                   ]
                 ]
@@ -25822,8 +25822,8 @@
                       "SEQ": 137,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25831,8 +25831,8 @@
                       "SEQ": 138,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25840,8 +25840,8 @@
                       "SEQ": 139,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25849,8 +25849,8 @@
                       "SEQ": 140,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25858,8 +25858,8 @@
                       "SEQ": 141,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25867,8 +25867,8 @@
                       "SEQ": 142,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25876,8 +25876,8 @@
                       "SEQ": 143,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25885,8 +25885,8 @@
                       "SEQ": 144,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25894,8 +25894,8 @@
                       "SEQ": 145,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25903,8 +25903,8 @@
                       "SEQ": 146,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25912,8 +25912,8 @@
                       "SEQ": 147,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25921,8 +25921,8 @@
                       "SEQ": 148,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25930,8 +25930,8 @@
                       "SEQ": 149,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25939,8 +25939,8 @@
                       "SEQ": 150,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25948,8 +25948,8 @@
                       "SEQ": 151,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25957,8 +25957,8 @@
                       "SEQ": 152,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     },
                     {
@@ -25966,8 +25966,8 @@
                       "SEQ": 153,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 300.0,
-                        "VISITDY": 56.0
+                        "VISITDY": 56.0,
+                        "VISITNUM": 300.0
                       }
                     }
                   ]
@@ -26044,8 +26044,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VISITNUM": 5.01,
-                        "VISITDY": 40.0
+                        "VISITDY": 40.0,
+                        "VISITNUM": 5.01
                       }
                     }
                   ]
@@ -26265,8 +26265,8 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 30.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPT": "30 MIN POST",
+                        "FTTPTNUM": 30.0
                       }
                     },
                     {
@@ -26274,8 +26274,8 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPT": "30 MIN POST",
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -26283,8 +26283,8 @@
                       "SEQ": 134,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "FTTPTNUM": 1.0,
-                        "FTTPT": "60 MIN POST"
+                        "FTTPT": "60 MIN POST",
+                        "FTTPTNUM": 1.0
                       }
                     }
                   ]
@@ -26303,8 +26303,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "10MIN POSTDOSE",
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": "10MIN POSTDOSE"
                       }
                     },
                     {
@@ -26312,8 +26312,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": null,
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": null
                       }
                     },
                     {
@@ -26321,8 +26321,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "PREDOSE",
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": "PREDOSE"
                       }
                     },
                     {
@@ -26330,8 +26330,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "PREDOSE",
-                        "VSTPTNUM": -1.0
+                        "VSTPTNUM": -1.0,
+                        "VSTPT": "PREDOSE"
                       }
                     },
                     {
@@ -26339,8 +26339,8 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "10MIN POSTDOSE",
-                        "VSTPTNUM": 5.0
+                        "VSTPTNUM": 5.0,
+                        "VSTPT": "10MIN POSTDOSE"
                       }
                     },
                     {
@@ -26348,8 +26348,8 @@
                       "SEQ": 7,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "5MIN POSTDOSE",
-                        "VSTPTNUM": 5.0
+                        "VSTPTNUM": 5.0,
+                        "VSTPT": "5MIN POSTDOSE"
                       }
                     }
                   ]
@@ -26488,9 +26488,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "VSTPTNUM": "14",
                         "VSTPT": "4H PREDOSE",
-                        "VSELTM": "-PT4H",
-                        "VSTPTNUM": "14"
+                        "VSELTM": "-PT4H"
                       }
                     }
                   ]
@@ -26544,9 +26544,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "FTELTM": "PT30M",
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     }
                   ]
@@ -41538,8 +41538,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMREASND": "Subject's Decision",
-                        "CMSTAT": "Not Done"
+                        "CMSTAT": "Not Done",
+                        "CMREASND": "Subject's Decision"
                       }
                     }
                   ]
@@ -42447,9 +42447,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "USUBJID": null,
+                        "POOLID": null,
                         "RSUBJID": "CDISC-TEST-001",
-                        "POOLID": null
+                        "USUBJID": null
                       }
                     }
                   ]
@@ -42684,8 +42684,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     },
                     {
@@ -42693,8 +42693,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     },
                     {
@@ -42702,8 +42702,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     }
                   ]
@@ -42757,8 +42757,8 @@
                       "SEQ": 1,
                       "USUBJID": "123101",
                       "value": {
-                        "AESCAT": "TEST CATEGORY",
-                        "AECAT": "TEST CATEGORY"
+                        "AECAT": "TEST CATEGORY",
+                        "AESCAT": "TEST CATEGORY"
                       }
                     }
                   ]
@@ -44133,8 +44133,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBRFTDTC": "2019-03-12T10:00",
-                        "LBTPTREF": null
+                        "LBTPTREF": null,
+                        "LBRFTDTC": "2019-03-12T10:00"
                       }
                     },
                     {
@@ -44142,8 +44142,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBRFTDTC": "2019-03-12T10:00",
-                        "LBTPTREF": null
+                        "LBTPTREF": null,
+                        "LBRFTDTC": "2019-03-12T10:00"
                       }
                     }
                   ]
@@ -44372,8 +44372,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "VISITNUM": 200.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 200.0
                       }
                     }
                   ]
@@ -44503,8 +44503,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44512,8 +44512,8 @@
                       "SEQ": 10,
                       "USUBJID": "CDISC-TEST-002",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44521,8 +44521,8 @@
                       "SEQ": 16,
                       "USUBJID": "CDISC-TEST-003",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44530,8 +44530,8 @@
                       "SEQ": 22,
                       "USUBJID": "CDISC-TEST-004",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44539,8 +44539,8 @@
                       "SEQ": 28,
                       "USUBJID": "CDISC-TEST-005",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44548,8 +44548,8 @@
                       "SEQ": 34,
                       "USUBJID": "CDISC-TEST-006",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44557,8 +44557,8 @@
                       "SEQ": 40,
                       "USUBJID": "CDISC-TEST-007",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44566,8 +44566,8 @@
                       "SEQ": 46,
                       "USUBJID": "CDISC-TEST-008",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44575,8 +44575,8 @@
                       "SEQ": 52,
                       "USUBJID": "CDISC-TEST-009",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44584,8 +44584,8 @@
                       "SEQ": 58,
                       "USUBJID": "CDISC-TEST-010",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44593,8 +44593,8 @@
                       "SEQ": 64,
                       "USUBJID": "CDISC-TEST-011",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44602,8 +44602,8 @@
                       "SEQ": 70,
                       "USUBJID": "CDISC-TEST-012",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44611,8 +44611,8 @@
                       "SEQ": 76,
                       "USUBJID": "CDISC-TEST-013",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44620,8 +44620,8 @@
                       "SEQ": 82,
                       "USUBJID": "CDISC-TEST-014",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44629,8 +44629,8 @@
                       "SEQ": 88,
                       "USUBJID": "CDISC-TEST-015",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44638,8 +44638,8 @@
                       "SEQ": 94,
                       "USUBJID": "CDISC-TEST-016",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44647,8 +44647,8 @@
                       "SEQ": 100,
                       "USUBJID": "CDISC-TEST-017",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44656,8 +44656,8 @@
                       "SEQ": 106,
                       "USUBJID": "CDISC-TEST-018",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44665,8 +44665,8 @@
                       "SEQ": 112,
                       "USUBJID": "CDISC-TEST-019",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44674,8 +44674,8 @@
                       "SEQ": 118,
                       "USUBJID": "CDISC-TEST-020",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44683,8 +44683,8 @@
                       "SEQ": 124,
                       "USUBJID": "CDISC-TEST-021",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44692,8 +44692,8 @@
                       "SEQ": 130,
                       "USUBJID": "CDISC-TEST-022",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44701,8 +44701,8 @@
                       "SEQ": 136,
                       "USUBJID": "CDISC-TEST-023",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44710,8 +44710,8 @@
                       "SEQ": 142,
                       "USUBJID": "CDISC-TEST-024",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44719,8 +44719,8 @@
                       "SEQ": 148,
                       "USUBJID": "CDISC-TEST-025",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44728,8 +44728,8 @@
                       "SEQ": 154,
                       "USUBJID": "CDISC-TEST-026",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44737,8 +44737,8 @@
                       "SEQ": 160,
                       "USUBJID": "CDISC-TEST-027",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44746,8 +44746,8 @@
                       "SEQ": 166,
                       "USUBJID": "CDISC-TEST-028",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44755,8 +44755,8 @@
                       "SEQ": 172,
                       "USUBJID": "CDISC-TEST-029",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44764,8 +44764,8 @@
                       "SEQ": 178,
                       "USUBJID": "CDISC-TEST-030",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44773,8 +44773,8 @@
                       "SEQ": 184,
                       "USUBJID": "CDISC-TEST-031",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44782,8 +44782,8 @@
                       "SEQ": 190,
                       "USUBJID": "CDISC-TEST-032",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44791,8 +44791,8 @@
                       "SEQ": 196,
                       "USUBJID": "CDISC-TEST-033",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44800,8 +44800,8 @@
                       "SEQ": 202,
                       "USUBJID": "CDISC-TEST-034",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44809,8 +44809,8 @@
                       "SEQ": 208,
                       "USUBJID": "CDISC-TEST-035",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44818,8 +44818,8 @@
                       "SEQ": 214,
                       "USUBJID": "CDISC-TEST-036",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44827,8 +44827,8 @@
                       "SEQ": 220,
                       "USUBJID": "CDISC-TEST-037",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44836,8 +44836,8 @@
                       "SEQ": 226,
                       "USUBJID": "CDISC-TEST-038",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44845,8 +44845,8 @@
                       "SEQ": 232,
                       "USUBJID": "CDISC-TEST-039",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44854,8 +44854,8 @@
                       "SEQ": 238,
                       "USUBJID": "CDISC-TEST-040",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44863,8 +44863,8 @@
                       "SEQ": 244,
                       "USUBJID": "CDISC-TEST-041",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44872,8 +44872,8 @@
                       "SEQ": 250,
                       "USUBJID": "CDISC-TEST-042",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44881,8 +44881,8 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC-TEST-043",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44890,8 +44890,8 @@
                       "SEQ": 262,
                       "USUBJID": "CDISC-TEST-044",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44899,8 +44899,8 @@
                       "SEQ": 268,
                       "USUBJID": "CDISC-TEST-045",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44908,8 +44908,8 @@
                       "SEQ": 274,
                       "USUBJID": "CDISC-TEST-046",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44917,8 +44917,8 @@
                       "SEQ": 280,
                       "USUBJID": "CDISC-TEST-047",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44926,8 +44926,8 @@
                       "SEQ": 286,
                       "USUBJID": "CDISC-TEST-048",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44935,8 +44935,8 @@
                       "SEQ": 292,
                       "USUBJID": "CDISC-TEST-049",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44944,8 +44944,8 @@
                       "SEQ": 298,
                       "USUBJID": "CDISC-TEST-050",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44953,8 +44953,8 @@
                       "SEQ": 304,
                       "USUBJID": "CDISC-TEST-051",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44962,8 +44962,8 @@
                       "SEQ": 310,
                       "USUBJID": "CDISC-TEST-052",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44971,8 +44971,8 @@
                       "SEQ": 316,
                       "USUBJID": "CDISC-TEST-053",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44980,8 +44980,8 @@
                       "SEQ": 322,
                       "USUBJID": "CDISC-TEST-054",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44989,8 +44989,8 @@
                       "SEQ": 328,
                       "USUBJID": "CDISC-TEST-055",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -44998,8 +44998,8 @@
                       "SEQ": 334,
                       "USUBJID": "CDISC-TEST-056",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45007,8 +45007,8 @@
                       "SEQ": 340,
                       "USUBJID": "CDISC-TEST-057",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45016,8 +45016,8 @@
                       "SEQ": 346,
                       "USUBJID": "CDISC-TEST-058",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45025,8 +45025,8 @@
                       "SEQ": 352,
                       "USUBJID": "CDISC-TEST-059",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45034,8 +45034,8 @@
                       "SEQ": 355,
                       "USUBJID": "CDISC-TEST-060",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45043,8 +45043,8 @@
                       "SEQ": 364,
                       "USUBJID": "CDISC-TEST-061",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45052,8 +45052,8 @@
                       "SEQ": 370,
                       "USUBJID": "CDISC-TEST-062",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45061,8 +45061,8 @@
                       "SEQ": 376,
                       "USUBJID": "CDISC-TEST-063",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45070,8 +45070,8 @@
                       "SEQ": 382,
                       "USUBJID": "CDISC-TEST-064",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45079,8 +45079,8 @@
                       "SEQ": 385,
                       "USUBJID": "CDISC-TEST-065",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45088,8 +45088,8 @@
                       "SEQ": 394,
                       "USUBJID": "CDISC-TEST-066",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45097,8 +45097,8 @@
                       "SEQ": 400,
                       "USUBJID": "CDISC-TEST-067",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45106,8 +45106,8 @@
                       "SEQ": 406,
                       "USUBJID": "CDISC-TEST-068",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45115,8 +45115,8 @@
                       "SEQ": 412,
                       "USUBJID": "CDISC-TEST-069",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45124,8 +45124,8 @@
                       "SEQ": 415,
                       "USUBJID": "CDISC-TEST-070",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45133,8 +45133,8 @@
                       "SEQ": 424,
                       "USUBJID": "CDISC-TEST-071",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45142,8 +45142,8 @@
                       "SEQ": 430,
                       "USUBJID": "CDISC-TEST-072",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45151,8 +45151,8 @@
                       "SEQ": 436,
                       "USUBJID": "CDISC-TEST-073",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45160,8 +45160,8 @@
                       "SEQ": 442,
                       "USUBJID": "CDISC-TEST-074",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45169,8 +45169,8 @@
                       "SEQ": 445,
                       "USUBJID": "CDISC-TEST-075",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45178,8 +45178,8 @@
                       "SEQ": 454,
                       "USUBJID": "CDISC-TEST-076",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45187,8 +45187,8 @@
                       "SEQ": 460,
                       "USUBJID": "CDISC-TEST-077",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45196,8 +45196,8 @@
                       "SEQ": 466,
                       "USUBJID": "CDISC-TEST-078",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45205,8 +45205,8 @@
                       "SEQ": 472,
                       "USUBJID": "CDISC-TEST-079",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45214,8 +45214,8 @@
                       "SEQ": 475,
                       "USUBJID": "CDISC-TEST-080",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45223,8 +45223,8 @@
                       "SEQ": 484,
                       "USUBJID": "CDISC-TEST-081",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45232,8 +45232,8 @@
                       "SEQ": 490,
                       "USUBJID": "CDISC-TEST-082",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45241,8 +45241,8 @@
                       "SEQ": 496,
                       "USUBJID": "CDISC-TEST-083",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45250,8 +45250,8 @@
                       "SEQ": 502,
                       "USUBJID": "CDISC-TEST-084",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45259,8 +45259,8 @@
                       "SEQ": 505,
                       "USUBJID": "CDISC-TEST-085",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45268,8 +45268,8 @@
                       "SEQ": 514,
                       "USUBJID": "CDISC-TEST-086",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45277,8 +45277,8 @@
                       "SEQ": 520,
                       "USUBJID": "CDISC-TEST-087",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45286,8 +45286,8 @@
                       "SEQ": 526,
                       "USUBJID": "CDISC-TEST-088",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45295,8 +45295,8 @@
                       "SEQ": 532,
                       "USUBJID": "CDISC-TEST-089",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45304,8 +45304,8 @@
                       "SEQ": 535,
                       "USUBJID": "CDISC-TEST-090",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45313,8 +45313,8 @@
                       "SEQ": 544,
                       "USUBJID": "CDISC-TEST-091",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45322,8 +45322,8 @@
                       "SEQ": 550,
                       "USUBJID": "CDISC-TEST-092",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45331,8 +45331,8 @@
                       "SEQ": 556,
                       "USUBJID": "CDISC-TEST-093",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45340,8 +45340,8 @@
                       "SEQ": 562,
                       "USUBJID": "CDISC-TEST-094",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45349,8 +45349,8 @@
                       "SEQ": 565,
                       "USUBJID": "CDISC-TEST-095",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45358,8 +45358,8 @@
                       "SEQ": 574,
                       "USUBJID": "CDISC-TEST-096",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45367,8 +45367,8 @@
                       "SEQ": 580,
                       "USUBJID": "CDISC-TEST-097",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45376,8 +45376,8 @@
                       "SEQ": 586,
                       "USUBJID": "CDISC-TEST-098",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45385,8 +45385,8 @@
                       "SEQ": 592,
                       "USUBJID": "CDISC-TEST-099",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45394,8 +45394,8 @@
                       "SEQ": 595,
                       "USUBJID": "CDISC-TEST-100",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     }
                   ]
@@ -45414,8 +45414,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45423,8 +45423,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-002",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45432,8 +45432,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-003",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45441,8 +45441,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-004",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45450,8 +45450,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-005",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45459,8 +45459,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-006",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45468,8 +45468,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-007",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45477,8 +45477,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-008",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45486,8 +45486,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-009",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45495,8 +45495,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-010",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45504,8 +45504,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-011",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45513,8 +45513,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-012",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45522,8 +45522,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-013",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45531,8 +45531,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-014",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45540,8 +45540,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-015",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45549,8 +45549,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-016",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45558,8 +45558,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-017",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45567,8 +45567,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-018",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45576,8 +45576,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-019",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45585,8 +45585,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-020",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45594,8 +45594,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-021",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45603,8 +45603,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-022",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45612,8 +45612,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-023",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45621,8 +45621,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-024",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45630,8 +45630,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-025",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45639,8 +45639,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-026",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45648,8 +45648,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-027",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45657,8 +45657,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-028",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45666,8 +45666,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-029",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45675,8 +45675,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-030",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45684,8 +45684,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-031",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45693,8 +45693,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-032",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45702,8 +45702,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-033",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45711,8 +45711,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-034",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45720,8 +45720,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-035",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45729,8 +45729,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-036",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45738,8 +45738,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-037",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45747,8 +45747,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-038",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45756,8 +45756,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-039",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45765,8 +45765,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-040",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45774,8 +45774,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-041",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45783,8 +45783,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-042",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45792,8 +45792,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-043",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45801,8 +45801,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-044",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45810,8 +45810,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-045",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45819,8 +45819,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-046",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45828,8 +45828,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-047",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45837,8 +45837,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-048",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45846,8 +45846,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-049",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45855,8 +45855,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-050",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45864,8 +45864,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-051",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45873,8 +45873,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-052",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45882,8 +45882,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-053",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45891,8 +45891,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-054",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45900,8 +45900,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-055",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45909,8 +45909,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-056",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45918,8 +45918,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-057",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45927,8 +45927,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-058",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45936,8 +45936,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-059",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45945,8 +45945,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-060",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45954,8 +45954,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-061",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45963,8 +45963,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-062",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45972,8 +45972,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-063",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45981,8 +45981,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-064",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45990,8 +45990,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-065",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -45999,8 +45999,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-066",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46008,8 +46008,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-067",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46017,8 +46017,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-068",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46026,8 +46026,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-069",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46035,8 +46035,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-070",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46044,8 +46044,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-071",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46053,8 +46053,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-072",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46062,8 +46062,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-073",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46071,8 +46071,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-074",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46080,8 +46080,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-075",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46089,8 +46089,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-076",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46098,8 +46098,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-077",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46107,8 +46107,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-078",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46116,8 +46116,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-079",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46125,8 +46125,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-080",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46134,8 +46134,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-081",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46143,8 +46143,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-082",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46152,8 +46152,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-083",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46161,8 +46161,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-084",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46170,8 +46170,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-085",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46179,8 +46179,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-086",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46188,8 +46188,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-087",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46197,8 +46197,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-088",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46206,8 +46206,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-089",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46215,8 +46215,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-090",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46224,8 +46224,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-091",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46233,8 +46233,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-092",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46242,8 +46242,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-093",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46251,8 +46251,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-094",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46260,8 +46260,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-095",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46269,8 +46269,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-096",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46278,8 +46278,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-097",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46287,8 +46287,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-098",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46296,8 +46296,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-099",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     },
                     {
@@ -46305,8 +46305,8 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-100",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     }
                   ]
@@ -46376,8 +46376,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "VISITNUM": 100.0,
-                        "VISITDY": -15.0
+                        "VISITDY": -15.0,
+                        "VISITNUM": 100.0
                       }
                     }
                   ]
@@ -49181,8 +49181,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49190,8 +49190,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49199,8 +49199,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49208,8 +49208,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49217,8 +49217,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49226,8 +49226,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     }
                   ]
@@ -58808,9 +58808,9 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
+                        "CMENRTPT": "AFTER",
                         "CMENTPT": "2013-05-20",
-                        "CMDTC": "2013-05-20",
-                        "CMENRTPT": "AFTER"
+                        "CMDTC": "2013-05-20"
                       }
                     }
                   ]
@@ -58829,8 +58829,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "MHDTC": "2013-05-20",
                         "MHENTPT": "2013-05-20",
+                        "MHDTC": "2013-05-20",
                         "MHENRTPT": "AFTER"
                       }
                     },
@@ -58839,8 +58839,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "MHDTC": "2013-05-03",
                         "MHENTPT": "2013-05-03",
+                        "MHDTC": "2013-05-03",
                         "MHENRTPT": "AFTER"
                       }
                     },
@@ -58849,8 +58849,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-04",
                         "MHENTPT": "2013-05-04",
+                        "MHDTC": "2013-05-04",
                         "MHENRTPT": null
                       }
                     }
@@ -59163,9 +59163,183 @@
     "rule_in_mltple_standards": [],
     "sharepoint_source": "SDTMIG",
     "negative_folder_path": "CDISC_Sharepoint_dump_20250806/unitTesting/SDTMIG/CG0122/negative",
-    "negative_regressions": [],
+    "negative_regressions": [
+      {
+        "unitTesting/SDTMIG/CG0122/negative/02": {
+          "test_case_xslx_file": "unitTesting/SDTMIG/CG0122/negative/02/data/unit-test-coreid-CG0122-negative_20250724.xlsx",
+          "engine_regression": {
+            "define_xml_present": false,
+            "datasets_conversion": "SUCCESS",
+            "datasets_import_sql": "SUCCESS",
+            "results_present_sql": true,
+            "results_sql": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "execution_error",
+                "execution_message": "rule execution error",
+                "number_errors": 1,
+                "errors": [
+                  [
+                    {
+                      "error": "Column not found in data",
+                      "message": "ARM"
+                    }
+                  ]
+                ]
+              }
+            ],
+            "dataset_import_old": "SUCCESS",
+            "results_present_old": true,
+            "results_old": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "skipped",
+                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000330, dataset=dm",
+                "number_errors": 0,
+                "errors": []
+              }
+            ],
+            "old_vs_sql": {
+              "execution_status_match": false
+            }
+          }
+        }
+      },
+      {
+        "unitTesting/SDTMIG/CG0122/negative/01": {
+          "test_case_xslx_file": "unitTesting/SDTMIG/CG0122/negative/01/data/unit-test-coreid-CG0122-negative.xlsx",
+          "engine_regression": {
+            "define_xml_present": false,
+            "datasets_conversion": "SUCCESS",
+            "datasets_import_sql": "SUCCESS",
+            "results_present_sql": true,
+            "results_sql": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "execution_error",
+                "execution_message": "rule execution error",
+                "number_errors": 1,
+                "errors": [
+                  [
+                    {
+                      "error": "Column not found in data",
+                      "message": "ARM"
+                    }
+                  ]
+                ]
+              }
+            ],
+            "dataset_import_old": "SUCCESS",
+            "results_present_old": true,
+            "results_old": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "skipped",
+                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000330, dataset=dm",
+                "number_errors": 0,
+                "errors": []
+              }
+            ],
+            "old_vs_sql": {
+              "execution_status_match": false
+            }
+          }
+        }
+      }
+    ],
     "positive_folder_path": "CDISC_Sharepoint_dump_20250806/unitTesting/SDTMIG/CG0122/positive",
-    "positive_regressions": []
+    "positive_regressions": [
+      {
+        "unitTesting/SDTMIG/CG0122/positive/02": {
+          "test_case_xslx_file": "unitTesting/SDTMIG/CG0122/positive/02/data/unit-test-coreid-CG0122-positive_20250724.xlsx",
+          "engine_regression": {
+            "define_xml_present": false,
+            "datasets_conversion": "SUCCESS",
+            "datasets_import_sql": "SUCCESS",
+            "results_present_sql": true,
+            "results_sql": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "execution_error",
+                "execution_message": "rule execution error",
+                "number_errors": 1,
+                "errors": [
+                  [
+                    {
+                      "error": "Column not found in data",
+                      "message": "ARM"
+                    }
+                  ]
+                ]
+              }
+            ],
+            "dataset_import_old": "SUCCESS",
+            "results_present_old": true,
+            "results_old": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "skipped",
+                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000330, dataset=dm",
+                "number_errors": 0,
+                "errors": []
+              }
+            ],
+            "old_vs_sql": {
+              "execution_status_match": false
+            }
+          }
+        }
+      },
+      {
+        "unitTesting/SDTMIG/CG0122/positive/01": {
+          "test_case_xslx_file": "unitTesting/SDTMIG/CG0122/positive/01/data/unit-test-coreid-CG0122-positive.xlsx",
+          "engine_regression": {
+            "define_xml_present": false,
+            "datasets_conversion": "SUCCESS",
+            "datasets_import_sql": "SUCCESS",
+            "results_present_sql": true,
+            "results_sql": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "execution_error",
+                "execution_message": "rule execution error",
+                "number_errors": 1,
+                "errors": [
+                  [
+                    {
+                      "error": "Column not found in data",
+                      "message": "ARM"
+                    }
+                  ]
+                ]
+              }
+            ],
+            "dataset_import_old": "SUCCESS",
+            "results_present_old": true,
+            "results_old": [
+              {
+                "dataset": "dm.xpt",
+                "domain": "DM",
+                "execution_status": "skipped",
+                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000330, dataset=dm",
+                "number_errors": 0,
+                "errors": []
+              }
+            ],
+            "old_vs_sql": {
+              "execution_status_match": false
+            }
+          }
+        }
+      }
+    ]
   },
   {
     "core-id": "CORE-000331",
@@ -60414,9 +60588,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CEDTC": "2014-10",
                         "CEDY": 174.0,
-                        "RFSTDTC": "2012-11-30"
+                        "RFSTDTC": "2012-11-30",
+                        "CEDTC": "2014-10"
                       }
                     },
                     {
@@ -60424,9 +60598,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "CEDTC": "2014-10-31",
                         "CEDY": 174.0,
-                        "RFSTDTC": "2012-11"
+                        "RFSTDTC": "2012-11",
+                        "CEDTC": "2014-10-31"
                       }
                     }
                   ]
@@ -60586,9 +60760,9 @@
                       "SEQ": 1,
                       "USUBJID": "123101",
                       "value": {
+                        "RFSTDTC": "2005-10-13T10:15",
                         "LBDTC": "2005-09",
-                        "LBDY": -15.0,
-                        "RFSTDTC": "2005-10-13T10:15"
+                        "LBDY": -15.0
                       }
                     },
                     {
@@ -60596,9 +60770,9 @@
                       "SEQ": 2,
                       "USUBJID": "123101",
                       "value": {
+                        "RFSTDTC": "2005-10-13T10:15",
                         "LBDTC": null,
-                        "LBDY": 1.0,
-                        "RFSTDTC": "2005-10-13T10:15"
+                        "LBDY": 1.0
                       }
                     }
                   ]
@@ -66408,9 +66582,9 @@
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
                         "$val_dy": -1,
-                        "DMDTC": "2012-11-29",
+                        "RFSTDTC": "2012-11-30",
                         "DMDY": -5.0,
-                        "RFSTDTC": "2012-11-30"
+                        "DMDTC": "2012-11-29"
                       }
                     }
                   ]
@@ -66479,10 +66653,10 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBDTC": "2012-11-30",
                         "$val_dy": 1,
-                        "LBDY": 2.0,
-                        "RFSTDTC": "2012-11-30"
+                        "RFSTDTC": "2012-11-30",
+                        "LBDTC": "2012-11-30",
+                        "LBDY": 2.0
                       }
                     }
                   ]
@@ -66606,9 +66780,9 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FADTC": "2012-12-02",
-                        "FADY": 35.0,
                         "$val_dy": 18,
-                        "RFSTDTC": "2012-11-15"
+                        "RFSTDTC": "2012-11-15",
+                        "FADY": 35.0
                       }
                     },
                     {
@@ -66617,9 +66791,9 @@
                       "USUBJID": "CDISC004",
                       "value": {
                         "FADTC": "2013-10-12",
-                        "FADY": 3.0,
                         "$val_dy": 5,
-                        "RFSTDTC": "2013-10-08"
+                        "RFSTDTC": "2013-10-08",
+                        "FADY": 3.0
                       }
                     },
                     {
@@ -66628,9 +66802,9 @@
                       "USUBJID": "CDISC007",
                       "value": {
                         "FADTC": "2012-12-02",
-                        "FADY": -30.0,
                         "$val_dy": -34,
-                        "RFSTDTC": "2013-01-05"
+                        "RFSTDTC": "2013-01-05",
+                        "FADY": -30.0
                       }
                     },
                     {
@@ -66639,9 +66813,9 @@
                       "USUBJID": "CDISC008",
                       "value": {
                         "FADTC": "2014-12-02",
-                        "FADY": 230.0,
                         "$val_dy": 206,
-                        "RFSTDTC": "2014-05-11"
+                        "RFSTDTC": "2014-05-11",
+                        "FADY": 230.0
                       }
                     }
                   ]
@@ -66660,9 +66834,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "IEDY": -4.0,
                         "$val_dy": -3,
                         "RFSTDTC": "2022-03-20",
+                        "IEDY": -4.0,
                         "IEDTC": "2022-03-17"
                       }
                     }
@@ -66682,10 +66856,10 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBDTC": "2022-03-30",
                         "$val_dy": 11,
-                        "LBDY": 2.0,
-                        "RFSTDTC": "2022-03-20"
+                        "RFSTDTC": "2022-03-20",
+                        "LBDTC": "2022-03-30",
+                        "LBDY": 2.0
                       }
                     }
                   ]
@@ -67689,8 +67863,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "$list_dataset_names": ["dm", "mhlb", "ex"],
-                        "dataset_name": "mhlb"
+                        "dataset_name": "mhlb",
+                        "$list_dataset_names": ["ex", "mhlb", "dm"]
                       }
                     }
                   ]
@@ -67760,8 +67934,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "$list_dataset_names": ["qsae", "qs1"],
-                        "dataset_name": "qs1"
+                        "dataset_name": "qs1",
+                        "$list_dataset_names": ["qs1", "qsae"]
                       }
                     },
                     {
@@ -67769,8 +67943,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "$list_dataset_names": ["qsae", "qs1"],
-                        "dataset_name": "qsae"
+                        "dataset_name": "qsae",
+                        "$list_dataset_names": ["qs1", "qsae"]
                       }
                     }
                   ]
@@ -68704,10 +68878,10 @@
                       "SEQ": 5,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "CMSTDY": null,
-                        "CMSTDTC": "2013-02-18",
                         "RFSTDTC": "2013-01-05",
-                        "$val_stdy": 45
+                        "CMSTDY": null,
+                        "$val_stdy": 45,
+                        "CMSTDTC": "2013-02-18"
                       }
                     },
                     {
@@ -68715,10 +68889,10 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "CMSTDY": 45.0,
-                        "CMSTDTC": "2013-02-18",
                         "RFSTDTC": "2014-05-11",
-                        "$val_stdy": -447
+                        "CMSTDY": 45.0,
+                        "$val_stdy": -447,
+                        "CMSTDTC": "2013-02-18"
                       }
                     },
                     {
@@ -68726,10 +68900,10 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC010",
                       "value": {
-                        "CMSTDY": -511.0,
-                        "CMSTDTC": "2011-07-15",
                         "RFSTDTC": "2013-09-21",
-                        "$val_stdy": -799
+                        "CMSTDY": -511.0,
+                        "$val_stdy": -799,
+                        "CMSTDTC": "2011-07-15"
                       }
                     }
                   ]
@@ -68898,10 +69072,10 @@
                       "SEQ": 2,
                       "USUBJID": "001",
                       "value": {
-                        "AEENDY": -2.0,
+                        "RFSTDTC": "2022-03-20",
                         "AEENDTC": "2022-03-19",
-                        "$val_endy": -1,
-                        "RFSTDTC": "2022-03-20"
+                        "AEENDY": -2.0,
+                        "$val_endy": -1
                       }
                     },
                     {
@@ -68909,10 +69083,10 @@
                       "SEQ": 1,
                       "USUBJID": "001",
                       "value": {
-                        "AEENDY": 0.0,
+                        "RFSTDTC": "2022-03-20",
                         "AEENDTC": "2022-03-20",
-                        "$val_endy": 1,
-                        "RFSTDTC": "2022-03-20"
+                        "AEENDY": 0.0,
+                        "$val_endy": 1
                       }
                     }
                   ]
@@ -68931,10 +69105,10 @@
                       "SEQ": 5,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "$val_endy": 126,
-                        "CMENDY": null,
+                        "CMENDTC": "2013-05-10",
                         "RFSTDTC": "2013-01-05",
-                        "CMENDTC": "2013-05-10"
+                        "CMENDY": null,
+                        "$val_endy": 126
                       }
                     },
                     {
@@ -68942,10 +69116,10 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "$val_endy": 10,
-                        "CMENDY": 11.0,
+                        "CMENDTC": "2014-05-20",
                         "RFSTDTC": "2014-05-11",
-                        "CMENDTC": "2014-05-20"
+                        "CMENDY": 11.0,
+                        "$val_endy": 10
                       }
                     },
                     {
@@ -68953,10 +69127,10 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC010",
                       "value": {
-                        "$val_endy": -108,
-                        "CMENDY": -107.0,
+                        "CMENDTC": "2013-06-05",
                         "RFSTDTC": "2013-09-21",
-                        "CMENDTC": "2013-06-05"
+                        "CMENDY": -107.0,
+                        "$val_endy": -108
                       }
                     }
                   ]
@@ -69947,9 +70121,9 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
+                        "CMENRTPT": "WRONG",
                         "CMENTPT": "2013-05-20",
-                        "CMDTC": "2013-05-21",
-                        "CMENRTPT": "WRONG"
+                        "CMDTC": "2013-05-21"
                       }
                     },
                     {
@@ -69957,9 +70131,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
+                        "CMENRTPT": "WRONG",
                         "CMENTPT": "2013-05-20T10:30",
-                        "CMDTC": "2013-05-20T10:31",
-                        "CMENRTPT": "WRONG"
+                        "CMDTC": "2013-05-20T10:31"
                       }
                     }
                   ]
@@ -69978,8 +70152,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
-                        "MHDTC": "2013-05-20",
                         "MHENTPT": "2013-05-19",
+                        "MHDTC": "2013-05-20",
                         "MHENRTPT": "WRONG"
                       }
                     },
@@ -69988,8 +70162,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-03",
                         "MHENTPT": "2013-05-02",
+                        "MHDTC": "2013-05-03",
                         "MHENRTPT": null
                       }
                     }
@@ -71885,9 +72059,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71895,9 +72069,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71905,9 +72079,9 @@
                       "SEQ": 122,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -71915,9 +72089,9 @@
                       "SEQ": 123,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71925,9 +72099,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -71935,9 +72109,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -71945,9 +72119,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST5",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST5"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -71955,9 +72129,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -71965,9 +72139,9 @@
                       "SEQ": 392,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "35 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "35 MIN POST4"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71975,9 +72149,9 @@
                       "SEQ": 393,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71985,9 +72159,9 @@
                       "SEQ": 394,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -71995,9 +72169,9 @@
                       "SEQ": 395,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 2.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -72005,9 +72179,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72015,9 +72189,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72025,9 +72199,9 @@
                       "SEQ": 122,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 2.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -72035,9 +72209,9 @@
                       "SEQ": 123,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 2.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -72045,9 +72219,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72055,9 +72229,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 3.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 3.0
                       }
                     },
                     {
@@ -72065,9 +72239,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72075,9 +72249,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72085,9 +72259,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72095,9 +72269,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72105,9 +72279,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 3.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 3.0
                       }
                     },
                     {
@@ -72115,9 +72289,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72125,9 +72299,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72135,9 +72309,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72145,9 +72319,9 @@
                       "SEQ": 528,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 2.0,
+                        "FTTPT": "30 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST5"
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -72155,9 +72329,9 @@
                       "SEQ": 529,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "31 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "31 MIN POST5"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72165,9 +72339,9 @@
                       "SEQ": 530,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "32 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "32 MIN POST5"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72175,9 +72349,9 @@
                       "SEQ": 531,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "33 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "33 MIN POST5"
+                        "FTTPTNUM": 1.0
                       }
                     }
                   ]
@@ -72231,9 +72405,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72241,9 +72415,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72251,9 +72425,9 @@
                       "SEQ": 122,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72261,9 +72435,9 @@
                       "SEQ": 123,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72271,9 +72445,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72281,9 +72455,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72291,9 +72465,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72301,9 +72475,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72311,9 +72485,9 @@
                       "SEQ": 392,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72321,9 +72495,9 @@
                       "SEQ": 393,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72331,9 +72505,9 @@
                       "SEQ": 394,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72341,9 +72515,9 @@
                       "SEQ": 395,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "30 MIN POST4",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST4"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72351,9 +72525,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72361,9 +72535,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72371,9 +72545,9 @@
                       "SEQ": 122,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72381,9 +72555,9 @@
                       "SEQ": 123,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72391,9 +72565,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72401,9 +72575,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72411,9 +72585,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72421,9 +72595,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72431,9 +72605,9 @@
                       "SEQ": 120,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72441,9 +72615,9 @@
                       "SEQ": 121,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST1",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST1"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72451,9 +72625,9 @@
                       "SEQ": 122,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72461,9 +72635,9 @@
                       "SEQ": 123,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 1.0,
+                        "FTTPT": "30 MIN POST",
                         "VISITNUM": 2.0,
-                        "FTTPT": "30 MIN POST"
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72471,9 +72645,9 @@
                       "SEQ": 256,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72481,9 +72655,9 @@
                       "SEQ": 257,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST2",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST2"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72491,9 +72665,9 @@
                       "SEQ": 258,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72501,9 +72675,9 @@
                       "SEQ": 259,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 4.0,
+                        "FTTPT": "30 MIN POST3",
                         "VISITNUM": 8.0,
-                        "FTTPT": "30 MIN POST3"
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72511,9 +72685,9 @@
                       "SEQ": 528,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "30 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "30 MIN POST5"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72521,9 +72695,9 @@
                       "SEQ": 529,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "31 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "31 MIN POST5"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72531,9 +72705,9 @@
                       "SEQ": 530,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "32 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "32 MIN POST5"
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -72541,9 +72715,9 @@
                       "SEQ": 531,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "FTTPTNUM": 10.0,
+                        "FTTPT": "33 MIN POST5",
                         "VISITNUM": 201.0,
-                        "FTTPT": "33 MIN POST5"
+                        "FTTPTNUM": 10.0
                       }
                     }
                   ]
@@ -74155,9 +74329,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2013-02-18",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2013-02-18"
                       }
                     },
                     {
@@ -74165,9 +74339,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2007-04-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2007-04-20"
                       }
                     },
                     {
@@ -74175,9 +74349,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC007",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2012-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2012-05-20"
                       }
                     },
                     {
@@ -74185,9 +74359,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
+                        "MHSTRTPT": null,
                         "MHDTC": "2013-05-03",
-                        "MHSTTPT": "2013-05-02",
-                        "MHSTRTPT": null
+                        "MHSTTPT": "2013-05-02"
                       }
                     },
                     {
@@ -74195,9 +74369,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
+                        "MHSTRTPT": null,
                         "MHDTC": "2013-05-04",
-                        "MHSTTPT": "2013-04-04",
-                        "MHSTRTPT": null
+                        "MHSTTPT": "2013-04-04"
                       }
                     }
                   ]
@@ -77548,7 +77722,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                     }
                   ]
                 ]
@@ -77591,7 +77765,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                     }
                   ]
                 ]
@@ -77634,7 +77808,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                     }
                   ]
                 ]
@@ -78642,9 +78816,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2013-05-20"
                       }
                     },
                     {
@@ -78652,9 +78826,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
+                        "MHSTRTPT": "AFTER",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "AFTER"
+                        "MHSTTPT": "2013-05-20"
                       }
                     },
                     {
@@ -78662,9 +78836,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2013-05-20"
                       }
                     },
                     {
@@ -78672,9 +78846,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC007",
                       "value": {
+                        "MHSTRTPT": "ONGOING",
                         "MHDTC": "2013-05-20",
-                        "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHSTTPT": "2013-05-20"
                       }
                     },
                     {
@@ -78682,9 +78856,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
+                        "MHSTRTPT": "AFTER",
                         "MHDTC": "2013-05-03",
-                        "MHSTTPT": "2013-05-03",
-                        "MHSTRTPT": "AFTER"
+                        "MHSTTPT": "2013-05-03"
                       }
                     },
                     {
@@ -78692,9 +78866,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
+                        "MHSTRTPT": null,
                         "MHDTC": "2013-05-04",
-                        "MHSTTPT": "2013-05-04",
-                        "MHSTRTPT": null
+                        "MHSTTPT": "2013-05-04"
                       }
                     }
                   ]
