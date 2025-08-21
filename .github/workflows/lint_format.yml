@@ -42,4 +42,4 @@ jobs:
           flake8 ${{needs.get_changed_files.outputs.py}} --ignore E203,W503 --count --statistics
       - name: Run black
         run: |
-          black --check --line-length 120 --exclude tests/resources/rules/rules.json ${{needs.get_changed_files.outputs.py}}
+          black --check --line-length 120 ${{needs.get_changed_files.outputs.py}}
