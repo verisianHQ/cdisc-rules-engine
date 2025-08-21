@@ -287,8 +287,8 @@ def extract_results_regression(results):
         if res[0].get("executionStatus", "") == "execution_error":
             domain_res_regression["errors"] = (
                 [
-                    {"error": error.get("error"), "message": sorted(error.get("message"))}
-                    for error in sorted(res[0].get("errors"))
+                    {"error": error.get("error"), "message": error.get("message")}
+                    for error in sorted(res[0].get("errors"), key=lambda x: x.get("message"))
                 ],
             )
         elif res[0].get("executionStatus", "") == "skipped":
