@@ -28,7 +28,7 @@
     "cdisc_rule_id": "19",
     "standard": "ADaMIG",
     "executability": "Fully Executable",
-    "status": "Publiched",
+    "status": "Draft",
     "standard_source": "ADAMIG",
     "core_id_is_null": false,
     "core_id_startswith_CORE": false,
@@ -4185,7 +4185,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4215,7 +4215,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4245,7 +4245,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTAT, AEOCCUR"
+                      "message": "AEOCCUR, AESTAT"
                     }
                   ]
                 ]
@@ -4305,7 +4305,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVOCCUR, DVSTAT"
+                      "message": "DVSTAT, DVOCCUR"
                     }
                   ]
                 ]
@@ -4320,7 +4320,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "HOOCCUR, HOSTAT"
+                      "message": "HOSTAT, HOOCCUR"
                     }
                   ]
                 ]
@@ -4335,7 +4335,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MHSTAT, MHOCCUR"
+                      "message": "MHOCCUR, MHSTAT"
                     }
                   ]
                 ]
@@ -4527,7 +4527,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4557,7 +4557,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4587,7 +4587,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTAT, AEOCCUR"
+                      "message": "AEOCCUR, AESTAT"
                     }
                   ]
                 ]
@@ -4647,7 +4647,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVOCCUR, DVSTAT"
+                      "message": "DVSTAT, DVOCCUR"
                     }
                   ]
                 ]
@@ -4662,7 +4662,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "HOOCCUR, HOSTAT"
+                      "message": "HOSTAT, HOOCCUR"
                     }
                   ]
                 ]
@@ -4677,7 +4677,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MHSTAT, MHOCCUR"
+                      "message": "MHOCCUR, MHSTAT"
                     }
                   ]
                 ]
@@ -4872,7 +4872,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -4902,7 +4902,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -4932,7 +4932,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTAT, AEOCCUR"
+                      "message": "AEOCCUR, AESTAT"
                     }
                   ]
                 ]
@@ -4992,7 +4992,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVOCCUR, DVSTAT"
+                      "message": "DVSTAT, DVOCCUR"
                     }
                   ]
                 ]
@@ -5007,7 +5007,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "HOOCCUR, HOSTAT"
+                      "message": "HOSTAT, HOOCCUR"
                     }
                   ]
                 ]
@@ -5022,7 +5022,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MHSTAT, MHOCCUR"
+                      "message": "MHOCCUR, MHSTAT"
                     }
                   ]
                 ]
@@ -5214,7 +5214,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXOCCUR, EXSTAT"
+                      "message": "EXSTAT, EXOCCUR"
                     }
                   ]
                 ]
@@ -5244,7 +5244,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "PRSTAT, PROCCUR"
+                      "message": "PROCCUR, PRSTAT"
                     }
                   ]
                 ]
@@ -5274,7 +5274,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTAT, AEOCCUR"
+                      "message": "AEOCCUR, AESTAT"
                     }
                   ]
                 ]
@@ -5334,7 +5334,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "DVOCCUR, DVSTAT"
+                      "message": "DVSTAT, DVOCCUR"
                     }
                   ]
                 ]
@@ -5349,7 +5349,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "HOOCCUR, HOSTAT"
+                      "message": "HOSTAT, HOOCCUR"
                     }
                   ]
                 ]
@@ -5364,7 +5364,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "MHSTAT, MHOCCUR"
+                      "message": "MHOCCUR, MHSTAT"
                     }
                   ]
                 ]
@@ -9748,7 +9748,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "IEORRES, IEDRVFL"
+                      "message": "IEDRVFL, IEORRES"
                     }
                   ]
                 ]
@@ -9922,7 +9922,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESLIFE, AESMIE, AESCONG, AESDTH, AESCAN, AESHOSP, AESDISAB, AESOD"
+                      "message": "AESHOSP, AESLIFE, AESCAN, AESDISAB, AESOD, AESCONG, AESMIE, AESDTH"
                     }
                   ]
                 ]
@@ -9968,7 +9968,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESLIFE, AESMIE, AESCONG, AESDTH, AESCAN, AESHOSP, AESDISAB, AESOD"
+                      "message": "AESHOSP, AESLIFE, AESCAN, AESDISAB, AESOD, AESCONG, AESMIE, AESDTH"
                     }
                   ]
                 ]
@@ -10459,9 +10459,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "SCREEN",
                         "tedur": null,
-                        "teenrl": null,
-                        "etcd": "SCREEN"
+                        "teenrl": null
                       }
                     },
                     {
@@ -10469,9 +10469,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "PLACEBO",
                         "tedur": "26",
-                        "teenrl": "26 weeks after the start of the Element",
-                        "etcd": "PLACEBO"
+                        "teenrl": "26 weeks after the start of the Element"
                       }
                     }
                   ]
@@ -10522,9 +10522,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "E000",
                         "tedur": "P2W",
-                        "teenrl": null,
-                        "etcd": "E000"
+                        "teenrl": null
                       }
                     },
                     {
@@ -10532,9 +10532,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "E001",
                         "tedur": "P26W",
-                        "teenrl": "XXXX",
-                        "etcd": "E001"
+                        "teenrl": "XXXX"
                       }
                     },
                     {
@@ -10542,9 +10542,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "E002",
                         "tedur": null,
-                        "teenrl": "FIRST DOSE OF METFORMIN",
-                        "etcd": "E002"
+                        "teenrl": "FIRST DOSE OF METFORMIN"
                       }
                     },
                     {
@@ -10552,9 +10552,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
+                        "etcd": "E003",
                         "tedur": "P4W",
-                        "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE",
-                        "etcd": "E003"
+                        "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE"
                       }
                     }
                   ]
@@ -10602,8 +10602,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "tedur": "P2W",
                         "etcd": "E000",
+                        "tedur": "P2W",
                         "teenrl": "Not in dataset"
                       }
                     },
@@ -10612,8 +10612,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "tedur": "P26W",
                         "etcd": "E001",
+                        "tedur": "P26W",
                         "teenrl": "Not in dataset"
                       }
                     },
@@ -10622,8 +10622,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "tedur": "P26W",
                         "etcd": "E002",
+                        "tedur": "P26W",
                         "teenrl": "Not in dataset"
                       }
                     },
@@ -10632,8 +10632,8 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "tedur": "P4W",
                         "etcd": "E003",
+                        "tedur": "P4W",
                         "teenrl": "Not in dataset"
                       }
                     }
@@ -16541,8 +16541,8 @@
                       "USUBJID": null,
                       "value": {
                         "ECTPTREF": "1",
-                        "ECELTM": "Not in dataset",
                         "ECTPT": "Not in dataset",
+                        "ECELTM": "Not in dataset",
                         "ECTPTNUM": "Not in dataset"
                       }
                     }
@@ -17329,8 +17329,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMSTRTPT": null,
-                        "CMSTTPT": "SCREENING"
+                        "CMSTTPT": "SCREENING",
+                        "CMSTRTPT": null
                       }
                     },
                     {
@@ -17338,8 +17338,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMSTRTPT": null,
-                        "CMSTTPT": "SCREENING"
+                        "CMSTTPT": "SCREENING",
+                        "CMSTRTPT": null
                       }
                     }
                   ]
@@ -21651,8 +21651,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": "2013-08-06",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2013-08-06"
                       }
                     },
                     {
@@ -21660,8 +21660,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": "2013-08-06",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2013-08-06"
                       }
                     },
                     {
@@ -21669,8 +21669,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     },
                     {
@@ -21678,8 +21678,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     },
                     {
@@ -21687,8 +21687,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": "2014-03-08",
-                        "CMENRTPT": null
+                        "CMENRTPT": null,
+                        "CMENTPT": "2014-03-08"
                       }
                     }
                   ]
@@ -25188,7 +25188,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTDTC, RFSTDTC"
+                      "message": "RFSTDTC, AESTDTC"
                     }
                   ]
                 ]
@@ -25225,9 +25225,9 @@
                       "SEQ": 1,
                       "USUBJID": "001",
                       "value": {
-                        "AESTDTC": "2005-10",
                         "RFSTDTC": "2022-03-20",
-                        "AESTDY": 1.0
+                        "AESTDY": 1.0,
+                        "AESTDTC": "2005-10"
                       }
                     },
                     {
@@ -25235,9 +25235,9 @@
                       "SEQ": 1,
                       "USUBJID": "002",
                       "value": {
-                        "AESTDTC": "2005-10-13T13:05",
                         "RFSTDTC": "2022-03",
-                        "AESTDY": 1.0
+                        "AESTDY": 1.0,
+                        "AESTDTC": "2005-10-13T13:05"
                       }
                     }
                   ]
@@ -25288,7 +25288,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AESTDTC, RFSTDTC"
+                      "message": "RFSTDTC, AESTDTC"
                     }
                   ]
                 ]
@@ -25393,7 +25393,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXENDTC, RFSTDTC"
+                      "message": "RFSTDTC, EXENDTC"
                     }
                   ]
                 ]
@@ -25423,9 +25423,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-11-30",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 1.0
+                        "EXENDY": 1.0,
+                        "EXENDTC": "2012-11-30"
                       }
                     },
                     {
@@ -25433,9 +25433,9 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-01",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 2.0
+                        "EXENDY": 2.0,
+                        "EXENDTC": "2012-12-01"
                       }
                     },
                     {
@@ -25443,9 +25443,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-02",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 3.0
+                        "EXENDY": 3.0,
+                        "EXENDTC": "2012-12-02"
                       }
                     },
                     {
@@ -25453,9 +25453,9 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-03",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 4.0
+                        "EXENDY": 4.0,
+                        "EXENDTC": "2012-12-03"
                       }
                     },
                     {
@@ -25463,9 +25463,9 @@
                       "SEQ": 5,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-04",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 5.0
+                        "EXENDY": 5.0,
+                        "EXENDTC": "2012-12-04"
                       }
                     },
                     {
@@ -25473,9 +25473,9 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-05",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 6.0
+                        "EXENDY": 6.0,
+                        "EXENDTC": "2012-12-05"
                       }
                     },
                     {
@@ -25483,9 +25483,9 @@
                       "SEQ": 7,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-06",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 7.0
+                        "EXENDY": 7.0,
+                        "EXENDTC": "2012-12-06"
                       }
                     },
                     {
@@ -25493,9 +25493,9 @@
                       "SEQ": 8,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-07",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 8.0
+                        "EXENDY": 8.0,
+                        "EXENDTC": "2012-12-07"
                       }
                     },
                     {
@@ -25503,9 +25503,9 @@
                       "SEQ": 9,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "EXENDTC": "2012-12-08",
                         "RFSTDTC": "2012-11",
-                        "EXENDY": 9.0
+                        "EXENDY": 9.0,
+                        "EXENDTC": "2012-12-08"
                       }
                     }
                   ]
@@ -25574,9 +25574,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMENDY": 151.0,
                         "RFSTDTC": "2012-11-30",
-                        "CMENDTC": "2013-04"
+                        "CMENDTC": "2013-04",
+                        "CMENDY": 151.0
                       }
                     },
                     {
@@ -25584,9 +25584,9 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMENDY": 166.0,
                         "RFSTDTC": "2012-11-30",
-                        "CMENDTC": "2013----14"
+                        "CMENDTC": "2013----14",
+                        "CMENDY": 166.0
                       }
                     }
                   ]
@@ -25644,7 +25644,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "EXENDTC, RFSTDTC"
+                      "message": "RFSTDTC, EXENDTC"
                     }
                   ]
                 ]
@@ -26303,8 +26303,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "10MIN POSTDOSE",
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": "10MIN POSTDOSE"
                       }
                     },
                     {
@@ -26312,8 +26312,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": null,
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": null
                       }
                     },
                     {
@@ -26321,8 +26321,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "PREDOSE",
-                        "VSTPTNUM": null
+                        "VSTPTNUM": null,
+                        "VSTPT": "PREDOSE"
                       }
                     },
                     {
@@ -26330,8 +26330,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "PREDOSE",
-                        "VSTPTNUM": -1.0
+                        "VSTPTNUM": -1.0,
+                        "VSTPT": "PREDOSE"
                       }
                     },
                     {
@@ -26339,8 +26339,8 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "10MIN POSTDOSE",
-                        "VSTPTNUM": 5.0
+                        "VSTPTNUM": 5.0,
+                        "VSTPT": "10MIN POSTDOSE"
                       }
                     },
                     {
@@ -26348,8 +26348,8 @@
                       "SEQ": 7,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "VSTPT": "5MIN POSTDOSE",
-                        "VSTPTNUM": 5.0
+                        "VSTPTNUM": 5.0,
+                        "VSTPT": "5MIN POSTDOSE"
                       }
                     }
                   ]
@@ -26488,9 +26488,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "VSTPT": "4H PREDOSE",
+                        "VSTPTNUM": "14",
                         "VSELTM": "-PT4H",
-                        "VSTPTNUM": "14"
+                        "VSTPT": "4H PREDOSE"
                       }
                     }
                   ]
@@ -26545,8 +26545,8 @@
                       "USUBJID": null,
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTELTM": "PT30M",
-                        "FTTPTNUM": 1.0
+                        "FTTPTNUM": 1.0,
+                        "FTELTM": "PT30M"
                       }
                     }
                   ]
@@ -37820,7 +37820,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "LBSTAT, LBDRVFL"
+                      "message": "LBDRVFL, LBSTAT"
                     }
                   ]
                 ]
@@ -37863,7 +37863,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "LBSTAT, LBDRVFL"
+                      "message": "LBDRVFL, LBSTAT"
                     }
                   ]
                 ]
@@ -37906,7 +37906,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "LBSTAT, LBDRVFL"
+                      "message": "LBDRVFL, LBSTAT"
                     }
                   ]
                 ]
@@ -38605,155 +38605,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=co",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=relrec",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=supplb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=lb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=dm",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=suppdm",
-                "number_errors": 0,
-                "errors": []
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"idvar\" does not exist\nLINE 8:                     idvar,\n                            ^\n"
           }
         }
       },
@@ -41686,8 +41538,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CMREASND": "Subject's Decision",
-                        "CMSTAT": "Not Done"
+                        "CMSTAT": "Not Done",
+                        "CMREASND": "Subject's Decision"
                       }
                     }
                   ]
@@ -41706,8 +41558,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "MHSTAT": "Not Done",
-                        "MHREASND": "Subject's Decision"
+                        "MHREASND": "Subject's Decision",
+                        "MHSTAT": "Not Done"
                       }
                     },
                     {
@@ -41715,8 +41567,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "MHSTAT": null,
-                        "MHREASND": "Subject's Decision"
+                        "MHREASND": "Subject's Decision",
+                        "MHSTAT": null
                       }
                     }
                   ]
@@ -42595,9 +42447,9 @@
                       "SEQ": null,
                       "USUBJID": null,
                       "value": {
-                        "USUBJID": null,
+                        "RSUBJID": "CDISC-TEST-001",
                         "POOLID": null,
-                        "RSUBJID": "CDISC-TEST-001"
+                        "USUBJID": null
                       }
                     }
                   ]
@@ -42832,8 +42684,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     },
                     {
@@ -42841,8 +42693,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     },
                     {
@@ -42850,8 +42702,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBSCAT": "BIOCHEMISTRY",
-                        "LBCAT": "BIOCHEMISTRY"
+                        "LBCAT": "BIOCHEMISTRY",
+                        "LBSCAT": "BIOCHEMISTRY"
                       }
                     }
                   ]
@@ -44345,8 +44197,8 @@
                       "SEQ": 1,
                       "USUBJID": "123101",
                       "value": {
-                        "AETPTREF": null,
-                        "AERFTDTC": "2005-10-10"
+                        "AERFTDTC": "2005-10-10",
+                        "AETPTREF": null
                       }
                     }
                   ]
@@ -47529,8 +47381,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47538,8 +47390,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "AFTER"
+                        "HOSTRTPT": "AFTER",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47547,8 +47399,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC014",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47556,8 +47408,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC016",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47565,8 +47417,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47574,8 +47426,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC018",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "AFTER"
+                        "HOSTRTPT": "AFTER",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47583,8 +47435,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC019",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47592,8 +47444,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC020",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     },
                     {
@@ -47601,8 +47453,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC021",
                       "value": {
-                        "HOSTTPT": null,
-                        "HOSTRTPT": "BEFORE"
+                        "HOSTRTPT": "BEFORE",
+                        "HOSTTPT": null
                       }
                     }
                   ]
@@ -47656,8 +47508,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC009",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "AFTER"
+                        "PRSTRTPT": "AFTER",
+                        "PRSTTPT": null
                       }
                     },
                     {
@@ -47665,8 +47517,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC010",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "AFTER"
+                        "PRSTRTPT": "AFTER",
+                        "PRSTTPT": null
                       }
                     },
                     {
@@ -47674,8 +47526,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC011",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "AFTER"
+                        "PRSTRTPT": "AFTER",
+                        "PRSTTPT": null
                       }
                     },
                     {
@@ -47683,8 +47535,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "BEFORE"
+                        "PRSTRTPT": "BEFORE",
+                        "PRSTTPT": null
                       }
                     },
                     {
@@ -47692,8 +47544,8 @@
                       "SEQ": 10,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "BEFORE"
+                        "PRSTRTPT": "BEFORE",
+                        "PRSTTPT": null
                       }
                     },
                     {
@@ -47701,8 +47553,8 @@
                       "SEQ": 11,
                       "USUBJID": "CDISC014",
                       "value": {
-                        "PRSTTPT": null,
-                        "PRSTRTPT": "BEFORE"
+                        "PRSTRTPT": "BEFORE",
+                        "PRSTTPT": null
                       }
                     }
                   ]
@@ -49329,8 +49181,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49338,8 +49190,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC005",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49347,8 +49199,8 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49356,8 +49208,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49365,8 +49217,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     },
                     {
@@ -49374,8 +49226,8 @@
                       "SEQ": 4,
                       "USUBJID": "CDISC017",
                       "value": {
-                        "CMENTPT": null,
-                        "CMENRTPT": "ONGOING"
+                        "CMENRTPT": "ONGOING",
+                        "CMENTPT": null
                       }
                     }
                   ]
@@ -58956,8 +58808,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMENTPT": "2013-05-20",
                         "CMENRTPT": "AFTER",
+                        "CMENTPT": "2013-05-20",
                         "CMDTC": "2013-05-20"
                       }
                     }
@@ -58977,9 +58829,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "MHDTC": "2013-05-20",
                         "MHENTPT": "2013-05-20",
-                        "MHENRTPT": "AFTER"
+                        "MHENRTPT": "AFTER",
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -58987,9 +58839,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "MHDTC": "2013-05-03",
                         "MHENTPT": "2013-05-03",
-                        "MHENRTPT": "AFTER"
+                        "MHENRTPT": "AFTER",
+                        "MHDTC": "2013-05-03"
                       }
                     },
                     {
@@ -58997,9 +58849,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-04",
                         "MHENTPT": "2013-05-04",
-                        "MHENRTPT": null
+                        "MHENRTPT": null,
+                        "MHDTC": "2013-05-04"
                       }
                     }
                   ]
@@ -60562,9 +60414,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC001",
                       "value": {
-                        "CEDY": 174.0,
                         "RFSTDTC": "2012-11-30",
-                        "CEDTC": "2014-10"
+                        "CEDTC": "2014-10",
+                        "CEDY": 174.0
                       }
                     },
                     {
@@ -60572,9 +60424,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "CEDY": 174.0,
                         "RFSTDTC": "2012-11",
-                        "CEDTC": "2014-10-31"
+                        "CEDTC": "2014-10-31",
+                        "CEDY": 174.0
                       }
                     }
                   ]
@@ -60734,9 +60586,9 @@
                       "SEQ": 1,
                       "USUBJID": "123101",
                       "value": {
-                        "LBDTC": "2005-09",
+                        "RFSTDTC": "2005-10-13T10:15",
                         "LBDY": -15.0,
-                        "RFSTDTC": "2005-10-13T10:15"
+                        "LBDTC": "2005-09"
                       }
                     },
                     {
@@ -60744,9 +60596,9 @@
                       "SEQ": 2,
                       "USUBJID": "123101",
                       "value": {
-                        "LBDTC": null,
+                        "RFSTDTC": "2005-10-13T10:15",
                         "LBDY": 1.0,
-                        "RFSTDTC": "2005-10-13T10:15"
+                        "LBDTC": null
                       }
                     }
                   ]
@@ -63829,7 +63681,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGETXT, AGE"
+                      "message": "AGE, AGETXT"
                     }
                   ]
                 ]
@@ -63875,7 +63727,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "AGETXT, AGE"
+                      "message": "AGE, AGETXT"
                     }
                   ]
                 ]
@@ -66555,9 +66407,9 @@
                       "SEQ": null,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "DMDTC": "2012-11-29",
-                        "RFSTDTC": "2012-11-30",
                         "$val_dy": -1,
+                        "RFSTDTC": "2012-11-30",
+                        "DMDTC": "2012-11-29",
                         "DMDY": -5.0
                       }
                     }
@@ -66627,10 +66479,10 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBDTC": "2012-11-30",
                         "$val_dy": 1,
+                        "RFSTDTC": "2012-11-30",
                         "LBDY": 2.0,
-                        "RFSTDTC": "2012-11-30"
+                        "LBDTC": "2012-11-30"
                       }
                     }
                   ]
@@ -66754,9 +66606,9 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "$val_dy": 18,
+                        "RFSTDTC": "2012-11-15",
                         "FADTC": "2012-12-02",
-                        "FADY": 35.0,
-                        "RFSTDTC": "2012-11-15"
+                        "FADY": 35.0
                       }
                     },
                     {
@@ -66765,9 +66617,9 @@
                       "USUBJID": "CDISC004",
                       "value": {
                         "$val_dy": 5,
+                        "RFSTDTC": "2013-10-08",
                         "FADTC": "2013-10-12",
-                        "FADY": 3.0,
-                        "RFSTDTC": "2013-10-08"
+                        "FADY": 3.0
                       }
                     },
                     {
@@ -66776,9 +66628,9 @@
                       "USUBJID": "CDISC007",
                       "value": {
                         "$val_dy": -34,
+                        "RFSTDTC": "2013-01-05",
                         "FADTC": "2012-12-02",
-                        "FADY": -30.0,
-                        "RFSTDTC": "2013-01-05"
+                        "FADY": -30.0
                       }
                     },
                     {
@@ -66787,9 +66639,9 @@
                       "USUBJID": "CDISC008",
                       "value": {
                         "$val_dy": 206,
+                        "RFSTDTC": "2014-05-11",
                         "FADTC": "2014-12-02",
-                        "FADY": 230.0,
-                        "RFSTDTC": "2014-05-11"
+                        "FADY": 230.0
                       }
                     }
                   ]
@@ -66809,9 +66661,9 @@
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
                         "IEDTC": "2022-03-17",
-                        "RFSTDTC": "2022-03-20",
                         "$val_dy": -3,
-                        "IEDY": -4.0
+                        "IEDY": -4.0,
+                        "RFSTDTC": "2022-03-20"
                       }
                     }
                   ]
@@ -66830,10 +66682,10 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC-TEST-001",
                       "value": {
-                        "LBDTC": "2022-03-30",
                         "$val_dy": 11,
+                        "RFSTDTC": "2022-03-20",
                         "LBDY": 2.0,
-                        "RFSTDTC": "2022-03-20"
+                        "LBDTC": "2022-03-30"
                       }
                     }
                   ]
@@ -67838,7 +67690,7 @@
                       "USUBJID": null,
                       "value": {
                         "dataset_name": "mhlb",
-                        "$list_dataset_names": ["ex", "mhlb", "dm"]
+                        "$list_dataset_names": ["dm", "mhlb", "ex"]
                       }
                     }
                   ]
@@ -68007,86 +67859,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "mhLB.xpt",
-                "domain": "MH",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ex.xpt",
-                "domain": "EX",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "mhLB.xpt",
-                "domain": "MH",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "ex.xpt",
-                "domain": "EX",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
           }
         }
       },
@@ -68096,63 +67869,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "qs1.xpt",
-                "domain": "QS",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "qs1.xpt",
-                "domain": "QS",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
           }
         }
       }
@@ -68178,40 +67895,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "fa1.xpt",
-                "domain": "FA",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "fa1.xpt",
-                "domain": "FA",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
           }
         }
       },
@@ -68712,392 +68396,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "ds.xpt",
-                "domain": "DS",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ss1.xpt",
-                "domain": "SS",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lbae.xpt",
-                "domain": "LB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "ds.xpt",
-                "domain": "DS",
-                "execution_status": "success",
-                "execution_message": "DSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 2,
-                "errors": [
-                  [
-                    {
-                      "row": 5,
-                      "SEQ": 5,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "DSSEQ": 5.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 6,
-                      "SEQ": 5,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "DSSEQ": 5.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ss1.xpt, ss2.xpt",
-                "domain": "SS",
-                "execution_status": "success",
-                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 16,
-                "errors": [
-                  [
-                    {
-                      "row": 1,
-                      "SEQ": 1,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 1.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 2,
-                      "SEQ": 2,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 2.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 3,
-                      "SEQ": 3,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 3.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 4,
-                      "SEQ": 4,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 4.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 5,
-                      "SEQ": 5,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 5.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 6,
-                      "SEQ": 6,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 6.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 7,
-                      "SEQ": 7,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 7.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 1,
-                      "SEQ": 1,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 1.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 2,
-                      "SEQ": 2,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 2.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 3,
-                      "SEQ": 3,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 3.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 4,
-                      "SEQ": 4,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 4.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 5,
-                      "SEQ": 5,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 5.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 6,
-                      "SEQ": 6,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 6.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 7,
-                      "SEQ": 7,
-                      "USUBJID": "0001",
-                      "value": {
-                        "USUBJID": "0001",
-                        "SSSEQ": 7.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 13,
-                      "SEQ": 14,
-                      "USUBJID": "0002",
-                      "value": {
-                        "USUBJID": "0002",
-                        "SSSEQ": 14.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 14,
-                      "SEQ": 14,
-                      "USUBJID": "0002",
-                      "value": {
-                        "USUBJID": "0002",
-                        "SSSEQ": 14.0,
-                        "POOLID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "success",
-                "execution_message": "AESEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 7,
-                "errors": [
-                  [
-                    {
-                      "row": 8,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 9,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 10,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 11,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 12,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 13,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 14,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "AESEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lbae.xpt, lbds.xpt",
-                "domain": "LB",
-                "execution_status": "success",
-                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 2,
-                "errors": [
-                  [
-                    {
-                      "row": 8,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "LBSEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 8,
-                      "SEQ": 1,
-                      "USUBJID": null,
-                      "value": {
-                        "POOLID": "0002",
-                        "LBSEQ": 1.0,
-                        "USUBJID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false,
-              "number_of_errors_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 11: ...     WHEN EXISTS (SELECT 1 FROM public.lbae WHERE usubjid IS...\n                                                              ^\n"
           }
         }
       }
@@ -69110,302 +68409,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "ds.xpt",
-                "domain": "DS",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ss1.xpt",
-                "domain": "SS",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lbae.xpt",
-                "domain": "LB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "suppec.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "sv.xpt",
-                "domain": "SV",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "USUBJID, POOLID"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "ds.xpt",
-                "domain": "DS",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "ss1.xpt",
-                "domain": "SS",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "ae.xpt",
-                "domain": "AE",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "lbae.xpt",
-                "domain": "LB",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              },
-              {
-                "dataset": "suppec.xpt",
-                "domain": "suppec",
-                "execution_status": "success",
-                "execution_message": "SEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 4,
-                "errors": [
-                  [
-                    {
-                      "row": 1,
-                      "SEQ": null,
-                      "USUBJID": "CDISC009",
-                      "value": {
-                        "USUBJID": "CDISC009",
-                        "SEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 2,
-                      "SEQ": null,
-                      "USUBJID": "CDISC009",
-                      "value": {
-                        "USUBJID": "CDISC009",
-                        "SEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 3,
-                      "SEQ": null,
-                      "USUBJID": "CDISC009",
-                      "value": {
-                        "USUBJID": "CDISC009",
-                        "SEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 4,
-                      "SEQ": null,
-                      "USUBJID": "CDISC009",
-                      "value": {
-                        "USUBJID": "CDISC009",
-                        "SEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "sv.xpt",
-                "domain": "SV",
-                "execution_status": "success",
-                "execution_message": "SVSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                "number_errors": 10,
-                "errors": [
-                  [
-                    {
-                      "row": 1,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 2,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 3,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 4,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 5,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 6,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 7,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 8,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 9,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    },
-                    {
-                      "row": 10,
-                      "SEQ": null,
-                      "USUBJID": "CDISC001",
-                      "value": {
-                        "USUBJID": "CDISC001",
-                        "SVSEQ": "Not in dataset",
-                        "POOLID": "Not in dataset"
-                      }
-                    }
-                  ]
-                ]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false,
-              "number_of_errors_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 29: ...     WHEN EXISTS (SELECT 1 FROM public.lbae WHERE usubjid IS...\n                                                              ^\nDETAIL:  There is a column named \"usubjid\" in table \"*SELECT* 1\", but it cannot be referenced from this part of the query.\n"
           }
         }
       }
@@ -69700,10 +68704,10 @@
                       "SEQ": 5,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "CMSTDTC": "2013-02-18",
-                        "RFSTDTC": "2013-01-05",
                         "$val_stdy": 45,
-                        "CMSTDY": null
+                        "CMSTDY": null,
+                        "CMSTDTC": "2013-02-18",
+                        "RFSTDTC": "2013-01-05"
                       }
                     },
                     {
@@ -69711,10 +68715,10 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "CMSTDTC": "2013-02-18",
-                        "RFSTDTC": "2014-05-11",
                         "$val_stdy": -447,
-                        "CMSTDY": 45.0
+                        "CMSTDY": 45.0,
+                        "CMSTDTC": "2013-02-18",
+                        "RFSTDTC": "2014-05-11"
                       }
                     },
                     {
@@ -69722,10 +68726,10 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC010",
                       "value": {
-                        "CMSTDTC": "2011-07-15",
-                        "RFSTDTC": "2013-09-21",
                         "$val_stdy": -799,
-                        "CMSTDY": -511.0
+                        "CMSTDY": -511.0,
+                        "CMSTDTC": "2011-07-15",
+                        "RFSTDTC": "2013-09-21"
                       }
                     }
                   ]
@@ -69894,10 +68898,10 @@
                       "SEQ": 2,
                       "USUBJID": "001",
                       "value": {
-                        "AEENDTC": "2022-03-19",
+                        "$val_endy": -1,
                         "AEENDY": -2.0,
                         "RFSTDTC": "2022-03-20",
-                        "$val_endy": -1
+                        "AEENDTC": "2022-03-19"
                       }
                     },
                     {
@@ -69905,10 +68909,10 @@
                       "SEQ": 1,
                       "USUBJID": "001",
                       "value": {
-                        "AEENDTC": "2022-03-20",
+                        "$val_endy": 1,
                         "AEENDY": 0.0,
                         "RFSTDTC": "2022-03-20",
-                        "$val_endy": 1
+                        "AEENDTC": "2022-03-20"
                       }
                     }
                   ]
@@ -69927,10 +68931,10 @@
                       "SEQ": 5,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "CMENDY": null,
-                        "RFSTDTC": "2013-01-05",
                         "$val_endy": 126,
-                        "CMENDTC": "2013-05-10"
+                        "CMENDTC": "2013-05-10",
+                        "RFSTDTC": "2013-01-05",
+                        "CMENDY": null
                       }
                     },
                     {
@@ -69938,10 +68942,10 @@
                       "SEQ": 6,
                       "USUBJID": "CDISC008",
                       "value": {
-                        "CMENDY": 11.0,
-                        "RFSTDTC": "2014-05-11",
                         "$val_endy": 10,
-                        "CMENDTC": "2014-05-20"
+                        "CMENDTC": "2014-05-20",
+                        "RFSTDTC": "2014-05-11",
+                        "CMENDY": 11.0
                       }
                     },
                     {
@@ -69949,10 +68953,10 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC010",
                       "value": {
-                        "CMENDY": -107.0,
-                        "RFSTDTC": "2013-09-21",
                         "$val_endy": -108,
-                        "CMENDTC": "2013-06-05"
+                        "CMENDTC": "2013-06-05",
+                        "RFSTDTC": "2013-09-21",
+                        "CMENDY": -107.0
                       }
                     }
                   ]
@@ -70943,8 +69947,8 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMENTPT": "2013-05-20",
                         "CMENRTPT": "WRONG",
+                        "CMENTPT": "2013-05-20",
                         "CMDTC": "2013-05-21"
                       }
                     },
@@ -70953,8 +69957,8 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMENTPT": "2013-05-20T10:30",
                         "CMENRTPT": "WRONG",
+                        "CMENTPT": "2013-05-20T10:30",
                         "CMDTC": "2013-05-20T10:31"
                       }
                     }
@@ -70974,9 +69978,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
-                        "MHDTC": "2013-05-20",
                         "MHENTPT": "2013-05-19",
-                        "MHENRTPT": "WRONG"
+                        "MHENRTPT": "WRONG",
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -70984,9 +69988,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-03",
                         "MHENTPT": "2013-05-02",
-                        "MHENRTPT": null
+                        "MHENRTPT": null,
+                        "MHDTC": "2013-05-03"
                       }
                     }
                   ]
@@ -72859,7 +71863,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                      "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                     }
                   ]
                 ]
@@ -72882,8 +71886,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72892,8 +71896,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72902,8 +71906,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72912,8 +71916,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72922,8 +71926,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72932,8 +71936,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72942,8 +71946,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST5",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72952,8 +71956,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -72962,8 +71966,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "35 MIN POST4",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72972,8 +71976,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72982,8 +71986,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -72992,8 +71996,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 2.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -73002,8 +72006,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73012,8 +72016,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73022,8 +72026,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 2.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -73032,8 +72036,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 2.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -73042,8 +72046,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73052,8 +72056,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 3.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 3.0
                       }
                     },
                     {
@@ -73062,8 +72066,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73072,8 +72076,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73082,8 +72086,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73092,8 +72096,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73102,8 +72106,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 3.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 3.0
                       }
                     },
                     {
@@ -73112,8 +72116,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73122,8 +72126,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73132,8 +72136,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73142,8 +72146,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST5",
-                        "FTTPTNUM": 2.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 2.0
                       }
                     },
                     {
@@ -73152,8 +72156,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "31 MIN POST5",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73162,8 +72166,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "32 MIN POST5",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73172,8 +72176,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "33 MIN POST5",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 1.0
                       }
                     }
                   ]
@@ -73205,7 +72209,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                      "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                     }
                   ]
                 ]
@@ -73228,8 +72232,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73238,8 +72242,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73248,8 +72252,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73258,8 +72262,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73268,8 +72272,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73278,8 +72282,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73288,8 +72292,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73298,8 +72302,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73308,8 +72312,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73318,8 +72322,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73328,8 +72332,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73338,8 +72342,8 @@
                       "USUBJID": "CDISC001",
                       "value": {
                         "FTTPT": "30 MIN POST4",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73348,8 +72352,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73358,8 +72362,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73368,8 +72372,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73378,8 +72382,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73388,8 +72392,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73398,8 +72402,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73408,8 +72412,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73418,8 +72422,8 @@
                       "USUBJID": "CDISC002",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73428,8 +72432,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73438,8 +72442,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST1",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73448,8 +72452,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73458,8 +72462,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST",
-                        "FTTPTNUM": 1.0,
-                        "VISITNUM": 2.0
+                        "VISITNUM": 2.0,
+                        "FTTPTNUM": 1.0
                       }
                     },
                     {
@@ -73468,8 +72472,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73478,8 +72482,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST2",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73488,8 +72492,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73498,8 +72502,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST3",
-                        "FTTPTNUM": 4.0,
-                        "VISITNUM": 8.0
+                        "VISITNUM": 8.0,
+                        "FTTPTNUM": 4.0
                       }
                     },
                     {
@@ -73508,8 +72512,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "30 MIN POST5",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73518,8 +72522,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "31 MIN POST5",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73528,8 +72532,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "32 MIN POST5",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     },
                     {
@@ -73538,8 +72542,8 @@
                       "USUBJID": "CDISC003",
                       "value": {
                         "FTTPT": "33 MIN POST5",
-                        "FTTPTNUM": 10.0,
-                        "VISITNUM": 201.0
+                        "VISITNUM": 201.0,
+                        "FTTPTNUM": 10.0
                       }
                     }
                   ]
@@ -73574,7 +72578,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                      "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                     }
                   ]
                 ]
@@ -73617,7 +72621,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                      "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                     }
                   ]
                 ]
@@ -75090,9 +74094,9 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": null,
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-19",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": null
                       }
                     },
                     {
@@ -75100,9 +74104,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": "ONGOING",
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-10",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": "ONGOING"
                       }
                     },
                     {
@@ -75110,9 +74114,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": "ONGOING",
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-10",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": "ONGOING"
                       }
                     },
                     {
@@ -75120,9 +74124,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": "POST",
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-10",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": "POST"
                       }
                     },
                     {
@@ -75130,9 +74134,9 @@
                       "SEQ": 3,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": "UNK",
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-10",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": "UNK"
                       }
                     }
                   ]
@@ -75151,9 +74155,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2013-02-18",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -75161,9 +74165,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2007-04-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -75171,9 +74175,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2012-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -75181,9 +74185,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "MHDTC": "2013-05-03",
+                        "MHSTRTPT": null,
                         "MHSTTPT": "2013-05-02",
-                        "MHSTRTPT": null
+                        "MHDTC": "2013-05-03"
                       }
                     },
                     {
@@ -75191,9 +74195,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-04",
+                        "MHSTRTPT": null,
                         "MHSTTPT": "2013-04-04",
-                        "MHSTRTPT": null
+                        "MHDTC": "2013-05-04"
                       }
                     }
                   ]
@@ -75517,155 +74521,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=co",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=relrec",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=dm",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
-                "number_errors": 0,
-                "errors": []
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"rdomain\" does not exist\nLINE 7:                     rdomain as rdomain,\n                            ^\nHINT:  Perhaps you meant to reference the column \"co.domain\".\n"
           }
         }
       },
@@ -75675,155 +74531,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "IDVAR"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "co.xpt",
-                "domain": "CO",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=co",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "relrec.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=relrec",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "supplb.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "lb.xpt",
-                "domain": "LB",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "dm.xpt",
-                "domain": "DM",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=dm",
-                "number_errors": 0,
-                "errors": []
-              },
-              {
-                "dataset": "suppdm.xpt",
-                "domain": "",
-                "execution_status": "skipped",
-                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
-                "number_errors": 0,
-                "errors": []
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"idvar\" does not exist\nLINE 8:                     idvar,\n                            ^\n"
           }
         }
       },
@@ -78840,7 +77548,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
+                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
                     }
                   ]
                 ]
@@ -78883,7 +77591,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
+                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
                     }
                   ]
                 ]
@@ -78926,7 +77634,7 @@
                   [
                     {
                       "error": "Column not found in data",
-                      "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
+                      "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
                     }
                   ]
                 ]
@@ -79913,9 +78621,9 @@
                       "SEQ": 2,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "CMSTRTPT": null,
+                        "CMDTC": "2013-05-20",
                         "CMSTTPT": "2013-05-20",
-                        "CMDTC": "2013-05-20"
+                        "CMSTRTPT": null
                       }
                     }
                   ]
@@ -79934,9 +78642,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC002",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -79944,9 +78652,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC003",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "AFTER",
                         "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "AFTER"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -79954,9 +78662,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC006",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -79964,9 +78672,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC007",
                       "value": {
-                        "MHDTC": "2013-05-20",
+                        "MHSTRTPT": "ONGOING",
                         "MHSTTPT": "2013-05-20",
-                        "MHSTRTPT": "ONGOING"
+                        "MHDTC": "2013-05-20"
                       }
                     },
                     {
@@ -79974,9 +78682,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC012",
                       "value": {
-                        "MHDTC": "2013-05-03",
+                        "MHSTRTPT": "AFTER",
                         "MHSTTPT": "2013-05-03",
-                        "MHSTRTPT": "AFTER"
+                        "MHDTC": "2013-05-03"
                       }
                     },
                     {
@@ -79984,9 +78692,9 @@
                       "SEQ": 1,
                       "USUBJID": "CDISC013",
                       "value": {
-                        "MHDTC": "2013-05-04",
+                        "MHSTRTPT": null,
                         "MHSTTPT": "2013-05-04",
-                        "MHSTRTPT": null
+                        "MHDTC": "2013-05-04"
                       }
                     }
                   ]
@@ -84191,40 +82899,7 @@
           "engine_regression": {
             "define_xml_present": false,
             "datasets_conversion": "SUCCESS",
-            "datasets_import_sql": "SUCCESS",
-            "results_present_sql": true,
-            "results_sql": [
-              {
-                "dataset": "aplbe.xpt",
-                "domain": "APLB",
-                "execution_status": "execution_error",
-                "execution_message": "rule execution error",
-                "number_errors": 1,
-                "errors": [
-                  [
-                    {
-                      "error": "Column not found in data",
-                      "message": "dataset_name"
-                    }
-                  ]
-                ]
-              }
-            ],
-            "dataset_import_old": "SUCCESS",
-            "results_present_old": true,
-            "results_old": [
-              {
-                "dataset": "aplbe.xpt",
-                "domain": "APLB",
-                "execution_status": "success",
-                "execution_message": null,
-                "number_errors": 0,
-                "errors": [[]]
-              }
-            ],
-            "old_vs_sql": {
-              "execution_status_match": false
-            }
+            "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 11: ...    WHEN EXISTS (SELECT 1 FROM public.aplbe WHERE usubjid IS...\n                                                              ^\nHINT:  Perhaps you meant to reference the column \"aplbe.rsubjid\" or the column \"aplbe.rsubjid\".\n"
           }
         }
       }

@@ -4,6 +4,7 @@ import json
 from typing import Tuple
 import pandas as pd
 from unittest.mock import patch
+from psycopg2 import errors
 
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
@@ -224,6 +225,13 @@ def process_test_case_dataset(
     except ValueError as e:
         if str(e) == "Data list cannot be empty":
             regression_errors["datasets_import_sql"] = f"datasets_dataset_errors: {str(e)}"
+        # if "column" in str(e) and "does not exist" in str(e):
+        #     regression_errors["datasets_import_sql"] = f"pre_processor_error: {str(e)}"
+        else:
+            raise
+    except errors.UndefinedColumn as e:
+        if "column" in str(e) and "does not exist" in str(e):
+            regression_errors["datasets_import_sql"] = f"pre_processor_error: {str(e)}"
         else:
             raise
 

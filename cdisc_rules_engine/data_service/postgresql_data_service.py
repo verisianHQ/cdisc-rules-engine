@@ -99,8 +99,7 @@ class PostgresQLDataService(SQLDataService):
             row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
 
             # collect col types from variables
-            col_type_dict = {col["name"]: col["type"] for col in test_dataset["variables"]}
-            pgi.create_table_from_data_metadata(table_name=table_name, column_type_dict=col_type_dict)
+            pgi.create_table_from_metadata(table_name=table_name, metadata=test_dataset)
             pgi.insert_data(table_name=table_name, data=row_dicts)
 
             ddf = pd.DataFrame.from_records(row_dicts)
