@@ -205,7 +205,7 @@ def process_test_case_dataset(
         regression_errors["datasets_import_sql"] = "SUCCESS"
         sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule)
         regression_errors["results_present_sql"] = True
-        sql_regression = extract_sql_results_regression(sql_results)
+        sql_regression = extract_results_regression(sql_results)
         regression_errors["results_sql"] = sql_regression
 
         # Execute in old engine
@@ -218,7 +218,7 @@ def process_test_case_dataset(
         )
         regression_errors["dataset_import_old"] = "SUCCESS"
         regression_errors["results_present_old"] = True
-        old_regression = extract_sql_results_regression(old_results)
+        old_regression = extract_results_regression(old_results)
         regression_errors["results_old"] = old_regression
 
         regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
@@ -274,7 +274,7 @@ def compare_error_lists(old_errors, sql_errors):
     return [json.loads(item) for item in diff_serialized]
 
 
-def extract_sql_results_regression(results):
+def extract_results_regression(results):
     res_regression = []
     for _, res in results.items():
         domain_res_regression = {
@@ -286,22 +286,23 @@ def extract_sql_results_regression(results):
         }
         if res[0].get("executionStatus", "") == "execution_error":
             domain_res_regression["errors"] = (
-                [{"error": error.get("error"), "message": error.get("message")} for error in res[0].get("errors")],
+                [
+                    {"error": error.get("error"), "message": error.get("message")}
+                    for error in sorted(res[0].get("errors"))
+                ],
             )
         elif res[0].get("executionStatus", "") == "skipped":
             domain_res_regression["errors"] = []
         elif res[0].get("executionStatus", "") == "success":
-            domain_res_regression["errors"] = (
-                [
-                    {
-                        "row": error.get("row"),
-                        "SEQ": error.get("SEQ"),
-                        "USUBJID": error.get("USUBJID"),
-                        "value": error.get("value"),
-                    }
-                    for error in res[0].get("errors")
-                ],
-            )
+            domain_res_regression["errors"] = [
+                {
+                    "row": error.get("row"),
+                    "SEQ": error.get("SEQ"),
+                    "USUBJID": error.get("USUBJID"),
+                    "value": error.get("value"),
+                }
+                for error in sorted(res[0].get("errors"), key=lambda x: x.get("row"))
+            ]
         else:
             domain_res_regression["errors"] = [{"error": "unknown execution status"}]
         res_regression.append(domain_res_regression)

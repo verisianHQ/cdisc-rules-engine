@@ -4171,7 +4171,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CMOCCUR, CMSTAT"
+                                            "message": "CMSTAT, CMOCCUR"
                                         }
                                     ]
                                 ]
@@ -4186,7 +4186,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "ECSTAT, ECOCCUR"
+                                            "message": "ECOCCUR, ECSTAT"
                                         }
                                     ]
                                 ]
@@ -4231,7 +4231,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "PROCCUR, PRSTAT"
+                                            "message": "PRSTAT, PROCCUR"
                                         }
                                     ]
                                 ]
@@ -4261,7 +4261,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESTAT, AEOCCUR"
+                                            "message": "AEOCCUR, AESTAT"
                                         }
                                     ]
                                 ]
@@ -4276,7 +4276,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "BEOCCUR, BESTAT"
+                                            "message": "BESTAT, BEOCCUR"
                                         }
                                     ]
                                 ]
@@ -4291,7 +4291,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CESTAT, CEOCCUR"
+                                            "message": "CEOCCUR, CESTAT"
                                         }
                                     ]
                                 ]
@@ -4306,7 +4306,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DSSTAT, DSOCCUR"
+                                            "message": "DSOCCUR, DSSTAT"
                                         }
                                     ]
                                 ]
@@ -4321,7 +4321,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DVOCCUR, DVSTAT"
+                                            "message": "DVSTAT, DVOCCUR"
                                         }
                                     ]
                                 ]
@@ -4336,7 +4336,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "HOSTAT, HOOCCUR"
+                                            "message": "HOOCCUR, HOSTAT"
                                         }
                                     ]
                                 ]
@@ -4513,7 +4513,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CMOCCUR, CMSTAT"
+                                            "message": "CMSTAT, CMOCCUR"
                                         }
                                     ]
                                 ]
@@ -4528,7 +4528,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "ECSTAT, ECOCCUR"
+                                            "message": "ECOCCUR, ECSTAT"
                                         }
                                     ]
                                 ]
@@ -4573,7 +4573,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "PROCCUR, PRSTAT"
+                                            "message": "PRSTAT, PROCCUR"
                                         }
                                     ]
                                 ]
@@ -4603,7 +4603,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESTAT, AEOCCUR"
+                                            "message": "AEOCCUR, AESTAT"
                                         }
                                     ]
                                 ]
@@ -4618,7 +4618,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "BEOCCUR, BESTAT"
+                                            "message": "BESTAT, BEOCCUR"
                                         }
                                     ]
                                 ]
@@ -4633,7 +4633,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CESTAT, CEOCCUR"
+                                            "message": "CEOCCUR, CESTAT"
                                         }
                                     ]
                                 ]
@@ -4648,7 +4648,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DSSTAT, DSOCCUR"
+                                            "message": "DSOCCUR, DSSTAT"
                                         }
                                     ]
                                 ]
@@ -4663,7 +4663,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DVOCCUR, DVSTAT"
+                                            "message": "DVSTAT, DVOCCUR"
                                         }
                                     ]
                                 ]
@@ -4678,7 +4678,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "HOSTAT, HOOCCUR"
+                                            "message": "HOOCCUR, HOSTAT"
                                         }
                                     ]
                                 ]
@@ -4858,7 +4858,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CMOCCUR, CMSTAT"
+                                            "message": "CMSTAT, CMOCCUR"
                                         }
                                     ]
                                 ]
@@ -4873,7 +4873,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "ECSTAT, ECOCCUR"
+                                            "message": "ECOCCUR, ECSTAT"
                                         }
                                     ]
                                 ]
@@ -4918,7 +4918,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "PROCCUR, PRSTAT"
+                                            "message": "PRSTAT, PROCCUR"
                                         }
                                     ]
                                 ]
@@ -4948,7 +4948,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESTAT, AEOCCUR"
+                                            "message": "AEOCCUR, AESTAT"
                                         }
                                     ]
                                 ]
@@ -4963,7 +4963,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "BEOCCUR, BESTAT"
+                                            "message": "BESTAT, BEOCCUR"
                                         }
                                     ]
                                 ]
@@ -4978,7 +4978,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CESTAT, CEOCCUR"
+                                            "message": "CEOCCUR, CESTAT"
                                         }
                                     ]
                                 ]
@@ -4993,7 +4993,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DSSTAT, DSOCCUR"
+                                            "message": "DSOCCUR, DSSTAT"
                                         }
                                     ]
                                 ]
@@ -5008,7 +5008,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DVOCCUR, DVSTAT"
+                                            "message": "DVSTAT, DVOCCUR"
                                         }
                                     ]
                                 ]
@@ -5023,7 +5023,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "HOSTAT, HOOCCUR"
+                                            "message": "HOOCCUR, HOSTAT"
                                         }
                                     ]
                                 ]
@@ -5200,7 +5200,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CMOCCUR, CMSTAT"
+                                            "message": "CMSTAT, CMOCCUR"
                                         }
                                     ]
                                 ]
@@ -5215,7 +5215,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "ECSTAT, ECOCCUR"
+                                            "message": "ECOCCUR, ECSTAT"
                                         }
                                     ]
                                 ]
@@ -5260,7 +5260,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "PROCCUR, PRSTAT"
+                                            "message": "PRSTAT, PROCCUR"
                                         }
                                     ]
                                 ]
@@ -5290,7 +5290,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESTAT, AEOCCUR"
+                                            "message": "AEOCCUR, AESTAT"
                                         }
                                     ]
                                 ]
@@ -5305,7 +5305,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "BEOCCUR, BESTAT"
+                                            "message": "BESTAT, BEOCCUR"
                                         }
                                     ]
                                 ]
@@ -5320,7 +5320,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "CESTAT, CEOCCUR"
+                                            "message": "CEOCCUR, CESTAT"
                                         }
                                     ]
                                 ]
@@ -5335,7 +5335,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DSSTAT, DSOCCUR"
+                                            "message": "DSOCCUR, DSSTAT"
                                         }
                                     ]
                                 ]
@@ -5350,7 +5350,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DVOCCUR, DVSTAT"
+                                            "message": "DVSTAT, DVOCCUR"
                                         }
                                     ]
                                 ]
@@ -5365,7 +5365,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "HOSTAT, HOOCCUR"
+                                            "message": "HOOCCUR, HOSTAT"
                                         }
                                     ]
                                 ]
@@ -9868,7 +9868,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "IEORRES, IEDRVFL"
+                                            "message": "IEDRVFL, IEORRES"
                                         }
                                     ]
                                 ]
@@ -9883,7 +9883,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "LBDRVFL, LBORRES"
+                                            "message": "LBORRES, LBDRVFL"
                                         }
                                     ]
                                 ]
@@ -9960,7 +9960,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "LBDRVFL, LBORRES"
+                                            "message": "LBORRES, LBDRVFL"
                                         }
                                     ]
                                 ]
@@ -10042,7 +10042,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESHOSP, AESMIE, AESCAN, AESDTH, AESOD, AESLIFE, AESDISAB, AESCONG"
+                                            "message": "AESHOSP, AESCONG, AESMIE, AESDTH, AESDISAB, AESLIFE, AESOD, AESCAN"
                                         }
                                     ]
                                 ]
@@ -10088,7 +10088,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AESHOSP, AESMIE, AESCAN, AESDTH, AESOD, AESLIFE, AESDISAB, AESCONG"
+                                            "message": "AESHOSP, AESCONG, AESMIE, AESDTH, AESDISAB, AESLIFE, AESOD, AESCAN"
                                         }
                                     ]
                                 ]
@@ -10589,8 +10589,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": null,
                                                 "etcd": "SCREEN",
+                                                "teenrl": null,
                                                 "tedur": null
                                             }
                                         },
@@ -10599,8 +10599,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": "26 weeks after the start of the Element",
                                                 "etcd": "PLACEBO",
+                                                "teenrl": "26 weeks after the start of the Element",
                                                 "tedur": "26"
                                             }
                                         }
@@ -10652,8 +10652,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": null,
                                                 "etcd": "E000",
+                                                "teenrl": null,
                                                 "tedur": "P2W"
                                             }
                                         },
@@ -10662,8 +10662,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": "XXXX",
                                                 "etcd": "E001",
+                                                "teenrl": "XXXX",
                                                 "tedur": "P26W"
                                             }
                                         },
@@ -10672,8 +10672,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": "FIRST DOSE OF METFORMIN",
                                                 "etcd": "E002",
+                                                "teenrl": "FIRST DOSE OF METFORMIN",
                                                 "tedur": null
                                             }
                                         },
@@ -10682,8 +10682,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE",
                                                 "etcd": "E003",
+                                                "teenrl": "ATTEND FOLLOW-UP VISIT 0 TO 30 DAYS AFTER LAST DOSE",
                                                 "tedur": "P4W"
                                             }
                                         }
@@ -10918,8 +10918,8 @@
                                             "SEQ": 3,
                                             "USUBJID": "123101",
                                             "value": {
-                                                "PCELTM": "PT2H",
-                                                "PCTPTREF": null
+                                                "PCTPTREF": null,
+                                                "PCELTM": "PT2H"
                                             }
                                         },
                                         {
@@ -10927,8 +10927,8 @@
                                             "SEQ": 4,
                                             "USUBJID": "123101",
                                             "value": {
-                                                "PCELTM": "PT24H",
-                                                "PCTPTREF": null
+                                                "PCTPTREF": null,
+                                                "PCELTM": "PT24H"
                                             }
                                         },
                                         {
@@ -10936,8 +10936,8 @@
                                             "SEQ": 5,
                                             "USUBJID": "123101",
                                             "value": {
-                                                "PCELTM": "PT48H",
-                                                "PCTPTREF": null
+                                                "PCTPTREF": null,
+                                                "PCELTM": "PT48H"
                                             }
                                         }
                                     ]
@@ -16899,9 +16899,9 @@
                                             "USUBJID": null,
                                             "value": {
                                                 "ECTPTREF": "1",
-                                                "ECELTM": "Not in dataset",
+                                                "ECTPTNUM": "Not in dataset",
                                                 "ECTPT": "Not in dataset",
-                                                "ECTPTNUM": "Not in dataset"
+                                                "ECELTM": "Not in dataset"
                                             }
                                         }
                                     ]
@@ -22081,8 +22081,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC005",
                                             "value": {
-                                                "CMENTPT": "2013-08-06",
-                                                "CMENRTPT": null
+                                                "CMENRTPT": null,
+                                                "CMENTPT": "2013-08-06"
                                             }
                                         },
                                         {
@@ -22090,8 +22090,8 @@
                                             "SEQ": 4,
                                             "USUBJID": "CDISC005",
                                             "value": {
-                                                "CMENTPT": "2013-08-06",
-                                                "CMENRTPT": null
+                                                "CMENRTPT": null,
+                                                "CMENTPT": "2013-08-06"
                                             }
                                         },
                                         {
@@ -22099,8 +22099,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": "2014-03-08",
-                                                "CMENRTPT": null
+                                                "CMENRTPT": null,
+                                                "CMENTPT": "2014-03-08"
                                             }
                                         },
                                         {
@@ -22108,8 +22108,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": "2014-03-08",
-                                                "CMENRTPT": null
+                                                "CMENRTPT": null,
+                                                "CMENTPT": "2014-03-08"
                                             }
                                         },
                                         {
@@ -22117,8 +22117,8 @@
                                             "SEQ": 3,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": "2014-03-08",
-                                                "CMENRTPT": null
+                                                "CMENRTPT": null,
+                                                "CMENTPT": "2014-03-08"
                                             }
                                         }
                                     ]
@@ -25646,7 +25646,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "RFSTDTC, AESTDTC"
+                                            "message": "AESTDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -25683,8 +25683,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "001",
                                             "value": {
-                                                "AESTDY": 1.0,
                                                 "AESTDTC": "2005-10",
+                                                "AESTDY": 1.0,
                                                 "RFSTDTC": "2022-03-20"
                                             }
                                         },
@@ -25693,8 +25693,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "002",
                                             "value": {
-                                                "AESTDY": 1.0,
                                                 "AESTDTC": "2005-10-13T13:05",
+                                                "AESTDY": 1.0,
                                                 "RFSTDTC": "2022-03"
                                             }
                                         }
@@ -25711,7 +25711,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DMSTDY, DMSTDTC"
+                                            "message": "DMSTDTC, DMSTDY"
                                         }
                                     ]
                                 ]
@@ -25746,7 +25746,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "RFSTDTC, AESTDTC"
+                                            "message": "AESTDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -25790,7 +25790,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "DMSTDY, DMSTDTC"
+                                            "message": "DMSTDTC, DMSTDY"
                                         }
                                     ]
                                 ]
@@ -25853,7 +25853,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "EXENDTC, RFSTDTC"
+                                            "message": "RFSTDTC, EXENDTC"
                                         }
                                     ]
                                 ]
@@ -25883,9 +25883,9 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-11-30",
+                                                "EXENDY": 1.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 1.0
+                                                "EXENDTC": "2012-11-30"
                                             }
                                         },
                                         {
@@ -25893,9 +25893,9 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-01",
+                                                "EXENDY": 2.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 2.0
+                                                "EXENDTC": "2012-12-01"
                                             }
                                         },
                                         {
@@ -25903,9 +25903,9 @@
                                             "SEQ": 3,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-02",
+                                                "EXENDY": 3.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 3.0
+                                                "EXENDTC": "2012-12-02"
                                             }
                                         },
                                         {
@@ -25913,9 +25913,9 @@
                                             "SEQ": 4,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-03",
+                                                "EXENDY": 4.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 4.0
+                                                "EXENDTC": "2012-12-03"
                                             }
                                         },
                                         {
@@ -25923,9 +25923,9 @@
                                             "SEQ": 5,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-04",
+                                                "EXENDY": 5.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 5.0
+                                                "EXENDTC": "2012-12-04"
                                             }
                                         },
                                         {
@@ -25933,9 +25933,9 @@
                                             "SEQ": 6,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-05",
+                                                "EXENDY": 6.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 6.0
+                                                "EXENDTC": "2012-12-05"
                                             }
                                         },
                                         {
@@ -25943,9 +25943,9 @@
                                             "SEQ": 7,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-06",
+                                                "EXENDY": 7.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 7.0
+                                                "EXENDTC": "2012-12-06"
                                             }
                                         },
                                         {
@@ -25953,9 +25953,9 @@
                                             "SEQ": 8,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-07",
+                                                "EXENDY": 8.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 8.0
+                                                "EXENDTC": "2012-12-07"
                                             }
                                         },
                                         {
@@ -25963,9 +25963,9 @@
                                             "SEQ": 9,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "EXENDTC": "2012-12-08",
+                                                "EXENDY": 9.0,
                                                 "RFSTDTC": "2012-11",
-                                                "EXENDY": 9.0
+                                                "EXENDTC": "2012-12-08"
                                             }
                                         }
                                     ]
@@ -26035,8 +26035,8 @@
                                             "USUBJID": "CDISC001",
                                             "value": {
                                                 "CMENDTC": "2013-04",
-                                                "CMENDY": 151.0,
-                                                "RFSTDTC": "2012-11-30"
+                                                "RFSTDTC": "2012-11-30",
+                                                "CMENDY": 151.0
                                             }
                                         },
                                         {
@@ -26045,8 +26045,8 @@
                                             "USUBJID": "CDISC001",
                                             "value": {
                                                 "CMENDTC": "2013----14",
-                                                "CMENDY": 166.0,
-                                                "RFSTDTC": "2012-11-30"
+                                                "RFSTDTC": "2012-11-30",
+                                                "CMENDY": 166.0
                                             }
                                         }
                                     ]
@@ -26104,7 +26104,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "EXENDTC, RFSTDTC"
+                                            "message": "RFSTDTC, EXENDTC"
                                         }
                                     ]
                                 ]
@@ -26968,8 +26968,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "VSELTM": "-PT4H",
                                                 "VSTPT": "4H PREDOSE",
+                                                "VSELTM": "-PT4H",
                                                 "VSTPTNUM": "14"
                                             }
                                         }
@@ -27024,9 +27024,9 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
-                                                "FTELTM": "PT30M"
+                                                "FTELTM": "PT30M",
+                                                "FTTPTNUM": 1.0
                                             }
                                         }
                                     ]
@@ -38930,7 +38930,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "LBDRVFL, LBSTAT"
+                                            "message": "LBSTAT, LBDRVFL"
                                         }
                                     ]
                                 ]
@@ -38973,7 +38973,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "LBDRVFL, LBSTAT"
+                                            "message": "LBSTAT, LBDRVFL"
                                         }
                                     ]
                                 ]
@@ -39016,7 +39016,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "LBDRVFL, LBSTAT"
+                                            "message": "LBSTAT, LBDRVFL"
                                         }
                                     ]
                                 ]
@@ -42666,8 +42666,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "CMREASND": "Subject's Decision",
-                                                "CMSTAT": "Not Done"
+                                                "CMSTAT": "Not Done",
+                                                "CMREASND": "Subject's Decision"
                                             }
                                         }
                                     ]
@@ -43582,8 +43582,8 @@
                                             "USUBJID": null,
                                             "value": {
                                                 "USUBJID": null,
-                                                "POOLID": null,
-                                                "RSUBJID": "CDISC-TEST-001"
+                                                "RSUBJID": "CDISC-TEST-001",
+                                                "POOLID": null
                                             }
                                         }
                                     ]
@@ -43818,8 +43818,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "LBCAT": "BIOCHEMISTRY",
-                                                "LBSCAT": "BIOCHEMISTRY"
+                                                "LBSCAT": "BIOCHEMISTRY",
+                                                "LBCAT": "BIOCHEMISTRY"
                                             }
                                         },
                                         {
@@ -43827,8 +43827,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "LBCAT": "BIOCHEMISTRY",
-                                                "LBSCAT": "BIOCHEMISTRY"
+                                                "LBSCAT": "BIOCHEMISTRY",
+                                                "LBCAT": "BIOCHEMISTRY"
                                             }
                                         },
                                         {
@@ -43836,8 +43836,8 @@
                                             "SEQ": 3,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "LBCAT": "BIOCHEMISTRY",
-                                                "LBSCAT": "BIOCHEMISTRY"
+                                                "LBSCAT": "BIOCHEMISTRY",
+                                                "LBCAT": "BIOCHEMISTRY"
                                             }
                                         }
                                     ]
@@ -43891,8 +43891,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "123101",
                                             "value": {
-                                                "AESCAT": "TEST CATEGORY",
-                                                "AECAT": "TEST CATEGORY"
+                                                "AECAT": "TEST CATEGORY",
+                                                "AESCAT": "TEST CATEGORY"
                                             }
                                         }
                                     ]
@@ -45305,8 +45305,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "LBTPTREF": null,
-                                                "LBRFTDTC": "2019-03-12T10:00"
+                                                "LBRFTDTC": "2019-03-12T10:00",
+                                                "LBTPTREF": null
                                             }
                                         },
                                         {
@@ -45314,8 +45314,8 @@
                                             "SEQ": 3,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "LBTPTREF": null,
-                                                "LBRFTDTC": "2019-03-12T10:00"
+                                                "LBRFTDTC": "2019-03-12T10:00",
+                                                "LBTPTREF": null
                                             }
                                         }
                                     ]
@@ -45369,8 +45369,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "123101",
                                             "value": {
-                                                "AERFTDTC": "2005-10-10",
-                                                "AETPTREF": null
+                                                "AETPTREF": null,
+                                                "AERFTDTC": "2005-10-10"
                                             }
                                         }
                                     ]
@@ -50389,8 +50389,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         },
                                         {
@@ -50398,8 +50398,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC005",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         },
                                         {
@@ -50407,8 +50407,8 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         },
                                         {
@@ -50416,8 +50416,8 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         },
                                         {
@@ -50425,8 +50425,8 @@
                                             "SEQ": 3,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         },
                                         {
@@ -50434,8 +50434,8 @@
                                             "SEQ": 4,
                                             "USUBJID": "CDISC017",
                                             "value": {
-                                                "CMENTPT": null,
-                                                "CMENRTPT": "ONGOING"
+                                                "CMENRTPT": "ONGOING",
+                                                "CMENTPT": null
                                             }
                                         }
                                     ]
@@ -60333,8 +60333,8 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "CMDTC": "2013-05-20",
-                                                "CMENTPT": "2013-05-20",
-                                                "CMENRTPT": "AFTER"
+                                                "CMENRTPT": "AFTER",
+                                                "CMENTPT": "2013-05-20"
                                             }
                                         }
                                     ]
@@ -62118,9 +62118,9 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC001",
                                             "value": {
+                                                "CEDY": 174.0,
                                                 "CEDTC": "2014-10",
-                                                "RFSTDTC": "2012-11-30",
-                                                "CEDY": 174.0
+                                                "RFSTDTC": "2012-11-30"
                                             }
                                         },
                                         {
@@ -62128,9 +62128,9 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC008",
                                             "value": {
+                                                "CEDY": 174.0,
                                                 "CEDTC": "2014-10-31",
-                                                "RFSTDTC": "2012-11",
-                                                "CEDY": 174.0
+                                                "RFSTDTC": "2012-11"
                                             }
                                         }
                                     ]
@@ -62290,9 +62290,9 @@
                                             "SEQ": 1,
                                             "USUBJID": "123101",
                                             "value": {
+                                                "RFSTDTC": "2005-10-13T10:15",
                                                 "LBDTC": "2005-09",
-                                                "LBDY": -15.0,
-                                                "RFSTDTC": "2005-10-13T10:15"
+                                                "LBDY": -15.0
                                             }
                                         },
                                         {
@@ -62300,9 +62300,9 @@
                                             "SEQ": 2,
                                             "USUBJID": "123101",
                                             "value": {
+                                                "RFSTDTC": "2005-10-13T10:15",
                                                 "LBDTC": null,
-                                                "LBDY": 1.0,
-                                                "RFSTDTC": "2005-10-13T10:15"
+                                                "LBDY": 1.0
                                             }
                                         }
                                     ]
@@ -62893,8 +62893,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "$VARIABLE_COUNT": 1,
-                                                "FALNKGRP": "CDISC001 - 1"
+                                                "FALNKGRP": "CDISC001 - 1",
+                                                "$VARIABLE_COUNT": 1
                                             }
                                         }
                                     ]
@@ -65413,7 +65413,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AGE, AGETXT"
+                                            "message": "AGETXT, AGE"
                                         }
                                     ]
                                 ]
@@ -65459,7 +65459,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "AGE, AGETXT"
+                                            "message": "AGETXT, AGE"
                                         }
                                     ]
                                 ]
@@ -68149,10 +68149,10 @@
                                             "SEQ": null,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "DMDTC": "2012-11-29",
-                                                "DMDY": -5.0,
                                                 "RFSTDTC": "2012-11-30",
-                                                "$val_dy": -1
+                                                "$val_dy": -1,
+                                                "DMDTC": "2012-11-29",
+                                                "DMDY": -5.0
                                             }
                                         }
                                     ]
@@ -68221,10 +68221,10 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
+                                                "RFSTDTC": "2012-11-30",
                                                 "$val_dy": 1,
                                                 "LBDTC": "2012-11-30",
-                                                "LBDY": 2.0,
-                                                "RFSTDTC": "2012-11-30"
+                                                "LBDY": 2.0
                                             }
                                         }
                                     ]
@@ -68350,9 +68350,9 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "FADTC": "2012-12-02",
+                                                "RFSTDTC": "2012-11-15",
                                                 "$val_dy": 18,
-                                                "FADY": 35.0,
-                                                "RFSTDTC": "2012-11-15"
+                                                "FADY": 35.0
                                             }
                                         },
                                         {
@@ -68361,9 +68361,9 @@
                                             "USUBJID": "CDISC004",
                                             "value": {
                                                 "FADTC": "2013-10-12",
+                                                "RFSTDTC": "2013-10-08",
                                                 "$val_dy": 5,
-                                                "FADY": 3.0,
-                                                "RFSTDTC": "2013-10-08"
+                                                "FADY": 3.0
                                             }
                                         },
                                         {
@@ -68372,9 +68372,9 @@
                                             "USUBJID": "CDISC007",
                                             "value": {
                                                 "FADTC": "2012-12-02",
+                                                "RFSTDTC": "2013-01-05",
                                                 "$val_dy": -34,
-                                                "FADY": -30.0,
-                                                "RFSTDTC": "2013-01-05"
+                                                "FADY": -30.0
                                             }
                                         },
                                         {
@@ -68383,9 +68383,9 @@
                                             "USUBJID": "CDISC008",
                                             "value": {
                                                 "FADTC": "2014-12-02",
+                                                "RFSTDTC": "2014-05-11",
                                                 "$val_dy": 206,
-                                                "FADY": 230.0,
-                                                "RFSTDTC": "2014-05-11"
+                                                "FADY": 230.0
                                             }
                                         }
                                     ]
@@ -68404,10 +68404,10 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
-                                                "IEDY": -4.0,
-                                                "$val_dy": -3,
+                                                "IEDTC": "2022-03-17",
                                                 "RFSTDTC": "2022-03-20",
-                                                "IEDTC": "2022-03-17"
+                                                "$val_dy": -3,
+                                                "IEDY": -4.0
                                             }
                                         }
                                     ]
@@ -68426,10 +68426,10 @@
                                             "SEQ": 1,
                                             "USUBJID": "CDISC-TEST-001",
                                             "value": {
+                                                "RFSTDTC": "2022-03-20",
                                                 "$val_dy": 11,
                                                 "LBDTC": "2022-03-30",
-                                                "LBDY": 2.0,
-                                                "RFSTDTC": "2022-03-20"
+                                                "LBDY": 2.0
                                             }
                                         }
                                     ]
@@ -69446,9 +69446,9 @@
                                             "USUBJID": null,
                                             "value": {
                                                 "$list_dataset_names": [
+                                                    "mhlb",
                                                     "dm",
-                                                    "ex",
-                                                    "mhlb"
+                                                    "ex"
                                                 ],
                                                 "dataset_name": "mhlb"
                                             }
@@ -70492,10 +70492,10 @@
                                             "SEQ": 5,
                                             "USUBJID": "CDISC007",
                                             "value": {
-                                                "CMSTDTC": "2013-02-18",
                                                 "CMSTDY": null,
-                                                "RFSTDTC": "2013-01-05",
-                                                "$val_stdy": 45
+                                                "CMSTDTC": "2013-02-18",
+                                                "$val_stdy": 45,
+                                                "RFSTDTC": "2013-01-05"
                                             }
                                         },
                                         {
@@ -70503,10 +70503,10 @@
                                             "SEQ": 6,
                                             "USUBJID": "CDISC008",
                                             "value": {
-                                                "CMSTDTC": "2013-02-18",
                                                 "CMSTDY": 45.0,
-                                                "RFSTDTC": "2014-05-11",
-                                                "$val_stdy": -447
+                                                "CMSTDTC": "2013-02-18",
+                                                "$val_stdy": -447,
+                                                "RFSTDTC": "2014-05-11"
                                             }
                                         },
                                         {
@@ -70514,10 +70514,10 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC010",
                                             "value": {
-                                                "CMSTDTC": "2011-07-15",
                                                 "CMSTDY": -511.0,
-                                                "RFSTDTC": "2013-09-21",
-                                                "$val_stdy": -799
+                                                "CMSTDTC": "2011-07-15",
+                                                "$val_stdy": -799,
+                                                "RFSTDTC": "2013-09-21"
                                             }
                                         }
                                     ]
@@ -70689,9 +70689,9 @@
                                             "USUBJID": "001",
                                             "value": {
                                                 "RFSTDTC": "2022-03-20",
-                                                "AEENDY": -2.0,
+                                                "$val_endy": -1,
                                                 "AEENDTC": "2022-03-19",
-                                                "$val_endy": -1
+                                                "AEENDY": -2.0
                                             }
                                         },
                                         {
@@ -70700,9 +70700,9 @@
                                             "USUBJID": "001",
                                             "value": {
                                                 "RFSTDTC": "2022-03-20",
-                                                "AEENDY": 0.0,
+                                                "$val_endy": 1,
                                                 "AEENDTC": "2022-03-20",
-                                                "$val_endy": 1
+                                                "AEENDY": 0.0
                                             }
                                         }
                                     ]
@@ -70721,10 +70721,10 @@
                                             "SEQ": 5,
                                             "USUBJID": "CDISC007",
                                             "value": {
-                                                "CMENDY": null,
                                                 "CMENDTC": "2013-05-10",
-                                                "$val_endy": 126,
-                                                "RFSTDTC": "2013-01-05"
+                                                "RFSTDTC": "2013-01-05",
+                                                "CMENDY": null,
+                                                "$val_endy": 126
                                             }
                                         },
                                         {
@@ -70732,10 +70732,10 @@
                                             "SEQ": 6,
                                             "USUBJID": "CDISC008",
                                             "value": {
-                                                "CMENDY": 11.0,
                                                 "CMENDTC": "2014-05-20",
-                                                "$val_endy": 10,
-                                                "RFSTDTC": "2014-05-11"
+                                                "RFSTDTC": "2014-05-11",
+                                                "CMENDY": 11.0,
+                                                "$val_endy": 10
                                             }
                                         },
                                         {
@@ -70743,10 +70743,10 @@
                                             "SEQ": 2,
                                             "USUBJID": "CDISC010",
                                             "value": {
-                                                "CMENDY": -107.0,
                                                 "CMENDTC": "2013-06-05",
-                                                "$val_endy": -108,
-                                                "RFSTDTC": "2013-09-21"
+                                                "RFSTDTC": "2013-09-21",
+                                                "CMENDY": -107.0,
+                                                "$val_endy": -108
                                             }
                                         }
                                     ]
@@ -71398,8 +71398,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "$VARIABLE_COUNT": 1,
-                                                "FALNKID": "CDISC001 - 1"
+                                                "FALNKID": "CDISC001 - 1",
+                                                "$VARIABLE_COUNT": 1
                                             }
                                         }
                                     ]
@@ -71493,8 +71493,8 @@
                                             "SEQ": null,
                                             "USUBJID": null,
                                             "value": {
-                                                "$VARIABLE_COUNT": 1,
-                                                "FALNKID": "CDISC001 - 1"
+                                                "FALNKID": "CDISC001 - 1",
+                                                "$VARIABLE_COUNT": 1
                                             }
                                         }
                                     ]
@@ -71758,8 +71758,8 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "CMDTC": "2013-05-21",
-                                                "CMENTPT": "2013-05-20",
-                                                "CMENRTPT": "WRONG"
+                                                "CMENRTPT": "WRONG",
+                                                "CMENTPT": "2013-05-20"
                                             }
                                         },
                                         {
@@ -71768,8 +71768,8 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "CMDTC": "2013-05-20T10:31",
-                                                "CMENTPT": "2013-05-20T10:30",
-                                                "CMENRTPT": "WRONG"
+                                                "CMENRTPT": "WRONG",
+                                                "CMENTPT": "2013-05-20T10:30"
                                             }
                                         }
                                     ]
@@ -73683,7 +73683,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                                            "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                                         }
                                     ]
                                 ]
@@ -73705,8 +73705,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73715,8 +73715,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73725,8 +73725,8 @@
                                             "SEQ": 122,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73735,8 +73735,8 @@
                                             "SEQ": 123,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73745,8 +73745,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73755,8 +73755,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73765,8 +73765,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST5",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73775,8 +73775,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73785,8 +73785,8 @@
                                             "SEQ": 392,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "35 MIN POST4",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73795,8 +73795,8 @@
                                             "SEQ": 393,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73805,8 +73805,8 @@
                                             "SEQ": 394,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73815,8 +73815,8 @@
                                             "SEQ": 395,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 2.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 2.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73825,8 +73825,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73835,8 +73835,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73845,8 +73845,8 @@
                                             "SEQ": 122,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 2.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 2.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73855,8 +73855,8 @@
                                             "SEQ": 123,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 2.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 2.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73865,8 +73865,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73875,8 +73875,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 3.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 3.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73885,8 +73885,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73895,8 +73895,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73905,8 +73905,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73915,8 +73915,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -73925,8 +73925,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 3.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 3.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73935,8 +73935,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73945,8 +73945,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73955,8 +73955,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -73965,8 +73965,8 @@
                                             "SEQ": 528,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 2.0,
                                                 "FTTPT": "30 MIN POST5",
+                                                "FTTPTNUM": 2.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73975,8 +73975,8 @@
                                             "SEQ": 529,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "31 MIN POST5",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73985,8 +73985,8 @@
                                             "SEQ": 530,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "32 MIN POST5",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -73995,8 +73995,8 @@
                                             "SEQ": 531,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "33 MIN POST5",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 201.0
                                             }
                                         }
@@ -74029,7 +74029,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                                            "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                                         }
                                     ]
                                 ]
@@ -74051,8 +74051,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74061,8 +74061,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74071,8 +74071,8 @@
                                             "SEQ": 122,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74081,8 +74081,8 @@
                                             "SEQ": 123,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74091,8 +74091,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74101,8 +74101,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74111,8 +74111,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74121,8 +74121,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74131,8 +74131,8 @@
                                             "SEQ": 392,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74141,8 +74141,8 @@
                                             "SEQ": 393,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74151,8 +74151,8 @@
                                             "SEQ": 394,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74161,8 +74161,8 @@
                                             "SEQ": 395,
                                             "USUBJID": "CDISC001",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "30 MIN POST4",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74171,8 +74171,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74181,8 +74181,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74191,8 +74191,8 @@
                                             "SEQ": 122,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74201,8 +74201,8 @@
                                             "SEQ": 123,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74211,8 +74211,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74221,8 +74221,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74231,8 +74231,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74241,8 +74241,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC002",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74251,8 +74251,8 @@
                                             "SEQ": 120,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74261,8 +74261,8 @@
                                             "SEQ": 121,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST1",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74271,8 +74271,8 @@
                                             "SEQ": 122,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74281,8 +74281,8 @@
                                             "SEQ": 123,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 1.0,
                                                 "FTTPT": "30 MIN POST",
+                                                "FTTPTNUM": 1.0,
                                                 "VISITNUM": 2.0
                                             }
                                         },
@@ -74291,8 +74291,8 @@
                                             "SEQ": 256,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74301,8 +74301,8 @@
                                             "SEQ": 257,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST2",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74311,8 +74311,8 @@
                                             "SEQ": 258,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74321,8 +74321,8 @@
                                             "SEQ": 259,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 4.0,
                                                 "FTTPT": "30 MIN POST3",
+                                                "FTTPTNUM": 4.0,
                                                 "VISITNUM": 8.0
                                             }
                                         },
@@ -74331,8 +74331,8 @@
                                             "SEQ": 528,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "30 MIN POST5",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74341,8 +74341,8 @@
                                             "SEQ": 529,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "31 MIN POST5",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74351,8 +74351,8 @@
                                             "SEQ": 530,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "32 MIN POST5",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         },
@@ -74361,8 +74361,8 @@
                                             "SEQ": 531,
                                             "USUBJID": "CDISC003",
                                             "value": {
-                                                "FTTPTNUM": 10.0,
                                                 "FTTPT": "33 MIN POST5",
+                                                "FTTPTNUM": 10.0,
                                                 "VISITNUM": 201.0
                                             }
                                         }
@@ -74398,7 +74398,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                                            "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                                         }
                                     ]
                                 ]
@@ -74443,7 +74443,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "None of [Index(['FTTPT'], dtype='object')] are in the [columns], None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns]"
+                                            "message": "None of [Index(['FTTPTNUM'], dtype='object')] are in the [columns], None of [Index(['FTTPT'], dtype='object')] are in the [columns]"
                                         }
                                     ]
                                 ]
@@ -76016,8 +76016,8 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2013-02-18"
+                                                "MHSTTPT": "2013-02-18",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -76026,8 +76026,8 @@
                                             "USUBJID": "CDISC006",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2007-04-20"
+                                                "MHSTTPT": "2007-04-20",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -76036,8 +76036,8 @@
                                             "USUBJID": "CDISC007",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2012-05-20"
+                                                "MHSTTPT": "2012-05-20",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -76046,8 +76046,8 @@
                                             "USUBJID": "CDISC012",
                                             "value": {
                                                 "MHDTC": "2013-05-03",
-                                                "MHSTRTPT": null,
-                                                "MHSTTPT": "2013-05-02"
+                                                "MHSTTPT": "2013-05-02",
+                                                "MHSTRTPT": null
                                             }
                                         },
                                         {
@@ -76056,8 +76056,8 @@
                                             "USUBJID": "CDISC013",
                                             "value": {
                                                 "MHDTC": "2013-05-04",
-                                                "MHSTRTPT": null,
-                                                "MHSTTPT": "2013-04-04"
+                                                "MHSTTPT": "2013-04-04",
+                                                "MHSTRTPT": null
                                             }
                                         }
                                     ]
@@ -79414,7 +79414,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                                            "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                                         }
                                     ]
                                 ]
@@ -79457,7 +79457,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                                            "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                                         }
                                     ]
                                 ]
@@ -79500,7 +79500,7 @@
                                     [
                                         {
                                             "error": "Column not found in data",
-                                            "message": "TSPARMCD, $STYPE_INTERVENTIONAL"
+                                            "message": "$STYPE_INTERVENTIONAL, TSPARMCD"
                                         }
                                     ]
                                 ]
@@ -80509,8 +80509,8 @@
                                             "USUBJID": "CDISC002",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2013-05-20"
+                                                "MHSTTPT": "2013-05-20",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -80519,8 +80519,8 @@
                                             "USUBJID": "CDISC003",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "AFTER",
-                                                "MHSTTPT": "2013-05-20"
+                                                "MHSTTPT": "2013-05-20",
+                                                "MHSTRTPT": "AFTER"
                                             }
                                         },
                                         {
@@ -80529,8 +80529,8 @@
                                             "USUBJID": "CDISC006",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2013-05-20"
+                                                "MHSTTPT": "2013-05-20",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -80539,8 +80539,8 @@
                                             "USUBJID": "CDISC007",
                                             "value": {
                                                 "MHDTC": "2013-05-20",
-                                                "MHSTRTPT": "ONGOING",
-                                                "MHSTTPT": "2013-05-20"
+                                                "MHSTTPT": "2013-05-20",
+                                                "MHSTRTPT": "ONGOING"
                                             }
                                         },
                                         {
@@ -80549,8 +80549,8 @@
                                             "USUBJID": "CDISC012",
                                             "value": {
                                                 "MHDTC": "2013-05-03",
-                                                "MHSTRTPT": "AFTER",
-                                                "MHSTTPT": "2013-05-03"
+                                                "MHSTTPT": "2013-05-03",
+                                                "MHSTRTPT": "AFTER"
                                             }
                                         },
                                         {
@@ -80559,8 +80559,8 @@
                                             "USUBJID": "CDISC013",
                                             "value": {
                                                 "MHDTC": "2013-05-04",
-                                                "MHSTRTPT": null,
-                                                "MHSTTPT": "2013-05-04"
+                                                "MHSTTPT": "2013-05-04",
+                                                "MHSTRTPT": null
                                             }
                                         }
                                     ]
