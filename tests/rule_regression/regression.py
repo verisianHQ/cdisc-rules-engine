@@ -466,3 +466,27 @@ def find_define_xml_file_path(path: str) -> str:
     except FileNotFoundError:
         return ""
     return ""
+
+
+def output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, engine: str):
+    rule_id = os.getenv("CURRENT_RULE_DEV", "")
+    assert rule_id
+    regression_df = get_core_rules_df()
+    rule_reg = run_single_rule_regression(regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule)
+    test_case_results = []
+    for test_case in rule_reg["negative_regressions"]:
+        key, value = next(iter(test_case.items()))
+        results_old = value["engine_regression"].get(f"results_{engine.lower()}", [])
+        test_case_results.append({"_".join(key.split("/")[-3:]): {"results": results_old}})
+    for test_case in rule_reg["positive_regressions"]:
+        key, value = next(iter(test_case.items()))
+        results_old = value["engine_regression"].get(f"results_{engine.lower()}", [])
+        test_case_results.append({"_".join(key.split("/")[-3:]): {"results": results_old}})
+    for result in test_case_results:
+        key, value = next(iter(result.items()))
+        with open(
+            str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/test_case_results_{engine}/{key}_results.json",
+            "w",
+            encoding="utf-8",
+        ) as f:
+            json.dump(value, f, ensure_ascii=False, indent=4)
