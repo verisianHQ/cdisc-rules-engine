@@ -6,7 +6,11 @@ from unittest.mock import patch
 
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from scripts.run_sql_validation import sql_run_single_rule_validation
-from tests.rule_regression.regression import output_engine_results_json, run_single_rule_regression
+from tests.rule_regression.regression import (
+    delete_files_in_directory,
+    output_engine_results_json,
+    run_single_rule_regression,
+)
 
 load_dotenv()
 
@@ -26,9 +30,9 @@ def test_regression_single_rule_DEV(pytestconfig, get_core_rules_df, get_core_ru
     assert rule_id
     regression_df = get_core_rules_df()
     rule_reg = run_single_rule_regression(regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule)
-    with open(
-        str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/{rule_id}_rule.json", "w", encoding="utf-8"
-    ) as f:
+    output_folder = str(pytestconfig.rootpath) + "/tests/resources/rules/dev/"
+    delete_files_in_directory(output_folder)
+    with open(f"{output_folder}{rule_id}_rule.json", "w", encoding="utf-8") as f:
         json.dump(rule_reg, f, ensure_ascii=False, indent=4)
     output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, "old")
     output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, "sql")

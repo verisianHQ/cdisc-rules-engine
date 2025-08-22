@@ -482,11 +482,22 @@ def output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, e
         key, value = next(iter(test_case.items()))
         results_old = value["engine_regression"].get(f"results_{engine.lower()}", [])
         test_case_results.append({"_".join(key.split("/")[-3:]): {"results": results_old}})
+
+    # output
+    output_folder = str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/test_case_results_{engine}/"
+    delete_files_in_directory(output_folder)
     for result in test_case_results:
         key, value = next(iter(result.items()))
         with open(
-            str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/test_case_results_{engine}/{key}_results.json",
+            f"{output_folder}{key}_results.json",
             "w",
             encoding="utf-8",
         ) as f:
             json.dump(value, f, ensure_ascii=False, indent=4)
+
+
+def delete_files_in_directory(dir_path: str):
+    for filename in os.listdir(dir_path):
+        file_path = os.path.join(dir_path, filename)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
