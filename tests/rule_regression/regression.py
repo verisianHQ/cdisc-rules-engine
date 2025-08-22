@@ -226,11 +226,18 @@ def process_test_case_dataset(
         validated_results_folder = f"{test_case_folder_path}/validated_results"
         if not os.path.exists(validated_results_folder):
             regression_errors["validated_results_folder_exists"] = False
+            regression_errors["validation_file"] = ""
+            regression_errors["validation_file_validation"] = ""
+            regression_errors["old_result_validation"] = "invalid"
+            regression_errors["sql_results_validation"] = "invalid"
         else:
             regression_errors["validated_results_folder_exists"] = True
             validation_file_path = find_data_file(validated_results_folder)
             if not validation_file_path:
                 regression_errors["validation_file"] = ""
+                regression_errors["validation_file_validation"] = ""
+                regression_errors["old_result_validation"] = "invalid"
+                regression_errors["sql_results_validation"] = "invalid"
             else:
                 regression_errors["validation_file"] = "/".join(validation_file_path.split("/")[-7:])
                 try:
@@ -245,6 +252,8 @@ def process_test_case_dataset(
                         )
                 except json.decoder.JSONDecodeError as e:
                     regression_errors["validation_file_validation"] = e
+                    regression_errors["old_result_validation"] = "invalid"
+                    regression_errors["sql_results_validation"] = "invalid"
 
         return sql_results, old_results
 
