@@ -11,9 +11,7 @@ from tests.rule_regression.regression import run_single_rule_regression
 load_dotenv()
 
 
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_regression_all_rules(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    mock_get_dataset_class.return_value = None
+def test_regression_all_rules(pytestconfig, get_core_rules_df, get_core_rule):
     regression_df = get_core_rules_df()
     regression_json = []
     for _, row in regression_df.iterrows():
@@ -23,9 +21,7 @@ def test_regression_all_rules(mock_get_dataset_class, pytestconfig, get_core_rul
         json.dump(regression_json, f, ensure_ascii=False, indent=4)
 
 
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_regression_single_rule(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    mock_get_dataset_class.return_value = None
+def test_regression_single_rule(pytestconfig, get_core_rules_df, get_core_rule):
     rule_id = os.getenv("CURRENT_RULE_DEV", "")
     assert rule_id
     regression_df = get_core_rules_df()
