@@ -1,19 +1,17 @@
+import json
 import os
 import re
-import json
 from typing import Tuple
-from dotenv import load_dotenv
-import pandas as pd
-from unittest.mock import patch
 from psycopg2 import errors
+
+import pandas as pd
+
 
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
-
-load_dotenv()
 
 
 def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
@@ -60,31 +58,6 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
                     else:
                         rule_regression["rule_in_mltple_standards"] = paths
     return rule_regression
-
-
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_regression_all_rules(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    mock_get_dataset_class.return_value = None
-    regression_df = get_core_rules_df()
-    regression_json = []
-    for _, row in regression_df.iterrows():
-        rule_reg = run_single_rule_regression(row, get_core_rule)
-        regression_json.append(rule_reg)
-    with open(str(pytestconfig.rootpath) + "/tests/resources/rules/rules.json", "w", encoding="utf-8") as f:
-        json.dump(regression_json, f, ensure_ascii=False, indent=4)
-
-
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_regression_single_rule(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    mock_get_dataset_class.return_value = None
-    rule_id = os.getenv("CURRENT_RULE_DEV", "")
-    assert rule_id
-    regression_df = get_core_rules_df()
-    rule_reg = run_single_rule_regression(regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule)
-    with open(
-        str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/{rule_id}_rule.json", "w", encoding="utf-8"
-    ) as f:
-        json.dump(rule_reg, f, ensure_ascii=False, indent=4)
 
 
 def initialize_regression_dict(row) -> dict:
@@ -493,29 +466,3 @@ def find_define_xml_file_path(path: str) -> str:
     except FileNotFoundError:
         return ""
     return ""
-
-
-def test_ouput_old_engine_json():
-    print()
-
-
-def test_ouput_sql_engine_json():
-    print()
-
-
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_rule_existing_rule(mock_get_dataset_class, get_sample_lb_rule, get_sample_lb_dataset):
-    mock_get_dataset_class.return_value = None
-    ig_specs = {
-        "standard": "SDTMIG",
-        "standard_version": "3.4",
-        "standard_substandard": None,
-        "define_xml_version": None,
-    }
-    ds = PostgresQLDataService.from_list_of_testdatasets([get_sample_lb_dataset], ig_specs)
-    data = sql_run_single_rule_validation(data_service=ds, rule=get_sample_lb_rule)
-
-    assert "LB" in data
-    assert len(data["LB"]) == 1
-    assert data["LB"][0]["message"] == "LBSEQ greater than 0"
-    assert len(data["LB"][0]["errors"]) == 2

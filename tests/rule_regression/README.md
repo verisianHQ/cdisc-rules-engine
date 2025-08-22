@@ -15,7 +15,8 @@
 
 ## Run regression
 
-- run `test_regression.py` to update the rules.json
+- run `test_regression::test_regression_all_rules` to update the rules.json
+- run `test_regression::test_regression_single_rule` to run local regression on a specific rule, as set in .env under `CURRENT_RULE_DEV`
 
 ## IGNORE ATM
 
