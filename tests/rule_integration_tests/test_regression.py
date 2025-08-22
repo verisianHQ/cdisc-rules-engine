@@ -16,64 +16,75 @@ from scripts.run_validation import run_single_rule_validation
 load_dotenv()
 
 
-@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
-def test_regression(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
-    mock_get_dataset_class.return_value = None
-    regression_df = get_core_rules_df()
-    local_path = os.getenv("REGRESSION_PATH")
-
-    # set up SQL Engine
+def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
     ig_specs = {
         "standard": "SDTMIG",
         "standard_version": "3.4",
         "standard_substandard": None,
         "define_xml_version": None,
     }
-
-    regression_json = []
-
-    for _, row in regression_df.iterrows():
-        cur_core_id = str(row["Core-ID"])
-        cur_regression = initialize_regression_dict(row)
-        if not cur_core_id or cur_core_id == "nan":
-            cur_regression["core_id_is_null"] = True
-            cur_regression["core_id_startswith_CORE"] = False
-            cur_regression["in_cache"] = False
-            cur_regression["rule_in_mltple_standards"] = []
+    cur_core_id = str(row["Core-ID"])
+    rule_regression = initialize_regression_dict(row)
+    if not cur_core_id or cur_core_id == "nan":
+        rule_regression["core_id_is_null"] = True
+        rule_regression["core_id_startswith_CORE"] = False
+        rule_regression["in_cache"] = False
+        rule_regression["rule_in_mltple_standards"] = []
+    else:
+        rule_regression["core_id_is_null"] = False
+        if not cur_core_id.startswith("CORE-"):
+            rule_regression["core_id_startswith_CORE"] = False
+            rule_regression["in_cache"] = False
+            rule_regression["rule_in_mltple_standards"] = []
         else:
-            cur_regression["core_id_is_null"] = False
-            if not cur_core_id.startswith("CORE-"):
-                cur_regression["core_id_startswith_CORE"] = False
-                cur_regression["in_cache"] = False
-                cur_regression["rule_in_mltple_standards"] = []
+            rule_regression["core_id_startswith_CORE"] = True
+            rule = get_core_rule(cur_core_id)
+            if not rule:
+                rule_regression["in_cache"] = False
             else:
-                cur_regression["core_id_startswith_CORE"] = True
-                rule = get_core_rule(cur_core_id)
-                if not rule:
-                    cur_regression["in_cache"] = False
-                else:
-                    cur_regression["in_cache"] = True
-                    rule_ids = row["rids"]
-                    for rid in rule_ids:
-                        paths = get_data_paths_by_rule_id(local_path, row, rid)
-                        if len(paths) == 1:
-                            cur_regression["rule_in_mltple_standards"] = []
-                            p = paths[0]
-                            cur_regression["sharepoint_source"] = p.split("/")[-2]
+                rule_regression["in_cache"] = True
+                rule_ids = row["rids"]
+                for rid in rule_ids:
+                    paths = get_data_paths_by_rule_id(row, rid)
+                    if len(paths) == 1:
+                        rule_regression["rule_in_mltple_standards"] = []
+                        p = paths[0]
+                        rule_regression["sharepoint_source"] = p.split("/")[-2]
 
-                            for case in ["negative", "positive"]:
-                                case_path = p + f"/{case}"
-                                if os.path.exists(case_path):
-                                    run_test_cases(cur_regression, case, case_path, ig_specs, rule)
-                        elif len(paths) < 1:
-                            cur_regression["rule_in_mltple_standards"] = []
-                        else:
-                            cur_regression["rule_in_mltple_standards"] = paths
-        regression_json.append(cur_regression)
+                        for case in ["negative", "positive"]:
+                            case_path = p + f"/{case}"
+                            if os.path.exists(case_path):
+                                run_test_cases(rule_regression, case, case_path, ig_specs, rule)
+                    elif len(paths) < 1:
+                        rule_regression["rule_in_mltple_standards"] = []
+                    else:
+                        rule_regression["rule_in_mltple_standards"] = paths
+    return rule_regression
 
-    # output rules.json
+
+@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
+def test_regression_all_rules(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
+    mock_get_dataset_class.return_value = None
+    regression_df = get_core_rules_df()
+    regression_json = []
+    for _, row in regression_df.iterrows():
+        rule_reg = run_single_rule_regression(row, get_core_rule)
+        regression_json.append(rule_reg)
     with open(str(pytestconfig.rootpath) + "/tests/resources/rules/rules.json", "w", encoding="utf-8") as f:
         json.dump(regression_json, f, ensure_ascii=False, indent=4)
+
+
+@patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
+def test_regression_single_rule(mock_get_dataset_class, pytestconfig, get_core_rules_df, get_core_rule):
+    mock_get_dataset_class.return_value = None
+    rule_id = os.getenv("CURRENT_RULE_DEV", "")
+    assert rule_id
+    regression_df = get_core_rules_df()
+    rule_reg = run_single_rule_regression(regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule)
+    with open(
+        str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/{rule_id}_rule.json", "w", encoding="utf-8"
+    ) as f:
+        json.dump(rule_reg, f, ensure_ascii=False, indent=4)
 
 
 def initialize_regression_dict(row) -> dict:
@@ -309,7 +320,8 @@ def extract_results_regression(results):
     return res_regression
 
 
-def get_data_paths_by_rule_id(local_path: str, row: pd.Series, rid: str) -> list[str]:
+def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
+    local_path = os.getenv("REGRESSION_PATH")
     paths = []
     if "SDTMIG" in row["std"]:
         paths.extend(
@@ -481,6 +493,14 @@ def find_define_xml_file_path(path: str) -> str:
     except FileNotFoundError:
         return ""
     return ""
+
+
+def test_ouput_old_engine_json():
+    print()
+
+
+def test_ouput_sql_engine_json():
+    print()
 
 
 @patch("cdisc_rules_engine.services.data_services.DummyDataService.get_dataset_class")
