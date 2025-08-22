@@ -3,6 +3,7 @@ import os
 import re
 from typing import Tuple
 from psycopg2 import errors
+from deepdiff import DeepDiff
 
 import pandas as pd
 
@@ -101,6 +102,7 @@ def run_test_cases(
             # run engine
             engine_regression = {}
             run_regression_on_test_case(
+                test_case_folder_path,
                 test_case_file_path,
                 define_xml_file_path,
                 engine_regression,
@@ -128,6 +130,7 @@ def run_test_cases(
 
 
 def run_regression_on_test_case(
+    test_case_folder_path: str,
     data_file_path: str,
     define_xml_file_path: str,
     regression_errors: dict,
@@ -173,13 +176,25 @@ def run_regression_on_test_case(
 
     # Second phase: running validations if dataset can be processed
     if can_process_dataset:
-        process_test_case_dataset(regression_errors, define_xml_file_path, data_test_datasets, ig_specs, rule)
+        process_test_case_dataset(
+            regression_errors,
+            define_xml_file_path,
+            data_test_datasets,
+            ig_specs,
+            rule,
+            test_case_folder_path,
+        )
 
     return None, None
 
 
 def process_test_case_dataset(
-    regression_errors: list, define_xml_file_path: str, data_test_datasets: list, ig_specs: IGSpecification, rule: dict
+    regression_errors: list,
+    define_xml_file_path: str,
+    data_test_datasets: list,
+    ig_specs: IGSpecification,
+    rule: dict,
+    test_case_folder_path: str,
 ):
     try:
         # Execute rule in SQL engine
@@ -207,6 +222,30 @@ def process_test_case_dataset(
 
         regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
 
+        # does validated_results path exist:
+        validated_results_folder = f"{test_case_folder_path}/validated_results"
+        if not os.path.exists(validated_results_folder):
+            regression_errors["validated_results_folder_exists"] = False
+        else:
+            regression_errors["validated_results_folder_exists"] = True
+            validation_file_path = find_data_file(validated_results_folder)
+            if not validation_file_path:
+                regression_errors["validation_file"] = ""
+            else:
+                regression_errors["validation_file"] = "/".join(validation_file_path.split("/")[-7:])
+                try:
+                    with open(validation_file_path, "r", encoding="utf-8") as f:
+                        validated_result = json.load(f)
+                        regression_errors["validation_file_validation"] = "valid"
+                        regression_errors["old_result_validation"] = validate_engine_result(
+                            old_regression, validated_result
+                        )
+                        regression_errors["sql_results_validation"] = validate_engine_result(
+                            sql_regression, validated_result
+                        )
+                except json.decoder.JSONDecodeError as e:
+                    regression_errors["validation_file_validation"] = e
+
         return sql_results, old_results
 
     except ValueError as e:
@@ -219,6 +258,19 @@ def process_test_case_dataset(
             regression_errors["datasets_import_sql"] = f"pre_processor_error: {str(e)}"
         else:
             raise
+
+
+def validate_engine_result(engine_result: list[dict], validated_result: list[dict]) -> dict:
+    val_result = validated_result["results"]
+    diff = DeepDiff(
+        engine_result,
+        val_result,
+        ignore_order=True,
+    )
+    if diff:
+        return "failed"
+    else:
+        return "valid"
 
 
 def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[dict]):
@@ -445,7 +497,7 @@ def find_max_dir(root) -> str:
 def find_data_file(path: str) -> str:
     if not path:
         return ""
-    accepted_extensions = ["xls", "xlsx"]
+    accepted_extensions = ["xls", "xlsx", "json"]
     try:
         for filename in os.listdir(path):
             full_path = os.path.join(path, filename)
