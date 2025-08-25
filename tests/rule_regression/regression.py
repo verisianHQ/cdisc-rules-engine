@@ -494,7 +494,7 @@ def extract_data(filename: str, col_type_dict: dict, dataset_df: pd.DataFrame) -
     return data
 
 
-def find_dirs(root, target_name, case_insensitive=False) -> list[tuple[str, str]]:
+def find_dirs(root, target_name, case_insensitive=False) -> list[str]:
     matches = []
     for d in os.listdir(root):
         if (d == target_name) or (case_insensitive and d.lower() == target_name.lower()):
@@ -571,11 +571,11 @@ def output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, e
             json.dump(value, f, ensure_ascii=False, indent=4)
 
 
-def extract_final_path(path: str, parts: int) -> str:
+def extract_final_path(path: str, part_num: int) -> str:
     parts = path.split("/")
-    if len(parts) < parts:
-        raise ValueError(f"Path {path} does not have enough parts to extract {parts} parts.")
-    return "/".join(parts[-parts:])
+    if len(parts) < part_num:
+        raise ValueError(f"Path {path} does not have enough parts to extract {part_num} parts.")
+    return "/".join(parts[-part_num:])
 
 
 def delete_files_in_directory(dir_path: str):
