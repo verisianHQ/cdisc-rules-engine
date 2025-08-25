@@ -54,7 +54,7 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
                     if len(paths) == 1:
                         rule_regression["rule_in_mltple_standards"] = []
                         p = paths[0]
-                        rule_regression["sharepoint_source"] = p.split("/")[-RULE_DEPTH : -(RULE_DEPTH - 1)]
+                        rule_regression["sharepoint_source"] = p.split("/")[-RULE_DEPTH : -(RULE_DEPTH - 1)][0]
 
                         for case in ["negative", "positive"]:
                             case_path = p + f"/{case}"
