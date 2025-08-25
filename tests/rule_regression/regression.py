@@ -15,6 +15,11 @@ from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
 
+RULE_DEPTH = 2
+TYPE_DEPTH = RULE_DEPTH + 1
+CASE_DEPTH = TYPE_DEPTH + 1
+DATA_DEPTH = CASE_DEPTH + 2
+
 
 def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
     ig_specs = {
@@ -49,14 +54,12 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
                     if len(paths) == 1:
                         rule_regression["rule_in_mltple_standards"] = []
                         p = paths[0]
-                        rule_regression["sharepoint_source"] = p.split("/")[-2]
+                        rule_regression["sharepoint_source"] = extract_final_path(p, RULE_DEPTH)
 
                         for case in ["negative", "positive"]:
                             case_path = p + f"/{case}"
                             if os.path.exists(case_path):
-                                run_test_cases(
-                                    rule_regression, case, case_path, ig_specs, rule
-                                )
+                                run_test_cases(rule_regression, case, case_path, ig_specs, rule)
                     elif len(paths) < 1:
                         rule_regression["rule_in_mltple_standards"] = []
                     else:
@@ -66,31 +69,17 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
 
 def initialize_regression_dict(row) -> dict:
     return {
-        "core-id": (
-            row["Core-ID"]
-            if pd.notna(row["Core-ID"]) and str(row["Core-ID"]).strip()
-            else "unknown"
-        ),
+        "core-id": (row["Core-ID"] if pd.notna(row["Core-ID"]) and str(row["Core-ID"]).strip() else "unknown"),
         "cdisc_rule_id": (
-            row["CDISC Rule ID"]
-            if pd.notna(row["CDISC Rule ID"]) and str(row["CDISC Rule ID"]).strip()
-            else "unknown"
+            row["CDISC Rule ID"] if pd.notna(row["CDISC Rule ID"]) and str(row["CDISC Rule ID"]).strip() else "unknown"
         ),
         "standard": (
-            row["Standard Name"]
-            if pd.notna(row["Standard Name"]) and str(row["Standard Name"]).strip()
-            else "unknown"
+            row["Standard Name"] if pd.notna(row["Standard Name"]) and str(row["Standard Name"]).strip() else "unknown"
         ),
         "executability": (
-            row["Executability"]
-            if pd.notna(row["Executability"]) and str(row["Executability"]).strip()
-            else "unknown"
+            row["Executability"] if pd.notna(row["Executability"]) and str(row["Executability"]).strip() else "unknown"
         ),
-        "status": (
-            row["Status"]
-            if pd.notna(row["Status"]) and str(row["Status"]).strip()
-            else "unknown"
-        ),
+        "status": (row["Status"] if pd.notna(row["Status"]) and str(row["Status"]).strip() else "unknown"),
         "standard_source": row["standard_source"],
     }
 
@@ -103,12 +92,11 @@ def run_test_cases(
     rule,
 ):
     two_digit_pattern = re.compile(r"^\d{2}$")
-    cur_regression[f"{case}_folder_path"] = "/".join(case_folder_path.split("/")[-5:])
+    cur_regression[f"{case}_folder_path"] = extract_final_path(case_folder_path, TYPE_DEPTH)
     test_case_folder_paths = [
         case_folder_path + "/" + name
         for name in os.listdir(case_folder_path)
-        if os.path.isdir(os.path.join(case_folder_path, name))
-        and two_digit_pattern.match(name)
+        if os.path.isdir(os.path.join(case_folder_path, name)) and two_digit_pattern.match(name)
     ]
 
     test_case_regression = []
@@ -116,9 +104,7 @@ def run_test_cases(
 
         try:
             test_case_file_path = find_data_file(test_case_folder_path + "/data")
-            define_xml_file_path = find_define_xml_file_path(
-                test_case_folder_path + "/data"
-            )
+            define_xml_file_path = find_define_xml_file_path(test_case_folder_path + "/data")
             # run engine
             engine_regression = {}
             run_regression_on_test_case(
@@ -131,10 +117,8 @@ def run_test_cases(
             )
             test_case_regression.append(
                 {
-                    "/".join(test_case_folder_path.split("/")[-5:]): {
-                        "test_case_xslx_file": "/".join(
-                            test_case_file_path.split("/")[-7:]
-                        ),
+                    extract_final_path(test_case_folder_path, CASE_DEPTH): {
+                        "test_case_xslx_file": extract_final_path(test_case_file_path, DATA_DEPTH),
                         "engine_regression": engine_regression,
                     }
                 }
@@ -176,25 +160,19 @@ def run_regression_on_test_case(
     except ValueError as e:
         err_msg = str(e)
         if err_msg == "Worksheet named 'Datasets' not found":
-            regression_errors["datasets_conversion"] = (
-                "test_metadata_error - 'Datasets' sheet not found in xlsx file"
-            )
+            regression_errors["datasets_conversion"] = "test_metadata_error - 'Datasets' sheet not found in xlsx file"
             regression_errors["datasets_import_sql"] = "FAIL"
             regression_errors["results_present_sql"] = False
             regression_errors["dataset_import_old"] = "FAIL"
             regression_errors["results_present_old"] = False
         elif err_msg.startswith("Error converting column"):
-            regression_errors["datasets_conversion"] = (
-                f"column_convert_error - {err_msg}"
-            )
+            regression_errors["datasets_conversion"] = f"column_convert_error - {err_msg}"
             regression_errors["datasets_import_sql"] = "FAIL"
             regression_errors["results_present_sql"] = False
             regression_errors["dataset_import_old"] = "FAIL"
             regression_errors["results_present_old"] = False
         elif err_msg.startswith("Unsupported column type:"):
-            regression_errors["datasets_conversion"] = (
-                f"column_type_unsupported - {err_msg}"
-            )
+            regression_errors["datasets_conversion"] = f"column_type_unsupported - {err_msg}"
             regression_errors["datasets_import_sql"] = "FAIL"
             regression_errors["results_present_sql"] = False
             regression_errors["dataset_import_old"] = "FAIL"
@@ -248,9 +226,7 @@ def process_test_case_dataset(
         old_regression = extract_results_regression(old_results)
         regression_errors["results_old"] = old_regression
 
-        regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(
-            old_regression, sql_regression
-        )
+        regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
 
         # does validated_results path exist:
         validated_results_folder = f"{test_case_folder_path}/validated_results"
@@ -269,18 +245,16 @@ def process_test_case_dataset(
                 regression_errors["old_result_validation"] = "invalid"
                 regression_errors["sql_results_validation"] = "invalid"
             else:
-                regression_errors["validation_file"] = "/".join(
-                    validation_file_path.split("/")[-7:]
-                )
+                regression_errors["validation_file"] = "/".join(validation_file_path.split("/")[-7:])
                 try:
                     with open(validation_file_path, "r", encoding="utf-8") as f:
                         validated_result = json.load(f)
                         regression_errors["validation_file_validation"] = "valid"
-                        regression_errors["old_result_validation"] = (
-                            validate_engine_result(old_regression, validated_result)
+                        regression_errors["old_result_validation"] = validate_engine_result(
+                            old_regression, validated_result
                         )
-                        regression_errors["sql_results_validation"] = (
-                            validate_engine_result(sql_regression, validated_result)
+                        regression_errors["sql_results_validation"] = validate_engine_result(
+                            sql_regression, validated_result
                         )
                 except json.decoder.JSONDecodeError as e:
                     regression_errors["validation_file_validation"] = e
@@ -291,9 +265,7 @@ def process_test_case_dataset(
 
     except ValueError as e:
         if str(e) == "Data list cannot be empty":
-            regression_errors["datasets_import_sql"] = (
-                f"datasets_dataset_errors: {str(e)}"
-            )
+            regression_errors["datasets_import_sql"] = f"datasets_dataset_errors: {str(e)}"
         else:
             raise
     except errors.UndefinedColumn as e:
@@ -303,9 +275,7 @@ def process_test_case_dataset(
             raise
 
 
-def validate_engine_result(
-    engine_result: list[dict], validated_result: list[dict]
-) -> dict:
+def validate_engine_result(engine_result: list[dict], validated_result: list[dict]) -> dict:
     val_result = validated_result["results"]
     diff = DeepDiff(
         engine_result,
@@ -327,8 +297,7 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
             (
                 res
                 for res in sql_results
-                if res.get("dataset") == o_res.get("dataset")
-                and res.get("domain") == o_res.get("domain")
+                if res.get("dataset") == o_res.get("dataset") and res.get("domain") == o_res.get("domain")
             ),
             None,
         )
@@ -341,9 +310,7 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
                     comp_regression["number_of_errors_match"] = False
                 else:
                     comp_regression["number_of_errors_match"] = True
-                    comp_regression["deep_diff"] = compare_error_lists(
-                        o_res.get("errors"), sql_res.get("errors")
-                    )
+                    comp_regression["deep_diff"] = compare_error_lists(o_res.get("errors"), sql_res.get("errors"))
         else:
             comp_regression["execution_status_match"] = False
             comp_regression["number_of_errors_match"] = False
@@ -352,12 +319,8 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
 
 
 def compare_error_lists(old_errors, sql_errors):
-    set1 = {
-        json.dumps(item, sort_keys=True) for sublist in old_errors for item in sublist
-    }
-    set2 = {
-        json.dumps(item, sort_keys=True) for sublist in sql_errors for item in sublist
-    }
+    set1 = {json.dumps(item, sort_keys=True) for sublist in old_errors for item in sublist}
+    set2 = {json.dumps(item, sort_keys=True) for sublist in sql_errors for item in sublist}
     diff_serialized = set1.symmetric_difference(set2)
     return [json.loads(item) for item in diff_serialized]
 
@@ -376,9 +339,7 @@ def extract_results_regression(results):
             domain_res_regression["errors"] = (
                 [
                     {"error": error.get("error"), "message": error.get("message")}
-                    for error in sorted(
-                        res[0].get("errors"), key=lambda x: x.get("message")
-                    )
+                    for error in sorted(res[0].get("errors"), key=lambda x: x.get("message"))
                 ],
             )
         elif res[0].get("executionStatus", "") == "skipped":
@@ -516,26 +477,16 @@ def extract_data(filename: str, col_type_dict: dict, dataset_df: pd.DataFrame) -
         # Preprocess the column values based on the column type
         if col_type_dict[column_name].lower() == "num":
             try:
-                column_values = [
-                    None if pd.isna(val) else float(val) for val in column_values
-                ]
+                column_values = [None if pd.isna(val) else float(val) for val in column_values]
             except ValueError as e:
-                raise ValueError(
-                    f"Error converting column '{column_name}' in table '{filename}' to numeric: {e}"
-                )
+                raise ValueError(f"Error converting column '{column_name}' in table '{filename}' to numeric: {e}")
         elif col_type_dict[column_name].lower() == "char":
             try:
-                column_values = [
-                    "" if pd.isna(val) else str(val) for val in column_values
-                ]
+                column_values = ["" if pd.isna(val) else str(val) for val in column_values]
             except ValueError as e:
-                raise ValueError(
-                    f"Error converting column '{column_name}' in table '{filename}' to string: {e}"
-                )
+                raise ValueError(f"Error converting column '{column_name}' in table '{filename}' to string: {e}")
         else:
-            raise ValueError(
-                f"Unsupported column type: {col_type_dict[column_name]} for rule"
-            )
+            raise ValueError(f"Unsupported column type: {col_type_dict[column_name]} for rule")
 
         # Store the column name and its values in the data dictionary
         data[column_name] = column_values
@@ -543,12 +494,10 @@ def extract_data(filename: str, col_type_dict: dict, dataset_df: pd.DataFrame) -
     return data
 
 
-def find_dirs(root, target_name, case_insensitive=False) -> list[str]:
+def find_dirs(root, target_name, case_insensitive=False) -> list[tuple[str, str]]:
     matches = []
     for d in os.listdir(root):
-        if (d == target_name) or (
-            case_insensitive and d.lower() == target_name.lower()
-        ):
+        if (d == target_name) or (case_insensitive and d.lower() == target_name.lower()):
             matches.append(os.path.join(root, d))
     return matches
 
@@ -594,34 +543,23 @@ def find_define_xml_file_path(path: str) -> str:
     return ""
 
 
-def output_engine_results_json(
-    pytestconfig, get_core_rules_df, get_core_rule, engine: str
-):
+def output_engine_results_json(pytestconfig, get_core_rules_df, get_core_rule, engine: str):
     rule_id = os.getenv("CURRENT_RULE_DEV", "")
     assert rule_id
     regression_df = get_core_rules_df()
-    rule_reg = run_single_rule_regression(
-        regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule
-    )
+    rule_reg = run_single_rule_regression(regression_df[regression_df["Core-ID"] == rule_id].iloc[0], get_core_rule)
     test_case_results = []
     for test_case in rule_reg["negative_regressions"]:
         key, value = next(iter(test_case.items()))
         results_old = value["engine_regression"].get(f"results_{engine.lower()}", [])
-        test_case_results.append(
-            {"_".join(key.split("/")[-3:]): {"results": results_old}}
-        )
+        test_case_results.append({"_".join(key.split("/")[-3:]): {"results": results_old}})
     for test_case in rule_reg["positive_regressions"]:
         key, value = next(iter(test_case.items()))
         results_old = value["engine_regression"].get(f"results_{engine.lower()}", [])
-        test_case_results.append(
-            {"_".join(key.split("/")[-3:]): {"results": results_old}}
-        )
+        test_case_results.append({"_".join(key.split("/")[-3:]): {"results": results_old}})
 
     # output
-    output_folder = (
-        str(pytestconfig.rootpath)
-        + f"/tests/resources/rules/dev/test_case_results_{engine}/"
-    )
+    output_folder = str(pytestconfig.rootpath) + f"/tests/resources/rules/dev/test_case_results_{engine}/"
     delete_files_in_directory(output_folder)
     for result in test_case_results:
         key, value = next(iter(result.items()))
@@ -633,7 +571,18 @@ def output_engine_results_json(
             json.dump(value, f, ensure_ascii=False, indent=4)
 
 
+def extract_final_path(path: str, parts: int) -> str:
+    parts = path.split("/")
+    if len(parts) < parts:
+        raise ValueError(f"Path {path} does not have enough parts to extract {parts} parts.")
+    return "/".join(parts[-parts:])
+
+
 def delete_files_in_directory(dir_path: str):
+    # Ensure the directory exists before attempting to delete files
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
     for filename in os.listdir(dir_path):
         file_path = os.path.join(dir_path, filename)
         if os.path.isfile(file_path):
