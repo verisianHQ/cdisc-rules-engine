@@ -2758,9 +2758,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0176/negative",
         "negative_regressions": [
             {
@@ -2903,9 +2901,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0208/negative",
         "negative_regressions": [
             {
@@ -3020,9 +3016,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0299/negative",
         "negative_regressions": [
             {
@@ -3156,9 +3150,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0101/negative",
         "negative_regressions": [
             {
@@ -3283,9 +3275,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0102/negative",
         "negative_regressions": [
             {
@@ -3419,9 +3409,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0131/negative",
         "negative_regressions": [
             {
@@ -3536,9 +3524,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0606/negative",
         "negative_regressions": [
             {
@@ -3664,9 +3650,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0152/negative",
         "negative_regressions": [
             {
@@ -3781,9 +3765,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0153/negative",
         "negative_regressions": [
             {
@@ -3944,9 +3926,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0175/negative",
         "negative_regressions": [
             {
@@ -4071,9 +4051,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0040/negative",
         "negative_regressions": [
             {
@@ -4236,9 +4214,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0044/negative",
         "negative_regressions": [
             {
@@ -4401,9 +4377,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0087/negative",
         "negative_regressions": [
             {
@@ -6420,9 +6394,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0088/negative",
         "negative_regressions": [
             {
@@ -7041,9 +7013,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0089/negative",
         "negative_regressions": [
             {
@@ -9007,9 +8977,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0166/negative",
         "negative_regressions": [
             {
@@ -9124,9 +9092,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0086/negative",
         "negative_regressions": [
             {
@@ -11074,9 +11040,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0311/negative",
         "negative_regressions": [
             {
@@ -11825,9 +11789,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0206/negative",
         "negative_regressions": [
             {
@@ -11942,9 +11904,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0397/negative",
         "negative_regressions": [
             {
@@ -12170,9 +12130,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0041/negative",
         "negative_regressions": [
             {
@@ -12486,9 +12444,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0084/negative",
         "negative_regressions": [
             {
@@ -12600,9 +12556,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0082/negative",
         "negative_regressions": [
             {
@@ -12745,9 +12699,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0177/negative",
         "negative_regressions": [
             {
@@ -12890,9 +12842,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0468/negative",
         "negative_regressions": [
             {
@@ -13028,9 +12978,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0329/negative",
         "negative_regressions": [
             {
@@ -13278,9 +13226,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0008/negative",
         "negative_regressions": [
             {
@@ -13594,9 +13540,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0661/negative",
         "negative_regressions": [
             {
@@ -13759,9 +13703,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0053/negative",
         "negative_regressions": [
             {
@@ -13870,9 +13812,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0659/negative",
         "negative_regressions": [
             {
@@ -14087,9 +14027,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0660/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0660/positive",
@@ -14193,9 +14131,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0065/negative",
         "negative_regressions": [
             {
@@ -14320,9 +14256,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0069/negative",
         "negative_regressions": [
             {
@@ -14514,9 +14448,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0658/negative",
         "negative_regressions": [
             {
@@ -14655,9 +14587,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0657/negative",
         "negative_regressions": [
             {
@@ -14842,9 +14772,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0653/negative",
         "negative_regressions": [
             {
@@ -14889,9 +14817,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0654/negative",
         "negative_regressions": [
             {
@@ -14936,9 +14862,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0655/negative",
         "negative_regressions": [
             {
@@ -15188,9 +15112,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0656/negative",
         "negative_regressions": [
             {
@@ -15375,9 +15297,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0459/negative",
         "negative_regressions": [
             {
@@ -15492,9 +15412,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0647/negative",
         "negative_regressions": [
             {
@@ -15782,9 +15700,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0648/negative",
         "negative_regressions": [
             {
@@ -15829,9 +15745,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0646/negative",
         "negative_regressions": [
             {
@@ -16087,9 +16001,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0517/negative",
         "negative_regressions": [
             {
@@ -16204,9 +16116,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0519/negative",
         "negative_regressions": [
             {
@@ -16321,9 +16231,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0518/negative",
         "negative_regressions": [
             {
@@ -16484,9 +16392,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0621/negative",
         "negative_regressions": [
             {
@@ -16598,9 +16504,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0622/negative",
         "negative_regressions": [
             {
@@ -16805,9 +16709,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0623/negative",
         "negative_regressions": [
             {
@@ -16919,9 +16821,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0624/negative",
         "negative_regressions": [
             {
@@ -17033,9 +16933,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0625/negative",
         "negative_regressions": [
             {
@@ -17147,9 +17045,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0627/negative",
         "negative_regressions": [
             {
@@ -17261,9 +17157,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0628/negative",
         "negative_regressions": [
             {
@@ -17375,9 +17269,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0629/negative",
         "negative_regressions": [
             {
@@ -17489,9 +17381,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0630/negative",
         "negative_regressions": [
             {
@@ -17603,9 +17493,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0631/negative",
         "negative_regressions": [
             {
@@ -17717,9 +17605,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0632/negative",
         "negative_regressions": [
             {
@@ -17831,9 +17717,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0633/negative",
         "negative_regressions": [
             {
@@ -17945,9 +17829,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0634/negative",
         "negative_regressions": [
             {
@@ -18059,9 +17941,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0637/negative",
         "negative_regressions": [
             {
@@ -18173,9 +18053,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0638/negative",
         "negative_regressions": [
             {
@@ -18287,9 +18165,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0639/negative",
         "negative_regressions": [
             {
@@ -18401,9 +18277,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0640/negative",
         "negative_regressions": [
             {
@@ -18515,9 +18389,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0641/negative",
         "negative_regressions": [
             {
@@ -18618,9 +18490,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0642/negative",
         "negative_regressions": [
             {
@@ -18721,9 +18591,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0643/negative",
         "negative_regressions": [
             {
@@ -18824,9 +18692,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0644/negative",
         "negative_regressions": [
             {
@@ -18927,9 +18793,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0542/negative",
         "negative_regressions": [
             {
@@ -19082,9 +18946,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0533/negative",
         "negative_regressions": [
             {
@@ -19226,9 +19088,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0508/negative",
         "negative_regressions": [
             {
@@ -19340,9 +19200,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0304/negative",
         "negative_regressions": [
             {
@@ -19454,9 +19312,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0302/negative",
         "negative_regressions": [
             {
@@ -19568,9 +19424,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0301/negative",
         "negative_regressions": [
             {
@@ -19682,9 +19536,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0300/negative",
         "negative_regressions": [
             {
@@ -19729,9 +19581,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0095/negative",
         "negative_regressions": [
             {
@@ -19844,9 +19694,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0093/negative",
         "negative_regressions": [
             {
@@ -19961,9 +19809,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0056/negative",
         "negative_regressions": [
             {
@@ -20101,9 +19947,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0561/negative",
         "negative_regressions": [
             {
@@ -20246,9 +20090,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0553/negative",
         "negative_regressions": [
             {
@@ -20531,9 +20373,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0057/negative",
         "negative_regressions": [
             {
@@ -20738,9 +20578,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0059/negative",
         "negative_regressions": [
             {
@@ -20998,9 +20836,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0075/negative",
         "negative_regressions": [
             {
@@ -21180,9 +21016,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0387/negative",
         "negative_regressions": [
             {
@@ -21306,9 +21140,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0149/negative",
         "negative_regressions": [
             {
@@ -21469,9 +21301,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0106/negative",
         "negative_regressions": [
             {
@@ -21596,9 +21426,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0164/negative",
         "negative_regressions": [
             {
@@ -21713,9 +21541,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0108/negative",
         "negative_regressions": [
             {
@@ -21840,9 +21666,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0111/negative",
         "negative_regressions": [
             {
@@ -22303,9 +22127,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0114/negative",
         "negative_regressions": [
             {
@@ -22780,9 +22602,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0112/negative",
         "negative_regressions": [
             {
@@ -23208,9 +23028,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0211/negative",
         "negative_regressions": [
             {
@@ -23373,9 +23191,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0115/negative",
         "negative_regressions": [
             {
@@ -23636,9 +23452,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0218/negative",
         "negative_regressions": [
             {
@@ -23799,9 +23613,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0116/negative",
         "negative_regressions": [
             {
@@ -24052,9 +23864,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0422/negative",
         "negative_regressions": [
             {
@@ -24393,9 +24203,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0423/negative",
         "negative_regressions": [
             {
@@ -24520,9 +24328,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0427/negative",
         "negative_regressions": [
             {
@@ -24897,9 +24703,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0428/negative",
         "negative_regressions": [
             {
@@ -25320,9 +25124,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0429/negative",
         "negative_regressions": [
             {
@@ -25361,9 +25163,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0430/negative",
         "negative_regressions": [
             {
@@ -25466,9 +25266,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0569/negative",
         "negative_regressions": [
             {
@@ -25771,9 +25569,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0045/negative",
         "negative_regressions": [
             {
@@ -26103,9 +25899,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0554/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0554/positive",
@@ -26122,9 +25916,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0602/negative",
         "negative_regressions": [
             {
@@ -26285,9 +26077,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0547/negative",
         "negative_regressions": [
             {
@@ -26344,9 +26134,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0564/negative",
         "negative_regressions": [
             {
@@ -26474,9 +26262,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0565/negative",
         "negative_regressions": [
             {
@@ -26604,9 +26390,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0566/negative",
         "negative_regressions": [
             {
@@ -26734,9 +26518,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0567/negative",
         "negative_regressions": [
             {
@@ -26889,9 +26671,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0570/negative",
         "negative_regressions": [
             {
@@ -27198,9 +26978,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0619/negative",
         "negative_regressions": [
             {
@@ -27388,9 +27166,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0081/negative",
         "negative_regressions": [
             {
@@ -27461,9 +27237,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0404/negative",
         "negative_regressions": [
             {
@@ -27644,9 +27418,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0521/negative",
         "negative_regressions": [
             {
@@ -27761,9 +27533,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0522/negative",
         "negative_regressions": [
             {
@@ -27878,9 +27648,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0520/negative",
         "negative_regressions": [
             {
@@ -27995,9 +27763,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0434/negative",
         "negative_regressions": [
             {
@@ -28208,9 +27974,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0388/negative",
         "negative_regressions": [
             {
@@ -28334,9 +28098,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0389/negative",
         "negative_regressions": [
             {
@@ -28460,9 +28222,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0390/negative",
         "negative_regressions": [
             {
@@ -28551,9 +28311,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0391/negative",
         "negative_regressions": [
             {
@@ -28677,9 +28435,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0392/negative",
         "negative_regressions": [
             {
@@ -28803,9 +28559,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0393/negative",
         "negative_regressions": [
             {
@@ -28929,9 +28683,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0394/negative",
         "negative_regressions": [
             {
@@ -29055,9 +28807,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0395/negative",
         "negative_regressions": [
             {
@@ -29181,9 +28931,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0396/negative",
         "negative_regressions": [
             {
@@ -29307,9 +29055,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0154/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0154/positive",
@@ -29326,9 +29072,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000134",
@@ -29341,9 +29085,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0203/negative",
         "negative_regressions": [
             {
@@ -29554,9 +29296,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0204/negative",
         "negative_regressions": [
             {
@@ -29767,9 +29507,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0201/negative",
         "negative_regressions": [
             {
@@ -29884,9 +29622,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0100/negative",
         "negative_regressions": [
             {
@@ -30050,9 +29786,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0221/negative",
         "negative_regressions": [
             {
@@ -30250,9 +29984,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0223/negative",
         "negative_regressions": [
             {
@@ -30667,9 +30399,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0225/negative",
         "negative_regressions": [
             {
@@ -31136,9 +30866,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0922/negative",
         "negative_regressions": [
             {
@@ -31382,9 +31110,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0241/negative",
         "negative_regressions": [
             {
@@ -31617,9 +31343,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0246/negative",
         "negative_regressions": [
             {
@@ -31926,9 +31650,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0247/negative",
         "negative_regressions": [
             {
@@ -32043,9 +31765,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0255/negative",
         "negative_regressions": [
             {
@@ -32304,9 +32024,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0256/negative",
         "negative_regressions": [
             {
@@ -32469,9 +32187,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0257/negative",
         "negative_regressions": [
             {
@@ -32551,9 +32267,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0258/negative",
         "negative_regressions": [
             {
@@ -32633,9 +32347,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0259/negative",
         "negative_regressions": [
             {
@@ -32693,9 +32405,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0260/negative",
         "negative_regressions": [
             {
@@ -32740,9 +32450,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0261/negative",
         "negative_regressions": [
             {
@@ -32857,9 +32565,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0265/negative",
         "negative_regressions": [
             {
@@ -32974,9 +32680,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0266/negative",
         "negative_regressions": [
             {
@@ -33091,9 +32795,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0268/negative",
         "negative_regressions": [
             {
@@ -33208,9 +32910,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0293/negative",
         "negative_regressions": [
             {
@@ -33371,9 +33071,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0294/negative",
         "negative_regressions": [
             {
@@ -33534,9 +33232,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000158",
@@ -33549,9 +33245,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0163/negative",
         "negative_regressions": [
             {
@@ -33596,9 +33290,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0341/negative",
         "negative_regressions": [
             {
@@ -33827,9 +33519,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0342/negative",
         "negative_regressions": [
             {
@@ -34058,9 +33748,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0343/negative",
         "negative_regressions": [
             {
@@ -34289,9 +33977,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0344/negative",
         "negative_regressions": [
             {
@@ -34520,9 +34206,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0345/negative",
         "negative_regressions": [
             {
@@ -34751,9 +34435,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0346/negative",
         "negative_regressions": [
             {
@@ -34982,9 +34664,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3701/negative",
         "negative_regressions": [
             {
@@ -35052,9 +34732,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0091/negative",
         "negative_regressions": [
             {
@@ -35122,9 +34800,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0092/negative",
         "negative_regressions": [
             {
@@ -35192,9 +34868,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0034/negative",
         "negative_regressions": [
             {
@@ -35761,9 +35435,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0185/negative",
         "negative_regressions": [
             {
@@ -35846,9 +35518,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0541/negative",
         "negative_regressions": [
             {
@@ -35893,9 +35563,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0058/negative",
         "negative_regressions": [
             {
@@ -36102,9 +35770,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0409/negative",
         "negative_regressions": [
             {
@@ -36767,9 +36433,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0414/negative",
         "negative_regressions": [
             {
@@ -37072,9 +36736,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0356/negative",
         "negative_regressions": [
             {
@@ -37175,9 +36837,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0357/negative",
         "negative_regressions": [
             {
@@ -37278,9 +36938,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0358/negative",
         "negative_regressions": [
             {
@@ -37381,9 +37039,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0227/negative",
         "negative_regressions": [
             {
@@ -37760,9 +37416,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0172/negative",
         "negative_regressions": [
             {
@@ -37964,9 +37618,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0307/negative",
         "negative_regressions": [
             {
@@ -38129,9 +37781,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0308/negative",
         "negative_regressions": [
             {
@@ -38358,9 +38008,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0309/negative",
         "negative_regressions": [
             {
@@ -38717,9 +38365,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0310/negative",
         "negative_regressions": [
             {
@@ -39039,9 +38685,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0318/negative",
         "negative_regressions": [
             {
@@ -39185,9 +38829,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0083/negative",
         "negative_regressions": [
             {
@@ -39969,9 +39611,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0123/negative",
         "negative_regressions": [
             {
@@ -40086,9 +39726,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0150/negative",
         "negative_regressions": [
             {
@@ -40203,9 +39841,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0168/negative",
         "negative_regressions": [
             {
@@ -40250,9 +39886,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0191/negative",
         "negative_regressions": [
             {
@@ -40380,9 +40014,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0665/negative",
         "negative_regressions": [
             {
@@ -40497,9 +40129,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0666/negative",
         "negative_regressions": [
             {
@@ -40614,9 +40244,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0529/negative",
         "negative_regressions": [
             {
@@ -40731,9 +40359,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0530/negative",
         "negative_regressions": [
             {
@@ -40848,9 +40474,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0503/negative",
         "negative_regressions": [
             {
@@ -43339,9 +42963,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0338/negative",
         "negative_regressions": [
             {
@@ -43788,9 +43410,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0337/negative",
         "negative_regressions": [
             {
@@ -44237,9 +43857,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0339/negative",
         "negative_regressions": [
             {
@@ -44692,9 +44310,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0340/negative",
         "negative_regressions": [
             {
@@ -45147,9 +44763,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0406/negative",
         "negative_regressions": [
             {
@@ -45522,9 +45136,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0348/negative",
         "negative_regressions": [
             {
@@ -45747,9 +45359,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0029/negative",
         "negative_regressions": [
             {
@@ -46231,9 +45841,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000203",
@@ -46246,9 +45854,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000204",
@@ -46261,9 +45867,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000205",
@@ -46287,9 +45891,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0371/negative",
         "negative_regressions": [
             {
@@ -46644,9 +46246,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0467/negative",
         "negative_regressions": [
             {
@@ -46758,9 +46358,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0512/negative",
         "negative_regressions": [
             {
@@ -46945,9 +46543,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0514/negative",
         "negative_regressions": [
             {
@@ -47132,9 +46728,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0516/negative",
         "negative_regressions": [
             {
@@ -47319,9 +46913,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0528/negative",
         "negative_regressions": [
             {
@@ -47460,9 +47052,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0535/negative",
         "negative_regressions": [
             {
@@ -47568,9 +47158,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0536/negative",
         "negative_regressions": [
             {
@@ -47873,9 +47461,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0538/negative",
         "negative_regressions": [
             {
@@ -48013,9 +47599,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0539/negative",
         "negative_regressions": [
             {
@@ -48191,9 +47775,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0545/negative",
         "negative_regressions": [
             {
@@ -48378,9 +47960,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0462/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0462/positive",
@@ -48397,9 +47977,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0465/negative",
         "negative_regressions": [
             {
@@ -48610,9 +48188,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0350/negative",
         "negative_regressions": [
             {
@@ -48855,9 +48431,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0372/negative",
         "negative_regressions": [
             {
@@ -49133,9 +48707,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0417/negative",
         "negative_regressions": [
             {
@@ -49346,9 +48918,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0416/negative",
         "negative_regressions": [
             {
@@ -49559,9 +49129,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0513/negative",
         "negative_regressions": [
             {
@@ -49676,9 +49244,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0515/negative",
         "negative_regressions": [
             {
@@ -49793,9 +49359,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0094/negative",
         "negative_regressions": [
             {
@@ -49985,9 +49549,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0352/negative",
         "negative_regressions": [
             {
@@ -50054,9 +49616,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0178/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0178/positive",
@@ -50073,9 +49633,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0179/negative",
         "negative_regressions": [
             {
@@ -50253,9 +49811,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0361/negative",
         "negative_regressions": [
             {
@@ -50319,9 +49875,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0362/negative",
         "negative_regressions": [
             {
@@ -50385,9 +49939,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0363/negative",
         "negative_regressions": [
             {
@@ -50502,9 +50054,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0364/negative",
         "negative_regressions": [
             {
@@ -50568,9 +50118,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0365/negative",
         "negative_regressions": [
             {
@@ -50690,9 +50238,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0366/negative",
         "negative_regressions": [
             {
@@ -50789,9 +50335,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0367/negative",
         "negative_regressions": [
             {
@@ -50889,9 +50433,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0079/negative",
         "negative_regressions": [
             {
@@ -51080,9 +50622,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0027/negative",
         "negative_regressions": [
             {
@@ -51393,9 +50933,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0147/negative",
         "negative_regressions": [
             {
@@ -51640,9 +51178,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0148/negative",
         "negative_regressions": [
             {
@@ -51744,9 +51280,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000241",
@@ -51759,9 +51293,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0421/negative",
         "negative_regressions": [
             {
@@ -52013,9 +51545,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0353/negative",
         "negative_regressions": [
             {
@@ -52127,9 +51657,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0354/negative",
         "negative_regressions": [
             {
@@ -52241,9 +51769,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0355/negative",
         "negative_regressions": [
             {
@@ -52355,9 +51881,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0635/negative",
         "negative_regressions": [
             {
@@ -52469,9 +51993,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0636/negative",
         "negative_regressions": [
             {
@@ -52583,9 +52105,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0626/negative",
         "negative_regressions": [
             {
@@ -52697,9 +52217,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3702/negative",
         "negative_regressions": [
             {
@@ -52939,9 +52457,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0032/negative",
         "negative_regressions": [
             {
@@ -55046,9 +54562,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0078/negative",
         "negative_regressions": [
             {
@@ -55246,9 +54760,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0067/negative",
         "negative_regressions": [
             {
@@ -55427,9 +54939,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0605/negative",
         "negative_regressions": [
             {
@@ -55613,9 +55123,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0604/negative",
         "negative_regressions": [
             {
@@ -55776,9 +55284,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0603/negative",
         "negative_regressions": [
             {
@@ -55939,9 +55445,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0210/negative",
         "negative_regressions": [
             {
@@ -56104,9 +55608,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0061/negative",
         "negative_regressions": [
             {
@@ -56454,9 +55956,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0062/negative",
         "negative_regressions": [
             {
@@ -56661,9 +56161,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0171/negative",
         "negative_regressions": [
             {
@@ -56869,9 +56367,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0085/negative",
         "negative_regressions": [
             {
@@ -57308,9 +56804,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0060/negative",
         "negative_regressions": [
             {
@@ -57515,9 +57009,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0226/negative",
         "negative_regressions": [
             {
@@ -57886,9 +57378,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0039/negative",
         "negative_regressions": [
             {
@@ -58239,9 +57729,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0046/negative",
         "negative_regressions": [
             {
@@ -58580,9 +58068,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0042/negative",
         "negative_regressions": [
             {
@@ -58902,9 +58388,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0050/negative",
         "negative_regressions": [
             {
@@ -59060,9 +58544,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0049/negative",
         "negative_regressions": [
             {
@@ -59826,9 +59308,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0031/negative",
         "negative_regressions": [
             {
@@ -60384,9 +59864,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0033/negative",
         "negative_regressions": [
             {
@@ -61599,9 +61077,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0009/negative",
         "negative_regressions": [
             {
@@ -63022,9 +62498,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0336/negative",
         "negative_regressions": [
             {
@@ -63267,9 +62741,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0181/negative",
         "negative_regressions": [
             {
@@ -63403,9 +62875,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0180/negative",
         "negative_regressions": [
             {
@@ -63587,9 +63057,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0105/negative",
         "negative_regressions": [
             {
@@ -63759,9 +63227,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0107/negative",
         "negative_regressions": [
             {
@@ -63931,9 +63397,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0205/negative",
         "negative_regressions": [
             {
@@ -64102,9 +63566,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0270/negative",
         "negative_regressions": [
             {
@@ -64315,9 +63777,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0550/negative",
         "negative_regressions": [
             {
@@ -64466,9 +63926,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000297",
@@ -64481,9 +63939,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0501/negative",
         "negative_regressions": [
             {
@@ -67350,9 +66806,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0182/negative",
         "negative_regressions": [
             {
@@ -67592,9 +67046,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0183/negative",
         "negative_regressions": [
             {
@@ -67834,9 +67286,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0920/negative",
         "negative_regressions": [
             {
@@ -68008,9 +67458,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4005/negative",
         "negative_regressions": [
             {
@@ -68481,9 +67929,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4002/negative",
         "negative_regressions": [
             {
@@ -68686,9 +68132,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4001/negative",
         "negative_regressions": [
             {
@@ -68810,9 +68254,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3201/negative",
         "negative_regressions": [
             {
@@ -69227,9 +68669,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0066/negative",
         "negative_regressions": [
             {
@@ -69372,9 +68812,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0234/negative",
         "negative_regressions": [
             {
@@ -69585,9 +69023,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0568/negative",
         "negative_regressions": [
             {
@@ -69710,9 +69146,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0063/negative",
         "negative_regressions": [
             {
@@ -69864,9 +69298,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0122/negative",
         "negative_regressions": [
             {
@@ -70077,9 +69509,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0125/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0125/positive",
@@ -70096,9 +69526,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0193/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0193/positive",
@@ -70115,9 +69543,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0215/negative",
         "negative_regressions": [
             {
@@ -70420,9 +69846,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0016/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0016/positive",
@@ -70439,9 +69863,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0280/negative",
         "negative_regressions": [
             {
@@ -70556,9 +69978,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0140/negative",
         "negative_regressions": [
             {
@@ -70790,9 +70210,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0457/negative",
         "negative_regressions": [
             {
@@ -70907,9 +70325,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0456/negative",
         "negative_regressions": [
             {
@@ -71024,9 +70440,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0440/negative",
         "negative_regressions": [
             {
@@ -71229,9 +70643,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000352",
@@ -71244,9 +70656,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0207/negative",
         "negative_regressions": [
             {
@@ -71361,9 +70771,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0007/negative",
         "negative_regressions": [
             {
@@ -71860,9 +71268,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0014/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0014/positive",
@@ -71879,9 +71285,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0014/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0014/positive",
@@ -71898,9 +71302,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0018/negative",
         "negative_regressions": [
             {
@@ -72061,9 +71463,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0022/negative",
         "negative_regressions": [
             {
@@ -72432,9 +71832,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0035/negative",
         "negative_regressions": [
             {
@@ -72740,9 +72138,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0037/negative",
         "negative_regressions": [
             {
@@ -73038,9 +72434,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0068/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0068/positive",
@@ -73057,9 +72451,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0073/negative",
         "negative_regressions": [
             {
@@ -73185,9 +72577,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0077/negative",
         "negative_regressions": [
             {
@@ -73617,9 +73007,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0109/negative",
         "negative_regressions": [
             {
@@ -73780,9 +73168,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0118/negative",
         "negative_regressions": [
             {
@@ -73871,9 +73257,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0121/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0121/positive",
@@ -73890,9 +73274,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0141/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0141/positive",
@@ -73909,9 +73291,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0143/negative",
         "negative_regressions": [
             {
@@ -74095,9 +73475,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0244/negative",
         "negative_regressions": [
             {
@@ -74258,9 +73636,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0269/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0269/positive",
@@ -74277,9 +73653,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0271/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0271/positive",
@@ -74296,9 +73670,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0537/negative",
         "negative_regressions": [
             {
@@ -74626,9 +73998,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0202/negative",
         "negative_regressions": [
             {
@@ -74789,9 +74159,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0349/negative",
         "negative_regressions": [
             {
@@ -74982,9 +74350,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0129/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0129/positive",
@@ -75001,9 +74367,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0142/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0142/positive",
@@ -75020,9 +74384,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0145/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0145/positive",
@@ -75039,9 +74401,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0146/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0146/positive",
@@ -75058,9 +74418,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0374/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0374/positive",
@@ -75077,9 +74435,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0303/negative",
         "negative_regressions": [
             {
@@ -75330,9 +74686,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0432/negative",
         "negative_regressions": [
             {
@@ -75447,9 +74801,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0433/negative",
         "negative_regressions": [
             {
@@ -75564,9 +74916,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0373/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0373/positive",
@@ -75583,9 +74933,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0441/negative",
         "negative_regressions": [
             {
@@ -75796,9 +75144,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0276/negative",
         "negative_regressions": [
             {
@@ -76009,9 +75355,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0277/negative",
         "negative_regressions": [
             {
@@ -76222,9 +75566,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0278/negative",
         "negative_regressions": [
             {
@@ -76435,9 +75777,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0272/negative",
         "negative_regressions": [
             {
@@ -76744,9 +76084,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0455/negative",
         "negative_regressions": [
             {
@@ -76861,9 +76199,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0200/negative",
         "negative_regressions": [
             {
@@ -76978,9 +76314,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0279/negative",
         "negative_regressions": [
             {
@@ -77191,9 +76525,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0216/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0216/positive",
@@ -77210,9 +76542,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0369/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0369/positive",
@@ -77229,9 +76559,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0283/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0283/positive",
@@ -77248,9 +76576,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0285/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0285/positive",
@@ -77267,9 +76593,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0286/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0286/positive",
@@ -77286,9 +76610,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0017/negative",
         "negative_regressions": [
             {
@@ -77803,9 +77125,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0412/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0412/positive",
@@ -77822,9 +77142,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3601/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB3601/positive",
@@ -77841,9 +77159,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4003/negative",
         "negative_regressions": [
             {
@@ -78038,9 +77354,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4004/negative",
         "negative_regressions": [
             {
@@ -78235,9 +77549,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1401/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB1401/positive",
@@ -78254,9 +77566,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0209/negative",
         "negative_regressions": [
             {
@@ -78377,9 +77687,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0006/negative",
         "negative_regressions": [
             {
@@ -78979,9 +78287,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0119/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0119/positive",
@@ -79010,9 +78316,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0275/negative",
         "negative_regressions": [
             {
@@ -79319,9 +78623,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0138/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0138/positive",
@@ -79338,9 +78640,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0248/negative",
         "negative_regressions": [
             {
@@ -79468,9 +78768,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0620/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0620/positive",
@@ -79487,9 +78785,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0334/negative",
         "negative_regressions": [
             {
@@ -79723,9 +79019,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0332/negative",
         "negative_regressions": [
             {
@@ -80017,9 +79311,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0333/negative",
         "negative_regressions": [
             {
@@ -80332,9 +79624,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0372/negative",
         "negative_regressions": [
             {
@@ -80545,9 +79835,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0127/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0127/positive",
@@ -80564,9 +79852,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0028/negative",
         "negative_regressions": [
             {
@@ -80605,9 +79891,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0013/negative",
         "negative_regressions": [
             {
@@ -80828,9 +80112,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0220/negative",
         "negative_regressions": [
             {
@@ -81025,9 +80307,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0222/negative",
         "negative_regressions": [
             {
@@ -81302,9 +80582,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0273/negative",
         "negative_regressions": [
             {
@@ -81563,9 +80841,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0282/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0282/positive",
@@ -81582,9 +80858,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0458/negative",
         "negative_regressions": [
             {
@@ -81795,9 +81069,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0024/negative",
         "negative_regressions": [
             {
@@ -82166,9 +81438,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0235/negative",
         "negative_regressions": [
             {
@@ -82390,9 +81660,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0408/negative",
         "negative_regressions": [
             {
@@ -82469,9 +81737,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0325/negative",
         "negative_regressions": [
             {
@@ -82778,9 +82044,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0368/negative",
         "negative_regressions": [
             {
@@ -82972,9 +82236,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ]
+        "sharepoint_source": "SDTMIG"
     },
     {
         "core-id": "CORE-000585",
@@ -82987,9 +82249,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0313/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0313/positive",
@@ -83006,9 +82266,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0398/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0398/positive",
@@ -83025,9 +82283,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0284/negative",
         "negative_regressions": [
             {
@@ -83141,9 +82397,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0359/negative",
         "negative_regressions": [
             {
@@ -83299,9 +82553,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0043/negative",
         "negative_regressions": [
             {
@@ -83478,9 +82730,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0413/negative",
         "negative_regressions": [
             {
@@ -83632,9 +82882,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB7001/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB7001/positive",
@@ -83651,9 +82899,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4403/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB4403/positive",
@@ -83670,9 +82916,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4404/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB4404/positive",
@@ -83689,9 +82933,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB2601/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB2601/positive",
@@ -83708,9 +82950,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB2501/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB2501/positive",
@@ -83727,9 +82967,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB2502/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB2502/positive",
@@ -83746,9 +82984,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3409/negative",
         "negative_regressions": [
             {
@@ -83874,9 +83110,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3412/negative",
         "negative_regressions": [
             {
@@ -83991,9 +83225,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3410/negative",
         "negative_regressions": [
             {
@@ -84140,9 +83372,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3901/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB3901/positive",
@@ -84159,9 +83389,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4201/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB4201/positive",
@@ -84178,9 +83406,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0608/negative",
         "negative_regressions": [
             {
@@ -84350,9 +83576,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0571/negative",
         "negative_regressions": [
             {
@@ -85185,9 +84409,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0572/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0572/positive",
@@ -85204,9 +84426,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0573/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0573/positive",
@@ -85223,9 +84443,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3001/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB3001/positive",
@@ -85242,9 +84460,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3204/negative",
         "negative_regressions": [
             {
@@ -85639,9 +84855,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB2201/negative",
         "negative_regressions": [
             {
@@ -86053,9 +85267,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0610/negative",
         "negative_regressions": [
             {
@@ -86170,9 +85382,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0906/negative",
         "negative_regressions": [
             {
@@ -86342,9 +85552,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3208/negative",
         "negative_regressions": [
             {
@@ -86478,9 +85686,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3207/negative",
         "negative_regressions": [
             {
@@ -86799,9 +86005,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0607/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB0607/positive",
@@ -86818,9 +86022,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0233/negative",
         "negative_regressions": [
             {
@@ -87083,9 +86285,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3404/negative",
         "negative_regressions": [
             {
@@ -87200,9 +86400,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0370/negative",
         "negative_regressions": [
             {
@@ -87521,9 +86719,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3411/negative",
         "negative_regressions": [
             {
@@ -87638,9 +86834,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3408/negative",
         "negative_regressions": [
             {
@@ -87755,9 +86949,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0911/negative",
         "negative_regressions": [
             {
@@ -87927,9 +87119,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3401/negative",
         "negative_regressions": [
             {
@@ -88100,9 +87290,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3209/negative",
         "negative_regressions": [
             {
@@ -88421,9 +87609,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0908/negative",
         "negative_regressions": [
             {
@@ -88593,9 +87779,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3406/negative",
         "negative_regressions": [
             {
@@ -88822,9 +88006,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0907/negative",
         "negative_regressions": [
             {
@@ -88994,9 +88176,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0910/negative",
         "negative_regressions": [
             {
@@ -89166,9 +88346,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0909/negative",
         "negative_regressions": [
             {
@@ -89338,9 +88516,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB5701/negative",
         "negative_regressions": [
             {
@@ -89501,9 +88677,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0904/negative",
         "negative_regressions": [
             {
@@ -89666,9 +88840,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0912/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB0912/positive",
@@ -89685,9 +88857,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0438/negative",
         "negative_regressions": [
             {
@@ -89802,9 +88972,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0439/negative",
         "negative_regressions": [
             {
@@ -89919,9 +89087,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3103/negative",
         "negative_regressions": [
             {
@@ -89966,9 +89132,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0281/negative",
         "negative_regressions": [
             {
@@ -90131,9 +89295,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1104/negative",
         "negative_regressions": [
             {
@@ -90248,9 +89410,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0444/negative",
         "negative_regressions": [
             {
@@ -90365,9 +89525,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1116/negative",
         "negative_regressions": [
             {
@@ -90482,9 +89640,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1102/negative",
         "negative_regressions": [
             {
@@ -90647,9 +89803,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1106/negative",
         "negative_regressions": [
             {
@@ -90764,9 +89918,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0407/negative",
         "negative_regressions": [
             {
@@ -90913,9 +90065,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0287/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0287/positive",
@@ -90932,9 +90082,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1111/negative",
         "negative_regressions": [
             {
@@ -91096,9 +90244,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB1110/negative",
         "negative_regressions": [
             {
@@ -91213,9 +90359,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0918/negative",
         "negative_regressions": [
             {
@@ -91330,9 +90474,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0174/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0174/positive",
@@ -91349,9 +90491,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB0915/negative",
         "negative_regressions": [
             {
@@ -91466,9 +90606,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB5801/negative",
         "negative_regressions": [
             {
@@ -91629,9 +90767,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB6001/negative",
         "negative_regressions": [
             {
@@ -91803,9 +90939,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0602/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0602/positive",
@@ -91822,9 +90956,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0534/negative",
         "negative_regressions": [],
         "positive_folder_path": "SDTMIG/CG0534/positive",
@@ -91841,9 +90973,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3413/negative",
         "negative_regressions": [
             {
@@ -91958,9 +91088,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0289/negative",
         "negative_regressions": [
             {
@@ -92075,9 +91203,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0232/negative",
         "negative_regressions": [
             {
@@ -92322,9 +91448,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0601/negative",
         "negative_regressions": [
             {
@@ -92598,9 +91722,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0603/negative",
         "negative_regressions": [
             {
@@ -92919,9 +92041,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB4202/negative",
         "negative_regressions": [],
         "positive_folder_path": "FDA Business Rules/FB4202/positive",
@@ -92938,9 +92058,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "FDA Business Rules"
-        ],
+        "sharepoint_source": "FDA Business Rules",
         "negative_folder_path": "FDA Business Rules/FB3203/negative",
         "negative_regressions": [
             {
@@ -93335,9 +92453,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0502/negative",
         "negative_regressions": [
             {
@@ -96433,9 +95549,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0650/negative",
         "negative_regressions": [
             {
@@ -96568,9 +95682,7 @@
         "core_id_startswith_CORE": true,
         "in_cache": true,
         "rule_in_mltple_standards": [],
-        "sharepoint_source": [
-            "SDTMIG"
-        ],
+        "sharepoint_source": "SDTMIG",
         "negative_folder_path": "SDTMIG/CG0376/negative",
         "negative_regressions": [
             {
