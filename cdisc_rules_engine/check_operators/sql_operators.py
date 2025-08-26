@@ -915,31 +915,16 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_incomplete_date(self, other_value):
-        # Ensure target column is lowercase and prefix replaced
-        target = self.replace_prefix(other_value.get("target")).lower()
-        # Build a unique operation name for SQL
-        op_name = f"{target}_is_incomplete_date"
-
-        # SQL logic for incomplete date: not (length = 10 and not null)
-        def sql():
-            return f"""
-                CASE WHEN NOT (LENGTH({target}) = 10 AND {target} IS NOT NULL) THEN TRUE ELSE FALSE END
-            """
-
-        return self._do_check_operator(op_name, sql)
+        return ~self.is_complete_date(other_value)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_complete_date(self, other_value):
         target = self.replace_prefix(other_value.get("target")).lower()
         op_name = f"{target}_is_complete_date"
-
-        def sql():
-            return f"""
-                CASE WHEN LENGTH({target}) = 10 AND {target} IS NOT NULL THEN TRUE ELSE FALSE END
-            """
-
-        return self._do_check_operator(op_name, sql)
+        return self._do_check_operator(
+            op_name, lambda: f"CASE WHEN LENGTH({target}) = 10 AND {target} IS NOT NULL THEN TRUE ELSE FALSE END"
+        )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)

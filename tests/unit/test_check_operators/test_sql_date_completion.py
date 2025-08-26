@@ -1,4 +1,5 @@
 import pytest
+import pandas as pd
 from cdisc_rules_engine.check_operators.sql_operators import PostgresQLOperators
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 
@@ -21,7 +22,7 @@ def test_is_complete_date_sql(data, expected_complete):
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
     result_complete = sql_ops.is_complete_date({"target": "target"})
-    assert list(result_complete) == expected_complete
+    assert result_complete.equals(pd.Series(expected_complete))
 
 
 @pytest.mark.parametrize(
@@ -42,4 +43,4 @@ def test_is_incomplete_date_sql(data, expected_incomplete):
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
     result_incomplete = sql_ops.is_incomplete_date({"target": "target"})
-    assert list(result_incomplete) == expected_incomplete
+    assert result_incomplete.equals(pd.Series(expected_incomplete))
