@@ -1152,19 +1152,41 @@ class PostgresQLOperators(BaseType):
     @type_operator(FIELD_DATAFRAME)
     def present_on_multiple_rows_within(self, other_value: dict):
         """
-        The operator ensures that the target is present on multiple rows
-        within a group_by column. The dataframe is grouped by a certain column
-        and the check is applied to each group.
+        Checks if a target value is present on multiple rows within a group.
         """
-        """target = self.replace_prefix(other_value.get("target"))
-        min_count: int = other_value.get("comparator") or 1
-        group_by_column = self.replace_prefix(other_value.get("within"))
-        grouped = self.validation_df.groupby([group_by_column, target])
-        meta = (target, bool)
-        results = grouped.apply(lambda x: self.validate_series_length(x, target, min_count), meta=meta)
-        uuid = str(uuid4())
-        return self.validation_df.merge(results.rename(uuid).reset_index(), on=[group_by_column, target])[uuid]"""
-        raise NotImplementedError()
+        target_column = other_value.get("target").lower()
+        min_count = other_value.get("comparator", 1)  # Default to 1 if not provided
+        within_column = other_value.get("within").lower()
+
+        op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
+
+        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, op_name)
+
+        if not exists:
+            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
+
+            # Construct the UPDATE query. This uses a window function to count
+            # occurrences within each group and then updates each row accordingly.
+            query = f"""
+                UPDATE {db_table} AS t
+                SET {db_column} = sub.is_present
+                FROM (
+                    SELECT
+                        id,
+                        (COUNT(*) OVER (PARTITION BY {within_column}, {target_column})) > {min_count} AS is_present
+                    FROM {db_table}
+                ) AS sub
+                WHERE t.id = sub.id;
+            """
+
+            # Execute the command to add the new column, then the command to update it
+            self.sql_data_service.pgi.execute_many(
+                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            )
+
+        # 5. Fetch the results from the new column to return to the Venmo process
+        result_series = self._fetch_for_venmo(db_column)
+        return result_series.sort_index()
 
     def validate_series_length(self, data: DatasetInterface, target: str, min_length: int):
         return len(data) > min_length

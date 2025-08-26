@@ -70060,7 +70060,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": ""
+                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, dscat)) > None AS is...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -70148,7 +70148,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": ""
+                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, dscat)) > None AS is...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -77113,7 +77113,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": ""
+                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, relid)) > None AS is...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -77164,7 +77164,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": ""
+                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, relid)) > None AS is...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
