@@ -85,14 +85,38 @@ This installs `pre-commit` in your `.git/hooks` directory.
 
 ### **Installing dependencies**
 
-These steps should be run before running any tests or core commands using the non compiled version.
+These steps should be run before running any tests or core commands using the non-compiled version.
 
-- Create a virtual environment:
+- **Option 1: Using `pyenv` (Recommended)**
 
-  `python -m venv <virtual_environment_name>`
+  This approach is ideal for managing multiple projects that require different Python versions.
 
-NOTE: if you have multiple versions of python on your machine, you can call python 3.12 for the virtual environment's creation instead of the above command:
-`python3.12 -m venv <virtual_environment_name>`
+  1. **Install the required Python version:**
+
+     ```bash
+     pyenv install 3.12.5
+     ```
+
+  2. **Create and activate a virtual environment for this project:**
+     ```bash
+     pyenv virtualenv 3.12.5 venv_cdisc
+     pyenv local venv_cdisc
+     ```
+     This will create a new virtual environment named `venv_cdisc` based on Python 3.12.5 and automatically activate it for this project directory.
+
+- **Option 2: Using standard `venv`**
+
+  This approach works if you have Python 3.12 as your default system version or if you prefer to manage virtual environments manually.
+
+  1. **Create a virtual environment:**
+     `python -m venv <virtual_environment_name>`
+
+     NOTE: if you have multiple versions of python on your machine, you can call python 3.12 for the virtual environment's creation instead of the above command:
+     `python3.12 -m venv <virtual_environment_name>`
+
+  2. **Activate the virtual environment:**
+     `source ./<virtual_environment_name>/bin/activate` -- on Linux/Mac
+     `.\<virtual_environment_name>\Scripts\Activate` -- on Windows
 
 - Create the required `.env` files by duplicating the example files:
   `./.env.example`
@@ -102,11 +126,6 @@ NOTE: if you have multiple versions of python on your machine, you can call pyth
 - Ensure you have the docker desktop app running and then run these commands to set-up docker for this environment:
   `cd ./environment/local`
   `docker-compose up -d`
-
-- Activate the virtual environment:
-
-`source ./<virtual_environment_name>/bin/activate` -- on linux/mac </br>
-`.\<virtual_environment_name>\Scripts\Activate` -- on windows
 
 - Install the requirements.
 
