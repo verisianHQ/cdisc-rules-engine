@@ -130,16 +130,14 @@ class PostgresQLOperators(BaseType):
         result = not self._exists(target_column)
         return self._do_check_operator(f"""{target_column}_notexists""", lambda: "TRUE" if result else "FALSE")
 
-    def _check_equality(
+    def _check_equality_literal(
         self,
-        row,
-        target,
-        comparator,
-        value_is_literal: bool = False,
-        value_is_reference: bool = False,
+        original_column,
+        value,
+        invert: bool = False,
         case_insensitive: bool = False,
         type_insensitive: bool = False,
-    ) -> bool:
+    ):
         """
         Equality checks work slightly differently for clinical datasets.
         See truth table below:
@@ -148,145 +146,189 @@ class PostgresQLOperators(BaseType):
         equal_to       "" or null  Populated   False
         equal_to       Populated   "" or null  False
         equal_to       Populated   Populated   A == B
-        """
-        if value_is_reference:
-            dynamic_column_name = row[comparator]
-            comparison_data = row[dynamic_column_name]
-        else:
-            comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
-        both_null = (comparison_data == "" or comparison_data is None) & (row[target] == "" or row[target] is None)
-        if both_null:
-            return False
-        if type_insensitive:
-            target_val = self._custom_str_conversion(row[target])
-            comparison_val = self._custom_str_conversion(comparison_data)
-        else:
-            target_val = row[target]
-            comparison_val = comparison_data
-        if case_insensitive:
-            target_val = row[target].lower() if row[target] else None
-            comparison_val = comparison_data.lower() if comparison_data else None
-            return target_val == comparison_val
-        return target_val == comparison_val
-
-    def _check_inequality(
-        self,
-        row,
-        target,
-        comparator,
-        value_is_literal: bool = False,
-        value_is_reference: bool = False,
-        case_insensitive: bool = False,
-        type_insensitive: bool = False,
-    ) -> bool:
-        """
-        Equality checks work slightly differently for clinical datasets.
-        See truth table below:
-        Operator       --A         --B         Outcome
         not_equal_to   "" or null  "" or null  False
         not_equal_to   "" or null  Populated   True
         not_equal_to   Populated   "" or null  True
         not_equal_to   Populated   Populated   A != B
         """
-        if value_is_reference:
-            dynamic_column_name = row[comparator]
-            comparison_data = row[dynamic_column_name]
-        else:
-            comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
-        both_null = (comparison_data == "" or comparison_data is None) & (row[target] == "" or row[target] is None)
-        if both_null:
-            return False
-        if type_insensitive:
-            target_val = self._custom_str_conversion(row[target])
-            comparison_val = self._custom_str_conversion(comparison_data)
-        else:
-            target_val = row[target]
-            comparison_val = comparison_data
+        column = original_column
         if case_insensitive:
-            target_val = row[target].lower() if row[target] else None
-            comparison_val = comparison_data.lower() if comparison_data else None
-            return target_val != comparison_val
-        return target_val != comparison_val
+            column = f"""LOWER({column})"""
+            if isinstance(value, str):
+                value = value.lower()
+
+        if type_insensitive:
+            column = f"""CAST({column} AS TEXT)"""
+
+        def sql():
+            if value is None or value == "":
+                if invert:
+                    query = f"""{original_column} IS NOT NULL AND {column} != ''"""
+                else:
+                    query = "FALSE"
+            else:
+                query = f"""{original_column} IS NOT NULL AND {column} = '{value}'"""
+                if invert:
+                    query = f"NOT ({query})"
+
+            return query
+
+        return self._do_check_operator(f"{original_column}={value}_{invert}_{case_insensitive}_{type_insensitive}", sql)
+
+    def _check_equality_comparison(
+        self,
+        original_column,
+        original_comparison,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+        """
+        column = original_column
+        comparison = original_comparison
+        if case_insensitive:
+            column = f"""LOWER({column})"""
+            comparison = f"""LOWER({comparison})"""
+
+        if type_insensitive:
+            column = f"""CAST({column} AS TEXT)"""
+            comparison = f"""CAST({comparison} AS TEXT)"""
+
+        def sql():
+            if invert:
+                return f"""CASE 
+                        WHEN {original_column} IS NULL OR {column} = ''
+                            THEN {original_comparison} IS NULL OR {comparison} = ''
+                        WHEN {original_comparison} IS NULL OR {comparison} = ''
+                            THEN TRUE
+                        ELSE {column} != {comparison}
+                    END"""
+            else:
+                return f"""CASE 
+                        WHEN {original_column} IS NULL OR {column} = ''
+                            THEN FALSE
+                        WHEN {original_comparison} IS NULL OR {comparison} = ''
+                            THEN FALSE
+                        ELSE {column} = {comparison}
+                    END"""
+
+        return self._do_check_operator(
+            f"{original_column}={original_comparison}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
+
+    def _check_equality_reference(
+        self,
+        original_column,
+        original_comparison,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+
+        This method implements equality testing by reference, ie you specifiy a pivot
+        column, that column is then used to look up which other column to compare
+        that row against. The way we handle that in SQL is by finding out all of the
+        columns that could be referenced (the DISTINCT values of the pivot column),
+        and then generating a CASE statement that checks each of those values.
+        """
+        column = original_column
+
+        # Find all of the values of the pivot column -> all columns to compare against
+        self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {original_comparison} col FROM {self.table_id};")
+        comparison_values = self.sql_data_service.pgi.fetch_all()
+        comparison_values = [item["col"].lower() for item in comparison_values]
+        comparison_values = filter(self._exists, comparison_values)
+
+        if case_insensitive:
+            column = f"""LOWER({column})"""
+
+        if type_insensitive:
+            column = f"""CAST({column} AS TEXT)"""
+
+        # This builds up the case statement for a simple column comparison
+        def single_comparison_sql(original_c):
+            c = original_c
+            if case_insensitive:
+                c = f"""LOWER({c})"""
+
+            if type_insensitive:
+                c = f"""CAST({c} AS TEXT)"""
+
+            if invert:
+                return f"""CASE 
+                        WHEN {original_column} IS NULL OR {column} = ''
+                            THEN {original_c} IS NULL OR {c} = ''
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN TRUE
+                        ELSE {column} != {c}
+                    END"""
+            else:
+                return f"""CASE 
+                        WHEN {original_column} IS NULL OR {column} = ''
+                            THEN FALSE
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN FALSE
+                        ELSE {column} = {c}
+                    END"""
+
+        def sql():
+            sql = "CASE "
+            # Build a CASE statement for each possible column
+            for c in comparison_values:
+                sql += f"WHEN LOWER({original_comparison}) = '{c.lower()}' THEN ({single_comparison_sql(c)}) "
+            sql += "ELSE FALSE END"
+            return sql
+
+        return self._do_check_operator(
+            f"{original_column}_ref=_{original_comparison}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
+        column = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         value_is_reference = other_value.get("value_is_reference", False)
+        case_insensitive = other_value.get("case_insensitive", False)
         type_insensitive = other_value.get("type_insensitive", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_equality(
-                row,
-                target,
-                comparator,
-                value_is_literal,
-                value_is_reference,
-                type_insensitive=type_insensitive,
-            ),
-            axis=1,
-            meta=(None, "bool"),
-        ).reset_index(drop=True)
+        invert = other_value.get("invert", False)
+        comparator = other_value.get("comparator")
+        if not value_is_literal:
+            comparator = self.replace_prefix(comparator)
+        if value_is_reference:
+            return self._check_equality_reference(
+                column, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
+
+        if value_is_literal or not isinstance(comparator, str) or not self._exists(comparator):
+            return self._check_equality_literal(
+                column, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
+        else:
+            return self._check_equality_comparison(
+                column, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def equal_to_case_insensitive(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_equality(row, target, comparator, value_is_literal, case_insensitive=True),
-            axis=1,
-        )
+        return self.equal_to({**other_value, "case_insensitive": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def not_equal_to_case_insensitive(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_inequality(row, target, comparator, value_is_literal, case_insensitive=True),
-            axis=1,
-        )
+        return self.not_equal_to({**other_value, "case_insensitive": True, "invert": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def not_equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        value_is_reference = other_value.get("value_is_reference", False)
-        type_insensitive = other_value.get("type_insensitive", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_inequality(
-                row,
-                target,
-                comparator,
-                value_is_literal,
-                value_is_reference,
-                type_insensitive=type_insensitive,
-            ),
-            axis=1,
-            meta=(None, "bool"),
-        ).reset_index(drop=True)
+        return self.equal_to({**other_value, "invert": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
