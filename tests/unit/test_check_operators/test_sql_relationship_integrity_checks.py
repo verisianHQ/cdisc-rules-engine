@@ -10,7 +10,6 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 @pytest.mark.parametrize(
     "data, comparator, within, expected_result",
     [
-        # Using the exact data from the original test case
         (
             {
                 "USUBJID": [1, 1, 1, 2, 2, 2],
@@ -35,13 +34,9 @@ def test_present_on_multiple_rows_within(data, comparator, within, expected_resu
     Unit test for the SQL-based present_on_multiple_rows_within operator.
     """
     table_name = "test_present_on_multiple_rows"
-    # Set up the data service to simulate the data being in a Postgres table
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    # Instantiate the operators class
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
-    # Execute the operator
     result = sql_ops.present_on_multiple_rows_within({"target": "target", "comparator": comparator, "within": within})
-    # Assert that the result matches the expected outcome
     assert result.equals(pd.Series(expected_result))
 
 

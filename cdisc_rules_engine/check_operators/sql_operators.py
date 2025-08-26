@@ -1155,7 +1155,7 @@ class PostgresQLOperators(BaseType):
         Checks if a target value is present on multiple rows within a group.
         """
         target_column = other_value.get("target").lower()
-        min_count = other_value.get("comparator", 1)  # Default to 1 if not provided
+        min_count = other_value.get("comparator", 1)
         within_column = other_value.get("within").lower()
 
         op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
@@ -1184,7 +1184,6 @@ class PostgresQLOperators(BaseType):
                 queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
             )
 
-        # 5. Fetch the results from the new column to return to the Venmo process
         result_series = self._fetch_for_venmo(db_column)
         return result_series.sort_index()
 
