@@ -65,9 +65,6 @@ def test_has_different_values(data, expected_result):
     ],
 )
 def test_has_same_values(data, expected_result):
-    """
-    Unit test for the SQL-based has_same_values operator.
-    """
     table_name = "test_has_same_values"
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
