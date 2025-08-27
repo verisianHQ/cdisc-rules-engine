@@ -35,7 +35,7 @@ jobs:
         run: |
           python -m pytest tests/unit/ --cov=cdisc_rules_engine --cov-fail-under=75
           python -m pytest tests/QARegressionTests/
-        end:
+        env:
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           DATABASE_NAME: coredb
