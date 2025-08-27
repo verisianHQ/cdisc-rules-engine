@@ -1187,9 +1187,9 @@ class PostgresQLOperators(BaseType):
         the next enumerated variable has index 1 (VARIABLE1).
         """
         """variable_name: str = self.replace_prefix(other_value.get("target"))
-        df = self.validation_df
-        pattern = rf"^{re.escape(variable_name)}(\d*)$"
-        matching_columns = [col for col in df.columns if re.match(pattern, col)]
+        df = self.validation_df"""
+        # pattern = rf"^{re.escape(variable_name)}(\d*)$"
+        """matching_columns = [col for col in df.columns if re.match(pattern, col)]
         if not matching_columns:
             return pd.Series([False] * len(df))  # Return a series of False values if no matching columns
         sorted_columns = sorted(matching_columns, key=lambda x: (len(x), x))
