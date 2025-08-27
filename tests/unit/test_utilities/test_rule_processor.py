@@ -3,6 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
+from conftest import mock_data_service
 
 from cdisc_rules_engine.constants.classes import (
     EVENTS,
@@ -22,8 +23,6 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
     InMemoryCacheService,
 )
 from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
-
-from ...conftest import mock_data_service
 
 
 @pytest.mark.parametrize(

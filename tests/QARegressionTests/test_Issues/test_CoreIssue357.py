@@ -3,8 +3,7 @@ import subprocess
 import unittest
 
 import pytest
-
-from ...conftest import get_python_executable
+from conftest import get_python_executable
 
 
 @pytest.mark.regression

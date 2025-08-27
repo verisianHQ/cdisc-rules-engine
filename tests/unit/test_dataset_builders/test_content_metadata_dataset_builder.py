@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 
 import pandas as pd
 import pytest
+from conftest import mock_data_service
 
 from cdisc_rules_engine.dataset_builders.content_metadata_dataset_builder import (
     ContentMetadataDatasetBuilder,
@@ -17,8 +18,6 @@ from cdisc_rules_engine.services.cache.in_memory_cache_service import (
 )
 from cdisc_rules_engine.services.data_services import DummyDataService
 from cdisc_rules_engine.utilities.rule_processor import RuleProcessor
-
-from ...conftest import mock_data_service
 
 test_data = {
     "datasets": [

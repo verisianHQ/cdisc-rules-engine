@@ -3,6 +3,7 @@ import subprocess
 
 import openpyxl
 import pytest
+from conftest import get_python_executable
 from QARegressionTests.globals import (
     dataset_details_sheet,
     dataset_sheet_dataset_column,
@@ -11,8 +12,6 @@ from QARegressionTests.globals import (
     rules_report_sheet,
     rules_sheet_rule_status_column,
 )
-
-from ...conftest import get_python_executable
 
 """ These tests utilizes a dataset
 to validate successful working CG0019. The dataset

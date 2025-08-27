@@ -34,11 +34,17 @@ jobs:
       - name: Install requirements
         run: |
           pip install -r requirements.txt
-      - name: Running Tests
+      - name: Running unit tests
         # Clearly we need to get this back up to 75%
-        run: |
-          python -m pytest tests/unit/ --cov=cdisc_rules_engine --cov-fail-under=65
-          python -m pytest tests/QARegressionTests/
+        run: python -m pytest tests/unit/ --cov=cdisc_rules_engine --cov-fail-under=65
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          DATABASE_NAME: coredb
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: postgres
+      - name: Running QA tests
+        run: python -m pytest tests/QARegressionTests/
         env:
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432

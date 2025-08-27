@@ -4,8 +4,7 @@ import subprocess
 import unittest
 
 import pytest
-
-from ...conftest import get_python_executable
+from conftest import get_python_executable
 
 """This regression test is for automating the validation of acceptancce criteria
 which is "For any variables that come from datasets and appear in the results,

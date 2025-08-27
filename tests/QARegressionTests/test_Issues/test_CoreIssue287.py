@@ -3,9 +3,8 @@ import subprocess
 import unittest
 
 import pytest
+from conftest import get_python_executable
 from openpyxl import load_workbook
-
-from ...conftest import get_python_executable
 
 
 @pytest.mark.regression
