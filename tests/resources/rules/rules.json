@@ -7171,7 +7171,7 @@
         "negative_folder_path": "SDTMIG/CG0089/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0089/negative/03": {
+                "SDTMIG/CG0089/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -13009,13 +13009,13 @@
         "negative_folder_path": "SDTMIG/CG0468/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0468/negative/03": {
+                "SDTMIG/CG0468/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0468/negative/02": {
+                "SDTMIG/CG0468/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -13084,13 +13084,13 @@
         "positive_folder_path": "SDTMIG/CG0468/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0468/positive/03": {
+                "SDTMIG/CG0468/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0468/positive/02": {
+                "SDTMIG/CG0468/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -13909,7 +13909,7 @@
         "negative_folder_path": "SDTMIG/CG0659/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0659/negative/03": {
+                "SDTMIG/CG0659/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14042,13 +14042,13 @@
         "positive_folder_path": "SDTMIG/CG0659/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0659/positive/03": {
+                "SDTMIG/CG0659/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0659/positive/02": {
+                "SDTMIG/CG0659/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14146,13 +14146,13 @@
         "positive_folder_path": "SDTMIG/CG0660/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0660/positive/03": {
+                "SDTMIG/CG0660/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0660/positive/02": {
+                "SDTMIG/CG0660/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14565,13 +14565,13 @@
         "negative_folder_path": "SDTMIG/CG0658/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0658/negative/03": {
+                "SDTMIG/CG0658/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0658/negative/02": {
+                "SDTMIG/CG0658/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14628,13 +14628,13 @@
         "positive_folder_path": "SDTMIG/CG0658/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0658/positive/03": {
+                "SDTMIG/CG0658/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0658/positive/02": {
+                "SDTMIG/CG0658/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14704,13 +14704,13 @@
         "negative_folder_path": "SDTMIG/CG0657/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0657/negative/03": {
+                "SDTMIG/CG0657/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0657/negative/02": {
+                "SDTMIG/CG0657/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14790,13 +14790,13 @@
         "positive_folder_path": "SDTMIG/CG0657/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0657/positive/03": {
+                "SDTMIG/CG0657/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0657/positive/02": {
+                "SDTMIG/CG0657/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -14979,7 +14979,7 @@
         "negative_folder_path": "SDTMIG/CG0655/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0655/negative/03": {
+                "SDTMIG/CG0655/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -15130,13 +15130,13 @@
         "positive_folder_path": "SDTMIG/CG0655/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0655/positive/03": {
+                "SDTMIG/CG0655/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0655/positive/02": {
+                "SDTMIG/CG0655/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -15229,13 +15229,13 @@
         "negative_folder_path": "SDTMIG/CG0656/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0656/negative/03": {
+                "SDTMIG/CG0656/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0656/negative/02": {
+                "SDTMIG/CG0656/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -15315,13 +15315,13 @@
         "positive_folder_path": "SDTMIG/CG0656/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0656/positive/03": {
+                "SDTMIG/CG0656/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0656/positive/02": {
+                "SDTMIG/CG0656/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -46362,7 +46362,7 @@
         "positive_folder_path": "SDTMIG/CG0029/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0029/positive/03": {
+                "SDTMIG/CG0029/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47053,13 +47053,13 @@
         "negative_folder_path": "SDTMIG/CG0512/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0512/negative/03": {
+                "SDTMIG/CG0512/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0512/negative/02": {
+                "SDTMIG/CG0512/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47139,13 +47139,13 @@
         "positive_folder_path": "SDTMIG/CG0512/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0512/positive/03": {
+                "SDTMIG/CG0512/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0512/positive/02": {
+                "SDTMIG/CG0512/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47238,13 +47238,13 @@
         "negative_folder_path": "SDTMIG/CG0514/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0514/negative/03": {
+                "SDTMIG/CG0514/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0514/negative/02": {
+                "SDTMIG/CG0514/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47324,13 +47324,13 @@
         "positive_folder_path": "SDTMIG/CG0514/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0514/positive/03": {
+                "SDTMIG/CG0514/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0514/positive/02": {
+                "SDTMIG/CG0514/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47423,13 +47423,13 @@
         "negative_folder_path": "SDTMIG/CG0516/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0516/negative/03": {
+                "SDTMIG/CG0516/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0516/negative/02": {
+                "SDTMIG/CG0516/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47509,13 +47509,13 @@
         "positive_folder_path": "SDTMIG/CG0516/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0516/positive/03": {
+                "SDTMIG/CG0516/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0516/positive/02": {
+                "SDTMIG/CG0516/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47608,13 +47608,13 @@
         "negative_folder_path": "SDTMIG/CG0528/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0528/negative/03": {
+                "SDTMIG/CG0528/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0528/negative/02": {
+                "SDTMIG/CG0528/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47671,13 +47671,13 @@
         "positive_folder_path": "SDTMIG/CG0528/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0528/positive/03": {
+                "SDTMIG/CG0528/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0528/positive/02": {
+                "SDTMIG/CG0528/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47747,13 +47747,13 @@
         "negative_folder_path": "SDTMIG/CG0535/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0535/negative/03": {
+                "SDTMIG/CG0535/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0535/negative/02": {
+                "SDTMIG/CG0535/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -47819,19 +47819,19 @@
         "positive_folder_path": "SDTMIG/CG0535/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0535/positive/03": {
+                "SDTMIG/CG0535/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0535/positive/02": {
+                "SDTMIG/CG0535/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0535/positive/01": {
+                "SDTMIG/CG0535/positive/01": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -48038,7 +48038,7 @@
         "positive_folder_path": "SDTMIG/CG0536/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0536/positive/03": {
+                "SDTMIG/CG0536/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -48470,13 +48470,13 @@
         "negative_folder_path": "SDTMIG/CG0545/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0545/negative/03": {
+                "SDTMIG/CG0545/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0545/negative/02": {
+                "SDTMIG/CG0545/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -48556,13 +48556,13 @@
         "positive_folder_path": "SDTMIG/CG0545/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0545/positive/03": {
+                "SDTMIG/CG0545/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0545/positive/02": {
+                "SDTMIG/CG0545/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -51326,7 +51326,7 @@
         "negative_folder_path": "SDTMIG/CG0027/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0027/negative/03": {
+                "SDTMIG/CG0027/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -58862,7 +58862,7 @@
         "negative_folder_path": "SDTMIG/CG0042/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0042/negative/02": {
+                "SDTMIG/CG0042/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -59112,7 +59112,7 @@
         "positive_folder_path": "SDTMIG/CG0042/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0042/positive/02": {
+                "SDTMIG/CG0042/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -64290,7 +64290,7 @@
         "positive_folder_path": "SDTMIG/CG0205/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0205/positive/02": {
+                "SDTMIG/CG0205/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -64571,13 +64571,13 @@
         "negative_folder_path": "SDTMIG/CG0550/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0550/negative/03": {
+                "SDTMIG/CG0550/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0550/negative/02": {
+                "SDTMIG/CG0550/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -64644,13 +64644,13 @@
         "positive_folder_path": "SDTMIG/CG0550/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0550/positive/03": {
+                "SDTMIG/CG0550/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0550/positive/02": {
+                "SDTMIG/CG0550/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -74803,7 +74803,7 @@
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0537/positive/02": {
+                "SDTMIG/CG0537/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -78492,7 +78492,7 @@
         "positive_folder_path": "SDTMIG/CG0209/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0209/positive/02": {
+                "SDTMIG/CG0209/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -83678,7 +83678,7 @@
         "positive_folder_path": "SDTMIG/CG0413/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0413/positive/02": {
+                "SDTMIG/CG0413/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -96559,13 +96559,13 @@
         "negative_folder_path": "SDTMIG/CG0650/negative",
         "negative_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0650/negative/03": {
+                "SDTMIG/CG0650/negative/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0650/negative/02": {
+                "SDTMIG/CG0650/negative/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
@@ -96654,13 +96654,13 @@
         "positive_folder_path": "SDTMIG/CG0650/positive",
         "positive_regressions": [
             {
-                "core-sharepoint/SDTMIG/CG0650/positive/03": {
+                "SDTMIG/CG0650/positive/03": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
             },
             {
-                "core-sharepoint/SDTMIG/CG0650/positive/02": {
+                "SDTMIG/CG0650/positive/02": {
                     "test_case_xslx_file": null,
                     "engine_regression": null
                 }
