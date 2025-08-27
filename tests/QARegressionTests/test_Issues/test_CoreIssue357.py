@@ -1,8 +1,10 @@
 import os
 import subprocess
 import unittest
+
 import pytest
-from conftest import get_python_executable
+
+from ...conftest import get_python_executable
 
 
 @pytest.mark.regression
@@ -28,11 +30,7 @@ class TerminalCommandTestCase(unittest.TestCase):
 
         # Get the latest created Excel file
         files = os.listdir()
-        excel_files = [
-            file
-            for file in files
-            if file.startswith("CORE-Report-") and file.endswith(".xlsx")
-        ]
+        excel_files = [file for file in files if file.startswith("CORE-Report-") and file.endswith(".xlsx")]
         cls.excel_file_path = sorted(excel_files)[-1]
 
     def test_command_execution(self):

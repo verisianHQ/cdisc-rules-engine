@@ -1,14 +1,16 @@
-import subprocess
 import os
+import subprocess
+
 import openpyxl
 import pytest
-from conftest import get_python_executable
 from QARegressionTests.globals import (
     issue_datails_sheet,
     issue_sheet_record_column,
-    issue_sheet_variable_column,
     issue_sheet_values_column,
+    issue_sheet_variable_column,
 )
+
+from ...conftest import get_python_executable
 
 
 @pytest.mark.regression
@@ -45,9 +47,7 @@ def test_negative_dataset():
     # Remove None values using list comprehension
     record_values = [value for value in record_values if value is not None]
     variables_values = [value for value in variables_values if value is not None]
-    values_column_values = [
-        value for value in values_column_values if value is not None
-    ]
+    values_column_values = [value for value in values_column_values if value is not None]
 
     # Perform the assertion
     # Ensure only two negative values are caught
@@ -108,9 +108,7 @@ def test_positive_dataset():
     # Remove None values using list comprehension
     record_values = [value for value in record_values if value is not None]
     variables_values = [value for value in variables_values if value is not None]
-    values_column_values = [
-        value for value in values_column_values if value is not None
-    ]
+    values_column_values = [value for value in values_column_values if value is not None]
 
     # Perform the assertion
     # Ensure only two negative values are caught

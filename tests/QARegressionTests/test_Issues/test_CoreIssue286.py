@@ -1,8 +1,10 @@
-import subprocess
 import os
+import subprocess
+
 import openpyxl
 import pytest
-from conftest import get_python_executable
+
+from ...conftest import get_python_executable
 
 
 @pytest.mark.regression
