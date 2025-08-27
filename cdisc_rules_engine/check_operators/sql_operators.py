@@ -199,7 +199,7 @@ class PostgresQLOperators(BaseType):
 
         def sql():
             if invert:
-                return f"""CASE 
+                return f"""CASE
                         WHEN {original_column} IS NULL OR {column} = ''
                             THEN {original_comparison} IS NULL OR {comparison} = ''
                         WHEN {original_comparison} IS NULL OR {comparison} = ''
@@ -207,7 +207,7 @@ class PostgresQLOperators(BaseType):
                         ELSE {column} != {comparison}
                     END"""
             else:
-                return f"""CASE 
+                return f"""CASE
                         WHEN {original_column} IS NULL OR {column} = ''
                             THEN FALSE
                         WHEN {original_comparison} IS NULL OR {comparison} = ''
@@ -261,7 +261,7 @@ class PostgresQLOperators(BaseType):
                 c = f"""CAST({c} AS TEXT)"""
 
             if invert:
-                return f"""CASE 
+                return f"""CASE
                         WHEN {original_column} IS NULL OR {column} = ''
                             THEN {original_c} IS NULL OR {c} = ''
                         WHEN {original_c} IS NULL OR {c} = ''
@@ -269,7 +269,7 @@ class PostgresQLOperators(BaseType):
                         ELSE {column} != {c}
                     END"""
             else:
-                return f"""CASE 
+                return f"""CASE
                         WHEN {original_column} IS NULL OR {column} = ''
                             THEN FALSE
                         WHEN {original_c} IS NULL OR {c} = ''
