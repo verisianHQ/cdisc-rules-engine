@@ -80,6 +80,8 @@ EXPECTED_ROW_COUNTS = {
     "SDTM_CT_2025-03-28.xlsx": 44856,
 }
 
+SDTM_CODELIST_RANGE = ["2025"]
+
 # change to True for all files, otherwise all ADaM and latest SDTM file will be used
 TEST_ALL_FILES = False
 
@@ -115,7 +117,7 @@ def _load_all_codelists(codelists_dir_str, test_subset=False):
         for f in files:
             if "ADaM" in f.name:
                 subset_files.append(f)
-            elif "SDTM" in f.name and "2025" in f.name:
+            elif "SDTM" in f.name and any([y in f.name for y in SDTM_CODELIST_RANGE]):
                 subset_files.append(f)
         files = subset_files
 
@@ -156,7 +158,7 @@ def test_row_counts(codelist_cache):
     """Test that each file returns the expected number of rows."""
     for file_path, (reader, data) in codelist_cache.items():
         if reader is None:
-            continue
+            pytest.fail(f"Reader is None for {file_path.name}")
 
         expected_count = EXPECTED_ROW_COUNTS.get(file_path.name)
         if expected_count is not None:
@@ -171,7 +173,7 @@ def test_keys_structure(codelist_cache):
     """Test that all rows have the correct keys in the correct order."""
     for file_path, (reader, data) in codelist_cache.items():
         if reader is None:
-            continue
+            pytest.fail(f"Reader is None for {file_path.name}")
 
         if len(data) == 0:
             continue
@@ -190,7 +192,7 @@ def test_metadata_extraction(codelist_cache):
     """Test that metadata is correctly extracted from all files."""
     for _, (reader, _) in codelist_cache.items():
         if reader is None:
-            continue
+            pytest.fail("Reader is None for a codelist file")
 
         assert reader.metadata.standard_type in ["ADaM", "SDTM"]
         assert reader.metadata.version_date is not None
@@ -201,7 +203,7 @@ def test_data_values_populated(codelist_cache):
     """Test that data values are correctly populated."""
     for file_path, (reader, data) in codelist_cache.items():
         if reader is None:
-            continue
+            pytest.fail(f"Reader is None for {file_path.name}")
 
         if len(data) == 0:
             continue
