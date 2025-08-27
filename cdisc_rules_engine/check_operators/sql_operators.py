@@ -1160,14 +1160,10 @@ class PostgresQLOperators(BaseType):
 
         op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
 
-        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, op_name)
-
-        if not exists:
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
-
+        def generate_update_query(db_table: str, db_column: str) -> str:
             # Construct the UPDATE query. This uses a window function to count
             # occurrences within each group and then updates each row accordingly.
-            query = f"""
+            return f"""
                 UPDATE {db_table} AS t
                 SET {db_column} = sub.is_present
                 FROM (
@@ -1179,16 +1175,9 @@ class PostgresQLOperators(BaseType):
                 WHERE t.id = sub.id;
             """
 
-            # Execute the command to add the new column, then the command to update it
-            self.sql_data_service.pgi.execute_many(
-                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
-            )
+        result_series = self._do_complex_check_operator(op_name, generate_update_query)
 
-        result_series = self._fetch_for_venmo(db_column)
         return result_series.sort_index()
-
-    def validate_series_length(self, data: DatasetInterface, target: str, min_length: int):
-        return len(data) > min_length
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1538,17 +1527,24 @@ class PostgresQLOperators(BaseType):
         return_series = pd.Series(data={item["id"] - 1: item[db_column] for item in sql_results})
         return return_series
 
-    def _do_check_operator(self, new_column: str, sql_fn: str):
-        """
-        Runs a check operator. First checks if the columns already exists,
-        if not, generates the SQL to create the column and runs it to populate the column.
-        """
+    def _do_check_operator(self, new_column: str, sql_subquery_fn):
+        # Handles simple checks by creating a column and updating it with a scalar subquery.
         exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, new_column)
         if not exists:
-            # do operation
             db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
-            subquery = sql_fn()
+            subquery = sql_subquery_fn()
             query = f"UPDATE {db_table} SET {db_column} = ({subquery});"
+            self.sql_data_service.pgi.execute_many(
+                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            )
+        return self._fetch_for_venmo(db_column)
+
+    def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
+        # Handles complex checks by creating a column and populating it with a full custom query.
+        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, new_column)
+        if not exists:
+            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
+            query = sql_full_query_fn(db_table, db_column)
             self.sql_data_service.pgi.execute_many(
                 queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
             )
