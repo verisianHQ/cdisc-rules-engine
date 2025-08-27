@@ -70059,8 +70059,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, dscat)) > None AS is...\n                                                             ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "DSCAT"
                                         }
                                     ]
                                 ]
@@ -70147,8 +70147,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, dscat)) > None AS is...\n                                                             ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "DSCAT"
                                         }
                                     ]
                                 ]
@@ -77104,18 +77104,92 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "dataset": "",
+                                "domain": "relrec",
+                                "execution_status": "success",
+                                "execution_message": "Unique RELID is NOT present on multiple RELREC records within a subject.",
+                                "number_errors": 10,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, relid)) > None AS is...\n                                                             ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEDS1"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEDS2"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEDD3"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEDD4"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEFA5"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AEFA6"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AECM1"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AECM2"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AECM3"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "relid": "AECM4"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -77132,7 +77206,8 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false
+                            "execution_status_match": false,
+                            "number_of_errors_match": false
                         },
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77156,18 +77231,11 @@
                         "results_sql": [
                             {
                                 "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "column \"none\" does not exist\nLINE 7: ...  (COUNT(*) OVER (PARTITION BY usubjid, relid)) > None AS is...\n                                                             ^\n"
-                                        }
-                                    ]
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77183,7 +77251,8 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false
+                            "execution_status_match": false,
+                            "number_of_errors_match": false
                         },
                         "validated_results_folder_exists": false,
                         "validation_file": "",

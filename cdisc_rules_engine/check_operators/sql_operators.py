@@ -1154,9 +1154,9 @@ class PostgresQLOperators(BaseType):
         """
         Checks if a target value is present on multiple rows within a group.
         """
-        target_column = other_value.get("target").lower()
-        min_count = other_value.get("comparator", 1)
-        within_column = other_value.get("within").lower()
+        target_column = self.replace_prefix(other_value.get("target")).lower()
+        min_count = other_value.get("comparator") or 1
+        within_column = self.replace_prefix(other_value.get("within")).lower()
 
         op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
 
