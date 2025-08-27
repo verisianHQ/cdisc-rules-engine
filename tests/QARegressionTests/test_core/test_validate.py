@@ -1,6 +1,7 @@
 import os
 import re
 import unittest
+
 import openpyxl
 from test_utils import run_command, tearDown
 
@@ -14,8 +15,7 @@ class TestValidate(unittest.TestCase):
         latest_excel_files = [
             file
             for file in excel_files
-            if os.path.getctime(file)
-            == max(os.path.getctime(file) for file in excel_files)
+            if os.path.getctime(file) == max(os.path.getctime(file) for file in excel_files)
         ]
 
         if not latest_excel_files:
@@ -183,7 +183,7 @@ class TestValidate(unittest.TestCase):
             "-dp",
             os.path.join("tests", "resources", "datasets", "ae.xpt"),
             "-lr",
-            os.path.join("tests", "resources", "rules"),
+            os.path.join("tests", "resources", "local_rules"),
             "-r",
             "CORE-000473",
         ]
