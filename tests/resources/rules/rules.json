@@ -74205,7 +74205,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"CONSENT\"\nLINE 1: ...zhpgx5g29zttwzcgts = (DSTERM LIKE '%' || INFORMED CONSENT ||...\n                                                             ^\n"
+                                            "message": "column \"dsterm\" does not exist\nLINE 1: ... SET vcl28xitaqugrym4yz4hty8zhpgx5g29zttwzcgts = (DSTERM LIK...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.actarm\".\n"
                                         }
                                     ]
                                 ]
@@ -74219,8 +74219,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"CONSENT\"\nLINE 1: ...zhpgx5g29zttwzcgts = (DSTERM LIKE '%' || INFORMED CONSENT ||...\n                                                             ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "RFICDTC"
                                         }
                                     ]
                                 ]
@@ -74302,7 +74302,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"CONSENT\"\nLINE 1: ...zhpgx5g29zttwzcgts = (DSTERM LIKE '%' || INFORMED CONSENT ||...\n                                                             ^\n"
+                                            "message": "column \"dsterm\" does not exist\nLINE 1: ... SET vcl28xitaqugrym4yz4hty8zhpgx5g29zttwzcgts = (DSTERM LIK...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.actarm\".\n"
                                         }
                                     ]
                                 ]
@@ -74316,8 +74316,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"CONSENT\"\nLINE 1: ...zhpgx5g29zttwzcgts = (DSTERM LIKE '%' || INFORMED CONSENT ||...\n                                                             ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "RFICDTC"
                                         }
                                     ]
                                 ]
