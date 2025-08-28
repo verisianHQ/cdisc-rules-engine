@@ -67,6 +67,7 @@ class PostgresQLOperators(BaseType):
         self.value_level_metadata = data.get("value_level_metadata", [])
         self.column_codelist_map = data.get("column_codelist_map", {})
         self.codelist_term_maps = data.get("codelist_term_maps", [])
+        self.operation_variables = data.get("operation_variables", {})
 
     def _assert_valid_value_and_cast(self, value):
         return value
