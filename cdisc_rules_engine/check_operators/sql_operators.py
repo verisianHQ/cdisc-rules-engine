@@ -1152,7 +1152,8 @@ class PostgresQLOperators(BaseType):
     @type_operator(FIELD_DATAFRAME)
     def present_on_multiple_rows_within(self, other_value: dict):
         """
-        Checks if a target value is present on multiple rows within a group.
+        Verifies if a value in the 'target' column appears on multiple rows
+        within groups defined by the 'within' column.
         """
         target_column = self.replace_prefix(other_value.get("target")).lower()
         min_count = other_value.get("comparator") or 1
@@ -1171,13 +1172,14 @@ class PostgresQLOperators(BaseType):
                         id,
                         (COUNT(*) OVER (PARTITION BY {within_column}, {target_column})) > {min_count} AS is_present
                     FROM {db_table}
+                    ORDER BY id
                 ) AS sub
                 WHERE t.id = sub.id;
             """
 
         result_series = self._do_complex_check_operator(op_name, generate_update_query)
 
-        return result_series.sort_index()
+        return result_series
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)

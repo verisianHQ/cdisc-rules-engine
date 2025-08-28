@@ -30,9 +30,6 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     ],
 )
 def test_present_on_multiple_rows_within(data, comparator, within, expected_result):
-    """
-    Unit test for the SQL-based present_on_multiple_rows_within operator.
-    """
     table_name = "test_present_on_multiple_rows"
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
