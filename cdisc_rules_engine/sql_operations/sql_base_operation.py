@@ -38,9 +38,9 @@ class SqlBaseOperation:
         Custom exceptions should be allowed to propagate up while other exceptions are logged.
         """
         try:
-            logger.info(f"Starting operation {self.params.operation_name}")
+            logger.info(f"Starting operation {self.__class__.__name__}")
             result = self._execute_operation()
-            logger.info(f"Operation {self.params.operation_name} completed.")
+            logger.info(f"Operation {self.__class__.__name__} completed.")
             return result
         except (
             EngineError,
@@ -58,12 +58,12 @@ class SqlBaseOperation:
             UnsupportedDictionaryType,
             FailedSchemaValidation,
         ) as e:
-            logger.debug(f"error in operation {self.params.operation_name}: {str(e)}")
+            logger.debug(f"error in operation {self.__class__.__name__}: {str(e)}")
             raise
         except Exception as e:
             # Log unexpected errors
             logger.error(
-                f"error in operation {self.params.operation_name}: {str(e)}",
+                f"error in operation {self.__class__.__name__}: {str(e)}",
                 exc_info=True,
             )
             # error_message = str(e)

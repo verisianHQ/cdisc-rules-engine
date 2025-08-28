@@ -3,6 +3,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinct
+from cdisc_rules_engine.sql_operations.maximum import SqlMaximum
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 
 
@@ -22,7 +23,7 @@ class SqlOperationsFactory:
         "get_model_filtered_variables": None,
         "get_parent_model_column_order": None,
         "map": None,
-        "max": None,
+        "max": SqlMaximum,
         "max_date": None,
         "mean": None,
         "min": None,

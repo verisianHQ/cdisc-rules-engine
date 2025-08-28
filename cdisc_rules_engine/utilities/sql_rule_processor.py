@@ -1,5 +1,4 @@
 import re
-from ast import Dict
 from typing import List, Optional, Set, Tuple
 
 from cdisc_rules_engine.config import config as default_config
@@ -281,42 +280,48 @@ class SQLRuleProcessor:
     def perform_rule_operations(
         self,
         rule: dict,
-        domain: str,
+        current_domain: str,
         data_service: PostgresQLDataService,
-    ) -> Dict[str, str]:
+    ) -> dict[str, str]:
         """
         Each operation creates an output variable
         """
         operations: List[dict] = rule.get("operations") or []
-        output_variables: Dict[str, str] = {}
+        output_variables: dict[str, str] = {}
 
         for operation in operations:
-            name = operation.get("operator")
-            output_variable = operation.get("id")
+            rule_name = operation.get("operator", "")
+            output_variable = operation.get("id", "")
+
+            if not output_variable.startswith("$"):
+                raise ValueError(
+                    f"Output variable must start with '$', "
+                    f"but got '{output_variable}' in rule {rule.get('core_id', 'unknown')}"
+                )
+
             # change -- pattern to domain name
-            original_target: str = operation.get("name")
-            target: str = original_target
-            domain: str = operation.get("domain", domain)
-            if target and target.startswith("--") and domain:
+            target_variable: str = operation.get("name")
+            operation_domain: str = operation.get("domain", current_domain)
+            if target_variable and target_variable.startswith("--") and current_domain:
                 # Not a study wide operation
-                target = target.replace("--", domain)
+                target_variable = target_variable.replace("--", current_domain)
 
                 # TODO: WTF is this line doing?
                 # domain = domain.replace("--", domain)
 
             # build parameters for the operation
             params = SqlOperationParams(
-                domain=domain,
-                target=target,
+                domain=operation_domain,
+                target=target_variable,
                 standard=data_service.ig_specs.get("standard"),
                 standard_version=data_service.ig_specs.get("standard_version"),
             )
 
-            operation = sql_operations_factory.get_service(name, params=params, data_service=data_service)
+            operation = sql_operations_factory.get_service(rule_name, params=params, data_service=data_service)
             query = operation.execute()
             output_variables[output_variable] = query
 
-            logger.info(f"Processed rule operation. " f"operation={name}, rule={rule}")
+            logger.info(f"Processed rule operation. " f"operation={rule_name}, rule={rule}")
         return output_variables
 
     # def is_relationship_dataset(self, dataset_name: str) -> bool:

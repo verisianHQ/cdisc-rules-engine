@@ -496,7 +496,7 @@ class PostgresQLOperators(BaseType):
         other_value: dict,
         operator: str,
     ):
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target_column = self.replace_prefix(other_value.get("target"))
         comparator = (
             other_value.get("comparator").lower()
             if isinstance(other_value.get("comparator"), str)
