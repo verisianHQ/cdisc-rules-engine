@@ -9,7 +9,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDa
     "data,comparator,value_is_literal,expected_result",
     [
         (
-            {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "btt", "lll"]},
             "VAR2",
             False,
             [True, False, False],
@@ -18,7 +18,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDa
             {"target": ["Ctt", "Btt", "A"]},
             "A",
             True,
-            [True, False, True],
+            [False, False, True],
         ),
         (
             {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
@@ -55,13 +55,13 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
             {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
             "VAR2",
             False,
-            [False, True, True],
+            [True, True, True],
         ),
         (
             {"target": ["Ctt", "Btt", "A"]},
             "A",
             True,
-            [False, True, False],
+            [True, True, False],
         ),
         (
             {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
