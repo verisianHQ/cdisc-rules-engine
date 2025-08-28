@@ -32,6 +32,12 @@ from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDa
             False,
             [False, False, False],
         ),
+        (
+            {"target": ["A", "1", "2"]},
+            1,
+            True,
+            [False, True, False],
+        ),
     ],
 )
 def test_sql_contains(data, comparator, value_is_literal, expected_result):
@@ -74,6 +80,12 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
             "VAR2",
             False,
             [True, True, True],
+        ),
+        (
+            {"target": ["A", "1", "2"]},
+            1,
+            True,
+            [True, False, True],
         ),
     ],
 )

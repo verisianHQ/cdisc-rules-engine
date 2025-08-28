@@ -486,7 +486,7 @@ class PostgresQLOperators(BaseType):
         operation_name = f"{target}_contains_{comparator}"
 
         def sql():
-            if value_is_literal:
+            if value_is_literal or not isinstance(comparator, str) or not self._exists(comparator):
                 return f"{target} LIKE '%{comparator}%'"
             else:
                 return f"{target} LIKE '%' || {comparator} || '%'"
