@@ -21286,8 +21286,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DVSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"dvstdtc\" does not exist\nLINE 2:                         dvstdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
                                         }
                                     ]
                                 ]
@@ -21301,8 +21301,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DVSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"rficdtc\" does not exist\nLINE 4:                         AND rficdtc IS NOT NULL\n                                    ^\n"
                                         }
                                     ]
                                 ]
@@ -21379,8 +21379,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DVSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"dvstdtc\" does not exist\nLINE 2:                         dvstdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
                                         }
                                     ]
                                 ]
@@ -21394,8 +21394,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DVSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"rficdtc\" does not exist\nLINE 4:                         AND rficdtc IS NOT NULL\n                                    ^\n"
                                         }
                                     ]
                                 ]
@@ -23932,8 +23932,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "SESTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"svstdtc\" does not exist\nLINE 4:                         AND svstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"se.sestdtc\".\n"
                                         }
                                     ]
                                 ]
@@ -23947,8 +23947,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "SESTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"sestdtc\" does not exist\nLINE 2:                         sestdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"sv.svstdtc\".\n"
                                         }
                                     ]
                                 ]
@@ -24006,8 +24006,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "SESTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"svstdtc\" does not exist\nLINE 4:                         AND svstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"se.sestdtc\".\n"
                                         }
                                     ]
                                 ]
@@ -24021,8 +24021,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "SESTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"sestdtc\" does not exist\nLINE 2:                         sestdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"sv.svstdtc\".\n"
                                         }
                                     ]
                                 ]

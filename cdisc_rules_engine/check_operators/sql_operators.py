@@ -873,13 +873,13 @@ class PostgresQLOperators(BaseType):
         Performs date comparison operations in PostgreSQL.
         Handles date component extraction and comparison.
         """
-        target_column = other_value.get("target").lower()
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         comparator = other_value.get("comparator")
         value_is_literal = other_value.get("value_is_literal", False)
         date_component = other_value.get("date_component")
 
         if isinstance(comparator, str) and not value_is_literal:
-            comparator = comparator.lower()
+            comparator = self.replace_prefix(comparator).lower()
 
         component_suffix = f"_{date_component}" if date_component else ""
         cache_key = f"{target_column}{operator}{comparator}{component_suffix}"
@@ -922,9 +922,9 @@ class PostgresQLOperators(BaseType):
             else:
                 if value_is_literal:
                     return f"""CASE WHEN
-                        {self.replace_prefix(target_column)} IS NOT NULL
-                        AND {self.replace_prefix(target_column)} != ''
-                        AND CAST({self.replace_prefix(target_column)} AS TIMESTAMP)
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
                             {operator}
                         CAST('{comparator}' AS TIMESTAMP)
                         THEN true
@@ -932,13 +932,13 @@ class PostgresQLOperators(BaseType):
                         END"""
                 else:
                     return f"""CASE WHEN
-                        {self.replace_prefix(target_column)} IS NOT NULL
-                        AND {self.replace_prefix(target_column)} != ''
-                        AND {self.replace_prefix(comparator)} IS NOT NULL
-                        AND {self.replace_prefix(comparator)} != ''
-                        AND CAST({self.replace_prefix(target_column)} AS TIMESTAMP)
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND {comparator} IS NOT NULL
+                        AND {comparator} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
                             {operator}
-                        CAST({self.replace_prefix(comparator)} AS TIMESTAMP)
+                        CAST({comparator} AS TIMESTAMP)
                         THEN true
                         ELSE false
                         END"""
