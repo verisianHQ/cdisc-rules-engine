@@ -9,34 +9,28 @@ from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDa
     "data,comparator,value_is_literal,expected_result",
     [
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["pie", "split", "cake"]},
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
             "VAR2",
             False,
-            [True, True, False],
+            [True, False, False],
         ),
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["apple", "banana", "cherry"]},
+            {"target": ["Ctt", "Btt", "A"]},
+            "A",
+            True,
+            [True, False, True],
+        ),
+        (
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
             "VAR2",
             False,
             [True, True, True],
         ),
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["orange", "split", "tart"]},
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
             "VAR2",
             False,
-            [False, True, True],
-        ),
-        (
-            {"target": ["apple pie", "banana split", "cherry tart"]},
-            "pie",
-            True,
-            [True, False, False],
-        ),
-        (
-            {"target": ["apple pie", "banana split", "cherry tart"]},
-            "split",
-            True,
-            [False, True, False],
+            [False, False, False],
         ),
     ],
 )
@@ -58,34 +52,28 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
     "data,comparator,value_is_literal,expected_result",
     [
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["pie", "split", "cake"]},
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
             "VAR2",
             False,
-            [False, False, True],
+            [False, True, True],
         ),
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["apple", "banana", "cherry"]},
+            {"target": ["Ctt", "Btt", "A"]},
+            "A",
+            True,
+            [False, True, False],
+        ),
+        (
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
             "VAR2",
             False,
             [False, False, False],
         ),
         (
-            {"target": ["apple pie", "banana split", "cherry tart"], "VAR2": ["orange", "split", "tart"]},
+            {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
             "VAR2",
             False,
-            [True, False, False],
-        ),
-        (
-            {"target": ["apple pie", "banana split", "cherry tart"]},
-            "pie",
-            True,
-            [False, True, True],
-        ),
-        (
-            {"target": ["apple pie", "banana split", "cherry tart"]},
-            "split",
-            True,
-            [True, False, True],
+            [True, True, True],
         ),
     ],
 )
