@@ -574,19 +574,56 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_contained_by(self, other_value):
-        """target = self.replace_prefix(other_value.get("target"))
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
-        if isinstance(comparator, str) and not value_is_literal:
-            # column name provided
-            comparator = self.replace_prefix(comparator)
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        if self.is_column_of_iterables(comparison_data):
-            results = vectorized_is_in(self.validation_df[target], comparison_data)
+
+        if isinstance(comparator, list):
+            # List of literal values - use SQL IN clause
+            values_list = "', '".join(str(v).replace("'", "''") for v in comparator)
+            cache_key = f"{target_column}_contained_by_list"
+
+            def sql():
+                return f"""CASE WHEN {target_column} IS NOT NULL
+                          AND {target_column} != ''
+                          AND {target_column} IN ('{values_list}')
+                          THEN true
+                          ELSE false
+                          END"""
+
+        elif isinstance(comparator, str) and not value_is_literal:
+            # Column name provided - check if target value exists anywhere in comparator column
+            comparator_column = self.replace_prefix(comparator).lower()
+            cache_key = f"{target_column}_contained_by_{comparator_column}"
+            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
+
+            def sql():
+                return f"""CASE WHEN {target_column} IS NOT NULL
+                          AND {target_column} != ''
+                          AND {target_column} IN (
+                              SELECT DISTINCT {comparator_column}
+                              FROM {db_table}
+                              WHERE {comparator_column} IS NOT NULL
+                              AND {comparator_column} != ''
+                          )
+                          THEN true
+                          ELSE false
+                          END"""
+
         else:
-            results = self.validation_df[target].isin(comparison_data)
-        return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError("is_contained_by check_operator not implemented")
+            # Single literal value
+            escaped_value = str(comparator).replace("'", "''")
+            cache_key = f"{target_column}_contained_by_{escaped_value}"
+
+            def sql():
+                return f"""CASE WHEN {target_column} IS NOT NULL
+                          AND {target_column} != ''
+                          AND {target_column} = '{escaped_value}'
+                          THEN true
+                          ELSE false
+                          END"""
+
+        return self._do_check_operator(cache_key, sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
