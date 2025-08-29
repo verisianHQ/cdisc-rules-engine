@@ -16861,7 +16861,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -16949,7 +16949,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -17031,17 +17031,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -17082,18 +17075,21 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "TSVALNF is populated when TSVAL is populated with a value that is not in the ISO 21090 null flavor codelist.",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Something else",
+                                            "tsvalnf": "QS"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -17998,7 +17994,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -18074,7 +18070,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -23230,18 +23226,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESER is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeser": "U"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -23294,17 +23292,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -29091,18 +29082,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "tv.xpt",
+                                "dataset": "",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARM cannot be equal to 'Screen Failure', 'Not Assigned', 'Unplanned Treatment' or 'Not Treated'.",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT TREATED"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT ASSIGNED"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "SCREEN FAILURE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "UNPLANNED TREATMENT"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -29141,18 +29158,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ta.xpt",
+                                "dataset": "",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARM cannot be equal to 'Screen Failure', 'Not Assigned', 'Unplanned Treatment' or 'Not Treated'.",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT TREATED"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT ASSIGNED"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "SCREEN FAILURE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "UNPLANNED TREATMENT"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -29191,18 +29234,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARM cannot be equal to 'Screen Failure', 'Not Assigned', 'Unplanned Treatment' or 'Not Treated'.",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT TREATED"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "NOT ASSIGNED"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "SCREEN FAILURE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "UNPLANNED TREATMENT"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -29246,17 +29315,10 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -29296,17 +29358,10 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -29346,17 +29401,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -30419,18 +30467,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESCAN is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aescan": "U"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30483,17 +30533,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -30547,18 +30590,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESCONG is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aescong": "U"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30611,17 +30656,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -30675,18 +30713,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESDISAB is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesdisab": "U"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30766,18 +30806,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESDTH is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesdth": "X"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30830,17 +30872,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -30894,18 +30929,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESHOSP is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeshosp": "B"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30958,17 +30995,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31022,18 +31052,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESLIFE is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeslife": "X"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -31086,17 +31118,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31150,18 +31175,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESOD is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesod": "X"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -31214,17 +31241,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31278,18 +31298,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESMIE is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "A"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -31342,17 +31364,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31406,18 +31421,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AECONTRT is completed, but not equal to \"N\" or \"Y\"",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aecontrt": "A"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -31470,17 +31487,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -33261,7 +33271,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33276,7 +33286,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33488,7 +33498,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33503,7 +33513,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33574,7 +33584,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33589,7 +33599,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33647,7 +33657,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -33662,7 +33672,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -35854,7 +35864,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -35869,7 +35879,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -35930,7 +35940,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -35945,7 +35955,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -36019,7 +36029,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -36034,7 +36044,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -36095,7 +36105,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -36110,7 +36120,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38770,7 +38780,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38785,7 +38795,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38852,7 +38862,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38867,7 +38877,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38958,7 +38968,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -38973,7 +38983,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39040,7 +39050,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39055,7 +39065,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39141,7 +39151,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39156,7 +39166,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39214,7 +39224,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39229,7 +39239,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39287,7 +39297,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39302,7 +39312,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39360,7 +39370,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -39375,7 +39385,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_studyid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49456,7 +49466,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49471,7 +49481,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49546,7 +49556,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49561,7 +49571,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49576,7 +49586,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49684,7 +49694,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49699,7 +49709,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49783,7 +49793,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49798,7 +49808,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49856,7 +49866,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -49871,7 +49881,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $dm_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50489,7 +50499,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50577,7 +50587,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50678,7 +50688,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50766,7 +50776,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_arm\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50867,7 +50877,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50882,7 +50892,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50955,7 +50965,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -50970,7 +50980,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_armcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -51942,7 +51952,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tm_midstype\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -51957,7 +51967,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tm_midstype\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -52030,7 +52040,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tm_midstype\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -52045,7 +52055,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tm_midstype\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -53888,7 +53898,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ti_ietestcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -53903,7 +53913,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ti_ietestcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -53981,7 +53991,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ti_ietestcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -53996,7 +54006,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ti_ietestcd\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55340,7 +55350,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55355,7 +55365,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55429,7 +55439,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55444,7 +55454,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55502,7 +55512,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55517,7 +55527,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55591,7 +55601,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -55606,7 +55616,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ex_usubjid\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -56938,7 +56948,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -56953,7 +56963,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -57021,7 +57031,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -57036,7 +57046,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -57051,7 +57061,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -57066,7 +57076,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -58949,7 +58959,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -58964,7 +58974,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -66453,7 +66463,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -66468,7 +66478,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -66483,7 +66493,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -66498,7 +66508,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67039,7 +67049,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67054,7 +67064,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67069,7 +67079,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67084,7 +67094,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67628,7 +67638,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67643,7 +67653,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67658,7 +67668,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67673,7 +67683,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67747,7 +67757,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67762,7 +67772,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67777,7 +67787,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -67792,7 +67802,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $ta_epoch\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -74887,8 +74897,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "ARM"
                                         }
                                     ]
                                 ]
@@ -74937,8 +74947,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "ARM"
                                         }
                                     ]
                                 ]
@@ -74990,8 +75000,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "ARM"
                                         }
                                     ]
                                 ]
@@ -75040,8 +75050,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "ARM"
                                         }
                                     ]
                                 ]
@@ -75214,7 +75224,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $vis_list\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -75363,7 +75373,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $vis_list\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77530,7 +77540,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77545,7 +77555,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77680,7 +77690,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77695,7 +77705,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77753,7 +77763,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -77768,7 +77778,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $tv_visitnum\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -78821,7 +78831,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $usubjids_in_e...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -78836,7 +78846,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ...hzhgovqesmnfkffdasfrkrertw4dcs = (CASE WHEN lower(actarmcd) ...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -78897,7 +78907,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $usubjids_in_e...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -78912,7 +78922,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by_case_insensitive check_operator not implemented"
+                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ...hzhgovqesmnfkffdasfrkrertw4dcs = (CASE WHEN lower(actarmcd) ...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -78986,7 +78996,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $arms_in_ta\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -79001,7 +79011,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "column \"actarm\" does not exist\nLINE 1: ...atoet52hwyvjxp0xursjxgdllwnfsmsrbajm = (CASE WHEN actarm IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
                                         }
                                     ]
                                 ]
@@ -79290,33 +79300,117 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ta.xpt",
+                                "dataset": "",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARM is \"Screen Failure\", \"Not Assigned\", \"Unplanned Treatment\" or \"Not Treated\"",
+                                "number_errors": 8,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Screen Failure"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Screen Failure"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Unplanned Treatment"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Unplanned Treatment"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Assigned"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Assigned"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Treated"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Treated"
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "tv.xpt",
+                                "dataset": "",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARM is \"Screen Failure\", \"Not Assigned\", \"Unplanned Treatment\" or \"Not Treated\"",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Screen Failure"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Assigned"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Unplanned Treatment"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "arm": "Not Treated"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -79368,32 +79462,18 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -85980,7 +86060,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $allowed_varia...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -85995,7 +86075,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $allowed_varia...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -86010,7 +86090,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $allowed_varia...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -86100,7 +86180,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $allowed_varia...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -86115,7 +86195,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "message": "syntax error at or near \"$\"\nLINE 4:                               SELECT DISTINCT $allowed_varia...\n                                                      ^\n"
                                         }
                                     ]
                                 ]
@@ -86966,8 +87046,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "TSVCDREF"
                                         }
                                     ]
                                 ]
@@ -87016,8 +87096,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "TSVCDREF"
                                         }
                                     ]
                                 ]
@@ -87066,8 +87146,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "TSVCDREF"
                                         }
                                     ]
                                 ]
@@ -87119,8 +87199,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "TSVCDREF"
                                         }
                                     ]
                                 ]
@@ -94856,8 +94936,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "QNAM"
                                         }
                                     ]
                                 ]
@@ -94932,8 +95012,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_contained_by check_operator not implemented"
+                                            "error": "Column not found in data",
+                                            "message": "QNAM"
                                         }
                                     ]
                                 ]
