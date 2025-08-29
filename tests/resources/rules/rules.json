@@ -34097,33 +34097,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ft.xpt",
+                                "dataset": "",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FTTPT and FTTPTNUM do not have a one-to-one relationship",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "fttpt": "30 MIN POST",
+                                            "fttptnum": 30.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "fttpt": "30 MIN POST",
+                                            "fttptnum": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "fttpt": "60 MIN POST",
+                                            "fttptnum": 1.0
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "vs.xpt",
+                                "dataset": "",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VSTPT and VSTPTNUM do not have a one-to-one relationship",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "vstpt": "10MIN POSTDOSE",
+                                            "vstptnum": 5.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "vstpt": "5MIN POSTDOSE",
+                                            "vstptnum": 5.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -34258,32 +34291,18 @@
                             {
                                 "dataset": "ft.xpt",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -35844,18 +35863,48 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is not a one-to-one relationship between TSVAL and TSVALCD",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "N",
+                                            "tsvalcd": "C49487"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "N",
+                                            "tsvalcd": "C49488"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "N",
+                                            "tsvalcd": "C49487"
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Y",
+                                            "tsvalcd": "C49488"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -35899,17 +35948,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -42104,18 +42146,30 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSPARM and TSPARMCD don't have a one-to-one relationship.",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsparm": "Planned Maximum Age of\nSubjects",
+                                            "tsparmcd": "AGEMAX"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsparm": "Planned Maximum Age of\nSubjects",
+                                            "tsparmcd": "AGEMIN"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -42154,18 +42208,30 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSPARM and TSPARMCD don't have a one-to-one relationship.",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsparm": "Planned Maximum Age of\nSubjects",
+                                            "tsparmcd": "AGEMAX"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsparm": "Planned Minimum Age of\nSubjects",
+                                            "tsparmcd": "AGEMAX"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -42209,17 +42275,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -43339,18 +43398,678 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is not a one-to-one relationship between AEBODSYS and AEBDSYSCD",
+                                "number_errors": 74,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Apple"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Apple"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 19,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 30,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 34,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 36,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 37,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Blue"
+                                        }
+                                    },
+                                    {
+                                        "row": 38,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 39,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 40,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 41,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 42,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 43,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 44,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 45,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 46,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 47,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 48,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 49,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 50,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 51,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 52,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 53,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 54,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 55,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 56,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 57,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 58,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 59,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 60,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 61,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 62,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 63,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 64,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 68,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 69,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 70,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 71,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 72,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "A",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 73,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "B",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    },
+                                    {
+                                        "row": 74,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": "C",
+                                            "aebodsys": "Carrot"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -44061,17 +44780,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -66105,18 +66817,660 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEDECOD and AEPTCD do not have a one-to-one relationship",
+                                "number_errors": 72,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "FATIGUE"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "SHOULDER PAIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "JOINT DISLOCATION"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INCONTINENCE"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "SKIN LACERATION"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "CONFUSIONAL STATE"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "DYSPNOEA"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "SUDDEN DEATH"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "HYPERHIDROSIS"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "STOMACH DISCOMFORT"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "PAIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "NASAL CONGESTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "MALAISE"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "MYALGIA"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "PHARYNGOLARYNGEAL PAIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 19,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "PRODUCTIVE COUGH"
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "DIZZINESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "DIZZINESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "CONTUSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "HEADACHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "EPISTAXIS"
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "RESPIRATORY TRACT CONGESTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "RHINITIS"
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "FEELING ABNORMAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "LIBIDO DECREASED"
+                                        }
+                                    },
+                                    {
+                                        "row": 30,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "LISTLESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 34,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "CHEST DISCOMFORT"
+                                        }
+                                    },
+                                    {
+                                        "row": 36,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "HEADACHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 37,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "COUGH"
+                                        }
+                                    },
+                                    {
+                                        "row": 38,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 39,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "SALIVARY HYPERSECRETION"
+                                        }
+                                    },
+                                    {
+                                        "row": 40,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "PARAESTHESIA"
+                                        }
+                                    },
+                                    {
+                                        "row": 41,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "COMPLETED SUICIDE"
+                                        }
+                                    },
+                                    {
+                                        "row": 42,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "HEART RATE IRREGULAR"
+                                        }
+                                    },
+                                    {
+                                        "row": 43,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "DIZZINESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 44,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "HEADACHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 45,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "HEART RATE IRREGULAR"
+                                        }
+                                    },
+                                    {
+                                        "row": 46,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "DIZZINESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 47,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 48,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "DIZZINESS"
+                                        }
+                                    },
+                                    {
+                                        "row": 49,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 50,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "MYOCARDIAL INFARCTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 51,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 52,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "NASOPHARYNGITIS"
+                                        }
+                                    },
+                                    {
+                                        "row": 53,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "PARAESTHESIA ORAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 54,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "NASOPHARYNGITIS"
+                                        }
+                                    },
+                                    {
+                                        "row": 55,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "SUPRAVENTRICULAR EXTRASYSTOLES"
+                                        }
+                                    },
+                                    {
+                                        "row": 56,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "RASH PRURITIC"
+                                        }
+                                    },
+                                    {
+                                        "row": 57,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "VENTRICULAR EXTRASYSTOLES"
+                                        }
+                                    },
+                                    {
+                                        "row": 58,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "CONJUNCTIVAL HAEMORRHAGE"
+                                        }
+                                    },
+                                    {
+                                        "row": 59,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "CERUMEN IMPACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 60,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "FALL"
+                                        }
+                                    },
+                                    {
+                                        "row": 61,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "BALANCE DISORDER"
+                                        }
+                                    },
+                                    {
+                                        "row": 62,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "CONTUSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 63,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "COORDINATION ABNORMAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 64,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "BACK PAIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "NAUSEA"
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "AMNESIA"
+                                        }
+                                    },
+                                    {
+                                        "row": 68,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "NAUSEA"
+                                        }
+                                    },
+                                    {
+                                        "row": 69,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "LETHARGY"
+                                        }
+                                    },
+                                    {
+                                        "row": 70,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "NAUSEA"
+                                        }
+                                    },
+                                    {
+                                        "row": 71,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "General",
+                                            "aeptcd": "NAUSEA"
+                                        }
+                                    },
+                                    {
+                                        "row": 72,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Other",
+                                            "aeptcd": "INJECTION SITE REACTION"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -66809,17 +68163,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -78562,33 +79909,111 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppdm.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "dataset": "",
+                                "domain": "suppdm",
+                                "execution_status": "success",
+                                "execution_message": "QNAM and QLABEL do not have a one-to-one relationship",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Race 1",
+                                            "qnam": "RACE1"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Race 2",
+                                            "qnam": "RACE1"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Race 3",
+                                            "qnam": "RACE1"
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "suppec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "dataset": "",
+                                "domain": "suppec",
+                                "execution_status": "success",
+                                "execution_message": "QNAM and QLABEL do not have a one-to-one relationship",
+                                "number_errors": 7,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason for Occur Value",
+                                            "qnam": "ECREASOC"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason Occur Value",
+                                            "qnam": "ECREASOC"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason for Occur",
+                                            "qnam": "ECREASOC"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason Occur",
+                                            "qnam": "ECREASOC"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason Occur Value",
+                                            "qnam": "REASOC"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason for Occur",
+                                            "qnam": "REASOC"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "qlabel": "Reason Occur",
+                                            "qnam": "REASOC"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -78639,33 +80064,19 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99051,18 +100462,48 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AELLTCD and AELLT do not have a one-to-one relationship",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aellt": "Headache",
+                                            "aelltcd": 10019211.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aellt": "Headache",
+                                            "aelltcd": 10019212.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aellt": "Headache",
+                                            "aelltcd": 10019212.0
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aellt": null,
+                                            "aelltcd": 10019211.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -99161,17 +100602,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -100939,18 +102373,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AESOCCD and AESOC do not have a one-to-one relationship",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": "Nervous system disorders",
+                                            "aesoccd": 10029205.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": "Nervous system disorders",
+                                            "aesoccd": 10029206.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": "Nervous system disorders",
+                                            "aesoccd": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": "Nervous system disorders",
+                                            "aesoccd": 10029205.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": "Vascular disorders",
+                                            "aesoccd": 10047065.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesoc": null,
+                                            "aesoccd": 10047065.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -101049,17 +102531,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101589,18 +103064,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEHLGTCD and AEHLGT do not have a one-to-one relationship",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": "Headaches",
+                                            "aehlgtcd": 10019231.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": "Headaches",
+                                            "aehlgtcd": 10019232.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": "Headaches",
+                                            "aehlgtcd": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": "Headaches",
+                                            "aehlgtcd": 10019231.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": null,
+                                            "aehlgtcd": 10057166.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlgt": "Vascular hypertensive disorders",
+                                            "aehlgtcd": 10057166.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -101699,17 +103222,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101994,18 +103510,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEHLTCD and AEHLT do not have a one-to-one relationship",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": "Headaches NEC",
+                                            "aehltcd": 10019233.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": "Headaches NEC",
+                                            "aehltcd": 10019234.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": "Headaches NEC",
+                                            "aehltcd": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": "Headaches NEC",
+                                            "aehltcd": 10019233.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": "Vascular hypertensive disorders NEC",
+                                            "aehltcd": 10020774.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aehlt": null,
+                                            "aehltcd": 10020774.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -102104,17 +103668,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102168,18 +103725,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEBDSYCD and AEBODSYS do not have a one-to-one relationship",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": 10029205.0,
+                                            "aebodsys": "Nervous system disorders"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": 10029206.0,
+                                            "aebodsys": "Nervous system disorders"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": null,
+                                            "aebodsys": "Nervous system disorders"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": 10029205.0,
+                                            "aebodsys": "Nervous system disorders"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": 10047065.0,
+                                            "aebodsys": "Vascular disorders"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": 10047065.0,
+                                            "aebodsys": null
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -102278,17 +103883,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102342,18 +103940,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEPTCD and AEDECOD do not have a one-to-one relationship",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Headache",
+                                            "aeptcd": 10019211.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Headache",
+                                            "aeptcd": 10019212.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Headache",
+                                            "aeptcd": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Headache",
+                                            "aeptcd": 10019211.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": "Hypertension",
+                                            "aeptcd": 10020772.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aedecod": null,
+                                            "aeptcd": 10020772.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -102452,17 +104098,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102681,18 +104320,39 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is not a one-to-one relationship between TSVAL and TSVALCD",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "N",
+                                            "tsvalcd": "C49488 "
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Y ",
+                                            "tsvalcd": "C49488 "
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Adenocarcinom a of pancreas ",
+                                            "tsvalcd": "700423003"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -102731,18 +104391,48 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is not a one-to-one relationship between TSVAL and TSVALCD",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Y ",
+                                            "tsvalcd": "C494888"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Adenocarcinom a of pancreas ",
+                                            "tsvalcd": "C494888"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Y ",
+                                            "tsvalcd": "C49488 "
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "tsval": "Adenocarcinom a of pancreas ",
+                                            "tsvalcd": "700423003"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -102786,17 +104476,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104435,18 +106118,57 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ti.xpt",
+                                "dataset": "",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "IETESTCD and IETEST do not have a one-to-one relationship",
+                                "number_errors": 5,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ietest": "Has disease under study",
+                                            "ietestcd": "INCL01"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ietest": "Age 21 or greater",
+                                            "ietestcd": "INCL01"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ietest": "Pregnant or lactating",
+                                            "ietestcd": "EXCL01"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ietest": "Has disease under study",
+                                            "ietestcd": "INCL01"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ietest": "Pregnant or lactating",
+                                            "ietestcd": null
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -104490,17 +106212,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104571,18 +106286,48 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "oi.xpt",
+                                "dataset": "",
                                 "domain": "OI",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "OIPARMCD and OIPARM do not have a one-to-one relationship",
+                                "number_errors": 4,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "oiparm": "Genotype",
+                                            "oiparmcd": null
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "oiparm": "Genotype",
+                                            "oiparmcd": "GENTYPE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "oiparm": null,
+                                            "oiparmcd": "SUBTYPE"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "oiparm": "Subtype",
+                                            "oiparmcd": "SUBTYPE"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -104626,17 +106371,10 @@
                             {
                                 "dataset": "oi.xpt",
                                 "domain": "OI",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "is_not_unique_relationship check_operator not implemented"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
