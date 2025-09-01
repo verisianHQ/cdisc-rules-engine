@@ -51751,7 +51751,162 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"idvar\" does not exist\nLINE 8:                     idvar,\n                            ^\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvarval\" does not exist\nLINE 1: ...ET vfz3ulfqdihpofuvujvi3d6w32mwsbtc6qltu7bgea = ((IDVARVAL I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"supplb.idvar\".\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=co",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -91673,7 +91828,93 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "mhLB.xpt",
+                                "domain": "MH",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "mhLB.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -91683,7 +91924,70 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "qs1.xpt",
+                                "domain": "QS",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "qs1.xpt",
+                                "domain": "QS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -91709,7 +92013,47 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"source_dataset_id\" does not exist\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "fa1.xpt",
+                                "domain": "FA",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "Operation dataset_names is not implemented"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "fa1.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -92266,7 +92610,390 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 11: ...     WHEN EXISTS (SELECT 1 FROM public.lbae WHERE usubjid IS...\n                                                              ^\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ss1.xpt",
+                                "domain": "SS",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "lbae.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": "DSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ss1.xpt, ss2.xpt",
+                                "domain": "SS",
+                                "execution_status": "success",
+                                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 16,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 14,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 14.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 14,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 14.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": "AESEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 7,
+                                "errors": [
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "lbae.xpt, lbds.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "LBSEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "LBSEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -92279,7 +93006,304 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 29: ...     WHEN EXISTS (SELECT 1 FROM public.lbae WHERE usubjid IS...\n                                                              ^\nDETAIL:  There is a column named \"usubjid\" in table \"*SELECT* 1\", but it cannot be referenced from this part of the query.\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ss1.xpt",
+                                "domain": "SS",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "lbae.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "is_unique_set check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ss1.xpt",
+                                "domain": "SS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lbae.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppec.xpt",
+                                "domain": "suppec",
+                                "execution_status": "success",
+                                "execution_message": "SEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 4,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SEQ": "Not in dataset",
+                                            "USUBJID": "CDISC009"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SEQ": "Not in dataset",
+                                            "USUBJID": "CDISC009"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SEQ": "Not in dataset",
+                                            "USUBJID": "CDISC009"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SEQ": "Not in dataset",
+                                            "USUBJID": "CDISC009"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": "SVSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 10,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SVSEQ": "Not in dataset",
+                                            "USUBJID": "CDISC001"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -99176,7 +100200,162 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"rdomain\" does not exist\nLINE 7:                     rdomain as rdomain,\n                            ^\nHINT:  Perhaps you meant to reference the column \"co.domain\".\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=co",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -99186,7 +100365,162 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"idvar\" does not exist\nLINE 8:                     idvar,\n                            ^\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "Rule format error",
+                                            "message": "Rule contains invalid operator"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "co.xpt",
+                                "domain": "CO",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=co",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "relrec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "supplb.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -108521,7 +109855,47 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "pre_processor_error: column \"usubjid\" does not exist\nLINE 11: ...    WHEN EXISTS (SELECT 1 FROM public.aplbe WHERE usubjid IS...\n                                                              ^\nHINT:  Perhaps you meant to reference the column \"aplbe.rsubjid\" or the column \"aplbe.rsubjid\".\n"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "aplbe.xpt",
+                                "domain": "APLB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    [
+                                        {
+                                            "error": "An unknown exception has occurred",
+                                            "message": "longer_than check_operator not implemented"
+                                        }
+                                    ]
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "aplbe.xpt",
+                                "domain": "APLB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
