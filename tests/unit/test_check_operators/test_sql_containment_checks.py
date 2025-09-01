@@ -6,6 +6,123 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 
+CONTAINS_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "btt", "lll"]},
+        "VAR2",
+        False,
+        [True, False, False],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "B",
+        True,
+        [False, True, False],
+    ),
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
+        "VAR2",
+        False,
+        [True, True, True],
+    ),
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
+        "VAR2",
+        False,
+        [False, False, False],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["C", "Z", "A"],
+        True,
+        [True, False, True],
+    ),
+    # Note: Doesn't seem like there is a way to test this using SQL
+    # (
+    #     {"target": [["A", "B", "C"], ["A", "B", "L"], ["L", "Q", "R"]]},
+    #     "L",
+    #     True,
+    #     [False, True, True],
+    # ),
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_TEST_DATA,
+)
+def test_sql_contains(data, comparator, value_is_literal, expected_result):
+    table_name = "test_table"
+    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
+    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
+    result = sql_ops.contains(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert result.equals(pd.Series(expected_result))
+
+
+DOES_NOT_CONTAIN_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
+        "VAR2",
+        False,
+        [False, True, True],
+    ),
+    (
+        {"target": ["Ctt", "Btt", "A"]},
+        "A",
+        True,
+        [True, True, False],
+    ),
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
+        "VAR2",
+        False,
+        [False, False, False],
+    ),
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
+        "VAR2",
+        False,
+        [True, True, True],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["C", "Z", "A"],
+        True,
+        [False, True, False],
+    ),
+    # (
+    #     {"target": [["A", "B", "C"], ["A", "B", "L"], ["L", "Q", "R"]]},
+    #     "L",
+    #     True,
+    #     [True, False, False],
+    # )
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    DOES_NOT_CONTAIN_TEST_DATA,
+)
+def test_sql_does_not_contain(data, comparator, value_is_literal, expected_result):
+    table_name = "test_table"
+    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
+    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
+    result = sql_ops.does_not_contain(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert result.equals(pd.Series(expected_result))
+
+
 CONTAINED_BY_TEST_DATA = [
     (
         {"target": ["Ctt", "Btt", "A"]},
