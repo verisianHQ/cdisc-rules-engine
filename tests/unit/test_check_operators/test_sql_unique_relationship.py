@@ -77,22 +77,22 @@ def test_sql_is_unique_relationship(data, target, comparator, expected_result):
     "data,target,comparator,expected_result",
     [
         (
-            {"STUDYID": [1, 2, 3, 1, 2], "DOMAIN": ["AE", "DM", "LB", "AE", "DM"], "VISITNUM": [1, 1, 1, 1, 1]},
+            {"STUDYID": [1, 2, 3, 1, 2], "DOMAIN": ["AE", "DM", "LB", "AE", "DM"], "VISITNUM": [1, 2, 3, 1, 2]},
             "STUDYID",
             ["DOMAIN", "VISITNUM"],
             [False, False, False, False, False],
         ),
         (
-            {"STUDYID": [1, 1, 2, 3], "DOMAIN": ["AE", "DM", "AE", "LB"], "VISITNUM": [1, 1, 1, 1]},
+            {"STUDYID": [1, 1, 2, 3], "DOMAIN": ["AE", "DM", "AE", "LB"], "VISITNUM": [1, 2, 1, 3]},
             "STUDYID",
             ["DOMAIN", "VISITNUM"],
             [True, True, True, False],
         ),
         (
-            {"STUDYID": [1, 2, 3], "DOMAIN": ["AE", "AE", "DM"], "VISITNUM": [1, 1, 1]},
+            {"STUDYID": [1, 2, 3, 4], "DOMAIN": ["AE", "AE", "DM", "AE"], "VISITNUM": [1, 1, 2, 1]},
             "STUDYID",
             ["DOMAIN", "VISITNUM"],
-            [True, True, False],
+            [True, True, False, True],
         ),
     ],
 )
