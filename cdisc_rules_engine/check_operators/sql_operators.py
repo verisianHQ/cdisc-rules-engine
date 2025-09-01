@@ -518,22 +518,20 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def contains(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        operation_name = f"{target}_contains_{comparator}"
+        """
+        Checks if the comparator value(s) are contained within the target column values.
+        This is implemented by calling is_contained_by with target and comparator swapped.
+        """
 
-        def sql():
-            if value_is_literal or not isinstance(comparator, str) or not self._exists(comparator):
-                return f"{target} LIKE '%{comparator}%'"
-            else:
-                return f"{target} LIKE '%' || {comparator} || '%'"
-
-        return self._do_check_operator(operation_name, sql)
+        if other_value.get("value_is_literal", False):
+            return self.is_contained_by(other_value)
+        else:
+            swapped = {
+                "target": other_value["comparator"],
+                "comparator": other_value["target"],
+                "value_is_literal": other_value["value_is_literal"],
+            }
+        return self.is_contained_by(swapped)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
