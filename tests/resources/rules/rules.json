@@ -33007,8 +33007,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "AESTDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33022,8 +33022,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMSTDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33111,8 +33111,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "AESTDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33126,8 +33126,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMSTDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33207,8 +33207,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33222,8 +33222,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "EXENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ppyn5g27sze20lblala5day = ((EXENDY IS NULL OR EXENDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33371,8 +33371,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...k8sklfreqsilfry9ncnla0o = ((CMENDY IS NULL OR CMENDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33386,8 +33386,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33468,8 +33468,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33483,8 +33483,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "EXENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ppyn5g27sze20lblala5day = ((EXENDY IS NULL OR EXENDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33541,8 +33541,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...k8sklfreqsilfry9ncnla0o = ((CMENDY IS NULL OR CMENDY = ''));\n                                                                  ^\n"
                                         }
                                     ]
                                 ]
@@ -33556,8 +33556,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "DMENDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -80205,33 +80205,61 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "CMENRTPT is not in ('BEFORE', 'COINCIDENT', 'ONGOING', 'UNKNOWN')",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "CMENTPT"
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmenrtpt": "AFTER",
+                                            "cmentpt": "2013-05-20"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "mh.xpt",
+                                "dataset": "",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "MHENRTPT is not in ('BEFORE', 'COINCIDENT', 'ONGOING', 'UNKNOWN')",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHENTPT"
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhenrtpt": "AFTER",
+                                            "mhentpt": "2013-05-20"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-03",
+                                            "mhenrtpt": "AFTER",
+                                            "mhentpt": "2013-05-03"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-04",
+                                            "mhenrtpt": null,
+                                            "mhentpt": "2013-05-04"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -80331,8 +80359,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CMENTPT"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -80340,17 +80368,10 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHENTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94935,25 +94956,39 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CMENTPT"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "invalid input syntax for type timestamp: \"2012-08\"\n"
                                         }
                                     ]
                                 ]
                             },
                             {
-                                "dataset": "mh.xpt",
+                                "dataset": "",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "MHENRTPT is not in ('BEFORE', 'COINCIDENT', 'ONGOING', 'AFTER', 'UNKNOWN')",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHENTPT"
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhenrtpt": "WRONG",
+                                            "mhentpt": "2013-05-19"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-03",
+                                            "mhenrtpt": null,
+                                            "mhentpt": "2013-05-02"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -95053,8 +95088,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CMENTPT"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -95062,17 +95097,10 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHENTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99703,33 +99731,121 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMSTRTPT is not in ('BEFORE', 'COINCIDENT', 'AFTER', 'UNKNOWN')",
+                                "number_errors": 5,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "CMSTTPT"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": null,
+                                            "cmsttpt": "2013-05-19"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": "ONGOING",
+                                            "cmsttpt": "2013-05-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": "ONGOING",
+                                            "cmsttpt": "2013-05-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": "POST",
+                                            "cmsttpt": "2013-05-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": "UNK",
+                                            "cmsttpt": "2013-05-10"
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "mh.xpt",
+                                "dataset": "",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "MHSTRTPT is not in ('BEFORE', 'COINCIDENT', 'AFTER', 'UNKNOWN')",
+                                "number_errors": 5,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHSTTPT"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2013-02-18"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2007-04-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2012-05-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-03",
+                                            "mhstrtpt": null,
+                                            "mhsttpt": "2013-05-02"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-04",
+                                            "mhstrtpt": null,
+                                            "mhsttpt": "2013-04-04"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -99883,32 +99999,18 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "CMSTTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHSTTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -105296,33 +105398,91 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "CMSTTPT is equal to the date of collection or assessment but CMSTRTPT is not in ('BEFORE', 'COINCIDENT',  'UNKNOWN').",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "CMSTTPT"
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdtc": "2013-05-20",
+                                            "cmstrtpt": null,
+                                            "cmsttpt": "2013-05-20"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "mh.xpt",
+                                "dataset": "",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "MHSTTPT is equal to the date of collection or assessment but MHSTRTPT is not in ('BEFORE', 'COINCIDENT',  'UNKNOWN').",
+                                "number_errors": 6,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHSTTPT"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2013-05-20"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "AFTER",
+                                            "mhsttpt": "2013-05-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2013-05-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-20",
+                                            "mhstrtpt": "ONGOING",
+                                            "mhsttpt": "2013-05-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-03",
+                                            "mhstrtpt": "AFTER",
+                                            "mhsttpt": "2013-05-03"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhdtc": "2013-05-04",
+                                            "mhstrtpt": null,
+                                            "mhsttpt": "2013-05-04"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -105446,32 +105606,18 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "CMSTTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "Column not found in data",
-                                            "message": "MHSTTPT"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
