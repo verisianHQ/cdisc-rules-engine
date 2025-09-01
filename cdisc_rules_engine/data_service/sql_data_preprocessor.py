@@ -2,15 +2,13 @@
 Data Preprocessor for SDTM and ADaM clinical data.
 """
 
-import logging
-from datetime import datetime
-from typing import Dict, List, Optional, Set, Any
-from collections import defaultdict
 import json
-
+import logging
+from collections import defaultdict
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.db_cache import DBCache
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +19,8 @@ class DataPreprocessor:
     Operations should be performed at data ingestion time.
     """
 
-    def __init__(self, postgres_interface: PostgresQLInterface, cache: DBCache):
+    def __init__(self, postgres_interface: PostgresQLInterface):
         self.pgi = postgres_interface
-        self.cache = cache
         self._merged_datasets_cache: Set[str] = set()
         self._relrec_catalog: Optional[List[Dict]] = None
         self._co_catalog: Optional[List[Dict]] = None
@@ -74,7 +71,7 @@ class DataPreprocessor:
         """Create table to store preprocessing results."""
         create_table_query = """
             CREATE TABLE IF NOT EXISTS public.preprocessing_results (
-                id SERIAL PRIMARY KEY,
+                id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                 run_id UUID DEFAULT gen_random_uuid(),
                 timestamp TIMESTAMPTZ NOT NULL,
                 stage TEXT NOT NULL,
@@ -96,7 +93,7 @@ class DataPreprocessor:
 
         validation_errors_table = """
             CREATE TABLE IF NOT EXISTS public.preprocessing_validation_errors (
-                id SERIAL PRIMARY KEY,
+                id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                 run_id UUID,
                 validation_type TEXT NOT NULL,
                 source_table TEXT,
