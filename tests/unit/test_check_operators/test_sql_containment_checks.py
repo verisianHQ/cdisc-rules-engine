@@ -6,41 +6,43 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 
+CONTAINED_BY_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"]},
+        ["Ctt", "B", "A"],
+        True,
+        [True, False, True],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["C", "Z", "A"],
+        True,
+        [True, False, True],
+    ),
+    (
+        {"target": ["A", "B", "C"], "VAR2": ["A", "B", "D"]},
+        "VAR2",
+        False,
+        [True, True, False],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "B",
+        True,
+        [False, True, False],
+    ),
+    # Note: Doesn't seem like there is a way to test this using SQL
+    # (
+    #     {"target": [1, 2, 3], "VAR2": [[1, 2], [3], [3]]},
+    #     "VAR2",
+    #     [True, False, True],
+    # ),
+]
+
 
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
-    [
-        (
-            {"target": ["Ctt", "Btt", "A"]},
-            ["Ctt", "B", "A"],
-            True,
-            [True, False, True],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            ["C", "Z", "A"],
-            True,
-            [True, False, True],
-        ),
-        (
-            {"target": ["A", "B", "C"], "VAR2": ["A", "B", "D"]},
-            "VAR2",
-            False,
-            [True, True, False],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            "B",
-            True,
-            [False, True, False],
-        ),
-        # Note: Doesn't seem like there is a way to test this using SQL
-        # (
-        #     {"target": [1, 2, 3], "VAR2": [[1, 2], [3], [3]]},
-        #     "VAR2",
-        #     [True, False, True],
-        # ),
-    ],
+    CONTAINED_BY_TEST_DATA,
 )
 def test_is_contained_by(data, comparator, value_is_literal, expected_result):
     table_name = "test_table"
@@ -56,30 +58,8 @@ def test_is_contained_by(data, comparator, value_is_literal, expected_result):
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
     [
-        (
-            {"target": ["Ctt", "Btt", "A"]},
-            ["Ctt", "B", "A"],
-            True,
-            [False, True, False],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            ["C", "Z", "A"],
-            True,
-            [False, True, False],
-        ),
-        (
-            {"target": ["A", "B", "C"], "VAR2": ["A", "B", "D"]},
-            "VAR2",
-            False,
-            [False, False, True],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            "B",
-            True,
-            [True, False, True],
-        ),
+        (data, comparator, value_is_literal, [not x for x in expected_result])
+        for data, comparator, value_is_literal, expected_result in CONTAINED_BY_TEST_DATA
     ],
 )
 def test_is_not_contained_by(data, comparator, value_is_literal, expected_result):
@@ -93,28 +73,31 @@ def test_is_not_contained_by(data, comparator, value_is_literal, expected_result
     assert result.equals(pd.Series(expected_result))
 
 
+CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"]},
+        ["ctt", "b", "a"],
+        True,
+        [True, False, True],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["c", "z", "a"],
+        True,
+        [True, False, True],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "b",
+        True,
+        [False, True, False],
+    ),
+]
+
+
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
-    [
-        (
-            {"target": ["Ctt", "Btt", "A"]},
-            ["ctt", "b", "a"],
-            True,
-            [True, False, True],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            ["c", "z", "a"],
-            True,
-            [True, False, True],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            "b",
-            True,
-            [False, True, False],
-        ),
-    ],
+    CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA,
 )
 def test_is_contained_by_case_insensitive(data, comparator, value_is_literal, expected_result):
     table_name = "test_table"
@@ -130,24 +113,8 @@ def test_is_contained_by_case_insensitive(data, comparator, value_is_literal, ex
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
     [
-        (
-            {"target": ["Ctt", "Btt", "A"]},
-            ["ctt", "b", "a"],
-            True,
-            [False, True, False],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            ["c", "z", "a"],
-            True,
-            [False, True, False],
-        ),
-        (
-            {"target": ["A", "B", "C"]},
-            "b",
-            True,
-            [True, False, True],
-        ),
+        (data, comparator, value_is_literal, [not x for x in expected_result])
+        for data, comparator, value_is_literal, expected_result in CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA
     ],
 )
 def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal, expected_result):

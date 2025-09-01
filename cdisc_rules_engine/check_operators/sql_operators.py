@@ -574,6 +574,18 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_contained_by(self, other_value):
+        """
+        Checks if the target column values are contained within the comparator.
+
+        Returns True if target value exists in the comparator collection/column and is not null/empty.
+        Returns False if target value is null, empty, or not found in comparator.
+
+        Handles three types of comparators:
+        1. List of literal values - check if target is in the list
+        2. Column name (when value_is_literal=False) - checks if target value exists anywhere in the comparator column
+        3. Single literal value - checks direct equality with the target
+
+        """
         target_column = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
@@ -591,7 +603,7 @@ class PostgresQLOperators(BaseType):
                           ELSE false
                           END"""
 
-        elif isinstance(comparator, str) and not value_is_literal:
+        elif isinstance(comparator, str) and not value_is_literal and self._exists(comparator):
             # Column name provided - check if target value exists anywhere in comparator column
             comparator_column = self.replace_prefix(comparator).lower()
             cache_key = f"{target_column}_contained_by_{comparator_column}"
