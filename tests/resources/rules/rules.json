@@ -16713,7 +16713,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -16874,7 +16874,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -16975,7 +16975,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -17063,7 +17063,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33631,7 +33631,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33646,7 +33646,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33858,7 +33858,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33873,7 +33873,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33944,7 +33944,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -33959,7 +33959,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -34017,7 +34017,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -34032,7 +34032,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -58932,7 +58932,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -58947,7 +58947,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -59015,7 +59015,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -59030,7 +59030,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -59045,7 +59045,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -59060,7 +59060,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -60943,7 +60943,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -60958,7 +60958,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -67574,7 +67574,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$TV_VISITNUM\"\nLINE 1: ...czt1rlrvd0 = (visitnum IS NOT NULL AND visitnum = '$TV_VISIT...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -67967,7 +67967,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$TV_VISITNUM\"\nLINE 1: ...czt1rlrvd0 = (visitnum IS NOT NULL AND visitnum = '$TV_VISIT...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -68619,7 +68619,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$TV_VISITNUM\"\nLINE 1: ...czt1rlrvd0 = (visitnum IS NOT NULL AND visitnum = '$TV_VISIT...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83534,7 +83534,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83549,7 +83549,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83684,7 +83684,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83699,7 +83699,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83757,7 +83757,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -83772,7 +83772,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 2:                           AND visitnum != ''\n                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$tv_visitnum\"\nLINE 1: ...mclpn8ifr4 = (visitnum IS NOT NULL AND visitnum = '$tv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -92234,7 +92234,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...t713wtdc1jz8pa1hbvhx9myg5d4aa2sb7dwy = (CASE WHEN variable_n...\n                                                             ^\n"
+                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vomtkzuyvtz9lkyel6qxmivzgcilpxspoobv9ihmtxuo = (variable_n...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -92249,7 +92249,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...t713wtdc1jz8pa1hbvhx9myg5d4aa2sb7dwy = (CASE WHEN variable_n...\n                                                             ^\n"
+                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vomtkzuyvtz9lkyel6qxmivzgcilpxspoobv9ihmtxuo = (variable_n...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -92264,7 +92264,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...t713wtdc1jz8pa1hbvhx9myg5d4aa2sb7dwy = (CASE WHEN variable_n...\n                                                             ^\n"
+                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vomtkzuyvtz9lkyel6qxmivzgcilpxspoobv9ihmtxuo = (variable_n...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -92354,7 +92354,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...t713wtdc1jz8pa1hbvhx9myg5d4aa2sb7dwy = (CASE WHEN variable_n...\n                                                             ^\n"
+                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vomtkzuyvtz9lkyel6qxmivzgcilpxspoobv9ihmtxuo = (variable_n...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -92369,7 +92369,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...t713wtdc1jz8pa1hbvhx9myg5d4aa2sb7dwy = (CASE WHEN variable_n...\n                                                             ^\n"
+                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vomtkzuyvtz9lkyel6qxmivzgcilpxspoobv9ihmtxuo = (variable_n...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
