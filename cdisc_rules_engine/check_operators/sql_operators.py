@@ -1087,7 +1087,9 @@ class PostgresQLOperators(BaseType):
             lambda: (
                 f"CASE WHEN {target} IS NOT NULL "
                 f"AND {target} != '' "
-                f"AND {target}::text ~ '^\\d{{4}}-\\d{{2}}-\\d{{2}}$' "
+                f"AND {target}::text ~ "
+                f"'^\\d{{4}}-\\d{{2}}-\\d{{2}}"
+                f"(T\\d{{2}}:\\d{{2}}(:\\d{{2}})?(\\.\\d+)?([+-]\\d{{2}}:?\\d{{2}}|Z)?)?$' "
                 f"THEN TRUE ELSE FALSE END"
             ),
         )
