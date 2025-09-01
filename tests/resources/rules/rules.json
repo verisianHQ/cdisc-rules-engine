@@ -5477,7 +5477,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ecstat\" does not exist\nLINE 1: ...c SET vjhsnkywknxhmvnhbyevbx6n21dazufbuvhejogw = (ecstat IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ec.ectrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -5492,7 +5492,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"expresp\" does not exist\nLINE 1: ...vc7nvim9bv416pnsbid2aep6usztvmegxcgivffz4 = (NOT (expresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -5624,7 +5624,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeoccur\" does not exist\nLINE 1: ... SET vozjgeipaiworw5r2gpvehwjfoer5mrggdy2espg = ((AEOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -5737,7 +5737,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dspresp\" does not exist\nLINE 1: ...9fghfjvd6cgbhyeyvvzckn3irgzhitrmlarpnqur0 = (NOT (dspresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -5752,7 +5752,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvpresp\" does not exist\nLINE 1: ...mppl4gw1pfa9kqmmsrtueptoeyiqo9h2rz8iqhp1o = (NOT (dvpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -6624,7 +6624,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ecstat\" does not exist\nLINE 1: ...c SET vjhsnkywknxhmvnhbyevbx6n21dazufbuvhejogw = (ecstat IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ec.ectrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -6639,7 +6639,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"expresp\" does not exist\nLINE 1: ...vc7nvim9bv416pnsbid2aep6usztvmegxcgivffz4 = (NOT (expresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -6678,7 +6678,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeoccur\" does not exist\nLINE 1: ... SET vozjgeipaiworw5r2gpvehwjfoer5mrggdy2espg = ((AEOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -6709,7 +6709,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dspresp\" does not exist\nLINE 1: ...9fghfjvd6cgbhyeyvvzckn3irgzhitrmlarpnqur0 = (NOT (dspresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -6724,7 +6724,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvpresp\" does not exist\nLINE 1: ...mppl4gw1pfa9kqmmsrtueptoeyiqo9h2rz8iqhp1o = (NOT (dvpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -8578,7 +8578,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"exoccur\" does not exist\nLINE 1: ...T vp3dtwfmht8k6tw1opvck7j27wn5fstn5795o3qbuuy = ((EXOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -8701,7 +8701,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeoccur\" does not exist\nLINE 1: ... SET vozjgeipaiworw5r2gpvehwjfoer5mrggdy2espg = ((AEOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -8806,7 +8806,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsoccur\" does not exist\nLINE 1: ... v2gdijsbozlewpjr0aolhxawowcrkfpjtlcvnxkocaku = ((DSOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -8821,7 +8821,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvoccur\" does not exist\nLINE 1: ...T vukdxwagcqpvsw1xu6cznaeumeynufeioegthdnvcao = ((DVOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -9689,7 +9689,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"exoccur\" does not exist\nLINE 1: ...T vp3dtwfmht8k6tw1opvck7j27wn5fstn5795o3qbuuy = ((EXOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -9728,7 +9728,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeoccur\" does not exist\nLINE 1: ... SET vozjgeipaiworw5r2gpvehwjfoer5mrggdy2espg = ((AEOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -9759,7 +9759,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsoccur\" does not exist\nLINE 1: ... v2gdijsbozlewpjr0aolhxawowcrkfpjtlcvnxkocaku = ((DSOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -9774,7 +9774,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvoccur\" does not exist\nLINE 1: ...T vukdxwagcqpvsw1xu6cznaeumeynufeioegthdnvcao = ((DVOCCUR IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -11018,7 +11018,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ecstat\" does not exist\nLINE 1: ... vqxqzfavkqjweh26ov5amz1bykcszgntxvkgpsvesoyi = ((ECSTAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ec.ectrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -11033,7 +11033,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"expresp\" does not exist\nLINE 1: ...ex SET vkk7xyesjh6xnkkdq0hoe4tstvdhgnpl2w0iyl0 = (expresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -11165,7 +11165,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aestat\" does not exist\nLINE 1: ... vdnb0n2kbaxnugvabwywjonaagd44hj3bgdhuako5ytc = ((AESTAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aeseq\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -11278,7 +11278,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dspresp\" does not exist\nLINE 1: ...ET vc6mb9xehot2xmqpbqvgdkyecydcsxzxwofaal81pmg = (dspresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -11293,7 +11293,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvpresp\" does not exist\nLINE 1: ...v SET vyorsntjmrryu3i5rjpz34avitwu3esj4qoiu7ic = (dvpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -12102,7 +12102,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ecstat\" does not exist\nLINE 1: ... vqxqzfavkqjweh26ov5amz1bykcszgntxvkgpsvesoyi = ((ECSTAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ec.ectrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -12117,7 +12117,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"expresp\" does not exist\nLINE 1: ...ex SET vkk7xyesjh6xnkkdq0hoe4tstvdhgnpl2w0iyl0 = (expresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -12156,7 +12156,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aestat\" does not exist\nLINE 1: ... vdnb0n2kbaxnugvabwywjonaagd44hj3bgdhuako5ytc = ((AESTAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aeseq\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -12187,7 +12187,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dspresp\" does not exist\nLINE 1: ...ET vc6mb9xehot2xmqpbqvgdkyecydcsxzxwofaal81pmg = (dspresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -12202,7 +12202,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvpresp\" does not exist\nLINE 1: ...v SET vyorsntjmrryu3i5rjpz34avitwu3esj4qoiu7ic = (dvpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -13267,7 +13267,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"iedrvfl\" does not exist\nLINE 1: ...T vjv0tbu4txe7lbqaap4xequceplnczx2zofq64lm2eju = (iedrvfl IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -14692,7 +14692,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"teenrl\" does not exist\nLINE 1: ...T v2bj2mgevlafh5acpalihdinz3ytmzkcrtycykp05qe = ((TEENRL IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"te.testrl\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -14976,7 +14976,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"pctptref\" does not exist\nLINE 1: ...T vi7qjh4fyy0dryvtjlpgmg3dqyxrcafclezflf3kogy = ((PCTPTREF I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"pc.pctpt\" or the column \"pc.pctptnum\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -15887,7 +15887,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsdecod\" does not exist\nLINE 1: ...m SET vtkndtiwbcy2x1hfldkve70o93fod5vl5ybdwhrs = (dsdecod IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16038,7 +16038,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsdecod\" does not exist\nLINE 1: ...m SET vtkndtiwbcy2x1hfldkve70o93fod5vl5ybdwhrs = (dsdecod IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16398,7 +16398,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16543,7 +16543,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16728,7 +16728,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16786,7 +16786,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"sv.svupdes\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16801,7 +16801,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16889,7 +16889,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -16990,7 +16990,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...SET vyosddfyqqctfoseumbkoffdurbzsyy4sysbhmq2q = ((SVPRESP IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -17078,7 +17078,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...SET vyosddfyqqctfoseumbkoffdurbzsyy4sysbhmq2q = ((SVPRESP IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -18253,7 +18253,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarm\" does not exist\nLINE 1: ...T vdncq3djuyiugwmjwwsmdrpdyxzrlt6nmc1xvmjpvrg = ((ACTARM IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -18459,7 +18459,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarm\" does not exist\nLINE 1: ...T vdncq3djuyiugwmjwwsmdrpdyxzrlt6nmc1xvmjpvrg = ((ACTARM IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -22605,7 +22605,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"vsdrvfl\" does not exist\nLINE 1: ...4b6ccpp3djop8o17gyf4x3kfyqw8zkfvblvtlh7qu = (NOT (vsdrvfl IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -22804,7 +22804,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"vsdrvfl\" does not exist\nLINE 1: ...4b6ccpp3djop8o17gyf4x3kfyqw8zkfvblvtlh7qu = (NOT (vsdrvfl IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -23425,7 +23425,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvstdtc\" does not exist\nLINE 2:                         dvstdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -23440,7 +23440,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rficdtc\" does not exist\nLINE 4:                         AND rficdtc IS NOT NULL\n                                    ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -23520,7 +23520,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dvstdtc\" does not exist\nLINE 2:                         dvstdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -23535,7 +23535,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rficdtc\" does not exist\nLINE 4:                         AND rficdtc IS NOT NULL\n                                    ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -25744,7 +25744,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"seupdes\" does not exist\nLINE 1: ... vm5sxrgfr0nladbplyvb9cqeru3z6kdzkkxbbikzjirg = ((SEUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -26103,7 +26103,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svstdtc\" does not exist\nLINE 4:                         AND svstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"se.sestdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -26118,7 +26118,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"sestdtc\" does not exist\nLINE 2:                         sestdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"sv.svstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -26179,7 +26179,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svstdtc\" does not exist\nLINE 4:                         AND svstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"se.sestdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -26194,7 +26194,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"sestdtc\" does not exist\nLINE 2:                         sestdtc IS NOT NULL\n                                ^\nHINT:  Perhaps you meant to reference the column \"sv.svstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -28634,7 +28634,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -28703,7 +28703,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -29907,7 +29907,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"lbspcufl\" does not exist\nLINE 1: ...rry0kudj2gzlw0fgnlofkravygkpsoqvjppnrodwq = (NOT (lbspcufl I...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41522,7 +41522,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmenrf\" does not exist\nLINE 1: ... vbbzm8wjwnxbi8gz7azb7gtvoqluuwauwkbi4f8ghlzu = ((DMENRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41537,7 +41537,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfendtc\" does not exist\nLINE 1: ...T vco9vuc69afodu24wvfqenmpqp7ka3uxiqb4gsbhpsk = ((RFENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aeendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41636,7 +41636,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmenrf\" does not exist\nLINE 1: ... vbbzm8wjwnxbi8gz7azb7gtvoqluuwauwkbi4f8ghlzu = ((DMENRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41651,7 +41651,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfendtc\" does not exist\nLINE 1: ...T vco9vuc69afodu24wvfqenmpqp7ka3uxiqb4gsbhpsk = ((RFENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41745,7 +41745,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmenrf\" does not exist\nLINE 1: ... vbbzm8wjwnxbi8gz7azb7gtvoqluuwauwkbi4f8ghlzu = ((DMENRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41760,7 +41760,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfendtc\" does not exist\nLINE 1: ...T vco9vuc69afodu24wvfqenmpqp7ka3uxiqb4gsbhpsk = ((RFENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aeendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41818,7 +41818,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmenrf\" does not exist\nLINE 1: ... vbbzm8wjwnxbi8gz7azb7gtvoqluuwauwkbi4f8ghlzu = ((DMENRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -41833,7 +41833,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfendtc\" does not exist\nLINE 1: ...T vco9vuc69afodu24wvfqenmpqp7ka3uxiqb4gsbhpsk = ((RFENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -50639,7 +50639,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"lbdrvfl\" does not exist\nLINE 1: ...ET v6va7v7haeo1j2ykppwi2pnk9afjkxadc6mxdc = (NOT (lbdrvfl IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -50710,7 +50710,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"lbstat\" does not exist\nLINE 1: ... vefrhan1auwkbt7ap54gpi6putwzqmyop4rxeey499oa = ((LBSTAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"lb.lbcat\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51664,7 +51664,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51679,7 +51679,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51764,7 +51764,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51794,7 +51794,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvarval\" does not exist\nLINE 1: ...ET vfz3ulfqdihpofuvujvi3d6w32mwsbtc6qltu7bgea = ((IDVARVAL I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"supplb.idvar\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51809,7 +51809,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51824,7 +51824,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51839,7 +51839,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51974,7 +51974,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -51989,7 +51989,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -52004,7 +52004,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -52301,7 +52301,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ... SET vecehzzvaabqi8ko0a4wab8x6vrf7eag7dlukx44 = ((ACTARMCD I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.armcd\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -52407,7 +52407,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ... SET vecehzzvaabqi8ko0a4wab8x6vrf7eag7dlukx44 = ((ACTARMCD I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.armcd\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -52526,7 +52526,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarm\" does not exist\nLINE 1: ...T vdncq3djuyiugwmjwwsmdrpdyxzrlt6nmc1xvmjpvrg = ((ACTARM IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -52632,7 +52632,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarm\" does not exist\nLINE 1: ...T vdncq3djuyiugwmjwwsmdrpdyxzrlt6nmc1xvmjpvrg = ((ACTARM IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -53945,7 +53945,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"tmrpt\" does not exist\nLINE 1: ...ET vsalyywpszqvne66ovcywdus8ymhivys2urrwi2lpto = (tmrpt IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -54033,7 +54033,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"tmrpt\" does not exist\nLINE 1: ...ET vsalyywpszqvne66ovcywdus8ymhivys2urrwi2lpto = (tmrpt IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -56937,7 +56937,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rsubjid\" does not exist\nLINE 1: ...T vw8befygjbah1t8tqbwvwz6tbhvqep6evc2pmks79os = ((RSUBJID IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.usubjid\" or the column \"dm.subjid\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -57022,7 +57022,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 4:                         AND rfstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"mh.mhstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -57037,7 +57037,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"mhstdtc\" does not exist\nLINE 1: ... vmzceeu1n5sjshjqov7rnjgmurkjxgm5m2s1efstb4l8 = ((MHSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -57126,7 +57126,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 4:                         AND rfstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"mh.mhstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -57141,7 +57141,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"mhstdtc\" does not exist\nLINE 1: ... vmzceeu1n5sjshjqov7rnjgmurkjxgm5m2s1efstb4l8 = ((MHSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.rfstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -57386,7 +57386,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"lbscat\" does not exist\nLINE 1: ...T vp43yyqirzrhvoon5gb8zzkiji6hdwyt8zhc0hzqgwg = ((LBSCAT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"lb.lbcat\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61253,7 +61253,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 4:                         AND rfstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"mh.mhstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61268,7 +61268,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"mhendtc\" does not exist\nLINE 1: ...SET vqu5lrdlz1yn6tvysufcva9w8dspdw2jc4d4adsui = ((MHENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.rfendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61366,7 +61366,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 4:                         AND rfstdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"mh.mhstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61381,7 +61381,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"mhendtc\" does not exist\nLINE 1: ...SET vqu5lrdlz1yn6tvysufcva9w8dspdw2jc4d4adsui = ((MHENDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.rfendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61455,7 +61455,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ssstresc\" does not exist\nLINE 1: ...ET vpykwat6p4srw9sj11lfktbkvqbr9mtvt8llwxedxz0 = (ssstresc I...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61549,7 +61549,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ssstresc\" does not exist\nLINE 1: ...ET vpykwat6p4srw9sj11lfktbkvqbr9mtvt8llwxedxz0 = (ssstresc I...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61638,7 +61638,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61653,7 +61653,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsdecod\" does not exist\nLINE 1: ...m SET vtkndtiwbcy2x1hfldkve70o93fod5vl5ybdwhrs = (dsdecod IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61714,7 +61714,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61729,7 +61729,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsdecod\" does not exist\nLINE 1: ...m SET vtkndtiwbcy2x1hfldkve70o93fod5vl5ybdwhrs = (dsdecod IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61744,7 +61744,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dsdecod\" does not exist\nLINE 1: ...e SET vtkndtiwbcy2x1hfldkve70o93fod5vl5ybdwhrs = (dsdecod IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61826,7 +61826,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aesdth\" does not exist\nLINE 1: ...T vnzvn1t4hafownstj9pqruoec6k3mdqrs1vwrcabifk8 = (aesdth IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61841,7 +61841,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61902,7 +61902,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aesdth\" does not exist\nLINE 1: ...T vnzvn1t4hafownstj9pqruoec6k3mdqrs1vwrcabifk8 = (aesdth IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61917,7 +61917,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -61991,7 +61991,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeout\" does not exist\nLINE 1: ... SET vuum1iyb5wtdxcnubcthpvyufctehu7x7dhmnhaqm = (aeout IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -62006,7 +62006,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -62067,7 +62067,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aeout\" does not exist\nLINE 1: ... SET vuum1iyb5wtdxcnubcthpvyufctehu7x7dhmnhaqm = (aeout IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -62082,7 +62082,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...vbriviko3vkmixegbcde4ptgvrxqdb4ab2mxtmkak = (NOT (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -63006,7 +63006,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ssstresc\" does not exist\nLINE 1: ...ET vpykwat6p4srw9sj11lfktbkvqbr9mtvt8llwxedxz0 = (ssstresc I...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -63021,7 +63021,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthdtc\" does not exist\nLINE 4:                         AND dthdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"ss.ssdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -63127,7 +63127,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ssstresc\" does not exist\nLINE 1: ...ET vpykwat6p4srw9sj11lfktbkvqbr9mtvt8llwxedxz0 = (ssstresc I...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -63142,7 +63142,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthdtc\" does not exist\nLINE 4:                         AND dthdtc IS NOT NULL\n                                    ^\nHINT:  Perhaps you meant to reference the column \"ss.ssdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64050,7 +64050,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmstrf\" does not exist\nLINE 1: ...T vxextob2vx5eny393pgywwzkbcatttlhxdnknbhwshm = ((DMSTRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64065,7 +64065,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 1: ...T vs3gubojijvnumzk6muialyqshi4gbejmndlygfk4ts = ((RFSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aestdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64156,7 +64156,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmstrf\" does not exist\nLINE 1: ...T vxextob2vx5eny393pgywwzkbcatttlhxdnknbhwshm = ((DMSTRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64171,7 +64171,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 1: ...T vs3gubojijvnumzk6muialyqshi4gbejmndlygfk4ts = ((RFSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64265,7 +64265,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmstrf\" does not exist\nLINE 1: ...T vxextob2vx5eny393pgywwzkbcatttlhxdnknbhwshm = ((DMSTRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64280,7 +64280,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 1: ...T vs3gubojijvnumzk6muialyqshi4gbejmndlygfk4ts = ((RFSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aestdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64338,7 +64338,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmstrf\" does not exist\nLINE 1: ...T vxextob2vx5eny393pgywwzkbcatttlhxdnknbhwshm = ((DMSTRF IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -64353,7 +64353,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfstdtc\" does not exist\nLINE 1: ...T vs3gubojijvnumzk6muialyqshi4gbejmndlygfk4ts = ((RFSTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -66882,7 +66882,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -66897,7 +66897,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67227,7 +67227,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67242,7 +67242,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67740,7 +67740,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67755,7 +67755,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67770,7 +67770,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67800,7 +67800,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -67815,7 +67815,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68148,7 +68148,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68163,7 +68163,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68193,7 +68193,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68208,7 +68208,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68800,7 +68800,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68815,7 +68815,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68845,7 +68845,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -68860,7 +68860,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svpresp\" does not exist\nLINE 1: ...T vxmzdvxg4qwwaydtv7auuzdor9393ihfrtyz1zjozjjg = (svpresp IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81016,7 +81016,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81031,7 +81031,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81288,7 +81288,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81349,7 +81349,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81364,7 +81364,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81621,7 +81621,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"svupdes\" does not exist\nLINE 1: ... vecupqdlwhrp2hvhaifnsdmsguuhcafehkh9lkgplswg = ((SVUPDES IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81831,7 +81831,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"race\" does not exist\nLINE 1: ...kpzyu52mm5xvdumtzdyj0afe4qemacaf3cfsnxpe4 = (NOT (race IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81907,7 +81907,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"race\" does not exist\nLINE 1: ...kpzyu52mm5xvdumtzdyj0afe4qemacaf3cfsnxpe4 = (NOT (race IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -81980,7 +81980,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"race\" does not exist\nLINE 1: ...kpzyu52mm5xvdumtzdyj0afe4qemacaf3cfsnxpe4 = (NOT (race IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -82711,7 +82711,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdy\" does not exist\nLINE 1: ...T vs07jwjwidkdirx5boicpw6ooecdnd0ykrxegnfdfiu = ((DMDY IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -82797,7 +82797,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aedy\" does not exist\nLINE 1: ...SET vxqym8eygxzhfiapppsfopadfmyxldjugcanxkqdg = ((AEDY IS NU...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aestdy\" or the column \"ae.aeendy\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -82812,7 +82812,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdy\" does not exist\nLINE 1: ...T vs07jwjwidkdirx5boicpw6ooecdnd0ykrxegnfdfiu = ((DMDY IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -82827,7 +82827,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"exdy\" does not exist\nLINE 1: ... vbljdcfgbtid9hxqydsmd04qgxpai1xn9mmxuib10lva = ((EXDY IS NU...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ex.exstdy\" or the column \"ex.exendy\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -82976,7 +82976,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdy\" does not exist\nLINE 1: ...T vs07jwjwidkdirx5boicpw6ooecdnd0ykrxegnfdfiu = ((DMDY IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -83041,7 +83041,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aedy\" does not exist\nLINE 1: ...SET vxqym8eygxzhfiapppsfopadfmyxldjugcanxkqdg = ((AEDY IS NU...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ae.aestdy\" or the column \"ae.aeendy\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -83056,7 +83056,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdy\" does not exist\nLINE 1: ...T vs07jwjwidkdirx5boicpw6ooecdnd0ykrxegnfdfiu = ((DMDY IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -83071,7 +83071,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"exdy\" does not exist\nLINE 1: ... vbljdcfgbtid9hxqydsmd04qgxpai1xn9mmxuib10lva = ((EXDY IS NU...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ex.exstdy\" or the column \"ex.exendy\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -85100,7 +85100,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ...hzhgovqesmnfkffdasfrkrertw4dcs = (CASE WHEN lower(actarmcd) ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -85197,7 +85197,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarmcd\" does not exist\nLINE 1: ...hzhgovqesmnfkffdasfrkrertw4dcs = (CASE WHEN lower(actarmcd) ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -85424,7 +85424,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"actarm\" does not exist\nLINE 1: ...atoet52hwyvjxp0xursjxgdllwnfsmsrbajm = (CASE WHEN actarm IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ta.arm\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86800,7 +86800,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86815,7 +86815,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86830,7 +86830,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86920,7 +86920,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86935,7 +86935,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -86950,7 +86950,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"variable_name\" does not exist\nLINE 1: ...T vzxibnc5spbeebl7ek8rimvkofeuoxzsynem33wqjgcm = (variable_n...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -87172,7 +87172,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"agetxt\" does not exist\nLINE 1: ...T v3syb0cwvpok3fylj0zcjlwmsictbca0wzniinoksbu = ((AGETXT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.age\" or the column \"dm.ageu\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -87225,7 +87225,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"agetxt\" does not exist\nLINE 1: ...T v3syb0cwvpok3fylj0zcjlwmsictbca0wzniinoksbu = ((AGETXT IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.age\" or the column \"dm.ageu\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -92653,7 +92653,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -92668,7 +92668,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -93049,7 +93049,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -93064,7 +93064,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"usubjid\" does not exist\nLINE 1: ... vinb4w3t1nryxw6coixqoelru2rmz7kkwewqe2wws6hi = ((USUBJID IS...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -96111,7 +96111,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...ET vyenlb5a2limtdensrol9geh3wi6wpqux88dofijtqu = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -96126,7 +96126,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aesmie\" does not exist\nLINE 1: ...a1958zwar2wfyl0apamqijdlgh4r5ohqbbl6rbhz8 = (NOT (aesmie IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -96194,7 +96194,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...ET vyenlb5a2limtdensrol9geh3wi6wpqux88dofijtqu = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -96209,7 +96209,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aesmie\" does not exist\nLINE 1: ...a1958zwar2wfyl0apamqijdlgh4r5ohqbbl6rbhz8 = (NOT (aesmie IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -97011,7 +97011,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...SET vabfjxojif0tn3yuh96v4fdht99ppxahmc37laxzfm = (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -97096,7 +97096,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dthfl\" does not exist\nLINE 1: ...SET vabfjxojif0tn3yuh96v4fdht99ppxahmc37laxzfm = (dthfl IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -98597,7 +98597,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"epoch\" does not exist\nLINE 1: ...ET vyifnitmgnllszviairels1f1xn5zau2qzmq5y7pec = ((EPOCH IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -98800,7 +98800,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"epoch\" does not exist\nLINE 1: ...ET vyifnitmgnllszviairels1f1xn5zau2qzmq5y7pec = ((EPOCH IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -98839,7 +98839,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"epoch\" does not exist\nLINE 1: ...ET vyifnitmgnllszviairels1f1xn5zau2qzmq5y7pec = ((EPOCH IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100136,7 +100136,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100258,7 +100258,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100273,7 +100273,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100378,7 +100378,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100423,7 +100423,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100438,7 +100438,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100453,7 +100453,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100588,7 +100588,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100603,7 +100603,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"idvar\" does not exist\nLINE 1: ... vpe4gwez4rwrglrgkubvihacbj0vrpcq9ddhi6fbwd4a = ((IDVAR IS N...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101122,7 +101122,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aestdtc\" does not exist\nLINE 1: ...T vqtjtoksxwft13qkogdgyhq6ehxgnqzxr0iobw1vhg8 = ((AESTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ds.dsstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101137,7 +101137,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"$\"\nLINE 4:                         AND $max_dsstdtc IS NOT NULL\n                                    ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101208,7 +101208,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"aestdtc\" does not exist\nLINE 1: ...T vqtjtoksxwft13qkogdgyhq6ehxgnqzxr0iobw1vhg8 = ((AESTDTC IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ds.dsstdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101223,7 +101223,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at or near \"$\"\nLINE 4:                         AND $max_dsstdtc IS NOT NULL\n                                    ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101772,7 +101772,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdtc\" does not exist\nLINE 1: ...ET vb1povxdlq7iaioqsfc5ue8ruduvalyvi0smfpne6q = ((DMDTC IS N...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.dthdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101787,7 +101787,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfpendtc\" does not exist\nLINE 1: ...T v0bzjeky2azlmbpy7gjpjzwgha59zldqkrgjkiedh7g = ((RFPENDTC I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ce.ceendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101802,7 +101802,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfpendtc\" does not exist\nLINE 1: ...T v0bzjeky2azlmbpy7gjpjzwgha59zldqkrgjkiedh7g = ((RFPENDTC I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"lb.lbendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101891,7 +101891,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"dmdtc\" does not exist\nLINE 1: ...ET vb1povxdlq7iaioqsfc5ue8ruduvalyvi0smfpne6q = ((DMDTC IS N...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"dm.dthdtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101906,7 +101906,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfpendtc\" does not exist\nLINE 1: ...T v0bzjeky2azlmbpy7gjpjzwgha59zldqkrgjkiedh7g = ((RFPENDTC I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"lb.lbendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -101921,7 +101921,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"rfpendtc\" does not exist\nLINE 1: ...T v0bzjeky2azlmbpy7gjpjzwgha59zldqkrgjkiedh7g = ((RFPENDTC I...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"ce.ceendtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -102525,7 +102525,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ethnic\" does not exist\nLINE 1: ...ET vyu2kxrowmrb0difpoqtft1cukawlgkygkpiwdmy9s = ((ETHNIC IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -102540,7 +102540,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vd7ebbvqg5x3ga3e2czoep2u8ttokmxnzvbxdzlpdakw = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -102601,7 +102601,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ethnic\" does not exist\nLINE 1: ...ET vyu2kxrowmrb0difpoqtft1cukawlgkygkpiwdmy9s = ((ETHNIC IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -102616,7 +102616,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vd7ebbvqg5x3ga3e2czoep2u8ttokmxnzvbxdzlpdakw = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104699,7 +104699,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ethnic\" does not exist\nLINE 1: ...ET vyu2kxrowmrb0difpoqtft1cukawlgkygkpiwdmy9s = ((ETHNIC IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104714,7 +104714,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vd7ebbvqg5x3ga3e2czoep2u8ttokmxnzvbxdzlpdakw = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104775,7 +104775,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"ethnic\" does not exist\nLINE 1: ...ET vyu2kxrowmrb0difpoqtft1cukawlgkygkpiwdmy9s = ((ETHNIC IS ...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104790,7 +104790,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vd7ebbvqg5x3ga3e2czoep2u8ttokmxnzvbxdzlpdakw = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104864,7 +104864,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"race\" does not exist\nLINE 1: ...ET vsph8xn8blgkuqw8yvsdwndgrnugbmcqgfxboazjn0 = ((RACE IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104879,7 +104879,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vlll1espw5qz9vurn1assg7jqfjyf8po5infuvhyjfxg = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104940,7 +104940,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"race\" does not exist\nLINE 1: ...ET vsph8xn8blgkuqw8yvsdwndgrnugbmcqgfxboazjn0 = ((RACE IS NU...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -104955,7 +104955,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"qnam\" does not exist\nLINE 1: ...T vlll1espw5qz9vurn1assg7jqfjyf8po5infuvhyjfxg = (qnam IS NO...\n                                                             ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105554,7 +105554,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"cmterm\" does not exist\nLINE 1: ...vh8ruy6kc8jywogs9czddyozbnmmwz4gvuaatyh0m = (NOT (cmterm IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmtrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105598,7 +105598,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"fadecod\" does not exist\nLINE 1: ...a SET vsir231wopcy37e9qyt3wnjmdw284y62o8nglag = ((FADECOD IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"fa.fadtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105613,7 +105613,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at end of input\nLINE 1: ...h2tiwskd1vqdpvalkqfxm = ((--DECOD IS NULL OR --DECOD = ''));\n                                                                       ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105711,7 +105711,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"cmterm\" does not exist\nLINE 1: ...vh8ruy6kc8jywogs9czddyozbnmmwz4gvuaatyh0m = (NOT (cmterm IS ...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"cm.cmtrt\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105734,7 +105734,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "column \"fadecod\" does not exist\nLINE 1: ...a SET vsir231wopcy37e9qyt3wnjmdw284y62o8nglag = ((FADECOD IS...\n                                                             ^\nHINT:  Perhaps you meant to reference the column \"fa.fadtc\".\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105749,7 +105749,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at end of input\nLINE 1: ...h2tiwskd1vqdpvalkqfxm = ((--DECOD IS NULL OR --DECOD = ''));\n                                                                       ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105893,7 +105893,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at end of input\nLINE 1: ...h2tiwskd1vqdpvalkqfxm = ((--DECOD IS NULL OR --DECOD = ''));\n                                                                       ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -106051,7 +106051,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "syntax error at end of input\nLINE 1: ...h2tiwskd1vqdpvalkqfxm = ((--DECOD IS NULL OR --DECOD = ''));\n                                                                       ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
