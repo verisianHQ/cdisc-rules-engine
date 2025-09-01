@@ -5624,7 +5624,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEOCCUR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -6678,7 +6678,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEOCCUR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -8578,7 +8578,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EXOCCUR does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -8701,7 +8701,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEOCCUR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -8806,7 +8806,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DSOCCUR does not exist in the table ds."
                                         }
                                     ]
                                 ]
@@ -8821,7 +8821,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DVOCCUR does not exist in the table dv."
                                         }
                                     ]
                                 ]
@@ -9689,7 +9689,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EXOCCUR does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -9728,7 +9728,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEOCCUR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -9759,7 +9759,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DSOCCUR does not exist in the table ds."
                                         }
                                     ]
                                 ]
@@ -9774,7 +9774,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DVOCCUR does not exist in the table dv."
                                         }
                                     ]
                                 ]
@@ -11018,7 +11018,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ECSTAT does not exist in the table ec."
                                         }
                                     ]
                                 ]
@@ -11165,7 +11165,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AESTAT does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -12102,7 +12102,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ECSTAT does not exist in the table ec."
                                         }
                                     ]
                                 ]
@@ -12156,7 +12156,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AESTAT does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -13139,18 +13139,21 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "se.xpt",
+                                "dataset": "",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "TAETORD should be null when ETCD = 'UNPLAN'.",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...lwkxp0jdhpuitv9s4pluc = ((TAETORD IS NULL OR TAETORD = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "etcd": "UNPLAN",
+                                            "taetord": 3.0
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -13194,17 +13197,10 @@
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...lwkxp0jdhpuitv9s4pluc = ((TAETORD IS NULL OR TAETORD = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -14128,18 +14124,39 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEBODSYS is not empty and AEBDSYCD is empty",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...1uomsgso3vycisvyvue = ((AEBDSYCD IS NULL OR AEBDSYCD = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": null,
+                                            "aebodsys": "Musculoskeletal and connective tissue disorders"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": null,
+                                            "aebodsys": "Nervous system disorders"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aebdsycd": null,
+                                            "aebodsys": "Vascular disorders"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -14211,17 +14228,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...1uomsgso3vycisvyvue = ((AEBDSYCD IS NULL OR AEBDSYCD = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -14692,7 +14702,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column TEENRL does not exist in the table te."
                                         }
                                     ]
                                 ]
@@ -14976,7 +14986,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column PCTPTREF does not exist in the table pc."
                                         }
                                     ]
                                 ]
@@ -16174,18 +16184,39 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "sv.xpt",
+                                "dataset": "",
                                 "domain": "SV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VISITDY is populated when SVPRESP is null.  VISITDY is the Planned Study Day of a visit. It should not be populated for unplanned visits.",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...057gyhgxqtafmhxixqims = ((VISITDY IS NULL OR VISITDY = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "svpresp": null,
+                                            "visitdy": 31.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "svpresp": null,
+                                            "visitdy": 62.0
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "svpresp": null,
+                                            "visitdy": 63.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -16241,17 +16272,10 @@
                             {
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...057gyhgxqtafmhxixqims = ((VISITDY IS NULL OR VISITDY = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -16990,7 +17014,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVPRESP does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -17078,7 +17102,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVPRESP does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -18253,7 +18277,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARM does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -18459,7 +18483,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARM does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -24262,108 +24286,129 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ag.xpt",
+                                "dataset": "",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both AGDOSE and AGDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d2pnfurb5wkz08ygqobb1cg = ((AGDOSE IS NULL OR AGDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "agdose": 250.0,
+                                            "agdostxt": "250"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both CMDOSE and CMDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdose": 100.0,
+                                            "cmdostxt": "100"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ec.xpt",
+                                "dataset": "",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both ECDOSE and ECDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ktfxcu7uywhmkio18wcescq = ((ECDOSE IS NULL OR ECDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ecdose": 2.0,
+                                            "ecdostxt": "2"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both EXDOSE and EXDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdose": 500.0,
+                                            "exdostxt": "500"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ml.xpt",
+                                "dataset": "",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both MLDOSE and MLDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...gxoli46m3popi7ssyh3nvfu = ((MLDOSE IS NULL OR MLDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mldose": 8.0,
+                                            "mldostxt": "8"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "pr.xpt",
+                                "dataset": "",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both PRDOSE and PRDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...w9p81pstjw1lcpm4mvh4eyi = ((PRDOSE IS NULL OR PRDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "prdose": 25.0,
+                                            "prdostxt": "25"
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "su.xpt",
+                                "dataset": "",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Both SUDOSE and SUDOSTXT values are populated",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ypjca23yha02lwbda4optxm = ((SUDOSE IS NULL OR SUDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "sudose": 3.0,
+                                            "sudostxt": "3"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -24525,107 +24570,58 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d2pnfurb5wkz08ygqobb1cg = ((AGDOSE IS NULL OR AGDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ktfxcu7uywhmkio18wcescq = ((ECDOSE IS NULL OR ECDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...gxoli46m3popi7ssyh3nvfu = ((MLDOSE IS NULL OR MLDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "pr.xpt",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...w9p81pstjw1lcpm4mvh4eyi = ((PRDOSE IS NULL OR PRDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ypjca23yha02lwbda4optxm = ((SUDOSE IS NULL OR SUDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -24736,24 +24732,29 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d2pnfurb5wkz08ygqobb1cg = ((AGDOSE IS NULL OR AGDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column AGDOSTOT does not exist in the table ag."
                                         }
                                     ]
                                 ]
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Missing value for CMDOSU, when CMDOSE, CMDOSTXT or CMDOSTOT is provided",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdose": 100.0,
+                                            "cmdostot": 200.0,
+                                            "cmdostxt": null,
+                                            "cmdosu": null
                                         }
-                                    ]
+                                    }
                                 ]
                             },
                             {
@@ -24766,7 +24767,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ktfxcu7uywhmkio18wcescq = ((ECDOSE IS NULL OR ECDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column ECDOSTOT does not exist in the table ec."
                                         }
                                     ]
                                 ]
@@ -24781,7 +24782,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column EXDOSTOT does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -24796,7 +24797,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...gxoli46m3popi7ssyh3nvfu = ((MLDOSE IS NULL OR MLDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column MLDOSTOT does not exist in the table ml."
                                         }
                                     ]
                                 ]
@@ -24811,24 +24812,29 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...w9p81pstjw1lcpm4mvh4eyi = ((PRDOSE IS NULL OR PRDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column PRDOSTOT does not exist in the table pr."
                                         }
                                     ]
                                 ]
                             },
                             {
-                                "dataset": "su.xpt",
+                                "dataset": "",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Missing value for SUDOSU, when SUDOSE, SUDOSTXT or SUDOSTOT is provided",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ypjca23yha02lwbda4optxm = ((SUDOSE IS NULL OR SUDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "sudose": null,
+                                            "sudostot": 3.0,
+                                            "sudostxt": null,
+                                            "sudosu": null
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -25011,7 +25017,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d2pnfurb5wkz08ygqobb1cg = ((AGDOSE IS NULL OR AGDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column AGDOSTOT does not exist in the table ag."
                                         }
                                     ]
                                 ]
@@ -25019,17 +25025,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
@@ -25041,7 +25040,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ktfxcu7uywhmkio18wcescq = ((ECDOSE IS NULL OR ECDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column ECDOSTOT does not exist in the table ec."
                                         }
                                     ]
                                 ]
@@ -25056,7 +25055,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column EXDOSTOT does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -25071,7 +25070,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...gxoli46m3popi7ssyh3nvfu = ((MLDOSE IS NULL OR MLDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column MLDOSTOT does not exist in the table ml."
                                         }
                                     ]
                                 ]
@@ -25086,7 +25085,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...w9p81pstjw1lcpm4mvh4eyi = ((PRDOSE IS NULL OR PRDOSE = ''));\n                                                                  ^\n"
+                                            "message": "Column PRDOSTOT does not exist in the table pr."
                                         }
                                     ]
                                 ]
@@ -25094,17 +25093,10 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ypjca23yha02lwbda4optxm = ((SUDOSE IS NULL OR SUDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -25744,7 +25736,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SEUPDES does not exist in the table se."
                                         }
                                     ]
                                 ]
@@ -30617,7 +30609,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                            "message": "Column AGETXT does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -30658,18 +30650,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AGEU not empty, but AGE empty and AGETXT empty",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": null,
+                                            "agetxt": null,
+                                            "ageu": "YEARS"
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -30720,7 +30716,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                            "message": "Column AGETXT does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -30763,17 +30759,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -34415,7 +34404,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qvujk9ljojwfqtdyw4g = ((FTTPTNUM IS NULL OR FTTPTNUM = ''));\n                                                                  ^\n"
+                                            "message": "is_unique_set check_operator not implemented"
                                         }
                                     ]
                                 ]
@@ -34479,7 +34468,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...lrmxpefgrzhsgqdlh4w = ((VSTPTNUM IS NULL OR VSTPTNUM = ''));\n                                                                  ^\n"
+                                            "message": "is_unique_set check_operator not implemented"
                                         }
                                     ]
                                 ]
@@ -34529,7 +34518,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qvujk9ljojwfqtdyw4g = ((FTTPTNUM IS NULL OR FTTPTNUM = ''));\n                                                                  ^\n"
+                                            "message": "is_unique_set check_operator not implemented"
                                         }
                                     ]
                                 ]
@@ -38803,7 +38792,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...rirdb6hsd6wtaht9n1w = ((VISITNUM IS NULL OR VISITNUM = ''));\n                                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$sv_visitnum\"\nLINE 1: ...c1w4vkx25w = (visitnum IS NOT NULL AND visitnum = '$sv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -38818,7 +38807,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...rirdb6hsd6wtaht9n1w = ((VISITNUM IS NULL OR VISITNUM = ''));\n                                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$sv_visitnum\"\nLINE 1: ...c1w4vkx25w = (visitnum IS NOT NULL AND visitnum = '$sv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -38833,7 +38822,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...rirdb6hsd6wtaht9n1w = ((VISITNUM IS NULL OR VISITNUM = ''));\n                                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$sv_visitnum\"\nLINE 1: ...c1w4vkx25w = (visitnum IS NOT NULL AND visitnum = '$sv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -38848,7 +38837,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...rirdb6hsd6wtaht9n1w = ((VISITNUM IS NULL OR VISITNUM = ''));\n                                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$sv_visitnum\"\nLINE 1: ...c1w4vkx25w = (visitnum IS NOT NULL AND visitnum = '$sv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -38863,7 +38852,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...rirdb6hsd6wtaht9n1w = ((VISITNUM IS NULL OR VISITNUM = ''));\n                                                                  ^\n"
+                                            "message": "invalid input syntax for type double precision: \"$sv_visitnum\"\nLINE 1: ...c1w4vkx25w = (visitnum IS NOT NULL AND visitnum = '$sv_visit...\n                                                             ^\n"
                                         }
                                     ]
                                 ]
@@ -41522,7 +41511,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMENRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -41537,7 +41526,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFENDTC does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -41636,7 +41625,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMENRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -41651,7 +41640,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFENDTC does not exist in the table cm."
                                         }
                                     ]
                                 ]
@@ -41745,7 +41734,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMENRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -41760,7 +41749,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFENDTC does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -41818,7 +41807,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMENRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -41833,7 +41822,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFENDTC does not exist in the table cm."
                                         }
                                     ]
                                 ]
@@ -44538,18 +44527,39 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AGEU is missing when AGE is provided.",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": 26.0,
+                                            "ageu": null
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": 57.0,
+                                            "ageu": null
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": 21.0,
+                                            "ageu": null
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -44593,17 +44603,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -44657,18 +44660,30 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AGE is missing when AGEU is provided.",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": null,
+                                            "ageu": "YEARS"
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": null,
+                                            "ageu": "YEARS"
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -44712,17 +44727,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -50710,7 +50718,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column LBSTAT does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -51664,7 +51672,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -51679,7 +51687,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -51764,7 +51772,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table co."
                                         }
                                     ]
                                 ]
@@ -51794,7 +51802,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVARVAL does not exist in the table supplb."
                                         }
                                     ]
                                 ]
@@ -51809,7 +51817,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -51824,7 +51832,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -51839,7 +51847,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -51974,7 +51982,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -51989,7 +51997,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -52004,7 +52012,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -52301,7 +52309,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARMCD does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -52407,7 +52415,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARMCD does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -52526,7 +52534,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARM does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -52632,7 +52640,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ACTARM does not exist in the table ta."
                                         }
                                     ]
                                 ]
@@ -56937,7 +56945,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RSUBJID does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -57037,7 +57045,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column MHSTDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -57141,7 +57149,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column MHSTDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -57386,7 +57394,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column LBSCAT does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -61268,7 +61276,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column MHENDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -61381,7 +61389,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column MHENDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -64050,7 +64058,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMSTRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -64065,7 +64073,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFSTDTC does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -64156,7 +64164,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMSTRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -64171,7 +64179,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFSTDTC does not exist in the table cm."
                                         }
                                     ]
                                 ]
@@ -64265,7 +64273,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMSTRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -64280,7 +64288,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFSTDTC does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -64338,7 +64346,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMSTRF does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -64353,7 +64361,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFSTDTC does not exist in the table cm."
                                         }
                                     ]
                                 ]
@@ -75025,18 +75033,21 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "lb.xpt",
+                                "dataset": "",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "LBSTREFN is null when LBSTREFC is populated.",
                                 "number_errors": 1,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0o0rpezcjx2m1eawacw = ((LBSTREFN IS NULL OR LBSTREFN = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "lbstrefc": "ABC",
+                                            "lbstrefn": null
                                         }
-                                    ]
+                                    }
                                 ]
                             }
                         ],
@@ -75102,17 +75113,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0o0rpezcjx2m1eawacw = ((LBSTREFN IS NULL OR LBSTREFN = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -79213,33 +79217,61 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMDOSE is lower than zero",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdose": -1.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdose": -325.0
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "EXDOSE is lower than zero",
+                                "number_errors": 3,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdose": -2.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdose": -54.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdose": -1.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -79333,32 +79365,18 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...dmzmdpgqpw8rzfmmslmi0iq = ((CMDOSE IS NULL OR CMDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ndlkxb59y6gawtx4jqc0xjo = ((EXDOSE IS NULL OR EXDOSE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -81016,7 +81034,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table sv."
                                         }
                                     ]
                                 ]
@@ -81031,7 +81049,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -81288,7 +81306,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -81349,7 +81367,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table sv."
                                         }
                                     ]
                                 ]
@@ -81364,7 +81382,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -81621,7 +81639,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column SVUPDES does not exist in the table tv."
                                         }
                                     ]
                                 ]
@@ -82695,8 +82713,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d4ip3mjdb6wj11pskvorrgub1q0 = ((CEDY IS NULL OR CEDY = ''));\n                                                                  ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "CEDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -82711,7 +82729,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDY does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -82797,7 +82815,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEDY does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -82812,7 +82830,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDY does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -82827,7 +82845,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EXDY does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -82841,8 +82859,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...jq3bjvlg5s6ksh3pnfvbr0uzfhs = ((LBDY IS NULL OR LBDY = ''));\n                                                                  ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "LBDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -82960,8 +82978,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d4ip3mjdb6wj11pskvorrgub1q0 = ((CEDY IS NULL OR CEDY = ''));\n                                                                  ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "CEDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -82976,7 +82994,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDY does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -83041,7 +83059,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AEDY does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -83056,7 +83074,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDY does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -83071,7 +83089,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EXDY does not exist in the table ex."
                                         }
                                     ]
                                 ]
@@ -83085,8 +83103,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...jq3bjvlg5s6ksh3pnfvbr0uzfhs = ((LBDY IS NULL OR LBDY = ''));\n                                                                  ^\n"
+                                            "error": "Column not found in data",
+                                            "message": "LBDTC, RFSTDTC"
                                         }
                                     ]
                                 ]
@@ -87044,18 +87062,32 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Missing value for AGEU, when AGE or AGETXT is provided",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": 34.0,
+                                            "agetxt": null,
+                                            "ageu": null
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "age": null,
+                                            "agetxt": "31-34",
+                                            "ageu": null
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -87099,17 +87131,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...0fuutiyq6zqbcs4vybhi1nxleukq8 = ((AGE IS NULL OR AGE = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87172,7 +87197,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AGETXT does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -87225,7 +87250,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AGETXT does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -89665,33 +89690,53 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMDOSTOT is lower than zero",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...o2nfyjfh2koilm7b8mi = ((CMDOSTOT IS NULL OR CMDOSTOT = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdostot": -1.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmdostot": -325.0
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "EXDOSTOT is lower than zero",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ihdfz0suhfzvc4lusay = ((EXDOSTOT IS NULL OR EXDOSTOT = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdostot": -1.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exdostot": -2.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -89777,32 +89822,18 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...o2nfyjfh2koilm7b8mi = ((CMDOSTOT IS NULL OR CMDOSTOT = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ihdfz0suhfzvc4lusay = ((EXDOSTOT IS NULL OR EXDOSTOT = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89864,33 +89895,53 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMVAMT is lower than zero",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qiokqsuwd59e7gppdg1an9m = ((CMVAMT IS NULL OR CMVAMT = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmvamt": -1.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmvamt": -325.0
+                                        }
+                                    }
                                 ]
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "EXVAMT is lower than zero",
+                                "number_errors": 2,
                                 "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...l5e948qe4y6hbgkd9kuab00 = ((EXVAMT IS NULL OR EXVAMT = ''));\n                                                                  ^\n"
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exvamt": -1.0
                                         }
-                                    ]
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "exvamt": -2.0
+                                        }
+                                    }
                                 ]
                             }
                         ],
@@ -89976,32 +90027,18 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qiokqsuwd59e7gppdg1an9m = ((CMVAMT IS NULL OR CMVAMT = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    [
-                                        {
-                                            "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...l5e948qe4y6hbgkd9kuab00 = ((EXVAMT IS NULL OR EXVAMT = ''));\n                                                                  ^\n"
-                                        }
-                                    ]
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -92653,7 +92690,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column USUBJID does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -92668,7 +92705,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column USUBJID does not exist in the table lbae."
                                         }
                                     ]
                                 ]
@@ -93049,7 +93086,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column USUBJID does not exist in the table ae."
                                         }
                                     ]
                                 ]
@@ -93064,7 +93101,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column USUBJID does not exist in the table lbae."
                                         }
                                     ]
                                 ]
@@ -98597,7 +98634,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EPOCH does not exist in the table eg."
                                         }
                                     ]
                                 ]
@@ -98800,7 +98837,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EPOCH does not exist in the table mh."
                                         }
                                     ]
                                 ]
@@ -98839,7 +98876,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column EPOCH does not exist in the table pp."
                                         }
                                     ]
                                 ]
@@ -99234,7 +99271,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...jq3bjvlg5s6ksh3pnfvbr0uzfhs = ((LBDY IS NULL OR LBDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99306,7 +99343,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...jq3bjvlg5s6ksh3pnfvbr0uzfhs = ((LBDY IS NULL OR LBDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99372,7 +99409,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qcl8g8duqoqoqt2maak6zek = ((SMSTDY IS NULL OR SMSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99387,7 +99424,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ehm89p7xojetkhkvq5jdapu = ((SESTDY IS NULL OR SESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99402,7 +99439,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d709kvupvguflpavawbqbzq = ((SVSTDY IS NULL OR SVSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99417,7 +99454,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99432,7 +99469,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ct51dh7kp29kocq8ekemif8 = ((CMSTDY IS NULL OR CMSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99537,7 +99574,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...qcl8g8duqoqoqt2maak6zek = ((SMSTDY IS NULL OR SMSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99552,7 +99589,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ehm89p7xojetkhkvq5jdapu = ((SESTDY IS NULL OR SESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99567,7 +99604,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...d709kvupvguflpavawbqbzq = ((SVSTDY IS NULL OR SVSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99582,7 +99619,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -99597,7 +99634,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ct51dh7kp29kocq8ekemif8 = ((CMSTDY IS NULL OR CMSTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -100136,7 +100173,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -100258,7 +100295,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -100273,7 +100310,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -100378,7 +100415,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table co."
                                         }
                                     ]
                                 ]
@@ -100423,7 +100460,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -100438,7 +100475,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -100453,7 +100490,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -100588,7 +100625,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -100603,7 +100640,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column IDVAR does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -101122,7 +101159,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AESTDTC does not exist in the table ds."
                                         }
                                     ]
                                 ]
@@ -101208,7 +101245,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column AESTDTC does not exist in the table ds."
                                         }
                                     ]
                                 ]
@@ -101772,7 +101809,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -101787,7 +101824,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFPENDTC does not exist in the table ce."
                                         }
                                     ]
                                 ]
@@ -101802,7 +101839,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFPENDTC does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -101891,7 +101928,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column DMDTC does not exist in the table dm."
                                         }
                                     ]
                                 ]
@@ -101906,7 +101943,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFPENDTC does not exist in the table lb."
                                         }
                                     ]
                                 ]
@@ -101921,7 +101958,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RFPENDTC does not exist in the table ce."
                                         }
                                     ]
                                 ]
@@ -102525,7 +102562,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ETHNIC does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -102601,7 +102638,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ETHNIC does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -104699,7 +104736,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ETHNIC does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -104775,7 +104812,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column ETHNIC does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -104864,7 +104901,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RACE does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -104940,7 +104977,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column RACE does not exist in the table suppdm."
                                         }
                                     ]
                                 ]
@@ -105598,7 +105635,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column FADECOD does not exist in the table fa."
                                         }
                                     ]
                                 ]
@@ -105613,7 +105650,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column --DECOD does not exist in the table relrec."
                                         }
                                     ]
                                 ]
@@ -105734,7 +105771,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column FADECOD does not exist in the table fa."
                                         }
                                     ]
                                 ]
@@ -105749,7 +105786,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column --DECOD does not exist in the table relrec."
                                         }
                                     ]
                                 ]
@@ -105893,7 +105930,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column --DECOD does not exist in the table relrec."
                                         }
                                     ]
                                 ]
@@ -106051,7 +106088,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "A postgres SQL error occurred"
+                                            "message": "Column --DECOD does not exist in the table relrec."
                                         }
                                     ]
                                 ]
