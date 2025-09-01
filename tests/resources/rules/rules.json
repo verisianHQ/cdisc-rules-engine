@@ -32997,7 +32997,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33101,7 +33101,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...tjeyru5cwmuegpxktatbenk = ((AESTDY IS NULL OR AESTDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33212,7 +33212,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ppyn5g27sze20lblala5day = ((EXENDY IS NULL OR EXENDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33361,7 +33361,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...k8sklfreqsilfry9ncnla0o = ((CMENDY IS NULL OR CMENDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33473,7 +33473,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...ppyn5g27sze20lblala5day = ((EXENDY IS NULL OR EXENDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -33531,7 +33531,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "invalid input syntax for type double precision: \"\"\nLINE 1: ...k8sklfreqsilfry9ncnla0o = ((CMENDY IS NULL OR CMENDY = ''));\n                                                                  ^\n"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -84145,8 +84145,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CEDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -84291,8 +84291,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "LBDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -84410,8 +84410,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "CEDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -84535,8 +84535,8 @@
                                 "errors": [
                                     [
                                         {
-                                            "error": "Column not found in data",
-                                            "message": "LBDTC, RFSTDTC"
+                                            "error": "An unknown exception has occurred",
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
