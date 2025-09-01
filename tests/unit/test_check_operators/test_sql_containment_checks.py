@@ -57,10 +57,7 @@ def test_is_contained_by(data, comparator, value_is_literal, expected_result):
 
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
-    [
-        (data, comparator, value_is_literal, [not x for x in expected_result])
-        for data, comparator, value_is_literal, expected_result in CONTAINED_BY_TEST_DATA
-    ],
+    CONTAINED_BY_TEST_DATA,
 )
 def test_is_not_contained_by(data, comparator, value_is_literal, expected_result):
     table_name = "test_table"
@@ -70,7 +67,7 @@ def test_is_not_contained_by(data, comparator, value_is_literal, expected_result
     result = sql_ops.is_not_contained_by(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(pd.Series(expected_result))
+    assert result.equals(~pd.Series(expected_result))
 
 
 CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
@@ -112,10 +109,7 @@ def test_is_contained_by_case_insensitive(data, comparator, value_is_literal, ex
 
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
-    [
-        (data, comparator, value_is_literal, [not x for x in expected_result])
-        for data, comparator, value_is_literal, expected_result in CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA
-    ],
+    CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA,
 )
 def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal, expected_result):
     table_name = "test_table"
@@ -125,4 +119,4 @@ def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal
     result = sql_ops.is_not_contained_by_case_insensitive(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(pd.Series(expected_result))
+    assert result.equals(~pd.Series(expected_result))

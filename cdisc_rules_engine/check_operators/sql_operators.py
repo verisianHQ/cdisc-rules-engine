@@ -623,17 +623,9 @@ class PostgresQLOperators(BaseType):
                           END"""
 
         else:
-            # Single literal value
-            escaped_value = str(comparator).replace("'", "''")
-            cache_key = f"{target_column}_contained_by_{escaped_value}"
-
-            def sql():
-                return f"""CASE WHEN {target_column} IS NOT NULL
-                          AND {target_column} != ''
-                          AND {target_column} = '{escaped_value}'
-                          THEN true
-                          ELSE false
-                          END"""
+            return self.equal_to(
+                {"target": other_value.get("target"), "comparator": comparator, "value_is_literal": True}
+            )
 
         return self._do_check_operator(cache_key, sql)
 
