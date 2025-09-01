@@ -1,4 +1,3 @@
-import operator
 import traceback
 from functools import wraps
 from typing import Any, List, Union
@@ -12,12 +11,12 @@ from business_rules.utils import (
     vectorized_is_complete_date,
 )
 
-from cdisc_rules_engine.check_operators.helpers import vectorized_compare_dates
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.utilities.utils import dates_overlap, parse_date
 
@@ -69,6 +68,7 @@ class PostgresQLOperators(BaseType):
         self.value_level_metadata = data.get("value_level_metadata", [])
         self.column_codelist_map = data.get("column_codelist_map", {})
         self.codelist_term_maps = data.get("codelist_term_maps", [])
+        self.operation_variables = data.get("operation_variables", {})
 
     def _assert_valid_value_and_cast(self, value):
         return value
@@ -111,10 +111,10 @@ class PostgresQLOperators(BaseType):
         """return self.validation_df.is_series(column) and (
             isinstance(column.iloc[0], list) or isinstance(column.iloc[0], set)
         )"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_column_of_iterables check_operator not implemented")
 
     def _exists(self, column: str) -> bool:
-        return column.lower() in self.sql_data_service.cache.get_columns(self.table_id)
+        return self.sql_data_service.pgi.schema.column_exists(self.table_id, column)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -130,16 +130,14 @@ class PostgresQLOperators(BaseType):
         result = not self._exists(target_column)
         return self._do_check_operator(f"""{target_column}_notexists""", lambda: "TRUE" if result else "FALSE")
 
-    def _check_equality(
+    def _check_equality_literal(
         self,
-        row,
-        target,
-        comparator,
-        value_is_literal: bool = False,
-        value_is_reference: bool = False,
+        original_target,
+        value,
+        invert: bool = False,
         case_insensitive: bool = False,
         type_insensitive: bool = False,
-    ) -> bool:
+    ):
         """
         Equality checks work slightly differently for clinical datasets.
         See truth table below:
@@ -148,145 +146,189 @@ class PostgresQLOperators(BaseType):
         equal_to       "" or null  Populated   False
         equal_to       Populated   "" or null  False
         equal_to       Populated   Populated   A == B
-        """
-        if value_is_reference:
-            dynamic_column_name = row[comparator]
-            comparison_data = row[dynamic_column_name]
-        else:
-            comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
-        both_null = (comparison_data == "" or comparison_data is None) & (row[target] == "" or row[target] is None)
-        if both_null:
-            return False
-        if type_insensitive:
-            target_val = self._custom_str_conversion(row[target])
-            comparison_val = self._custom_str_conversion(comparison_data)
-        else:
-            target_val = row[target]
-            comparison_val = comparison_data
-        if case_insensitive:
-            target_val = row[target].lower() if row[target] else None
-            comparison_val = comparison_data.lower() if comparison_data else None
-            return target_val == comparison_val
-        return target_val == comparison_val
-
-    def _check_inequality(
-        self,
-        row,
-        target,
-        comparator,
-        value_is_literal: bool = False,
-        value_is_reference: bool = False,
-        case_insensitive: bool = False,
-        type_insensitive: bool = False,
-    ) -> bool:
-        """
-        Equality checks work slightly differently for clinical datasets.
-        See truth table below:
-        Operator       --A         --B         Outcome
         not_equal_to   "" or null  "" or null  False
         not_equal_to   "" or null  Populated   True
         not_equal_to   Populated   "" or null  True
         not_equal_to   Populated   Populated   A != B
         """
-        if value_is_reference:
-            dynamic_column_name = row[comparator]
-            comparison_data = row[dynamic_column_name]
-        else:
-            comparison_data = comparator if comparator not in row or value_is_literal else row[comparator]
-        both_null = (comparison_data == "" or comparison_data is None) & (row[target] == "" or row[target] is None)
-        if both_null:
-            return False
-        if type_insensitive:
-            target_val = self._custom_str_conversion(row[target])
-            comparison_val = self._custom_str_conversion(comparison_data)
-        else:
-            target_val = row[target]
-            comparison_val = comparison_data
+        target = original_target
         if case_insensitive:
-            target_val = row[target].lower() if row[target] else None
-            comparison_val = comparison_data.lower() if comparison_data else None
-            return target_val != comparison_val
-        return target_val != comparison_val
+            target = f"""LOWER({target})"""
+            if isinstance(value, str):
+                value = value.lower()
+
+        if type_insensitive:
+            target = f"""CAST({target} AS TEXT)"""
+
+        def sql():
+            if value is None or value == "":
+                if invert:
+                    query = f"""{original_target} IS NOT NULL AND {target} != ''"""
+                else:
+                    query = "FALSE"
+            else:
+                query = f"""{original_target} IS NOT NULL AND {target} = '{value}'"""
+                if invert:
+                    query = f"NOT ({query})"
+
+            return query
+
+        return self._do_check_operator(f"{original_target}={value}_{invert}_{case_insensitive}_{type_insensitive}", sql)
+
+    def _check_equality_comparison(
+        self,
+        original_target,
+        original_comparator,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+        """
+        target = original_target
+        comparator = original_comparator
+        if case_insensitive:
+            target = f"""LOWER({target})"""
+            comparator = f"""LOWER({comparator})"""
+
+        if type_insensitive:
+            target = f"""CAST({target} AS TEXT)"""
+            comparator = f"""CAST({comparator} AS TEXT)"""
+
+        def sql():
+            if invert:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {target} = ''
+                            THEN {original_comparator} IS NULL OR {comparator} = ''
+                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                            THEN TRUE
+                        ELSE {target} != {comparator}
+                    END"""
+            else:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {target} = ''
+                            THEN FALSE
+                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                            THEN FALSE
+                        ELSE {target} = {comparator}
+                    END"""
+
+        return self._do_check_operator(
+            f"{original_target}={original_comparator}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
+
+    def _check_equality_reference(
+        self,
+        original_target,
+        pivot_column,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+
+        This method implements equality testing by reference, ie you specifiy a pivot
+        column, that column is then used to look up which other column to compare
+        that row against. The way we handle that in SQL is by finding out all of the
+        columns that could be referenced (the DISTINCT values of the pivot column),
+        and then generating a CASE statement that checks each of those values.
+        """
+        column = original_target
+
+        # Find all of the values of the pivot column -> all columns to compare against
+        self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {pivot_column} col FROM {self.table_id};")
+        comparison_values = self.sql_data_service.pgi.fetch_all()
+        comparison_values = [item["col"].lower() for item in comparison_values]
+        comparison_values = filter(self._exists, comparison_values)
+
+        if case_insensitive:
+            column = f"""LOWER({column})"""
+
+        if type_insensitive:
+            column = f"""CAST({column} AS TEXT)"""
+
+        # This builds up the case statement for a simple column comparison
+        def single_comparison_sql(original_c):
+            c = original_c
+            if case_insensitive:
+                c = f"""LOWER({c})"""
+
+            if type_insensitive:
+                c = f"""CAST({c} AS TEXT)"""
+
+            if invert:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {column} = ''
+                            THEN {original_c} IS NULL OR {c} = ''
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN TRUE
+                        ELSE {column} != {c}
+                    END"""
+            else:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {column} = ''
+                            THEN FALSE
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN FALSE
+                        ELSE {column} = {c}
+                    END"""
+
+        def sql():
+            sql = "CASE "
+            # Build a CASE statement for each possible column
+            for c in comparison_values:
+                sql += f"WHEN LOWER({pivot_column}) = '{c.lower()}' THEN ({single_comparison_sql(c)}) "
+            sql += "ELSE FALSE END"
+            return sql
+
+        return self._do_check_operator(
+            f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
+        target = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         value_is_reference = other_value.get("value_is_reference", False)
+        case_insensitive = other_value.get("case_insensitive", False)
         type_insensitive = other_value.get("type_insensitive", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_equality(
-                row,
-                target,
-                comparator,
-                value_is_literal,
-                value_is_reference,
-                type_insensitive=type_insensitive,
-            ),
-            axis=1,
-            meta=(None, "bool"),
-        ).reset_index(drop=True)
+        invert = other_value.get("invert", False)
+        comparator = other_value.get("comparator")
+        if not value_is_literal:
+            comparator = self.replace_prefix(comparator)
+        if value_is_reference:
+            return self._check_equality_reference(
+                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
+
+        if value_is_literal or not isinstance(comparator, str) or not self._exists(comparator):
+            return self._check_equality_literal(
+                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
+        else:
+            return self._check_equality_comparison(
+                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+            )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def equal_to_case_insensitive(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_equality(row, target, comparator, value_is_literal, case_insensitive=True),
-            axis=1,
-        )
+        return self.equal_to({**other_value, "case_insensitive": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def not_equal_to_case_insensitive(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_inequality(row, target, comparator, value_is_literal, case_insensitive=True),
-            axis=1,
-        )
+        return self.not_equal_to({**other_value, "case_insensitive": True, "invert": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def not_equal_to(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
-        value_is_literal = other_value.get("value_is_literal", False)
-        value_is_reference = other_value.get("value_is_reference", False)
-        type_insensitive = other_value.get("type_insensitive", False)
-        comparator = (
-            self.replace_prefix(other_value.get("comparator"))
-            if not value_is_literal
-            else other_value.get("comparator")
-        )
-        return self.validation_df.apply(
-            lambda row: self._check_inequality(
-                row,
-                target,
-                comparator,
-                value_is_literal,
-                value_is_reference,
-                type_insensitive=type_insensitive,
-            ),
-            axis=1,
-            meta=(None, "bool"),
-        ).reset_index(drop=True)
+        return self.equal_to({**other_value, "invert": True})
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -304,7 +346,7 @@ class PostgresQLOperators(BaseType):
         comparison_data = self.get_comparator_data(comparator, value_is_literal)
         suffix: int = self.replace_prefix(other_value.get("suffix"))
         return self._check_equality_of_string_part(target, comparison_data, "suffix", suffix)"""
-        raise NotImplementedError()
+        raise NotImplementedError("suffix_equal_to check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -333,7 +375,7 @@ class PostgresQLOperators(BaseType):
             comparison_data = self.get_comparator_data(comparator, value_is_literal)
         prefix: int = self.replace_prefix(other_value.get("prefix"))
         return self._check_equality_of_string_part(target, comparison_data, "prefix", prefix)"""
-        raise NotImplementedError()
+        raise NotImplementedError("prefix_equal_to check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -360,7 +402,7 @@ class PostgresQLOperators(BaseType):
         prefix_length: int = other_value.get("prefix")
         series_to_validate = self._get_string_part_series("prefix", prefix_length, target)
         return self._value_is_contained_by(series_to_validate, comparison_data)"""
-        raise NotImplementedError()
+        raise NotImplementedError("prefix_is_contained_by check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -384,7 +426,7 @@ class PostgresQLOperators(BaseType):
         suffix_length: int = other_value.get("suffix")
         series_to_validate = self._get_string_part_series("suffix", suffix_length, target)
         return self._value_is_contained_by(series_to_validate, comparison_data)"""
-        raise NotImplementedError()
+        raise NotImplementedError("suffix_is_contained_by check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -406,7 +448,7 @@ class PostgresQLOperators(BaseType):
             )
         series_to_validate = series_to_validate.mask(pd.isna(self.validation_df[target]))
         return series_to_validate"""
-        raise NotImplementedError()
+        raise NotImplementedError("_get_string_part_series check_operator not implemented")
 
     def _value_is_contained_by(self, series, comparison_data):
         """if self.is_column_of_iterables(comparison_data):
@@ -414,7 +456,7 @@ class PostgresQLOperators(BaseType):
         else:
             results = series.isin(comparison_data)
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("_value_is_contained_by check_operator not implemented")
 
     def _check_equality_of_string_part(
         self,
@@ -428,7 +470,7 @@ class PostgresQLOperators(BaseType):
         """
         """series_to_validate = self._get_string_part_series(part_to_validate, length, target)
         return series_to_validate.eq(comparison_data).astype(bool)"""
-        raise NotImplementedError()
+        raise NotImplementedError("_check_equality_of_string_part check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -455,7 +497,7 @@ class PostgresQLOperators(BaseType):
         other_value: dict,
         operator: str,
     ):
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target_column = self.replace_prefix(other_value.get("target"))
         comparator = (
             other_value.get("comparator").lower()
             if isinstance(other_value.get("comparator"), str)
@@ -523,7 +565,7 @@ class PostgresQLOperators(BaseType):
         else:
             results = vectorized_case_insensitive_is_in(comparison_data.lower(), self.validation_df[target])
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("contains_case_insensitive check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -533,19 +575,59 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_contained_by(self, other_value):
-        """target = self.replace_prefix(other_value.get("target"))
+        """
+        Checks if the target column values are contained within the comparator.
+
+        Returns True if target value exists in the comparator collection/column and is not null/empty.
+        Returns False if target value is null, empty, or not found in comparator.
+
+        Handles three types of comparators:
+        1. List of literal values - check if target is in the list
+        2. Column name (when value_is_literal=False) - checks if target value exists anywhere in the comparator column
+        3. Single literal value - checks direct equality with the target
+
+        """
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
-        if isinstance(comparator, str) and not value_is_literal:
-            # column name provided
-            comparator = self.replace_prefix(comparator)
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        if self.is_column_of_iterables(comparison_data):
-            results = vectorized_is_in(self.validation_df[target], comparison_data)
+
+        if isinstance(comparator, list):
+            # List of literal values - use SQL IN clause
+            values_list = "', '".join(str(v).replace("'", "''") for v in comparator)
+            cache_key = f"{target_column}_contained_by_list"
+
+            def sql():
+                return f"""CASE WHEN {target_column} IS NOT NULL
+                          AND {target_column} != ''
+                          AND {target_column} IN ('{values_list}')
+                          THEN true
+                          ELSE false
+                          END"""
+
+        elif isinstance(comparator, str) and not value_is_literal and self._exists(comparator):
+            # Column name provided - check if target value exists anywhere in comparator column
+            comparator_column = self.replace_prefix(comparator).lower()
+            cache_key = f"{target_column}_contained_by_{comparator_column}"
+
+            def sql():
+                return f"""CASE WHEN {target_column} IS NOT NULL
+                          AND {target_column} != ''
+                          AND {target_column} IN (
+                              SELECT DISTINCT {comparator_column}
+                              FROM {self._table_sql()}
+                              WHERE {comparator_column} IS NOT NULL
+                              AND {comparator_column} != ''
+                          )
+                          THEN true
+                          ELSE false
+                          END"""
+
         else:
-            results = self.validation_df[target].isin(comparison_data)
-        return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+            return self.equal_to(
+                {"target": other_value.get("target"), "comparator": comparator, "value_is_literal": True}
+            )
+
+        return self._do_check_operator(cache_key, sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -555,24 +637,19 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_contained_by_case_insensitive(self, other_value):
-        """target = self.replace_prefix(other_value.get("target"))
-        comparator = other_value.get("comparator", [])
-        value_is_literal = other_value.get("value_is_literal", False)
+        comparator = other_value["comparator"]
         if isinstance(comparator, list):
-            comparator = [val.lower() for val in comparator]
-        elif isinstance(comparator, str) and not value_is_literal:
-            # column name provided
-            comparator = self.replace_prefix(comparator)
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        if self.is_column_of_iterables(comparison_data):
-            results = vectorized_case_insensitive_is_in(self.validation_df[target].str.lower(), comparison_data)
-            return self.validation_df.convert_to_series(results)
-        elif self.validation_df.is_series(comparison_data):
-            results = self.validation_df[target].str.lower().isin(comparison_data.str.lower())
-        else:
-            results = self.validation_df[target].str.lower().isin(comparison_data)
-        return results"""
-        raise NotImplementedError()
+            comparator = [str(v).lower() for v in comparator]
+        elif isinstance(comparator, str):
+            comparator = comparator.lower()
+
+        return self.is_contained_by(
+            {
+                "target": f"LOWER({self.replace_prefix(other_value['target']).lower()})",
+                "comparator": comparator,
+                "value_is_literal": other_value.get("value_is_literal", False),
+            }
+        )
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -590,7 +667,7 @@ class PostgresQLOperators(BaseType):
             lambda x: re.search(comparator, x[:prefix]) is not None
         )
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("prefix_matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -603,7 +680,7 @@ class PostgresQLOperators(BaseType):
             lambda x: re.search(comparator, x[:prefix]) is not None
         )
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("not_prefix_matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -616,7 +693,7 @@ class PostgresQLOperators(BaseType):
             lambda x: re.search(comparator, x[-suffix:]) is not None
         )
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("suffix_matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -629,7 +706,7 @@ class PostgresQLOperators(BaseType):
             lambda x: re.search(comparator, x[-suffix:]) is not None
         )
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("not_suffix_matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -639,7 +716,7 @@ class PostgresQLOperators(BaseType):
         converted_strings = self.validation_df[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & converted_strings.astype(str).str.match(comparator)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -649,7 +726,7 @@ class PostgresQLOperators(BaseType):
         converted_strings = self.validation_df[target].map(lambda x: self._custom_str_conversion(x))
         results = converted_strings.notna() & ~converted_strings.astype(str).str.match(comparator)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("not_matches_regex check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -674,7 +751,7 @@ class PostgresQLOperators(BaseType):
             lambda row: self._check_equality(row, target, parsed_id, value_is_literal),
             axis=1,
         )"""
-        raise NotImplementedError()
+        raise NotImplementedError("equals_string_part check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -693,7 +770,7 @@ class PostgresQLOperators(BaseType):
             comparison_data: Tuple[str] = tuple(comparison_data)
         results = self.validation_df[target].str.startswith(comparison_data)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("starts_with check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -707,7 +784,7 @@ class PostgresQLOperators(BaseType):
             comparison_data: Tuple[str] = tuple(comparison_data)
         results = self.validation_df[target].str.endswith(comparison_data)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("ends_with check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -729,7 +806,7 @@ class PostgresQLOperators(BaseType):
         else:
             results = self.validation_df[target].str.len().eq(comparator).astype(bool)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("has_equal_length check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -756,7 +833,7 @@ class PostgresQLOperators(BaseType):
         else:
             results = self.validation_df[target].str.len().gt(comparison_data)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("longer_than check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -773,7 +850,7 @@ class PostgresQLOperators(BaseType):
         else:
             results = self.validation_df[target].str.len().ge(comparator)
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("longer_than_or_equal_to check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -788,14 +865,12 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def empty(self, other_value: dict):
-        """target = self.replace_prefix(other_value.get("target"))
-        results = np.where(
-            self.validation_df[target].isin(NULL_FLAVORS) | pd.isna(self.validation_df[target]),
-            True,
-            False,
-        )
-        return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        column = self.replace_prefix(other_value.get("target"))
+
+        def sql():
+            return self._is_empty_sql(column)
+
+        return self._do_check_operator(f"{column}_empty", sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -817,7 +892,7 @@ class PostgresQLOperators(BaseType):
             results = results.compute()
         # return values with corresponding indexes from results
         return pd.Series(results.reset_index(level=0, drop=True))"""
-        raise NotImplementedError()
+        raise NotImplementedError("empty_within_except_last_row check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -846,7 +921,7 @@ class PostgresQLOperators(BaseType):
 
         # return values with corresponding indexes from results
         return pd.Series(results.reset_index(level=0, drop=True))"""
-        raise NotImplementedError()
+        raise NotImplementedError("non_empty_within_except_last_row check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -860,7 +935,7 @@ class PostgresQLOperators(BaseType):
             comparator = self.replace_prefix(comparator)
             values = self.validation_df[comparator].unique()
         return self.validation_df.convert_to_series(set(values).issubset(set(self.validation_df[target].unique())))"""
-        raise NotImplementedError()
+        raise NotImplementedError("contains_all check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -873,7 +948,7 @@ class PostgresQLOperators(BaseType):
         """target = self.replace_prefix(other_value.get("target"))
         results = ~vectorized_is_valid(self.validation_df[target])
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("invalid_date check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -884,50 +959,120 @@ class PostgresQLOperators(BaseType):
         else:
             results = ~vectorized_is_valid_duration(self.validation_df[target], True)
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("invalid_duration check_operator not implemented")
 
-    def date_comparison(self, other_value, operator):
-        target = self.replace_prefix(other_value.get("target"))
-        comparator = self.replace_prefix(other_value.get("comparator"))
-        value_is_literal: bool = other_value.get("value_is_literal", False)
-        comparison_data = self.get_comparator_data(comparator, value_is_literal)
-        component = other_value.get("date_component")
-        results = np.where(
-            vectorized_compare_dates(component, self.validation_df[target], comparison_data, operator),
-            True,
-            False,
-        )
-        return self.validation_df.convert_to_series(results)
+    def _date_comparison(self, other_value: dict, operator: str):
+        """
+        Performs date comparison operations in PostgreSQL.
+        Handles date component extraction and comparison.
+        """
+        target_column = self.replace_prefix(other_value.get("target")).lower()
+        comparator = other_value.get("comparator")
+        value_is_literal = other_value.get("value_is_literal", False)
+        date_component = other_value.get("date_component")
+
+        if isinstance(comparator, str) and not value_is_literal:
+            comparator = self.replace_prefix(comparator).lower()
+
+        component_suffix = f"_{date_component}" if date_component else ""
+        cache_key = f"{target_column}{operator}{comparator}{component_suffix}"
+
+        def sql():
+            if date_component:
+                component_map = {
+                    "year": "YEAR",
+                    "month": "MONTH",
+                    "day": "DAY",
+                    "hour": "HOUR",
+                    "minute": "MINUTE",
+                    "second": "SECOND",
+                    "microsecond": "MICROSECONDS",
+                }
+                pg_component = component_map.get(date_component, "EPOCH")
+
+                if value_is_literal:
+                    return f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST('{comparator}' AS TIMESTAMP))
+                        THEN true
+                        ELSE false
+                        END"""
+                else:
+                    return f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND {self.replace_prefix(comparator)} IS NOT NULL
+                        AND {self.replace_prefix(comparator)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST({self.replace_prefix(comparator)} AS TIMESTAMP))
+                        THEN true
+                        ELSE false
+                        END"""
+            else:
+                if value_is_literal:
+                    return f"""CASE WHEN
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
+                            {operator}
+                        CAST('{comparator}' AS TIMESTAMP)
+                        THEN true
+                        ELSE false
+                        END"""
+                else:
+                    return f"""CASE WHEN
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND {comparator} IS NOT NULL
+                        AND {comparator} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
+                            {operator}
+                        CAST({comparator} AS TIMESTAMP)
+                        THEN true
+                        ELSE false
+                        END"""
+
+        return self._do_check_operator(cache_key, sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.eq)
+        """Check if target date equals comparator date"""
+        return self._date_comparison(other_value, "=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_not_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.ne)
+        """Check if target date does not equal comparator date"""
+        return self._date_comparison(other_value, "!=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_less_than(self, other_value):
-        return self.date_comparison(other_value, operator.lt)
+        """Check if target date is less than comparator date"""
+        return self._date_comparison(other_value, "<")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_less_than_or_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.le)
+        """Check if target date is less than or equal to comparator date"""
+        return self._date_comparison(other_value, "<=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_greater_than_or_equal_to(self, other_value):
-        return self.date_comparison(other_value, operator.ge)
+        """Check if target date is greater than or equal to comparator date"""
+        return self._date_comparison(other_value, ">=")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def date_greater_than(self, other_value):
-        return self.date_comparison(other_value, operator.gt)
+        """Check if target date is greater than comparator date"""
+        return self._date_comparison(other_value, ">")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -963,7 +1108,7 @@ class PostgresQLOperators(BaseType):
             if group[target].nunique() == 1:
                 results[group.index] = False
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_inconsistent_across_dataset check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -984,7 +1129,7 @@ class PostgresQLOperators(BaseType):
         counts = df_group.apply(tuple, axis=1).map(group_sizes)
         results = np.where(counts <= 1, True, False)
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_unique_set check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1036,7 +1181,7 @@ class PostgresQLOperators(BaseType):
             duplicated_target_values = set(df_without_duplicates[duplicated_target][target])
             result += self.validation_df[target].isin(duplicated_target_values)
         return result"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_not_unique_relationship check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1051,7 +1196,7 @@ class PostgresQLOperators(BaseType):
         if not isinstance(value, str):
             raise Exception("Comparator must be a single String value")
         return self.validation_df.is_column_sorted_within(value, target)"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_ordered_set check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1065,7 +1210,7 @@ class PostgresQLOperators(BaseType):
         for vlm in self.value_level_metadata:
             results |= self.validation_df.apply(lambda row: vlm["filter"](row) and not vlm["type_check"](row), axis=1)
         return self.validation_df.convert_to_series(results.values)"""
-        raise NotImplementedError()
+        raise NotImplementedError("non_conformant_value_data_type check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1074,7 +1219,7 @@ class PostgresQLOperators(BaseType):
         for vlm in self.value_level_metadata:
             results |= self.validation_df.apply(lambda row: vlm["filter"](row) and not vlm["length_check"](row), axis=1)
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("non_conformant_value_length check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1095,7 +1240,7 @@ class PostgresQLOperators(BaseType):
         for vlm in self.value_level_metadata:
             results |= self.validation_df.apply(lambda row: vlm["filter"](row) and vlm["length_check"](row), axis=1)
         return self.validation_df.convert_to_series(results)"""
-        raise NotImplementedError()
+        raise NotImplementedError("conformant_value_length check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1116,7 +1261,7 @@ class PostgresQLOperators(BaseType):
         grouped_df = ordered_df.groupby(group_by_column)
         results = grouped_df.apply(lambda x: self.compare_target_with_comparator_next_row(x, target, comparator))
         return self.validation_df.convert_to_series(results.explode().tolist())"""
-        raise NotImplementedError()
+        raise NotImplementedError("has_next_corresponding_record check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1145,28 +1290,40 @@ class PostgresQLOperators(BaseType):
                 True,
             ]
         ).tolist()"""
-        raise NotImplementedError()
+        raise NotImplementedError("compare_target_with_comparator_next_row check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def present_on_multiple_rows_within(self, other_value: dict):
         """
-        The operator ensures that the target is present on multiple rows
-        within a group_by column. The dataframe is grouped by a certain column
-        and the check is applied to each group.
+        Verifies if a value in the 'target' column appears on multiple rows
+        within groups defined by the 'within' column.
         """
-        """target = self.replace_prefix(other_value.get("target"))
-        min_count: int = other_value.get("comparator") or 1
-        group_by_column = self.replace_prefix(other_value.get("within"))
-        grouped = self.validation_df.groupby([group_by_column, target])
-        meta = (target, bool)
-        results = grouped.apply(lambda x: self.validate_series_length(x, target, min_count), meta=meta)
-        uuid = str(uuid4())
-        return self.validation_df.merge(results.rename(uuid).reset_index(), on=[group_by_column, target])[uuid]"""
-        raise NotImplementedError()
+        target_column = self.replace_prefix(other_value.get("target")).lower()
+        min_count = other_value.get("comparator") or 1
+        within_column = self.replace_prefix(other_value.get("within")).lower()
 
-    def validate_series_length(self, data: DatasetInterface, target: str, min_length: int):
-        return len(data) > min_length
+        op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
+
+        def generate_update_query(db_table: str, db_column: str) -> str:
+            # Construct the UPDATE query. This uses a window function to count
+            # occurrences within each group and then updates each row accordingly.
+            return f"""
+                UPDATE {db_table} AS t
+                SET {db_column} = sub.is_present
+                FROM (
+                    SELECT
+                        id,
+                        (COUNT(*) OVER (PARTITION BY {within_column}, {target_column})) > {min_count} AS is_present
+                    FROM {db_table}
+                    ORDER BY id
+                ) AS sub
+                WHERE t.id = sub.id;
+            """
+
+        result_series = self._do_complex_check_operator(op_name, generate_update_query)
+
+        return result_series
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1204,7 +1361,7 @@ class PostgresQLOperators(BaseType):
             return False
 
         return df.apply(check_inconsistency, axis=1)"""
-        raise NotImplementedError()
+        raise NotImplementedError("inconsistent_enumerated_columns check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1216,7 +1373,7 @@ class PostgresQLOperators(BaseType):
             axis=1,
         )
         return result"""
-        raise NotImplementedError()
+        raise NotImplementedError("references_correct_codelist check_operator not implemented")
 
     @type_operator(FIELD_DATAFRAME)
     def does_not_reference_correct_codelist(self, other_value: dict):
@@ -1229,7 +1386,7 @@ class PostgresQLOperators(BaseType):
             if next_position < len(row) and not (pd.isna(row[next_position]) or row[next_position] in NULL_FLAVORS):
                 return True
         return False"""
-        raise NotImplementedError()
+        raise NotImplementedError("next_column_exists_and_previous_is_null check_operator not implemented")
 
     def valid_codelist_reference(self, column_name, codelist):
         if column_name in self.column_codelist_map:
@@ -1248,10 +1405,9 @@ class PostgresQLOperators(BaseType):
     def has_different_values(self, other_value: dict):
         target_column = other_value.get("target").lower()
         operation_name = f"{target_column}_has_different_values"
-        db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
 
         return self._do_check_operator(
-            operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {db_table}) > 1"
+            operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {self._table_sql()}) > 1"
         )
 
     @log_operator_execution
@@ -1275,7 +1431,7 @@ class PostgresQLOperators(BaseType):
             .eq(self.validation_df[target].sort_values(ascending=sort_order_bool, ignore_index=True))
             .astype(bool)
         )"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_ordered_by check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1297,7 +1453,7 @@ class PostgresQLOperators(BaseType):
             False,
         )
         return self.validation_df.convert_to_series(result)"""
-        raise NotImplementedError()
+        raise NotImplementedError("value_has_multiple_references check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1387,7 +1543,7 @@ class PostgresQLOperators(BaseType):
                     result = result.compute()
                 result = result.squeeze()
         return result"""
-        raise NotImplementedError()
+        raise NotImplementedError("target_is_sorted_by check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1416,7 +1572,7 @@ class PostgresQLOperators(BaseType):
             False,
         )
         return self.validation_df.convert_to_series(result)"""
-        raise NotImplementedError()
+        raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1435,7 +1591,7 @@ class PostgresQLOperators(BaseType):
             return bool(target_set.intersection(comparator_set))
 
         return self.validation_df.apply(check_shared_elements, axis=1).any()"""
-        raise NotImplementedError()
+        raise NotImplementedError("shares_at_least_one_element_with check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1449,7 +1605,7 @@ class PostgresQLOperators(BaseType):
             return len(target_set.intersection(comparator_set)) == 1
 
         return self.validation_df.apply(check_exactly_one_shared_element, axis=1).any()"""
-        raise NotImplementedError()
+        raise NotImplementedError("shares_exactly_one_element_with check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1463,7 +1619,7 @@ class PostgresQLOperators(BaseType):
             return len(target_set.intersection(comparator_set)) == 0
 
         return self.validation_df.apply(check_no_shared_elements, axis=1).all()"""
-        raise NotImplementedError()
+        raise NotImplementedError("shares_no_elements_with check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1493,41 +1649,60 @@ class PostgresQLOperators(BaseType):
         if missing_columns:
             logger.info(f"Columns not found in comparator list {comparator}: {', '.join(sorted(missing_columns))}")
         return results"""
-        raise NotImplementedError()
+        raise NotImplementedError("is_ordered_subset_of check_operator not implemented")
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def is_not_ordered_subset_of(self, other_value: dict):
         return ~self.is_ordered_subset_of(other_value)
 
-    def _add_column_query(self, table_name: str, column_name: str, column_type: str) -> str:
-        return f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS {column_name} {column_type};"
+    def _is_empty_sql(self, col: str) -> str:
+        """
+        Generates a SQL query to check if a column is empty.
+        """
+        return f"({col} IS NULL OR {col} = '')"
 
-    def _fetch_for_venmo(self, db_column: str):
+    def _fetch_for_venmo(self, column: str):
         """
         Fetches data from a SQL table and returns it as a pandas Series,
         so we can pass it to Venmo.
         """
         # Fetch all of the rows
-        self.sql_data_service.pgi.execute_sql(f"SELECT id, {db_column} FROM {self.table_id};")
+        self.sql_data_service.pgi.execute_sql(
+            f"SELECT id, {self._column_sql(column)} as data FROM {self._table_sql()};"
+        )
         sql_results = self.sql_data_service.pgi.fetch_all()
 
         # Fix off-by-one
-        return_series = pd.Series(data={item["id"] - 1: item[db_column] for item in sql_results})
+        return_series = pd.Series(data={item["id"] - 1: item["data"] for item in sql_results})
         return return_series
 
-    def _do_check_operator(self, new_column: str, sql_fn: str):
-        """
-        Runs a check operator. First checks if the columns already exists,
-        if not, generates the SQL to create the column and runs it to populate the column.
-        """
-        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, new_column)
+    def _do_check_operator(self, new_column: str, sql_subquery_fn):
+        # Handles simple checks by creating a column and updating it with a scalar subquery.
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
-            # do operation
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
-            subquery = sql_fn()
-            query = f"UPDATE {db_table} SET {db_column} = ({subquery});"
-            self.sql_data_service.pgi.execute_many(
-                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            self.sql_data_service.pgi.add_column(
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
             )
-        return self._fetch_for_venmo(db_column)
+
+            subquery = sql_subquery_fn()
+            query = f"UPDATE {self._table_sql()} SET {self._column_sql(new_column)} = ({subquery});"
+            self.sql_data_service.pgi.execute_sql(query)
+        return self._fetch_for_venmo(new_column)
+
+    def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
+        # Handles complex checks by creating a column and populating it with a full custom query.
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
+        if not exists:
+            self.sql_data_service.pgi.add_column(
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
+            )
+            query = sql_full_query_fn(self._table_sql(), self._column_sql(new_column))
+            self.sql_data_service.pgi.execute_sql(query)
+        return self._fetch_for_venmo(new_column)
+
+    def _table_sql(self):
+        return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
+
+    def _column_sql(self, column: str):
+        return self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
