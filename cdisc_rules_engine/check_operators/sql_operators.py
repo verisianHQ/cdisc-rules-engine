@@ -609,14 +609,13 @@ class PostgresQLOperators(BaseType):
             # Column name provided - check if target value exists anywhere in comparator column
             comparator_column = self.replace_prefix(comparator).lower()
             cache_key = f"{target_column}_contained_by_{comparator_column}"
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
 
             def sql():
                 return f"""CASE WHEN {target_column} IS NOT NULL
                           AND {target_column} != ''
                           AND {target_column} IN (
                               SELECT DISTINCT {comparator_column}
-                              FROM {db_table}
+                              FROM {self._table_sql()}
                               WHERE {comparator_column} IS NOT NULL
                               AND {comparator_column} != ''
                           )
