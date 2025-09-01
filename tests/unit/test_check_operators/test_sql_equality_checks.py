@@ -72,7 +72,7 @@ def test_equal_to_null_strings(data, comparator, expected_result):
     [
         (
             {
-                "IDVARVAL": ["A", "B", "C"],
+                "target": ["A", "B", "C"],
                 "IDVAR": ["LBSEQ", "AESEQ", "LBSEQ"],
                 "LBSEQ": ["D", "D", "C"],
                 "AESEQ": ["E", "B", "E"],
@@ -83,7 +83,7 @@ def test_equal_to_null_strings(data, comparator, expected_result):
         ),
         (
             {
-                "IDVARVAL": ["A", "B", "C"],
+                "target": ["A", "B", "C"],
                 "IDVAR": ["LBSEQ", "AESEQ", "LBSEQ"],
                 "LBSEQ": ["D", "D", "C"],
                 "AESEQ": ["E", "B", "E"],
@@ -100,9 +100,9 @@ def test_equality_operators_value_is_reference(data, comparator, operator, expec
     tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
     sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
     if operator == "equal_to":
-        result = sql_ops.equal_to({"target": "IDVARVAL", "comparator": comparator, "value_is_reference": True})
+        result = sql_ops.equal_to({"target": "target", "comparator": comparator, "value_is_reference": True})
     else:
-        result = sql_ops.not_equal_to({"target": "IDVARVAL", "comparator": comparator, "value_is_reference": True})
+        result = sql_ops.not_equal_to({"target": "target", "comparator": comparator, "value_is_reference": True})
     assert result.equals(pd.Series(expected_result))
 
 
@@ -111,7 +111,7 @@ def test_equality_operators_value_is_reference(data, comparator, operator, expec
     [
         (
             {
-                "IDVARVAL": ["320", "2", "15"],
+                "target": ["320", "2", "15"],
                 "IDVAR": ["LBSEQ", "AESEQ", "LBSEQ"],
                 "LBSEQ": [320, 21, 15],
                 "AESEQ": [1, 2, 1],
@@ -122,7 +122,7 @@ def test_equality_operators_value_is_reference(data, comparator, operator, expec
         ),
         (
             {
-                "IDVARVAL": ["320", "2", "15"],
+                "target": ["320", "2", "15"],
                 "IDVAR": ["LBSEQ", "AESEQ", "LBSEQ"],
                 "LBSEQ": [320, 21, 15],
                 "AESEQ": [1, 2, 1],
@@ -133,7 +133,7 @@ def test_equality_operators_value_is_reference(data, comparator, operator, expec
         ),
         (
             {
-                "IDVARVAL": ["999", "5", "100"],
+                "target": ["999", "5", "100"],
                 "IDVAR": ["LBSEQ", "AESEQ", "LBSEQ"],
                 "LBSEQ": [320, 21, 15],
                 "AESEQ": [1, 2, 1],
@@ -144,7 +144,7 @@ def test_equality_operators_value_is_reference(data, comparator, operator, expec
         ),
         (
             {
-                "IDVARVAL": ["1", "2", "3"],
+                "target": ["1", "2", "3"],
                 "IDVAR": ["FLOATCOL", "FLOATCOL", "FLOATCOL"],
                 "FLOATCOL": [1.0, 2.0, 3.0],
             },
@@ -162,7 +162,7 @@ def test_equality_operators_type_insensitive(data, comparator, operator, expecte
     if operator == "equal_to":
         result = sql_ops.equal_to(
             {
-                "target": "IDVARVAL",
+                "target": "target",
                 "comparator": comparator,
                 "value_is_reference": True,
                 "type_insensitive": True,
@@ -171,7 +171,7 @@ def test_equality_operators_type_insensitive(data, comparator, operator, expecte
     else:
         result = sql_ops.not_equal_to(
             {
-                "target": "IDVARVAL",
+                "target": "target",
                 "comparator": comparator,
                 "value_is_reference": True,
                 "type_insensitive": True,
