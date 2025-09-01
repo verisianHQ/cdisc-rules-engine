@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from psycopg2.errors import UndefinedColumn
+from psycopg2.errors import ProgrammingError
 
 from cdisc_rules_engine.data_service.database import (
     DatabaseConfigPostgres,
@@ -72,9 +72,8 @@ class PostgresQLInterface:
                 logger.error(f"Query execution failed: {e}")
 
                 # TODO: Adding this temporarily to make regression deterministic
-                if isinstance(e, UndefinedColumn):
-                    logger.error("Undefined column error. Check your SQL query and database schema.")
-                    raise UndefinedColumn("Undefined column in SQL query") from e
+                if isinstance(e, ProgrammingError):
+                    raise ProgrammingError("A postgres SQL error occurred") from e
                 raise
 
         return affected_rows
@@ -108,9 +107,8 @@ class PostgresQLInterface:
                 logger.error(f"Batch execution failed: {e}")
 
                 # TODO: Adding this temporarily to make regression deterministic
-                if isinstance(e, UndefinedColumn):
-                    logger.error("Undefined column error. Check your SQL query and database schema.")
-                    raise UndefinedColumn("Undefined column in SQL query") from e
+                if isinstance(e, ProgrammingError):
+                    raise ProgrammingError("A postgres SQL error occurred") from e
                 raise
 
         return affected_rows_list
