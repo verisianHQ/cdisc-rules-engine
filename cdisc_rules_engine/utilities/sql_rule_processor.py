@@ -62,31 +62,25 @@ class SQLRuleProcessor:
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
-        # Extract domain from SQLDatasetMetadata
         domain_name = dataset_metadata.dataset_name.upper()
 
-        # Check if it's a SUPP dataset
         is_supp = domain_name.startswith("SUPP")
 
-        # Simple inclusion check
         if included_domains:
             if ALL_KEYWORD in included_domains:
                 return True
             if domain_name not in included_domains:
-                # Check for special patterns like SUPP--, AP--
                 if not any(
                     (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
                     for pattern in included_domains
                 ):
                     return False
 
-        # Simple exclusion check
         if excluded_domains:
             if ALL_KEYWORD in excluded_domains:
                 return False
             if domain_name in excluded_domains:
                 return False
-            # Check for special patterns
             if any(
                 (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
                 for pattern in excluded_domains
