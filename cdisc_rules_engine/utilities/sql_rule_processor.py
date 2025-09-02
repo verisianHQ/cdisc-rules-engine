@@ -58,36 +58,46 @@ class SQLRuleProcessor:
     def rule_applies_to_domain(cls, dataset_metadata: SQLDatasetMetadata, rule: dict) -> bool:
         """Check that rule is applicable to dataset domain"""
         domains = rule.get("domains") or {}
-
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
         domain_name = dataset_metadata.dataset_name.upper()
 
-        is_supp = domain_name.startswith("SUPP")
+        is_explicitly_included = domain_name in included_domains
+        is_explicitly_excluded = domain_name in excluded_domains
 
-        if included_domains:
-            if ALL_KEYWORD in included_domains:
-                return True
-            if domain_name not in included_domains:
-                if not any(
-                    (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
-                    for pattern in included_domains
-                ):
-                    return False
+        if is_explicitly_excluded:
+            return False
 
-        if excluded_domains:
-            if ALL_KEYWORD in excluded_domains:
-                return False
-            if domain_name in excluded_domains:
-                return False
-            if any(
-                (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
-                for pattern in excluded_domains
-            ):
-                return False
+        if is_explicitly_included:
+            return True
+
+        included_by_pattern = cls.matches_domain_pattern(domain_name, included_domains)
+        excluded_by_pattern = cls.matches_domain_pattern(domain_name, excluded_domains)
+
+        if included_domains and not included_by_pattern:
+            return False
+
+        if excluded_by_pattern:
+            return False
 
         return True
+
+    @staticmethod
+    def matches_domain_pattern(domain: str, patterns: list) -> bool:
+        """Check if domain matches any of the skippable patterns"""
+        for pattern in patterns:
+            if pattern == ALL_KEYWORD:
+                return True
+            if pattern == domain:
+                return True
+            if pattern == "SUPP--" and domain.startswith("SUPP"):
+                return True
+            if pattern == "AP--" and domain.startswith("AP"):
+                return True
+            if pattern == "SQ--" and domain.startswith("SQ"):
+                return True
+        return False
 
     # @classmethod
     # def _is_domain_name_included(
