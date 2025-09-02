@@ -3,6 +3,7 @@ from abc import abstractmethod
 from functools import wraps
 from typing import Any, List, Union
 
+import numpy as np
 import pandas as pd
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
@@ -181,3 +182,335 @@ class BaseSqlOperator:
                     if generic_column_name in self.column_codelist_map:
                         return codelist in self.column_codelist_map.get(generic_column_name)
         return True
+
+    def _get_string_part_series(self, part_to_validate: str, length: int, target: str):
+        """if not self.validation_df[target].apply(type).eq(str).all():
+            raise ValueError("The operator can't be used with non-string values")
+
+        if part_to_validate == "suffix":
+            series_to_validate = self.validation_df[target].str.slice(-length)
+        elif part_to_validate == "prefix":
+            series_to_validate = self.validation_df[target].str.slice(stop=length)
+        else:
+            raise ValueError(
+                f"Invalid part to validate: {part_to_validate}. \
+                    Valid values are: suffix, prefix"
+            )
+        series_to_validate = series_to_validate.mask(pd.isna(self.validation_df[target]))
+        return series_to_validate"""
+        raise NotImplementedError("_get_string_part_series check_operator not implemented")
+
+    def _check_equality_of_string_part(
+        self,
+        target: str,
+        comparison_data,
+        part_to_validate: str,
+        length: int,
+    ):
+        """
+        Checks if the given string part is equal to comparison data.
+        """
+        """series_to_validate = self._get_string_part_series(part_to_validate, length, target)
+        return series_to_validate.eq(comparison_data).astype(bool)"""
+        raise NotImplementedError("_check_equality_of_string_part check_operator not implemented")
+
+    def compare_target_with_comparator_next_row(self, df: DatasetInterface, target: str, comparator: str):
+        """
+        Compares current row of a target with the next row of comparator.
+        We can't
+        compare last row of target with the next row of comparator
+        because there is no row after the last one.
+        """
+        """target_without_last_row = df[target].drop(df[target].tail(1).index)
+        comparator_without_first_row = df[comparator].drop(df[comparator].head(1).index)
+        results = np.where(
+            target_without_last_row.values == comparator_without_first_row.values,
+            True,
+            False,
+        )
+        # we add True at the end as the last row of target has nothing to compare
+        # so as to not raise errors or incorrect issues in the report with False or NaN
+        return self.validation_df.convert_to_series(
+            [
+                *results,
+                True,
+            ]
+        ).tolist()"""
+        raise NotImplementedError("compare_target_with_comparator_next_row check_operator not implemented")
+
+    def next_column_exists_and_previous_is_null(self, row) -> bool:
+        """row.reset_index(drop=True, inplace=True)
+        for index in row[row.isin(NULL_FLAVORS) | pd.isna(row)].index:  # leaving null values only
+            next_position: int = index + 1
+            if next_position < len(row) and not (pd.isna(row[next_position]) or row[next_position] in NULL_FLAVORS):
+                return True
+        return False"""
+        raise NotImplementedError("next_column_exists_and_previous_is_null check_operator not implemented")
+
+    def _check_equality_literal(
+        self,
+        original_target,
+        value,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table below:
+        Operator       --A         --B         Outcome
+        equal_to       "" or null  "" or null  False
+        equal_to       "" or null  Populated   False
+        equal_to       Populated   "" or null  False
+        equal_to       Populated   Populated   A == B
+        not_equal_to   "" or null  "" or null  False
+        not_equal_to   "" or null  Populated   True
+        not_equal_to   Populated   "" or null  True
+        not_equal_to   Populated   Populated   A != B
+        """
+        target = original_target
+        if case_insensitive:
+            target = f"""LOWER({target})"""
+            if isinstance(value, str):
+                value = value.lower()
+
+        if type_insensitive:
+            target = f"""CAST({target} AS TEXT)"""
+
+        def sql():
+            if value is None or value == "":
+                if invert:
+                    query = f"""{original_target} IS NOT NULL AND {target} != ''"""
+                else:
+                    query = "FALSE"
+            else:
+                query = f"""{original_target} IS NOT NULL AND {target} = '{value}'"""
+                if invert:
+                    query = f"NOT ({query})"
+
+            return query
+
+        return self._do_check_operator(f"{original_target}={value}_{invert}_{case_insensitive}_{type_insensitive}", sql)
+
+    def is_column_of_iterables(self, column):
+        """return self.validation_df.is_series(column) and (
+            isinstance(column.iloc[0], list) or isinstance(column.iloc[0], set)
+        )"""
+        raise NotImplementedError("is_column_of_iterables check_operator not implemented")
+
+    def _check_equality_comparison(
+        self,
+        original_target,
+        original_comparator,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+        """
+        target = original_target
+        comparator = original_comparator
+        if case_insensitive:
+            target = f"""LOWER({target})"""
+            comparator = f"""LOWER({comparator})"""
+
+        if type_insensitive:
+            target = f"""CAST({target} AS TEXT)"""
+            comparator = f"""CAST({comparator} AS TEXT)"""
+
+        def sql():
+            if invert:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {target} = ''
+                            THEN {original_comparator} IS NULL OR {comparator} = ''
+                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                            THEN TRUE
+                        ELSE {target} != {comparator}
+                    END"""
+            else:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {target} = ''
+                            THEN FALSE
+                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                            THEN FALSE
+                        ELSE {target} = {comparator}
+                    END"""
+
+        return self._do_check_operator(
+            f"{original_target}={original_comparator}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
+
+    def _check_equality_reference(
+        self,
+        original_target,
+        pivot_column,
+        invert: bool = False,
+        case_insensitive: bool = False,
+        type_insensitive: bool = False,
+    ):
+        """
+        Equality checks work slightly differently for clinical datasets.
+        See truth table in _check_equality_literal for details.
+
+        This method implements equality testing by reference, ie you specifiy a pivot
+        column, that column is then used to look up which other column to compare
+        that row against. The way we handle that in SQL is by finding out all of the
+        columns that could be referenced (the DISTINCT values of the pivot column),
+        and then generating a CASE statement that checks each of those values.
+        """
+        column = original_target
+
+        # Find all of the values of the pivot column -> all columns to compare against
+        self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {pivot_column} col FROM {self.table_id};")
+        comparison_values = self.sql_data_service.pgi.fetch_all()
+        comparison_values = [item["col"].lower() for item in comparison_values]
+        comparison_values = filter(self._exists, comparison_values)
+
+        if case_insensitive:
+            column = f"""LOWER({column})"""
+
+        if type_insensitive:
+            column = f"""CAST({column} AS TEXT)"""
+
+        # This builds up the case statement for a simple column comparison
+        def single_comparison_sql(original_c):
+            c = original_c
+            if case_insensitive:
+                c = f"""LOWER({c})"""
+
+            if type_insensitive:
+                c = f"""CAST({c} AS TEXT)"""
+
+            if invert:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {column} = ''
+                            THEN {original_c} IS NULL OR {c} = ''
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN TRUE
+                        ELSE {column} != {c}
+                    END"""
+            else:
+                return f"""CASE
+                        WHEN {original_target} IS NULL OR {column} = ''
+                            THEN FALSE
+                        WHEN {original_c} IS NULL OR {c} = ''
+                            THEN FALSE
+                        ELSE {column} = {c}
+                    END"""
+
+        def sql():
+            sql = "CASE "
+            # Build a CASE statement for each possible column
+            for c in comparison_values:
+                sql += f"WHEN LOWER({pivot_column}) = '{c.lower()}' THEN ({single_comparison_sql(c)}) "
+            sql += "ELSE FALSE END"
+            return sql
+
+        return self._do_check_operator(
+            f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
+
+    def _date_comparison(self, other_value: dict, operator: str):
+        """
+        Performs date comparison operations in PostgreSQL.
+        Handles date component extraction and comparison.
+        """
+        target_column = self.replace_prefix(other_value.get("target")).lower()
+        comparator = other_value.get("comparator")
+        value_is_literal = other_value.get("value_is_literal", False)
+        date_component = other_value.get("date_component")
+
+        if isinstance(comparator, str) and not value_is_literal:
+            comparator = self.replace_prefix(comparator).lower()
+
+        component_suffix = f"_{date_component}" if date_component else ""
+        cache_key = f"{target_column}{operator}{comparator}{component_suffix}"
+
+        def sql():
+            if date_component:
+                component_map = {
+                    "year": "YEAR",
+                    "month": "MONTH",
+                    "day": "DAY",
+                    "hour": "HOUR",
+                    "minute": "MINUTE",
+                    "second": "SECOND",
+                    "microsecond": "MICROSECONDS",
+                }
+                pg_component = component_map.get(date_component, "EPOCH")
+
+                if value_is_literal:
+                    return f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST('{comparator}' AS TIMESTAMP))
+                        THEN true
+                        ELSE false
+                        END"""
+                else:
+                    return f"""CASE WHEN
+                        {self.replace_prefix(target_column)} IS NOT NULL
+                        AND {self.replace_prefix(target_column)} != ''
+                        AND {self.replace_prefix(comparator)} IS NOT NULL
+                        AND {self.replace_prefix(comparator)} != ''
+                        AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
+                            {operator}
+                        EXTRACT({pg_component} FROM CAST({self.replace_prefix(comparator)} AS TIMESTAMP))
+                        THEN true
+                        ELSE false
+                        END"""
+            else:
+                if value_is_literal:
+                    return f"""CASE WHEN
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
+                            {operator}
+                        CAST('{comparator}' AS TIMESTAMP)
+                        THEN true
+                        ELSE false
+                        END"""
+                else:
+                    return f"""CASE WHEN
+                        {target_column} IS NOT NULL
+                        AND {target_column} != ''
+                        AND {comparator} IS NOT NULL
+                        AND {comparator} != ''
+                        AND CAST({target_column} AS TIMESTAMP)
+                            {operator}
+                        CAST({comparator} AS TIMESTAMP)
+                        THEN true
+                        ELSE false
+                        END"""
+
+        return self._do_check_operator(cache_key, sql)
+
+    def _numeric_comparison(
+        self,
+        other_value: dict,
+        operator: str,
+    ):
+        target_column = self.replace_prefix(other_value.get("target"))
+        comparator = (
+            other_value.get("comparator").lower()
+            if isinstance(other_value.get("comparator"), str)
+            else other_value.get("comparator")
+        )
+
+        def sql():
+            return f"""CASE WHEN
+                            CAST({target_column} AS NUMERIC)
+                                {operator}
+                            CAST({comparator} AS NUMERIC) THEN true
+                        ELSE false
+                        END
+                        """
+
+        return self._do_check_operator(f"{target_column}{operator}{comparator}", sql)
+
+    def _series_is_in(self, target, comparison_data):
+        return np.where(comparison_data.isin(target), True, False)

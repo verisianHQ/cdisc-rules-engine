@@ -29,6 +29,7 @@ from .is_not_contained_by_case_insensitive_operator import IsNotContainedByCaseI
 from .is_not_unique_relationship_operator import IsNotUniqueRelationshipOperator
 from .is_unique_relationship_operator import IsUniqueRelationshipOperator
 from .present_on_multiple_rows_within_operator import PresentOnMultipleRowsWithinOperator
+from .not_present_on_multiple_rows_within_operator import NotPresentOnMultipleRowsWithinOperator
 from .prefix_is_contained_by_operator import PrefixIsContainedByOperator
 from .prefix_is_not_contained_by_operator import PrefixIsNotContainedByOperator
 from .suffix_is_contained_by_operator import SuffixIsContainedByOperator
@@ -60,30 +61,25 @@ from .conformant_value_data_type_operator import ConformantValueDataTypeOperator
 from .non_conformant_value_data_type_operator import NonConformantValueDataTypeOperator
 from .conformant_value_length_operator import ConformantValueLengthOperator
 from .non_conformant_value_length_operator import NonConformantValueLengthOperator
-from .is_column_of_iterables_operator import IsColumnOfIterablesOperator
 from .suffix_equal_to_operator import SuffixEqualToOperator
 from .suffix_not_equal_to_operator import SuffixNotEqualToOperator
 from .prefix_equal_to_operator import PrefixEqualToOperator
 from .prefix_not_equal_to_operator import PrefixNotEqualToOperator
-from .get_string_part_series_operator import GetStringPartSeriesOperator
-from .value_is_contained_by_operator import ValueIsContainedByOperator
-from .check_equality_of_string_part_operator import CheckEqualityOfStringPartOperator
 from .has_equal_length_operator import HasEqualLengthOperator
 from .has_not_equal_length_operator import HasNotEqualLengthOperator
 from .longer_than_operator import LongerThanOperator
 from .longer_than_or_equal_to_operator import LongerThanOrEqualToOperator
 from .shorter_than_operator import ShorterThanOperator
+from .shorter_than_or_equal_to_operator import ShorterThanOrEqualToOperator
 from .empty_within_except_last_row_operator import EmptyWithinExceptLastRowOperator
 from .non_empty_within_except_last_row_operator import NonEmptyWithinExceptLastRowOperator
 from .contains_all_operator import ContainsAllOperator
 from .not_contains_all_operator import NotContainsAllOperator
 from .has_next_corresponding_record_operator import HasNextCorrespondingRecordOperator
 from .does_not_have_next_corresponding_record_operator import DoesNotHaveNextCorrespondingRecordOperator
-from .compare_target_with_comparator_next_row_operator import CompareTargetWithComparatorNextRowOperator
 from .inconsistent_enumerated_columns_operator import InconsistentEnumeratedColumnsOperator
 from .references_correct_codelist_operator import ReferencesCorrectCodelistOperator
 from .does_not_reference_correct_codelist_operator import DoesNotReferenceCorrectCodelistOperator
-from .next_column_exists_and_previous_is_null_operator import NextColumnExistsAndPreviousIsNullOperator
 from .is_ordered_by_operator import IsOrderedByOperator
 from .is_not_ordered_by_operator import IsNotOrderedByOperator
 from .value_has_multiple_references_operator import ValueHasMultipleReferencesOperator
@@ -144,6 +140,7 @@ class PostgresQLOperators(BaseType):
             "is_not_unique_relationship": IsNotUniqueRelationshipOperator,
             "is_unique_relationship": IsUniqueRelationshipOperator,
             "present_on_multiple_rows_within": PresentOnMultipleRowsWithinOperator,
+            "not_present_on_multiple_rows_within": NotPresentOnMultipleRowsWithinOperator,
             "prefix_is_contained_by": PrefixIsContainedByOperator,
             "prefix_is_not_contained_by": PrefixIsNotContainedByOperator,
             "suffix_is_contained_by": SuffixIsContainedByOperator,
@@ -175,30 +172,25 @@ class PostgresQLOperators(BaseType):
             "non_conformant_value_data_type": NonConformantValueDataTypeOperator,
             "conformant_value_length": ConformantValueLengthOperator,
             "non_conformant_value_length": NonConformantValueLengthOperator,
-            "is_column_of_iterables": IsColumnOfIterablesOperator,
             "suffix_equal_to": SuffixEqualToOperator,
             "suffix_not_equal_to": SuffixNotEqualToOperator,
             "prefix_equal_to": PrefixEqualToOperator,
             "prefix_not_equal_to": PrefixNotEqualToOperator,
-            "_get_string_part_series": GetStringPartSeriesOperator,
-            "_value_is_contained_by": ValueIsContainedByOperator,
-            "_check_equality_of_string_part": CheckEqualityOfStringPartOperator,
             "has_equal_length": HasEqualLengthOperator,
             "has_not_equal_length": HasNotEqualLengthOperator,
             "longer_than": LongerThanOperator,
             "longer_than_or_equal_to": LongerThanOrEqualToOperator,
             "shorter_than": ShorterThanOperator,
+            "shorter_than_or_equal_to": ShorterThanOrEqualToOperator,
             "empty_within_except_last_row": EmptyWithinExceptLastRowOperator,
             "non_empty_within_except_last_row": NonEmptyWithinExceptLastRowOperator,
             "contains_all": ContainsAllOperator,
             "not_contains_all": NotContainsAllOperator,
             "has_next_corresponding_record": HasNextCorrespondingRecordOperator,
             "does_not_have_next_corresponding_record": DoesNotHaveNextCorrespondingRecordOperator,
-            "compare_target_with_comparator_next_row": CompareTargetWithComparatorNextRowOperator,
             "inconsistent_enumerated_columns": InconsistentEnumeratedColumnsOperator,
             "references_correct_codelist": ReferencesCorrectCodelistOperator,
             "does_not_reference_correct_codelist": DoesNotReferenceCorrectCodelistOperator,
-            "next_column_exists_and_previous_is_null": NextColumnExistsAndPreviousIsNullOperator,
             "is_ordered_by": IsOrderedByOperator,
             "is_not_ordered_by": IsNotOrderedByOperator,
             "value_has_multiple_references": ValueHasMultipleReferencesOperator,
