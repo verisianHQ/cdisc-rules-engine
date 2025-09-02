@@ -16,6 +16,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 )
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.utilities.utils import dates_overlap, parse_date
 
@@ -113,7 +114,7 @@ class PostgresQLOperators(BaseType):
         raise NotImplementedError("is_column_of_iterables check_operator not implemented")
 
     def _exists(self, column: str) -> bool:
-        return column.lower() in self.sql_data_service.cache.get_columns(self.table_id)
+        return self.sql_data_service.pgi.schema.column_exists(self.table_id, column)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -588,14 +589,13 @@ class PostgresQLOperators(BaseType):
             # Column name provided - check if target value exists anywhere in comparator column
             comparator_column = self.replace_prefix(comparator).lower()
             cache_key = f"{target_column}_contained_by_{comparator_column}"
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
 
             def sql():
                 return f"""CASE WHEN {target_column} IS NOT NULL
                           AND {target_column} != ''
                           AND {target_column} IN (
                               SELECT DISTINCT {comparator_column}
-                              FROM {db_table}
+                              FROM {self._table_sql()}
                               WHERE {comparator_column} IS NOT NULL
                               AND {comparator_column} != ''
                           )
@@ -1143,26 +1143,54 @@ class PostgresQLOperators(BaseType):
         2        A
         3        C
         """
-        """target = self.replace_prefix(other_value.get("target"))
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         comparator = other_value.get("comparator")
+
         if isinstance(comparator, list):
-            comparator = self.replace_all_prefixes(comparator)
+            comparator_columns = [self.replace_prefix(col).lower() for col in comparator]
+            comparator_list = ", ".join(comparator_columns)
+            concat_expr = " || '|' || ".join(comparator_columns)
+            op_name = f"{target_column}_{'_'.join(comparator_columns)}_not_unique_relationship"
         else:
-            comparator = self.replace_prefix(comparator)
-        # remove repeating rows
-        df_without_duplicates: DatasetInterface = self.validation_df[[target, comparator]].drop_duplicates()
-        # we need to check if ANY of the columns (target or comparator) is duplicated
-        duplicated_comparator = df_without_duplicates[comparator].duplicated(keep=False)
-        duplicated_target = df_without_duplicates[target].duplicated(keep=False)
-        result = self.validation_df.convert_to_series([False] * len(self.validation_df))
-        if duplicated_comparator.any():
-            duplicated_comparator_values = set(df_without_duplicates[duplicated_comparator][comparator])
-            result += self.validation_df[comparator].isin(duplicated_comparator_values)
-        if duplicated_target.any():
-            duplicated_target_values = set(df_without_duplicates[duplicated_target][target])
-            result += self.validation_df[target].isin(duplicated_target_values)
-        return result"""
-        raise NotImplementedError("is_not_unique_relationship check_operator not implemented")
+            comparator_column = self.replace_prefix(comparator).lower()
+            comparator_list = comparator_column
+            concat_expr = comparator_column
+            op_name = f"{target_column}_{comparator_column}_not_unique_relationship"
+
+        def generate_update_query(db_table: str, db_column: str) -> str:
+            return f"""
+                UPDATE {db_table} AS t
+                SET {db_column} = sub.has_violation
+                FROM (
+                    WITH distinct_pairs AS (
+                        SELECT DISTINCT {target_column}, {comparator_list}
+                        FROM {db_table}
+                    ),
+                    target_violations AS (
+                        SELECT {target_column}
+                        FROM distinct_pairs
+                        GROUP BY {target_column}
+                        HAVING COUNT(DISTINCT {concat_expr}) > 1
+                    ),
+                    comparator_violations AS (
+                        SELECT {concat_expr} as comp_key
+                        FROM distinct_pairs
+                        GROUP BY {concat_expr}
+                        HAVING COUNT(DISTINCT {target_column}) > 1
+                    )
+                    SELECT
+                        id,
+                        CASE WHEN
+                            {target_column} IN (SELECT {target_column} FROM target_violations) OR
+                            {concat_expr} IN (SELECT comp_key FROM comparator_violations)
+                        THEN true ELSE false END AS has_violation
+                    FROM {db_table}
+                    ORDER BY id
+                ) AS sub
+                WHERE t.id = sub.id;
+            """
+
+        return self._do_complex_check_operator(op_name, generate_update_query)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
@@ -1386,10 +1414,9 @@ class PostgresQLOperators(BaseType):
     def has_different_values(self, other_value: dict):
         target_column = other_value.get("target").lower()
         operation_name = f"{target_column}_has_different_values"
-        db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
 
         return self._do_check_operator(
-            operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {db_table}) > 1"
+            operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {self._table_sql()}) > 1"
         )
 
     @log_operator_execution
@@ -1642,43 +1669,61 @@ class PostgresQLOperators(BaseType):
         """
         Generates a SQL query to check if a column is empty.
         """
-        return f"({col} IS NULL OR {col} = '')"
+        column = self.sql_data_service.pgi.schema.get_column(self.table_id, col)
+        if not column:
+            raise ValueError(f"Column {col} does not exist in the table {self.table_id}.")
 
-    def _add_column_query(self, table_name: str, column_name: str, column_type: str) -> str:
-        return f"ALTER TABLE {table_name} ADD COLUMN IF NOT EXISTS {column_name} {column_type};"
+        match column.type:
+            case "Char":
+                return f"({column.hash} IS NULL OR {column.hash} = '')"
+            case "Bool":
+                return f"({column.hash} IS NULL)"
+            case "Num":
+                return f"({column.hash} IS NULL)"
+            case _:
+                raise ValueError(f"Unsupported column type: {column.type} for column {col}.")
 
-    def _fetch_for_venmo(self, db_column: str):
+    def _fetch_for_venmo(self, column: str):
         """
         Fetches data from a SQL table and returns it as a pandas Series,
         so we can pass it to Venmo.
         """
         # Fetch all of the rows
-        self.sql_data_service.pgi.execute_sql(f"SELECT id, {db_column} FROM {self.table_id};")
+        self.sql_data_service.pgi.execute_sql(
+            f"SELECT id, {self._column_sql(column)} as data FROM {self._table_sql()};"
+        )
         sql_results = self.sql_data_service.pgi.fetch_all()
 
         # Fix off-by-one
-        return_series = pd.Series(data={item["id"] - 1: item[db_column] for item in sql_results})
+        return_series = pd.Series(data={item["id"] - 1: item["data"] for item in sql_results})
         return return_series
 
     def _do_check_operator(self, new_column: str, sql_subquery_fn):
         # Handles simple checks by creating a column and updating it with a scalar subquery.
-        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, new_column)
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
-            subquery = sql_subquery_fn()
-            query = f"UPDATE {db_table} SET {db_column} = ({subquery});"
-            self.sql_data_service.pgi.execute_many(
-                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            self.sql_data_service.pgi.add_column(
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
             )
-        return self._fetch_for_venmo(db_column)
+
+            subquery = sql_subquery_fn()
+            query = f"UPDATE {self._table_sql()} SET {self._column_sql(new_column)} = ({subquery});"
+            self.sql_data_service.pgi.execute_sql(query)
+        return self._fetch_for_venmo(new_column)
 
     def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
         # Handles complex checks by creating a column and populating it with a full custom query.
-        exists, _, db_column = self.sql_data_service.cache.add_db_column_if_missing(self.table_id, new_column)
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
-            db_table = self.sql_data_service.cache.get_db_table_hash(self.table_id)
-            query = sql_full_query_fn(db_table, db_column)
-            self.sql_data_service.pgi.execute_many(
-                queries=[self._add_column_query(db_table, db_column, "BOOLEAN"), query]
+            self.sql_data_service.pgi.add_column(
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
             )
-        return self._fetch_for_venmo(db_column)
+            query = sql_full_query_fn(self._table_sql(), self._column_sql(new_column))
+            self.sql_data_service.pgi.execute_sql(query)
+        return self._fetch_for_venmo(new_column)
+
+    def _table_sql(self):
+        return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
+
+    def _column_sql(self, column: str):
+        return self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
