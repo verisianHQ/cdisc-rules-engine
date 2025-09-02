@@ -17,7 +17,8 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 #     APFA_DOMAIN,
 #     SUPPLEMENTARY_DOMAINS,
 # )
-# from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
+from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
+
 # from cdisc_rules_engine.constants.use_cases import USE_CASE_DOMAINS
 from cdisc_rules_engine.interfaces import ConditionInterface
 from cdisc_rules_engine.models.library_metadata_container import (
@@ -53,29 +54,46 @@ class SQLRuleProcessor:
         self.cache = CacheServiceFactory(default_config).get_cache_service()
         self.library_metadata = library_metadata
 
-    # @classmethod
-    # def rule_applies_to_domain(cls, dataset_metadata: SDTMDatasetMetadata, rule: dict) -> bool:
-    #     """
-    #     Check that rule is applicable to dataset domain
-    #     """
-    #     domains = rule.get("domains") or {}
-    #     include_split_datasets: bool = domains.get("include_split_datasets")
+    @classmethod
+    def rule_applies_to_domain(cls, dataset_metadata: SQLDatasetMetadata, rule: dict) -> bool:
+        """Check that rule is applicable to dataset domain"""
+        domains = rule.get("domains") or {}
 
-    #     included_domains = domains.get("Include", [])
-    #     excluded_domains = domains.get("Exclude", [])
+        included_domains = domains.get("Include", [])
+        excluded_domains = domains.get("Exclude", [])
 
-    #     is_included = cls._is_domain_name_included(dataset_metadata, included_domains, include_split_datasets)
-    #     is_excluded = cls._is_domain_name_excluded(dataset_metadata, excluded_domains)
+        # Extract domain from SQLDatasetMetadata
+        domain_name = dataset_metadata.dataset_name.upper()
 
-    #     # additional check for split domains based on the flag
-    #     is_excluded, is_included = cls._handle_split_domains(
-    #         dataset_metadata.is_split,
-    #         include_split_datasets,
-    #         is_excluded,
-    #         is_included,
-    #     )
+        # Check if it's a SUPP dataset
+        is_supp = domain_name.startswith("SUPP")
 
-    #     return is_included and not is_excluded
+        # Simple inclusion check
+        if included_domains:
+            if ALL_KEYWORD in included_domains:
+                return True
+            if domain_name not in included_domains:
+                # Check for special patterns like SUPP--, AP--
+                if not any(
+                    (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
+                    for pattern in included_domains
+                ):
+                    return False
+
+        # Simple exclusion check
+        if excluded_domains:
+            if ALL_KEYWORD in excluded_domains:
+                return False
+            if domain_name in excluded_domains:
+                return False
+            # Check for special patterns
+            if any(
+                (pattern == "SUPP--" and is_supp) or (pattern == "AP--" and domain_name.startswith("AP"))
+                for pattern in excluded_domains
+            ):
+                return False
+
+        return True
 
     # @classmethod
     # def _is_domain_name_included(
@@ -335,7 +353,7 @@ class SQLRuleProcessor:
     #         result = True
     #     else:
     #         result = False
-    #     logger.info(f"is_relationship_dataset. dataset_name={dataset_name}, result={result}")
+    #     # logger.info(f"is_relationship_dataset. dataset_name={dataset_name}, result={result}")
     #     return result
 
     # def get_size_unit_from_rule(self, rule: dict) -> Optional[str]:
@@ -391,7 +409,7 @@ class SQLRuleProcessor:
     #             comparator_to_add = None
     #         if comparator_to_add:
     #             value["comparator"] = comparator_to_add
-    #     logger.info(
+    #     # logger.info(
     #         f"Added comparator to rule conditions. " f"comparator={comparator}, conditions={rule['conditions']}"
     #     )
 
@@ -422,27 +440,17 @@ class SQLRuleProcessor:
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
         dataset_name = dataset_metadata.dataset_name
-        # if not self.valid_rule_structure(rule):
-        #     reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
-        # if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
-        #     reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
-        # if not self.rule_applies_to_domain(dataset_metadata, rule):
-        #     reason = f"Rule skipped - doesn't apply to domain for " f"rule id={rule_id}, dataset={dataset_name}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
-        # if not self.rule_applies_to_class(rule, datasets, dataset_metadata):
-        #     reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
-        logger.info(f"is_suitable_for_validation. rule id={rule_id}, " f"dataset={dataset_name}, result=True")
+
+        if not self.rule_applies_to_domain(dataset_metadata, rule):
+            reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
+            logger.info(f"is_suitable_for_validation. {reason}, result=False")
+            return False, reason
+        # TODO: other checks (class, use case, etc.)
+
+        logger.info(f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True")
         return True, ""
 
-    @staticmethod
-    def extract_target_names_from_rule(rule: dict, domain: str, column_names: List[str]) -> Set[str]:
+    def extract_target_names_from_rule(self, rule: dict, domain: str, column_names: List[str]) -> Set[str]:
         r"""
         Extracts target from each item of condition list.
 
@@ -470,9 +478,7 @@ class SQLRuleProcessor:
                 if target is None:
                     continue
                 target = target.replace("--", domain or "")
-                op_related_pattern: str = SQLRuleProcessor.get_operator_related_pattern(
-                    condition.get("operator"), target
-                )
+                op_related_pattern: str = self.get_operator_related_pattern(condition.get("operator"), target)
                 if op_related_pattern is not None:
                     # if pattern exists -> return only matching column names
                     target_names.extend(
