@@ -1,4 +1,5 @@
 from .base_sql_operator import BaseSqlOperator
+from .equal_to_operator import EqualToOperator
 
 
 class IsContainedByOperator(BaseSqlOperator):
@@ -52,12 +53,7 @@ class IsContainedByOperator(BaseSqlOperator):
                           END"""
 
         else:
-            # For single literal values, delegate to equal_to logic
-            # Import here to avoid circular imports
-            from .equal_to_operator import EqualToOperator
-
-            equal_to_operator = EqualToOperator(self.original_data)
-            return equal_to_operator.execute_operator(
+            return EqualToOperator(self.original_data).execute_operator(
                 {"target": other_value.get("target"), "comparator": comparator, "value_is_literal": True}
             )
 

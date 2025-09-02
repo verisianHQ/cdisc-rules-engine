@@ -1,4 +1,5 @@
 from .base_sql_operator import BaseSqlOperator
+from .is_contained_by_operator import IsContainedByOperator
 
 
 class SuffixIsContainedByOperator(BaseSqlOperator):
@@ -12,12 +13,5 @@ class SuffixIsContainedByOperator(BaseSqlOperator):
         suffix_length = other_value.get("suffix")
         suffix_sql = f"RIGHT({target}, {suffix_length})"
 
-        # Create new other_value with the suffix SQL as target
-        modified_other_value = other_value.copy()
-        modified_other_value["target"] = suffix_sql
-
-        # Delegate to is_contained_by logic
-        from .is_contained_by_operator import IsContainedByOperator
-
-        is_contained_by_operator = IsContainedByOperator(self.original_data)
-        return is_contained_by_operator.execute_operator(modified_other_value)
+        other_value["target"] = suffix_sql
+        return IsContainedByOperator(self.original_data).execute_operator(other_value)

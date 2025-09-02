@@ -1,7 +1,7 @@
-from .date_equal_to_operator import DateEqualToOperator
+from .base_sql_operator import BaseSqlOperator
 
 
-class DateGreaterThanOperator(DateEqualToOperator):
+class DateGreaterThanOperator(BaseSqlOperator):
     """Operator for date greater-than comparisons."""
 
     def execute_operator(self, other_value):

@@ -5,6 +5,11 @@ class LongerThanOperator(BaseSqlOperator):
     """Operator for checking if value is longer than expected length."""
 
     def execute_operator(self, other_value):
+        """
+        Checks if the target is longer than the comparator.
+        If comparing two columns (value_is_literal is False), the operator
+        compares lengths of values in these columns.
+        """
         """target = self.replace_prefix(other_value.get("target"))
         comparator = other_value.get("comparator")
         value_is_literal: bool = other_value.get("value_is_literal", False)

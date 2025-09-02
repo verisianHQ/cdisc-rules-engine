@@ -5,20 +5,23 @@ class VariableMetadataEqualToOperator(BaseSqlOperator):
     """Operator for checking if variable metadata equals to expected value."""
 
     def execute_operator(self, other_value):
+        """
+        Validates the metadata for variables,
+        provided in the metadata column, is equal to
+        the comparator.
+        Ex.
+        target: STUDYID
+        comparator: "Exp"
+        metadata_column: {"STUDYID": "Req", "DOMAIN": "Req"}
+        result: False
+        """
         """target = self.replace_prefix(other_value.get("target"))
-        comparator = other_value.get("comparator")
-        metadata_type = other_value.get("metadata_type")
-
-        # Check if target column has the expected metadata value
-        if metadata_type in self.value_level_metadata:
-            metadata_values = self.value_level_metadata[metadata_type]
-            if target in metadata_values:
-                expected_value = metadata_values[target]
-                results = pd.Series([expected_value == comparator] * len(self.validation_df))
-            else:
-                results = pd.Series([False] * len(self.validation_df))
-        else:
-            results = pd.Series([False] * len(self.validation_df))
-
-        return results"""
+        comparator = other_value.get("comparator")  # Assumes the comparator is a value not a column
+        metadata_column = self.replace_prefix(other_value.get("metadata"))
+        result = np.where(
+            vectorized_get_dict_key(self.validation_df[metadata_column], target) == comparator,
+            True,
+            False,
+        )
+        return self.validation_df.convert_to_series(result)"""
         raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")

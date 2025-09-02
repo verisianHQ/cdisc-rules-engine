@@ -1,4 +1,5 @@
 from .base_sql_operator import BaseSqlOperator
+from .is_contained_by_operator import IsContainedByOperator
 
 
 class PrefixIsContainedByOperator(BaseSqlOperator):
@@ -12,12 +13,6 @@ class PrefixIsContainedByOperator(BaseSqlOperator):
         prefix_length = other_value.get("prefix")
         prefix_sql = f"LEFT({target}, {prefix_length})"
 
-        # Create new other_value with the prefix SQL as target
-        modified_other_value = other_value.copy()
-        modified_other_value["target"] = prefix_sql
+        other_value["target"] = prefix_sql
 
-        # Delegate to is_contained_by logic
-        from .is_contained_by_operator import IsContainedByOperator
-
-        is_contained_by_operator = IsContainedByOperator(self.original_data)
-        return is_contained_by_operator.execute_operator(modified_other_value)
+        return IsContainedByOperator(self.original_data).execute_operator(other_value)

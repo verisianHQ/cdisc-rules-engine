@@ -1,7 +1,7 @@
-from .less_than_operator import LessThanOperator
+from .base_sql_operator import BaseSqlOperator
 
 
-class GreaterThanOrEqualToOperator(LessThanOperator):
+class GreaterThanOrEqualToOperator(BaseSqlOperator):
     """Operator for numeric greater-than-or-equal-to comparisons."""
 
     def execute_operator(self, other_value):

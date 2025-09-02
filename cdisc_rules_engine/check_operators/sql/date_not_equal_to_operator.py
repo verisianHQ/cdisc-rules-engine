@@ -1,7 +1,7 @@
-from .date_equal_to_operator import DateEqualToOperator
+from .base_sql_operator import BaseSqlOperator
 
 
-class DateNotEqualToOperator(DateEqualToOperator):
+class DateNotEqualToOperator(BaseSqlOperator):
     """Operator for date inequality comparisons."""
 
     def execute_operator(self, other_value):

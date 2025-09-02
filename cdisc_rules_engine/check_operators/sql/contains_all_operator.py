@@ -6,14 +6,12 @@ class ContainsAllOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         """target = self.replace_prefix(other_value.get("target"))
-        value_is_literal: bool = other_value.get("value_is_literal", False)
-        comparator: list = other_value.get("comparator")
-        column_data = self.validation_df[target]
-        # We need to check that ALL elements in comparator are contained in the target iterables
-        if self.is_column_of_iterables(column_data):
-            results = column_data.apply(lambda x: set(comparator).issubset(set(x)) if isinstance(x, (list, set))
-              else False)
+        comparator = other_value.get("comparator")
+        if isinstance(comparator, list):
+            # get column as array of values
+            values = flatten_list(self.validation_df, comparator)
         else:
-            results = False
-        return results"""
+            comparator = self.replace_prefix(comparator)
+            values = self.validation_df[comparator].unique()
+        return self.validation_df.convert_to_series(set(values).issubset(set(self.validation_df[target].unique())))"""
         raise NotImplementedError("contains_all check_operator not implemented")
