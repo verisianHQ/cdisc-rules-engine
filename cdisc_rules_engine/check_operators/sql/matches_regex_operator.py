@@ -10,9 +10,10 @@ class MatchesRegexOperator(BaseSqlOperator):
 
         def sql():
             return f"""CASE WHEN
-                            {target_column} IS NOT NULL 
+                            {target_column} IS NOT NULL
                             AND {target_column}::text ~ '{comparator}'
                         THEN true
                         ELSE false
                         END"""
+
         return self._do_check_operator(f"{target_column}_matches_regex", sql)
