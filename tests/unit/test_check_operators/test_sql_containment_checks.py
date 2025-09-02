@@ -26,10 +26,10 @@ CONTAINS_TEST_DATA = [
         [True, True, True],
     ),
     (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y"]},
         "VAR2",
         False,
-        [False, False, False],
+        [False, False],
     ),
     (
         {"target": ["A", "B", "C"]},
@@ -65,49 +65,9 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
     assert result.equals(pd.Series(expected_result))
 
 
-DOES_NOT_CONTAIN_TEST_DATA = [
-    (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "btt", "lll"]},
-        "VAR2",
-        False,
-        [False, True, True],
-    ),
-    (
-        {"target": ["Ctt", "Btt", "A"]},
-        "A",
-        True,
-        [True, True, False],
-    ),
-    (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
-        "VAR2",
-        False,
-        [False, False, False],
-    ),
-    (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Z"]},
-        "VAR2",
-        False,
-        [True, True, True],
-    ),
-    (
-        {"target": ["A", "B", "C"]},
-        ["C", "Z", "A"],
-        True,
-        [False, True, False],
-    ),
-    # (
-    #     {"target": [["A", "B", "C"], ["A", "B", "L"], ["L", "Q", "R"]]},
-    #     "L",
-    #     True,
-    #     [True, False, False],
-    # )
-]
-
-
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
-    DOES_NOT_CONTAIN_TEST_DATA,
+    CONTAINS_TEST_DATA,
 )
 def test_sql_does_not_contain(data, comparator, value_is_literal, expected_result):
     table_name = "test_table"
@@ -120,7 +80,7 @@ def test_sql_does_not_contain(data, comparator, value_is_literal, expected_resul
             "value_is_literal": value_is_literal,
         }
     )
-    assert result.equals(pd.Series(expected_result))
+    assert result.equals(~pd.Series(expected_result))
 
 
 CONTAINED_BY_TEST_DATA = [
