@@ -85,7 +85,7 @@ class SQLRuleProcessor:
 
     @staticmethod
     def matches_domain_pattern(domain: str, patterns: list) -> bool:
-        """Check if domain matches any of the skippable patterns"""
+        """Check if domain matches any of the patterns."""
         for pattern in patterns:
             if pattern == ALL_KEYWORD:
                 return True
