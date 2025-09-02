@@ -632,20 +632,34 @@ class PostgresQLOperators(BaseType):
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def matches_regex(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         comparator = other_value.get("comparator")
-        converted_strings = self.validation_df[target].map(lambda x: self._custom_str_conversion(x))
-        results = converted_strings.notna() & converted_strings.astype(str).str.match(comparator)
-        return results
+
+        def sql():
+            return f"""CASE WHEN
+                            {target_column} IS NOT NULL 
+                            AND {target_column}::text ~ '{comparator}'
+                        THEN true
+                        ELSE false
+                        END"""
+
+        return self._do_check_operator(f"{target_column}_matches_regex", sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def not_matches_regex(self, other_value):
-        target = self.replace_prefix(other_value.get("target"))
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         comparator = other_value.get("comparator")
-        converted_strings = self.validation_df[target].map(lambda x: self._custom_str_conversion(x))
-        results = converted_strings.notna() & ~converted_strings.astype(str).str.match(comparator)
-        return results
+        
+        def sql():
+            return f"""CASE WHEN
+                            {target_column} IS NOT NULL 
+                            AND NOT ({target_column}::text ~ '{comparator}')
+                        THEN true
+                        ELSE false
+                        END"""
+
+        return self._do_check_operator(f"{target_column}_not_matches_regex", sql)
 
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
