@@ -12,6 +12,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
+from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 
 
@@ -62,7 +63,7 @@ class BaseSqlOperator:
         self.value_level_metadata = data.get("value_level_metadata", [])
         self.column_codelist_map = data.get("column_codelist_map", {})
         self.codelist_term_maps = data.get("codelist_term_maps", [])
-        self.operation_variables = data.get("operation_variables", {})
+        self.operation_variables: dict[str, SqlOperationResult] = data.get("operation_variables", {})
 
     @abstractmethod
     def execute_operator(self, other_value):
@@ -157,8 +158,79 @@ class BaseSqlOperator:
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
 
-    def _column_sql(self, column: str):
-        return self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
+    def _column_sql(self, column: str, lowercase: bool = False) -> str:
+        query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
+        if lowercase:
+            query = f"LOWER({query})"
+        return query
+
+    def _constant_sql(self, value: Any, lowercase: bool = False) -> str:
+        """
+        Generates a SQL constant value based on the type of the value.
+        Will resolve any operation variables it finds.
+        Will map None to an empty string.
+        """
+        if isinstance(value, str):
+            if value in self.operation_variables:
+                variable = self.operation_variables[value]
+                if variable.type != "constant":
+                    raise ValueError(f"Variable {value} is not a constant.")
+                query = f"({variable.query})"
+            else:
+                query = f"'{value.replace("'", "''")}'"
+
+            if lowercase:
+                query = f"LOWER({query})"
+            return query
+        elif isinstance(value, bool):
+            return "TRUE" if value else "FALSE"
+        elif isinstance(value, (int, float)):
+            return str(value)
+        elif value is None:
+            return ""
+        else:
+            raise ValueError(f"Unsupported constant type: {type(value)}")
+
+    def _collection_sql(self, value: Any, lowercase: bool = False) -> str:
+        """
+        Generates a SQL collection string based on the type of the value.
+        """
+        if isinstance(value, list):
+            return f"({', '.join(self._constant_sql(v, lowercase=lowercase) for v in value)})"
+        elif isinstance(value, str):
+            if value in self.operation_variables:
+                variable = self.operation_variables[value]
+                if variable.type != "collection":
+                    raise ValueError(f"Variable {value} is not a collection.")
+                query = f"({variable.query})"
+                if lowercase:
+                    # column1 is the default column name
+                    query = f"(SELECT LOWER(column1) FROM {query})"
+                return query
+            raise ValueError(f"Expected a collection, got a string: {value}")
+        elif value is None:
+            return ""
+        else:
+            raise ValueError(f"Unsupported collection type: {type(value)}")
+
+    def _sql(self, value: Any, lowercase: bool = False) -> str:
+        """
+        Tries to generate a general SQL query. Will resolve a column is possible
+        or an operation variable if possible otherwise assumes it's a constant
+        """
+        if isinstance(value, str):
+            if value in self.operation_variables:
+                variable = self.operation_variables[value]
+                if variable.type == "constant":
+                    return self._constant_sql(value, lowercase=lowercase)
+                elif variable.type == "collection":
+                    return self._collection_sql(value, lowercase=lowercase)
+                else:
+                    raise ValueError(f"Unsupported variable type: {variable.type} for variable {value}.")
+            elif self.sql_data_service.pgi.schema.column_exists(self.table_id, value):
+                return self._column_sql(value, lowercase=lowercase)
+
+        return self._constant_sql(value, lowercase=lowercase)
 
     def valid_codelist_reference(self, column_name, codelist):
         if column_name in self.column_codelist_map:
@@ -305,3 +377,21 @@ class BaseSqlOperator:
 
     def _series_is_in(self, target, comparison_data):
         return np.where(comparison_data.isin(target), True, False)
+
+    def _is_empty_sql(self, col: str) -> str:
+        """
+        Generates a SQL query to check if a column is empty.
+        """
+        column = self.sql_data_service.pgi.schema.get_column(self.table_id, col)
+        if not column:
+            raise ValueError(f"Column {col} does not exist in the table {self.table_id}.")
+
+        match column.type:
+            case "Char":
+                return f"({column.hash} IS NULL OR {column.hash} = '')"
+            case "Bool":
+                return f"({column.hash} IS NULL)"
+            case "Num":
+                return f"({column.hash} IS NULL)"
+            case _:
+                raise ValueError(f"Unsupported column type: {column.type} for column {col}.")

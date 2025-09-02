@@ -20,9 +20,16 @@ class IsContainedByOperator(BaseSqlOperator):
         target_column = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
+        case_insensitive = other_value.get("case_insensitive", False)
+
+        if case_insensitive:
+            target_column = f"""LOWER({target_column})"""
 
         if isinstance(comparator, list):
             # List of literal values - use SQL IN clause
+            # TODO: TMP
+            if case_insensitive:
+                comparator = [str(c).lower() for c in comparator]
             values_list = "', '".join(str(v).replace("'", "''") for v in comparator)
             cache_key = f"{target_column}_contained_by_list"
 
@@ -37,6 +44,8 @@ class IsContainedByOperator(BaseSqlOperator):
         elif isinstance(comparator, str) and not value_is_literal and self._exists(comparator):
             # Column name provided - check if target value exists anywhere in comparator column
             comparator_column = self.replace_prefix(comparator).lower()
+            if case_insensitive:
+                comparator_column = f"""LOWER({comparator_column})"""
             cache_key = f"{target_column}_contained_by_{comparator_column}"
 
             def sql():
@@ -54,7 +63,12 @@ class IsContainedByOperator(BaseSqlOperator):
 
         else:
             return EqualToOperator(self.original_data).execute_operator(
-                {"target": other_value.get("target"), "comparator": comparator, "value_is_literal": True}
+                {
+                    "target": other_value.get("target"),
+                    "comparator": comparator,
+                    "value_is_literal": True,
+                    "case_insensitive": case_insensitive,
+                }
             )
 
         return self._do_check_operator(cache_key, sql)

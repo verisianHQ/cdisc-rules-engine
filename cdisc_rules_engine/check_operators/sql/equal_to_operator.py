@@ -49,23 +49,24 @@ class EqualToOperator(BaseSqlOperator):
         not_equal_to   Populated   "" or null  True
         not_equal_to   Populated   Populated   A != B
         """
-        target = original_target
+        target = self._column_sql(original_target)
+        value = self._constant_sql(value)
         if case_insensitive:
             target = f"""LOWER({target})"""
-            if isinstance(value, str):
-                value = value.lower()
+            value = f"""LOWER({value})"""
 
         if type_insensitive:
             target = f"""CAST({target} AS TEXT)"""
+            value = f"""CAST({value} AS TEXT)"""
 
         def sql():
-            if value is None or value == "":
+            if value == "":
                 if invert:
-                    query = f"""{original_target} IS NOT NULL AND {target} != ''"""
+                    query = f"NOT ({self._is_empty_sql(original_target)})"
                 else:
                     query = "FALSE"
             else:
-                query = f"""{original_target} IS NOT NULL AND {target} = '{value}'"""
+                query = f"NOT ({self._is_empty_sql(original_target)}) AND {target} = {value}" ""
                 if invert:
                     query = f"NOT ({query})"
 

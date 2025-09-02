@@ -29438,6 +29438,86 @@
         "in_cache": true,
         "rule_in_mltple_standards": [],
         "sharepoint_source": "SDTMIG",
+        "negative_folder_path": "SDTMIG/CG0619/negative",
+        "negative_regressions": [
+            {
+                "SDTMIG/CG0619/negative/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0619/negative/01/data/unit-test-coreid-CG0619-negative.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "LBSPCUFL is not null or equal to 'N'",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "lbspcufl": "Y"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "lbspcufl": "No"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "LBSPCUFL is not null or equal to 'N'",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "LBSPCUFL": "Y"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "LBSPCUFL": "No"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ],
         "positive_folder_path": "SDTMIG/CG0619/positive",
         "positive_regressions": [
             {
@@ -29482,6 +29562,49 @@
                                         }
                                     ]
                                 ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
+                "SDTMIG/CG0619/positive/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0619/positive/01/data/unit-test-coreid-CG0619-positive 1.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "old_vs_sql": {
@@ -105552,7 +105675,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "not_matches_regex check_operator not implemented"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]
@@ -105605,7 +105728,7 @@
                                     [
                                         {
                                             "error": "An unknown exception has occurred",
-                                            "message": "not_matches_regex check_operator not implemented"
+                                            "message": "A postgres SQL error occurred"
                                         }
                                     ]
                                 ]

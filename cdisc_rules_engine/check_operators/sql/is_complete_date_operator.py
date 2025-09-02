@@ -1,12 +1,20 @@
 from .base_sql_operator import BaseSqlOperator
-from business_rules.utils import vectorized_is_complete_date
 
 
 class IsCompleteDateOperator(BaseSqlOperator):
     """Operator for checking if date is complete."""
 
     def execute_operator(self, other_value):
-        # This operator has some implementation in the original version
-        target = self.replace_prefix(other_value.get("target"))
-        results = vectorized_is_complete_date(self.validation_df[target])
-        return self.validation_df.convert_to_series(results)
+        target = self.replace_prefix(other_value.get("target")).lower()
+        op_name = f"{target}_is_complete_date"
+        return self._do_check_operator(
+            op_name,
+            lambda: (
+                f"CASE WHEN {target} IS NOT NULL "
+                f"AND {target} != '' "
+                f"AND {target}::text ~ "
+                f"'^\\d{{4}}-\\d{{2}}-\\d{{2}}"
+                f"(T\\d{{2}}:\\d{{2}}(:\\d{{2}})?(\\.\\d+)?([+-]\\d{{2}}:?\\d{{2}}|Z)?)?$' "
+                f"THEN TRUE ELSE FALSE END"
+            ),
+        )
