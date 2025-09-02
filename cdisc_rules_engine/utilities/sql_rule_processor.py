@@ -449,7 +449,23 @@ class SQLRuleProcessor:
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        # TODO: other checks (class, use case, etc.)
+        # if not self.valid_rule_structure(rule):
+        #     reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
+        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
+        #     return False, reason
+        # if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
+        #     reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
+        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
+        #     return False, reason
+        # if not self.rule_applies_to_domain(dataset_metadata, rule):
+        #     reason = f"Rule skipped - doesn't apply to domain for " f"rule id={rule_id}, dataset={dataset_name}"
+        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
+        #     return False, reason
+        # if not self.rule_applies_to_class(rule, datasets, dataset_metadata):
+        #     reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
+        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
+        #     return False, reason
+        # TODO: uncomment and reimplement above other checks (class, use-case, rule structure)
 
         logger.info(f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True")
         return True, ""
