@@ -472,7 +472,8 @@ class SQLRuleProcessor:
         logger.info(f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True")
         return True, ""
 
-    def extract_target_names_from_rule(self, rule: dict, domain: str, column_names: List[str]) -> Set[str]:
+    @staticmethod
+    def extract_target_names_from_rule(rule: dict, domain: str, column_names: List[str]) -> Set[str]:
         r"""
         Extracts target from each item of condition list.
 
@@ -500,7 +501,9 @@ class SQLRuleProcessor:
                 if target is None:
                     continue
                 target = target.replace("--", domain or "")
-                op_related_pattern: str = self.get_operator_related_pattern(condition.get("operator"), target)
+                op_related_pattern: str = SQLRuleProcessor.get_operator_related_pattern(
+                    condition.get("operator"), target
+                )
                 if op_related_pattern is not None:
                     target_names.extend(
                         filter(
