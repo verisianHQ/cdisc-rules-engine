@@ -21,7 +21,6 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     RuleFormatError,
     VariableMetadataNotFoundError,
 )
-from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
     ConditionCompositeFactory,
@@ -207,7 +206,6 @@ class SQLRulesEngine:
         validation_dataset = PostgresQLBusinessEngineObject(
             validation_dataset_id=dataset_id,
             sql_data_service=self.data_service,
-            dataset=PandasDataset(self.data_service.data_dfs.get(dataset_id)),
             column_prefix_map={"--": dataset_metadata.domain},
             value_level_metadata=value_level_metadata,
             column_codelist_map=variable_codelist_map,

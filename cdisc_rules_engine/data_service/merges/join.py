@@ -62,7 +62,6 @@ class SqlJoinMerge:
                     {', '.join(selected_right_columns)}
                 FROM {left.hash} l
                 {type} JOIN {right.hash} r ON {join_condition}
-            
         """
 
         pgi.execute_sql(query)
@@ -98,7 +97,14 @@ class SqlJoinMerge:
                 continue
             if name in pivot_right:
                 continue
-            new_col_schema = SqlColumnSchema.generated(column=f"{right.name}.{name}", type=column.type)
+            # TODO: We may want to require that all merged variables are referenced by a unique name to avoid clashes
+            # new_column_name = f"{left.name}.{name}"
+            new_column_name = name
+            if joined_schema.get_column(name) is not None:
+                # Skipping duplicated column
+                continue
+
+            new_col_schema = SqlColumnSchema.generated(column=new_column_name, type=column.type)
             joined_schema.add_column(new_col_schema)
             right_output_columns.append((column.hash, new_col_schema.hash))
 
