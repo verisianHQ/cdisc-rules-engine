@@ -289,12 +289,12 @@ class SQLRuleProcessor:
     #         return True
     #     return False
 
-    # def valid_rule_structure(self, rule) -> bool:
-    #     required_keys = ["standards", "core_id"]
-    #     for key in required_keys:
-    #         if key not in rule:
-    #             return False
-    #     return True
+    def valid_rule_structure(self, rule) -> bool:
+        required_keys = ["standards", "core_id"]
+        for key in required_keys:
+            if key not in rule:
+                return False
+        return True
 
     # @staticmethod
     # def _ct_package_type_api_name(ct_package_type: str | None) -> str:
@@ -447,14 +447,14 @@ class SQLRuleProcessor:
         rule_id = rule.get("core_id", "unknown")
         dataset_name = dataset_metadata.dataset_name
 
+        if not self.valid_rule_structure(rule):
+            reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
+            logger.info(f"is_suitable_for_validation. {reason}, result=False")
+            return False, reason
         if not self.rule_applies_to_domain(dataset_metadata, rule):
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        # if not self.valid_rule_structure(rule):
-        #     reason = f"Rule skipped - invalid rule structure for rule id={rule_id}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
         # if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
         #     reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
         #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
