@@ -15367,6 +15367,68 @@
                     }
                 }
             }
+        ],
+        "positive_folder_path": "SDTMIG/CG0069/positive",
+        "positive_regressions": [
+            {
+                "SDTMIG/CG0069/positive/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0069/positive/01/data/unit-test-coreid-CG0069-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
         ]
     },
     {
