@@ -15268,7 +15268,7 @@
                                 "domain": "DS",
                                 "execution_status": "success",
                                 "execution_message": "DSSTDTC does not equal DM.DTHDTC, when DSDECOD equals \"DEATH\".",
-                                "number_errors": 5,
+                                "number_errors": 3,
                                 "errors": [
                                     {
                                         "row": 7,
@@ -15277,26 +15277,6 @@
                                         "value": {
                                             "dsdecod": "DEATH",
                                             "dsstdtc": "2022-02-20",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": "2018-09-04",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 16,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": null,
                                             "dthdtc": "Not in dataset"
                                         }
                                     },
@@ -15372,119 +15352,6 @@
                                         }
                                     }
                                 ]
-                            }
-                        ],
-                        "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
-                        },
-                        "validated_results_folder_exists": false,
-                        "validation_file": "",
-                        "validation_file_validation": "",
-                        "old_result_validation": "invalid",
-                        "sql_results_validation": "invalid"
-                    }
-                }
-            }
-        ],
-        "positive_folder_path": "SDTMIG/CG0069/positive",
-        "positive_regressions": [
-            {
-                "SDTMIG/CG0069/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0069/positive/01/data/unit-test-coreid-CG0069-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "SUCCESS",
-                        "results_present_sql": true,
-                        "results_sql": [
-                            {
-                                "dataset": "dm.xpt",
-                                "domain": "DM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "",
-                                "domain": "DS",
-                                "execution_status": "success",
-                                "execution_message": "DSSTDTC does not equal DM.DTHDTC, when DSDECOD equals \"DEATH\".",
-                                "number_errors": 5,
-                                "errors": [
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": "2022-02-20",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": "2018-09-04",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 16,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": null,
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 21,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": "2019-01-10",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 26,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": "DEATH",
-                                            "dsstdtc": "2021-02-16",
-                                            "dthdtc": "Not in dataset"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "dataset_import_old": "SUCCESS",
-                        "results_present_old": true,
-                        "results_old": [
-                            {
-                                "dataset": "dm.xpt",
-                                "domain": "DM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "ds.xpt",
-                                "domain": "DS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
                             }
                         ],
                         "old_vs_sql": {
@@ -34619,12 +34486,12 @@
                                         }
                                     },
                                     {
-                                        "row": 17,
+                                        "row": 18,
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "tsvcdref": null,
-                                            "tsvcdver": "2019-03-01"
+                                            "tsvcdref": "CDISC",
+                                            "tsvcdver": "2020-03-27"
                                         }
                                     },
                                     {
@@ -38978,15 +38845,51 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "DM.RFENDTC is empty, but AEENRF is completed.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFENDTC does not exist in the table ae."
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeenrf": "ONGOING"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeenrf": "ONGOING"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeenrf": "ONGOING"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeenrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aeenrf": "AFTER"
+                                        }
                                     }
                                 ]
                             }
@@ -39083,15 +38986,43 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "DM.RFENDTC is empty, but CMENRF is completed.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFENDTC does not exist in the table cm."
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmenrf": "AFTER"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmenrf": "AFTER"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmenrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmenrf": "AFTER"
+                                        }
                                     }
                                 ]
                             }
@@ -39185,15 +39116,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFENDTC does not exist in the table ae."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -39249,15 +39175,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFENDTC does not exist in the table cm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -45964,12 +45885,12 @@
                                         }
                                     },
                                     {
-                                        "row": 14,
+                                        "row": 15,
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "aedecod": "Conjunctival Haemorrhage",
-                                            "aescat": "CONJUNCTIVAL HAEMORRHAGE"
+                                            "aedecod": null,
+                                            "aescat": null
                                         }
                                     }
                                 ]
@@ -58652,15 +58573,20 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "DTHFL is not 'Y' when DS.DSDECOD is \"DEATH\"",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dsdecod does not exist in the table dm."
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dsdecod": "Not in dataset",
+                                            "dthfl": null
+                                        }
                                     }
                                 ]
                             }
@@ -58721,15 +58647,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dsdecod does not exist in the table dm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -58807,15 +58728,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "DTHFL is not 'Y' when AE.AESDTH is 'Y'.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column aesdth does not exist in the table dm."
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesdth": "Not in dataset",
+                                            "dthfl": null
+                                        }
                                     }
                                 ]
                             },
@@ -58876,15 +58802,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column aesdth does not exist in the table dm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -58954,15 +58875,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "DTHFL is not 'Y' when AE.AEOUT is 'FATAL'.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column aeout does not exist in the table dm."
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dthfl": null
+                                        }
                                     }
                                 ]
                             },
@@ -59023,15 +58948,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column aeout does not exist in the table dm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -60968,15 +60888,43 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RFSTDTC in DM dataset is empty but AESTRF is completed.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFSTDTC does not exist in the table ae."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aestrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aestrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aestrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aestrf": "ONGOING"
+                                        }
                                     }
                                 ]
                             }
@@ -61065,15 +61013,43 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RFSTDTC in DM dataset is empty but CMSTRF is completed.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFSTDTC does not exist in the table cm."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmstrf": "ONGOING"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmstrf": "ONGOING"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmstrf": "BEFORE"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "cmstrf": "AFTER"
+                                        }
                                     }
                                 ]
                             }
@@ -61167,15 +61143,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFSTDTC does not exist in the table ae."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -61231,15 +61202,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column RFSTDTC does not exist in the table cm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -61305,8 +61271,18 @@
                                 "domain": "MH",
                                 "execution_status": "success",
                                 "execution_message": "Primary analysis used but MHBODSYS and MHSOC are not equal",
-                                "number_errors": 4,
+                                "number_errors": 5,
                                 "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "mhbodsys": null,
+                                            "mhsoc": "Neurodegenerative Diseases",
+                                            "mhterm": "ALZHEIMER'S DISEASE"
+                                        }
+                                    },
                                     {
                                         "row": 3,
                                         "SEQ": null,
@@ -61607,23 +61583,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "",
+                                "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "Primary analysis used but MHBODSYS and MHSOC are not equal",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "mhbodsys": null,
-                                            "mhsoc": null,
-                                            "mhterm": "ALZHEIMER'S DISEASE"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -64268,7 +64233,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table lb."
+                                        "message": "Variable $tv_visit is not a constant."
                                     }
                                 ]
                             },
@@ -64281,7 +64246,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table oe."
+                                        "message": "Variable $tv_visit is not a constant."
                                     }
                                 ]
                             },
@@ -64294,7 +64259,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Variable $tv_visit is not a constant."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -64315,7 +64280,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table vs."
+                                        "message": "Variable $tv_visit is not a constant."
                                     }
                                 ]
                             }
@@ -64811,7 +64776,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table ae."
+                                        "message": "Column visitnum or visitnum not found in the respective schemas."
                                     }
                                 ]
                             },
@@ -64824,7 +64789,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table lb."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -64837,7 +64802,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table oe."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -64850,7 +64815,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Variable $TV_VISITNUM is not a constant."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -64871,7 +64836,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table vs."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             }
@@ -65200,7 +65165,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table lb."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -65213,7 +65178,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table oe."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -65226,7 +65191,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Variable $TV_VISITNUM is not a constant."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -65247,7 +65212,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table vs."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             }
@@ -65837,7 +65802,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table lb."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -65850,7 +65815,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table oe."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             },
@@ -65863,7 +65828,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Variable $TV_VISITNUM is not a constant."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -65884,7 +65849,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column svpresp does not exist in the table vs."
+                                        "message": "Variable $TV_VISITNUM is not a constant."
                                     }
                                 ]
                             }
@@ -73538,22 +73503,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "",
+                                "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "success",
-                                "execution_message": "DSCAT equals PROTOCOL MILESTONE but DSTERM is not equal to DSDECOD",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dsdecod": null,
-                                            "dsterm": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -74841,7 +74796,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column race does not exist in the table suppdm."
+                                        "message": "starts_with check_operator not implemented"
                                     }
                                 ]
                             },
@@ -74908,7 +74863,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column race does not exist in the table suppdm."
+                                        "message": "starts_with check_operator not implemented"
                                     }
                                 ]
                             },
@@ -74972,7 +74927,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column race does not exist in the table suppdm."
+                                        "message": "starts_with check_operator not implemented"
                                     }
                                 ]
                             },
@@ -75680,7 +75635,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDY does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -75762,7 +75717,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column AEDY does not exist in the table ae."
+                                        "message": "Column AEDY does not exist in the table ae_inner_dm_on_l.usubjid = r.usubjid."
                                     }
                                 ]
                             },
@@ -75775,7 +75730,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDY does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -75788,7 +75743,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column EXDY does not exist in the table ex."
+                                        "message": "Column EXDY does not exist in the table ex_inner_dm_on_l.usubjid = r.usubjid."
                                     }
                                 ]
                             },
@@ -75925,7 +75880,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDY does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -75986,7 +75941,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column AEDY does not exist in the table ae."
+                                        "message": "Column AEDY does not exist in the table ae_inner_dm_on_l.usubjid = r.usubjid."
                                     }
                                 ]
                             },
@@ -75999,7 +75954,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDY does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -76012,7 +75967,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column EXDY does not exist in the table ex."
+                                        "message": "Column EXDY does not exist in the table ex_inner_dm_on_l.usubjid = r.usubjid."
                                     }
                                 ]
                             },
@@ -87779,10 +87734,11 @@
                                         "USUBJID": null,
                                         "value": {
                                             "domain": "AE",
-                                            "results": true,
+                                            "id": 1,
                                             "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "usubjid": "CDISC001"
+                                            "usubjid": "CDISC001",
+                                            "v2pbuaahzet5zj0msncwskswybsv3msz4ezj7d9fyy": true
                                         }
                                     }
                                 ]
@@ -87820,10 +87776,11 @@
                                     "root[0]['value']": {
                                         "new_value": {
                                             "domain": "AE",
-                                            "results": true,
+                                            "id": 1,
                                             "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "usubjid": "CDISC001"
+                                            "usubjid": "CDISC001",
+                                            "v2pbuaahzet5zj0msncwskswybsv3msz4ezj7d9fyy": true
                                         },
                                         "old_value": {
                                             "AE": "ae.xpt",
@@ -87881,8 +87838,8 @@
                                             "dthdtc": "",
                                             "dthfl": "",
                                             "ethnic": "NOT HISPANIC OR LATINO",
+                                            "id": 1,
                                             "race": "WHITE",
-                                            "results": true,
                                             "rfendtc": "2013-01-23",
                                             "rficdtc": "2012-11-23",
                                             "rfpendtc": "2013-05-20",
@@ -87893,7 +87850,8 @@
                                             "siteid": "701",
                                             "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "usubjid": "CDISC001"
+                                            "usubjid": "CDISC001",
+                                            "v2pbuaahzet5zj0msncwskswybsv3msz4ezj7d9fyy": true
                                         }
                                     }
                                 ]
@@ -87911,10 +87869,11 @@
                                         "USUBJID": null,
                                         "value": {
                                             "domain": "AE",
-                                            "results": true,
+                                            "id": 1,
                                             "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "usubjid": "CDISC001"
+                                            "usubjid": "CDISC001",
+                                            "v2pbuaahzet5zj0msncwskswybsv3msz4ezj7d9fyy": true
                                         }
                                     }
                                 ]
@@ -87951,10 +87910,11 @@
                                         "USUBJID": null,
                                         "value": {
                                             "domain": "AE",
-                                            "results": true,
+                                            "id": 1,
                                             "studyid": "CDISCPILOT01",
                                             "subjid": "1115",
-                                            "usubjid": "CDISC001"
+                                            "usubjid": "CDISC001",
+                                            "v2pbuaahzet5zj0msncwskswybsv3msz4ezj7d9fyy": true
                                         }
                                     }
                                 }
@@ -88311,15 +88271,83 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table ae."
+                                        "row": 21,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": null,
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 189,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 190,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 191,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 192,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -88383,15 +88411,83 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table ae."
+                                        "row": 21,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 190,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 191,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 192,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 266,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": "N",
+                                            "qnam": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 267,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "aesmie": null,
+                                            "qnam": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -89193,7 +89289,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column dthfl does not exist in the table ds."
+                                        "message": "contains check_operator not implemented"
                                     }
                                 ]
                             },
@@ -89269,7 +89365,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column dthfl does not exist in the table ds."
+                                        "message": "contains check_operator not implemented"
                                     }
                                 ]
                             },
@@ -93936,7 +94032,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDTC does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -93949,7 +94045,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column RFPENDTC does not exist in the table ce."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -93962,7 +94058,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column RFPENDTC does not exist in the table lb."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -94049,7 +94145,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column DMDTC does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -94062,7 +94158,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column RFPENDTC does not exist in the table lb."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -94075,7 +94171,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column RFPENDTC does not exist in the table ce."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -94808,7 +94904,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -94875,7 +94971,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -96298,9 +96394,10 @@
                                             "exstdtc": "2011-01-14 00:00:00",
                                             "exstdy": 1.0,
                                             "extrt": "DRUG X",
-                                            "results": true,
+                                            "id": 1,
                                             "studyid": "ABC",
-                                            "usubjid": "ABC1001"
+                                            "usubjid": "ABC1001",
+                                            "vj4lp3eesr09noqik8ymxv3lixzi5fzi6gxywtn7m4": true
                                         }
                                     },
                                     {
@@ -96322,9 +96419,10 @@
                                             "exstdtc": "2011-01-14 00:00:00",
                                             "exstdy": 1.0,
                                             "extrt": "DRUG Z",
-                                            "results": true,
+                                            "id": 2,
                                             "studyid": "ABC",
-                                            "usubjid": "ABC2001"
+                                            "usubjid": "ABC2001",
+                                            "vj4lp3eesr09noqik8ymxv3lixzi5fzi6gxywtn7m4": true
                                         }
                                     },
                                     {
@@ -96346,9 +96444,10 @@
                                             "exstdtc": "2011-01-25 00:00:00",
                                             "exstdy": 12.0,
                                             "extrt": "DRUG Z",
-                                            "results": true,
+                                            "id": 3,
                                             "studyid": "ABC",
-                                            "usubjid": "ABC2001"
+                                            "usubjid": "ABC2001",
+                                            "vj4lp3eesr09noqik8ymxv3lixzi5fzi6gxywtn7m4": true
                                         }
                                     }
                                 ]
@@ -97017,15 +97116,27 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Ethnicity(CETHNIC) has been collected as \"Spanish origin\" but the values in DM is not mapped to \"HISPANIC OR LATINO\"",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ethnic": "LATINO"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "ethnic": "NOT HISPANIC"
+                                        }
                                     }
                                 ]
                             }
@@ -97086,15 +97197,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97164,15 +97270,27 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Haitin or Negro was collected in CRACE but RACE does not have the value as BLACK OR AFRICAN AMERICAN",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "race": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "race": "BLACK OR\nAFRICAN"
+                                        }
                                     }
                                 ]
                             }
@@ -97233,15 +97351,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column qnam does not exist in the table dm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97874,36 +97987,20 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column cmterm does not exist in the table cm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Related record is present in the parent domain dataset and \"Other, specify\" value was coded.",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "aedecod": null,
-                                            "aeterm": "INJECTION SITE REACTION",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "aedecod": null,
-                                            "aeterm": "FATIGUE",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -97916,7 +98013,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column FADECOD does not exist in the table fa."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -97929,7 +98026,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column --DECOD does not exist in the table relrec."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -98025,17 +98122,22 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column cmterm does not exist in the table cm."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -98046,7 +98148,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column FADECOD does not exist in the table fa."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -98059,7 +98161,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column --DECOD does not exist in the table relrec."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -98139,56 +98241,41 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "",
+                                "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "Parent record exists and CMDECOD is not null, but FAOBJ is not equal to CMDECOD.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "cmdecod": "TEST",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Parent record exists and AEDECOD is not null, but FAOBJ is not equal to AEDECOD.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "aedecod": "TEST",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "",
+                                "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": "Parent record exists and FADECOD is not null, but FAOBJ is not equal to FADECOD.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "fadecod": "TEST",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
@@ -98201,7 +98288,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column --DECOD does not exist in the table relrec."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -98303,48 +98390,43 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "",
+                                "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "Parent record exists and CMDECOD is not null, but FAOBJ is not equal to CMDECOD.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "cmdecod": "ASPIRINA",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Parent record exists and AEDECOD is not null, but FAOBJ is not equal to AEDECOD.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "aedecod": "ERYTHEMA",
-                                            "relrec.faobj": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "A postgres SQL error occurred"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "relrec.xpt",
@@ -98355,7 +98437,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Column --DECOD does not exist in the table relrec."
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
