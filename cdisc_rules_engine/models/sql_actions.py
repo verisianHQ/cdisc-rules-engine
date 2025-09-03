@@ -113,9 +113,7 @@ class SQLCOREActions(BaseActions):
         targets_not_in_dataset = targets.difference(df_columns)
         all_targets_missing = len(targets_in_dataset) == 0 and len(targets_not_in_dataset) > 0
         if targets_in_dataset:
-            # TODO: Doing this temporarily before we cleanup the error output
-            # errors_df = data[list(targets_in_dataset)]
-            errors_df = data
+            errors_df = data[list(targets_in_dataset)]
         else:
             errors_df = data
         if not targets:
@@ -140,7 +138,7 @@ class SQLCOREActions(BaseActions):
             ]
         elif self.rule.get("sensitivity") == Sensitivity.RECORD.value:
             errors_list = self._generate_errors_by_target_presence(
-                data, targets_not_in_dataset, all_targets_missing, errors_df, targets
+                data, targets_not_in_dataset, all_targets_missing, errors_df
             )
         elif self.rule.get("sensitivity") is not None:  # rule sensitivity is incorrectly defined
             error_entity = ValidationErrorEntity(
@@ -164,7 +162,7 @@ class SQLCOREActions(BaseActions):
             )
         else:  # rule sensitivity is undefined
             errors_list = self._generate_errors_by_target_presence(
-                data, targets_not_in_dataset, all_targets_missing, errors_df, targets
+                data, targets_not_in_dataset, all_targets_missing, errors_df
             )
         return ValidationErrorContainer(
             **{
@@ -186,7 +184,6 @@ class SQLCOREActions(BaseActions):
         targets_not_in_dataset: Set[str],
         all_targets_missing: bool,
         errors_df: pd.DataFrame,
-        targets: Set[str],
     ) -> List[ValidationErrorEntity]:
         """
         Generate error list based on presence of target variables in the dataset.
@@ -223,9 +220,7 @@ class SQLCOREActions(BaseActions):
             #     )
             #     errors_list.append(error)
         else:
-            errors_series: pd.Series = errors_df.apply(
-                lambda df_row: self._create_error_object(df_row, data, targets), axis=1
-            )
+            errors_series: pd.Series = errors_df.apply(lambda df_row: self._create_error_object(df_row, data), axis=1)
             errors_list: List[ValidationErrorEntity] = errors_series.tolist()
             if missing_vars:
                 for error in errors_list:
@@ -238,23 +233,22 @@ class SQLCOREActions(BaseActions):
     #     source_filename_str = ", ".join(sorted(set(source_filename or "" for source_filename in source_filenames)))
     #     return source_filename_str
 
-    def _create_error_object(self, df_row: pd.Series, data: pd.DataFrame, targets: Set[str]) -> ValidationErrorEntity:
+    def _create_error_object(self, df_row: pd.Series, data: pd.DataFrame) -> ValidationErrorEntity:
         usubjid: Optional[pd.Series] = data.get("usubjid")
         sequence: Optional[pd.Series] = data.get(f"{self.dataset_metadata.domain or ''}SEQ".lower())
+        row_id: Optional[pd.Series] = data.get("id")
         # source_row_number: Optional[pd.Series] = data.get(SOURCE_ROW_NUMBER)
         source_filename: Optional[pd.Series] = data.get(SOURCE_FILENAME)
         row_dict = df_row.to_dict()
         filtered_dict = {}
         for key, value in row_dict.items():
-            if key not in targets:
-                continue
             if isinstance(value, list):
                 filtered_dict[key] = [None if (val in NULL_FLAVORS or pd.isna(val)) else val for val in value]
             else:
                 filtered_dict[key] = None if (value in NULL_FLAVORS or pd.isna(value)) else value
         error_object = ValidationErrorEntity(
             dataset=(path.basename(source_filename[df_row.name]) if isinstance(source_filename, pd.Series) else ""),
-            row=df_row.get("id"),
+            row=int(row_id[df_row.name]),
             value=filtered_dict,
             usubjid=(str(usubjid[df_row.name]) if isinstance(usubjid, pd.Series) else None),
             sequence=(int(sequence[df_row.name]) if self._sequence_exists(sequence, df_row.name) else None),
