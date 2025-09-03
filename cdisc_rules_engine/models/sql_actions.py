@@ -234,8 +234,8 @@ class SQLCOREActions(BaseActions):
     #     return source_filename_str
 
     def _create_error_object(self, df_row: pd.Series, data: pd.DataFrame) -> ValidationErrorEntity:
-        usubjid: Optional[pd.Series] = data.get("usubjid")
-        sequence: Optional[pd.Series] = data.get(f"{self.dataset_metadata.domain or ''}SEQ".lower())
+        usubjid: Optional[pd.Series] = data.get("USUBJID")
+        sequence: Optional[pd.Series] = data.get(f"{self.dataset_metadata.domain or ''}SEQ")
         row_id: Optional[pd.Series] = data.get("id")
         # source_row_number: Optional[pd.Series] = data.get(SOURCE_ROW_NUMBER)
         source_filename: Optional[pd.Series] = data.get(SOURCE_FILENAME)
