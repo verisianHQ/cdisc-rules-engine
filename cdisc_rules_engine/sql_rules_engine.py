@@ -199,7 +199,8 @@ class SQLRulesEngine:
             data_service=self.data_service,
         )
 
-        dataset_id = dataset_metadata.dataset_id
+        # Apply any joins
+        dataset_id = self.data_service.get_dataset_for_rule(dataset_metadata, rule_copy)
 
         # VENMO ENGINE START - this is actually rule-specific, so it belongs here
         #  TODO: pass in dataservice

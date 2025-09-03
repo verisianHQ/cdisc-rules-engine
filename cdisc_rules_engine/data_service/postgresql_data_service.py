@@ -2,11 +2,12 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 
 from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
+from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_data_preprocessor import DataPreprocessor
 from cdisc_rules_engine.data_service.sql_data_service import SQLDataService
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -474,23 +475,32 @@ class PostgresQLDataService(SQLDataService):
             variables=[res["var_name"] for res in results],
         )
 
-    def get_preprocessed_dataset_for_rule(self, rule_spec: dict) -> Optional[str]:
+    def get_dataset_for_rule(self, dataset_metadata: SQLDatasetMetadata, rule: dict) -> str:
         """Get or create preprocessed dataset based on rule requirements."""
-        datasets = rule_spec.get("datasets", [])
+        datasets = rule.get("datasets", [])
+        if not datasets:
+            return dataset_metadata.dataset_id
 
-        for dataset_spec in datasets:
-            domain_name = dataset_spec.get("domain_name") or dataset_spec.get("domain")
+        left_id = dataset_metadata.dataset_id
 
-            if domain_name in ["RELREC", "SUPP--", "SUPPQUAL"] or (
-                domain_name and (domain_name.startswith("CO") or domain_name.startswith("SUPP"))
-            ):
-                merged_dataset_name = self.data_preprocessor.process_rule_driven_merges(rule_spec)
+        for merge_spec in datasets:
+            # TODO: This only handles simple joins for now
+            right = merge_spec.get("domain_name").lower()
+            join_type = merge_spec.get("join_type", "INNER")
+            # For now we assume pivot columns are always the same in left and right
+            pivot_columns = merge_spec.get("match_key", [])
 
-                if merged_dataset_name:
-                    logger.info(f"Created/retrieved preprocessed dataset: {merged_dataset_name}")
-                    return merged_dataset_name
+            joined_schema = SqlJoinMerge.perform_join(
+                pgi=self.pgi,
+                left=self.pgi.schema.get_table(left_id),
+                right=self.pgi.schema.get_table(right),
+                pivot_left=pivot_columns,
+                pivot_right=pivot_columns,
+                type=join_type.upper(),
+            )
+            left_id = joined_schema.name
 
-        return None
+        return left_id
 
     def get_preprocessing_status(self) -> dict:
         """Get the current status of data preprocessing."""
