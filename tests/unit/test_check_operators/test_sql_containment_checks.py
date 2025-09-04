@@ -20,22 +20,22 @@ CONTAINS_TEST_DATA = [
         [False, True, False],
     ),
     (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "Btt", "A"]},
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Ctt"]},
         "VAR2",
         False,
-        [True, True, True],
-    ),
-    (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y"]},
-        "VAR2",
-        False,
-        [False, False],
+        [False, False, True],
     ),
     (
         {"target": ["A", "B", "C"]},
         ["C", "Z", "A"],
         True,
         [True, False, True],
+    ),
+    (
+        {"target": ["b", "c", "a"], "VAR2": ["a", "b", "c"]},
+        "VAR2",
+        False,
+        [True, True, True],
     ),
     # Note: Doesn't seem like there is a way to test this using SQL
     # (
