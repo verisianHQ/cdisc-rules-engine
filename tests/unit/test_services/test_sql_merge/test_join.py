@@ -7,15 +7,15 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 
+SIMPLE_DATA = {
+    "left": {"key": [1, 2, 3], "name": ["Alice", "Bob", "Charlie"]},
+    "right": {"key": [1, 2, 4], "age": [30, 25, 40]},
+}
+
 
 @pytest.mark.parametrize(
     "data",
-    [
-        {
-            "left": {"key": [1, 2, 3], "name": ["Alice", "Bob", "Charlie"]},
-            "right": {"key": [1, 2, 4], "age": [30, 25, 40]},
-        }
-    ],
+    [SIMPLE_DATA],
 )
 @pytest.mark.parametrize(
     "type, result",
@@ -118,3 +118,68 @@ def test_multiple_keys(data, result):
     result = pd.DataFrame(ds.pgi.fetch_all())
     expected_result = pd.DataFrame(result)
     assert expected_result.equals(result)
+
+
+@pytest.mark.parametrize(
+    "data",
+    [SIMPLE_DATA],
+)
+def test_table_not_in_data(data):
+    ds = PostgresQLDataService.from_column_data(table_name="l", column_data=data["left"])
+    PostgresQLDataService.add_test_dataset(ds.pgi, "r", data["right"])
+
+    # Perform the join operation
+    with pytest.raises(Exception):
+        SqlJoinMerge.perform_join(
+            ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("unknown"), ["key", "key2"], ["key1", "key2"]
+        )
+
+
+@pytest.mark.parametrize(
+    "data",
+    [SIMPLE_DATA],
+)
+def test_column_not_in_data(data):
+    ds = PostgresQLDataService.from_column_data(table_name="l", column_data=data["left"])
+    PostgresQLDataService.add_test_dataset(ds.pgi, "r", data["right"])
+
+    # Perform the join operation
+    with pytest.raises(Exception):
+        SqlJoinMerge.perform_join(
+            ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key", "key2"], ["key1", "key2"]
+        )
+
+
+@pytest.mark.parametrize(
+    "data",
+    [SIMPLE_DATA],
+)
+def test_wrong_column_number(data):
+    ds = PostgresQLDataService.from_column_data(table_name="l", column_data=data["left"])
+    PostgresQLDataService.add_test_dataset(ds.pgi, "r", data["right"])
+
+    # Perform the join operation
+    with pytest.raises(Exception):
+        SqlJoinMerge.perform_join(
+            ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key", "key2"], ["key1"]
+        )
+
+
+@pytest.mark.parametrize(
+    "data",
+    [SIMPLE_DATA],
+)
+def test_run_twice(data):
+    ds = PostgresQLDataService.from_column_data(table_name="l", column_data=data["left"])
+    PostgresQLDataService.add_test_dataset(ds.pgi, "r", data["right"])
+
+    # Perform the join operation
+    schema = SqlJoinMerge.perform_join(
+        ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key"], ["key"]
+    )
+
+    schema2 = SqlJoinMerge.perform_join(
+        ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key"], ["key"]
+    )
+
+    assert schema == schema2
