@@ -68,7 +68,7 @@ class PostgresQLOperators(BaseType):
 
     _operator_map = {
         "exists": lambda data: ExistsOperator(data),
-        "not_exists": lambda data: ExistsOperator(data, invert=True),
+        "not_exists": lambda data: NotOperator(data, ExistsOperator),
         "equal_to": lambda data: EqualToOperator(data),
         "not_equal_to": lambda data: EqualToOperator(data, invert=True),
         "equal_to_case_insensitive": lambda data: EqualToOperator(data, case_insensitive=True),

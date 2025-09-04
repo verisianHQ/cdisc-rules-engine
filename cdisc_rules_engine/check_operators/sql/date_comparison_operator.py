@@ -9,10 +9,6 @@ class DateComparisonOperator(BaseSqlOperator):
         self.operator = operator
 
     def execute_operator(self, other_value):
-        """Check if target date satisfies comparison with comparator date"""
-        return self._date_comparison(other_value, self.operator)
-
-    def _date_comparison(self, other_value: dict, operator: str):
         """
         Performs date comparison operations in PostgreSQL.
         Handles date component extraction and comparison.
@@ -26,7 +22,7 @@ class DateComparisonOperator(BaseSqlOperator):
             comparator = self.replace_prefix(comparator).lower()
 
         component_suffix = f"_{date_component}" if date_component else ""
-        cache_key = f"{target_column}{operator}{comparator}{component_suffix}"
+        cache_key = f"{target_column}{self.operator}{comparator}{component_suffix}"
 
         def sql():
             if date_component:
@@ -46,7 +42,7 @@ class DateComparisonOperator(BaseSqlOperator):
                         {self.replace_prefix(target_column)} IS NOT NULL
                         AND {self.replace_prefix(target_column)} != ''
                         AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
-                            {operator}
+                            {self.operator}
                         EXTRACT({pg_component} FROM CAST('{comparator}' AS TIMESTAMP))
                         THEN true
                         ELSE false
@@ -58,7 +54,7 @@ class DateComparisonOperator(BaseSqlOperator):
                         AND {self.replace_prefix(comparator)} IS NOT NULL
                         AND {self.replace_prefix(comparator)} != ''
                         AND EXTRACT({pg_component} FROM CAST({self.replace_prefix(target_column)} AS TIMESTAMP))
-                            {operator}
+                            {self.operator}
                         EXTRACT({pg_component} FROM CAST({self.replace_prefix(comparator)} AS TIMESTAMP))
                         THEN true
                         ELSE false
@@ -69,7 +65,7 @@ class DateComparisonOperator(BaseSqlOperator):
                         {target_column} IS NOT NULL
                         AND {target_column} != ''
                         AND CAST({target_column} AS TIMESTAMP)
-                            {operator}
+                            {self.operator}
                         CAST('{comparator}' AS TIMESTAMP)
                         THEN true
                         ELSE false
@@ -81,7 +77,7 @@ class DateComparisonOperator(BaseSqlOperator):
                         AND {comparator} IS NOT NULL
                         AND {comparator} != ''
                         AND CAST({target_column} AS TIMESTAMP)
-                            {operator}
+                            {self.operator}
                         CAST({comparator} AS TIMESTAMP)
                         THEN true
                         ELSE false
