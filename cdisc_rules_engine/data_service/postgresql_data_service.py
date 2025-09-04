@@ -154,6 +154,19 @@ class PostgresQLDataService(SQLDataService):
 
         return instance
 
+    @staticmethod
+    def add_test_dataset(
+        pgi: PostgresQLInterface, table_name: str, column_data: dict[str, list[Union[str, int, float]]]
+    ):
+        # Create schema and table:
+        row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
+        row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
+
+        schema = SqlTableSchema.from_data(table_name, row_dicts[0])
+        pgi.create_table(schema)
+
+        pgi.insert_data(table_name=table_name, data=row_dicts)
+
     @classmethod
     def from_column_data(
         cls, table_name: str, column_data: dict[str, list[str, int, float]]
@@ -167,16 +180,9 @@ class PostgresQLDataService(SQLDataService):
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi, ig_specs=None)
-
-        # Create schema and table:
-        row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
-        row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
-
-        schema = SqlTableSchema.from_data(table_name, row_dicts[0])
-        pgi.create_table(schema)
-
-        pgi.insert_data(table_name=table_name, data=row_dicts)
         pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
+
+        cls.add_test_dataset(pgi, table_name, column_data)
         return instance
 
     @staticmethod

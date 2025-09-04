@@ -13,7 +13,7 @@ class SqlJoinMerge:
         right: SqlTableSchema,
         pivot_left: list[str],
         pivot_right: list[str],
-        type: Literal["INNER", "LEFT", "RIGHT", "FULL"] = "INNER",
+        type: Literal["INNER", "LEFT", "RIGHT", "FULL OUTER"] = "INNER",
     ) -> SqlTableSchema:
         """Perform a join operation on two SQL table schemas."""
         if len(pivot_left) != len(pivot_right):
