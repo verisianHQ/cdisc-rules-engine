@@ -171,6 +171,7 @@ class PostgresQLDataService(SQLDataService):
         pgi.create_table(schema)
 
         pgi.insert_data(table_name=table_name, data=row_dicts)
+        return schema
 
     @classmethod
     def test_instance(cls) -> "PostgresQLDataService":
