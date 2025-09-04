@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from typing import Tuple
+from typing import Optional, Tuple
 
 import pandas as pd
 from deepdiff import DeepDiff
@@ -12,6 +12,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 )
 from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
+from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
 
@@ -21,7 +22,7 @@ CASE_DEPTH = TYPE_DEPTH + 1
 DATA_DEPTH = CASE_DEPTH + 2
 
 
-def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
+def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
     ig_specs = {
         "standard": "SDTMIG",
         "standard_version": "3.4",
@@ -35,35 +36,38 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
         rule_regression["core_id_startswith_CORE"] = False
         rule_regression["in_cache"] = False
         rule_regression["rule_in_mltple_standards"] = []
-    else:
-        rule_regression["core_id_is_null"] = False
-        if not cur_core_id.startswith("CORE-"):
-            rule_regression["core_id_startswith_CORE"] = False
-            rule_regression["in_cache"] = False
+        return rule_regression
+
+    rule_regression["core_id_is_null"] = False
+    if not cur_core_id.startswith("CORE-"):
+        rule_regression["core_id_startswith_CORE"] = False
+        rule_regression["in_cache"] = False
+        rule_regression["rule_in_mltple_standards"] = []
+        return rule_regression
+
+    rule_regression["core_id_startswith_CORE"] = True
+    rule = get_core_rule(cur_core_id)
+    if not rule or not SQLRuleProcessor.valid_rule_structure(rule):
+        rule_regression["in_cache"] = False
+        return rule_regression
+
+    rule_regression["in_cache"] = True
+    rule_ids = row["rids"]
+    for rid in rule_ids:
+        paths = get_data_paths_by_rule_id(row, rid)
+        if len(paths) == 1:
+            rule_regression["rule_in_mltple_standards"] = []
+            p = paths[0]
+            rule_regression["sharepoint_source"] = p.split("/")[-RULE_DEPTH : -(RULE_DEPTH - 1)][0]
+
+            for case in ["negative", "positive"]:
+                case_path = p + f"/{case}"
+                if os.path.exists(case_path):
+                    run_test_cases(rule_regression, case, case_path, ig_specs, rule, target_case)
+        elif len(paths) < 1:
             rule_regression["rule_in_mltple_standards"] = []
         else:
-            rule_regression["core_id_startswith_CORE"] = True
-            rule = get_core_rule(cur_core_id)
-            if not rule:
-                rule_regression["in_cache"] = False
-            else:
-                rule_regression["in_cache"] = True
-                rule_ids = row["rids"]
-                for rid in rule_ids:
-                    paths = get_data_paths_by_rule_id(row, rid)
-                    if len(paths) == 1:
-                        rule_regression["rule_in_mltple_standards"] = []
-                        p = paths[0]
-                        rule_regression["sharepoint_source"] = p.split("/")[-RULE_DEPTH : -(RULE_DEPTH - 1)][0]
-
-                        for case in ["negative", "positive"]:
-                            case_path = p + f"/{case}"
-                            if os.path.exists(case_path):
-                                run_test_cases(rule_regression, case, case_path, ig_specs, rule)
-                    elif len(paths) < 1:
-                        rule_regression["rule_in_mltple_standards"] = []
-                    else:
-                        rule_regression["rule_in_mltple_standards"] = paths
+            rule_regression["rule_in_mltple_standards"] = paths
     return rule_regression
 
 
@@ -90,6 +94,7 @@ def run_test_cases(
     case_folder_path: str,
     ig_specs: IGSpecification,
     rule,
+    target_case: Optional[str] = None,
 ):
     two_digit_pattern = re.compile(r"^\d{2}$")
     cur_regression[f"{case}_folder_path"] = extract_final_path(case_folder_path, TYPE_DEPTH)
@@ -101,6 +106,8 @@ def run_test_cases(
 
     test_case_regression = []
     for test_case_folder_path in test_case_folder_paths:
+        if target_case and not test_case_folder_path.endswith(target_case):
+            continue
 
         try:
             test_case_file_path = find_data_file(test_case_folder_path + "/data")
