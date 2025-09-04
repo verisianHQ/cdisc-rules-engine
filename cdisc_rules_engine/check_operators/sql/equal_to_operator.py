@@ -4,28 +4,43 @@ from .base_sql_operator import BaseSqlOperator
 class EqualToOperator(BaseSqlOperator):
     """Operator for equality comparisons."""
 
+    def __init__(self, data, invert=False, case_insensitive=False):
+        super().__init__(data)
+        self.invert = invert
+        self.case_insensitive = case_insensitive
+
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target")).lower()
         value_is_literal = other_value.get("value_is_literal", False)
         value_is_reference = other_value.get("value_is_reference", False)
-        case_insensitive = other_value.get("case_insensitive", False)
         type_insensitive = other_value.get("type_insensitive", False)
-        invert = other_value.get("invert", False)
         comparator = other_value.get("comparator")
         if not value_is_literal:
             comparator = self.replace_prefix(comparator)
         if value_is_reference:
             return self._check_equality_reference(
-                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+                target,
+                comparator,
+                invert=self.invert,
+                case_insensitive=self.case_insensitive,
+                type_insensitive=type_insensitive,
             )
 
         if value_is_literal or not isinstance(comparator, str) or not self._exists(comparator):
             return self._check_equality_literal(
-                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+                target,
+                comparator,
+                invert=self.invert,
+                case_insensitive=self.case_insensitive,
+                type_insensitive=type_insensitive,
             )
         else:
             return self._check_equality_comparison(
-                target, comparator, invert=invert, case_insensitive=case_insensitive, type_insensitive=type_insensitive
+                target,
+                comparator,
+                invert=self.invert,
+                case_insensitive=self.case_insensitive,
+                type_insensitive=type_insensitive,
             )
 
     def _check_equality_literal(
@@ -86,11 +101,8 @@ class EqualToOperator(BaseSqlOperator):
         Equality checks work slightly differently for clinical datasets.
         See truth table in _check_equality_literal for details.
         """
-        target = original_target
-        comparator = original_comparator
-        if case_insensitive:
-            target = f"""LOWER({target})"""
-            comparator = f"""LOWER({comparator})"""
+        target = self._column_sql(original_target, lowercase=case_insensitive)
+        comparator = self._column_sql(original_comparator, lowercase=case_insensitive)
 
         if type_insensitive:
             target = f"""CAST({target} AS TEXT)"""
@@ -99,17 +111,17 @@ class EqualToOperator(BaseSqlOperator):
         def sql():
             if invert:
                 return f"""CASE
-                        WHEN {original_target} IS NULL OR {target} = ''
-                            THEN {original_comparator} IS NULL OR {comparator} = ''
-                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                        WHEN {target} IS NULL OR {target} = ''
+                            THEN {comparator} IS NOT NULL AND {comparator} != ''
+                        WHEN {comparator} IS NULL OR {comparator} = ''
                             THEN TRUE
                         ELSE {target} != {comparator}
                     END"""
             else:
                 return f"""CASE
-                        WHEN {original_target} IS NULL OR {target} = ''
+                        WHEN {target} IS NULL OR {target} = ''
                             THEN FALSE
-                        WHEN {original_comparator} IS NULL OR {comparator} = ''
+                        WHEN {comparator} IS NULL OR {comparator} = ''
                             THEN FALSE
                         ELSE {target} = {comparator}
                     END"""
