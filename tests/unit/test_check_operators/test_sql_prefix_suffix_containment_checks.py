@@ -116,7 +116,7 @@ def test_prefix_is_not_contained_by(data, comparator, value_is_literal, length, 
         }
     )
 
-    assert_series_equals(result, (~pd.Series(expected_result)).tolist())
+    assert_series_equals(result, ~pd.Series(expected_result))
 
 
 @pytest.mark.parametrize(
@@ -154,4 +154,4 @@ def test_suffix_is_not_contained_by(data, comparator, value_is_literal, length, 
         }
     )
 
-    assert_series_equals(result, (~pd.Series(expected_result)).tolist())
+    assert_series_equals(result, ~pd.Series(expected_result))

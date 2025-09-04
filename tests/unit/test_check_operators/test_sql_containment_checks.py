@@ -58,7 +58,7 @@ def test_is_not_contained_by(data, comparator, value_is_literal, expected_result
     result = sql_ops.is_not_contained_by(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert_series_equals(result, (~pd.Series(expected_result)).tolist())
+    assert_series_equals(result, ~pd.Series(expected_result))
 
 
 CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
@@ -104,4 +104,4 @@ def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal
     result = sql_ops.is_not_contained_by_case_insensitive(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert_series_equals(result, (~pd.Series(expected_result)).tolist())
+    assert_series_equals(result, ~pd.Series(expected_result))

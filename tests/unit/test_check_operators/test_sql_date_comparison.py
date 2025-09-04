@@ -373,4 +373,4 @@ def test_is_complete_date_sql(data, expected_complete):
 def test_is_incomplete_date_sql(data, expected_incomplete):
     sql_ops = create_sql_operators(data)
     result_incomplete = sql_ops.is_incomplete_date({"target": "target"})
-    assert_series_equals(result_incomplete, (~pd.Series(expected_incomplete)).tolist())
+    assert_series_equals(result_incomplete, ~pd.Series(expected_incomplete))

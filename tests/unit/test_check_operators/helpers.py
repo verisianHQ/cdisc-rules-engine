@@ -49,14 +49,17 @@ def create_sql_operators_with_config(column_data: dict, extra_config: dict = Non
     return PostgresQLOperators(config)
 
 
-def assert_series_equals(actual: pd.Series, expected: list):
-    """Assert that pandas Series equals expected list values.
+def assert_series_equals(actual: pd.Series, expected):
+    """Assert that pandas Series equals expected values.
 
     Args:
         actual: The actual pandas Series result
-        expected: Expected list of values
+        expected: Expected list of values or pandas Series
     """
-    expected_series = pd.Series(expected)
+    if isinstance(expected, pd.Series):
+        expected_series = expected
+    else:
+        expected_series = pd.Series(expected)
 
     if not actual.equals(expected_series):
         failing_rows = []
