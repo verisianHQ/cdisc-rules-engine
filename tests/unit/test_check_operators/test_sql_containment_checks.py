@@ -1,10 +1,7 @@
 import pandas as pd
 import pytest
 
-from cdisc_rules_engine.check_operators.sql import PostgresQLOperators
-from cdisc_rules_engine.data_service.postgresql_data_service import (
-    PostgresQLDataService,
-)
+from .helpers import create_sql_operators, assert_series_equals
 
 CONTAINS_TEST_DATA = [
     (
@@ -52,9 +49,7 @@ CONTAINS_TEST_DATA = [
     CONTAINS_TEST_DATA,
 )
 def test_sql_contains(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
+    sql_ops = create_sql_operators(data)
     result = sql_ops.contains(
         {
             "target": "target",
@@ -62,7 +57,7 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
             "value_is_literal": value_is_literal,
         }
     )
-    assert result.equals(pd.Series(expected_result))
+    assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -70,9 +65,7 @@ def test_sql_contains(data, comparator, value_is_literal, expected_result):
     CONTAINS_TEST_DATA,
 )
 def test_sql_does_not_contain(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
+    sql_ops = create_sql_operators(data)
     result = sql_ops.does_not_contain(
         {
             "target": "target",
@@ -80,7 +73,7 @@ def test_sql_does_not_contain(data, comparator, value_is_literal, expected_resul
             "value_is_literal": value_is_literal,
         }
     )
-    assert result.equals(~pd.Series(expected_result))
+    assert_series_equals(result, ~pd.Series(expected_result))
 
 
 CONTAINED_BY_TEST_DATA = [
@@ -122,14 +115,11 @@ CONTAINED_BY_TEST_DATA = [
     CONTAINED_BY_TEST_DATA,
 )
 def test_is_contained_by(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
-
+    sql_ops = create_sql_operators(data)
     result = sql_ops.is_contained_by(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(pd.Series(expected_result))
+    assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -137,14 +127,11 @@ def test_is_contained_by(data, comparator, value_is_literal, expected_result):
     CONTAINED_BY_TEST_DATA,
 )
 def test_is_not_contained_by(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
-
+    sql_ops = create_sql_operators(data)
     result = sql_ops.is_not_contained_by(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(~pd.Series(expected_result))
+    assert_series_equals(result, ~pd.Series(expected_result))
 
 
 CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
@@ -174,14 +161,11 @@ CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
     CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA,
 )
 def test_is_contained_by_case_insensitive(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
-
+    sql_ops = create_sql_operators(data)
     result = sql_ops.is_contained_by_case_insensitive(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(pd.Series(expected_result))
+    assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -189,11 +173,8 @@ def test_is_contained_by_case_insensitive(data, comparator, value_is_literal, ex
     CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA,
 )
 def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal, expected_result):
-    table_name = "test_table"
-    tds = PostgresQLDataService.from_column_data(table_name=table_name, column_data=data)
-    sql_ops = PostgresQLOperators({"validation_dataset_id": table_name, "sql_data_service": tds})
-
+    sql_ops = create_sql_operators(data)
     result = sql_ops.is_not_contained_by_case_insensitive(
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
-    assert result.equals(~pd.Series(expected_result))
+    assert_series_equals(result, ~pd.Series(expected_result))
