@@ -88,11 +88,3 @@ class DateComparisonOperator(BaseSqlOperator):
                         END"""
 
         return self._do_check_operator(cache_key, sql)
-
-
-# Keep DateEqualToOperator for backward compatibility
-class DateEqualToOperator(DateComparisonOperator):
-    """Operator for date equality comparisons."""
-
-    def __init__(self, data):
-        super().__init__(data, "=")

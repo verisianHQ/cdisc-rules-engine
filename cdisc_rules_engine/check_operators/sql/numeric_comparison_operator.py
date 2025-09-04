@@ -33,11 +33,3 @@ class NumericComparisonOperator(BaseSqlOperator):
                         """
 
         return self._do_check_operator(f"{target_column}{operator}{comparator}", sql)
-
-
-# Keep LessThanOperator for backward compatibility
-class LessThanOperator(NumericComparisonOperator):
-    """Operator for numeric less-than comparisons."""
-
-    def __init__(self, data):
-        super().__init__(data, "<")
