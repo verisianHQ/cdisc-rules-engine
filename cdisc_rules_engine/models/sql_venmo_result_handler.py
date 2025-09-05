@@ -78,7 +78,11 @@ class SqlVenmoResultHandler(BaseActions):
         """
         rows_with_error = self._get_error_rows(results)
 
-        errors_list = self._generate_errors_list(rows_with_error)
+        target_columns = SqlVenmoResultHandler._get_target_columns(
+            self.rule, self.dataset_metadata, self.data_service.pgi.schema.get_table(self.dataset_id)
+        )
+
+        errors_list = self._generate_errors_list(rows_with_error, target_columns)
         error_object = self._bundle_error_object(
             message=message,
             error_rows=errors_list,
@@ -116,38 +120,36 @@ class SqlVenmoResultHandler(BaseActions):
             message=message.replace("--", self.dataset_metadata.domain or ""),
         )
 
-    def _generate_errors_list(self, data: List[dict]) -> List[ValidationErrorEntity]:
+    def _generate_errors_list(self, data: List[dict], target_columns: dict[str, bool]) -> List[ValidationErrorEntity]:
         match self.rule.get("sensitivity"):
             case Sensitivity.DATASET.value:
-                return [self._build_dataset_error()]
+                return [self._build_dataset_error(data, target_columns)]
             case Sensitivity.RECORD.value | None:
-                return self._build_record_error_items(data)
+                return self._build_record_error_items(data, target_columns)
             case _:
                 raise ValueError(f"Invalid sensitivity value: {self.rule.get('sensitivity')}")
 
-    def _build_dataset_error(self):
+    def _build_dataset_error(self, data: List[dict], target_columns: dict[str, bool]) -> ValidationErrorEntity:
         """Only generate one error for rules with dataset sensitivity"""
-        # missing_vars = {target: "Not in dataset" for target in targets_not_in_dataset}
-
-        # Create the initial error
-        # error_value = dict(errors_df.iloc[0].to_dict()) if not all_targets_missing else {}
-
-        # Add missing variables to the error value
-        # if missing_vars:
-        #    error_value = {**error_value, **missing_vars}
+        if len(data) == 0:
+            value = {}
+        else:
+            schema = self.data_service.pgi.schema.get_table(self.dataset_id)
+            value = self._create_error_for_row(data[0], schema, target_columns).value
 
         return ValidationErrorEntity(
-            value="Dataset error",
+            value=value,
             dataset=self.dataset_metadata.dataset_name,
         )
 
-    def _build_record_error_items(self, data: List[dict]) -> List[ValidationErrorEntity]:
+    def _build_record_error_items(
+        self, data: List[dict], target_columns: dict[str, bool]
+    ) -> List[ValidationErrorEntity]:
         """
         Build a list of ValidationErrorEntity objects for each error row in the data.
         """
         schema: SqlTableSchema = self.data_service.pgi.schema.get_table(self.dataset_id)
-        desired_columns: List[str] = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, schema)
-        return [self._create_error_for_row(row, schema, desired_columns) for row in data]
+        return [self._create_error_for_row(row, schema, target_columns) for row in data]
 
     """def _generate_errors_by_target_presence(
         self,
@@ -199,19 +201,22 @@ class SqlVenmoResultHandler(BaseActions):
     return errors_list"""
 
     def _create_error_for_row(
-        self, row: dict, schema: SqlTableSchema, desired_columns: List[str]
+        self, row: dict, schema: SqlTableSchema, target_columns: dict[str, bool]
     ) -> ValidationErrorEntity:
-        usubjid = row.get(schema.get_column_hash("usubjid"))
+        usubjid = str(row.get(schema.get_column_hash("usubjid")))
 
         sequence_column = f"{self.dataset_metadata.domain or ''}SEQ"
-        sequence = row.get(schema.get_column_hash(sequence_column))
+        sequence_value = row.get(schema.get_column_hash(sequence_column))
+        sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
         row_id = row.get("id")
 
         values = {}
-        for column in desired_columns:
-            if not schema.has_column(column):
+        for column in sorted(target_columns.keys()):
+            if not target_columns[column]:
+                values[column] = "Not in dataset"
                 continue
+
             value = row.get(schema.get_column_hash(column))
             if value is None or value in NULL_FLAVORS:
                 values[column] = None
@@ -227,13 +232,13 @@ class SqlVenmoResultHandler(BaseActions):
         )
 
     @staticmethod
-    def _get_target_columns(rule: dict, metadata: SQLDatasetMetadata, schema: SqlTableSchema) -> List[str]:
+    def _get_target_columns(rule: dict, metadata: SQLDatasetMetadata, schema: SqlTableSchema) -> dict[str, bool]:
         """
         Returns the columns to display in the error object
         """
-        desired_columns = SqlVenmoResultHandler._extract_target_names_from_rule(rule, metadata, schema)
-        desired_columns.sort()
-        return desired_columns
+        target_columns = SqlVenmoResultHandler._extract_target_names_from_rule(rule, metadata, schema)
+        target_columns_with_presence = {column: schema.has_column(column) for column in target_columns}
+        return target_columns_with_presence
 
     @staticmethod
     def _extract_target_names_from_rule(rule: dict, metadata: SQLDatasetMetadata, schema: SqlTableSchema) -> List[str]:
