@@ -14284,94 +14284,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ml",
+                                "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "success",
-                                "execution_message": "MLTPTREF is empty and MLELTM is not empty",
-                                "number_errors": 5,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "MLELTM": "-PT10M",
-                                            "MLTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "MLELTM": "PT1H",
-                                            "MLTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "MLELTM": "PT2H",
-                                            "MLTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "MLELTM": "PT24H",
-                                            "MLTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "MLELTM": "PT48H",
-                                            "MLTPTREF": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ml",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
-                                "dataset": "pc",
+                                "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "success",
-                                "execution_message": "PCTPTREF is empty and PCELTM is not empty",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "PCELTM": "PT2H",
-                                            "PCTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "PCELTM": "PT24H",
-                                            "PCTPTREF": null
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "PCELTM": "PT48H",
-                                            "PCTPTREF": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=pc",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -14469,11 +14395,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -14498,23 +14424,18 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ml",
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column PCTPTREF does not exist in the table pc."
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=pc",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -14547,7 +14468,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -14569,16 +14490,16 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ml",
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=pc",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -14608,7 +14529,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -15447,7 +15368,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000034, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -15573,7 +15494,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000034, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000034, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -15834,7 +15755,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000036, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000036, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -15915,7 +15836,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000036, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000036, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16093,7 +16014,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16159,7 +16080,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16240,7 +16161,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16334,7 +16255,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000040, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000040, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16415,7 +16336,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000040, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000040, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16640,8 +16561,8 @@
                             {
                                 "dataset": "tt.xpt",
                                 "domain": "TT",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000042, dataset=tt",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16649,7 +16570,7 @@
                                 "dataset": "tp.xpt",
                                 "domain": "TP",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000042, dataset=tp",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000042, dataset=tp",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16728,7 +16649,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -16794,7 +16715,7 @@
                                 "dataset": "tp.xpt",
                                 "domain": "TP",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000042, dataset=tp",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000042, dataset=tp",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16980,7 +16901,7 @@
                                 "dataset": "tt.xpt",
                                 "domain": "TT",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000044, dataset=tt",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000044, dataset=tt",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16988,7 +16909,7 @@
                                 "dataset": "tp.xpt",
                                 "domain": "TP",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000044, dataset=tp",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000044, dataset=tp",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -17467,7 +17388,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000047, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000047, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -17536,7 +17457,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000047, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000047, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -22795,7 +22716,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000086, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000086, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -22883,7 +22804,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000086, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000086, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -22962,21 +22883,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "AESER is completed, but not equal to \"N\" or \"Y\"",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "AESER": "U"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000087, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -23001,11 +22913,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23030,8 +22942,8 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000087, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -23053,7 +22965,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23104,15 +23016,10 @@
                             {
                                 "dataset": "tx.xpt",
                                 "domain": "TX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000088, dataset=tx",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -23178,15 +23085,10 @@
                             {
                                 "dataset": "tx.xpt",
                                 "domain": "TX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000088, dataset=tx",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -27969,7 +27871,7 @@
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000108, dataset=dd",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000108, dataset=dd",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -28038,7 +27940,7 @@
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000108, dataset=dd",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000108, dataset=dd",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -31139,21 +31041,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "AECONTRT is completed, but not equal to \"N\" or \"Y\"",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "AECONTRT": "A"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000131, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31178,11 +31071,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31207,8 +31100,8 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000131, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -31230,7 +31123,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -40296,7 +40189,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000178, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000178, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -40406,7 +40299,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000178, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000178, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -41120,15 +41013,10 @@
                             {
                                 "dataset": "aprelsub.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "has_equal_length check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000181, dataset=aprelsub",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -41454,15 +41342,10 @@
                             {
                                 "dataset": "aprelsub.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000182, dataset=aprelsub",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -41537,7 +41420,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000183, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000183, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -41545,7 +41428,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000183, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000183, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -45448,8 +45331,8 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000193, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -45701,8 +45584,8 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000193, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -45954,8 +45837,8 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000193, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -46207,8 +46090,8 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000193, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -46460,8 +46343,8 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000193, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -50551,7 +50434,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -50559,7 +50442,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -50678,7 +50561,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -50823,7 +50706,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -50839,7 +50722,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000206, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -51113,7 +50996,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000208, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000208, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -51194,7 +51077,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000208, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000208, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -51288,7 +51171,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000209, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000209, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -51369,7 +51252,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000209, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000209, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -51463,7 +51346,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000210, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000210, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -51544,7 +51427,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000210, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000210, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52524,7 +52407,7 @@
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000216, dataset=tm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000216, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52605,7 +52488,7 @@
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000216, dataset=tm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000216, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -53288,15 +53171,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000220, dataset=ti",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53316,7 +53194,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54501,7 +54379,7 @@
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000228, dataset=ti",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000228, dataset=ti",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -54587,7 +54465,7 @@
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000228, dataset=ti",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000228, dataset=ti",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -54653,40 +54531,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "relsub",
-                                "domain": "relsub",
-                                "execution_status": "success",
-                                "execution_message": "POOLID must be null when USUBJID is populated",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "HEM021-001",
-                                        "value": {
-                                            "POOLID": "HEM021-001",
-                                            "USUBJID": "HEM021-001"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "HEM021-002",
-                                        "value": {
-                                            "POOLID": "HEM021-001",
-                                            "USUBJID": "HEM021-002"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "HEM021-003",
-                                        "value": {
-                                            "POOLID": "HEM021-001",
-                                            "USUBJID": "HEM021-003"
-                                        }
-                                    }
-                                ]
+                                "dataset": "relsub.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000229, dataset=relsub",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54706,7 +54556,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -55084,22 +54934,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "aprelsub",
-                                "domain": "aprelsub",
-                                "execution_status": "success",
-                                "execution_message": "RDEVID must be empty when RSUBJID is populated and RSUBJID must be empty when RDEVID is populated",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "RDEVID": "AB0001",
-                                            "RSUBJID": "HEM021-002"
-                                        }
-                                    }
-                                ]
+                                "dataset": "aprelsub.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000233, dataset=aprelsub",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aplb",
@@ -55123,7 +54963,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000233, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000233, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -55207,22 +55047,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "aprelsub",
-                                "domain": "aprelsub",
-                                "execution_status": "success",
-                                "execution_message": "RSUBJID must be missing when RDEVID is populated",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "RDEVID": "Device X",
-                                            "RSUBJID": "HEM021-001"
-                                        }
-                                    }
-                                ]
+                                "dataset": "aprelsub.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000234, dataset=aprelsub",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aplb",
@@ -55316,15 +55146,10 @@
                             {
                                 "dataset": "apdm.xpt",
                                 "domain": "APDM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Variable $dm_usubjid is not a constant."
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000235, dataset=apdm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -55371,7 +55196,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -55423,7 +55248,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000236, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000236, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -55520,7 +55345,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000236, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000236, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -55938,7 +55763,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -56020,7 +55845,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -56086,7 +55911,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -56168,7 +55993,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000239, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000239, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -59667,7 +59492,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000250, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000250, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -59773,7 +59598,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000250, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000250, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -59842,7 +59667,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000251, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000251, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -59929,7 +59754,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000251, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000251, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -60011,7 +59836,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -60085,7 +59910,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -60101,7 +59926,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -60196,7 +60021,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000253, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000253, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -60260,7 +60085,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000253, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000253, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -60346,7 +60171,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000254, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000254, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -60410,7 +60235,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000254, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000254, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -61349,7 +61174,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000259, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000259, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -61463,7 +61288,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000259, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000259, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -71802,15 +71627,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000297, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -72125,15 +71945,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000297, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -72448,15 +72263,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000297, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -72771,15 +72581,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000297, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -72938,15 +72743,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000297, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -76075,7 +75875,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -76141,7 +75941,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -76210,7 +76010,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -76276,7 +76076,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -79580,7 +79380,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000366, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000366, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -79649,7 +79449,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000366, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000366, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -79731,7 +79531,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000367, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000367, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -79836,7 +79636,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000370, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000370, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -79928,7 +79728,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000370, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000370, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -84549,15 +84349,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -84676,15 +84471,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -84872,15 +84662,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -84987,15 +84772,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=lb",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86613,15 +86393,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000541, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86641,7 +86416,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86716,15 +86491,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000541, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86744,7 +86514,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86766,15 +86536,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000541, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86794,7 +86559,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89714,19 +89479,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "DM dataset is missing.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {}
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000581, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89754,23 +89512,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
-                            "deep_diff": {
-                                "values_changed": {
-                                    "root[0]['value']": {
-                                        "new_value": {},
-                                        "old_value": {
-                                            "AE": "ae.xpt",
-                                            "results": true,
-                                            "source_filename": "ae.xpt",
-                                            "source_row_number": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89808,19 +89554,12 @@
                                 ]
                             },
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "DM dataset is missing.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {}
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000581, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89844,18 +89583,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
+                            "execution_status_match": false,
                             "number_of_errors_match": false,
-                            "deep_diff": {
-                                "iterable_item_added": {
-                                    "root[0]": {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {}
-                                    }
-                                }
-                            }
+                            "deep_diff": []
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -90060,15 +89790,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000594, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90129,7 +89854,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90302,7 +90027,7 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000597, dataset=suppae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000597, dataset=suppae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -90444,7 +90169,7 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000597, dataset=suppae",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000597, dataset=suppae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -91262,7 +90987,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000679, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000679, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -91340,7 +91065,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000679, dataset=dm",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000679, dataset=dm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -92419,8 +92144,8 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000700, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -92640,8 +92365,8 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000700, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -94440,7 +94165,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -94551,7 +94276,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -94696,7 +94421,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -94841,7 +94566,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=lb",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=lb",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -99058,49 +98783,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "oi",
+                                "dataset": "oi.xpt",
                                 "domain": "OI",
-                                "execution_status": "success",
-                                "execution_message": "OIPARMCD and OIPARM do not have a one-to-one relationship",
-                                "number_errors": 4,
-                                "errors": [
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "OIPARM": "Genotype",
-                                            "OIPARMCD": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "OIPARM": "Genotype",
-                                            "OIPARMCD": "GENTYPE"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "OIPARM": null,
-                                            "OIPARMCD": "SUBTYPE"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "OIPARM": "Subtype",
-                                            "OIPARMCD": "SUBTYPE"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000745, dataset=oi",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99116,9 +98804,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -99143,8 +98833,8 @@
                             {
                                 "dataset": "oi.xpt",
                                 "domain": "OI",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000745, dataset=oi",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -99166,7 +98856,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -100095,54 +99785,34 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=cm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=fa",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -100207,7 +99877,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -100232,54 +99902,34 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=cm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=fa",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -100323,7 +99973,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -100400,15 +100050,10 @@
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000767, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -100551,15 +100196,10 @@
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000767, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -100802,8 +100442,8 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000776, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -101014,8 +100654,8 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000776, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -102573,15 +102213,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000777, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102896,15 +102531,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000777, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103219,15 +102849,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000777, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103542,15 +103167,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000777, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103865,15 +103485,10 @@
                             {
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation variable_exists is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000777, dataset=tm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104047,15 +103662,10 @@
                             {
                                 "dataset": "apdm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=apdm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apdrug1ex.xpt",
@@ -104140,17 +103750,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "aplbs.xpt",
+                                "domain": "APLB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=aplbs",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "aplbe.xpt",
                                 "domain": "APLB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=aplbe",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104170,7 +103783,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -104208,15 +103821,10 @@
                             {
                                 "dataset": "td.xpt",
                                 "domain": "TD",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000779, dataset=td",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104236,7 +103844,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -104261,15 +103869,10 @@
                             {
                                 "dataset": "td.xpt",
                                 "domain": "TD",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000779, dataset=td",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -104289,7 +103892,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
