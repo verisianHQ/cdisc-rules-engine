@@ -82,3 +82,42 @@ def test_sql_not_matches_regex(data, comparator, expected_result):
     sql_ops = create_sql_operators(data)
     result = sql_ops.not_matches_regex({"target": "target", "comparator": comparator})
     assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,operator,expected_result",
+    [
+        (
+            {"target": ["word", "TEST"]},
+            ".*",
+            "matches_regex",
+            [True, True],
+        ),
+        (
+            {"target": ["word", "TEST"]},
+            ".*",
+            "not_matches_regex",
+            [False, False],
+        ),
+        (
+            {"target": ["word", None, "TEST"]},
+            ".*",
+            "matches_regex",
+            [True, False, True],
+        ),
+        (
+            {"target": ["word", None, "TEST"]},
+            ".*",
+            "not_matches_regex",
+            [False, False, False],
+        ),
+    ],
+)
+def test_regex_operators(data, comparator, operator, expected_result):
+    """Test both matches_regex and not_matches_regex operators."""
+    sql_ops = create_sql_operators(data)
+    if operator == "matches_regex":
+        result = sql_ops.matches_regex({"target": "target", "comparator": comparator})
+    else:
+        result = sql_ops.not_matches_regex({"target": "target", "comparator": comparator})
+    assert_series_equals(result, expected_result)
