@@ -16,7 +16,7 @@
 ## Run regression
 
 - run `test_regression::test_regression_all_rules` to update the rules.json
-- Set up the two folders `resources/rules/dev/test_case_results_old` and `resources/rules/dev/test_case_results_sql`
+- Set up the two folders `tests/resources/rules/dev/test_case_results_old` and `tests/resources/rules/dev/test_case_results_sql`
 - run `test_regression::test_regression_single_rule_DEV` to run local regression on a specific rule, as set in .env under `CURRENT_RULE_DEV`.
 
 ## IGNORE ATM
