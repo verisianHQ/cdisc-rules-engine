@@ -5,7 +5,8 @@ class NotMatchesRegexOperator(BaseSqlOperator):
     """Operator for inverted regex pattern matching."""
 
     def execute_operator(self, other_value):
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target = self.replace_prefix(other_value.get("target")).lower()
+        target_column = self._column_sql(target)
         comparator = other_value.get("comparator")
 
         def sql():
