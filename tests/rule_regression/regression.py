@@ -236,6 +236,9 @@ def process_test_case_dataset(
 
         regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
 
+        regression_errors["sql_overall_result"] = extract_overall_result(sql_regression)
+        regression_errors["old_overall_result"] = extract_overall_result(old_regression)
+
         # does validated_results path exist:
         test_case_path = Path(test_case_folder_path)
         validated_results_folder = test_case_path / "validated_results"
@@ -329,7 +332,9 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
 def compare_error_lists(old_errors, sql_errors):
     diff = DeepDiff(old_errors, sql_errors, ignore_order=True, ignore_string_case=True)
     if diff:
-        return diff
+        # Calling `to_json` to create a valid JSON (otherwise the output is not JSON serializable)
+        # and then converting it back to a Python object so it's formatted properly
+        return json.loads(diff.to_json())
     else:
         return []
 
@@ -367,6 +372,20 @@ def extract_results_regression(results):
             domain_res_regression["errors"] = [{"error": "unknown execution status"}]
         res_regression.append(domain_res_regression)
     return res_regression
+
+
+def extract_overall_result(results):
+    statuses = [domain["execution_status"] for domain in results]
+    if len(statuses) == 0:
+        return "missing"
+
+    if "execution_error" in statuses:
+        return "execution_error"
+
+    if all(status == "skipped" for status in statuses):
+        return "skipped"
+
+    return "success"
 
 
 def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
