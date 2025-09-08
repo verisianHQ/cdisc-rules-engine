@@ -2,7 +2,6 @@ import pandas as pd
 import pytest
 
 from .helpers import create_sql_operators, assert_series_equals
-from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
 CONTAINS_TEST_DATA = [
     (
@@ -215,13 +214,13 @@ CONTAINS_ALL_TEST_DATA = [
     ),
     (
         {"target": ["A", "B", "C"]},
-        "$constant_value",
+        "$constant",
         False,
         True,
     ),
     (
         {"target": ["A", "B", "C", "D"]},
-        "$collection_values",
+        "$list",
         False,
         True,
     ),
@@ -233,11 +232,7 @@ CONTAINS_ALL_TEST_DATA = [
     CONTAINS_ALL_TEST_DATA,
 )
 def test_sql_contains_all(data, comparator, value_is_literal, expected_result):
-    operation_variables = {
-        "$constant_value": SqlOperationResult(query="SELECT 'B'", type="constant"),
-        "$collection_values": SqlOperationResult(query="VALUES ('A'), ('B'), ('C')", type="collection"),
-    }
-    sql_ops = create_sql_operators(data, operation_variables)
+    sql_ops = create_sql_operators(data)
     result = sql_ops.contains_all(
         {
             "target": "target",
@@ -254,11 +249,7 @@ def test_sql_contains_all(data, comparator, value_is_literal, expected_result):
     CONTAINS_ALL_TEST_DATA,
 )
 def test_sql_not_contains_all(data, comparator, value_is_literal, expected_result):
-    operation_variables = {
-        "$constant_value": SqlOperationResult(query="SELECT 'B'", type="constant"),
-        "$collection_values": SqlOperationResult(query="VALUES ('A'), ('B'), ('C')", type="collection"),
-    }
-    sql_ops = create_sql_operators(data, operation_variables)
+    sql_ops = create_sql_operators(data)
     result = sql_ops.not_contains_all(
         {
             "target": "target",
