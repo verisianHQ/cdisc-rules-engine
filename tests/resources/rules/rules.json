@@ -4731,33 +4731,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUOCCUR should only be provided when SUPRESP is equal to \"Y\".",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": null,
-                                            "SUSTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": null,
-                                            "SUSTAT": "NOT DONE"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -5518,43 +5497,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUOCCUR should only be provided when SUPRESP is equal to \"Y\".",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": null,
-                                            "SUSTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "N",
-                                            "SUPRESP": null,
-                                            "SUSTAT": "NOT DONE"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": null,
-                                            "SUSTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -6321,8 +6269,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -6579,8 +6527,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -6896,22 +6844,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUPRESP is missing in dataset when SUOCCUR is present.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000015, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -7313,8 +7251,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000015, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -7690,31 +7628,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUPRESP should be populated as \"Y\" when SUOCCUR is provided.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": "y"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "N",
-                                            "SUPRESP": "y"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -8449,40 +8368,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUPRESP should be populated as \"Y\" when SUOCCUR is provided.",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "Y",
-                                            "SUPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "N",
-                                            "SUPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": "N",
-                                            "SUPRESP": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -9199,8 +9090,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -9452,8 +9343,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -9960,33 +9851,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUOCCUR is blank when SUPRESP is equal to \"Y\" and SUSTAT is not provided.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Y",
-                                            "SUSTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Y",
-                                            "SUSTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -10708,43 +10578,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "SUOCCUR is blank when SUPRESP is equal to \"Y\" and SUSTAT is not provided.",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Y",
-                                            "SUSTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Y",
-                                            "SUSTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SUOCCUR": null,
-                                            "SUPRESP": "Y",
-                                            "SUSTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -11446,8 +11285,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -11704,8 +11543,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16554,7 +16393,7 @@
                                 "dataset": "sj.xpt",
                                 "domain": "SJ",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000042, dataset=sj",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000042, dataset=sj",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16707,7 +16546,7 @@
                                 "dataset": "sj.xpt",
                                 "domain": "SJ",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000042, dataset=sj",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000042, dataset=sj",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16892,8 +16731,8 @@
                             {
                                 "dataset": "sj.xpt",
                                 "domain": "SJ",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000044, dataset=sj",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -16988,7 +16827,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23644,22 +23483,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "Both SUDOSE and SUDOSTXT values are populated",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "1234005",
-                                        "value": {
-                                            "SUDOSE": 3.0,
-                                            "SUDOSTXT": "3"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000092, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -23793,8 +23622,8 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
                         "sql_overall_result": "success",
@@ -23870,8 +23699,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000092, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -24062,24 +23891,12 @@
                                 ]
                             },
                             {
-                                "dataset": "su",
+                                "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": "Missing value for SUDOSU, when SUDOSE, SUDOSTXT or SUDOSTOT is provided",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "1234005",
-                                        "value": {
-                                            "SUDOSE": null,
-                                            "SUDOSTOT": 3.0,
-                                            "SUDOSTXT": null,
-                                            "SUDOSU": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000093, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -24227,8 +24044,8 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
                         "sql_overall_result": "execution_error",
@@ -24329,8 +24146,8 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000093, dataset=su",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -24516,15 +24333,10 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000094, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -24730,15 +24542,10 @@
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000094, dataset=su",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
