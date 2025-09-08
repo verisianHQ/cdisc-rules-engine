@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from .helpers import create_sql_operators, assert_series_equals
+from .helpers import assert_series_equals, create_sql_operators
 
 CONTAINS_TEST_DATA = [
     (
@@ -33,6 +33,12 @@ CONTAINS_TEST_DATA = [
         "VAR2",
         False,
         [True, True, True],
+    ),
+    (
+        {"target": ["B", "c", "a"]},
+        "$list",
+        False,
+        [True, False, False],
     ),
     # Note: Doesn't seem like there is a way to test this using SQL
     # (
