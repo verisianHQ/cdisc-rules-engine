@@ -97904,15 +97904,362 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The set of parameters without conditions listed in the TCG, Appendix B, is not included in the list of TSPARAMCD with TSVAL populated.",
+                                "number_errors": 39,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "contains_all check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ACTSUB",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ADAPT",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ADDON",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "AGEMAX",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "AGEMIN",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "COMPTRT",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "DCUTDESC",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "DCUTDTC",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "EXTTIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "FCNTRY",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "HLTSUBJI",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "LENGTH",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "NARMS",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "NCOHORT",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OBJPRIM",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OBJSEC",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ONGOSIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 19,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PDPSTIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PDSTIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PIPIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PLANSUB",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RDIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "REGID",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SENDTC",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SEXPOP",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SPONSOR",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SDTMVER",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SDTIGVER",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 30,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "STOPRULE",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "SSTDTC",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "STYPE",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TBLIND",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 34,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TCNTRL",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "THERAREA",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 36,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TITLE",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 37,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TPHASE",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 38,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TTYPE",
+                                            "TSVAL": "test"
+                                        }
+                                    },
+                                    {
+                                        "row": 39,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "INDIC",
+                                            "TSVAL": "test"
+                                        }
                                     }
                                 ]
                             }
@@ -97930,11 +98277,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97959,15 +98304,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "contains_all check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97987,7 +98327,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98009,15 +98349,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "contains_all check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98037,7 +98372,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
