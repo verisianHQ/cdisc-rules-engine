@@ -25,7 +25,10 @@ class IsContainedByOperator(BaseSqlOperator):
         value_is_literal = other_value.get("value_is_literal", False)
         comparator = other_value.get("comparator")
 
-        column = self._column_sql(target_column, lowercase=self.case_insensitive)
+        prefix = other_value.get("prefix", None)
+        suffix = other_value.get("suffix", None)
+
+        column = self._column_sql(target_column, lowercase=self.case_insensitive, prefix=prefix, suffix=suffix)
 
         cache_key = f"{target_column}_contained_by_{comparator}_{value_is_literal}_{self.case_insensitive}"
 
