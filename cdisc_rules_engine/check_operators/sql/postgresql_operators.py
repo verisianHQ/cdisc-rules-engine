@@ -16,7 +16,6 @@ from .present_on_multiple_rows_within_operator import PresentOnMultipleRowsWithi
 from .prefix_is_contained_by_operator import PrefixIsContainedByOperator
 from .suffix_is_contained_by_operator import SuffixIsContainedByOperator
 from .contains_operator import ContainsOperator
-from .contains_case_insensitive_operator import ContainsCaseInsensitiveOperator
 from .matches_regex_operator import MatchesRegexOperator
 from .not_matches_regex_operator import NotMatchesRegexOperator
 from .prefix_matches_regex_operator import PrefixMatchesRegexOperator
@@ -102,8 +101,10 @@ class PostgresQLOperators(BaseType):
         "suffix_is_not_contained_by": lambda data: NotOperator(data, SuffixIsContainedByOperator),
         "contains": lambda data: ContainsOperator(data),
         "does_not_contain": lambda data: NotOperator(data, ContainsOperator),
-        "contains_case_insensitive": lambda data: ContainsCaseInsensitiveOperator(data),
-        "does_not_contain_case_insensitive": lambda data: NotOperator(data, ContainsCaseInsensitiveOperator),
+        "contains_case_insensitive": lambda data: ContainsOperator(data, case_insensitive=True),
+        "does_not_contain_case_insensitive": lambda data: NotOperator(
+            data, lambda d: ContainsOperator(d, case_insensitive=True)
+        ),
         "matches_regex": lambda data: MatchesRegexOperator(data),
         "not_matches_regex": lambda data: NotMatchesRegexOperator(data),  # TODO check if this can use Not Operator
         "prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data),

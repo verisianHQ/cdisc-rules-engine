@@ -134,6 +134,66 @@ def test_is_not_contained_by(data, comparator, value_is_literal, expected_result
     assert_series_equals(result, ~pd.Series(expected_result))
 
 
+CONTAINS_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["ctt", "btt", "lll"]},
+        "VAR2",
+        False,
+        [True, True, False],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "b",
+        True,
+        [False, True, False],
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["c", "Z", "a"],
+        True,
+        [True, False, True],
+    ),
+    (
+        {"target": ["b", "c", "a"], "VAR2": ["A", "B", "C"]},
+        "VAR2",
+        False,
+        [True, True, True],
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_sql_contains_case_insensitive(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.contains_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_sql_does_not_contain_case_insensitive(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.does_not_contain_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert_series_equals(result, ~pd.Series(expected_result))
+
+
 CONTAINED_BY_CASE_INSENSITIVE_TEST_DATA = [
     (
         {"target": ["Ctt", "Btt", "A"]},
