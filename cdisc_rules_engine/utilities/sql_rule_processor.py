@@ -151,7 +151,8 @@ class SQLRuleProcessor:
                 return True
         return False
 
-    def get_dataset_class_from_variables(self, variables: List[str], domain_name: str) -> Optional[str]:
+    @classmethod
+    def get_dataset_class_from_variables(cls, variables: List[str], domain_name: str) -> Optional[str]:
         """Determine dataset class based on variable names and domain"""
         variables_upper = [v.upper() for v in variables] if variables else []
         domain_upper = domain_name.upper()
@@ -166,7 +167,7 @@ class SQLRuleProcessor:
             return RELATIONSHIP
 
         if not variables:
-            return self.get_class_from_empty_variables(domain_upper)
+            return cls.get_class_from_empty_variables(domain_upper)
 
         if any(
             v.endswith("TESTCD")
