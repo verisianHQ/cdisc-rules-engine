@@ -224,6 +224,37 @@ CONTAINS_ALL_TEST_DATA = [
         False,
         True,
     ),
+    # Negative test cases (should return False)
+    (
+        {"target": ["A", "B", "D"], "VAR2": ["A", "B", "C"]},
+        "VAR2",
+        False,
+        False,
+    ),
+    (
+        {"target": ["X", "Y", "Z"]},
+        ["A", "B"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["A", "B", "D"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["A", "B"]},
+        ["A", "B", "C"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["B"]},
+        [""],
+        True,
+        False,
+    ),
 ]
 
 
