@@ -43,8 +43,7 @@ class ContainsAllOperator(BaseSqlOperator):
                               WHERE val IN (
                                   SELECT DISTINCT {self._column_sql(target_column)}
                                   FROM {self._table_sql()}
-                                  WHERE {self._column_sql(target_column)} IS NOT NULL
-                                  AND {self._column_sql(target_column)} != ''
+                                  WHERE NOT ({self._is_empty_sql(target_column)})
                               )
                           ) = {len(comparator)}
                           THEN true
@@ -63,11 +62,10 @@ class ContainsAllOperator(BaseSqlOperator):
         elif variable.type == "constant":
             return self._handle_constant_variable(target_column, comparator, cache_key)
         else:
-
-            def sql():
-                return "false"
-
-            return self._do_check_operator(cache_key, sql)
+            raise ValueError(
+                f"Unsupported operation variable type '{variable.type}' for contains_all operation "
+                f"on column '{target_column}'. Expected 'collection' or 'constant'."
+            )
 
     def _handle_collection_variable(self, target_column, comparator, cache_key):
         """Handle collection type operation variable."""
@@ -82,8 +80,7 @@ class ContainsAllOperator(BaseSqlOperator):
                           AND column1 IN (
                               SELECT DISTINCT {self._column_sql(target_column)}
                               FROM {self._table_sql()}
-                              WHERE {self._column_sql(target_column)} IS NOT NULL
-                              AND {self._column_sql(target_column)} != ''
+                              WHERE NOT ({self._is_empty_sql(target_column)})
                           )
                       ) = (
                           SELECT COUNT(DISTINCT column1)
@@ -105,8 +102,7 @@ class ContainsAllOperator(BaseSqlOperator):
             return f"""CASE WHEN {constant_sql} IN (
                           SELECT DISTINCT {self._column_sql(target_column)}
                           FROM {self._table_sql()}
-                          WHERE {self._column_sql(target_column)} IS NOT NULL
-                          AND {self._column_sql(target_column)} != ''
+                          WHERE NOT ({self._is_empty_sql(target_column)})
                       )
                       THEN true
                       ELSE false
@@ -124,19 +120,16 @@ class ContainsAllOperator(BaseSqlOperator):
             return f"""CASE WHEN (
                           SELECT COUNT(DISTINCT {self._column_sql(comparator_column)})
                           FROM {self._table_sql()}
-                          WHERE {self._column_sql(comparator_column)} IS NOT NULL
-                          AND {self._column_sql(comparator_column)} != ''
+                          WHERE NOT ({self._is_empty_sql(comparator_column)})
                           AND {self._column_sql(comparator_column)} IN (
                               SELECT DISTINCT {self._column_sql(target_column)}
                               FROM {self._table_sql()}
-                              WHERE {self._column_sql(target_column)} IS NOT NULL
-                              AND {self._column_sql(target_column)} != ''
+                              WHERE NOT ({self._is_empty_sql(target_column)})
                           )
                       ) = (
                           SELECT COUNT(DISTINCT {self._column_sql(comparator_column)})
                           FROM {self._table_sql()}
-                          WHERE {self._column_sql(comparator_column)} IS NOT NULL
-                          AND {self._column_sql(comparator_column)} != ''
+                          WHERE NOT ({self._is_empty_sql(comparator_column)})
                       )
                       THEN true
                       ELSE false
@@ -146,9 +139,7 @@ class ContainsAllOperator(BaseSqlOperator):
 
     def _handle_invalid_comparator(self, target_column):
         """Handle invalid comparator types."""
-        cache_key = f"{target_column}_contains_all_invalid"
-
-        def sql():
-            return "false"
-
-        return self._do_check_operator(cache_key, sql)
+        raise ValueError(
+            f"Invalid comparator type for contains_all operation on column '{target_column}'. "
+            "Expected list, column name, or operation variable."
+        )
