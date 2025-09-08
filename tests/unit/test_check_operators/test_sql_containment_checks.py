@@ -2,6 +2,7 @@ import pandas as pd
 import pytest
 
 from .helpers import create_sql_operators, assert_series_equals
+from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
 CONTAINS_TEST_DATA = [
     (
@@ -178,3 +179,85 @@ def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
     assert_series_equals(result, ~pd.Series(expected_result))
+
+
+CONTAINS_ALL_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "Btt", "A"]},
+        "VAR2",
+        False,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C", "D"]},
+        ["A", "B", "C"],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        [],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["B"],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "$constant_value",
+        False,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C", "D"]},
+        "$collection_values",
+        False,
+        True,
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_ALL_TEST_DATA,
+)
+def test_sql_contains_all(data, comparator, value_is_literal, expected_result):
+    operation_variables = {
+        "$constant_value": SqlOperationResult(query="SELECT 'B'", type="constant"),
+        "$collection_values": SqlOperationResult(query="VALUES ('A'), ('B'), ('C')", type="collection"),
+    }
+    sql_ops = create_sql_operators(data, operation_variables)
+    result = sql_ops.contains_all(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    expected_series = [expected_result] * len(data["target"])
+    assert_series_equals(result, expected_series)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_ALL_TEST_DATA,
+)
+def test_sql_not_contains_all(data, comparator, value_is_literal, expected_result):
+    operation_variables = {
+        "$constant_value": SqlOperationResult(query="SELECT 'B'", type="constant"),
+        "$collection_values": SqlOperationResult(query="VALUES ('A'), ('B'), ('C')", type="collection"),
+    }
+    sql_ops = create_sql_operators(data, operation_variables)
+    result = sql_ops.not_contains_all(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    expected_series = [expected_result] * len(data["target"])
+    assert_series_equals(result, ~pd.Series(expected_series))
