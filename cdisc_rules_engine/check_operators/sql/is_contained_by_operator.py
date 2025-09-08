@@ -30,7 +30,9 @@ class IsContainedByOperator(BaseSqlOperator):
 
         column = self._column_sql(target_column, lowercase=self.case_insensitive, prefix=prefix, suffix=suffix)
 
-        cache_key = f"{target_column}_contained_by_{comparator}_{value_is_literal}_{self.case_insensitive}"
+        cache_key = (
+            f"{target_column}_contained_by_{comparator}_{value_is_literal}_{self.case_insensitive}_{prefix}_{suffix}"
+        )
 
         if isinstance(comparator, list) or (isinstance(comparator, str) and comparator in self.operation_variables):
 
