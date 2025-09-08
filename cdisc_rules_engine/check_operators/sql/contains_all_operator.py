@@ -36,10 +36,10 @@ class ContainsAllOperator(BaseSqlOperator):
             cache_key = f"{target_column}_contains_all_list"
 
             def sql():
+                values_clause = ", ".join(f"({self._constant_sql(v)})" for v in comparator)
                 return f"""CASE WHEN (
                               SELECT COUNT(DISTINCT val)
-                              FROM (VALUES {", ".join(f"('{str(v).replace("'", "''")}'"
-                                                      + ")" for v in comparator)}) AS comparator_values(val)
+                              FROM (VALUES {values_clause}) AS comparator_values(val)
                               WHERE val IN (
                                   SELECT DISTINCT {self._column_sql(target_column)}
                                   FROM {self._table_sql()}
