@@ -141,28 +141,40 @@ def test_is_not_contained_by(data, comparator, value_is_literal, expected_result
 
 CONTAINS_CASE_INSENSITIVE_TEST_DATA = [
     (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["ctt", "btt", "lll"]},
-        "VAR2",
-        False,
-        [True, True, False],
-    ),
-    (
-        {"target": ["A", "B", "C"]},
-        "b",
-        True,
-        [False, True, False],
-    ),
-    (
-        {"target": ["A", "B", "C"]},
-        ["c", "Z", "a"],
-        True,
-        [True, False, True],
-    ),
-    (
-        {"target": ["b", "c", "a"], "VAR2": ["A", "B", "C"]},
+        {"target": ["LBseq", "AEseq", "A"], "VAR2": ["lb", "AE", "a"]},
         "VAR2",
         False,
         [True, True, True],
+    ),
+    (
+        {"target": ["TOXGR", "grade", "LBTEST"]},
+        "gr",
+        True,
+        [True, True, False],
+    ),
+    (
+        {"target": ["LBTEST", "aeterm", "DOMAIN"]},
+        ["lb", "AE", "xy"],
+        True,
+        [True, True, False],
+    ),
+    (
+        {"target": ["LBTest", "AETest", "DMTest"], "VAR2": ["TEST", "test", "Test"]},
+        "VAR2",
+        False,
+        [True, True, True],
+    ),
+    (
+        {"target": ["abc", "XYZ", "A123"]},
+        "$constant",
+        False,
+        [True, False, True],
+    ),
+    (
+        {"target": ["b", "C", "ab"]},
+        "$list",
+        False,
+        [True, False, True],
     ),
 ]
 
