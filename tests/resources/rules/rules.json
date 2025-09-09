@@ -76922,80 +76922,176 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Negative value for AEDUR",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table ae."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AEDUR": "P-1DT2H"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "cm",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Negative value for CMDUR",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table cm."
+                                        "row": 1,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDUR": "-P9M"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDUR": "P-100D"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "rp.xpt",
+                                "dataset": "rp",
                                 "domain": "RP",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Negative value for RPDUR",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table rp."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "2324-P0002",
+                                        "value": {
+                                            "RPDUR": "-P3Y"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "fa.xpt",
+                                "dataset": "fa",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Negative value for FADUR",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table fa."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADUR": "-P10D"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADUR": "-P10D"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADUR": "-P11D"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADUR": "-P12D"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADUR": "P-10D"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "se.xpt",
+                                "dataset": "se",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Negative value for SEDUR",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table se."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "SEDUR": "-P14D"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "te.xpt",
+                                "dataset": "te",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Negative value for TEDUR",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table te."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TEDUR": "-P14D"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TEDUR": "P-26W"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TEDUR": "-P182D"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TEDUR": "-P14D"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TEDUR": "-P154D"
+                                        }
                                     }
                                 ]
                             }
@@ -77179,11 +77275,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77208,80 +77304,50 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table ae."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table cm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "rp.xpt",
                                 "domain": "RP",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table rp."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table fa."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table se."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column - does not exist in the table te."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77341,7 +77407,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
