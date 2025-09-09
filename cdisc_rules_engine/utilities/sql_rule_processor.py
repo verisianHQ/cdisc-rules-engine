@@ -25,7 +25,6 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     SQLDatasetMetadata,
 )
 
-from cdisc_rules_engine.constants.use_cases import USE_CASE_DOMAINS
 from cdisc_rules_engine.interfaces import ConditionInterface
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -234,79 +233,6 @@ class SQLRuleProcessor:
             return ASSOCIATED_PERSONS
         return None
 
-    def rule_applies_to_use_case(
-        self,
-        dataset_metadata: SQLDatasetMetadata,
-        rule: dict,
-        standard: str,
-        standard_substandard: str,
-    ) -> bool:
-        """Check if rule applies based on use case restrictions (TIG-specific)."""
-        if standard.lower() != "tig":
-            return True
-
-        use_cases = self._get_normalised_use_cases(rule)
-        if not use_cases:
-            return True
-
-        substandard = (standard_substandard or "").upper()
-        if substandard not in USE_CASE_DOMAINS:
-            logger.warning(f"Unknown substandard '{substandard}' for use case checking")
-            return False
-
-        domain_to_check = self._get_domain_for_use_case(dataset_metadata)
-
-        if substandard == "ADAM" and domain_to_check.startswith("AD"):
-            return "ANALYSIS" in use_cases
-
-        allowed_domains = self._get_allowed_domains_for_use_cases(use_cases, substandard)
-
-        if domain_to_check in allowed_domains:
-            return True
-
-        logger.debug(
-            f"Domain {domain_to_check} not in allowed domains {allowed_domains} "
-            f"for use cases {use_cases} in {substandard}"
-        )
-        return False
-
-    @staticmethod
-    def _get_normalised_use_cases(rule: dict) -> List[str]:
-        """Extract and normalise use cases from rule."""
-        use_cases = rule.get("use_case") or rule.get("Use_Case") or ""
-
-        if not use_cases:
-            return []
-
-        if isinstance(use_cases, str):
-            return [uc.strip().upper() for uc in use_cases.split(",")]
-        elif isinstance(use_cases, list):
-            return [uc.upper() for uc in use_cases]
-
-        return []
-
-    @staticmethod
-    def _get_domain_for_use_case(dataset_metadata: SQLDatasetMetadata) -> str:
-        """Get the appropriate domain name for use-case checking."""
-        domain = dataset_metadata.dataset_name.upper()
-
-        if domain.startswith("SUPP") and len(domain) > 4:
-            return domain[4:]
-
-        return domain
-
-    @staticmethod
-    def _get_allowed_domains_for_use_cases(use_cases: List[str], substandard: str) -> set:
-        """Get all allowed domains for the specified use cases."""
-        allowed_domains = set()
-        substandard_domains = USE_CASE_DOMAINS.get(substandard, {})
-
-        for use_case in use_cases:
-            if use_case in substandard_domains:
-                allowed_domains.update(substandard_domains[use_case])
-
-        return allowed_domains
-
     # @staticmethod
     # def _ct_package_type_api_name(ct_package_type: str | None) -> str:
     #     if ct_package_type is None:
@@ -464,10 +390,6 @@ class SQLRuleProcessor:
             return False, reason
         if not self.rule_applies_to_domain(dataset_metadata, rule):
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
-            logger.info(f"is_suitable_for_validation. {reason}, result=False")
-            return False, reason
-        if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
-            reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
 
