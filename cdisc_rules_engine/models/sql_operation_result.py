@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Optional
 
 
 @dataclass
@@ -10,3 +10,4 @@ class SqlOperationResult:
 
     query: str
     type: Literal["collection", "constant", "table"]
+    data_type: Optional[Literal["text", "int", "float", "number", "numeric"]] = None
