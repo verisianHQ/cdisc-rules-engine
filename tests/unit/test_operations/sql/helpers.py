@@ -1,6 +1,5 @@
 from typing import Any, List
 
-
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -69,9 +68,6 @@ def assert_operation_list(
 
     for row in rows:
         assert "value" in row, "The result column must be called 'value'"
-
-    print(rows)
-    print(expected)
 
     if unsorted:
         rows = sorted([row["value"] for row in rows])
