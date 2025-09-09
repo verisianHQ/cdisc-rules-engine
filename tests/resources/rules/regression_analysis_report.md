@@ -2,6 +2,17 @@
 
 =============================================
 
+## Rule Error Summary (out of 754 total rules)
+
+- **Rules with any errors**: 134 (17.8%)
+- **Clean rules**: 620 (82.2%)
+
+**Error Breakdown by Category:**
+
+- Rules with **operator errors**: 52
+- Rules with **operation errors**: 21
+- Rules with **other errors**: 62
+
 ## Missing Operators (14 operators, 195 total failures across 52 rule occurrences)
 
 1.  **longer_than**: 66 failures across 12 rules
@@ -32,6 +43,24 @@
 9.  **extract_metadata**: 4 failures across 1 rules
 10. **min_date**: 3 failures across 2 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
+
+## Other Execution Errors (57 unique messages, 215 total failures across 88 rule occurrences)
+
+1.  **A postgres SQL error occurred**: 99 failures across 28 rules
+2.  **Rule contains invalid operator**: 21 failures across 2 rules
+3.  **Column AGETXT does not exist in the table dm.**: 4 failures across 2 rules
+4.  **invalid input syntax for type double precision: "TV.VISITDY"...**: 4 failures across 1 rules
+5.  **Column $trt_count does not exist in the table ts.**: 3 failures across 1 rules
+6.  **Column $stype_interventional does not exist in the table ts.**: 3 failures across 1 rules
+7.  **Column ecstat does not exist in the table ec.**: 2 failures across 1 rules
+8.  **Column ECSTAT does not exist in the table ec.**: 2 failures across 1 rules
+9.  **Column vsdrvfl does not exist in the table vs.**: 2 failures across 1 rules
+10. **Column AGDOSTOT does not exist in the table ag.**: 2 failures across 1 rules
+11. **Column ECDOSTOT does not exist in the table ec.**: 2 failures across 1 rules
+12. **Column EXDOSTOT does not exist in the table ex.**: 2 failures across 1 rules
+13. **Column MLDOSTOT does not exist in the table ml.**: 2 failures across 1 rules
+14. **Column PRDOSTOT does not exist in the table pr.**: 2 failures across 1 rules
+15. **Column IDVAR does not exist in the table co.**: 2 failures across 2 rules
 
 ## SQL vs Old Engine Discrepancies
 
@@ -80,22 +109,3 @@ _Indicates actual regressions in SQL implementation_
 - [6] Operation dy is not implemented
 - [4] is_inconsistent_across_dataset check_operator not implemente...
 - [3] matches_regex check_operator not implemented
-
-## Other Execution Errors (57 unique messages, 215 total)
-
-- [ 99] A postgres SQL error occurred
-- [ 21] Rule contains invalid operator
-- [ 4] Column AGETXT does not exist in the table dm.
-- [ 4] invalid input syntax for type double precision: "TV.VISITDY"
-  LINE 1: ....
-- [ 3] Column $trt_count does not exist in the table ts.
-- [ 3] Column $stype_interventional does not exist in the table ts.
-- [ 2] Column ecstat does not exist in the table ec.
-- [ 2] Column ECSTAT does not exist in the table ec.
-- [ 2] Column vsdrvfl does not exist in the table vs.
-- [ 2] Column AGDOSTOT does not exist in the table ag.
-- [ 2] Column ECDOSTOT does not exist in the table ec.
-- [ 2] Column EXDOSTOT does not exist in the table ex.
-- [ 2] Column MLDOSTOT does not exist in the table ml.
-- [ 2] Column PRDOSTOT does not exist in the table pr.
-- [ 2] Column IDVAR does not exist in the table co.
