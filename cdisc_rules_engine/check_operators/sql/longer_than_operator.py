@@ -24,12 +24,15 @@ class LongerThanOperator(BaseSqlOperator):
         comparator = other_value.get("comparator")
         value_is_literal = other_value.get("value_is_literal", False)
 
-        if value_is_literal:
+        if value_is_literal or isinstance(comparator, (int, float)):
             return self._handle_literal_comparator(target_column, comparator)
         elif isinstance(comparator, str) and comparator in self.operation_variables:
             return self._handle_operation_variable_comparator(target_column, comparator)
         elif isinstance(comparator, str) and self._exists(comparator):
             return self._handle_column_comparator(target_column, comparator)
+        elif isinstance(comparator, str):
+            # String literals when not explicitly marked as literal
+            return self._handle_literal_comparator(target_column, comparator)
         else:
             return self._handle_invalid_comparator(target_column, comparator)
 
@@ -108,6 +111,8 @@ class LongerThanOperator(BaseSqlOperator):
             else:
                 comparison = f"{target_length} > LENGTH({comparator_expr})"
 
-            return f"""CASE WHEN {comparison} THEN true ELSE false END"""
+            return f"""CASE WHEN {self._is_empty_sql(target_column)} THEN FALSE
+                           WHEN {comparison} THEN TRUE
+                           ELSE FALSE END"""
 
         return self._do_check_operator(cache_key, sql)
