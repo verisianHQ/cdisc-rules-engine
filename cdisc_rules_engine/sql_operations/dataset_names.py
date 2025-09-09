@@ -8,6 +8,5 @@ class SqlDatasetNames(SqlBaseOperation):
         source_tables = [name for name, schema in all_tables if schema.source == "data"]
         table_values_clause = ", ".join([f"('{name}')" for name in source_tables])
         return SqlOperationResult(
-            f"SELECT column1 AS value FROM (VALUES {table_values_clause})",
-            type="collection",  # subtype="Char"
+            f"SELECT column1 AS value FROM (VALUES {table_values_clause})", type="collection", subtype="Char"
         )
