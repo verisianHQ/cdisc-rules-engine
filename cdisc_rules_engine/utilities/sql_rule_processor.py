@@ -111,8 +111,12 @@ class SQLRuleProcessor:
     @staticmethod
     def _get_base_domain(domain_name: str) -> str:
         """Get the base domain name from a potentially split dataset."""
-        base = sub(r"\d+$", "", domain_name.upper())
-        return base if base else domain_name
+        name_without_ext = domain_name.upper()
+        if "." in name_without_ext:
+            name_without_ext = name_without_ext.split(".")[0]
+
+        base = sub(r"\d+$", "", name_without_ext)
+        return base if base else name_without_ext
 
     @staticmethod
     def matches_domain_pattern(domain: str, patterns: list) -> bool:

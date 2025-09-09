@@ -77113,176 +77113,80 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for AEDUR",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "AEDUR": "P-1DT2H"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'AEDUR'. Expected list, column name, or operation variable, but got: str"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "cm",
+                                "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for CMDUR",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMDUR": "-P9M"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 6,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMDUR": "P-100D"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'CMDUR'. Expected list, column name, or operation variable, but got: str"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "rp",
+                                "dataset": "rp.xpt",
                                 "domain": "RP",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for RPDUR",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "2324-P0002",
-                                        "value": {
-                                            "RPDUR": "-P3Y"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'RPDUR'. Expected list, column name, or operation variable, but got: str"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "fa",
+                                "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for FADUR",
-                                "number_errors": 5,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "FADUR": "-P10D"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "FADUR": "-P10D"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "FADUR": "-P11D"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "FADUR": "-P12D"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "FADUR": "P-10D"
-                                        }
-                                    }
-                                ]
-                            },
-                            {
-                                "dataset": "se",
-                                "domain": "SE",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for SEDUR",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "SEDUR": "-P14D"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'FADUR'. Expected list, column name, or operation variable, but got: str"
                                     }
                                 ]
                             },
                             {
-                                "dataset": "te",
-                                "domain": "TE",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for TEDUR",
-                                "number_errors": 5,
+                                "dataset": "se.xpt",
+                                "domain": "SE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TEDUR": "-P14D"
-                                        }
-                                    },
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'SEDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "te.xpt",
+                                "domain": "TE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
                                     {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TEDUR": "P-26W"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TEDUR": "-P182D"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TEDUR": "-P14D"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TEDUR": "-P154D"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'TEDUR'. Expected list, column name, or operation variable, but got: str"
                                     }
                                 ]
                             }
@@ -77466,11 +77370,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77495,50 +77399,80 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'AEDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'CMDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "rp.xpt",
                                 "domain": "RP",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'RPDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'FADUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'SEDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Invalid comparator type for contains operation on column 'TEDUR'. Expected list, column name, or operation variable, but got: str"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77598,7 +77532,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -82042,28 +81976,18 @@
                             {
                                 "dataset": "suppqscqi.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000357, dataset=suppqscqi",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppqsswls.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000357, dataset=suppqsswls",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82091,7 +82015,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -82116,28 +82040,18 @@
                             {
                                 "dataset": "suppqscq.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000357, dataset=suppqscq",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppqssw.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000357, dataset=suppqssw",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82165,7 +82079,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83655,37 +83569,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "mh",
+                                "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": "MHCAT is grouping all records into one generic group. If no smaller categorization can be applied, then it is not necessary to include or populate this variable.",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC010",
-                                        "value": {
-                                            "MHCAT": "GENERAL"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC011",
-                                        "value": {
-                                            "MHCAT": "GENERAL"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC012",
-                                        "value": {
-                                            "MHCAT": "GENERAL"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mh",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -83726,11 +83615,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": true,
-                            "number_of_errors_match": true,
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83808,8 +83697,8 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mh",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83831,7 +83720,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87557,6 +87446,14 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscgi.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscgi",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
                                 "execution_status": "execution_error",
@@ -87640,6 +87537,14 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscgi.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscgi",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
                                 "execution_status": "execution_error",
@@ -87710,30 +87615,28 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87770,7 +87673,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87790,30 +87693,28 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=relrec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87841,7 +87742,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87861,17 +87762,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -87907,7 +87811,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87927,17 +87831,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppqscg.xpt",
@@ -87973,7 +87880,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87993,17 +87900,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -88023,7 +87933,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90406,6 +90316,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=fa",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "facm.xpt",
+                                "domain": "FA",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "fa1.xpt",
                                 "domain": "FA",
                                 "execution_status": "execution_error",
@@ -90458,15 +90384,10 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90486,7 +90407,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90511,28 +90432,18 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=fa",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMHE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=apmh",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90560,7 +90471,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90580,43 +90491,36 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "famh.xpt",
+                                "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=cm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "famh.xpt",
+                                "domain": "FA",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=famh",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=mh",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90652,7 +90556,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90674,28 +90578,18 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dataset_names is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=cm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90723,7 +90617,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108275,15 +108169,10 @@
                             {
                                 "dataset": "apdrug1ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000778, dataset=apdrug1ex",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108320,7 +108209,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
