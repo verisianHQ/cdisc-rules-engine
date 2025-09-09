@@ -5,42 +5,47 @@ from .helpers import create_sql_operators, assert_series_equals
 
 CONTAINS_TEST_DATA = [
     (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["Ctt", "btt", "lll"]},
-        "VAR2",
-        False,
-        [True, False, False],
-    ),
-    (
-        {"target": ["A", "B", "C"]},
-        "B",
-        True,
-        [False, True, False],
-    ),
-    (
-        {"target": ["Ctt", "Btt", "A"], "VAR2": ["X", "Y", "Ctt"]},
-        "VAR2",
-        False,
-        [False, False, True],
-    ),
-    (
-        {"target": ["A", "B", "C"]},
-        ["C", "Z", "A"],
-        True,
-        [True, False, True],
-    ),
-    (
-        {"target": ["b", "c", "a"], "VAR2": ["a", "b", "c"]},
+        {"target": ["LBSEQ", "AESEQ", "A"], "VAR2": ["LB", "AE", "A"]},
         "VAR2",
         False,
         [True, True, True],
     ),
-    # Note: Doesn't seem like there is a way to test this using SQL
-    # (
-    #     {"target": [["A", "B", "C"], ["A", "B", "L"], ["L", "Q", "R"]]},
-    #     "L",
-    #     True,
-    #     [False, True, True],
-    # ),
+    (
+        {"target": ["TOXGR", "GRADE", "LBTEST"]},
+        "GR",
+        True,
+        [True, True, False],
+    ),
+    (
+        {"target": ["LBSEQ", "AESEQ", "DMSEQ"], "VAR2": ["XY", "ZZ", "AA"]},
+        "VAR2",
+        False,
+        [False, False, False],
+    ),
+    (
+        {"target": ["LBTEST", "AETERM", "DOMAIN"]},
+        ["LB", "AE", "XY"],
+        True,
+        [True, True, False],
+    ),
+    (
+        {"target": ["LBTEST", "AETEST", "DMTEST"], "VAR2": ["TEST", "TEST", "TEST"]},
+        "VAR2",
+        False,
+        [True, True, True],
+    ),
+    (
+        {"target": ["ABC", "XYZ", "A123"]},
+        "$constant",
+        False,
+        [True, False, True],
+    ),
+    (
+        {"target": ["B", "c", "a"]},
+        "$list",
+        False,
+        [True, False, False],
+    ),
 ]
 
 
@@ -238,3 +243,108 @@ def test_is_not_contained_by_case_insensitive(data, comparator, value_is_literal
         {"target": "target", "comparator": comparator, "value_is_literal": value_is_literal}
     )
     assert_series_equals(result, ~pd.Series(expected_result))
+
+
+CONTAINS_ALL_TEST_DATA = [
+    (
+        {"target": ["Ctt", "Btt", "A"], "VAR2": ["A", "Btt", "A"]},
+        "VAR2",
+        False,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C", "D"]},
+        ["A", "B", "C"],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        [],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["B"],
+        True,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        "$constant",
+        False,
+        True,
+    ),
+    (
+        {"target": ["A", "B", "C", "D"]},
+        "$list",
+        False,
+        True,
+    ),
+    # Negative test cases (should return False)
+    (
+        {"target": ["A", "B", "D"], "VAR2": ["A", "B", "C"]},
+        "VAR2",
+        False,
+        False,
+    ),
+    (
+        {"target": ["X", "Y", "Z"]},
+        ["A", "B"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["A", "B", "C"]},
+        ["A", "B", "D"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["A", "B"]},
+        ["A", "B", "C"],
+        True,
+        False,
+    ),
+    (
+        {"target": ["B"]},
+        [""],
+        True,
+        False,
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_ALL_TEST_DATA,
+)
+def test_sql_contains_all(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.contains_all(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    expected_series = [expected_result] * len(data["target"])
+    assert_series_equals(result, expected_series)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    CONTAINS_ALL_TEST_DATA,
+)
+def test_sql_not_contains_all(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.not_contains_all(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    expected_series = [expected_result] * len(data["target"])
+    assert_series_equals(result, ~pd.Series(expected_series))
