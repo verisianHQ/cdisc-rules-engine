@@ -1,4 +1,5 @@
 from typing import List, Optional, Tuple
+from re import match, sub
 
 from cdisc_rules_engine.config import config as default_config
 
@@ -68,20 +69,31 @@ class SQLRuleProcessor:
         domains = rule.get("domains") or {}
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
+        include_split_datasets = domains.get("include_split_datasets")
 
         domain_name = dataset_metadata.dataset_name.upper()
 
-        is_explicitly_included = domain_name in included_domains
-        is_explicitly_excluded = domain_name in excluded_domains
+        is_split = cls._is_split_dataset(domain_name)
 
-        if is_explicitly_excluded:
+        if include_split_datasets is not None:
+            if include_split_datasets is True and not is_split:
+                return False
+            elif include_split_datasets is False and is_split:
+                return False
+
+        if is_split:
+            base_domain = cls._get_base_domain(domain_name)
+        else:
+            base_domain = domain_name
+
+        if domain_name in excluded_domains or base_domain in excluded_domains:
             return False
 
-        if is_explicitly_included:
+        if domain_name in included_domains or base_domain in included_domains:
             return True
 
-        included_by_pattern = cls.matches_domain_pattern(domain_name, included_domains)
-        excluded_by_pattern = cls.matches_domain_pattern(domain_name, excluded_domains)
+        included_by_pattern = cls.matches_domain_pattern(base_domain, included_domains)
+        excluded_by_pattern = cls.matches_domain_pattern(base_domain, excluded_domains)
 
         if included_domains and not included_by_pattern:
             return False
@@ -90,6 +102,17 @@ class SQLRuleProcessor:
             return False
 
         return True
+
+    @staticmethod
+    def _is_split_dataset(domain_name: str) -> bool:
+        """Check if a dataset is a split dataset."""
+        return bool(match(r"^[A-Z]+\d+$", domain_name.upper()))
+
+    @staticmethod
+    def _get_base_domain(domain_name: str) -> str:
+        """Get the base domain name from a potentially split dataset."""
+        base = sub(r"\d+$", "", domain_name.upper())
+        return base if base else domain_name
 
     @staticmethod
     def matches_domain_pattern(domain: str, patterns: list) -> bool:
@@ -157,7 +180,7 @@ class SQLRuleProcessor:
     def get_dataset_class_from_variables(cls, variables: List[str], domain_name: str) -> Optional[str]:
         """Determine dataset class based on variable names and domain"""
         variables_upper = [v.upper() for v in variables] if variables else []
-        domain_upper = domain_name.upper()
+        domain_upper = cls._get_base_domain(domain_name.upper())
 
         if domain_upper in ["DM", "CO", "SE", "SU", "SV", "SM"]:
             return SPECIAL_PURPOSE
