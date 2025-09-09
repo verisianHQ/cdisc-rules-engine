@@ -11,4 +11,4 @@ class SqlVariableExists(SqlBaseOperation):
                     FROM information_schema.columns
                     WHERE table_name = '{dataset_id}' AND column_name = '{column_id}'"""
 
-        return SqlOperationResult(query=query, type="constant")
+        return SqlOperationResult(query=query, type="constant", subtype="Bool")
