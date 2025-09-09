@@ -52468,7 +52468,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -52544,7 +52544,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -52610,7 +52610,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -52724,7 +52724,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85091,7 +85091,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85141,7 +85141,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85194,7 +85194,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85244,7 +85244,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85310,7 +85310,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85360,7 +85360,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85413,7 +85413,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85463,7 +85463,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85529,7 +85529,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85579,7 +85579,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85632,7 +85632,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85682,7 +85682,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85748,7 +85748,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85798,7 +85798,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85848,7 +85848,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85901,7 +85901,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -85951,7 +85951,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -86001,7 +86001,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -86374,7 +86374,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -86424,7 +86424,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -86477,7 +86477,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -86527,7 +86527,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88373,7 +88373,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88423,7 +88423,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88473,7 +88473,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88526,7 +88526,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88576,7 +88576,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -88626,7 +88626,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -91457,7 +91457,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -91507,7 +91507,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -91560,7 +91560,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -91610,7 +91610,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -91660,7 +91660,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -92583,7 +92583,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $records_in_dataset does not exist in the table ae."
                                     }
                                 ]
                             }
@@ -100844,7 +100844,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $trt_count does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -100894,7 +100894,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $trt_count does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -100947,7 +100947,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $trt_count does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -101274,7 +101274,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -101327,7 +101327,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -101897,7 +101897,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -101950,7 +101950,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "A postgres SQL error occurred"
                                     }
                                 ]
                             }
@@ -102150,7 +102150,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $stype_interventional does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -102200,7 +102200,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $stype_interventional does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -102250,7 +102250,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $stype_interventional does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -102318,7 +102318,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $hltsubji does not exist in the table ts."
                                     }
                                 ]
                             }
@@ -102371,7 +102371,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation record_count is not implemented"
+                                        "message": "Column $hltsubji does not exist in the table ts."
                                     }
                                 ]
                             }
