@@ -31344,90 +31344,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppec",
-                                "domain": "suppec",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN is not 'DM' but IDVAR is empty.",
-                                "number_errors": 7,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "122",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "123",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "124",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "125",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "126",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "127",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "128",
-                                            "QNAM": "ECREASOC",
-                                            "RDOMAIN": "EC"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000134, dataset=suppec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31447,7 +31369,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31467,123 +31389,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppae",
-                                "domain": "suppae",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN is not 'DM' but IDVAR is empty.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "1",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "10",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "11",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "12",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "13",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "14",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "15",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "2",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "3",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "4",
-                                            "QNAM": "DICTVER",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000134, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31603,7 +31414,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31627,9 +31438,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000134, dataset=suppec",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -31651,7 +31462,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31672,9 +31483,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppae.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000134, dataset=suppae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -31696,7 +31507,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31732,83 +31543,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppec",
-                                "domain": "suppec",
-                                "execution_status": "success",
-                                "execution_message": "IDVAR is not empty but IDVARVAL is empty.",
-                                "number_errors": 7,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": "ECSEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000135, dataset=suppec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31828,7 +31568,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31848,113 +31588,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppae",
-                                "domain": "suppae",
-                                "execution_status": "success",
-                                "execution_message": "IDVAR is not empty but IDVARVAL is empty.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "IDVAR": "AESEQ",
-                                            "IDVARVAL": null,
-                                            "QNAM": "DICTVER"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000135, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -31974,7 +31613,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -31998,9 +31637,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000135, dataset=suppec",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -32022,7 +31661,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -32043,9 +31682,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppae.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000135, dataset=suppae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -32067,7 +31706,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -51124,15 +50763,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -51251,15 +50885,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -51280,15 +50909,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -51396,15 +51020,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -51433,15 +51052,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000206, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -52232,15 +51846,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000211, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -52260,7 +51869,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -52297,15 +51906,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000211, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -52325,7 +51929,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53358,40 +52962,12 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppec",
-                                "domain": "suppec",
-                                "execution_status": "success",
-                                "execution_message": "IDVAR is empty but IDVARVAL is not empty",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "122"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "123"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "IDVAR": null,
-                                            "IDVARVAL": "124"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000218, dataset=suppec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53411,7 +52987,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53480,9 +53056,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000218, dataset=suppec",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -53504,7 +53080,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54060,15 +53636,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000221, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54088,7 +53659,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54110,15 +53681,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000221, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54138,7 +53704,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54163,15 +53729,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000221, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54191,7 +53752,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54213,15 +53774,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000221, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54241,7 +53797,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54279,15 +53835,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000222, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54307,7 +53858,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54329,15 +53880,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000222, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54357,7 +53903,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54382,15 +53928,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000222, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54410,7 +53951,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54432,15 +53973,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000222, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -54460,7 +53996,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -73277,15 +72813,10 @@
                             {
                                 "dataset": "suppdmmmm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000293, dataset=suppdmmmm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -73305,7 +72836,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -73327,15 +72858,10 @@
                             {
                                 "dataset": "suppapfamh.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "longer_than check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000293, dataset=suppapfamh",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -73355,7 +72881,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -76555,112 +76081,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppdm",
-                                "domain": "suppdm",
-                                "execution_status": "success",
-                                "execution_message": "QNAM and QLABEL do not have a one-to-one relationship",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QLABEL": "Race 1",
-                                            "QNAM": "RACE1"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QLABEL": "Race 2",
-                                            "QNAM": "RACE1"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QLABEL": "Race 3",
-                                            "QNAM": "RACE1"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppdm.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000302, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
-                                "dataset": "suppec",
-                                "domain": "suppec",
-                                "execution_status": "success",
-                                "execution_message": "QNAM and QLABEL do not have a one-to-one relationship",
-                                "number_errors": 7,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason for Occur Value",
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason Occur Value",
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason for Occur",
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason Occur",
-                                            "QNAM": "ECREASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason Occur Value",
-                                            "QNAM": "REASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason for Occur",
-                                            "QNAM": "REASOC"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QLABEL": "Reason Occur",
-                                            "QNAM": "REASOC"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000302, dataset=suppec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -76688,7 +76122,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -76712,17 +76146,17 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000302, dataset=suppdm",
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000302, dataset=suppec",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -76752,7 +76186,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83323,20 +82757,109 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "mha.xpt",
+                                "dataset": "mhb",
                                 "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mha",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "mhb.xpt",
-                                "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mhb",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "MHCAT is grouping all records into one generic group. If no smaller categorization can be applied, then it is not necessary to include or populate this variable.",
+                                "number_errors": 12,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC006",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC011",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC012",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -83549,7 +83072,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83569,12 +83092,37 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "mh.xpt",
+                                "dataset": "mh",
                                 "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mh",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "MHCAT is grouping all records into one generic group. If no smaller categorization can be applied, then it is not necessary to include or populate this variable.",
+                                "number_errors": 3,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC011",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC012",
+                                        "value": {
+                                            "MHCAT": "GENERAL"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -83615,11 +83163,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83642,18 +83190,10 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "mhd.xpt",
-                                "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mhd",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "mhg.xpt",
                                 "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mhg",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83675,7 +83215,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83697,8 +83237,8 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=mh",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83720,7 +83260,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -84704,76 +84244,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppae",
-                                "domain": "suppae",
-                                "execution_status": "success",
-                                "execution_message": "QORIG = ASSIGNED but QEVAL is not populated",
-                                "number_errors": 5,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "Assigned"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "Assigned"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "Assigned"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "Assigned"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "Assigned"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000375, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
-                                "dataset": "suppec",
-                                "domain": "suppec",
-                                "execution_status": "success",
-                                "execution_message": "QORIG = ASSIGNED but QEVAL is not populated",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QEVAL": null,
-                                            "QORIG": "ASSIGNED"
-                                        }
-                                    }
-                                ]
+                                "dataset": "suppec.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000375, dataset=suppec",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -84801,7 +84285,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -84825,17 +84309,17 @@
                         "results_sql": [
                             {
                                 "dataset": "suppae.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000375, dataset=suppae",
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "suppec.xpt",
-                                "domain": null,
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000375, dataset=suppec",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -84865,7 +84349,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87446,14 +86930,6 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscgi.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscgi",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
                                 "execution_status": "execution_error",
@@ -87537,14 +87013,6 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscgi.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscgi",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
                                 "execution_status": "execution_error",
@@ -87615,28 +87083,30 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscg.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=ae",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87673,7 +87143,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87693,20 +87163,17 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscg.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "relrec.xpt",
@@ -87742,7 +87209,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87762,20 +87229,17 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscg.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -87811,7 +87275,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87831,20 +87295,17 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscg.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "suppqscg.xpt",
@@ -87880,7 +87341,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87900,20 +87361,17 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscg.xpt",
-                                "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qscg",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=qspg",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87933,7 +87391,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89649,15 +89107,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000538, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89677,7 +89130,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89699,15 +89152,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000538, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89727,7 +89175,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89752,15 +89200,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000538, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -89796,7 +89239,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -89818,15 +89261,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000538, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -89846,7 +89284,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90316,22 +89754,6 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "fa.xpt",
-                                "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=fa",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "facm.xpt",
-                                "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
                                 "dataset": "fa1.xpt",
                                 "domain": "FA",
                                 "execution_status": "execution_error",
@@ -90384,10 +89806,15 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90407,7 +89834,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90432,18 +89859,28 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=fa",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMHE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=apmh",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90471,7 +89908,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90491,36 +89928,43 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "facm.xpt",
+                                "dataset": "famh.xpt",
                                 "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=cm",
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "famh.xpt",
-                                "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=famh",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=mh",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90556,7 +90000,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90578,18 +90022,28 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=facm",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000540, dataset=cm",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation dataset_names is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90617,7 +90071,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98499,15 +97953,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -98610,15 +98059,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -98639,15 +98083,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98755,15 +98194,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -98784,15 +98218,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98900,15 +98329,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -98929,15 +98353,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=suppdm",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108424,15 +107843,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_parent_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000783, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -108453,15 +107867,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_parent_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000783, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108505,7 +107914,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108530,15 +107939,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_parent_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000783, dataset=supplb",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -108559,15 +107963,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_parent_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000783, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108611,7 +108010,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",

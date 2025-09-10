@@ -72,19 +72,14 @@ class SQLRuleProcessor:
         include_split_datasets = domains.get("include_split_datasets")
 
         domain_name = dataset_metadata.dataset_name.upper()
-
-        is_split = cls._is_split_dataset(domain_name)
+        is_split = dataset_metadata.is_split
+        base_domain = dataset_metadata.base_domain.upper()
 
         if include_split_datasets is not None:
             if include_split_datasets is True and not is_split:
                 return False
             elif include_split_datasets is False and is_split:
                 return False
-
-        if is_split:
-            base_domain = cls._get_base_domain(domain_name)
-        else:
-            base_domain = domain_name
 
         if domain_name in excluded_domains or base_domain in excluded_domains:
             return False

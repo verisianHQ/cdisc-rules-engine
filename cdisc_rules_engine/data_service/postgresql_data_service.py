@@ -37,6 +37,8 @@ class SQLDatasetMetadata:
     is_supp: bool
     rdomain: str
     variables: list[str]
+    is_split: bool
+    base_domain: str
 
 
 class PostgresQLDataService(SQLDataService):
@@ -462,6 +464,8 @@ class PostgresQLDataService(SQLDataService):
             is_supp=results[0].get("dataset_is_supp"),
             rdomain=results[0].get("dataset_rdomain"),
             variables=[res["var_name"] for res in results],
+            is_split=results[0].get("dataset_is_split"),
+            base_domain=results[0].get("dataset_domain").upper(),
         )
 
     def get_dataset_for_rule(self, dataset_metadata: SQLDatasetMetadata, rule: dict) -> str:
