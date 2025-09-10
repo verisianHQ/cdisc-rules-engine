@@ -37450,15 +37450,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AESTDY is not null when either AESTDTC or DM.RFSTDTC do not contain complete values in their date portion",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "AESTDTC": "2005-10",
+                                            "AESTDY": 1.0,
+                                            "RFSTDTC": "2022-03-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "002",
+                                        "value": {
+                                            "AESTDTC": "2005-10-13T13:05",
+                                            "AESTDY": 1.0,
+                                            "RFSTDTC": "2022-03"
+                                        }
                                     }
                                 ]
                             },
@@ -37471,7 +37487,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -37552,15 +37568,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -37571,7 +37582,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -37650,15 +37661,101 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "ex",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "EXENDY is not null when either EXENDTC or DM.RFSTDTC do not contain complete values in their date portion",
+                                "number_errors": 9,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-11-30",
+                                            "EXENDY": 1.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-01",
+                                            "EXENDY": 2.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-02",
+                                            "EXENDY": 3.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-03",
+                                            "EXENDY": 4.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-04",
+                                            "EXENDY": 5.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-05",
+                                            "EXENDY": 6.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-06",
+                                            "EXENDY": 7.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 8,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-07",
+                                            "EXENDY": 8.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 9,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "EXENDTC": "2012-12-08",
+                                            "EXENDY": 9.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
                                     }
                                 ]
                             }
@@ -37775,11 +37872,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -37799,15 +37896,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "cm",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMENDY is not null when either CMENDTC or DM.RFSTDTC do not contain complete values in their date portion",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMENDTC": "2013-04",
+                                            "CMENDY": 151.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMENDTC": "2013----14",
+                                            "CMENDY": 166.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
                                     }
                                 ]
                             },
@@ -37866,7 +37979,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -37899,15 +38012,10 @@
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -37935,7 +38043,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -37957,15 +38065,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -38001,7 +38104,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56125,7 +56228,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56138,7 +56241,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56151,7 +56254,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56252,7 +56355,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56265,7 +56368,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56278,7 +56381,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56307,7 +56410,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             }
@@ -56397,7 +56500,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56410,7 +56513,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56423,7 +56526,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             },
@@ -56460,7 +56563,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             }
@@ -57811,7 +57914,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
                             }
@@ -57887,7 +57990,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
                             }
@@ -57953,7 +58056,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
                             }
@@ -58067,7 +58170,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
                             }
@@ -65472,8 +65575,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "error": "Column not found in data",
+                                        "message": "$ds_dsdecod"
                                     }
                                 ]
                             }
@@ -65559,8 +65662,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "error": "Column not found in data",
+                                        "message": "$ds_dsdecod"
                                     }
                                 ]
                             }
@@ -71728,7 +71831,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -72594,7 +72697,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -73870,7 +73973,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -75136,7 +75239,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -78082,7 +78185,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -78160,7 +78263,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -86638,15 +86741,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ce.xpt",
+                                "dataset": "ce",
                                 "domain": "CE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The date portion of CEDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but CEDY is not empty",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CEDTC": "2014-10",
+                                            "CEDY": 174.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "CEDTC": "2014-10-31",
+                                            "CEDY": 174.0,
+                                            "RFSTDTC": "2012-11"
+                                        }
                                     }
                                 ]
                             },
@@ -86659,7 +86778,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -86737,15 +86856,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -86756,33 +86870,44 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
-                                "dataset": "lb.xpt",
+                                "dataset": "lb",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The date portion of LBDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but LBDY is not empty",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 45,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": null,
+                                            "LBDY": 1.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
+                                        }
+                                    },
+                                    {
+                                        "row": 46,
+                                        "SEQ": 1,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": "2005-09",
+                                            "LBDY": -15.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
+                                        }
                                     }
                                 ]
                             }
@@ -86860,9 +86985,56 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
+                            "deep_diff": {
+                                "values_changed": {
+                                    "root[0]": {
+                                        "new_value": {
+                                            "row": 45,
+                                            "SEQ": 2,
+                                            "USUBJID": "123101",
+                                            "value": {
+                                                "LBDTC": null,
+                                                "LBDY": 1.0,
+                                                "RFSTDTC": "2005-10-13T10:15"
+                                            }
+                                        },
+                                        "old_value": {
+                                            "row": 1,
+                                            "SEQ": 1,
+                                            "USUBJID": "123101",
+                                            "value": {
+                                                "LBDTC": "2005-09",
+                                                "LBDY": -15.0,
+                                                "RFSTDTC": "2005-10-13T10:15"
+                                            }
+                                        }
+                                    },
+                                    "root[1]": {
+                                        "new_value": {
+                                            "row": 46,
+                                            "SEQ": 1,
+                                            "USUBJID": "123101",
+                                            "value": {
+                                                "LBDTC": "2005-09",
+                                                "LBDY": -15.0,
+                                                "RFSTDTC": "2005-10-13T10:15"
+                                            }
+                                        },
+                                        "old_value": {
+                                            "row": 2,
+                                            "SEQ": 2,
+                                            "USUBJID": "123101",
+                                            "value": {
+                                                "LBDTC": null,
+                                                "LBDY": 1.0,
+                                                "RFSTDTC": "2005-10-13T10:15"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -86889,15 +87061,10 @@
                             {
                                 "dataset": "ce.xpt",
                                 "domain": "CE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -86908,7 +87075,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             }
@@ -86963,15 +87130,21 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "The date portion of AEDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but AEDY is not empty",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "AEDTC": "Not in dataset",
+                                            "AEDY": "Not in dataset",
+                                            "RFSTDTC": "2005-10"
+                                        }
                                     }
                                 ]
                             },
@@ -86984,35 +87157,46 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ex.xpt",
+                                "dataset": "ex",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The date portion of EXDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but EXDY is not empty",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 54,
+                                        "SEQ": 54,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "EXDTC": "Not in dataset",
+                                            "EXDY": "Not in dataset",
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 55,
+                                        "SEQ": 55,
+                                        "USUBJID": "123103",
+                                        "value": {
+                                            "EXDTC": "Not in dataset",
+                                            "EXDY": "Not in dataset",
+                                            "RFSTDTC": null
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -91071,15 +91255,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = TRT is empty.",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 43,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 45,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 54,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91097,11 +91310,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91121,15 +91332,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = TRT is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 49,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91147,11 +91365,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91174,15 +91390,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = TRT is empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 51,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 52,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "TRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91200,11 +91434,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91226,15 +91458,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -91254,7 +91481,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91290,15 +91517,55 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTMODEL is empty.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 19,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "LENGTH",
+                                            "TSVAL": "P28W"
+                                        }
                                     }
                                 ]
                             }
@@ -91316,11 +91583,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91340,15 +91605,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTMODEL is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 18,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91366,11 +91638,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91393,15 +91663,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTMODEL is empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 19,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91419,11 +91707,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91445,15 +91731,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -91473,7 +91754,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91509,15 +91790,55 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTTYPE is empty.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 20,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "LENGTH",
+                                            "TSVAL": "P28W"
+                                        }
                                     }
                                 ]
                             }
@@ -91535,11 +91856,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91559,15 +91878,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTTYPE is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 19,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91585,11 +91911,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91612,15 +91936,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTTYPE is empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 19,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -91638,11 +91980,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91664,15 +92004,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -91692,7 +92027,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91728,15 +92063,66 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 50,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
+                                        }
+                                    },
+                                    {
+                                        "row": 51,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "HEALTHY"
+                                        }
+                                    },
+                                    {
+                                        "row": 52,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "HEALTHY"
+                                        }
+                                    },
+                                    {
+                                        "row": 53,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "4",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "HEALTHY"
+                                        }
+                                    },
+                                    {
+                                        "row": 54,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "4",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "NOT HEALTHY"
+                                        }
                                     }
                                 ]
                             }
@@ -91754,11 +92140,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91778,15 +92162,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 47,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
+                                        }
+                                    },
+                                    {
+                                        "row": 48,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Eczema"
+                                        }
                                     }
                                 ]
                             }
@@ -91804,11 +92206,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91828,15 +92228,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 45,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
+                                        }
                                     }
                                 ]
                             }
@@ -91854,11 +92261,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91881,15 +92286,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 48,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Alzheimer's Disease (Disorder)"
+                                        }
                                     }
                                 ]
                             }
@@ -91907,11 +92319,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91931,15 +92341,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 49,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": "Alzheimer's Disease (Disorder)"
+                                        }
                                     }
                                 ]
                             }
@@ -91957,11 +92374,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91983,15 +92398,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -92011,7 +92421,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92354,15 +92764,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = PCLAS is empty when PCLAS is applicable.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 30,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "PCLAS",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "PCLAS",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -92380,11 +92808,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92404,15 +92830,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = PCLAS is empty when PCLAS is applicable.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 29,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "PCLAS",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -92430,11 +92863,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92457,15 +92888,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = PCLAS is empty when PCLAS is applicable.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 32,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "PCLAS",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -92483,11 +92921,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92509,15 +92945,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -92537,7 +92968,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94353,15 +94784,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = ADDON and TSVAL = Y but TSVAL for TSPARMCD = CURTRT is empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$ADDON_Y": "Not in dataset",
+                                            "TSGRPID": "DRUG A",
+                                            "TSPARMCD": "CURTRT",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$ADDON_Y": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "CURTRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -94379,11 +94828,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94403,15 +94850,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = ADDON and TSVAL = Y but TSVAL for TSPARMCD = CURTRT is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$ADDON_Y": "Not in dataset",
+                                            "TSGRPID": "DRUG A",
+                                            "TSPARMCD": "CURTRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -94429,11 +94883,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94453,15 +94905,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = ADDON and TSVAL = Y but TSVAL for TSPARMCD = CURTRT is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$ADDON_Y": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "CURTRT",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -94479,11 +94938,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94508,15 +94965,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94536,7 +94988,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94558,15 +95010,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94586,7 +95033,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94608,15 +95055,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94636,7 +95078,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97295,15 +97737,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 49,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 50,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 51,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": "3",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -97321,11 +97792,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97345,15 +97814,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 45,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -97371,11 +97847,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97398,15 +97872,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 45,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -97424,11 +97905,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97448,15 +97927,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 47,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "TSGRPID": "2",
+                                            "TSPARMCD": "TDIGRP",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -97474,11 +97960,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97500,15 +97984,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97528,7 +98007,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -100538,8 +101017,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "error": "Column not found in data",
+                                        "message": "$ds_dsdecod"
                                     }
                                 ]
                             },
@@ -100616,8 +101095,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "error": "Column not found in data",
+                                        "message": "$ds_dsdecod"
                                     }
                                 ]
                             },
@@ -102757,15 +103236,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "lb.xpt",
+                                "dataset": "lb",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBDY is greater than LBENDY",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "LBDY": -20.0,
+                                            "LBENDY": -22.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBDY": 2.0,
+                                            "LBENDY": 1.0
+                                        }
                                     }
                                 ]
                             }
@@ -102802,11 +103295,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102831,15 +103324,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102859,7 +103347,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102895,67 +103383,92 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "sm.xpt",
+                                "dataset": "sm",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "SMSTDY is greater than SMENDY",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "SMENDY": 50.0,
+                                            "SMSTDY": 100.0
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "se.xpt",
+                                "dataset": "se",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "SESTDY is greater than SEENDY",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "SEENDY": 1430.0,
+                                            "SESTDY": 1435.0
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "sv.xpt",
+                                "dataset": "sv",
                                 "domain": "SV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "SVSTDY is greater than SVENDY",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "SVENDY": -28.0,
+                                            "SVSTDY": -27.0
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESTDY is greater than AEENDY",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "AEENDY": 7.0,
+                                            "AESTDY": 8.0
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "cm",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "CMSTDY is greater than CMENDY",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMENDY": 12.0,
+                                            "CMSTDY": 13.0
+                                        }
                                     }
                                 ]
                             }
@@ -103025,11 +103538,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103054,67 +103567,42 @@
                             {
                                 "dataset": "sm.xpt",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103166,7 +103654,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -105372,7 +105860,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -105497,7 +105985,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "message": "Cannot join a table to itself (currently). Use a different name for the right table."
                                     }
                                 ]
                             },
@@ -106930,15 +107418,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106958,7 +107441,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106980,15 +107463,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107008,7 +107486,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107033,15 +107511,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107061,7 +107534,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107358,15 +107831,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AGE and AGETXT are in the list of TSPARAMCDs with TSVAL populated.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$age_count": "Not in dataset",
+                                            "$agetxt_count": "Not in dataset",
+                                            "TSPARMCD": "AGE",
+                                            "TSVAL": "NonEmpty"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$age_count": "Not in dataset",
+                                            "$agetxt_count": "Not in dataset",
+                                            "TSPARMCD": "AGETXT",
+                                            "TSVAL": "NonEmpty"
+                                        }
                                     }
                                 ]
                             }
@@ -107384,11 +107875,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107411,15 +107900,22 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "AGE and AGETXT are in the list of TSPARAMCDs with TSVAL populated.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$age_count": "Not in dataset",
+                                            "$agetxt_count": "Not in dataset",
+                                            "TSPARMCD": "AGE",
+                                            "TSVAL": "NonEmpty"
+                                        }
                                     }
                                 ]
                             }
@@ -107437,11 +107933,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107981,15 +108475,21 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "No occurrence of TSPARMCD=’CRMDUR’ is included in TS or TSVAL is null.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$crmdur_count": "Not in dataset",
+                                            "TSPARMCD": "CRMDUR",
+                                            "TSVAL": null
+                                        }
                                     }
                                 ]
                             }
@@ -108007,11 +108507,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108036,15 +108534,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108064,7 +108557,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115301,7 +115794,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "'NoneType' object has no attribute 'name'"
                                     }
                                 ]
                             }
@@ -115827,15 +116320,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115863,7 +116351,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115946,15 +116434,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115982,7 +116465,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116012,15 +116495,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "A postgres SQL error occurred"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -116048,7 +116526,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
