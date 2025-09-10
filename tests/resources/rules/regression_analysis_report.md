@@ -76,9 +76,8 @@ _Indicates SQL engine running rules it shouldn't_
 
 - [22] is_unique_set check_operator not implemented
 - [18] longer_than check_operator not implemented
-- [16] column or relation does not exist
 - [15] not_matches_regex check_operator not implemented
-- [11] invalid input syntax
+- [15] invalid input syntax
 - [9] matches_regex check_operator not implemented
 - [5] Operation max_date is not implemented
 - [4] $ds_dsdecod
@@ -109,10 +108,10 @@ _Indicates actual regressions in SQL implementation_
 - [17] not_matches_regex check_operator not implemented
 - [13] longer_than check_operator not implemented
 - [12] matches_regex check_operator not implemented
-- [8] column or relation does not exist
 - [8] is_inconsistent_across_dataset check_operator not implemente...
 - [8] SQL syntax error
 - [8] Operation variable_count is not implemented
+- [6] column or relation does not exist
 - [6] Operation dy is not implemented
 - [5] Cannot join a table to itself (currently). Use a different n...
 - [3] longer_than_or_equal_to check_operator not implemented

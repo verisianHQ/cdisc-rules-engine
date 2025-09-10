@@ -84292,8 +84292,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type timestamp: \"cmdtc\"\nLINE 4: ...            AND CAST(cmentpt AS TIMESTAMP) = CAST('cmdtc' AS...\n                                                             ^\n"
+                                        "error": "SQL error in date_equal_to operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             },
@@ -98796,8 +98796,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type timestamp: \"cmdtc\"\nLINE 4: ...            AND CAST(cmentpt AS TIMESTAMP) < CAST('cmdtc' AS...\n                                                             ^\n"
+                                        "error": "SQL error in date_less_than operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             },
@@ -105190,8 +105190,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type timestamp: \"2018-04\"\n"
+                                        "error": "SQL error in date_greater_than operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             }
@@ -105269,8 +105269,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type timestamp: \"2018-04\"\n"
+                                        "error": "SQL error in date_greater_than operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             }
@@ -114367,8 +114367,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type double precision: \"SE.TAETORD\"\nLINE 6:                         ELSE taetord != 'SE.TAETORD'\n                                                ^\n"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             }
@@ -114436,8 +114436,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "invalid input syntax for type double precision: \"SE.TAETORD\"\nLINE 6:                         ELSE taetord != 'SE.TAETORD'\n                                                ^\n"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "invalid input syntax"
                                     }
                                 ]
                             }
