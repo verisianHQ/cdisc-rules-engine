@@ -11828,184 +11828,114 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ag."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table cm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ec."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ex."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ml."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "pr.xpt",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table pr."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table su."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ae."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table be."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
                                 "domain": "CE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ce."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ds."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dv.xpt",
                                 "domain": "DV",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table dv."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ho.xpt",
                                 "domain": "HO",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ho."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table mh."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -12165,7 +12095,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -12190,184 +12120,114 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ag."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table cm."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ec."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ex."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ml."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "pr.xpt",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table pr."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "su.xpt",
                                 "domain": "SU",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table su."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ae."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table be."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
                                 "domain": "CE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ce."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ds."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dv.xpt",
                                 "domain": "DV",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table dv."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ho.xpt",
                                 "domain": "HO",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table ho."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_label does not exist in the table mh."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -12491,7 +12351,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46675,15 +46535,43 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "apmhe.xpt",
+                                "dataset": "apmhe",
                                 "domain": "APMHE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "APAPMHE Domain value length is not equal to 4.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in has_not_equal_length operator",
-                                        "message": "has_equal_length check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "DOMAIN": "APMHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "DOMAIN": "APMHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "DOMAIN": "APMHE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "DOMAIN": "APMHE"
+                                        }
                                     }
                                 ]
                             },
@@ -46762,7 +46650,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46795,15 +46683,10 @@
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in has_not_equal_length operator",
-                                        "message": "has_equal_length check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -46847,7 +46730,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46893,15 +46776,10 @@
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in has_not_equal_length operator",
-                                        "message": "has_equal_length check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46945,7 +46823,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46981,41 +46859,53 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table ae."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "apmhe.xpt",
+                                "dataset": "apmhe",
                                 "domain": "APMHE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table apmhe."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table dm."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -47067,11 +46957,22 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
+                            "execution_status_match": true,
                             "number_of_errors_match": false,
-                            "deep_diff": []
+                            "deep_diff": {
+                                "iterable_item_added": {
+                                    "root[0]": {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -47094,41 +46995,53 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table ae."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "apmh.xpt",
+                                "dataset": "apmh",
                                 "domain": "APMH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table apmh."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table dm."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -47162,11 +47075,22 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
+                            "execution_status_match": true,
                             "number_of_errors_match": false,
-                            "deep_diff": []
+                            "deep_diff": {
+                                "iterable_item_added": {
+                                    "root[0]": {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -47186,28 +47110,36 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table ae."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column variable_name does not exist in the table dm."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -47253,7 +47185,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78835,15 +78767,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppdmmmm.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "dataset": "suppdmmmm",
+                                "domain": "suppdmmmm",
+                                "execution_status": "success",
+                                "execution_message": "Length of dataset name of SUPP dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppdmmmm."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -78865,7 +78801,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78885,15 +78821,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppapfamh.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "dataset": "suppapfamh",
+                                "domain": "suppapfamh",
+                                "execution_status": "success",
+                                "execution_message": "Length of dataset name of SUPP dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppapfamh."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -78915,7 +78855,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87669,28 +87609,52 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppqscqi.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "suppqscqi",
+                                "domain": "suppqscqi",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppqscqi."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "suppqsswls.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "suppqsswls",
+                                "domain": "suppqsswls",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppqsswls."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -87720,7 +87684,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87743,28 +87707,52 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "suppqscq.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "suppqscq",
+                                "domain": "suppqscq",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppqscq."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "suppqssw.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "suppqssw",
+                                "domain": "suppqssw",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table suppqssw."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -87794,7 +87782,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93433,15 +93421,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscgi2.xpt",
+                                "dataset": "qscgi2",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -93496,7 +93488,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93516,15 +93508,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qscgi2.xpt",
+                                "dataset": "qscgi2",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -93563,7 +93559,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93586,28 +93582,36 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qspg.xpt",
+                                "dataset": "qspg",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -93642,11 +93646,32 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
+                            "deep_diff": {
+                                "values_changed": {
+                                    "root[0]": {
+                                        "new_value": {
+                                            "row": 1,
+                                            "SEQ": 1,
+                                            "USUBJID": "CDISC01.100008",
+                                            "value": {
+                                                "dataset_name": "Not in dataset"
+                                            }
+                                        },
+                                        "old_value": {
+                                            "row": 1,
+                                            "SEQ": null,
+                                            "USUBJID": null,
+                                            "value": {
+                                                "dataset_name": "ae"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93666,28 +93691,44 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qspg.xpt",
+                                "dataset": "qspg",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "relrec",
+                                "domain": "relrec",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -93717,7 +93758,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93737,15 +93778,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qspg.xpt",
+                                "dataset": "qspg",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -93783,7 +93828,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93803,15 +93848,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qspg.xpt",
+                                "dataset": "qspg",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -93849,7 +93898,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93869,15 +93918,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "qspg.xpt",
+                                "dataset": "qspg",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in shorter_than operator",
-                                        "message": "longer_than_or_equal_to check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -93895,11 +93948,22 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
+                            "execution_status_match": true,
                             "number_of_errors_match": false,
-                            "deep_diff": []
+                            "deep_diff": {
+                                "iterable_item_added": {
+                                    "root[0]": {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114211,15 +114275,19 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "apdrug1ex.xpt",
+                                "dataset": "apdrug1ex",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column dataset_name does not exist in the table apdrug1ex."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -114254,11 +114322,18 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
+                            "deep_diff": {
+                                "values_changed": {
+                                    "root[0]['value']['dataset_name']": {
+                                        "new_value": "not in dataset",
+                                        "old_value": "apdrug1ex"
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",

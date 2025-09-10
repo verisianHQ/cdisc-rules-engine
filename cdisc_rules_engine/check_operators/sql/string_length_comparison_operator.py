@@ -14,7 +14,7 @@ class StringLengthComparisonOperator(BaseSqlOperator):
         value_is_literal = other_value.get("value_is_literal", False)
 
         def sql():
-            target_length = f"LENGTH(CAST({self._column_sql(target_column)} AS TEXT))"
+            target_length = f"LENGTH(CAST({self._sql(target_column)} AS TEXT))"
 
             if self._is_numeric_value(comparator, value_is_literal):
                 comparator_expr = self._sql(comparator, value_is_literal=value_is_literal)
