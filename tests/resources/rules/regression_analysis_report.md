@@ -44,29 +44,23 @@
 10. **min_date**: 3 failures across 2 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
 
-## Other Execution Errors (21 unique messages, 76 total failures across 30 rule occurrences)
+## Execution Errors by Type (25 unique error types, 384 total failures across 101 rule occurrences)
 
-1.  **Rule contains invalid operator**: 15 failures across 1 rules
-2.  **Cannot join a table to itself (currently). Use a different n...**: 14 failures across 6 rules
-3.  **'NoneType' object has no attribute 'name'**: 12 failures across 2 rules
-4.  **A postgres SQL error occurred**: 7 failures across 2 rules
-5.  **invalid input syntax for type double precision: "TV.VISITDY"...**: 4 failures across 1 rules
-6.  **$ds_dsdecod**: 4 failures across 2 rules
-7.  **invalid input syntax for type timestamp: "2018-04"
-    **: 3 failures across 2 rules
-8.  **invalid input syntax for type numeric: "redacted"
-    **: 2 failures across 1 rules
-9.  **invalid input syntax for type timestamp: "2019-03"
-    **: 2 failures across 1 rules
-10. **invalid input syntax for type double precision: "SE.TAETORD"...**: 2 failures across 1 rules
-11. **invalid input syntax for type double precision: "TV.VISITDY"...**: 1 failures across 1 rules
-12. **Column visitnum or visitnum not found in the respective sche...**: 1 failures across 1 rules
-13. **invalid input syntax for type timestamp: "cmdtc"
-    LINE 4: ......**: 1 failures across 1 rules
-14. **invalid input syntax for type timestamp: "2012-08"
-    **: 1 failures across 1 rules
-15. **invalid input syntax for type timestamp: "cmdtc"
-    LINE 4: ......**: 1 failures across 1 rules
+1.  **An unknown exception has occurred**: 104 failures across 25 rules
+2.  **SQL error in longer_than operator**: 66 failures across 12 rules
+3.  **SQL error in is_not_unique_set operator**: 47 failures across 13 rules
+4.  **SQL error in matches_regex operator**: 43 failures across 8 rules
+5.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
+6.  **Rule format error**: 15 failures across 1 rules
+7.  **SQL error in date_greater_than operator**: 10 failures across 6 rules
+8.  **SQL error in shorter_than operator**: 9 failures across 1 rules
+9.  **SQL error in is_inconsistent_across_dataset operator**: 8 failures across 2 rules
+10. **SQL error in not_equal_to operator**: 7 failures across 2 rules
+11. **PostgreSQL Error**: 6 failures across 1 rules
+12. **SQL error in does_not_contain operator**: 4 failures across 2 rules
+13. **SQL error in invalid_duration operator**: 4 failures across 1 rules
+14. **SQL error in is_incomplete_date operator**: 4 failures across 1 rules
+15. **SQL error in invalid_date operator**: 4 failures across 2 rules
 
 ## SQL vs Old Engine Discrepancies
 
@@ -80,9 +74,10 @@ _Indicates SQL engine running rules it shouldn't_
 - [15] invalid input syntax
 - [9] matches_regex check_operator not implemented
 - [5] Operation max_date is not implemented
-- [4] $ds_dsdecod
+- [4] '$ds_dsdecod'
 - [4] Cannot join a table to itself (currently). Use a different n...
 - [4] invalid_duration check_operator not implemented
+- [4] longer_than_or_equal_to check_operator not implemented
 
 ### SQL Success where Old Engine Skipped (299 cases)
 
@@ -109,9 +104,8 @@ _Indicates actual regressions in SQL implementation_
 - [13] longer_than check_operator not implemented
 - [12] matches_regex check_operator not implemented
 - [8] is_inconsistent_across_dataset check_operator not implemente...
-- [8] SQL syntax error
 - [8] Operation variable_count is not implemented
-- [6] column or relation does not exist
 - [6] Operation dy is not implemented
-- [5] Cannot join a table to itself (currently). Use a different n...
+- [4] Cannot join a table to itself (currently). Use a different n...
 - [3] longer_than_or_equal_to check_operator not implemented
+- [2] invalid input syntax

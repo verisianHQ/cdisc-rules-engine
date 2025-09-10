@@ -76,12 +76,8 @@ class SqlBaseOperation:
                 f"error in operation {self.__class__.__name__}: {str(e)}",
                 exc_info=True,
             )
-            # Convert class name to operation name (e.g., NumericOperation -> numeric)
-            operation_name = self.__class__.__name__.lower()
-            if operation_name.endswith("operation"):
-                operation_name = operation_name[:-9]
 
-            raise SqlOperationError(original_exception=e, operation_name=operation_name) from e
+            raise SqlOperationError(original_exception=e, operation_name=self.__class__.__name__.lower()) from e
 
     def construct_where_clause(self) -> str:
         """

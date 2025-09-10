@@ -37482,7 +37482,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -37577,7 +37577,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -57913,7 +57913,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "SQL error in is_not_unique_set operator",
                                         "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
@@ -57989,7 +57989,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "SQL error in is_not_unique_set operator",
                                         "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
@@ -58055,7 +58055,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "SQL error in is_not_unique_set operator",
                                         "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
@@ -58169,7 +58169,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "SQL error in is_not_unique_set operator",
                                         "message": "is_unique_set check_operator not implemented"
                                     }
                                 ]
@@ -65575,8 +65575,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "Column not found in data",
-                                        "message": "$ds_dsdecod"
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "'$ds_dsdecod'"
                                     }
                                 ]
                             }
@@ -65662,8 +65662,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "Column not found in data",
-                                        "message": "$ds_dsdecod"
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "'$ds_dsdecod'"
                                     }
                                 ]
                             }
@@ -71826,7 +71826,7 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -72692,7 +72692,7 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -73968,7 +73968,7 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -75234,7 +75234,7 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -78180,7 +78180,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -78258,7 +78258,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -86773,7 +86773,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -86856,16 +86856,21 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_incomplete_date operator",
+                                        "message": "'AEDTC'"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -86877,10 +86882,15 @@
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_incomplete_date operator",
+                                        "message": "'EXDTC'"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "lb",
@@ -87070,7 +87080,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -87130,21 +87140,15 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ae",
+                                "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "The date portion of AEDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but AEDY is not empty",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 4,
-                                        "SEQ": 1,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "AEDTC": "Not in dataset",
-                                            "AEDY": "Not in dataset",
-                                            "RFSTDTC": "2005-10"
-                                        }
+                                        "error": "SQL error in is_incomplete_date operator",
+                                        "message": "'AEDTC'"
                                     }
                                 ]
                             },
@@ -87152,7 +87156,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -87162,31 +87166,15 @@
                                 ]
                             },
                             {
-                                "dataset": "ex",
+                                "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "success",
-                                "execution_message": "The date portion of EXDTC is not complete date or the date portion of DM.RFSTDTC is not complete date, but EXDY is not empty",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 54,
-                                        "SEQ": 54,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "EXDTC": "Not in dataset",
-                                            "EXDY": "Not in dataset",
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 55,
-                                        "SEQ": 55,
-                                        "USUBJID": "123103",
-                                        "value": {
-                                            "EXDTC": "Not in dataset",
-                                            "EXDY": "Not in dataset",
-                                            "RFSTDTC": null
-                                        }
+                                        "error": "SQL error in is_incomplete_date operator",
+                                        "message": "'EXDTC'"
                                     }
                                 ]
                             },
@@ -101017,8 +101005,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "Column not found in data",
-                                        "message": "$ds_dsdecod"
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "'$ds_dsdecod'"
                                     }
                                 ]
                             },
@@ -101095,8 +101083,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "Column not found in data",
-                                        "message": "$ds_dsdecod"
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "'$ds_dsdecod'"
                                     }
                                 ]
                             },
@@ -105855,7 +105843,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -105980,7 +105968,7 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -116103,7 +116091,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in sqldistinct operation",
+                                        "error": "SQL error in sqldistinctoperation operation",
                                         "message": "'NoneType' object has no attribute 'type'"
                                     }
                                 ]
@@ -116382,7 +116370,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in less_than_or_equal_to operator",
-                                        "message": "SQL syntax error"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
