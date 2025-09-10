@@ -15,14 +15,14 @@
 
 ## Missing Operators (14 operators, 227 total failures across 58 rule occurrences)
 
-1.  **longer_than**: 66 failures across 12 rules
-2.  **is_unique_set**: 47 failures across 13 rules
-3.  **matches_regex**: 43 failures across 8 rules
-4.  **not_matches_regex**: 32 failures across 13 rules
-5.  **longer_than_or_equal_to**: 9 failures across 1 rules
-6.  **is_inconsistent_across_dataset**: 8 failures across 2 rules
-7.  **invalid_duration**: 4 failures across 1 rules
-8.  **invalid_date**: 4 failures across 2 rules
+1.  **is_unique_set**: 47 failures across 13 rules
+2.  **not_matches_regex**: 32 failures across 13 rules
+3.  **longer_than**: 66 failures across 12 rules
+4.  **matches_regex**: 43 failures across 8 rules
+5.  **is_inconsistent_across_dataset**: 8 failures across 2 rules
+6.  **invalid_date**: 4 failures across 2 rules
+7.  **longer_than_or_equal_to**: 9 failures across 1 rules
+8.  **invalid_duration**: 4 failures across 1 rules
 9.  **has_equal_length**: 3 failures across 1 rules
 10. **starts_with**: 3 failures across 1 rules
 11. **ends_with**: 2 failures across 1 rules
@@ -32,35 +32,35 @@
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
-1.  **variable_count**: 20 failures across 2 rules
-2.  **dy**: 16 failures across 3 rules
+1.  **dy**: 16 failures across 3 rules
+2.  **variable_count**: 20 failures across 2 rules
 3.  **domain_label**: 8 failures across 2 rules
-4.  **get_column_order_from_dataset**: 6 failures across 1 rules
-5.  **max_date**: 5 failures across 2 rules
-6.  **get_model_column_order**: 5 failures across 1 rules
-7.  **domain_is_custom**: 4 failures across 1 rules
-8.  **extract_metadata**: 4 failures across 1 rules
-9.  **get_parent_model_column_order**: 4 failures across 1 rules
-10. **min_date**: 3 failures across 2 rules
+4.  **max_date**: 5 failures across 2 rules
+5.  **min_date**: 3 failures across 2 rules
+6.  **get_column_order_from_dataset**: 6 failures across 1 rules
+7.  **get_model_column_order**: 5 failures across 1 rules
+8.  **domain_is_custom**: 4 failures across 1 rules
+9.  **extract_metadata**: 4 failures across 1 rules
+10. **get_parent_model_column_order**: 4 failures across 1 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
 
 ## Execution Errors by Type (25 unique error types, 384 total failures across 101 rule occurrences)
 
 1.  **An unknown exception has occurred**: 104 failures across 25 rules
-2.  **SQL error in longer_than operator**: 66 failures across 12 rules
-3.  **SQL error in is_not_unique_set operator**: 47 failures across 13 rules
-4.  **SQL error in matches_regex operator**: 43 failures across 8 rules
-5.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
-6.  **Rule format error**: 15 failures across 1 rules
-7.  **SQL error in date_greater_than operator**: 10 failures across 6 rules
-8.  **SQL error in shorter_than operator**: 9 failures across 1 rules
-9.  **SQL error in is_inconsistent_across_dataset operator**: 8 failures across 2 rules
-10. **SQL error in not_equal_to operator**: 7 failures across 2 rules
-11. **PostgreSQL Error**: 6 failures across 1 rules
-12. **SQL error in does_not_contain operator**: 4 failures across 2 rules
-13. **SQL error in invalid_duration operator**: 4 failures across 1 rules
-14. **SQL error in is_incomplete_date operator**: 4 failures across 1 rules
-15. **SQL error in invalid_date operator**: 4 failures across 2 rules
+2.  **SQL error in is_not_unique_set operator**: 47 failures across 13 rules
+3.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
+4.  **SQL error in longer_than operator**: 66 failures across 12 rules
+5.  **SQL error in matches_regex operator**: 43 failures across 8 rules
+6.  **SQL error in date_greater_than operator**: 10 failures across 6 rules
+7.  **SQL error in is_inconsistent_across_dataset operator**: 8 failures across 2 rules
+8.  **SQL error in not_equal_to operator**: 7 failures across 2 rules
+9.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
+10. **SQL error in invalid_date operator**: 4 failures across 2 rules
+11. **SQL error in less_than_or_equal_to operator**: 3 failures across 2 rules
+12. **Rule format error**: 15 failures across 1 rules
+13. **SQL error in shorter_than operator**: 9 failures across 1 rules
+14. **PostgreSQL Error**: 6 failures across 1 rules
+15. **SQL error in invalid_duration operator**: 4 failures across 1 rules
 
 ## SQL vs Old Engine Discrepancies
 

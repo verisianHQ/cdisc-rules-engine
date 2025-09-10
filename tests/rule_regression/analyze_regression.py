@@ -341,7 +341,10 @@ def _generate_operators_section(operator_failures: Dict[str, int], operator_rule
         )
         section.append("")
 
-        sorted_operators = sorted(operator_failures.items(), key=lambda x: x[1], reverse=True)
+        # Sort by rule count first, then by failure count
+        sorted_operators = sorted(
+            operator_failures.items(), key=lambda x: (operator_rule_counts.get(x[0], 0), x[1]), reverse=True
+        )
         for i, (operator, count) in enumerate(sorted_operators, 1):
             rule_count = operator_rule_counts.get(operator, 0)
             section.append(f"{i:2d}. **{operator}**: {count} failures across {rule_count} rules")
@@ -365,7 +368,10 @@ def _generate_operations_section(
         )
         section.append("")
 
-        sorted_operations = sorted(operation_failures.items(), key=lambda x: x[1], reverse=True)
+        # Sort by rule count first, then by failure count
+        sorted_operations = sorted(
+            operation_failures.items(), key=lambda x: (operation_rule_counts.get(x[0], 0), x[1]), reverse=True
+        )
         for i, (operation, count) in enumerate(sorted_operations, 1):
             rule_count = operation_rule_counts.get(operation, 0)
             section.append(f"{i:2d}. **{operation}**: {count} failures across {rule_count} rules")
@@ -443,7 +449,11 @@ def _generate_execution_errors_section(
         )
         section.append("")
 
-        for i, (error_type, count) in enumerate(execution_errors.most_common(15), 1):
+        # Sort by rule count first, then by failure count
+        sorted_errors = sorted(
+            execution_errors.items(), key=lambda x: (execution_error_rule_counts.get(x[0], 0), x[1]), reverse=True
+        )
+        for i, (error_type, count) in enumerate(sorted_errors[:15], 1):
             rule_count = execution_error_rule_counts.get(error_type, 0)
             section.append(f"{i:2d}. **{error_type}**: {count} failures across {rule_count} rules")
         section.append("")
