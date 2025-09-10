@@ -2,18 +2,20 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+from cdisc_rules_engine.sql_operations.dataset_names import SqlDatasetNames
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinct
 from cdisc_rules_engine.sql_operations.numeric_operation import (
     SqlNumericOperation,
 )
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
+from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExists
 
 
 class SqlOperationsFactory:
     _operations_map = {
         "codelist_extensible": None,
         "codelist_terms": None,
-        "dataset_names": None,
+        "dataset_names": SqlDatasetNames,
         "define_extensible_codelists": None,
         "distinct": SqlDistinct,
         "dy": None,
@@ -36,7 +38,7 @@ class SqlOperationsFactory:
         "whodrug_code_hierarchy": None,
         "valid_meddra_term_references": None,
         "valid_meddra_code_term_pairs": None,
-        "variable_exists": None,
+        "variable_exists": SqlVariableExists,
         "variable_names": None,
         "variable_library_metadata": None,
         "variable_value_count": None,

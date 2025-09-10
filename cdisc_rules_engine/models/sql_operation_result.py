@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Literal
+
+from cdisc_rules_engine.models.sql import DATASET_COLUMN_TYPES
 
 
 @dataclass
@@ -10,4 +12,4 @@ class SqlOperationResult:
 
     query: str
     type: Literal["collection", "constant", "table"]
-    data_type: Optional[Literal["text", "int", "float", "number", "numeric"]] = None
+    subtype: DATASET_COLUMN_TYPES

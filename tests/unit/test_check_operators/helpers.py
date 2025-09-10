@@ -31,12 +31,13 @@ def create_sql_operators(
     config = {**extra_config, "dataset_id": TEST_TABLE_NAME, "data_service": data_service}
 
     config["operation_variables"] = {**extra_operation_variables}
-    config["operation_variables"]["$constant"] = SqlOperationResult(query="SELECT 'A'", type="constant")
-    config["operation_variables"]["$number"] = SqlOperationResult(
-        query="SELECT 1.0", type="constant", data_type="float"
+    config["operation_variables"]["$constant"] = SqlOperationResult(query="SELECT 'A'", type="constant", subtype="Char")
+    config["operation_variables"]["$number"] = SqlOperationResult(query="SELECT 1.0", type="constant", subtype="Num")
+    config["operation_variables"]["$date"] = SqlOperationResult(
+        query="SELECT '2025-09-09'", type="constant", subtype="Char"
     )
     config["operation_variables"]["$list"] = SqlOperationResult(
-        query="SELECT column1 FROM (VALUES ('A'), ('B'))", type="collection"
+        query="SELECT column1 FROM (VALUES ('A'), ('B'))", type="collection", subtype="Char"
     )
 
     return PostgresQLOperators(config)
