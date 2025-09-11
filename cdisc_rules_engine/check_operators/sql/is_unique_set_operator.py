@@ -8,7 +8,25 @@ class IsUniqueSetOperator(BaseSqlOperator):
         target = other_value.get("target")
         comparator = other_value.get("comparator")
 
-        unique_columns = self._collect_and_deduplicate_columns(target, comparator)
+        all_columns = []
+
+        items_to_process = [target, comparator]
+        while items_to_process:
+            item = items_to_process.pop(0)
+            if isinstance(item, list):
+                items_to_process = item + items_to_process
+            elif item:
+                all_columns.append(item)
+
+        seen = set()
+        unique_columns = []
+
+        for col_raw in all_columns:
+            clean_name = self.replace_prefix(col_raw).lower()
+            clean_col = clean_name if self._exists(clean_name) else None
+            if clean_col and clean_col not in seen:
+                seen.add(clean_col)
+                unique_columns.append(clean_col)
 
         if not unique_columns:
             return self._do_check_operator("is_unique_set_no_cols", lambda: "TRUE")
@@ -39,24 +57,3 @@ class IsUniqueSetOperator(BaseSqlOperator):
             """
 
         return self._do_complex_check_operator(op_name, generate_update_query)
-
-    def _collect_and_deduplicate_columns(self, *column_groups) -> list[str]:
-        all_columns = []
-
-        items_to_process = list(column_groups)
-        while items_to_process:
-            item = items_to_process.pop(0)
-            if isinstance(item, list):
-                items_to_process = item + items_to_process
-            elif item:
-                all_columns.append(item)
-
-        seen = set()
-        unique_columns = []
-        for col_raw in all_columns:
-            clean_name = self.replace_prefix(col_raw).lower()
-            clean_col = clean_name if self._exists(clean_name) else None
-            if clean_col and clean_col not in seen:
-                seen.add(clean_col)
-                unique_columns.append(clean_col)
-        return unique_columns
