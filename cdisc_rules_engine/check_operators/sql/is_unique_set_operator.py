@@ -2,7 +2,12 @@ from .base_sql_operator import BaseSqlOperator
 
 
 class IsUniqueSetOperator(BaseSqlOperator):
-    """Operator for checking if values form a unique set."""
+    """
+    Operator for checking if values form a unique set.
+    This operator validates that the combination of target and comparator columns
+    forms a unique set, which means no duplicate combinations exist in the dataset.
+    Each unique combination should appear at most once.
+    """
 
     def execute_operator(self, other_value):
         target = other_value.get("target")
