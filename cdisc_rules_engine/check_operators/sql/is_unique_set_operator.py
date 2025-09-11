@@ -40,10 +40,6 @@ class IsUniqueSetOperator(BaseSqlOperator):
 
         return self._do_complex_check_operator(op_name, generate_update_query)
 
-    def _get_clean_col_name(self, col: str) -> str | None:
-        clean_name = self.replace_prefix(col).lower()
-        return clean_name if self._exists(clean_name) else None
-
     def _collect_and_deduplicate_columns(self, *column_groups) -> list[str]:
         all_columns = []
 
@@ -58,7 +54,8 @@ class IsUniqueSetOperator(BaseSqlOperator):
         seen = set()
         unique_columns = []
         for col_raw in all_columns:
-            clean_col = self._get_clean_col_name(col_raw)
+            clean_name = self.replace_prefix(col_raw).lower()
+            clean_col = clean_name if self._exists(clean_name) else None
             if clean_col and clean_col not in seen:
                 seen.add(clean_col)
                 unique_columns.append(clean_col)
