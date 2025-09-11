@@ -12,7 +12,6 @@ from .helpers import create_sql_operators, assert_series_equals
     ],
 )
 def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result):
-    """Test SQL implementation of is_inconsistent_across_dataset operator."""
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
         "BGSTRESU": ["kg", "kg", "g", "mg"],
@@ -33,7 +32,6 @@ def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result)
     ],
 )
 def test_sql_is_inconsistent_across_dataset_with_nulls(target, comparator, expected_result):
-    """Test SQL implementation with NULL values."""
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
         "BGSTRESU": ["kg", "kg", None, "g"],
