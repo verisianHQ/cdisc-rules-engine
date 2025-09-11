@@ -33890,15 +33890,35 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "vs.xpt",
+                                "dataset": "vs",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VSELTM is not the same value across records with the same values of DOMAIN, VISITNUM, VSTPTREF, and VSTPTNUM.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
+                                        "row": 3,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": 4.0,
+                                            "VSELTM": "10",
+                                            "VSTPT": "10MIN POSTDOSE",
+                                            "VSTPTNUM": "110"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": 4.0,
+                                            "VSELTM": "11",
+                                            "VSTPT": "10MIN POSTDOSE",
+                                            "VSTPTNUM": "110"
+                                        }
                                     }
                                 ]
                             }
@@ -33965,11 +33985,38 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
+                            "execution_status_match": true,
                             "number_of_errors_match": false,
-                            "deep_diff": []
+                            "deep_diff": {
+                                "iterable_item_removed": {
+                                    "root[0]": {
+                                        "row": 1,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": null,
+                                            "VSELTM": "-PT4H",
+                                            "VSTPT": "4H PREDOSE",
+                                            "VSTPTNUM": "14"
+                                        }
+                                    },
+                                    "root[1]": {
+                                        "row": 2,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": null,
+                                            "VSELTM": "PT4H",
+                                            "VSTPT": "4H PREDOSE",
+                                            "VSTPTNUM": "14"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -33989,15 +34036,59 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ft.xpt",
+                                "dataset": "ft",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FTELTM is not the same value across records with the same values of DOMAIN, VISITNUM, FTTPTREF, and FTTPTNUM.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT30M",
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT03M",
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 134,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT1H",
+                                            "FTTPT": "90 MIN POST",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 135,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT2H",
+                                            "FTTPT": "90 MIN POST",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
                                     }
                                 ]
                             }
@@ -34064,11 +34155,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34093,15 +34184,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -34121,7 +34207,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34141,15 +34227,35 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ft.xpt",
+                                "dataset": "ft",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FTELTM is not the same value across records with the same values of DOMAIN, VISITNUM, FTTPTREF, and FTTPTNUM.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
+                                        "row": 3,
+                                        "SEQ": 134,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT1H",
+                                            "FTTPT": "90 MIN POST",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 135,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "DOMAIN": "FT",
+                                            "FTELTM": "PT1H",
+                                            "FTTPT": "90 MIN POST",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
                                     }
                                 ]
                             }
@@ -34192,11 +34298,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98434,15 +98540,311 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ft.xpt",
+                                "dataset": "ft",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FTTPT and FTTPTNUM do not have a one-to-one relationship per unique value of VISITNUM",
+                                "number_errors": 30,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST5",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 392,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "35 MIN POST4",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 393,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 394,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 395,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 3.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 19,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 3.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": 528,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST5",
+                                            "FTTPTNUM": 2.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": 529,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "31 MIN POST5",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": 530,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "32 MIN POST5",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 30,
+                                        "SEQ": 531,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "33 MIN POST5",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 201.0
+                                        }
                                     }
                                 ]
                             }
@@ -98761,11 +99163,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98785,15 +99187,331 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ft.xpt",
+                                "dataset": "ft",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FTTPT and FTTPTNUM do not have a one-to-one relationship per unique value of VISITNUM",
+                                "number_errors": 32,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 392,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 393,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 394,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 395,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST4",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 19,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST1",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST",
+                                            "FTTPTNUM": 1.0,
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 256,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": 257,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST2",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": 258,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": 259,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST3",
+                                            "FTTPTNUM": 4.0,
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": 528,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "30 MIN POST5",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 30,
+                                        "SEQ": 529,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "31 MIN POST5",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 31,
+                                        "SEQ": 530,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "32 MIN POST5",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 531,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "FTTPT": "33 MIN POST5",
+                                            "FTTPTNUM": 10.0,
+                                            "VISITNUM": 201.0
+                                        }
                                     }
                                 ]
                             }
@@ -99132,11 +99850,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -99161,15 +99879,10 @@
                             {
                                 "dataset": "ft.xpt",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99189,7 +99902,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -99211,15 +99924,10 @@
                             {
                                 "dataset": "ft.xpt",
                                 "domain": "FT",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_inconsistent_across_dataset operator",
-                                        "message": "is_inconsistent_across_dataset check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99239,7 +99947,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
