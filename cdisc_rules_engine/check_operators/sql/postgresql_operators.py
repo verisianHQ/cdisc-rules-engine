@@ -139,9 +139,7 @@ class PostgresQLOperators(BaseType):
         "prefix_equal_to": lambda data: PrefixEqualToOperator(data),
         "prefix_not_equal_to": lambda data: NotOperator(data, PrefixEqualToOperator),
         "has_equal_length": lambda data: StringLengthComparisonOperator(data, operator="="),
-        "has_not_equal_length": lambda data: NotOperator(
-            data, lambda d: StringLengthComparisonOperator(d, operator="=")
-        ),
+        "has_not_equal_length": lambda data: StringLengthComparisonOperator(data, operator="!="),
         "longer_than": lambda data: StringLengthComparisonOperator(data, operator=">"),
         "shorter_than_or_equal_to": lambda data: StringLengthComparisonOperator(data, operator="<="),
         "longer_than_or_equal_to": lambda data: StringLengthComparisonOperator(data, operator=">="),
