@@ -25461,12 +25461,12 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 15,
+                                        "row": 14,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
                                             "EPOCH": "SCREENING",
-                                            "SESTDTC": "2018-06-29",
+                                            "SESTDTC": "2018-08-13",
                                             "SVSTDTC": "2018-08-20"
                                         }
                                     }
@@ -32476,7 +32476,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMSTDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -32571,7 +32571,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMSTDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -83618,7 +83618,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -83702,7 +83702,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'AEDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -83715,7 +83715,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -83728,7 +83728,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'EXDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -83925,7 +83925,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -83988,7 +83988,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'AEDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -84001,7 +84001,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -84014,7 +84014,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'EXDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -95485,15 +95485,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "cm.xpt",
+                                "dataset": "cm",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMENRTPT is not in ('BEFORE', 'COINCIDENT', 'ONGOING', 'AFTER', 'UNKNOWN')",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_less_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 6,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMDTC": "2013-05-21",
+                                            "CMENRTPT": "WRONG",
+                                            "CMENTPT": "2013-05-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMDTC": "2013-05-20T10:31",
+                                            "CMENRTPT": "WRONG",
+                                            "CMENTPT": "2013-05-20T10:30"
+                                        }
                                     }
                                 ]
                             },
@@ -95594,7 +95610,7 @@
                             "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -100880,15 +100896,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RFSTDTC is greater than RFENDTC",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "RFENDTC": "2018-08-03",
+                                            "RFSTDTC": "2018-09-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "RFENDTC": "2018-11-06",
+                                            "RFSTDTC": "2018-11-06T12:00"
+                                        }
                                     }
                                 ]
                             }
@@ -100906,11 +100936,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101556,15 +101584,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "RFICDTC is greater than RFSTDTC",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "RFICDTC": "2018-04-22",
+                                            "RFSTDTC": "2018-04-18T09:30"
+                                        }
                                     }
                                 ]
                             }
@@ -101582,11 +101615,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101670,15 +101701,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RFXSTDTC is greater than RFXENDTC",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "RFXENDTC": "2019-02-20T10:38",
+                                            "RFXSTDTC": "2019-02-20T11:50"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "RFXENDTC": "2018-07-18T11:15",
+                                            "RFXSTDTC": "2018-08-18T09:30"
+                                        }
                                     }
                                 ]
                             }
@@ -101696,11 +101741,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102011,15 +102054,20 @@
                                 "errors": []
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "AESTDTC is greater than max(DSSTDTC)",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "$max_dsstdtc": "Not in dataset",
+                                            "AESTDTC": "2022-02-20"
+                                        }
                                     }
                                 ]
                             }
@@ -102055,11 +102103,18 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
+                            "deep_diff": {
+                                "values_changed": {
+                                    "root[0]['value']['$max_dsstdtc']": {
+                                        "new_value": "not in dataset",
+                                        "old_value": "2022-01-19"
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102092,15 +102147,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102128,7 +102178,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102164,15 +102214,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "sm.xpt",
+                                "dataset": "sm",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "SMSTDTC is greater than SMENDTC",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "SMENDTC": "2018-07-18",
+                                            "SMSTDTC": "2018-07-18T11:15"
+                                        }
                                     }
                                 ]
                             },
@@ -102215,28 +102270,18 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -102308,7 +102353,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102357,15 +102402,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
@@ -102425,7 +102465,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102688,7 +102728,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in date_greater_than operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -102813,7 +102853,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in date_greater_than operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -106784,15 +106824,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RFCSTDTC is greater than RFCENDTC",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in date_greater_than operator",
-                                        "message": "invalid input syntax"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "RFCENDTC": "2019-04-20T10:38",
+                                            "RFCSTDTC": "2020-04-20T09:40"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "RFCENDTC": "2018-07-18",
+                                            "RFCSTDTC": "2018-08-18"
+                                        }
                                     }
                                 ]
                             }
@@ -106810,11 +106864,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111192,7 +111244,7 @@
                                 "domain": "SV",
                                 "execution_status": "success",
                                 "execution_message": "TAETORD values don't match between Subject Visits (SV) and Subject Elements (SE) datasets.",
-                                "number_errors": 15,
+                                "number_errors": 14,
                                 "errors": [
                                     {
                                         "row": 3,
@@ -111288,18 +111340,6 @@
                                             "SESTDTC": "2018-11-20",
                                             "SVSTDTC": "2019-01-06",
                                             "TAETORD": 2.0
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": null,
-                                        "USUBJID": "1201002",
-                                        "value": {
-                                            "SE.TAETORD": 2.0,
-                                            "SEENDTC": "2022-01-04",
-                                            "SESTDTC": "2019-01-07T06:10",
-                                            "SVSTDTC": "2019-01-07T6:10",
-                                            "TAETORD": 1.0
                                         }
                                     },
                                     {
