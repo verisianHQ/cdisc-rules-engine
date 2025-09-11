@@ -33894,8 +33894,32 @@
                                 "domain": "VS",
                                 "execution_status": "success",
                                 "execution_message": "VSELTM is not the same value across records with the same values of DOMAIN, VISITNUM, VSTPTREF, and VSTPTNUM.",
-                                "number_errors": 2,
+                                "number_errors": 4,
                                 "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": null,
+                                            "VSELTM": "-PT4H",
+                                            "VSTPT": "4H PREDOSE",
+                                            "VSTPTNUM": "14"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "DOMAIN": "VS",
+                                            "VISITNUM": null,
+                                            "VSELTM": "PT4H",
+                                            "VSTPT": "4H PREDOSE",
+                                            "VSTPTNUM": "14"
+                                        }
+                                    },
                                     {
                                         "row": 3,
                                         "SEQ": 6,
@@ -33986,35 +34010,8 @@
                         ],
                         "old_vs_sql": {
                             "execution_status_match": true,
-                            "number_of_errors_match": false,
-                            "deep_diff": {
-                                "iterable_item_removed": {
-                                    "root[0]": {
-                                        "row": 1,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "DOMAIN": "VS",
-                                            "VISITNUM": null,
-                                            "VSELTM": "-PT4H",
-                                            "VSTPT": "4H PREDOSE",
-                                            "VSTPTNUM": "14"
-                                        }
-                                    },
-                                    "root[1]": {
-                                        "row": 2,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "DOMAIN": "VS",
-                                            "VISITNUM": null,
-                                            "VSELTM": "PT4H",
-                                            "VSTPT": "4H PREDOSE",
-                                            "VSTPTNUM": "14"
-                                        }
-                                    }
-                                }
-                            }
+                            "number_of_errors_match": true,
+                            "deep_diff": []
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",

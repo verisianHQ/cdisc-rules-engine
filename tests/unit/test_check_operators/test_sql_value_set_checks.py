@@ -29,12 +29,18 @@ def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result)
     "target, comparator, expected_result",
     [
         ("BGSTRESU", "USUBJID", [False, False, True, True]),
+        ("VSELTM", "VISITNUM", [True, True, True, True]),
+        ("VSELTM", ["VISITNUM", "VSTPTNUM"], [True, True, True, True]),
     ],
 )
 def test_sql_is_inconsistent_across_dataset_with_nulls(target, comparator, expected_result):
+    """Test case covering both NULL target values and NULL comparator values"""
     data = {
-        "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
+        "USUBJID": ["SUBJ1", "SUBJ1", "CDISC001", "CDISC001"],
         "BGSTRESU": ["kg", "kg", None, "g"],
+        "VISITNUM": [4.0, 4.0, None, None],
+        "VSELTM": ["-PT4H", "PT4H", "-PT4H", "PT4H"],
+        "VSTPTNUM": [14, 14, 14, 14],
     }
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset({"target": target, "comparator": comparator})

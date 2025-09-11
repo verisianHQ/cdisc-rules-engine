@@ -48,7 +48,13 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
                                 END
                             )
                             FROM {db_table} AS t2
-                            WHERE t2.{self._column_sql(comparator_column)} = t1.{self._column_sql(comparator_column)}
+                            WHERE (
+                                (t2.{self._column_sql(comparator_column)} = t1.{self._column_sql(comparator_column)})
+                                OR
+                                (t2.{self._column_sql(comparator_column)} IS NULL
+                                AND
+                                t1.{self._column_sql(comparator_column)} IS NULL)
+                            )
                         ) > 1 AS is_inconsistent
                     FROM {db_table} AS t1
                     ORDER BY id
@@ -70,10 +76,14 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
-            # Build the WHERE clause for matching groups
+            # Build the WHERE clause for matching groups, handling NULLs properly
             where_conditions = []
             for comp_col in comparator_columns:
-                where_conditions.append(f"t2.{self._column_sql(comp_col)} = t1.{self._column_sql(comp_col)}")
+                condition = (
+                    f"(t2.{self._column_sql(comp_col)} = t1.{self._column_sql(comp_col)}) "
+                    f"OR (t2.{self._column_sql(comp_col)} IS NULL AND t1.{self._column_sql(comp_col)} IS NULL)"
+                )
+                where_conditions.append(f"({condition})")
             where_clause = " AND ".join(where_conditions)
 
             return f"""
