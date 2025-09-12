@@ -1,4 +1,5 @@
 from .base_sql_operator import BaseSqlOperator
+from cdisc_rules_engine.utilities.utils import flatten_nested_list
 
 
 class IsUniqueSetOperator(BaseSqlOperator):
@@ -13,15 +14,7 @@ class IsUniqueSetOperator(BaseSqlOperator):
         target = other_value.get("target")
         comparator = other_value.get("comparator")
 
-        all_columns = []
-
-        items_to_process = [target, comparator]
-        while items_to_process:
-            item = items_to_process.pop(0)
-            if isinstance(item, list):
-                items_to_process = item + items_to_process
-            elif item:
-                all_columns.append(item)
+        all_columns = flatten_nested_list([target, comparator])
 
         seen = set()
         unique_columns = []
@@ -34,12 +27,14 @@ class IsUniqueSetOperator(BaseSqlOperator):
                 unique_columns.append(clean_col)
 
         if not unique_columns:
-            return self._do_check_operator("is_unique_set_no_cols", lambda: "TRUE")
+            raise ValueError("No valid columns found for uniqueness check.")
 
         op_name = f"{'_'.join(unique_columns)}_is_unique_set"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
-            concat_parts = [f"COALESCE(CAST({self._column_sql(col)} AS TEXT), '_NULL_')" for col in unique_columns]
+            concat_parts = [
+                f"COALESCE(NULLIF(CAST({self._column_sql(col)} AS TEXT), ''), '_NULL_')" for col in unique_columns
+            ]
             concat_expr = " || '|' || ".join(concat_parts)
 
             return f"""
