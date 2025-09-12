@@ -4,14 +4,14 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 61 (8.0%)
-- **Clean rules**: 701 (92.0%)
+- **Rules with any errors**: 62 (8.1%)
+- **Clean rules**: 700 (91.9%)
 
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 29
 - Rules with **operation errors**: 17
-- Rules with **other errors**: 15
+- Rules with **other errors**: 16
 
 ## Missing Operators (9 operators, 94 total failures across 29 rule occurrences)
 
@@ -39,7 +39,7 @@
 10. **get_parent_model_column_order**: 4 failures across 1 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
 
-## Execution Errors by Type (18 unique error types, 227 total failures across 61 rule occurrences)
+## Execution Errors by Type (19 unique error types, 228 total failures across 62 rule occurrences)
 
 1.  **An unknown exception has occurred**: 96 failures across 21 rules
 2.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
@@ -90,7 +90,7 @@ _Indicates SQL engine not respecting rule applicability_
 - [5] Rule skipped - doesn't apply to class for rule id=CORE-00014...
 - [5] Rule skipped - doesn't apply to class for rule id=CORE-00056...
 
-### SQL Errors where Old Engine Succeeded (55 cases)
+### SQL Errors where Old Engine Succeeded (56 cases)
 
 _Indicates actual regressions in SQL implementation_
 
@@ -102,4 +102,5 @@ _Indicates actual regressions in SQL implementation_
 - [2] invalid input syntax
 - [2] prefix_equal_to check_operator not implemented
 - [2] Joins with relationship domains are not supported yet
+- [1] No valid columns found for uniqueness check.
 - [1] 'NoneType' object has no attribute 'get_column_hash'

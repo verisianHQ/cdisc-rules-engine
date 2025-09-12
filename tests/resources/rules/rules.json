@@ -15517,7 +15517,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000036, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000036, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -15593,7 +15593,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000036, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000036, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -15839,7 +15839,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -15900,7 +15900,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -15976,7 +15976,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000039, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000039, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16075,7 +16075,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000040, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000040, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -16151,7 +16151,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000040, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000040, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -17297,7 +17297,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000047, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000047, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -17361,7 +17361,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000047, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000047, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -27877,7 +27877,7 @@
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000108, dataset=dd",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000108, dataset=dd",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -27941,7 +27941,7 @@
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000108, dataset=dd",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000108, dataset=dd",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52268,7 +52268,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000208, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000208, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52344,7 +52344,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000208, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000208, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52450,7 +52450,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000209, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000209, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52526,7 +52526,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000209, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000209, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52632,7 +52632,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000210, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000210, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -52708,7 +52708,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000210, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000210, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -53783,7 +53783,7 @@
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000216, dataset=tm",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000216, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -53859,7 +53859,7 @@
                                 "dataset": "tm.xpt",
                                 "domain": "TM",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000216, dataset=tm",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000216, dataset=tm",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -55874,7 +55874,7 @@
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000228, dataset=ti",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000228, dataset=ti",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -55955,7 +55955,7 @@
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000228, dataset=ti",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000228, dataset=ti",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -57266,7 +57266,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -57348,7 +57348,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -57414,7 +57414,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000238, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000238, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -57496,7 +57496,7 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000239, dataset=ex",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000239, dataset=ex",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -63163,7 +63163,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -63237,7 +63237,7 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ds",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ds",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -63253,7 +63253,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000252, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000252, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -63348,7 +63348,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000253, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000253, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -63412,7 +63412,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000253, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000253, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -63499,7 +63499,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000254, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000254, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -63563,7 +63563,7 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000254, dataset=ae",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000254, dataset=ae",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -82981,7 +82981,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83061,7 +83061,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83125,7 +83125,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -83186,7 +83186,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000333, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000333, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -86744,7 +86744,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000367, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000367, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114309,7 +114309,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000791, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000791, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -114317,7 +114317,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000791, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000791, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114389,7 +114389,7 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000791, dataset=ta",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000791, dataset=ta",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -114397,7 +114397,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000791, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000791, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114747,7 +114747,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000842, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000842, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114827,7 +114827,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000842, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000842, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114891,7 +114891,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000842, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000842, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -114952,7 +114952,7 @@
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000842, dataset=tv",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000842, dataset=tv",
                                 "number_errors": 0,
                                 "errors": []
                             }
