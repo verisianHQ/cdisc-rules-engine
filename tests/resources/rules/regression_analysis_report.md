@@ -17,13 +17,14 @@
 
 1.  **is_unique_set**: 47 failures across 13 rules
 2.  **not_matches_regex**: 32 failures across 13 rules
-3.  **longer_than**: 66 failures across 12 rules
-4.  **matches_regex**: 43 failures across 8 rules
-5.  **is_inconsistent_across_dataset**: 8 failures across 2 rules
-6.  **invalid_date**: 4 failures across 2 rules
-7.  **longer_than_or_equal_to**: 9 failures across 1 rules
-8.  **invalid_duration**: 4 failures across 1 rules
-9.  **has_equal_length**: 3 failures across 1 rules
+3.  **matches_regex**: 43 failures across 8 rules
+4.  **invalid_date**: 4 failures across 2 rules
+5.  **invalid_duration**: 4 failures across 1 rules
+6.  **starts_with**: 3 failures across 1 rules
+7.  **ends_with**: 2 failures across 1 rules
+8.  **has_next_corresponding_record**: 2 failures across 1 rules
+9.  **empty_within_except_last_row**: 2 failures across 1 rules
+10. **prefix_equal_to**: 2 failures across 1 rules
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
@@ -69,7 +70,6 @@ _Indicates SQL engine running rules it shouldn't_
 - [5] Operation max_date is not implemented
 - [4] '$ds_dsdecod'
 - [4] invalid_duration check_operator not implemented
-- [4] longer_than_or_equal_to check_operator not implemented
 - [4] Operation extract_metadata is not implemented
 - [4] Operation dy is not implemented
 - [4] Rule contains invalid operator
@@ -97,10 +97,11 @@ _Indicates actual regressions in SQL implementation_
 
 - [17] is_unique_set check_operator not implemented
 - [17] not_matches_regex check_operator not implemented
-- [13] longer_than check_operator not implemented
 - [12] matches_regex check_operator not implemented
 - [8] Operation variable_count is not implemented
 - [6] Operation dy is not implemented
 - [5] column or relation does not exist
-- [3] longer_than_or_equal_to check_operator not implemented
 - [2] invalid input syntax
+- [2] prefix_equal_to check_operator not implemented
+- [2] Joins with relationship domains are not supported yet
+- [1] 'NoneType' object has no attribute 'get_column_hash'
