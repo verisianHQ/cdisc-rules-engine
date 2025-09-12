@@ -4,20 +4,20 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 72 (9.4%)
-- **Clean rules**: 690 (90.6%)
+- **Rules with any errors**: 61 (8.0%)
+- **Clean rules**: 701 (92.0%)
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 40
+- Rules with **operator errors**: 29
 - Rules with **operation errors**: 17
 - Rules with **other errors**: 15
 
-## Missing Operators (9 operators, 137 total failures across 40 rule occurrences)
+## Missing Operators (9 operators, 94 total failures across 29 rule occurrences)
 
-1.  **is_unique_set**: 47 failures across 13 rules
-2.  **not_matches_regex**: 32 failures across 13 rules
-3.  **matches_regex**: 43 failures across 8 rules
+1.  **not_matches_regex**: 32 failures across 13 rules
+2.  **matches_regex**: 43 failures across 8 rules
+3.  **invalid_date**: 4 failures across 2 rules
 4.  **invalid_duration**: 4 failures across 1 rules
 5.  **starts_with**: 3 failures across 1 rules
 6.  **ends_with**: 2 failures across 1 rules
@@ -39,14 +39,14 @@
 10. **get_parent_model_column_order**: 4 failures across 1 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
 
-## Execution Errors by Type (18 unique error types, 270 total failures across 72 rule occurrences)
+## Execution Errors by Type (18 unique error types, 227 total failures across 61 rule occurrences)
 
 1.  **An unknown exception has occurred**: 96 failures across 21 rules
-2.  **SQL error in is_not_unique_set operator**: 47 failures across 13 rules
-3.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
-4.  **SQL error in matches_regex operator**: 43 failures across 8 rules
-5.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
-6.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
+2.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
+3.  **SQL error in matches_regex operator**: 43 failures across 8 rules
+4.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
+5.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
+6.  **SQL error in invalid_date operator**: 4 failures across 2 rules
 7.  **SQL error in less_than_or_equal_to operator**: 3 failures across 2 rules
 8.  **Rule format error**: 15 failures across 1 rules
 9.  **SQL error in invalid_duration operator**: 4 failures across 1 rules
@@ -59,11 +59,10 @@
 
 ## SQL vs Old Engine Discrepancies
 
-### SQL Errors where Old Engine Skipped (96 cases)
+### SQL Errors where Old Engine Skipped (78 cases)
 
 _Indicates SQL engine running rules it shouldn't_
 
-- [22] is_unique_set check_operator not implemented
 - [15] not_matches_regex check_operator not implemented
 - [9] matches_regex check_operator not implemented
 - [5] Operation max_date is not implemented
@@ -72,29 +71,29 @@ _Indicates SQL engine running rules it shouldn't_
 - [4] Operation extract_metadata is not implemented
 - [4] Operation dy is not implemented
 - [4] Rule contains invalid operator
+- [4] invalid_date check_operator not implemented
 - [3] Joins with relationship domains are not supported yet
 
-### SQL Success where Old Engine Skipped (342 cases)
+### SQL Success where Old Engine Skipped (360 cases)
 
 _Indicates SQL engine not respecting rule applicability_
 **Skip Types:**
 
-- Class Not Applicable: 240
+- Class Not Applicable: 258
 - Domain Not Applicable: 102
 
 **Examples:**
 
 - [6] Rule skipped - doesn't apply to class for rule id=CORE-00047...
 - [6] Rule skipped - doesn't apply to class for rule id=CORE-00053...
+- [6] Rule skipped - doesn't apply to class for rule id=CORE-00058...
+- [5] Rule skipped - doesn't apply to class for rule id=CORE-00014...
 - [5] Rule skipped - doesn't apply to class for rule id=CORE-00056...
-- [4] Rule skipped - doesn't apply to class for rule id=CORE-00012...
-- [4] Rule skipped - doesn't apply to class for rule id=CORE-00033...
 
-### SQL Errors where Old Engine Succeeded (72 cases)
+### SQL Errors where Old Engine Succeeded (55 cases)
 
 _Indicates actual regressions in SQL implementation_
 
-- [17] is_unique_set check_operator not implemented
 - [17] not_matches_regex check_operator not implemented
 - [12] matches_regex check_operator not implemented
 - [8] Operation variable_count is not implemented

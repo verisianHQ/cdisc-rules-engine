@@ -34716,15 +34716,65 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ta.xpt",
+                                "dataset": "ta",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TAETORD is not unique within ARM",
+                                "number_errors": 6,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Placebo",
+                                            "TAETORD": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Placebo",
+                                            "TAETORD": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Zanomaline Low Dose (54 mg)",
+                                            "TAETORD": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Zanomaline Low Dose (54 mg)",
+                                            "TAETORD": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Zanomaline High Dose (81 mg)",
+                                            "TAETORD": 3.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARM": "Zanomaline High Dose (81 mg)",
+                                            "TAETORD": 3.0
+                                        }
                                     }
                                 ]
                             }
@@ -34742,11 +34792,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34771,15 +34819,10 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -34799,7 +34842,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34835,15 +34878,47 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ti.xpt",
+                                "dataset": "ti",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "IETESTCD is not unique within TIVERS",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL08",
+                                            "TIVERS": null
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL08",
+                                            "TIVERS": null
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "EXCL22",
+                                            "TIVERS": null
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "EXCL22",
+                                            "TIVERS": null
+                                        }
                                     }
                                 ]
                             }
@@ -34861,11 +34936,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34885,15 +34958,65 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ti.xpt",
+                                "dataset": "ti",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "IETESTCD is not unique within TIVERS",
+                                "number_errors": 6,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 28,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL05",
+                                            "TIVERS": "ORIGINAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 29,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL05",
+                                            "TIVERS": "ORIGINAL"
+                                        }
+                                    },
+                                    {
+                                        "row": 44,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "EXCL22",
+                                            "TIVERS": "AMENDMENT 1"
+                                        }
+                                    },
+                                    {
+                                        "row": 45,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "EXCL22",
+                                            "TIVERS": "AMENDMENT 1"
+                                        }
+                                    },
+                                    {
+                                        "row": 61,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL08",
+                                            "TIVERS": "AMENDMENT 1"
+                                        }
+                                    },
+                                    {
+                                        "row": 62,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL08",
+                                            "TIVERS": "AMENDMENT 1"
+                                        }
                                     }
                                 ]
                             }
@@ -34911,11 +35034,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34940,15 +35061,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -34968,7 +35084,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -34990,15 +35106,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -35018,7 +35129,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -35040,15 +35151,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -35068,7 +35174,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -35104,15 +35210,27 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ti.xpt",
+                                "dataset": "ti",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "IETESTCD is not unique",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL04"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IETESTCD": "INCL04"
+                                        }
                                     }
                                 ]
                             }
@@ -35130,11 +35248,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -35159,15 +35275,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -35187,7 +35298,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -35209,15 +35320,10 @@
                             {
                                 "dataset": "ti.xpt",
                                 "domain": "TI",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -35237,7 +35343,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -35978,15 +36084,83 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ts.xpt",
+                                "dataset": "ts",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSSEQ is not unique within TSPARMCD",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "DOSE",
+                                            "TSSEQ": 3.0
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "DOSE",
+                                            "TSSEQ": 3.0
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSSEQ": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSSEQ": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 27,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSSEQ": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 28,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSSEQ": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 50,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TTYPE",
+                                            "TSSEQ": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 51,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "TTYPE",
+                                            "TSSEQ": 1.0
+                                        }
                                     }
                                 ]
                             }
@@ -36004,11 +36178,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -36033,15 +36205,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -36061,7 +36228,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -44027,15 +44194,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "dm.xpt",
+                                "dataset": "dm",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "SUBJID is not unique within study",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "SUBJID": "NotUnique1"
+                                        }
                                     }
                                 ]
                             }
@@ -44053,11 +44224,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -44082,15 +44251,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -44110,7 +44274,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -52765,15 +52929,19 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "DSSCAT is not present when subject has more than one record per Epoch with DSCAT = 'DISPOSITION EVENT'.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             }
@@ -52800,11 +52968,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -52861,15 +53029,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "More than one record per subject per DSSCAT per EPOCH",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 5,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT"
+                                        }
                                     }
                                 ]
                             }
@@ -52906,11 +53088,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -52932,15 +53114,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -52960,7 +53137,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -52980,15 +53157,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "More than one record per subject per DSSCAT per EPOCH",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT"
+                                        }
                                     }
                                 ]
                             }
@@ -53025,11 +53216,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53060,15 +53251,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53088,7 +53274,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53110,15 +53296,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53138,7 +53319,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53174,15 +53355,33 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "More than 1 record exists per subject per EPOCH with DSCAT = 'DISPOSITION EVENT' and DSSCAT = 'STUDY PARTICIPATION'.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT",
+                                            "USUBJID": "S001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY PARTICIPATION",
+                                            "EPOCH": "TREATMENT",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             }
@@ -53223,11 +53422,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53252,15 +53451,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53280,7 +53474,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53316,15 +53510,71 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "More than 1 record exists per subject per EPOCH with DSCAT = 'DISPOSITION EVENT' and DSSCAT = 'STUDY TREATMENT'.",
+                                "number_errors": 6,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 2,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S002"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 3,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S002"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 4,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S002"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 5,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "STUDY TREATMENT",
+                                            "USUBJID": "S002"
+                                        }
                                     }
                                 ]
                             }
@@ -53403,11 +53653,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53432,15 +53682,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -53460,7 +53705,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53508,15 +53753,29 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "sm.xpt",
+                                "dataset": "sm",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "MIDSTYPE is not unique within subject when MIDSTYPE = TM.MIDSTYPE and TM.TMRPT = 'N'",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 2,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "MIDSTYPE": "DIAGNOSIS",
+                                            "TMRPT": "N"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "MIDSTYPE": "DIAGNOSIS",
+                                            "TMRPT": "N"
+                                        }
                                     }
                                 ]
                             },
@@ -53554,7 +53813,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -53591,15 +53850,10 @@
                             {
                                 "dataset": "sm.xpt",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "tm.xpt",
@@ -53635,7 +53889,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87037,15 +87291,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is more than one record per subject per EPOCH",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
                                     }
                                 ]
                             }
@@ -87084,11 +87354,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87108,15 +87378,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is more than one record per subject per EPOCH",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
                                     }
                                 ]
                             }
@@ -87155,11 +87441,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87179,15 +87465,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "There is more than one record per subject per EPOCH",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "DSCAT": "DISPOSITION EVENT",
+                                            "DSSCAT": "Not in dataset",
+                                            "EPOCH": "TREATMENT"
+                                        }
                                     }
                                 ]
                             }
@@ -87226,11 +87528,11 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
+                            "execution_status_match": true,
+                            "number_of_errors_match": true,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87255,15 +87557,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87283,7 +87580,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87311,15 +87608,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87339,7 +87631,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93874,54 +94166,468 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "DSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 13,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 1.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 2.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 3.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 4.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 7.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 1.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 2.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 3.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 4.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 7.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ss1.xpt",
+                                "dataset": "ss1",
                                 "domain": "SS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 14,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0002"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AESEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "lbae.xpt",
+                                "dataset": "lbae",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 4.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 5.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 6.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 7.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 4.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 5.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 6.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 7.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
                                     }
                                 ]
                             }
@@ -94241,7 +94947,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94264,54 +94970,538 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "ds.xpt",
+                                "dataset": "ds",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "DSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 14,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 1.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 2.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 3.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 4.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 6.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "DSSEQ": 7.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 1.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 2.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 3.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 4.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 5.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 6.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "DSSEQ": 7.0,
+                                            "POOLID": "Not in dataset",
+                                            "USUBJID": "0002"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ss1.xpt",
+                                "dataset": "ss1",
                                 "domain": "SS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 14,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "0001",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0001"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 1.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 2.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 3.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 4.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 5.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 6.0,
+                                            "USUBJID": "0002"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "0002",
+                                        "value": {
+                                            "POOLID": "Not in dataset",
+                                            "SSSEQ": 7.0,
+                                            "USUBJID": "0002"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "ae.xpt",
+                                "dataset": "ae",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AESEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 14,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 2.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 3.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 4.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 5.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 6.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 7.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 1.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 2.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 3.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 4.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 5.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 6.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "AESEQ": 7.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "lbae.xpt",
+                                "dataset": "lbae",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 4.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 5.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 6.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 7.0,
+                                            "POOLID": "0001",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 4.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 5,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 5.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 6,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 6.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 7,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "LBSEQ": 7.0,
+                                            "POOLID": "0002",
+                                            "USUBJID": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -94324,22 +95514,17 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "message": "No valid columns found for uniqueness check."
                                     }
                                 ]
                             },
                             {
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96566,15 +97751,71 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "te.xpt",
+                                "dataset": "te",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The combination of TESTRL, TEENRL, and TEDUR is not unique for each ETCD.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "HUMAN INSULIN",
+                                            "ETCD": "E001",
+                                            "TEDUR": "P26W",
+                                            "TEENRL": "Not in dataset",
+                                            "TESTRL": "FIRST DOSE OF HUMAN INSULIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "HUMAN INSULIN",
+                                            "ETCD": "E002",
+                                            "TEDUR": "P26W",
+                                            "TEENRL": "Not in dataset",
+                                            "TESTRL": "FIRST DOSE OF HUMAN INSULIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E006",
+                                            "TEDUR": "P2W",
+                                            "TEENRL": "Not in dataset",
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E006",
+                                            "TEDUR": "P2W",
+                                            "TEENRL": "Not in dataset",
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E007",
+                                            "TEDUR": "P2W",
+                                            "TEENRL": "Not in dataset",
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
                                     }
                                 ]
                             }
@@ -96592,11 +97833,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96616,15 +97855,71 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "te.xpt",
+                                "dataset": "te",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "The combination of TESTRL, TEENRL, and TEDUR is not unique for each ETCD.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "HUMAN INSULIN",
+                                            "ETCD": "E001",
+                                            "TEDUR": "Not in dataset",
+                                            "TEENRL": "END OF TREATMENT",
+                                            "TESTRL": "FIRST DOSE OF HUMAN INSULIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "HUMAN INSULIN",
+                                            "ETCD": "E002",
+                                            "TEDUR": "Not in dataset",
+                                            "TEENRL": "END OF TREATMENT",
+                                            "TESTRL": "FIRST DOSE OF HUMAN INSULIN"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E006",
+                                            "TEDUR": "Not in dataset",
+                                            "TEENRL": null,
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E006",
+                                            "TEDUR": "Not in dataset",
+                                            "TEENRL": null,
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ELEMENT": "Y",
+                                            "ETCD": "E007",
+                                            "TEDUR": "Not in dataset",
+                                            "TEENRL": null,
+                                            "TESTRL": "INFORMED CONSENT SIGNED2"
+                                        }
                                     }
                                 ]
                             }
@@ -96642,11 +97937,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "execution_status_match": false,
-                            "number_of_errors_match": false,
-                            "deep_diff": []
+                            "execution_status_match": false
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96668,15 +97961,10 @@
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96696,7 +97984,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96721,15 +98009,10 @@
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96749,7 +98032,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96771,15 +98054,10 @@
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96799,7 +98077,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96821,15 +98099,10 @@
                             {
                                 "dataset": "te.xpt",
                                 "domain": "TE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_unique_set operator",
-                                        "message": "is_unique_set check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96849,7 +98122,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
