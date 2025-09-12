@@ -241,6 +241,57 @@ class SQLRuleProcessor:
     #         return None
     #     return f"{ct_package_type.lower()}ct"
 
+    @classmethod
+    def should_skip_class_logic(cls, dataset_metadata: SQLDatasetMetadata, rule: dict) -> bool:
+        """
+        Check if we can skip class logic because of expensive class determination and use only domain logic.
+        """
+        domains = rule.get("domains") or {}
+        classes = rule.get("classes") or {}
+
+        included_domains = domains.get("Include", [])
+        excluded_domains = domains.get("Exclude", [])
+        included_classes = classes.get("Include", [])
+        excluded_classes = classes.get("Exclude", [])
+
+        total_classes = len(included_classes) + len(excluded_classes)
+        if total_classes != 1:
+            return False
+
+        explicit_domains = []
+        for domain_list in [included_domains, excluded_domains]:
+            explicit_domains.extend(
+                [d for d in domain_list if d != ALL_KEYWORD and not d.endswith("--") and not d.startswith("--")]
+            )
+
+        if len(explicit_domains) != 1:
+            return False
+
+        single_class = (included_classes + excluded_classes)[0]
+        single_domain = explicit_domains[0]
+
+        if single_class == ALL_KEYWORD:
+            return False
+
+        variables = dataset_metadata.variables if hasattr(dataset_metadata, "variables") else []
+        domain_class = cls.get_dataset_class_from_variables(variables, single_domain)
+
+        if domain_class == single_class:
+            logger.debug(
+                f"Optimization: Skipping class logic for rule. "
+                f"Domain {single_domain} belongs to class {single_class}"
+            )
+            return True
+
+        if domain_class == FINDINGS_ABOUT and single_class == FINDINGS:  # FINDINGS_ABOUT is considered part of FINDINGS
+            logger.debug(
+                f"Optimization: Skipping class logic for rule. "
+                f"Domain {single_domain} (FINDINGS_ABOUT) belongs to class {single_class} (FINDINGS)"
+            )
+            return True
+
+        return False
+
     def perform_rule_operations(
         self,
         rule: dict,
@@ -385,6 +436,19 @@ class SQLRuleProcessor:
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
         dataset_name = dataset_metadata.dataset_name
+
+        if self.should_skip_class_logic(dataset_metadata, rule):
+            logger.debug(f"Using domain-only validation for rule {rule_id}, dataset {dataset_name}")
+
+            if not self.rule_applies_to_domain(dataset_metadata, rule):
+                reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
+                logger.info(f"is_suitable_for_validation. {reason}, result=False")
+                return False, reason
+
+            logger.info(
+                f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True (domain-only)"
+            )
+            return True, ""
 
         if not self.rule_applies_to_class(dataset_metadata, rule):
             reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
