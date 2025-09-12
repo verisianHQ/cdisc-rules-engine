@@ -70,6 +70,7 @@ _Indicates SQL engine running rules it shouldn't_
 - [5] Operation max_date is not implemented
 - [4] '$ds_dsdecod'
 - [4] invalid_duration check_operator not implemented
+- [4] longer_than_or_equal_to check_operator not implemented
 - [4] Operation extract_metadata is not implemented
 - [4] Operation dy is not implemented
 - [4] Rule contains invalid operator
@@ -87,9 +88,9 @@ _Indicates SQL engine not respecting rule applicability_
 
 - [6] Rule skipped - doesn't apply to class for rule id=CORE-00047...
 - [6] Rule skipped - doesn't apply to class for rule id=CORE-00053...
-- [6] Rule skipped - doesn't apply to class for rule id=CORE-00058...
-- [5] Rule skipped - doesn't apply to class for rule id=CORE-00014...
 - [5] Rule skipped - doesn't apply to class for rule id=CORE-00056...
+- [4] Rule skipped - doesn't apply to class for rule id=CORE-00012...
+- [4] Rule skipped - doesn't apply to class for rule id=CORE-00033...
 
 ### SQL Errors where Old Engine Succeeded (72 cases)
 
@@ -97,11 +98,10 @@ _Indicates actual regressions in SQL implementation_
 
 - [17] is_unique_set check_operator not implemented
 - [17] not_matches_regex check_operator not implemented
+- [13] longer_than check_operator not implemented
 - [12] matches_regex check_operator not implemented
 - [8] Operation variable_count is not implemented
 - [6] Operation dy is not implemented
 - [5] column or relation does not exist
+- [3] longer_than_or_equal_to check_operator not implemented
 - [2] invalid input syntax
-- [2] prefix_equal_to check_operator not implemented
-- [2] Joins with relationship domains are not supported yet
-- [1] 'NoneType' object has no attribute 'get_column_hash'
