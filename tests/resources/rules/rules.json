@@ -95988,6 +95988,153 @@
         "negative_folder_path": "SDTMIG/CG0006/negative",
         "negative_regressions": [
             {
+                "SDTMIG/CG0006/negative/03": {
+                    "test_case_xslx_file": "SDTMIG/CG0006/negative/03/data/unit-test-coreid-CG0006-negative 3.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": "DMDY is not calculated correctly even though the date portion of DMDTC is complete, the date portion of DM.RFSTDTC is a complete date, and DMDY is not empty.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": -1,
+                                            "DMDTC": "2012-11-29",
+                                            "DMDY": -5.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
+                "SDTMIG/CG0006/negative/02": {
+                    "test_case_xslx_file": "SDTMIG/CG0006/negative/02/data/unit-test-coreid-CG0006-negative 2.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=LB",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operation execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in sqldaydatavalidatoroperation operation",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "LBDY is not calculated correctly even though the date portion of LBDTC is complete, the date portion of DM.RFSTDTC is a complete date, and LBDY is not empty.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": 1,
+                                            "LBDTC": "2012-11-30",
+                                            "LBDY": 2.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "DMDTC"
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "execution_error",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
                 "SDTMIG/CG0006/negative/01": {
                     "test_case_xslx_file": "SDTMIG/CG0006/negative/01/data/unit-test-coreid-CG0006-negative 1.xlsx",
                     "engine_regression": {
@@ -96000,12 +96147,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -96013,12 +96160,12 @@
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -96026,12 +96173,12 @@
                                 "dataset": "ie.xpt",
                                 "domain": "IE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -96164,6 +96311,60 @@
                         "sql_results_validation": "invalid"
                     }
                 }
+            }
+        ],
+        "positive_folder_path": "SDTMIG/CG0006/positive",
+        "positive_regressions": [
+            {
+                "SDTMIG/CG0006/positive/03": {
+                    "test_case_xslx_file": "SDTMIG/CG0006/positive/03/data/unit-test-coreid-CG0006-positive 3.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
             },
             {
                 "SDTMIG/CG0006/negative/02": {
@@ -96186,12 +96387,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in sqldaydatavalidatoroperation operation",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -96328,12 +96529,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -96341,12 +96542,12 @@
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -96354,12 +96555,12 @@
                                 "dataset": "ie.xpt",
                                 "domain": "IE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
                                     }
                                 ]
                             },
@@ -100269,12 +100470,12 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_stdy."
                                     }
                                 ]
                             }
@@ -100373,12 +100574,12 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_stdy."
                                     }
                                 ]
                             }
@@ -100448,12 +100649,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_endy."
                                     }
                                 ]
                             },
@@ -100461,12 +100662,12 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_endy."
                                     }
                                 ]
                             },
@@ -100596,12 +100797,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_endy."
                                     }
                                 ]
                             },
@@ -100617,12 +100818,12 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation dy is not implemented"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_endy."
                                     }
                                 ]
                             }
