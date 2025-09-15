@@ -508,7 +508,7 @@ def test_is_incomplete_date_sql(data, expected_incomplete):
                     "2023-01-01 ",
                 ]
             },
-            [False, False, True, True, True],
+            [True, True, True, True, True],
         ),
         (
             {
@@ -531,6 +531,28 @@ def test_is_incomplete_date_sql(data, expected_incomplete):
                 ]
             },
             [False, False, True, True],
+        ),
+        (
+            {
+                "target": [
+                    "2023-01/2023-02",
+                    "2023-01-01T12:-:",
+                    "2023-01-01/2023-01-02T12:30:45",
+                    "2023-01-01T12:30:-",
+                ]
+            },
+            [False, True, False, True],
+        ),
+        (
+            {
+                "target": [
+                    "2023-01/invalid",
+                    "2023-01-01T25:-:",
+                    "invalid/2023-02",
+                    "2023-01-01T12:65:-",
+                ]
+            },
+            [True, True, True, True],
         ),
     ],
 )

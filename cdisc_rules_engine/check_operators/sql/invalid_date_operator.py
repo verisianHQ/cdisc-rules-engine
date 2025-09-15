@@ -6,11 +6,18 @@ YEAR_FORMAT_PATTERN = "^-?[0-9]{4}$"
 PARTIAL_DATE_FORMAT_PATTERN = "^-?[0-9]{4}-[0-9]{2}$"
 UNCERTAINTY_YEAR_PATTERN = "^-?[0-9]{4}--$"
 UNCERTAINTY_MONTH_PATTERN = "^-?[0-9]{4}-[0-9]{2}--$"
+# Patterns for incomplete/invalid formats
+INVALID_YEAR_DASH_PATTERN = "^-?[0-9]{4}-$"  # YYYY- (invalid)
+INVALID_MONTH_DASH_PATTERN = "^-?[0-9]{4}-[0-9]{2}-$"  # YYYY-MM- (invalid)
 ISO_DATE_FORMAT_PATTERN = (
     "^-?[0-9]{4}-[0-9]{2}-[0-9]{2}(T[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\\.[0-9]+)?([+-][0-9]{2}:?[0-9]{2}|Z)?)?$"
 )
 INVALID_HOUR_PATTERN = "T(2[4-9]|[3-9][0-9]):"
 INVALID_MINUTE_SECOND_PATTERN = ":([6-9][0-9])([^0-9]|$)"
+
+# Date range patterns for uncertainty handling
+DATE_RANGE_PATTERN = "/"
+TIME_UNCERTAINTY_PATTERN = "-:"
 
 
 class InvalidDateOperator(BaseSqlOperator):
@@ -40,6 +47,34 @@ class InvalidDateOperator(BaseSqlOperator):
         return f"""
             {self._column_sql(target)} ~ '{UNCERTAINTY_YEAR_PATTERN}' OR
             {self._column_sql(target)} ~ '{UNCERTAINTY_MONTH_PATTERN}'
+        """
+
+    def _has_invalid_incomplete_patterns(self, target):
+        """Check if the date has invalid incomplete format like '2023-' or '2023-05-'."""
+        return f"""
+            {self._column_sql(target)} ~ '{INVALID_YEAR_DASH_PATTERN}' OR
+            {self._column_sql(target)} ~ '{INVALID_MONTH_DASH_PATTERN}'
+        """
+
+    def _is_date_range_pattern(self, target):
+        """Check if the date contains a range separator (/)."""
+        return f"{self._column_sql(target)} ~ '{DATE_RANGE_PATTERN}'"
+
+    def _has_time_uncertainty_pattern(self, target):
+        """Check if the date contains time uncertainty pattern (-:)."""
+        return f"{self._column_sql(target)} ~ '{TIME_UNCERTAINTY_PATTERN}'"
+
+    def _is_valid_date_range(self, target):
+        """Check if a date range pattern is valid (basic validation)."""
+        return f"""
+            CASE
+                -- Simple month ranges: YYYY-MM/YYYY-MM
+                WHEN {self._column_sql(target)} ~ '^[0-9]{{4}}-[0-9]{{2}}/[0-9]{{4}}-[0-9]{{2}}$' THEN TRUE
+                -- Full date ranges: YYYY-MM-DD/YYYY-MM-DD (with possible time components)
+                WHEN {self._column_sql(target)} ~
+                     '^[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}/[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}' THEN TRUE
+                ELSE FALSE
+            END
         """
 
     def _is_iso_format_pattern(self, target):
@@ -94,9 +129,17 @@ class InvalidDateOperator(BaseSqlOperator):
         def sql():
             return f"""
             CASE
-                WHEN {self._is_empty_sql(target)} THEN FALSE
+                -- Empty values are invalid
+                WHEN {self._is_empty_sql(target)} THEN TRUE
                 ELSE (
                     CASE
+                        -- Handle invalid incomplete patterns (YYYY- and YYYY-MM-) first - these are invalid
+                        WHEN {self._has_invalid_incomplete_patterns(target)} THEN TRUE
+                        -- Handle time uncertainty patterns with -: (these are invalid)
+                        WHEN {self._has_time_uncertainty_pattern(target)} THEN TRUE
+                        -- Handle date ranges with / - check if they're valid ranges
+                        WHEN {self._is_date_range_pattern(target)} THEN
+                            NOT ({self._is_valid_date_range(target)})
                         -- Handle 4-digit year format only (YYYY)
                         WHEN {self._is_year_format_valid(target)} THEN FALSE
                         -- Handle partial date format (YYYY-MM) with validation
