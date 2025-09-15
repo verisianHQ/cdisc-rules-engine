@@ -31973,15 +31973,88 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "dataset": "relrec",
+                                "domain": "relrec",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL and USUBJID are not completed, but IDVAR equals Sequence Number.",
+                                "number_errors": 7,
                                 "errors": [
                                     {
-                                        "error": "SQL error in ends_with operator",
-                                        "message": "ends_with check_operator not implemented"
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "DDSEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "DD",
+                                            "RELID": "AEDD"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "AESEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "AE",
+                                            "RELID": "AEFA"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "FASEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "FA",
+                                            "RELID": "AEFA"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "AESEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "AE",
+                                            "RELID": "AECM1"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "CMSEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "AE",
+                                            "RELID": "AECM1"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "AESEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "AE",
+                                            "RELID": "AEMH1"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IDVAR": "MHSEQ",
+                                            "IDVARVAL": null,
+                                            "RDOMAIN": "AE",
+                                            "RELID": "AEMH1"
+                                        }
                                     }
                                 ]
                             }
@@ -32003,7 +32076,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -32027,16 +32100,11 @@
                         "results_sql": [
                             {
                                 "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in ends_with operator",
-                                        "message": "ends_with check_operator not implemented"
-                                    }
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -32056,7 +32124,7 @@
                             "number_of_errors_match": false,
                             "deep_diff": []
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "skipped",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83395,8 +83463,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in starts_with operator",
-                                        "message": "starts_with check_operator not implemented"
+                                        "error": "SQL error in suffix_matches_regex operator",
+                                        "message": "suffix_matches_regex check_operator not implemented"
                                     }
                                 ]
                             },
@@ -83464,8 +83532,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in starts_with operator",
-                                        "message": "starts_with check_operator not implemented"
+                                        "error": "SQL error in suffix_matches_regex operator",
+                                        "message": "suffix_matches_regex check_operator not implemented"
                                     }
                                 ]
                             },
@@ -83530,8 +83598,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in starts_with operator",
-                                        "message": "starts_with check_operator not implemented"
+                                        "error": "SQL error in suffix_matches_regex operator",
+                                        "message": "suffix_matches_regex check_operator not implemented"
                                     }
                                 ]
                             },
