@@ -3247,15 +3247,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0299/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0299/positive/01/data/unit-test-coreid-CG0299-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -14495,15 +14488,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0053/negative/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0053/negative/02/data/mh.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
@@ -14583,27 +14569,52 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0053/positive/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0053/positive/02/data/mh.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
                 "SDTMIG/CG0053/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0053/positive/01/data/cm.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0053/positive/01/data/unit-test-coreid-CG0053-positive.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -15651,15 +15662,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0653/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0653/negative/01/data/unit-test-CG0653-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -15667,15 +15671,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0653/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0653/positive/01/data/unit-test-CG0653-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -15696,15 +15693,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0654/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0654/negative/01/data/unit-test-CG0654-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -15712,15 +15702,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0654/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0654/positive/01/data/unit-test-CG0654-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -16622,14 +16605,151 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0648/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0648/negative/01/data/unit-test-CG0648-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0648/negative/01/data/unit-test-CG0648-negative_20250611.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sj.xpt",
+                                "domain": "SJ",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000043, dataset=sj",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tt.xpt",
+                                "domain": "TT",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000043, dataset=tt",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tp.xpt",
+                                "domain": "TP",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000043, dataset=tp",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sj.xpt",
+                                "domain": "SJ",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=sj",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tt.xpt",
+                                "domain": "TT",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=tt",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tp.xpt",
+                                "domain": "TP",
+                                "execution_status": "success",
+                                "execution_message": "TP dataset is present.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "TP": "tp.xpt"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "sql_overall_result": "skipped",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -16638,14 +16758,110 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0648/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0648/positive/01/data/unit-test-CG0648-positive.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0648/positive/01/data/unit-test-CG0648-positive_20250611.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sj.xpt",
+                                "domain": "SJ",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000043, dataset=sj",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=dm",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "suppae.xpt",
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=suppae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=vs",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=ae",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sj.xpt",
+                                "domain": "SJ",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000043, dataset=sj",
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "sql_overall_result": "skipped",
+                        "old_overall_result": "skipped",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -21126,15 +21342,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0300/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0300/negative/01/data/unit-test-coreid-CG0300-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -21142,15 +21351,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0300/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0300/positive/01/data/unit-test-coreid-CG0300-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -21433,15 +21635,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0056/negative/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0056/negative/02/data/unit-test-coreid-CG0056-negative 2.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
@@ -21521,15 +21716,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0056/positive/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0056/positive/02/data/unit-test-coreid-CG0056-positive 2.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
@@ -27999,15 +28187,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0547/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0547/negative/01/data/unit-test-CG0547-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -28015,15 +28196,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0547/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0547/positive/01/data/unit-test-CG0547-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -29214,28 +29388,14 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0081/negative/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0081/negative/02/data/mh.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
                 "SDTMIG/CG0081/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0081/negative/01/data/cm.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -29243,28 +29403,14 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0081/positive/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0081/positive/02/data/mh.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
                 "SDTMIG/CG0081/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0081/positive/01/data/cm.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -35513,15 +35659,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0257/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0257/positive/01/data/unit-test-CG0257-psotive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -35616,15 +35755,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0258/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0258/positive/01/data/unit-test-CG0258-psotive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -35645,15 +35777,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0259/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0259/negative/01/data/unit-test-CG0259-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -35661,28 +35786,14 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0259/positive/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0259/positive/02/data/unit-test-CG0259-psotive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             },
             {
                 "SDTMIG/CG0259/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0259/positive/01/data/unit-test-CG0259-psotive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -35703,15 +35814,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0260/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0260/negative/01/data/unit-test-CG0260-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -35719,15 +35823,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0260/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0260/positive/01/data/unit-test-CG0260-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -36813,15 +36910,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0163/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0163/negative/01/data/unit-test-coreid-CG0163-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -36829,15 +36919,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0163/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0163/positive/01/data/unit-test-coreid-CG0163-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -39196,15 +39279,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0541/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0541/negative/01/data/lb.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -39212,15 +39288,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0541/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0541/positive/01/data/lb.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -44370,15 +44439,8 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0168/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0168/negative/01/data/unit-test-CG0168-negative.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ],
@@ -44386,15 +44448,8 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0168/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0168/positive/01/data/unit-test-CG0168-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
-                    }
+                    "test_case_xslx_file": null,
+                    "engine_regression": null
                 }
             }
         ]
@@ -99038,14 +99093,60 @@
             },
             {
                 "SDTMIG/CG0413/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0413/negative/01/data/unit-test-coreid-CG0413-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0413/negative/01/data/unit-test-coreid-CG0413-negative_1.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
-                        "datasets_conversion": "test_metadata_error - 'Datasets' sheet not found in xlsx file",
-                        "datasets_import_sql": "FAIL",
-                        "results_present_sql": false,
-                        "dataset_import_old": "FAIL",
-                        "results_present_old": false
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ab.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in prefix_not_equal_to operator",
+                                        "message": "prefix_equal_to check_operator not implemented"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ab.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "Dataset name does not begin with DOMAIN value",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "ab"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "execution_status_match": false,
+                            "number_of_errors_match": false,
+                            "deep_diff": []
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
