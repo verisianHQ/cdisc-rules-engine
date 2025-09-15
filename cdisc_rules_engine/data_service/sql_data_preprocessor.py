@@ -16,7 +16,7 @@ from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 logger = logging.getLogger(__name__)
 
 
-class DataPreprocessor:
+class SqlDataPreprocessor:
     """
     Performs preprocessing operations on clinical data.
     Operations should be performed at data ingestion time.
@@ -1460,9 +1460,8 @@ class DataPreprocessor:
 
     @staticmethod
     def run(data_service: PostgresQLDataService):
-        """Performs all preprocessing operations on data using the DataPreprocessor."""
         logger.info("Starting data preprocessing")
-        preprocessor = DataPreprocessor(data_service)
+        preprocessor = SqlDataPreprocessor(data_service)
         preprocessing_results = preprocessor.preprocess_all()
         logger.info(f"Preprocessing completed: {preprocessing_results}")
 

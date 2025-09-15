@@ -25,7 +25,7 @@ class DatasetMetadataManager:
     """
 
     def __init__(self, standard: IGSpecification, pgi: PostgresQLInterface):
-        self._dataset_metadata = {}
+        self._dataset_metadata: dict[str, DatasetMetadata] = {}
         self.standard = standard
         self.pgi = pgi
         self._domains = None
@@ -52,7 +52,9 @@ class DatasetMetadataManager:
         Generates and adds metadata for a dataset
         """
         self._load_domains()
-        self._dataset_metadata[dataset_name.lower()] = metadata
+        self._dataset_metadata[dataset_name.lower()] = DatasetMetadataManager.build_metadata(
+            dataset_name, self._domains
+        )
 
     def get_dataset_metadata(self, dataset_name: str) -> Union[DatasetMetadata, None]:
         """
@@ -63,9 +65,29 @@ class DatasetMetadataManager:
     @staticmethod
     def build_metadata(name: str, domain_lookup: dict) -> DatasetMetadata:
         """
-        Build metadata the metadata for a dataset.
+        Construct the metadata for the dataset.
         """
+        original = name
+
         name = name.lower()
         if name.startswith("supp"):
             is_supp = True
-            unsplit_name = name[4:]
+            name = name[4:]
+            domain = "suppqual"
+
+        if name.startswith("fa"):
+            is_findings_about = True
+            name = name[2:]
+            domain = "fa"
+
+        if name.startswith("relrec"):
+            is_relrec = True
+            domain = "relrec"
+        elif name.startswith("co"):
+            is_comments = True
+            domain = "co"
+        elif name.startswith("relspec"):
+
+        else:
+            if name[:2] in domain_lookup:
+                domain = name[:2]

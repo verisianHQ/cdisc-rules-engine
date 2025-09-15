@@ -6,6 +6,7 @@ from typing import Union
 
 from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
+from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.startup.populate_codelists import (
     populate_codelists,
@@ -19,7 +20,6 @@ from cdisc_rules_engine.data_service.startup.populate_terminology import (
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
-from cdisc_rules_engine.utilities.sql_dataset_preprocessor import SQLDatasetPreprocessor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -197,7 +197,7 @@ class PostgresQLDataService:
             terminology_paths=terminology_paths,
         )
 
-        SQLDatasetPreprocessor.run(pgi)
+        SqlDataPreprocessor.run(pgi)
 
         return instance
 
