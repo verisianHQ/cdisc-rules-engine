@@ -131,9 +131,7 @@ def run_test_cases(
             test_case_regression.append(
                 {
                     extract_final_path(test_case_folder_path, CASE_DEPTH): {
-                        "test_case_xslx_file": (
-                            extract_final_path(test_case_file_path, DATA_DEPTH) if test_case_file_path else None
-                        ),
+                        "test_case_xslx_file": extract_final_path(test_case_file_path, DATA_DEPTH),
                         "engine_regression": engine_regression,
                     }
                 }
@@ -430,7 +428,7 @@ def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
     if "SDTMIG" in row["std"]:
         paths.extend(
             find_dirs(
-                local_path / "SDTMIG",
+                local_path + "SDTMIG",
                 rid,
                 case_insensitive=True,
             )
@@ -439,21 +437,21 @@ def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
     if any(s in wanted for s in row["std"]):
         paths.extend(
             find_dirs(
-                local_path / "ADAMIG",
+                local_path + "ADAMIG",
                 rid,
                 case_insensitive=True,
             )
         )
     paths.extend(
         find_dirs(
-            local_path / "FDA Business Rules",
+            local_path + "FDA Business Rules",
             rid,
             case_insensitive=True,
         )
     )
     paths.extend(
         find_dirs(
-            local_path / "FDA Validator Rules",
+            local_path + "FDA Validator Rules",
             rid,
             case_insensitive=True,
         )
