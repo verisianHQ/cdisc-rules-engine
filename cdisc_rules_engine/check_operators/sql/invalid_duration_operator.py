@@ -10,6 +10,13 @@ class InvalidDurationOperator(BaseSqlOperator):
         operation_column = f"{target}_invalid_duration".lower()
 
         def sql_subquery():
+            """
+            These regex patterns validate ISO 8601 duration format strings.
+            They are custom implementations based on the ISO 8601 standard
+            specifications for durations, which can be in the
+            Format: P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]W
+            Originally implemented in business_rules.utils from the original engine.
+            """
             if negative:
                 pattern = (
                     r"^[-]?P(?!$)(?:(?:(\d+(?:[.,]\d*)?Y)?[,]?(\d+(?:[.,]\d*)?M)?[,]?"
