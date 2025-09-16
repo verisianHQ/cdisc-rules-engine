@@ -9,19 +9,18 @@
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 26
+- Rules with **operator errors**: 25
 - Rules with **operation errors**: 17
-- Rules with **other errors**: 16
+- Rules with **other errors**: 17
 
-## Missing Operators (7 operators, 89 total failures across 26 rule occurrences)
+## Missing Operators (6 operators, 86 total failures across 25 rule occurrences)
 
 1.  **not_matches_regex**: 32 failures across 13 rules
 2.  **matches_regex**: 43 failures across 8 rules
 3.  **invalid_duration**: 4 failures across 1 rules
 4.  **suffix_matches_regex**: 3 failures across 1 rules
-5.  **prefix_equal_to**: 3 failures across 1 rules
-6.  **has_next_corresponding_record**: 2 failures across 1 rules
-7.  **empty_within_except_last_row**: 2 failures across 1 rules
+5.  **has_next_corresponding_record**: 2 failures across 1 rules
+6.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
@@ -97,7 +96,7 @@ _Indicates actual regressions in SQL implementation_
 - [8] Operation variable_count is not implemented
 - [6] Operation dy is not implemented
 - [5] column or relation does not exist
-- [3] prefix_equal_to check_operator not implemented
+- [3] 'dataset_name'
 - [2] invalid input syntax
 - [2] Joins with relationship domains are not supported yet
 - [1] No valid columns found for uniqueness check.
