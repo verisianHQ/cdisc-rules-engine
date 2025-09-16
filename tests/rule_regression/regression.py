@@ -523,7 +523,7 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
                 TestDataset(
                     filename=filename,
                     filepath=filename,
-                    name=filename.split(".")[0],
+                    name=filename.split(".")[0].upper(),
                     label=label,
                     variables=variables,
                     records=data,
