@@ -9,7 +9,7 @@
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 25
+- Rules with **operator errors**: 26
 - Rules with **operation errors**: 17
 - Rules with **other errors**: 17
 
@@ -19,8 +19,9 @@
 2.  **matches_regex**: 43 failures across 8 rules
 3.  **invalid_duration**: 4 failures across 1 rules
 4.  **suffix_matches_regex**: 3 failures across 1 rules
-5.  **has_next_corresponding_record**: 2 failures across 1 rules
-6.  **empty_within_except_last_row**: 2 failures across 1 rules
+5.  **prefix_equal_to**: 3 failures across 1 rules
+6.  **has_next_corresponding_record**: 2 failures across 1 rules
+7.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
@@ -56,48 +57,48 @@
 
 ## SQL vs Old Engine Discrepancies
 
-### SQL Errors where Old Engine Skipped (72 cases)
+### SQL Errors where Old Engine Skipped (44 cases)
 
 _Indicates SQL engine running rules it shouldn't_
 
-- [15] not_matches_regex check_operator not implemented
-- [9] matches_regex check_operator not implemented
+- [5] matches_regex check_operator not implemented
 - [5] Operation max_date is not implemented
+- [4] not_matches_regex check_operator not implemented
 - [4] '$ds_dsdecod'
-- [4] invalid_duration check_operator not implemented
 - [4] Operation extract_metadata is not implemented
 - [4] Operation dy is not implemented
 - [4] Rule contains invalid operator
 - [3] Joins with relationship domains are not supported yet
 - [3] Operation min_date is not implemented
+- [3] suffix_matches_regex check_operator not implemented
 
-### SQL Success where Old Engine Skipped (366 cases)
+### SQL Success where Old Engine Skipped (141 cases)
 
 _Indicates SQL engine not respecting rule applicability_
 **Skip Types:**
 
-- Class Not Applicable: 262
-- Domain Not Applicable: 104
+- Domain Not Applicable: 136
+- Class Not Applicable: 5
 
 **Examples:**
 
-- [6] Rule skipped - doesn't apply to class for rule id=CORE-00047...
-- [6] Rule skipped - doesn't apply to class for rule id=CORE-00053...
-- [6] Rule skipped - doesn't apply to class for rule id=CORE-00058...
-- [5] Rule skipped - doesn't apply to class for rule id=CORE-00014...
-- [5] Rule skipped - doesn't apply to class for rule id=CORE-00056...
+- [4] Rule skipped - doesn't apply to domain for rule id=CORE-0001...
+- [4] Rule skipped - doesn't apply to domain for rule id=CORE-0003...
+- [4] Rule skipped - doesn't apply to domain for rule id=CORE-0008...
+- [3] Rule skipped - doesn't apply to domain for rule id=CORE-0000...
+- [3] Rule skipped - doesn't apply to domain for rule id=CORE-0001...
 
-### SQL Errors where Old Engine Succeeded (57 cases)
+### SQL Errors where Old Engine Succeeded (98 cases)
 
 _Indicates actual regressions in SQL implementation_
 
-- [17] not_matches_regex check_operator not implemented
-- [12] matches_regex check_operator not implemented
+- [28] not_matches_regex check_operator not implemented
+- [16] matches_regex check_operator not implemented
+- [8] Operation domain_label is not implemented
 - [8] Operation variable_count is not implemented
+- [6] column or relation does not exist
 - [6] Operation dy is not implemented
-- [5] column or relation does not exist
-- [3] 'dataset_name'
-- [2] invalid input syntax
-- [2] Joins with relationship domains are not supported yet
-- [1] No valid columns found for uniqueness check.
-- [1] 'NoneType' object has no attribute 'get_column_hash'
+- [4] invalid_duration check_operator not implemented
+- [4] invalid input syntax
+- [3] prefix_equal_to check_operator not implemented
+- [2] has_next_corresponding_record check_operator not implemented
