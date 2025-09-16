@@ -9,7 +9,7 @@
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 26
+- Rules with **operator errors**: 25
 - Rules with **operation errors**: 17
 - Rules with **other errors**: 17
 
@@ -19,9 +19,8 @@
 2.  **matches_regex**: 43 failures across 8 rules
 3.  **invalid_duration**: 4 failures across 1 rules
 4.  **suffix_matches_regex**: 3 failures across 1 rules
-5.  **prefix_equal_to**: 3 failures across 1 rules
-6.  **has_next_corresponding_record**: 2 failures across 1 rules
-7.  **empty_within_except_last_row**: 2 failures across 1 rules
+5.  **has_next_corresponding_record**: 2 failures across 1 rules
+6.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
@@ -100,5 +99,5 @@ _Indicates actual regressions in SQL implementation_
 - [6] Operation dy is not implemented
 - [4] invalid_duration check_operator not implemented
 - [4] invalid input syntax
-- [3] prefix_equal_to check_operator not implemented
+- [3] 'dataset_name'
 - [2] has_next_corresponding_record check_operator not implemented
