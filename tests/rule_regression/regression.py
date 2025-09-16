@@ -611,13 +611,13 @@ def find_data_file(path: str) -> str:
 
 
 def find_define_xml_file_path(path: str) -> str:
-    path_obj = Path(path)
-    if not path_obj.exists():
+    try:
+        for filename in os.listdir(path):
+            full_path = os.path.join(path, filename)
+            if os.path.isfile(full_path) and filename.lower() == "define.xml":
+                return full_path
+    except FileNotFoundError:
         return ""
-
-    define_xml_path = path_obj / "define.xml"
-    if define_xml_path.is_file():
-        return str(define_xml_path)
     return ""
 
 
