@@ -2,18 +2,22 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
-from cdisc_rules_engine.sql_operations.distinct import SqlDistinct
-from cdisc_rules_engine.sql_operations.maximum import SqlMaximum
+from cdisc_rules_engine.sql_operations.dataset_names import SqlDatasetNamesOperation
+from cdisc_rules_engine.sql_operations.distinct import SqlDistinctOperation
+from cdisc_rules_engine.sql_operations.numeric_operation import (
+    SqlNumericOperation,
+)
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
+from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 
 
 class SqlOperationsFactory:
     _operations_map = {
         "codelist_extensible": None,
         "codelist_terms": None,
-        "dataset_names": None,
+        "dataset_names": SqlDatasetNamesOperation,
         "define_extensible_codelists": None,
-        "distinct": SqlDistinct,
+        "distinct": SqlDistinctOperation,
         "dy": None,
         "extract_metadata": None,
         "get_column_order_from_dataset": None,
@@ -23,18 +27,18 @@ class SqlOperationsFactory:
         "get_model_filtered_variables": None,
         "get_parent_model_column_order": None,
         "map": None,
-        "max": SqlMaximum,
+        "max": lambda params, ds: SqlNumericOperation(params, ds, "MAX"),
         "max_date": None,
-        "mean": None,
-        "min": None,
+        "mean": lambda params, ds: SqlNumericOperation(params, ds, "AVG"),
+        "min": lambda params, ds: SqlNumericOperation(params, ds, "MIN"),
         "min_date": None,
-        "record_count": None,
+        "record_count": lambda params, ds: SqlNumericOperation(params, ds, "COUNT"),
         "valid_meddra_code_references": None,
         "valid_whodrug_references": None,
         "whodrug_code_hierarchy": None,
         "valid_meddra_term_references": None,
         "valid_meddra_code_term_pairs": None,
-        "variable_exists": None,
+        "variable_exists": SqlVariableExistsOperation,
         "variable_names": None,
         "variable_library_metadata": None,
         "variable_value_count": None,
@@ -57,18 +61,19 @@ class SqlOperationsFactory:
         "get_dataset_filtered_variables": None,
     }
 
+    @classmethod
     def get_service(
-        self,
+        cls,
         name: str,
         params: SqlOperationParams,
         data_service: PostgresQLDataService,
     ) -> SqlBaseOperation:
-        if name in self._operations_map:
-            operation = self._operations_map.get(name)
+        if name in cls._operations_map:
+            operation = cls._operations_map.get(name)
             if operation is None:
                 raise NotImplementedError(f"Operation {name} is not implemented")
             return operation(params, data_service)
 
         raise ValueError(
-            f"Operation name must be in  {list(self._operations_map.keys())}, " f"given operation name is {name}"
+            f"Operation name must be in  {list(cls._operations_map.keys())}, " f"given operation name is {name}"
         )

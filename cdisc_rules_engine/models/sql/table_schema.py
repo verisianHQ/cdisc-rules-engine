@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Union
+from typing import Any, Literal, Tuple, Union
 
 from cdisc_rules_engine.data_service.util import generate_hash
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -7,22 +7,25 @@ from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 class SqlTableSchema:
     """Stores the schema for a SQL table."""
 
-    def __init__(self, name: str, hash: str):
+    def __init__(self, name: str, hash: str, source: Literal["data", "derived"]):
         self.name = name
         self.hash = hash
         self._columns: dict[str, SqlColumnSchema] = {}
+        self.source = source
 
     def add_column(self, data: SqlColumnSchema) -> None:
         self._columns[data.name.lower()] = data
 
     def get_column(self, column: str) -> Union[SqlColumnSchema, None]:
+        if column is None:
+            return None
         return self._columns.get(column.lower())
 
     def has_column(self, column: str) -> bool:
         return self.get_column(column) is not None
 
     def get_column_hash(self, column: str) -> Union[str, None]:
-        col = self._columns.get(column.lower())
+        col = self.get_column(column)
         if col:
             return col.hash
         return None
@@ -33,7 +36,7 @@ class SqlTableSchema:
     @classmethod
     def from_data(cls, table_name: str, data: dict[str, Any]) -> "SqlTableSchema":
         """Create a SqlTableSchema from a dictionary."""
-        instance = cls(table_name.lower(), table_name.lower())
+        instance = cls(table_name.lower(), table_name.lower(), source="data")
         for column, value in data.items():
             instance.add_column(SqlColumnSchema.from_data(column, value))
         return instance
@@ -41,7 +44,7 @@ class SqlTableSchema:
     @classmethod
     def from_metadata(cls, metadata: dict[str, Any]) -> "SqlTableSchema":
         """Create a SqlTableSchema from its metadata."""
-        instance = cls(metadata.get("name").lower(), metadata.get("name").lower())
+        instance = cls(metadata.get("name").lower(), metadata.get("name").lower(), source="data")
         for variable_metadata in metadata.get("variables", []):
             instance.add_column(SqlColumnSchema.from_metadata(variable_metadata))
         return instance
@@ -50,4 +53,4 @@ class SqlTableSchema:
     def from_join(cls, name: str) -> "SqlTableSchema":
         """Create a SqlTableSchema for a join operation."""
         hash = generate_hash(name.lower())
-        return cls(name.lower(), hash)
+        return cls(name.lower(), hash, source="derived")

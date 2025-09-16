@@ -1,7 +1,7 @@
 import traceback
 from abc import abstractmethod
 from functools import wraps
-from typing import Any, List, Union
+from typing import Any, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -16,39 +16,55 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 
 
-def log_operator_execution(func):
-    @wraps(func)
-    def wrapper(self, other_value, *args, **kwargs):
-        try:
-            logger.info(f"Starting check operator: {func.__name__}")
-            result = func(self, other_value)
-            logger.info(f"Completed check operator: {func.__name__}")
-            return result
-        except Exception as e:
-            logger.error(f"Error in {func.__name__}: {str(e)}, " f"traceback: {traceback.format_exc()}")
-            error_message = str(e)
-            if isinstance(e, TypeError) and (
-                "NoneType" in error_message
-                or "None" in error_message
-                or any(
-                    phrase in error_message
-                    for phrase in [
-                        "NoneType",
-                        "object is None",
-                        "'NoneType'",
-                        "None has no attribute",
-                        "unsupported operand type",
-                        "bad operand type",
-                        "object is not",
-                        "cannot be None",
-                    ]
-                )
-            ):
-                return None
-            else:
-                raise
+class SqlOperatorError(Exception):
+    """Simple exception to identify which check operator caused the error."""
 
-    return wrapper
+    def __init__(self, original_exception, operator_name):
+        self.original_exception = original_exception
+        self.operator_name = operator_name
+        super().__init__(f"{operator_name}: {str(original_exception)}")
+
+
+def log_operator_execution(operator_name):
+    """Decorator that takes an operator name parameter."""
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, other_value, *args, **kwargs):
+            try:
+                logger.info(f"Starting check operator: {operator_name}")
+                result = func(self, other_value)
+                logger.info(f"Completed check operator: {operator_name}")
+                return result
+            except Exception as e:
+                logger.error(f"Error in {operator_name}: {str(e)}, " f"traceback: {traceback.format_exc()}")
+
+                # Handle None-type errors by returning None instead of raising
+                error_message = str(e)
+                if isinstance(e, TypeError) and (
+                    "NoneType" in error_message
+                    or "None" in error_message
+                    or any(
+                        phrase in error_message
+                        for phrase in [
+                            "NoneType",
+                            "object is None",
+                            "'NoneType'",
+                            "None has no attribute",
+                            "unsupported operand type",
+                            "bad operand type",
+                            "object is not",
+                            "cannot be None",
+                        ]
+                    )
+                ):
+                    return None
+                else:
+                    raise SqlOperatorError(original_exception=e, operator_name=operator_name) from e
+
+        return wrapper
+
+    return decorator
 
 
 class BaseSqlOperator:
@@ -158,10 +174,23 @@ class BaseSqlOperator:
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
 
-    def _column_sql(self, column: str, lowercase: bool = False) -> str:
+    def _column_sql(
+        self, column: str, lowercase: bool = False, prefix: Optional[int] = None, suffix: Optional[int] = None
+    ) -> str:
         query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
+
+        # TODO: Throwing this temporarily, so we can determine which errors
+        # are actually postgres errors and which are just rules which run on
+        # optional variables without checking
+        if query is None:
+            raise KeyError(column)
+
         if lowercase:
             query = f"LOWER({query})"
+        if prefix is not None:
+            query = f"LEFT({query}, {prefix})"
+        if suffix is not None:
+            query = f"RIGHT({query}, {suffix})"
         return query
 
     def _constant_sql(self, value: Any, lowercase: bool = False) -> str:
@@ -187,7 +216,7 @@ class BaseSqlOperator:
         elif isinstance(value, (int, float)):
             return str(value)
         elif value is None:
-            return ""
+            return "NULL"
         else:
             raise ValueError(f"Unsupported constant type: {type(value)}")
 
@@ -213,12 +242,12 @@ class BaseSqlOperator:
         else:
             raise ValueError(f"Unsupported collection type: {type(value)}")
 
-    def _sql(self, value: Any, lowercase: bool = False) -> str:
+    def _sql(self, value: Any, lowercase: bool = False, value_is_literal: bool = False) -> str:
         """
         Tries to generate a general SQL query. Will resolve a column is possible
         or an operation variable if possible otherwise assumes it's a constant
         """
-        if isinstance(value, str):
+        if isinstance(value, str) and not value_is_literal:
             if value in self.operation_variables:
                 variable = self.operation_variables[value]
                 if variable.type == "constant":
@@ -231,6 +260,32 @@ class BaseSqlOperator:
                 return self._column_sql(value, lowercase=lowercase)
 
         return self._constant_sql(value, lowercase=lowercase)
+
+    def _is_numeric_value(self, value: Any, value_is_literal: bool = False) -> bool:
+        """
+        Check if a value represents a numeric type that can be used directly in numeric comparisons.
+        """
+        # Direct numeric literals
+        if isinstance(value, (int, float)):
+            return True
+
+        # Numeric string literals
+        if value_is_literal and isinstance(value, str) and value.isdigit():
+            return True
+
+        if not value_is_literal and isinstance(value, str):
+            # Check operation variables
+            if value in self.operation_variables:
+                variable = self.operation_variables[value]
+                return variable.type == "constant" and variable.subtype == "Num"
+
+            # Check column types
+            if self.sql_data_service.pgi.schema.column_exists(self.table_id, value):
+                value_column = self.replace_prefix(value).lower()
+                col_schema = self.sql_data_service.pgi.schema.get_column(self.table_id, value_column)
+                return col_schema and col_schema.type == "Num"
+
+        return False
 
     def valid_codelist_reference(self, column_name, codelist):
         if column_name in self.column_codelist_map:
@@ -278,7 +333,25 @@ class BaseSqlOperator:
     def _series_is_in(self, target, comparison_data):
         return np.where(comparison_data.isin(target), True, False)
 
-    def _is_empty_sql(self, col: str) -> str:
+    def _is_empty_sql(self, target: str) -> str:
+        """
+        Generates a SQL query to check target is empty, checks if it is an
+        operation variable or column, otherwise assumes it's a constant.
+        """
+        if isinstance(target, str):
+            if self.sql_data_service.pgi.schema.get_column(self.table_id, target) is not None:
+                return self._is_empty_sql_column(target)
+            elif target in self.operation_variables:
+                return self._is_empty_sql_operation_variable(target)
+
+        if isinstance(target, str) and target == "":
+            return "TRUE"
+        elif target is None:
+            return "TRUE"
+        else:
+            return "FALSE"
+
+    def _is_empty_sql_column(self, col: str) -> str:
         """
         Generates a SQL query to check if a column is empty.
         """
@@ -293,5 +366,29 @@ class BaseSqlOperator:
                 return f"({column.hash} IS NULL)"
             case "Num":
                 return f"({column.hash} IS NULL)"
+            case "Date":
+                return f"({column.hash} IS NULL)"
             case _:
                 raise ValueError(f"Unsupported column type: {column.type} for column {col}.")
+
+    def _is_empty_sql_operation_variable(self, target: str) -> str:
+        """
+        Generates a SQL query to check if an operation variable is empty.
+        """
+        variable = self.operation_variables[target]
+        if not variable:
+            raise ValueError(f"Variable {target} does not exist.")
+        if variable.type != "constant":
+            raise ValueError(f"Variable {target} is not a constant.")
+
+        match variable.subtype:
+            case "Char":
+                return f"(({variable.query}) IS NULL OR ({variable.query}) = '')"
+            case "Bool":
+                return f"(({variable.query}) IS NULL)"
+            case "Num":
+                return f"(({variable.query}) IS NULL)"
+            case "Date":
+                return f"(({variable.query}) IS NULL)"
+            case _:
+                raise ValueError(f"Unsupported variable type: {variable.subtype} for variable {target}.")

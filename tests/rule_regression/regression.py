@@ -199,6 +199,21 @@ def run_regression_on_test_case(
             test_case_folder_path,
         )
 
+        # Uncomment to produce reports for CDISC to use
+        # if regression_errors.get("old_overall_result") == "skipped":
+        #     try:
+        #         xlsx_data = pd.ExcelFile(data_file_path)
+        #         pd.read_excel(xlsx_data, sheet_name="Library")
+        #         present = True
+        #     except ValueError:
+        #         present = False
+
+        #     with open("./skipped.txt", "a") as f:
+        #         f.write(
+        #             f"""{extract_final_path(test_case_folder_path, 4)} - skipped - Library sheet: {
+        #                 "present" if present else "not found"}\n"""
+        #         )
+
     return None, None
 
 
@@ -334,7 +349,11 @@ def compare_error_lists(old_errors, sql_errors):
     if diff:
         # Calling `to_json` to create a valid JSON (otherwise the output is not JSON serializable)
         # and then converting it back to a Python object so it's formatted properly
-        return json.loads(diff.to_json())
+        reloaded = json.loads(diff.to_json())
+        # Need to sort the values_changed keys for consistent output
+        if "values_changed" in reloaded:
+            reloaded["values_changed"] = dict(sorted(reloaded["values_changed"].items()))
+        return reloaded
     else:
         return []
 
@@ -553,6 +572,25 @@ def find_max_dir(root: str) -> str:
 
 def find_data_file(path: str) -> str:
     if not path:
+        return ""
+    try:
+        for filename in os.listdir(path):
+            full_path = os.path.join(path, filename)
+            extension = filename.split(".")[-1].lower()
+            if not os.path.isfile(full_path) or extension not in ["xls", "xlsx"]:
+                continue
+
+            xlsx_data = pd.ExcelFile(full_path)
+            try:
+                # these throw an error when the sheet is not present
+                # TODO: Should really check for the presence of the library
+                # sheet, but nothing runs if it's not present so ¯\_(ツ)_/¯
+                # pd.read_excel(xlsx_data, sheet_name="Library")
+                pd.read_excel(xlsx_data, sheet_name="Datasets")
+            except ValueError:
+                continue
+            return full_path
+    except FileNotFoundError:
         return ""
 
     path_obj = Path(path)

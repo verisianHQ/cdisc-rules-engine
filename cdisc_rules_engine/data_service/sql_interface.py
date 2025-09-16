@@ -2,8 +2,8 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from psycopg2.errors import ProgrammingError
 
+from cdisc_rules_engine.constants.rule_constants import COMPLETE_DATE_REGEX
 from cdisc_rules_engine.data_service.database import (
     DatabaseConfigPostgres,
     DatabasePostgres,
@@ -70,10 +70,6 @@ class PostgresQLInterface:
             except Exception as e:
                 conn.rollback()
                 logger.error(f"Query execution failed: {e}")
-
-                # TODO: Adding this temporarily to make regression deterministic
-                if isinstance(e, ProgrammingError):
-                    raise ProgrammingError("A postgres SQL error occurred") from e
                 raise
 
         return affected_rows
@@ -105,10 +101,6 @@ class PostgresQLInterface:
             except Exception as e:
                 conn.rollback()
                 logger.error(f"Batch execution failed: {e}")
-
-                # TODO: Adding this temporarily to make regression deterministic
-                if isinstance(e, ProgrammingError):
-                    raise ProgrammingError("A postgres SQL error occurred") from e
                 raise
 
         return affected_rows_list
@@ -142,6 +134,30 @@ class PostgresQLInterface:
         self.execute_sql(alter_stmt)
         table_schema.add_column(schema)
         logger.info(f"Column {table}.{schema.name} created successfully")
+
+    def generate_date_column(self, table: str, column: str) -> SqlColumnSchema:
+        """Builds a date column from a string column and adds to the table"""
+        col_schema = self.schema.get_column(table, column)
+        if not col_schema:
+            raise ValueError(f"Column {column} does not exist in table {table}")
+        date_column_name = f"{column}_dt"
+
+        # Check whether we've already generated this date column
+        if self.schema.column_exists(table, date_column_name):
+            return self.schema.get_column(table, date_column_name)
+
+        date_column_schema = SqlColumnSchema.generated(date_column_name, type="Date")
+        self.add_column(table, date_column_schema)
+        query = f"""UPDATE {self.schema.get_table_hash(table)}
+            SET {date_column_schema.hash} =
+                (CASE
+                WHEN {col_schema.hash} IS NOT NULL
+                  AND {col_schema.hash} ~ '{COMPLETE_DATE_REGEX}'
+                    THEN CAST({col_schema.hash} as TIMESTAMP)
+                ELSE NULL
+                END);"""
+        self.execute_sql(query)
+        return date_column_schema
 
     def insert_data(
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
