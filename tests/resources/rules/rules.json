@@ -87973,7 +87973,7 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "se",
+                                "dataset": "se.xpt",
                                 "domain": "SE",
                                 "execution_status": "success",
                                 "execution_message": "SEENDTC is not equal to SESTDTC of the next element.",
@@ -88028,10 +88028,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -88077,10 +88074,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
