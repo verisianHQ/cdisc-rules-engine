@@ -1,16 +1,17 @@
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
 
 from cdisc_rules_engine.config import config as default_config
 
 # import os
 from cdisc_rules_engine.constants.classes import (
-    FINDINGS,
-    SPECIAL_PURPOSE,
-    INTERVENTIONS,
+    ASSOCIATED_PERSONS,
     EVENTS,
-    RELATIONSHIP,
-    TRIAL_DESIGN,
+    FINDINGS,
     FINDINGS_ABOUT,
+    INTERVENTIONS,
+    RELATIONSHIP,
+    SPECIAL_PURPOSE,
+    TRIAL_DESIGN,
 )
 
 # from cdisc_rules_engine.constants.domains import (
@@ -24,7 +25,6 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     SQLDatasetMetadata,
 )
 
-# from cdisc_rules_engine.constants.use_cases import USE_CASE_DOMAINS
 from cdisc_rules_engine.interfaces import ConditionInterface
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -37,7 +37,9 @@ from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
-from cdisc_rules_engine.sql_operations import sql_operations_factory
+from cdisc_rules_engine.sql_operations.sql_operations_factory import (
+    SqlOperationsFactory,
+)
 
 # from cdisc_rules_engine.utilities.data_processor import DataProcessor
 # from cdisc_rules_engine.utilities.utils import (
@@ -106,101 +108,6 @@ class SQLRuleProcessor:
                     return True
         return False
 
-    # @classmethod
-    # def _is_domain_name_included(
-    #     cls,
-    #     dataset_metadata: SDTMDatasetMetadata,
-    #     included_domains: List[str],
-    #     include_split_datasets: bool,
-    # ) -> bool:
-    #     """
-    #     If included domains aren't specified
-    #      and include_split_datasets is True,
-    #      and it is not a split dataset
-    #      -> domain is not included
-    #     If included domains are specified,
-    #      and the domain is not in the list of included domains,
-    #      and domain doesn't match with AP / APFA / APRELSUB / SUPP / SQ naming pattern
-    #      -> domain is not included.
-    #     In other cases domain is included
-    #     """
-    #     if not included_domains:
-    #         if include_split_datasets is True and not dataset_metadata.is_split:
-    #             return False
-    #         return True
-
-    #     if (
-    #         dataset_metadata.domain in included_domains
-    #         or dataset_metadata.name in included_domains
-    #         or ALL_KEYWORD in included_domains
-    #     ):
-    #         return True
-    #     if cls._domain_matched_ap_or_supp(dataset_metadata, included_domains):
-    #         return True
-    #     return False
-
-    # @classmethod
-    # def _is_domain_name_excluded(cls, dataset_metadata: SDTMDatasetMetadata, excluded_domains: List[str]) -> bool:
-    #     """
-    #     If excluded domains are specified,
-    #      and the domain is in the list of excluded domains,
-    #      or domain name match with AP / APFA / APRELSUB / SUPP / SQ naming pattern
-    #      domain is excluded.
-
-    #     In other cases domain is not excluded.
-    #     """
-    #     if not excluded_domains:
-    #         return False
-
-    #     if (
-    #         dataset_metadata.domain in excluded_domains
-    #         or dataset_metadata.name in excluded_domains
-    #         or dataset_metadata.unsplit_name in excluded_domains
-    #         or ALL_KEYWORD in excluded_domains
-    #     ):
-    #         return True
-    #     if cls._domain_matched_ap_or_supp(dataset_metadata, excluded_domains):
-    #         return True
-    #     return False
-
-    # @classmethod
-    # def _handle_split_domains(
-    #     cls,
-    #     is_split_domain: bool,
-    #     include_split_datasets: bool,
-    #     is_excluded: bool,
-    #     is_included: bool,
-    # ) -> Tuple[bool, bool]:
-    #     """
-    #     HANDLING SPLIT DOMAINS
-
-    #     If include_split_datasets is True -
-    #     add split domains to the list of included domains.
-    #     If no included domains specified, only validate split domains
-
-    #     If include_split_datasets is False - Exclude split domains
-    #     If include_split_datasets is None - Do nothing
-    #     """
-    #     if include_split_datasets is True and is_split_domain and not is_excluded:
-    #         is_included = True
-    #     if include_split_datasets is False and is_split_domain:
-    #         is_excluded = True
-    #     return is_excluded, is_included
-
-    # @classmethod
-    # def _domain_matched_ap_or_supp(cls, dataset_metadata: SDTMDatasetMetadata, domains_to_check: List[str]) -> bool:
-    #     """
-    #     Check that domain name match with only
-    #     AP / APFA / APRELSUB / SUPP / SQ naming pattern
-    #     """
-    #     supp_ap_domains = {f"{domain}--" for domain in SUPPLEMENTARY_DOMAINS}
-    #     supp_ap_domains.update({f"{AP_DOMAIN}--", f"{APFA_DOMAIN}--"})
-
-    #     return any(set(domains_to_check).intersection(supp_ap_domains)) and (
-    #         dataset_metadata.is_supp
-    #         or is_ap_domain(dataset_metadata.domain or dataset_metadata.rdomain or dataset_metadata.name)
-    #     )
-
     @classmethod
     def rule_applies_to_class(cls, dataset_metadata: SQLDatasetMetadata, rule: dict) -> bool:
         """Check if rule applies to dataset's class"""
@@ -215,9 +122,12 @@ class SQLRuleProcessor:
         domain_name = dataset_metadata.dataset_name
         dataset_class = cls.get_dataset_class_from_variables(variables, domain_name)
 
-        if dataset_class is None and included_classes:
-            logger.warning(f"Could not determine class for dataset {domain_name} with include restrictions")
-            return False
+        if dataset_class is None and (included_classes or excluded_classes):
+            logger.debug(
+                f"Could not determine class for {domain_name}, variables: {variables if variables else 'none'}"
+            )
+        else:
+            logger.debug(f"Dataset {domain_name} identified as class: {dataset_class}")
 
         if cls.matches_class_pattern(dataset_class, excluded_classes):
             return False
@@ -242,13 +152,13 @@ class SQLRuleProcessor:
                 return True
         return False
 
-    @staticmethod
-    def get_dataset_class_from_variables(variables: List[str], domain_name: str) -> Optional[str]:
+    @classmethod
+    def get_dataset_class_from_variables(cls, variables: List[str], domain_name: str) -> Optional[str]:
         """Determine dataset class based on variable names and domain"""
-        variables_upper = [v.upper() for v in variables]
+        variables_upper = [v.upper() for v in variables] if variables else []
         domain_upper = domain_name.upper()
 
-        if domain_upper in ["DM", "CO", "SE", "SJ", "SV", "SM"]:
+        if domain_upper in ["DM", "CO", "SE", "SU", "SV", "SM"]:
             return SPECIAL_PURPOSE
 
         if domain_upper in ["TA", "TE", "TI", "TS", "TV"]:
@@ -256,6 +166,9 @@ class SQLRuleProcessor:
 
         if any([domain_upper.startswith(prefix) for prefix in ["REL", "SUPP", "SQ"]]):
             return RELATIONSHIP
+
+        if not variables:
+            return cls.get_class_from_empty_variables(domain_upper)
 
         if any(
             v.endswith("TESTCD")
@@ -283,38 +196,44 @@ class SQLRuleProcessor:
 
         return None
 
-    # def rule_applies_to_use_case(
-    #     self,
-    #     dataset_metadata: SDTMDatasetMetadata,
-    #     rule: dict,
-    #     standard: str,
-    #     standard_substandard: str,
-    # ) -> bool:
-    #     if standard.lower() != "tig":
-    #         return True
-    #     use_cases = rule.get("use_case") or []
-    #     if not use_cases:
-    #         return True
-    #     use_cases = [uc.strip() for uc in use_cases.split(",")]
-    #     substandard = standard_substandard.upper()
-    #     if substandard not in USE_CASE_DOMAINS:
-    #         return False
-
-    #     domain_to_check = dataset_metadata.domain
-    #     if dataset_metadata.is_supp and dataset_metadata.rdomain:
-    #         domain_to_check = dataset_metadata.rdomain
-
-    #     # Handle ADaM datasets with AD prefix
-    #     if substandard == "ADAM" and domain_to_check.startswith("AD"):
-    #         return "ANALYSIS" in use_cases
-
-    #     allowed_domains = set()
-    #     for use_case in use_cases:
-    #         if use_case in USE_CASE_DOMAINS[substandard]:
-    #             allowed_domains.update(USE_CASE_DOMAINS[substandard][use_case])
-    #     if domain_to_check in allowed_domains:
-    #         return True
-    #     return False
+    @staticmethod
+    def get_class_from_empty_variables(domain_upper: str) -> Optional[str]:
+        """Determine dataset class based on domain name when no variables are present."""
+        if domain_upper in ["AE", "CE", "DS", "MH", "HO", "DV", "DD"]:
+            return EVENTS
+        if domain_upper in ["CM", "EX", "PR", "EC", "AG", "ML", "DO"]:
+            return INTERVENTIONS
+        if domain_upper in [
+            "LB",
+            "VS",
+            "EG",
+            "PE",
+            "IE",
+            "QS",
+            "SC",
+            "PC",
+            "PP",
+            "MB",
+            "MS",
+            "MI",
+            "DA",
+            "FT",
+            "GF",
+            "NV",
+            "OE",
+            "PK",
+            "RS",
+            "SS",
+            "TR",
+            "TU",
+            "UR",
+        ]:
+            return FINDINGS
+        if domain_upper == "FA":
+            return FINDINGS_ABOUT
+        if domain_upper.startswith("AP"):
+            return ASSOCIATED_PERSONS
+        return None
 
     # @staticmethod
     # def _ct_package_type_api_name(ct_package_type: str | None) -> str:
@@ -362,7 +281,7 @@ class SQLRuleProcessor:
                 standard_version=data_service.ig_specs.get("standard_version"),
             )
 
-            operation = sql_operations_factory.get_service(rule_name, params=params, data_service=data_service)
+            operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
             query = operation.execute()
             output_variables[output_variable] = query
 
@@ -475,11 +394,6 @@ class SQLRuleProcessor:
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        # if not self.rule_applies_to_use_case(dataset_metadata, rule, standard, standard_substandard):
-        #     reason = f"Rule skipped - doesn't apply to use case for " f"rule id={rule_id}, dataset={dataset_name}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
-        # TODO: uncomment and reimplement above other checks (i.e. class, use-case)
 
         logger.info(f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True")
         return True, ""

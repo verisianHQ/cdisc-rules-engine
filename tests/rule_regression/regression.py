@@ -11,20 +11,25 @@ from psycopg2 import errors
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
+from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
+from scripts.script_utils import get_library_metadata_from_cache
 
 RULE_DEPTH = 2
 TYPE_DEPTH = RULE_DEPTH + 1
 CASE_DEPTH = TYPE_DEPTH + 1
 DATA_DEPTH = CASE_DEPTH + 2
 
+METADATA_CACHE = {}
+
 
 def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
     ig_specs = {
-        "standard": "SDTMIG",
+        "standard": "sdtmig",
         "standard_version": "3.4",
         "standard_substandard": None,
         "define_xml_version": None,
@@ -199,7 +204,55 @@ def run_regression_on_test_case(
             test_case_folder_path,
         )
 
+        # Uncomment to produce reports for CDISC to use
+        # if regression_errors.get("old_overall_result") == "skipped":
+        #     try:
+        #         xlsx_data = pd.ExcelFile(data_file_path)
+        #         pd.read_excel(xlsx_data, sheet_name="Library")
+        #         present = True
+        #     except ValueError:
+        #         present = False
+
+        #     with open("./skipped.txt", "a") as f:
+        #         f.write(
+        #             f"""{extract_final_path(test_case_folder_path, 4)} - skipped - Library sheet: {
+        #                 "present" if present else "not found"}\n"""
+        #         )
+
     return None, None
+
+
+def get_metadata(ig_specs: IGSpecification, define_xml_path: str):
+    """
+    Get metadata from cache or create it if not present.
+    """
+    key = f"{ig_specs['standard']}_{ig_specs['standard_version']}_{ig_specs['standard_substandard']}_{define_xml_path}"
+    if key not in METADATA_CACHE:
+        METADATA_CACHE[key] = get_library_metadata_from_cache(
+            Validation_args(
+                cache=os.path.join(os.path.dirname(__file__), "..", "..", DefaultFilePaths.CACHE.value),
+                pool_size=None,
+                dataset_paths=None,
+                log_level=None,
+                report_template=None,
+                standard=ig_specs["standard"],
+                version=ig_specs["standard_version"],
+                substandard=ig_specs["standard_substandard"],
+                controlled_terminology_package=None,
+                output=None,
+                output_format=None,
+                raw_report=None,
+                define_version=None,
+                external_dictionaries=None,
+                rules=None,
+                local_rules=None,
+                custom_standard=None,
+                progress=None,
+                define_xml_path=define_xml_path,
+                validate_xml=None,
+            )
+        )
+    return METADATA_CACHE[key]
 
 
 def process_test_case_dataset(
@@ -222,12 +275,14 @@ def process_test_case_dataset(
         regression_errors["results_sql"] = sql_regression
 
         # Execute in old engine
+        metadata = get_metadata(ig_specs, define_xml_file_path)
         old_results = run_single_rule_validation(
             data_test_datasets,
             rule,
             define_xml=define_xml_file_path,
             standard=ig_specs["standard"],
             standard_version=ig_specs["standard_version"],
+            library_metadata=metadata,
         )
         regression_errors["dataset_import_old"] = "SUCCESS"
         regression_errors["results_present_old"] = True
@@ -297,36 +352,39 @@ def validate_engine_result(engine_result: list[dict], validated_result: list[dic
 
 
 def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[dict]):
-    comp_regression = {}
+    dataset_mismatch = False
+    execution_status_mismatch = False
+    number_of_errors_mismatch = False
+    diff = {}
     # compare execution status
-    for o_res in old_results:
-        # find matching dataset/domain entries
-        sql_res = next(
-            (
-                sql_res
-                for sql_res in sql_results
-                if sql_res.get("dataset") == o_res.get("dataset").replace(".xpt", "")
-                and sql_res.get("domain") == o_res.get("domain")
-            ),
-            None,
-        )
-        if sql_res is not None:
-            if o_res.get("execution_status") != sql_res.get("execution_status"):
-                comp_regression["execution_status_match"] = False
-            else:
-                comp_regression["execution_status_match"] = True
-                if o_res.get("number_errors") != sql_res.get("number_errors"):
-                    comp_regression["number_of_errors_match"] = False
-                    comp_regression["deep_diff"] = compare_error_lists(o_res.get("errors"), sql_res.get("errors"))
-                else:
-                    comp_regression["number_of_errors_match"] = True
-                    comp_regression["deep_diff"] = compare_error_lists(o_res.get("errors"), sql_res.get("errors"))
-        else:
-            comp_regression["execution_status_match"] = False
-            comp_regression["number_of_errors_match"] = False
-            comp_regression["deep_diff"] = []
+    for sql, old in zip(sql_results, old_results):
+        if sql.get("dataset") != old.get("dataset") or sql.get("domain") != old.get("domain"):
+            dataset_mismatch = True
+            break
 
-    return comp_regression
+        if old.get("execution_status") != sql.get("execution_status"):
+            execution_status_mismatch = True
+            break
+
+        if old.get("number_errors") != sql.get("number_errors"):
+            number_of_errors_mismatch = True
+            break
+
+        dataset_diff = compare_error_lists(old.get("errors"), sql.get("errors"))
+        if dataset_diff:
+            diff[old.get("dataset")] = dataset_diff
+
+    if dataset_mismatch or execution_status_mismatch or number_of_errors_mismatch or diff:
+        return {
+            "dataset_mismatch": dataset_mismatch,
+            "execution_status_mismatch": execution_status_mismatch,
+            "number_of_errors_mismatch": number_of_errors_mismatch,
+            "diff": diff,
+        }
+    else:
+        return {
+            "equal": True,
+        }
 
 
 def compare_error_lists(old_errors, sql_errors):
@@ -334,7 +392,11 @@ def compare_error_lists(old_errors, sql_errors):
     if diff:
         # Calling `to_json` to create a valid JSON (otherwise the output is not JSON serializable)
         # and then converting it back to a Python object so it's formatted properly
-        return json.loads(diff.to_json())
+        reloaded = json.loads(diff.to_json())
+        # Need to sort the values_changed keys for consistent output
+        if "values_changed" in reloaded:
+            reloaded["values_changed"] = dict(sorted(reloaded["values_changed"].items()))
+        return reloaded
     else:
         return []
 
@@ -453,7 +515,7 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
                 TestDataset(
                     filename=filename,
                     filepath=filename,
-                    name=filename.split(".")[0],
+                    name=filename.split(".")[0].upper(),
                     label=label,
                     variables=variables,
                     records=data,
@@ -554,18 +616,15 @@ def find_max_dir(root: str) -> str:
 def find_data_file(path: str) -> str:
     if not path:
         return ""
-
-    path_obj = Path(path)
-    if not path_obj.exists():
-        return ""
-
     accepted_extensions = ["xls", "xlsx", "json"]
-
-    for file_path in path_obj.iterdir():
-        if file_path.is_file():
-            extension = file_path.suffix[1:].lower()  # Remove the dot and convert to lowercase
-            if extension in accepted_extensions:
-                return str(file_path)
+    try:
+        for filename in os.listdir(path):
+            full_path = os.path.join(path, filename)
+            extension = filename.split(".")[-1].lower()
+            if os.path.isfile(full_path) and extension in accepted_extensions:
+                return path + "/" + filename
+    except FileNotFoundError:
+        return ""
     return ""
 
 

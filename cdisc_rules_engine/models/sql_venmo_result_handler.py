@@ -97,7 +97,7 @@ class SqlVenmoResultHandler(BaseActions):
         self.data_service.pgi.execute_sql(
             f"""SELECT * FROM
                 {self.data_service.pgi.schema.get_table_hash(self.dataset_id)}
-            WHERE id IN ({', '.join(true_indicies)})"""
+            WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
         )
         results = self.data_service.pgi.fetch_all()
         return list(results)
@@ -139,7 +139,7 @@ class SqlVenmoResultHandler(BaseActions):
 
         return ValidationErrorEntity(
             value=value,
-            dataset=self.dataset_metadata.dataset_name,
+            dataset=self.dataset_metadata.filename,
         )
 
     def _build_record_error_items(
@@ -224,7 +224,7 @@ class SqlVenmoResultHandler(BaseActions):
                 values[column] = value
 
         return ValidationErrorEntity(
-            dataset=self.dataset_metadata.dataset_name,
+            dataset=self.dataset_metadata.filename,
             row=row_id,
             usubjid=usubjid,
             sequence=sequence,

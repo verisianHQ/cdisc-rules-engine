@@ -24,6 +24,15 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 
 
+class SqlOperationError(Exception):
+    """Simple exception to identify which SQL operation caused the error."""
+
+    def __init__(self, original_exception, operation_name):
+        self.original_exception = original_exception
+        self.operation_name = operation_name
+        super().__init__(f"{operation_name}: {str(original_exception)}")
+
+
 class SqlBaseOperation:
     def __init__(self, params: SqlOperationParams, data_service: PostgresQLDataService):
         self.params = params
@@ -62,28 +71,32 @@ class SqlBaseOperation:
             logger.debug(f"error in operation {self.__class__.__name__}: {str(e)}")
             raise
         except Exception as e:
-            # Log unexpected errors
+            # Log unexpected errors and wrap with operation context
             logger.error(
                 f"error in operation {self.__class__.__name__}: {str(e)}",
                 exc_info=True,
             )
-            # error_message = str(e)
-            # if isinstance(e, TypeError) and any(
-            #     phrase in error_message
-            #     for phrase in [
-            #         "NoneType",
-            #         "None",
-            #         "object is None",
-            #         "'NoneType'",
-            #         "None has no attribute",
-            #         "unsupported operand type",
-            #         "bad operand type",
-            #         "object is not",
-            #         "cannot be None",
-            #     ]
-            # ):
-            #     return None
-            raise
+
+            raise SqlOperationError(original_exception=e, operation_name=self.__class__.__name__.lower()) from e
+
+    def construct_where_clause(self) -> str:
+        """
+        Construct a WHERE clause from the provided filter conditions.
+        """
+        if not self.params.filter:
+            return ""
+
+        where_clauses = []
+        for column, value in self.params.filter.items():
+            column_sql = self.data_service.pgi.schema.get_column_hash(self.params.domain, column)
+            if isinstance(value, str):
+                where_clauses.append(f"{column_sql} = '{value.replace('\'', '\'\'')}'")
+            elif isinstance(value, (int, float)):
+                where_clauses.append(f"{column_sql} = {value}")
+            else:
+                raise ValueError(f"Unsupported filter value type: {type(value)} for column {column}")
+
+        return "WHERE " + " AND ".join(where_clauses) if where_clauses else ""
 
     @staticmethod
     def _replace_variable_wildcards(variables_metadata, domain):
