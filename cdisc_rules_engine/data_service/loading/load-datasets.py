@@ -1,25 +1,31 @@
+import logging
 
-    from cdisc_rules_engine.readers.data_reader import DataReader
+from zipp import Path
+
+from cdisc_rules_engine.data_service.postgresql_data_service import (
+    PostgresQLDataService,
+)
+from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.readers.data_reader import DataReader
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-def _create_sql_tables_from_dataset_paths(self) -> None:
+class SqlDatasetLoader:
+    @staticmethod
+    def load_datasets(data_service: PostgresQLDataService, directory_path: Path) -> None:
         """
         Iterate through dataset files in `self.datasets_path`
         and create corresponding SQL tables.
         """
-        if not self.datasets_path or not self.datasets_path.exists():
-            logger.info("No datasets path provided or path doesn't exist")
-            return
+        for file_path in directory_path.iterdir():
+            SqlDatasetLoader._load_dataset_file(data_service, file_path)
 
-        self.pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
-
-        timestamp = datetime.now().astimezone()
-
-        for file_path in self.datasets_path.iterdir():
-            self._process_dataset_file(file_path, timestamp)
-
-    def _process_dataset_file(self, file_path: Path, timestamp: datetime) -> None:
-        """Process a single dataset file."""
+    @staticmethod
+    def _load_dataset_file(data_service: PostgresQLDataService, file_path: Path) -> None:
+        """Load a single dataset file."""
         try:
             reader = DataReader(str(file_path))
             metadata_info = reader.read_metadata()
@@ -29,39 +35,33 @@ def _create_sql_tables_from_dataset_paths(self) -> None:
 
             logger.info(f"Loading dataset {file_path.name} into table {table_name}")
 
-            self._create_table_with_indexes(table_name, metadata_info)
+            schema = SqlTableSchema.from_metadata(metadata_info)
+            data_service.pgi.create_table(schema)
+            # TODO: INDEX
 
-            metadata_rows = []
-            first_chunk_processed = False
+            first_record = None
 
             for chunk_data in reader.read():
                 # force lowercase on columns
                 chunk_data = [{k.lower(): v for k, v in row} for row in chunk_data.items()]
-                if not first_chunk_processed and chunk_data:
-                    first_chunk = chunk_data[0]
-
-                    metadata_rows = self._build_metadata_rows(
-                        file_path, table_name, metadata_info, first_chunk, timestamp
-                    )
-                    first_chunk_processed = True
-
-                if chunk_data:
-                    self.pgi.insert_data(table_name, chunk_data)
-
-            if metadata_rows:
-                self.pgi.insert_data("data_metadata", metadata_rows)
+                if not first_record:
+                    first_record = chunk_data[0] if chunk_data else None
+                data_service.pgi.insert_data(table_name, chunk_data)
 
             logger.info(f"Successfully loaded {file_path.name}")
 
+            data_service.datasets.push(
+                SDTMDatasetMetadata(
+                    file_size=0,
+                    filename=metadata_info["name"],
+                    full_path=file_path,
+                    label=metadata_info["label"],
+                    name=metadata_info["name"],
+                    record_count=metadata_info["record_count"],
+                    modification_date=None,
+                    original_path=None,
+                    first_record=first_record,
+                )
+            )
         except Exception as e:
             logger.error(f"Failed to load {file_path.name}: {e}")
-
-    def _create_table_with_indexes(self, table_name: str, metadata: dict) -> None:
-        """Create table and add indexes for CDISC variables."""
-        self.pgi.create_table_from_metadata(table_name, metadata)
-
-        for col in ("usubjid", "studyid", "domain", "seq", "idvar", "idvarval"):
-            if col in [var["name"].lower() for var in metadata["variables"]]:
-                self.pgi.execute_sql(
-                    f"CREATE INDEX IF NOT EXISTS idx_{table_name}_{col.lower()} ON {table_name}({col})"
-                )

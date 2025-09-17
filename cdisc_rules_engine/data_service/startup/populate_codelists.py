@@ -24,8 +24,8 @@ def _schema():
     table.add_column(SqlColumnSchema(name="extensible", hash="extensible", type="Char"))
     table.add_column(SqlColumnSchema(name="name", hash="name", type="Char"))
     table.add_column(SqlColumnSchema(name="value", hash="value", type="Char"))
-    table.add_column(SqlColumnSchema(name="synonym", hash="synonym", type="Text"))
-    table.add_column(SqlColumnSchema(name="definition", hash="definition", type="Text"))
+    table.add_column(SqlColumnSchema(name="synonym", hash="synonym", type="Char"))
+    table.add_column(SqlColumnSchema(name="definition", hash="definition", type="Char"))
     table.add_column(SqlColumnSchema(name="term", hash="term", type="Char"))
     table.add_column(SqlColumnSchema(name="standard_and_date", hash="standard_and_date", type="Char"))
     return table
@@ -46,7 +46,7 @@ def populate_codelists(pgi: PostgresQLInterface, path: Path = None):
 
     schema = _schema()
     pgi.create_table(schema)
-    ## TODO: INDEX
+    # TODO: INDEX
 
     for file_path in path.iterdir():
         try:

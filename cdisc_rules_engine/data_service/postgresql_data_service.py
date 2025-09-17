@@ -1,10 +1,8 @@
 import logging
 from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
 from typing import Union
 
-from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -17,6 +15,7 @@ from cdisc_rules_engine.data_service.startup.populate_standards import (
 from cdisc_rules_engine.data_service.startup.populate_terminology import (
     populate_terminology,
 )
+from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
@@ -51,89 +50,19 @@ class PostgresQLDataService:
     ):
         super().__init__(ig_specs)
         self.pgi = postgres_interface
+        self.datasets: DatasetMetadata = []
 
     @classmethod
     def from_list_of_testdatasets(
         cls,
         test_datasets: list[TestDataset],
-        ig_specs: IGSpecification,
-        datasets_path: Path = None,
-        define_xml_path: str = "",
-        terminology_paths: dict = None,
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        metadata_rows: list[dict[str, Union[str, int, float]]] = []
-
-        # PostgresDB setup
-        pgi = PostgresQLInterface()
-        pgi.init_database()
-
-        # create metadata table in postgres
-        pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
-
-        PostgresQLDataService._preprocess_data(pgi)
-        instance = cls(
-            pgi,
-            ig_specs,
-            datasets_path,
-            define_xml_path,
-            None,
-            None,
-            terminology_paths,
-        )
-
-        # generate timestamp
-        timestamp = datetime.now().astimezone()
-        for test_dataset in test_datasets:
-            # Create schema and table:
-            row_dicts = [
-                dict(zip(test_dataset["records"], values)) for values in zip(*test_dataset["records"].values())
-            ]
-            # force lower_case throughout
-            table_name = test_dataset["name"].lower()
-            row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
-
-            schema = SqlTableSchema.from_metadata(test_dataset)
-            pgi.create_table(schema)
-            pgi.insert_data(table_name=table_name, data=row_dicts)
-
-            # Collect variable metadata
-            for test_variable in test_dataset["variables"]:
-                name = test_dataset["name"]
-                domain = row_dicts[0].get("domain") if row_dicts else None
-                is_supp = test_dataset["name"].startswith(SUPPLEMENTARY_DOMAINS)
-                rdomain = row_dicts[0].get("rdomain") if is_supp and row_dicts else None
-                unsplit_name = PostgresQLDataService._get_unsplit_name(name, domain, rdomain)
-                is_split = name != unsplit_name
-                metadata_rows.append(
-                    {
-                        "created_at": timestamp,
-                        "updated_at": timestamp,
-                        "dataset_filename": test_dataset["filename"],
-                        "dataset_filepath": test_dataset["filepath"],
-                        "dataset_id": name.lower(),
-                        "table_hash": name.lower(),
-                        "dataset_name": name,
-                        "dataset_label": test_dataset["label"],
-                        "dataset_domain": domain,
-                        "dataset_is_supp": is_supp,
-                        "dataset_rdomain": rdomain,
-                        "dataset_is_split": is_split,
-                        "dataset_unsplit_name": unsplit_name,
-                        "dataset_preprocessed": None,
-                        "var_name": test_variable["name"].lower(),
-                        "var_label": test_variable["label"],
-                        "var_type": test_variable["type"],
-                        "var_length": test_variable["length"],
-                        "var_format": test_variable["format"],
-                    }
-                )
-
-        # write metadata rows into DB
-        pgi.insert_data(table_name="data_metadata", data=metadata_rows)
+        instance = cls.instance()
+        SqlTestDatasetLoader.load_test_datasets(instance, test_datasets)
 
         return instance
 
@@ -200,44 +129,6 @@ class PostgresQLDataService:
         SqlDataPreprocessor.run(pgi)
 
         return instance
-
-    def _build_metadata_rows(
-        self, file_path: Path, table_name: str, metadata_info: dict, first_chunk: dict, timestamp: datetime
-    ) -> list[dict]:
-        """Build metadata rows for all variables in the dataset."""
-
-        domain = first_chunk.get("domain", None)
-        is_supp = domain.startswith(SUPPLEMENTARY_DOMAINS) if domain is not None else False
-        rdomain = first_chunk.get("rdomain", None)
-        unsplit_name = PostgresQLDataService._get_unsplit_name(table_name, domain, rdomain)
-        is_split = table_name != unsplit_name
-
-        metadata_rows = []
-        for var_info in metadata_info["variables"]:
-            metadata_rows.append(
-                {
-                    "created_at": timestamp,
-                    "updated_at": timestamp,
-                    "dataset_filename": file_path.name,
-                    "dataset_filepath": str(file_path),
-                    "dataset_id": table_name,
-                    "dataset_name": table_name,
-                    "dataset_label": metadata_info["metadata"].get("dataset_label", ""),
-                    "dataset_domain": domain,
-                    "dataset_is_supp": is_supp,
-                    "dataset_rdomain": rdomain,
-                    "dataset_is_split": is_split,
-                    "dataset_unsplit_name": unsplit_name,
-                    "dataset_preprocessed": None,
-                    "var_name": var_info.get("name", "").lower(),
-                    "var_label": var_info.get("label"),
-                    "var_type": var_info.get("type") or var_info.get("ctype"),
-                    "var_length": var_info.get("length"),
-                    "var_format": var_info.get("format"),
-                }
-            )
-
-        return metadata_rows
 
     def get_uploaded_dataset_ids(self) -> list[str]:
         query = "SELECT dataset_id FROM data_metadata GROUP BY dataset_id ORDER BY MIN(id);"
