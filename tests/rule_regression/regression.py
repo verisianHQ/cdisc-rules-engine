@@ -2,7 +2,7 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import pandas as pd
 from deepdiff import DeepDiff
@@ -15,6 +15,7 @@ from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
+from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from scripts.run_sql_validation import sql_run_single_rule_validation
 from scripts.run_validation import run_single_rule_validation
 from scripts.script_utils import get_library_metadata_from_cache
@@ -27,7 +28,7 @@ DATA_DEPTH = CASE_DEPTH + 2
 METADATA_CACHE = {}
 
 
-def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
+def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
     ig_specs = {
         "standard": "sdtmig",
         "standard_version": "3.4",
@@ -41,37 +42,40 @@ def run_single_rule_regression(row: pd.Series, get_core_rule) -> list:
         rule_regression["core_id_startswith_CORE"] = False
         rule_regression["in_cache"] = False
         rule_regression["rule_in_mltple_standards"] = []
-    else:
-        rule_regression["core_id_is_null"] = False
-        if not cur_core_id.startswith("CORE-"):
-            rule_regression["core_id_startswith_CORE"] = False
-            rule_regression["in_cache"] = False
+        return rule_regression
+
+    rule_regression["core_id_is_null"] = False
+    if not cur_core_id.startswith("CORE-"):
+        rule_regression["core_id_startswith_CORE"] = False
+        rule_regression["in_cache"] = False
+        rule_regression["rule_in_mltple_standards"] = []
+        return rule_regression
+
+    rule_regression["core_id_startswith_CORE"] = True
+    rule = get_core_rule(cur_core_id)
+    if not rule or not SQLRuleProcessor.valid_rule_structure(rule):
+        rule_regression["in_cache"] = False
+        return rule_regression
+
+    rule_regression["in_cache"] = True
+    rule_ids = row["rids"]
+    for rid in rule_ids:
+        paths = get_data_paths_by_rule_id(row, rid)
+        if len(paths) == 1:
+            rule_regression["rule_in_mltple_standards"] = []
+            p = paths[0]
+            path_obj = Path(p)
+            parts = path_obj.parts
+            rule_regression["sharepoint_source"] = parts[-RULE_DEPTH]
+
+            for case in ["negative", "positive"]:
+                case_path = path_obj / case
+                if case_path.exists():
+                    run_test_cases(rule_regression, case, str(case_path), ig_specs, rule, target_case)
+        elif len(paths) < 1:
             rule_regression["rule_in_mltple_standards"] = []
         else:
-            rule_regression["core_id_startswith_CORE"] = True
-            rule = get_core_rule(cur_core_id)
-            if not rule:
-                rule_regression["in_cache"] = False
-            else:
-                rule_regression["in_cache"] = True
-                rule_ids = row["rids"]
-                for rid in rule_ids:
-                    paths = get_data_paths_by_rule_id(row, rid)
-                    if len(paths) == 1:
-                        rule_regression["rule_in_mltple_standards"] = []
-                        p = paths[0]
-                        path_obj = Path(p)
-                        parts = path_obj.parts
-                        rule_regression["sharepoint_source"] = parts[-RULE_DEPTH]
-
-                        for case in ["negative", "positive"]:
-                            case_path = path_obj / case
-                            if case_path.exists():
-                                run_test_cases(rule_regression, case, str(case_path), ig_specs, rule)
-                    elif len(paths) < 1:
-                        rule_regression["rule_in_mltple_standards"] = []
-                    else:
-                        rule_regression["rule_in_mltple_standards"] = paths
+            rule_regression["rule_in_mltple_standards"] = paths
     return rule_regression
 
 
@@ -98,6 +102,7 @@ def run_test_cases(
     case_folder_path: str,
     ig_specs: IGSpecification,
     rule,
+    target_case: Optional[str] = None,
 ):
     two_digit_pattern = re.compile(r"^\d{2}$")
     cur_regression[f"{case}_folder_path"] = extract_final_path(case_folder_path, TYPE_DEPTH)
@@ -110,6 +115,8 @@ def run_test_cases(
 
     test_case_regression = []
     for test_case_folder_path in test_case_folder_paths:
+        if target_case and not test_case_folder_path.endswith(target_case):
+            continue
 
         try:
             test_case_path = Path(test_case_folder_path)
@@ -129,9 +136,7 @@ def run_test_cases(
             test_case_regression.append(
                 {
                     extract_final_path(test_case_folder_path, CASE_DEPTH): {
-                        "test_case_xslx_file": (
-                            extract_final_path(test_case_file_path, DATA_DEPTH) if test_case_file_path else None
-                        ),
+                        "test_case_xslx_file": extract_final_path(test_case_file_path, DATA_DEPTH),
                         "engine_regression": engine_regression,
                     }
                 }
@@ -403,22 +408,34 @@ def compare_error_lists(old_errors, sql_errors):
 
 def extract_results_regression(results):
     res_regression = []
-    for _, res in results.items():
+
+    if isinstance(results, dict):
+        result_list = [res[0] for res in results.values()]
+    elif isinstance(results, list):
+        result_list = results
+    else:
+        return res_regression
+
+    for res in result_list:
         domain_res_regression = {
-            "dataset": res[0].get("dataset", ""),
-            "domain": res[0].get("domain", ""),
-            "execution_status": res[0].get("executionStatus", ""),
-            "execution_message": res[0].get("message", ""),
-            "number_errors": len(res[0].get("errors")),
+            "dataset": res.get("dataset", ""),
+            "domain": res.get("domain", ""),
+            "execution_status": res.get("executionStatus", ""),
+            "execution_message": res.get("message", ""),
+            "number_errors": len(res.get("errors", [])),
         }
-        if res[0].get("executionStatus", "") == "execution_error":
+
+        execution_status = res.get("executionStatus", "")
+        errors = res.get("errors", [])
+
+        if execution_status == "execution_error":
             domain_res_regression["errors"] = [
                 {"error": error.get("error"), "message": error.get("message")}
-                for error in sorted(res[0].get("errors"), key=lambda x: x.get("message"))
+                for error in sorted(errors, key=lambda x: x.get("message", ""))
             ]
-        elif res[0].get("executionStatus", "") == "skipped":
+        elif execution_status == "skipped":
             domain_res_regression["errors"] = []
-        elif res[0].get("executionStatus", "") == "success":
+        elif execution_status == "success":
             domain_res_regression["errors"] = [
                 {
                     "row": error.get("row"),
@@ -426,7 +443,7 @@ def extract_results_regression(results):
                     "USUBJID": error.get("USUBJID"),
                     "value": error.get("value"),
                 }
-                for error in sorted(res[0].get("errors"), key=lambda x: x.get("row"))
+                for error in sorted(errors, key=lambda x: x.get("row", 0))
             ]
         else:
             domain_res_regression["errors"] = [{"error": "unknown execution status"}]
@@ -463,7 +480,7 @@ def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
     if any(s in wanted for s in row["std"]):
         paths.extend(
             find_dirs(
-                local_path / "ADAMIG",
+                local_path + "ADAMIG",
                 rid,
                 case_insensitive=True,
             )
@@ -614,26 +631,36 @@ def find_max_dir(root: str) -> str:
 def find_data_file(path: str) -> str:
     if not path:
         return ""
-    accepted_extensions = ["xls", "xlsx", "json"]
     try:
         for filename in os.listdir(path):
             full_path = os.path.join(path, filename)
             extension = filename.split(".")[-1].lower()
-            if os.path.isfile(full_path) and extension in accepted_extensions:
-                return path + "/" + filename
+            if not os.path.isfile(full_path) or extension not in ["xls", "xlsx"]:
+                continue
+
+            xlsx_data = pd.ExcelFile(full_path)
+            try:
+                # these throw an error when the sheet is not present
+                # TODO: Should really check for the presence of the library
+                # sheet, but nothing runs if it's not present so ¯\_(ツ)_/¯
+                # pd.read_excel(xlsx_data, sheet_name="Library")
+                pd.read_excel(xlsx_data, sheet_name="Datasets")
+            except ValueError:
+                continue
+            return full_path
     except FileNotFoundError:
         return ""
     return ""
 
 
 def find_define_xml_file_path(path: str) -> str:
-    path_obj = Path(path)
-    if not path_obj.exists():
+    try:
+        for filename in os.listdir(path):
+            full_path = os.path.join(path, filename)
+            if os.path.isfile(full_path) and filename.lower() == "define.xml":
+                return full_path
+    except FileNotFoundError:
         return ""
-
-    define_xml_path = path_obj / "define.xml"
-    if define_xml_path.is_file():
-        return str(define_xml_path)
     return ""
 
 
