@@ -86432,13 +86432,25 @@
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "SEENDTC is not equal to SESTDTC of the next element.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in does_not_have_next_corresponding_record operator",
-                                        "message": "has_next_corresponding_record check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "SEENDTC": "2012-11-30"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "SEENDTC": "2012-11-15"
+                                        }
                                     }
                                 ]
                             }
@@ -86473,12 +86485,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86503,15 +86512,10 @@
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_have_next_corresponding_record operator",
-                                        "message": "has_next_corresponding_record check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86527,12 +86531,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
