@@ -428,7 +428,7 @@ def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
     if "SDTMIG" in row["std"]:
         paths.extend(
             find_dirs(
-                local_path + "SDTMIG",
+                local_path / "SDTMIG",
                 rid,
                 case_insensitive=True,
             )
@@ -444,14 +444,14 @@ def get_data_paths_by_rule_id(row: pd.Series, rid: str) -> list[str]:
         )
     paths.extend(
         find_dirs(
-            local_path + "FDA Business Rules",
+            local_path / "FDA Business Rules",
             rid,
             case_insensitive=True,
         )
     )
     paths.extend(
         find_dirs(
-            local_path + "FDA Validator Rules",
+            local_path / "FDA Validator Rules",
             rid,
             case_insensitive=True,
         )
