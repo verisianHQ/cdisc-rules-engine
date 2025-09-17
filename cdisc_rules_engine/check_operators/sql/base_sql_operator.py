@@ -182,7 +182,9 @@ class BaseSqlOperator:
         query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
 
         if column == DATASET_NAME:
-            dataset_name = self.dataset_metadata.dataset_name if hasattr(self.dataset_metadata, "dataset_name") else ""
+            dataset_name = (
+                self.dataset_metadata.dataset_name if hasattr(self.dataset_metadata, "dataset_name") else None
+            )
             if prefix is not None:
                 dataset_name = dataset_name[: int(prefix)]
             elif suffix is not None:
