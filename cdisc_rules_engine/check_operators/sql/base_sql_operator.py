@@ -182,6 +182,15 @@ class BaseSqlOperator:
         # TODO: Throwing this temporarily, so we can determine which errors
         # are actually postgres errors and which are just rules which run on
         # optional variables without checking
+
+        if column == "dataset_name":
+            dataset_name = getattr(self, "dataset_metadata", {}).get("name", "")
+            if prefix is not None:
+                dataset_name = dataset_name[: int(prefix)]
+            elif suffix is not None:
+                dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
+            return self._constant_sql(dataset_name, lowercase=lowercase)
+
         if query is None:
             raise KeyError(column)
 
