@@ -105046,18 +105046,9 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "success",
-                                "execution_message": "Dataset name does not begin with DOMAIN value",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -105073,10 +105064,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
