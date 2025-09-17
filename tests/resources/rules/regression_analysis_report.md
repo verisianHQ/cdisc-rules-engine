@@ -4,24 +4,23 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 59 (7.7%)
-- **Clean rules**: 703 (92.3%)
+- **Rules with any errors**: 55 (7.2%)
+- **Clean rules**: 707 (92.8%)
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 26
+- Rules with **operator errors**: 24
 - Rules with **operation errors**: 17
-- Rules with **other errors**: 16
+- Rules with **other errors**: 14
 
-## Missing Operators (7 operators, 89 total failures across 26 rule occurrences)
+## Missing Operators (6 operators, 85 total failures across 24 rule occurrences)
 
-1.  **not_matches_regex**: 32 failures across 13 rules
+1.  **not_matches_regex**: 32 failures across 12 rules
 2.  **matches_regex**: 43 failures across 8 rules
-3.  **invalid_duration**: 4 failures across 1 rules
-4.  **suffix_matches_regex**: 3 failures across 1 rules
-5.  **prefix_equal_to**: 3 failures across 1 rules
-6.  **has_next_corresponding_record**: 2 failures across 1 rules
-7.  **empty_within_except_last_row**: 2 failures across 1 rules
+3.  **suffix_matches_regex**: 3 failures across 1 rules
+4.  **prefix_equal_to**: 3 failures across 1 rules
+5.  **has_next_corresponding_record**: 2 failures across 1 rules
+6.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
 
@@ -37,48 +36,47 @@
 10. **get_parent_model_column_order**: 4 failures across 1 rules
 11. **valid_codelist_dates**: 2 failures across 1 rules
 
-## Execution Errors by Type (17 unique error types, 223 total failures across 59 rule occurrences)
+## Execution Errors by Type (14 unique error types, 221 total failures across 55 rule occurrences)
 
-1.  **An unknown exception has occurred**: 96 failures across 21 rules
-2.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
+1.  **An unknown exception has occurred**: 97 failures across 21 rules
+2.  **SQL error in not_matches_regex operator**: 32 failures across 12 rules
 3.  **SQL error in matches_regex operator**: 43 failures across 8 rules
 4.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
 5.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
-6.  **SQL error in less_than_or_equal_to operator**: 3 failures across 2 rules
+6.  **SQL error in less_than_or_equal_to operator**: 4 failures across 2 rules
 7.  **Rule format error**: 15 failures across 1 rules
-8.  **SQL error in invalid_duration operator**: 4 failures across 1 rules
-9.  **SQL error in suffix_matches_regex operator**: 3 failures across 1 rules
-10. **SQL error in prefix_not_equal_to operator**: 3 failures across 1 rules
-11. **SQL error in does_not_have_next_corresponding_record operator**: 2 failures across 1 rules
-12. **SQL error in empty_within_except_last_row operator**: 2 failures across 1 rules
+8.  **SQL error in suffix_matches_regex operator**: 3 failures across 1 rules
+9.  **SQL error in prefix_not_equal_to operator**: 3 failures across 1 rules
+10. **SQL error in does_not_have_next_corresponding_record operator**: 2 failures across 1 rules
+11. **SQL error in empty_within_except_last_row operator**: 2 failures across 1 rules
+12. **SQL error in date_less_than operator**: 2 failures across 1 rules
 13. **SQL error in date_greater_than operator**: 2 failures across 1 rules
-14. **SQL error in date_equal_to operator**: 1 failures across 1 rules
-15. **SQL error in is_not_unique_set operator**: 1 failures across 1 rules
+14. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
 
 ## SQL vs Old Engine Discrepancies
 
-### SQL Errors where Old Engine Skipped (72 cases)
+### SQL Errors where Old Engine Skipped (69 cases)
 
 _Indicates SQL engine running rules it shouldn't_
 
-- [15] not_matches_regex check_operator not implemented
+- [14] not_matches_regex check_operator not implemented
 - [9] matches_regex check_operator not implemented
 - [5] Operation max_date is not implemented
 - [4] '$ds_dsdecod'
-- [4] invalid_duration check_operator not implemented
 - [4] Operation extract_metadata is not implemented
 - [4] Operation dy is not implemented
 - [4] Rule contains invalid operator
 - [3] Joins with relationship domains are not supported yet
 - [3] Operation min_date is not implemented
+- [3] suffix_matches_regex check_operator not implemented
 
 ### SQL Success where Old Engine Skipped (366 cases)
 
 _Indicates SQL engine not respecting rule applicability_
 **Skip Types:**
 
-- Class Not Applicable: 262
-- Domain Not Applicable: 104
+- Class Not Applicable: 264
+- Domain Not Applicable: 102
 
 **Examples:**
 
@@ -92,13 +90,12 @@ _Indicates SQL engine not respecting rule applicability_
 
 _Indicates actual regressions in SQL implementation_
 
-- [17] not_matches_regex check_operator not implemented
+- [18] not_matches_regex check_operator not implemented
 - [12] matches_regex check_operator not implemented
 - [8] Operation variable_count is not implemented
 - [6] Operation dy is not implemented
 - [5] column or relation does not exist
 - [3] prefix_equal_to check_operator not implemented
-- [2] invalid input syntax
 - [2] Joins with relationship domains are not supported yet
-- [1] No valid columns found for uniqueness check.
-- [1] 'NoneType' object has no attribute 'get_column_hash'
+- [2] 'NoneType' object has no attribute 'get_column_hash'
+- [1] invalid input syntax
