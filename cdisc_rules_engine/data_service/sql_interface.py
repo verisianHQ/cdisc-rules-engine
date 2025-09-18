@@ -122,9 +122,6 @@ class PostgresQLInterface:
         create_stmt = SQLSerialiser.create_table_query_from_schema(schema)
         self.execute_sql(create_stmt)
 
-        id_column = SqlColumnSchema(name="id", hash="id", type="Num")
-        schema.add_column(id_column)
-
         self.schema.add_table(schema)
         logger.info(f"Table {schema.name} created successfully")
 
