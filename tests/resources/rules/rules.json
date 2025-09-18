@@ -4052,26 +4052,162 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARMCD value length is greater than 20",
+                                "number_errors": 12,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC006",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC011",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC014",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC016",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC017",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC018",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "ARMCD value length is greater than 20",
+                                "number_errors": 6,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_LOW_DOSE_54_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "ARMCD": "ZANOMALINE_HIGH_DOSE_81_mg"
+                                        }
                                     }
                                 ]
                             }
@@ -4243,12 +4379,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -4273,28 +4406,18 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -4318,12 +4441,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -16637,7 +16757,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "message": "invalid regular expression: invalid embedded option\n"
                                     }
                                 ]
                             }
@@ -16691,7 +16811,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "message": "invalid regular expression: invalid embedded option\n"
                                     }
                                 ]
                             }
@@ -23630,13 +23750,41 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "SETCD value length is greater than 8",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "SETCD": "DRUG_A_SMOKER"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "SETCD": "DRUG_B_SMOKER"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "123106",
+                                        "value": {
+                                            "SETCD": "DRUG_A_NON_SMOKER"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "123107",
+                                        "value": {
+                                            "SETCD": "DRUG_B_NON_SMOKER"
+                                        }
                                     }
                                 ]
                             },
@@ -23703,12 +23851,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23733,15 +23878,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "tx.xpt",
@@ -23773,12 +23913,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -25113,80 +25250,76 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMDOSTXT value is numeric.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "ABC-0002",
+                                        "value": {
+                                            "CMDOSTXT": "100"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC-0003",
+                                        "value": {
+                                            "CMDOSTXT": "2.5"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "EXDOSTXT value is numeric.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC2001",
+                                        "value": {
+                                            "EXDOSTXT": "500"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "pr.xpt",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "su.xpt",
@@ -25298,7 +25431,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -25323,80 +25456,50 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "pr.xpt",
                                 "domain": "PR",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "su.xpt",
@@ -25473,7 +25576,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -40768,13 +40871,36 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Verify that LBTOXGR value is not from a numeric scale",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "LBTOX": null,
+                                            "LBTOXGR": "Grade 2"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "LBTOX": null,
+                                            "LBTOXGR": "Grade II"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBTOX": null,
+                                            "LBTOXGR": "XXXXXx 44"
+                                        }
                                     }
                                 ]
                             }
@@ -40812,11 +40938,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54644,14 +54770,90 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "domain": "SUPPDM",
+                                "execution_status": "success",
+                                "execution_message": "Population flag is present in SUPPDM",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "SAFETY"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "ENRFL"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "EFFFL"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "PPROTFL"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "COMPLT"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "FULLSET"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "ITT"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "PPROT"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "ITTFL"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "COMPLFL"
+                                        }
                                     }
                                 ]
                             }
@@ -54750,12 +54952,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -54791,14 +54990,26 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "domain": "SUPPDM",
+                                "execution_status": "success",
+                                "execution_message": "Population flag is present in SUPPDM",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "EXITT"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "QNAM": "XENRFL"
+                                        }
                                     }
                                 ]
                             }
@@ -54816,12 +55027,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "dataset_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56529,13 +56740,73 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VSTESTCD > 8 chars or contains more than only letters, numbers, underscores, or starts with a number.",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 8,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 9,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 22,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "1PULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 26,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "PULSE&&&&&&&"
+                                        }
                                     }
                                 ]
                             }
@@ -56618,12 +56889,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56645,13 +56913,73 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VSTESTCD > 8 chars or contains more than only letters, numbers, underscores, or starts with a number.",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 8,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 9,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "DIABPPULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 22,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "1PULSE"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 26,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTESTCD": "PULSE&&&&&&&"
+                                        }
                                     }
                                 ]
                             }
@@ -56734,12 +57062,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56764,15 +57089,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -56788,12 +57108,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56815,15 +57132,10 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -56839,12 +57151,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56881,14 +57190,110 @@
                         "results_sql": [
                             {
                                 "dataset": "suppae.xpt",
-                                "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "domain": "SUPPAE",
+                                "execution_status": "success",
+                                "execution_message": "QNAM > 8 chars or contains letters that are in not in uppercase, more than only letters, numbers, underscores, or starts with a number.",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "1",
+                                            "QNAM": "DICTVERSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "10",
+                                            "QNAM": "DICTVERSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "11",
+                                            "QNAM": "1DICTV"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "12",
+                                            "QNAM": "dICTV"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "13",
+                                            "QNAM": "DI&ION"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "14",
+                                            "QNAM": "DICTVERSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "15",
+                                            "QNAM": "DICTVER'"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "2",
+                                            "QNAM": "DICTVERSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "3",
+                                            "QNAM": "DICTVERSION"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "IDVAR": "AESPID",
+                                            "IDVARVAL": "4",
+                                            "QNAM": "DICTVERSION"
+                                        }
                                     }
                                 ]
                             }
@@ -57007,12 +57412,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57033,14 +57435,50 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "domain": "SUPPDM",
+                                "execution_status": "success",
+                                "execution_message": "QNAM > 8 chars or contains letters that are in not in uppercase, more than only letters, numbers, underscores, or starts with a number.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC006",
+                                        "value": {
+                                            "IDVAR": null,
+                                            "IDVARVAL": null,
+                                            "QNAM": "RACE11111"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "IDVAR": null,
+                                            "IDVARVAL": null,
+                                            "QNAM": "RaCE22"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "IDVAR": null,
+                                            "IDVARVAL": null,
+                                            "QNAM": "RACE@3"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "IDVAR": null,
+                                            "IDVARVAL": null,
+                                            "QNAM": "1RACE"
+                                        }
                                     }
                                 ]
                             }
@@ -57099,12 +57537,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57129,15 +57564,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57153,12 +57583,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57180,15 +57607,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57204,12 +57626,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -76973,13 +77392,27 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurement but LBORNRHI is not empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ALB",
+                                        "value": {
+                                            "LBORNRHI": "30",
+                                            "LBORRES": "NEGATIVE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "Prot",
+                                        "value": {
+                                            "LBORNRHI": "POSITIVE",
+                                            "LBORRES": "POSITIVE"
+                                        }
                                     }
                                 ]
                             }
@@ -77016,12 +77449,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77046,15 +77476,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77070,12 +77495,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77113,13 +77535,27 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurement but LBORNRLO is not empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ALB",
+                                        "value": {
+                                            "LBORNRLO": "30",
+                                            "LBORRES": "NEGATIVE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "Prot",
+                                        "value": {
+                                            "LBORNRLO": "POSITIVE",
+                                            "LBORRES": "POSITIVE"
+                                        }
                                     }
                                 ]
                             }
@@ -77156,12 +77592,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77186,15 +77619,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77210,12 +77638,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77237,15 +77662,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77261,12 +77681,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80497,13 +80914,18 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurment but LBSTNRLO is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "LBORRES": "CHAR RESULT",
+                                            "LBSTNRLO": 2.0
+                                        }
                                     }
                                 ]
                             }
@@ -80531,12 +80953,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80558,13 +80977,27 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurment but LBSTNRLO is not empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ALB",
+                                        "value": {
+                                            "LBORRES": "NEGATIVE",
+                                            "LBSTNRLO": "30"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "Prot",
+                                        "value": {
+                                            "LBORRES": "POSITIVE",
+                                            "LBSTNRLO": "clear"
+                                        }
                                     }
                                 ]
                             }
@@ -80601,12 +81034,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80631,15 +81061,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -80655,12 +81080,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80682,15 +81104,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -80706,12 +81123,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80749,13 +81163,18 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurement but LBSTNRHI is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "LBORRES": "CHAR RESULT",
+                                            "LBSTNRHI": 48.0
+                                        }
                                     }
                                 ]
                             }
@@ -80783,12 +81202,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80810,13 +81226,27 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBORRES is not a continuous measurement but LBSTNRHI is not empty.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ALB",
+                                        "value": {
+                                            "LBORRES": "NEGATIVE",
+                                            "LBSTNRHI": "30"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "Prot",
+                                        "value": {
+                                            "LBORRES": "POSITIVE",
+                                            "LBSTNRHI": "clear"
+                                        }
                                     }
                                 ]
                             }
@@ -80853,12 +81283,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80883,15 +81310,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -80907,12 +81329,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -80934,15 +81353,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -80958,12 +81372,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -85376,13 +85787,45 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSPARMCD = \"RANDQT\" but TSVAL is not a number between 0 and 1.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 34,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RANDQT",
+                                            "TSVAL": "1.1"
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RANDQT",
+                                            "TSVAL": "0"
+                                        }
+                                    },
+                                    {
+                                        "row": 36,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RANDQT",
+                                            "TSVAL": "1.01"
+                                        }
+                                    },
+                                    {
+                                        "row": 37,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RANDQT",
+                                            "TSVAL": "-0.001"
+                                        }
                                     }
                                 ]
                             }
@@ -85437,12 +85880,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -85467,13 +85907,18 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "TSPARMCD = \"RANDQT\" but TSVAL is not a number between 0 and 1.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 35,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "RANDQT",
+                                            "TSVAL": "1"
+                                        }
                                     }
                                 ]
                             }
@@ -85492,11 +85937,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -85800,13 +86245,36 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSPARMCD = ACTSUB but the value provided in TSVAL is not a positive integer.",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ACTSUB",
+                                            "TSVAL": "-1"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ACTSUB",
+                                            "TSVAL": "0"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "ACTSUB",
+                                            "TSVAL": "1.5"
+                                        }
                                     }
                                 ]
                             }
@@ -85852,12 +86320,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -85882,15 +86347,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -85906,12 +86366,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86182,13 +86639,36 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSPARMCD = PLANSUB but the value provided in TSVAL is not a positive integer.",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "row": 32,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PLANSUB",
+                                            "TSVAL": "-1"
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PLANSUB",
+                                            "TSVAL": "0"
+                                        }
+                                    },
+                                    {
+                                        "row": 34,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSPARMCD": "PLANSUB",
+                                            "TSVAL": "1.5"
+                                        }
                                     }
                                 ]
                             }
@@ -86234,12 +86714,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86264,15 +86741,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86288,12 +86760,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96471,15 +96940,10 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96529,11 +96993,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96571,15 +97035,10 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96595,12 +97054,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97001,7 +97457,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97077,7 +97533,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97090,7 +97546,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97103,7 +97559,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97187,7 +97643,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97200,7 +97656,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97259,7 +97715,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97272,7 +97728,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97285,7 +97741,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97352,7 +97808,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97365,7 +97821,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97440,7 +97896,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97503,7 +97959,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97571,7 +98027,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97584,7 +98040,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97643,7 +98099,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97656,7 +98112,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97669,7 +98125,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -97736,7 +98192,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             },
@@ -97749,7 +98205,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "'dataset_name'"
                                     }
                                 ]
                             }
@@ -102852,7 +103308,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in not_matches_regex operator",
-                                        "message": "not_matches_regex check_operator not implemented"
+                                        "message": "'variable_label'"
                                     }
                                 ]
                             }
@@ -120833,7 +121289,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "invalid regular expression: invalid embedded option\n"
                                     }
                                 ]
                             }
@@ -121128,7 +121584,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in matches_regex operator",
-                                        "message": "matches_regex check_operator not implemented"
+                                        "message": "invalid regular expression: invalid embedded option\n"
                                     }
                                 ]
                             }
