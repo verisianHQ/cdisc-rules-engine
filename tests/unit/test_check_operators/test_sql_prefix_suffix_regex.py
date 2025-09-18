@@ -46,7 +46,7 @@ PREFIX_NOT_MATCHES_REGEX_TEST_DATA = [
         {"target": [224, None]},
         r"^[1-9]{1}\d*$",
         2,
-        [False, False],  # Fixed: None should return False due to IS NOT NULL check
+        [False, False],
     ),
     (
         {"target": [-25, 3.14]},
