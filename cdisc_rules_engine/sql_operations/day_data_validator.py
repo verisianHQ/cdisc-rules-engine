@@ -21,8 +21,8 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         dm_table = self.data_service.pgi.schema.get_table("DM")
         if not dm_table:
             # Return 0 for all rows if DM doesn't exist
-            usubjid_col = self.data_service.pgi.schema.get_column_hash(self.params.domain, "USUBJID")
-            query = f"SELECT {usubjid_col} AS usubjid, 0 AS value FROM {current_table.hash} ORDER BY id"
+            id_col = self.data_service.pgi.schema.get_column_hash(self.params.domain, "id")
+            query = f"SELECT {id_col} AS id, 0 AS value FROM {current_table.hash} ORDER BY id"
             return SqlOperationResult(query=query, type="table", subtype="Num")
 
         joined_table = SqlJoinMerge.perform_join(
@@ -43,10 +43,10 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         rfstdtc_date_col = self.data_service.pgi.generate_date_column(joined_table.name, "RFSTDTC")
 
         # Build the DY calculation query using the generated date columns
-        usubjid_col = self.data_service.pgi.schema.get_column_hash(self.params.domain, "USUBJID")
+        id_col = self.data_service.pgi.schema.get_column_hash(self.params.domain, "id")
         query = f"""
         SELECT
-            {usubjid_col} AS usubjid,
+            {id_col} AS id,
             CASE
                 WHEN {target_date_col.hash} IS NULL OR {rfstdtc_date_col.hash} IS NULL THEN NULL
                 WHEN DATE({target_date_col.hash}) >= DATE({rfstdtc_date_col.hash}) THEN
