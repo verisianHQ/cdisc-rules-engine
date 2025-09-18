@@ -27724,11 +27724,52 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0429/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0429/negative/01/data/unit-test-coreid-CG0429-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0429/negative/01/data/unit-test-coreid-CG0429-TI only_negative.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "TISCAT"
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "execution_error",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27737,11 +27778,52 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0429/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0429/positive/01/data/unit-test-coreid-CG0429-positive.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0429/positive/01/data/unit-test-coreid-CG0429-TI only_positive.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "TISCAT"
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "execution_error",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27763,11 +27845,44 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0430/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0430/negative/01/data/unit-test-coreid-CG0430-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0430/negative/01/data/unit-test-coreid-CG0430-TI only_negative.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27776,11 +27891,44 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0430/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0430/positive/01/data/unit-test-coreid-CG0430-positive.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0430/positive/01/data/unit-test-coreid-CG0430-TI only_positive.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -121195,11 +121343,190 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0429/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0429/negative/01/data/unit-test-coreid-CG0429-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0429/negative/01/data/unit-test-coreid-CG0429-TI only_negative.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": "IECAT should not be null when IESCAT is populated",
+                                "number_errors": 8,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": "IECAT should not be null when IESCAT is populated",
+                                "number_errors": 8,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": null,
+                                            "IESCAT": "EXCLUSION SUB"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -121208,11 +121535,44 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0429/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0429/positive/01/data/unit-test-coreid-CG0429-positive.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0429/positive/01/data/unit-test-coreid-CG0429-TI only_positive.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -121234,11 +121594,64 @@
         "negative_regressions": [
             {
                 "SDTMIG/CG0430/negative/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0430/negative/01/data/unit-test-coreid-CG0430-negative.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0430/negative/01/data/unit-test-coreid-CG0430-TI only_negative.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": "IESCAT exists in a dataset, but IECAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": "Not in dataset",
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": "IESCAT exists in a dataset, but IECAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "IECAT": "Not in dataset",
+                                            "IESCAT": "INCLUSION SUB"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -121247,11 +121660,44 @@
         "positive_regressions": [
             {
                 "SDTMIG/CG0430/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0430/positive/01/data/unit-test-coreid-CG0430-positive.xlsx",
+                    "test_case_xslx_file": "SDTMIG/CG0430/positive/01/data/unit-test-coreid-CG0430-TI only_positive.xlsx",
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ti.xpt",
+                                "domain": "TI",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
