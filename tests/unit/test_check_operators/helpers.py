@@ -58,8 +58,8 @@ def create_sql_operators(
     Returns:
         PostgresQLOperators instance configured for testing
     """
-    data_service = PostgresQLDataService.test_instance()
-    PostgresQLDataService.add_test_dataset(data_service.pgi, table_name=TEST_TABLE_NAME, column_data=column_data)
+    data_service = PostgresQLDataService.instance()
+    PostgresQLDataService.add_test_dataset(data_service, table_name=TEST_TABLE_NAME, column_data=column_data)
 
     # Add dataset metadata if dataset_name is provided
     if dataset_name:

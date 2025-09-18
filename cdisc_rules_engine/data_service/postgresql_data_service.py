@@ -1,10 +1,13 @@
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Union
+from typing import List, Union
 
+from cdisc_rules_engine.data_service.loading.load_datasets import SqlDatasetLoader
+from cdisc_rules_engine.data_service.loading.load_test_datasets import (
+    SqlTestDatasetLoader,
+)
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
-from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.startup.populate_codelists import (
     populate_codelists,
@@ -16,6 +19,7 @@ from cdisc_rules_engine.data_service.startup.populate_terminology import (
     populate_terminology,
 )
 from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
+from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
@@ -43,32 +47,48 @@ class SQLDatasetMetadata:
 
 class PostgresQLDataService:
 
-    def __init__(
-        self,
-        postgres_interface: PostgresQLInterface,
-        ig_specs: IGSpecification,
-    ):
-        super().__init__(ig_specs)
+    def __init__(self, postgres_interface: PostgresQLInterface, standard: IGSpecification):
         self.pgi = postgres_interface
-        self.datasets: DatasetMetadata = []
+        self.datasets: List[DatasetMetadata] = []
+        self.ig_specs = standard
+
+    @classmethod
+    def instance(cls, standard: IGSpecification = None) -> "PostgresQLDataService":
+        """
+        Create a PostgresQLDataService instance with an initialized database.
+        """
+        # PostgresDB setup
+        pgi = PostgresQLInterface()
+        pgi.init_database()
+
+        instance = cls(postgres_interface=pgi, standard=standard)
+        pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
+        populate_terminology(pgi)
+        populate_codelists(pgi)
+        populate_standards(pgi)
+        return instance
 
     @classmethod
     def from_list_of_testdatasets(
-        cls,
-        test_datasets: list[TestDataset],
+        cls, test_datasets: list[TestDataset], standard: IGSpecification = None
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance()
-        SqlTestDatasetLoader.load_test_datasets(instance, test_datasets)
+        instance = cls.instance(standard)
+        instance.datasets += SqlTestDatasetLoader.load_test_datasets(instance.pgi, test_datasets)
+        return instance
 
+    @classmethod
+    def from_dataset_paths(cls, datasets_path: Path, standard: IGSpecification = None) -> "PostgresQLDataService":
+        instance = cls.instance(standard)
+        instance.datasets += SqlDatasetLoader.load_datasets(instance.pgi, datasets_path)
         return instance
 
     @staticmethod
     def add_test_dataset(
-        pgi: PostgresQLInterface, table_name: str, column_data: dict[str, list[Union[str, int, float]]]
+        data_service: "PostgresQLDataService", table_name: str, column_data: dict[str, list[Union[str, int, float]]]
     ):
         # Check all the columns are the same length
         lengths = {len(v) for v in column_data.values()}
@@ -83,81 +103,46 @@ class PostgresQLDataService:
         row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
 
         schema = SqlTableSchema.from_data(table_name, schema_row)
-        pgi.create_table(schema)
+        data_service.pgi.create_table(schema)
 
-        pgi.insert_data(table_name=table_name, data=row_dicts)
-        return schema
+        data_service.pgi.insert_data(table_name=table_name, data=row_dicts)
 
-    @classmethod
-    def instance(cls) -> "PostgresQLDataService":
-        """
-        Create a PostgresQLDataService instance with an initialized database.
-        """
-        # PostgresDB setup
-        pgi = PostgresQLInterface()
-        pgi.init_database()
-
-        instance = cls(postgres_interface=pgi, ig_specs=None)
-        pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
-        populate_terminology(pgi)
-        populate_codelists(pgi)
-        populate_standards(pgi)
-        return instance
-
-    @classmethod
-    def from_dataset_paths(
-        cls,
-        datasets_path: Path,
-        ig_specs: IGSpecification,
-        define_xml_path: Path = None,
-        terminology_paths: dict = None,
-    ) -> "PostgresQLDataService":
-        """
-        Load test datasets from dataset_paths to be used during test execution
-        """
-        pgi = PostgresQLInterface()
-        pgi.init_database()
-
-        instance = cls(
-            postgres_interface=pgi,
-            ig_specs=ig_specs,
-            datasets_path=datasets_path,
-            define_xml_path=define_xml_path,
-            terminology_paths=terminology_paths,
+        data_service.datasets.append(
+            SDTMDatasetMetadata(
+                file_size=0,
+                filename=table_name,
+                full_path=None,
+                label=None,
+                name=None,
+                record_count=len(row_dicts),
+                modification_date=None,
+                original_path=None,
+                first_record=row_dicts[0],
+            )
         )
 
-        SqlDataPreprocessor.run(pgi)
-
-        return instance
+        return schema
 
     def get_uploaded_dataset_ids(self) -> list[str]:
-        query = "SELECT dataset_id FROM data_metadata GROUP BY dataset_id ORDER BY MIN(id);"
-        self.pgi.execute_sql(query=query)
-        results = self.pgi.fetch_all()
-        return [res["dataset_id"] for res in results]
+        return [dataset.name for dataset in self.datasets]
 
     def get_dataset_metadata(self, dataset_id: str) -> SQLDatasetMetadata:
-        query = f"""
-            SELECT *
-            FROM data_metadata
-            WHERE dataset_id = '{dataset_id}';
-        """
-        self.pgi.execute_sql(query=query)
-        results = self.pgi.fetch_all()
-        if not results:
+
+        tmp = next((metadata for metadata in self.datasets if metadata.name.lower() == dataset_id.lower()), None)
+        if not tmp:
             return None
         return SQLDatasetMetadata(
-            filename=results[0].get("dataset_filename"),
-            filepath=results[0].get("dataset_filepath"),
-            dataset_id=results[0].get("dataset_id"),
-            table_hash=results[0].get("table_hash"),
-            dataset_name=results[0].get("dataset_name"),
-            dataset_label=results[0].get("dataset_label"),
-            unsplit_name=results[0].get("dataset_unsplit_name"),
-            domain=results[0].get("dataset_domain"),
-            is_supp=results[0].get("dataset_is_supp"),
-            rdomain=results[0].get("dataset_rdomain"),
-            variables=[res["var_name"] for res in results],
+            filename=tmp.filename,
+            filepath=str(tmp.full_path),
+            dataset_id=tmp.name,
+            table_hash=tmp.name,
+            dataset_name=tmp.name,
+            dataset_label=tmp.label,
+            unsplit_name=tmp.name,
+            domain=tmp.domain,
+            is_supp=tmp.is_supp,
+            rdomain=tmp.rdomain,
+            variables=[],
         )
 
     def get_dataset_for_rule(self, dataset_metadata: SQLDatasetMetadata, rule: dict) -> str:
@@ -190,50 +175,3 @@ class PostgresQLDataService:
             left_id = joined_schema.name
 
         return left_id
-
-    def _dataset_exists(self, dataset_name: str) -> bool:
-        """Check if a dataset/table exists in the database."""
-        query = """
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                  AND table_name = %s
-            )
-        """
-
-        self.pgi.execute_sql(query, (dataset_name.lower(),))
-
-        results = self.pgi.fetch_all()
-        if results:
-            return results[0]
-        return False
-
-    def _is_supp_dataset(self, dataset_id: str) -> bool:
-        """Check if a dataset is a SUPP dataset."""
-        query = """
-            SELECT dataset_is_supp
-            FROM public.data_metadata
-            WHERE dataset_id = %s
-            LIMIT 1
-        """
-
-        self.pgi.execute_sql(query, (dataset_id.lower(),))
-        result = self.pgi.fetch_one()
-
-        return result["dataset_is_supp"] if result else False
-
-    @staticmethod
-    def _get_unsplit_name(
-        name: str,
-        domain: Union[str, None],
-        rdomain: str,
-    ) -> str:
-        """Get the unsplit name for a dataset."""
-        if domain:
-            return domain
-        if name.startswith("SUPP"):
-            return f"SUPP{rdomain}"
-        if name.startswith("SQ"):
-            return f"SQ{rdomain}"
-        return name
