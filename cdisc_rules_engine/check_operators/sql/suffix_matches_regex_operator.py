@@ -14,7 +14,7 @@ class SuffixMatchesRegexOperator(BaseSqlOperator):
             length_expr = f"LENGTH({target_column}::text) - {suffix} + 1"
             substring_expr = f"SUBSTRING({target_column}::text, {length_expr})"
             return f"""CASE WHEN
-                            {target_column} IS NOT NULL
+                            NOT ({self._is_empty_sql(target)})
                             AND {substring_expr} ~ '{comparator}'
                         THEN true
                         ELSE false

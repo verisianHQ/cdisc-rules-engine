@@ -11,9 +11,10 @@ class NotSuffixMatchesRegexOperator(SuffixMatchesRegexOperator):
         suffix = other_value.get("suffix")
 
         def sql():
-            substring_expr = f"SUBSTRING({target_column}::text, " f"LENGTH({target_column}::text) - {suffix} + 1)"
+            length_expr = f"LENGTH({target_column}::text) - {suffix} + 1"
+            substring_expr = f"SUBSTRING({target_column}::text, {length_expr})"
             return f"""CASE WHEN
-                            {target_column} IS NOT NULL
+                            NOT ({self._is_empty_sql(target)})
                             AND NOT ({substring_expr} ~ '{comparator}')
                         THEN true
                         ELSE false

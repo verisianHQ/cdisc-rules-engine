@@ -11,9 +11,10 @@ class PrefixMatchesRegexOperator(BaseSqlOperator):
         prefix = other_value.get("prefix")
 
         def sql():
+            substring_expr = f"SUBSTRING({target_column}::text, 1, {prefix})"
             return f"""CASE WHEN
-                            {target_column} IS NOT NULL
-                            AND SUBSTRING({target_column}::text, 1, {prefix}) ~ '{comparator}'
+                            NOT ({self._is_empty_sql(target)})
+                            AND {substring_expr} ~ '{comparator}'
                         THEN true
                         ELSE false
                         END"""

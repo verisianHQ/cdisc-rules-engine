@@ -13,7 +13,7 @@ class NotPrefixMatchesRegexOperator(PrefixMatchesRegexOperator):
         def sql():
             substring_expr = f"SUBSTRING({target_column}::text, 1, {prefix})"
             return f"""CASE WHEN
-                            {target_column} IS NOT NULL
+                            NOT ({self._is_empty_sql(target)})
                             AND NOT ({substring_expr} ~ '{comparator}')
                         THEN true
                         ELSE false
