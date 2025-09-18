@@ -632,7 +632,8 @@ def find_data_file(path: str) -> str:
     if not path:
         return ""
     try:
-        for filename in os.listdir(path):
+        # Sorting to remove any non-determinism between OSes
+        for filename in sorted(os.listdir(path)):
             full_path = os.path.join(path, filename)
             extension = filename.split(".")[-1].lower()
             if not os.path.isfile(full_path) or extension not in ["xls", "xlsx"]:
