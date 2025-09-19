@@ -110,10 +110,10 @@ class PostgresQLDataService:
         data_service.datasets.append(
             SDTMDatasetMetadata(
                 file_size=0,
-                filename=table_name,
-                full_path=None,
-                label=None,
-                name=None,
+                filename=f"{table_name}.xpt",
+                full_path=f"/test/{table_name}.xpt",
+                label=f"Test {table_name} Dataset",
+                name=table_name,
                 record_count=len(row_dicts),
                 modification_date=None,
                 original_path=None,
