@@ -5207,51 +5207,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEOCCUR should only be provided when BEPRESP is equal to \"Y\".",
-                                "number_errors": 4,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null,
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "N",
-                                            "BEPRESP": null,
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null,
-                                            "BESTAT": "NOT DONE"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "N",
-                                            "BEPRESP": null,
-                                            "BESTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -6090,41 +6049,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEOCCUR should only be provided when BEPRESP is equal to \"Y\".",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null,
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null,
-                                            "BESTAT": "NOT DONE"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "N",
-                                            "BEPRESP": null,
-                                            "BESTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -6731,8 +6659,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -6985,8 +6913,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000014, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -7305,20 +7233,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEPRESP is missing in dataset when BEOCCUR is present.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000015, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -7753,8 +7671,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000015, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -8163,47 +8081,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEPRESP should be populated as \"Y\" when BEOCCUR is provided.",
-                                "number_errors": 4,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "N",
-                                            "BEPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "N",
-                                            "BEPRESP": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -8985,38 +8866,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEPRESP should be populated as \"Y\" when BEOCCUR is provided.",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": "y"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": "Y",
-                                            "BEPRESP": "N"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -9595,8 +9448,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -9849,8 +9702,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000016, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -10347,51 +10200,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEOCCUR is blank when BEPRESP is equal to \"Y\" and BESTAT is not provided.",
-                                "number_errors": 4,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -11165,41 +10977,10 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": "BEOCCUR is blank when BEPRESP is equal to \"Y\" and BESTAT is not provided.",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "BEOCCUR": null,
-                                            "BEPRESP": "Y",
-                                            "BESTAT": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ce.xpt",
@@ -11806,8 +11587,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -12065,8 +11846,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000018, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -12335,8 +12116,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000019, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -12628,8 +12409,8 @@
                             {
                                 "dataset": "be.xpt",
                                 "domain": "BE",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000019, dataset=BE",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -12791,7 +12572,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -14472,18 +14256,92 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ML",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "MLTPTREF is empty and MLELTM is not empty",
+                                "number_errors": 5,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "MLELTM": "-PT10M",
+                                            "MLTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "MLELTM": "PT1H",
+                                            "MLTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "MLELTM": "PT2H",
+                                            "MLTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "MLELTM": "PT24H",
+                                            "MLTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "MLELTM": "PT48H",
+                                            "MLTPTREF": null
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=PC",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "PCTPTREF is empty and PCELTM is not empty",
+                                "number_errors": 3,
+                                "errors": [
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "PCELTM": "PT2H",
+                                            "PCTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "PCELTM": "PT24H",
+                                            "PCTPTREF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "PCELTM": "PT48H",
+                                            "PCTPTREF": null
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -14581,12 +14439,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -14611,16 +14466,16 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ML",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=PC",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -14646,12 +14501,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -14673,16 +14525,16 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=ML",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
                                 "dataset": "pc.xpt",
                                 "domain": "PC",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000028, dataset=PC",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -14718,7 +14570,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23630,10 +23482,19 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000087, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "AESER is completed, but not equal to \"N\" or \"Y\"",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AESER": "U"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -23658,12 +23519,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -23688,8 +23546,8 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000087, dataset=AE",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -23707,12 +23565,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -27052,20 +26907,10 @@
                             {
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
-                                "execution_status": "success",
-                                "execution_message": "Missing DDSTRESC value, when DDRESCAT value is populated.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "DDRESCAT": "UNDERTERMINED",
-                                            "DDSTRESC": null
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000101, dataset=DD",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mb.xpt",
@@ -27211,7 +27056,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -27238,8 +27086,8 @@
                             {
                                 "dataset": "dd.xpt",
                                 "domain": "DD",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000101, dataset=DD",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -27337,7 +27185,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -32091,10 +31942,19 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000131, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "AECONTRT is completed, but not equal to \"N\" or \"Y\"",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AECONTRT": "A"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -32119,12 +31979,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -32149,8 +32006,8 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000131, dataset=AE",
+                                "execution_status": "success",
+                                "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -32168,12 +32025,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -44015,11 +43869,20 @@
                             },
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000181, dataset=APRELSUB",
-                                "number_errors": 0,
-                                "errors": []
+                                "domain": "APRELSUB",
+                                "execution_status": "success",
+                                "execution_message": "AP Domain value length is not equal to 4.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "DOMAIN": "Not in dataset"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -44072,8 +43935,8 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "dataset_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
@@ -44366,11 +44229,20 @@
                             },
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000182, dataset=APRELSUB",
-                                "number_errors": 0,
-                                "errors": []
+                                "domain": "APRELSUB",
+                                "execution_status": "success",
+                                "execution_message": "Variable name length is greater than 8.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -59604,11 +59476,21 @@
                         "results_sql": [
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000233, dataset=APRELSUB",
-                                "number_errors": 0,
-                                "errors": []
+                                "domain": "APRELSUB",
+                                "execution_status": "success",
+                                "execution_message": "RDEVID must be empty when RSUBJID is populated and RSUBJID must be empty when RDEVID is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "RDEVID": "AB0001",
+                                            "RSUBJID": "HEM021-002"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "aplb.xpt",
@@ -59632,7 +59514,7 @@
                                 "dataset": "lb.xpt",
                                 "domain": "",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000233, dataset=LB",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000233, dataset=LB",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -59686,10 +59568,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -59728,11 +59607,21 @@
                         "results_sql": [
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000234, dataset=APRELSUB",
-                                "number_errors": 0,
-                                "errors": []
+                                "domain": "APRELSUB",
+                                "execution_status": "success",
+                                "execution_message": "RSUBJID must be missing when RDEVID is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "RDEVID": "Device X",
+                                            "RSUBJID": "HEM021-001"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "aplb.xpt",
@@ -59794,10 +59683,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -59837,10 +59723,21 @@
                             {
                                 "dataset": "apdm.xpt",
                                 "domain": "APDM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000235, dataset=APDM",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "RSUBJID must equal DM.USUBJID when RSUBJID is populated and RSUBJID does not equal POOLID",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "POOLID": null,
+                                            "RSUBJID": "CDISC-TEST-001",
+                                            "USUBJID": null
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -59883,12 +59780,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -82244,19 +82138,10 @@
                             {
                                 "dataset": "rp.xpt",
                                 "domain": "RP",
-                                "execution_status": "success",
-                                "execution_message": "Negative value for RPDUR",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "2324-P0002",
-                                        "value": {
-                                            "RPDUR": "-P3Y"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000305, dataset=RP",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -82553,7 +82438,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -82596,8 +82484,8 @@
                             {
                                 "dataset": "rp.xpt",
                                 "domain": "RP",
-                                "execution_status": "success",
-                                "execution_message": null,
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000305, dataset=RP",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -82679,7 +82567,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -87869,6 +87760,31 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "suppqscqi.xpt",
+                                "domain": "SUPPQS",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
                                 "dataset": "suppqsswls.xpt",
                                 "domain": "SUPPQS",
                                 "execution_status": "success",
@@ -87951,6 +87867,31 @@
                         "datasets_import_sql": "SUCCESS",
                         "results_present_sql": true,
                         "results_sql": [
+                            {
+                                "dataset": "suppqscq.xpt",
+                                "domain": "SUPPQS",
+                                "execution_status": "success",
+                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100008",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC01.100014",
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
+                            },
                             {
                                 "dataset": "suppqssw.xpt",
                                 "domain": "SUPPQS",
@@ -89324,7 +89265,7 @@
                                 "dataset": "mha.xpt",
                                 "domain": "MH",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=MHA",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000365, dataset=MHA",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -89332,7 +89273,7 @@
                                 "dataset": "mhb.xpt",
                                 "domain": "MH",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=MHB",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000365, dataset=MHB",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -89617,7 +89558,7 @@
                                 "dataset": "mhd.xpt",
                                 "domain": "MH",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=MHD",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000365, dataset=MHD",
                                 "number_errors": 0,
                                 "errors": []
                             },
@@ -89625,7 +89566,7 @@
                                 "dataset": "mhg.xpt",
                                 "domain": "MH",
                                 "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000365, dataset=MHG",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000365, dataset=MHG",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -91048,28 +90989,18 @@
                             {
                                 "dataset": "zm.xpt",
                                 "domain": "ZM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_is_custom is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000376, dataset=ZM",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "zb.xpt",
                                 "domain": "ZB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_is_custom is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000376, dataset=ZB",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -91133,7 +91064,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91171,15 +91102,10 @@
                             {
                                 "dataset": "zb.xpt",
                                 "domain": "ZB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_is_custom is not implemented"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000376, dataset=ZB",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94877,21 +94803,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscgi.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCGI",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCGI2",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94929,7 +94854,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94949,21 +94874,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscgi.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCGI",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qscgi2.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCGI2",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmhe.xpt",
@@ -95017,7 +94941,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -95040,21 +94964,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSPG",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -95070,12 +94993,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -95095,21 +95018,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSPG",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppqscg.xpt",
@@ -95141,12 +95063,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -95166,21 +95088,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSPG",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -95221,9 +95142,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -95246,21 +95167,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSPG",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
@@ -95309,9 +95229,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -95334,21 +95254,20 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "qspg.xpt",
                                 "domain": "QS",
-                                "execution_status": "success",
-                                "execution_message": "Split dataset name is not 3 or 4 characters in length",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000510, dataset=QSPG",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -95380,12 +95299,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96060,10 +95979,15 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=LB",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96199,10 +96123,15 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=LB",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -96388,10 +96317,15 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=LB",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96458,10 +96392,15 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000529, dataset=LB",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -97621,15 +97560,18 @@
                             {
                                 "dataset": "qs1.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=QS1",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "qsae.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=QSAE",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97675,7 +97617,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97697,41 +97639,26 @@
                             {
                                 "dataset": "mhlb.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=MHLB",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97782,7 +97709,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97807,28 +97734,34 @@
                             {
                                 "dataset": "qs1.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=QS1",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "qsae.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=QSAE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "qs.xpt",
+                                "domain": "QS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97857,7 +97790,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97879,41 +97812,34 @@
                             {
                                 "dataset": "mhLB.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000539, dataset=MHLB",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97950,7 +97876,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97972,28 +97898,18 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMHE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98022,7 +97938,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98060,15 +97976,10 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FACM",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98101,7 +98012,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98121,17 +98032,28 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "facm.xpt",
+                                "domain": "FA",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FACM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
                                 "dataset": "fa1.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FA1",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98166,7 +98088,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98191,28 +98113,18 @@
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FACM",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98241,7 +98153,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98261,43 +98173,36 @@
                         "results_present_sql": true,
                         "results_sql": [
                             {
-                                "dataset": "famh.xpt",
+                                "dataset": "facm.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FACM",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "famh.xpt",
+                                "domain": "FA",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000540, dataset=FAMH",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98329,12 +98234,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "dataset_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98356,28 +98261,18 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMHE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98401,12 +98296,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98791,151 +98683,18 @@
                             {
                                 "dataset": "ss1.xpt",
                                 "domain": "SS",
-                                "execution_status": "success",
-                                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                                "number_errors": 14,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 1.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 2.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 3.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 4.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 5.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 6.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 7.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 1.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 2.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 3.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 4,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 4.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 5,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 5.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 6,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 6.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 7,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 7.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=SS1",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ss2.xpt",
+                                "domain": "SS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=SS2",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -99029,91 +98788,18 @@
                             {
                                 "dataset": "lbae.xpt",
                                 "domain": "LB",
-                                "execution_status": "success",
-                                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                                "number_errors": 8,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 4.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 5,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 5.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 6,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 6.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 7,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 7.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 4.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 5,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 5.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 6,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 6.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 7,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 7.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=LBAE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lbds.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=LBDS",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99606,151 +99292,18 @@
                             {
                                 "dataset": "ss1.xpt",
                                 "domain": "SS",
-                                "execution_status": "success",
-                                "execution_message": "SSSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                                "number_errors": 14,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 1.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 2.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 3.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 4.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 5.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 6.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "0001",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 7.0,
-                                            "USUBJID": "0001"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 1.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 2.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 3.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 4,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 4.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 5,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 5.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 6,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 6.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 7,
-                                        "USUBJID": "0002",
-                                        "value": {
-                                            "POOLID": "Not in dataset",
-                                            "SSSEQ": 7.0,
-                                            "USUBJID": "0002"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=SS1",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ss2.xpt",
+                                "domain": "SS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=SS2",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -99904,91 +99457,18 @@
                             {
                                 "dataset": "lbae.xpt",
                                 "domain": "LB",
-                                "execution_status": "success",
-                                "execution_message": "LBSEQ is not a unique number per USUBJID per domain, nor a unique number per POOLID per domain, including when the domain is split into multiple files",
-                                "number_errors": 8,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 4.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 5,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 5.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 6,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 6.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 7,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 7.0,
-                                            "POOLID": "0001",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 4.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 5,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 5.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 6,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 6.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 7,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "LBSEQ": 7.0,
-                                            "POOLID": "0002",
-                                            "USUBJID": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=LBAE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "lbds.xpt",
+                                "domain": "LB",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000544, dataset=LBDS",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103049,10 +102529,17 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000581, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "DM dataset is missing.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {}
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103081,11 +102568,25 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "ae.xpt": {
+                                    "values_changed": {
+                                        "root[0]['value']": {
+                                            "new_value": {},
+                                            "old_value": {
+                                                "AE": "ae.xpt",
+                                                "results": true,
+                                                "source_filename": "ae.xpt",
+                                                "source_row_number": 1
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103125,10 +102626,17 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000581, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "DM dataset is missing.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {}
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103382,10 +102890,15 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000594, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in not_matches_regex operator",
+                                        "message": "'variable_label'"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103447,7 +102960,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103847,15 +103360,10 @@
                             {
                                 "dataset": "ab.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_not_equal_to operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000598, dataset=AB",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103885,7 +103393,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103907,15 +103415,10 @@
                             {
                                 "dataset": "alb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_not_equal_to operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000598, dataset=ALB",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103945,7 +103448,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "skipped",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103970,15 +103473,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_not_equal_to operator",
-                                        "message": "'dataset_name'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103994,12 +103492,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116319,10 +115814,15 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -116394,7 +115894,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116427,10 +115927,15 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000766, dataset=AE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -116491,7 +115996,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -117317,7 +116822,22 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "missing",
+                        "old_overall_result": "missing",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             },
@@ -119735,10 +119255,19 @@
                             {
                                 "dataset": "apdm.xpt",
                                 "domain": "DM",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=APDM",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "apdrug1ex.xpt",
@@ -119789,8 +119318,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -119830,18 +119359,36 @@
                             {
                                 "dataset": "aplbs.xpt",
                                 "domain": "APLB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=APLBS",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "aplbe.xpt",
                                 "domain": "APLB",
-                                "execution_status": "skipped",
-                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000778, dataset=APLBE",
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "success",
+                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -119862,7 +119409,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "skipped",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
