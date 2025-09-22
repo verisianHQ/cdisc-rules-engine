@@ -69,12 +69,14 @@ def assert_operation_collection(
     for row in rows:
         assert "value" in row, "The result column must be called 'value'"
 
+    actual_values = [row["value"] for row in rows]
+
     if unsorted:
-        rows = sorted([row["value"] for row in rows])
+        actual_values = sorted(actual_values)
         expected = sorted(expected)
 
-    for i, row in enumerate(rows):
-        assert row == expected[i], f"Row {i} does not match expected data: {row} != {expected[i]}"
+    for i, actual_value in enumerate(actual_values):
+        assert actual_value == expected[i], f"Row {i} does not match expected data: {actual_value} != {expected[i]}"
 
 
 def assert_operation_table(operation: SqlBaseOperation, result: SqlOperationResult, expected: List[dict[str, Any]]):
@@ -105,7 +107,10 @@ def assert_operation_parameterized_collection(
 
         substituted_query = result.query
         for param_placeholder, param_value in params.items():
-            substituted_query = substituted_query.replace(param_placeholder, f"'{param_value}'")
+            if param_value is None:
+                substituted_query = substituted_query.replace(param_placeholder, "NULL")
+            else:
+                substituted_query = substituted_query.replace(param_placeholder, f"'{param_value}'")
 
         substituted_result = SqlOperationResult(
             query=substituted_query,

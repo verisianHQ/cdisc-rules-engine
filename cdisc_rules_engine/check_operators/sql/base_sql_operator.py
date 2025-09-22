@@ -255,7 +255,6 @@ class BaseSqlOperator:
                 query = f"({query})"
                 if lowercase:
                     if variable.params:
-                        # For parameterized queries, apply lowercase to the value column
                         query = f"(SELECT LOWER(value) FROM {query})"
                     else:
                         # column1 is the default column name for non-parameterized collections
