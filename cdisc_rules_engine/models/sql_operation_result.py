@@ -11,6 +11,6 @@ class SqlOperationResult:
     """
 
     query: str
-    type: Literal["collection", "constant", "table"]
+    type: Literal["collection", "constant"]
     subtype: DATASET_COLUMN_TYPES
     params: Optional[Dict[str, str]] = None
