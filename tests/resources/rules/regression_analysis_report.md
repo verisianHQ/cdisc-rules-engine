@@ -4,13 +4,13 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 58 (7.6%)
-- **Clean rules**: 704 (92.4%)
+- **Rules with any errors**: 56 (7.3%)
+- **Clean rules**: 706 (92.7%)
 
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 24
-- Rules with **operation errors**: 17
+- Rules with **operation errors**: 15
 - Rules with **other errors**: 17
 
 ## Missing Operators (5 operators, 84 total failures across 24 rule occurrences)
@@ -21,23 +21,22 @@
 4.  **suffix_matches_regex**: 3 failures across 1 rules
 5.  **empty_within_except_last_row**: 2 failures across 1 rules
 
-## Missing Operations (11 operations, 77 total failures across 17 rule occurrences)
+## Missing Operations (10 operations, 69 total failures across 15 rule occurrences)
 
 1.  **dy**: 16 failures across 3 rules
 2.  **variable_count**: 20 failures across 2 rules
-3.  **domain_label**: 8 failures across 2 rules
-4.  **max_date**: 5 failures across 2 rules
-5.  **min_date**: 3 failures across 2 rules
-6.  **get_column_order_from_dataset**: 6 failures across 1 rules
-7.  **get_model_column_order**: 5 failures across 1 rules
-8.  **domain_is_custom**: 4 failures across 1 rules
-9.  **extract_metadata**: 4 failures across 1 rules
-10. **get_parent_model_column_order**: 4 failures across 1 rules
-11. **valid_codelist_dates**: 2 failures across 1 rules
+3.  **max_date**: 5 failures across 2 rules
+4.  **min_date**: 3 failures across 2 rules
+5.  **get_column_order_from_dataset**: 6 failures across 1 rules
+6.  **get_model_column_order**: 5 failures across 1 rules
+7.  **domain_is_custom**: 4 failures across 1 rules
+8.  **extract_metadata**: 4 failures across 1 rules
+9.  **get_parent_model_column_order**: 4 failures across 1 rules
+10. **valid_codelist_dates**: 2 failures across 1 rules
 
-## Execution Errors by Type (16 unique error types, 221 total failures across 58 rule occurrences)
+## Execution Errors by Type (16 unique error types, 213 total failures across 56 rule occurrences)
 
-1.  **An unknown exception has occurred**: 96 failures across 21 rules
+1.  **An unknown exception has occurred**: 88 failures across 19 rules
 2.  **SQL error in not_matches_regex operator**: 32 failures across 13 rules
 3.  **SQL error in matches_regex operator**: 43 failures across 8 rules
 4.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
