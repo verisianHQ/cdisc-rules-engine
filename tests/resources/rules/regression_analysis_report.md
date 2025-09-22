@@ -19,12 +19,12 @@
 2.  **suffix_matches_regex**: 3 failures across 1 rules
 3.  **empty_within_except_last_row**: 2 failures across 1 rules
 
-## Missing Operations (10 operations, 58 total failures across 14 rule occurrences)
+## Missing Operations (10 operations, 52 total failures across 14 rule occurrences)
 
 1.  **variable_count**: 20 failures across 2 rules
-2.  **domain_label**: 8 failures across 2 rules
-3.  **max_date**: 5 failures across 2 rules
-4.  **min_date**: 3 failures across 2 rules
+2.  **max_date**: 5 failures across 2 rules
+3.  **min_date**: 3 failures across 2 rules
+4.  **domain_label**: 2 failures across 2 rules
 5.  **get_column_order_from_dataset**: 6 failures across 1 rules
 6.  **get_model_column_order**: 5 failures across 1 rules
 7.  **extract_metadata**: 4 failures across 1 rules
@@ -32,9 +32,9 @@
 9.  **valid_codelist_dates**: 2 failures across 1 rules
 10. **domain_is_custom**: 1 failures across 1 rules
 
-## Execution Errors by Type (15 unique error types, 158 total failures across 39 rule occurrences)
+## Execution Errors by Type (15 unique error types, 152 total failures across 39 rule occurrences)
 
-1.  **An unknown exception has occurred**: 80 failures across 19 rules
+1.  **An unknown exception has occurred**: 74 failures across 19 rules
 2.  **SQL error in not_equal_to operator**: 18 failures across 3 rules
 3.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
 4.  **SQL error in not_matches_regex operator**: 4 failures across 2 rules
