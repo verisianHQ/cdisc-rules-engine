@@ -9,15 +9,13 @@
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 3
+- Rules with **operator errors**: 1
 - Rules with **operation errors**: 14
 - Rules with **other errors**: 19
 
-## Missing Operators (3 operators, 13 total failures across 3 rule occurrences)
+## Missing Operators (1 operators, 2 total failures across 1 rule occurrences)
 
-1.  **not_prefix_matches_regex**: 8 failures across 1 rules
-2.  **suffix_matches_regex**: 3 failures across 1 rules
-3.  **empty_within_except_last_row**: 2 failures across 1 rules
+1.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (10 operations, 58 total failures across 14 rule occurrences)
 
@@ -48,5 +46,6 @@
 12. **SQL error in date_greater_than operator**: 2 failures across 1 rules
 13. **SQL error in matches_regex operator**: 2 failures across 1 rules
 14. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
+
 
 ## SQL vs Old Engine Discrepancies
