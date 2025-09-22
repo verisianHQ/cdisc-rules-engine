@@ -6,8 +6,8 @@ class EmptyWithinExceptLastRowOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         """
-        Checks if all values in the target column are empty (NULL or in NULL_FLAVORS)
-        for all rows within each group (defined by comparator) except the last row.
+        Returns a boolean for each row indicating if that row's target value is empty
+        within its group (last row in each group always returns false).
 
         Args:
             other_value: Dictionary containing:
@@ -16,7 +16,7 @@ class EmptyWithinExceptLastRowOperator(BaseSqlOperator):
                 - ordering: Optional column to determine the order within groups
 
         Returns:
-            Boolean series indicating if all non-last rows in each group are empty
+            Boolean for each row: true if row is empty and not last in group, false otherwise
         """
         target = self.replace_prefix(other_value.get("target"))
         comparator = self.replace_prefix(other_value.get("comparator"))
