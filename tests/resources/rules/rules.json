@@ -56364,211 +56364,6 @@
         "negative_folder_path": "SDTMIG/CG0350/negative",
         "negative_regressions": [
             {
-                "SDTMIG/CG0350/negative/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0350/negative/02/data/unit-test-coreid-CG0350-negative 2.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "SUCCESS",
-                        "results_present_sql": true,
-                        "results_sql": [
-                            {
-                                "dataset": "cm.xpt",
-                                "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "CMSCAT is equal to domain dataset label.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "dataset_import_old": "SUCCESS",
-                        "results_present_old": true,
-                        "results_old": [
-                            {
-                                "dataset": "cm.xpt",
-                                "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "CMSCAT is equal to domain dataset label.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "Concomitant/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "old_vs_sql": {
-                            "equal": true
-                        },
-                        "sql_overall_result": "success",
-                        "old_overall_result": "success",
-                        "validated_results_folder_exists": false,
-                        "validation_file": "",
-                        "validation_file_validation": "",
-                        "old_result_validation": "invalid",
-                        "sql_results_validation": "invalid"
-                    }
-                }
-            },
-            {
                 "SDTMIG/CG0350/negative/01": {
                     "test_case_xslx_file": "SDTMIG/CG0350/negative/01/data/unit-test-coreid-CG0350-negative 1.xlsx",
                     "engine_regression": {
@@ -56786,9 +56581,90 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "CMSCAT is equal to domain dataset label.",
+                                "number_errors": 10,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -56955,15 +56831,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -56979,12 +56850,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -77300,211 +77168,6 @@
         "negative_folder_path": "SDTMIG/CG0336/negative",
         "negative_regressions": [
             {
-                "SDTMIG/CG0336/negative/02": {
-                    "test_case_xslx_file": "SDTMIG/CG0336/negative/02/data/unit-test-coreid-CG0336-negative 2.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "SUCCESS",
-                        "results_present_sql": true,
-                        "results_sql": [
-                            {
-                                "dataset": "cm.xpt",
-                                "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "CMCAT is equal to DOMAIN.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "dataset_import_old": "SUCCESS",
-                        "results_present_old": true,
-                        "results_old": [
-                            {
-                                "dataset": "cm.xpt",
-                                "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "CMCAT is equal to DOMAIN.",
-                                "number_errors": 10,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 6,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 7,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 3,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "CMCAT": "Concomitant/Prior Medications"
-                                        }
-                                    }
-                                ]
-                            }
-                        ],
-                        "old_vs_sql": {
-                            "equal": true
-                        },
-                        "sql_overall_result": "success",
-                        "old_overall_result": "success",
-                        "validated_results_folder_exists": false,
-                        "validation_file": "",
-                        "validation_file_validation": "",
-                        "old_result_validation": "invalid",
-                        "sql_results_validation": "invalid"
-                    }
-                }
-            },
-            {
                 "SDTMIG/CG0336/negative/01": {
                     "test_case_xslx_file": "SDTMIG/CG0336/negative/01/data/unit-test-coreid-CG0336-negative 1.xlsx",
                     "engine_regression": {
@@ -77722,9 +77385,90 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "CMCAT is equal to DOMAIN.",
+                                "number_errors": 10,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77891,15 +77635,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -77915,12 +77654,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
