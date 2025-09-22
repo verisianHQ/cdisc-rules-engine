@@ -13,21 +13,21 @@ from .helpers import (
 
 
 def test_domain_label():
-    data_service = PostgresQLDataService.test_instance()
+    data_service = PostgresQLDataService.instance()
     PostgresQLDataService.add_test_dataset(
-        data_service.pgi, table_name="ae", column_data={"key": [1, 2, 3], "name": ["A", "B", "C"]}
+        data_service, table_name="ae", column_data={"key": [1, 2, 3], "name": ["A", "B", "C"]}
     )
 
     params = SqlOperationParams(domain="ae", target=None, standard="", standard_version="")
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
     result = operation.execute()
-    assert_operation_constant(operation, result, "")  # Default empty label for test data
+    assert_operation_constant(operation, result, "Test ae Dataset")  # Default label for test data
 
 
 def test_domain_label_nonexistent_domain():
-    data_service = PostgresQLDataService.test_instance()
+    data_service = PostgresQLDataService.instance()
     PostgresQLDataService.add_test_dataset(
-        data_service.pgi, table_name="ae", column_data={"key": [1, 2, 3], "name": ["A", "B", "C"]}
+        data_service, table_name="ae", column_data={"key": [1, 2, 3], "name": ["A", "B", "C"]}
     )
 
     params = SqlOperationParams(domain="vs", target=None, standard="", standard_version="")
@@ -64,7 +64,7 @@ def test_domain_label_with_valid_label():
         },
     )
 
-    data_service = PostgresQLDataService.from_list_of_testdatasets([ae_dataset], ig_specs=None)
+    data_service = PostgresQLDataService.from_list_of_testdatasets([ae_dataset])
 
     params = SqlOperationParams(domain="ae", target=None, standard="", standard_version="")
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
@@ -100,7 +100,7 @@ def test_domain_label_with_empty_label():
         },
     )
 
-    data_service = PostgresQLDataService.from_list_of_testdatasets([vs_dataset], ig_specs=None)
+    data_service = PostgresQLDataService.from_list_of_testdatasets([vs_dataset])
 
     params = SqlOperationParams(domain="vs", target=None, standard="", standard_version="")
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
@@ -136,7 +136,7 @@ def test_domain_label_with_quotes_in_label():
         },
     )
 
-    data_service = PostgresQLDataService.from_list_of_testdatasets([lb_dataset], ig_specs=None)
+    data_service = PostgresQLDataService.from_list_of_testdatasets([lb_dataset])
 
     params = SqlOperationParams(domain="lb", target=None, standard="", standard_version="")
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
