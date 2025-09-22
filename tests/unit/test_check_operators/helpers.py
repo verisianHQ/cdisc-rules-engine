@@ -12,7 +12,7 @@ TEST_TABLE_NAME = "test_table"
 
 
 def create_sql_operators(
-    column_data: dict, extra_operation_variables: dict = {}, extra_config: dict = {}
+    column_data: dict, extra_operation_variables: dict = {}, extra_config: dict = {}, dataset_name: str = None
 ) -> PostgresQLOperators:
     """Create PostgresQLOperators instance with test data.
     It will preload some operation variables which can be used in tests.
@@ -21,14 +21,17 @@ def create_sql_operators(
         column_data: Dictionary containing column names and their data
         extra_operation_variables: Optional additional custom dictionary of operation variables
         extra_config: Optional additional configuration for the operators
+        dataset_name: Optional dataset name for testing dataset_name column operations
 
     Returns:
         PostgresQLOperators instance configured for testing
     """
-    data_service = PostgresQLDataService.test_instance()
-    PostgresQLDataService.add_test_dataset(data_service.pgi, table_name=TEST_TABLE_NAME, column_data=column_data)
+    data_service = PostgresQLDataService.instance()
 
-    config = {**extra_config, "dataset_id": TEST_TABLE_NAME, "data_service": data_service}
+    table_name = dataset_name or TEST_TABLE_NAME
+    PostgresQLDataService.add_test_dataset(data_service, table_name=table_name, column_data=column_data)
+
+    config = {**extra_config, "dataset_id": table_name, "data_service": data_service}
 
     config["operation_variables"] = {**extra_operation_variables}
     config["operation_variables"]["$constant"] = SqlOperationResult(query="SELECT 'A'", type="constant", subtype="Char")
