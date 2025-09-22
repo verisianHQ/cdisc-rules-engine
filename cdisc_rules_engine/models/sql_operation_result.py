@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Dict, Literal, Optional
 
 from cdisc_rules_engine.models.sql import DATASET_COLUMN_TYPES
 
@@ -13,3 +13,4 @@ class SqlOperationResult:
     query: str
     type: Literal["collection", "constant", "table"]
     subtype: DATASET_COLUMN_TYPES
+    params: Optional[Dict[str, str]] = None

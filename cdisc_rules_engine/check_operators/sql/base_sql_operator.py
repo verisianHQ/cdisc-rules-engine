@@ -243,10 +243,23 @@ class BaseSqlOperator:
                 variable = self.operation_variables[value]
                 if variable.type != "collection":
                     raise ValueError(f"Variable {value} is not a collection.")
-                query = f"({variable.query})"
+
+                query = variable.query
+
+                if variable.params:
+                    # Substitute parameters with actual column values from current row context
+                    for param_placeholder, column_name in variable.params.items():
+                        column_sql = self._column_sql(column_name)
+                        query = query.replace(param_placeholder, column_sql)
+
+                query = f"({query})"
                 if lowercase:
-                    # column1 is the default column name
-                    query = f"(SELECT LOWER(column1) FROM {query})"
+                    if variable.params:
+                        # For parameterized queries, apply lowercase to the value column
+                        query = f"(SELECT LOWER(value) FROM {query})"
+                    else:
+                        # column1 is the default column name for non-parameterized collections
+                        query = f"(SELECT LOWER(column1) FROM {query})"
                 return query
             raise ValueError(f"Expected a collection, got a string: {value}")
         elif value is None:
