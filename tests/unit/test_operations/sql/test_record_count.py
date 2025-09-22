@@ -2,7 +2,7 @@ import pytest
 
 from .helpers import (
     assert_operation_constant,
-    assert_operation_parameterized_collection,
+    assert_operation_parameterized_constant,
     setup_sql_operations,
 )
 
@@ -156,7 +156,7 @@ def test_filtered_grouped_record_count(data, filter, grouping, expected):
         "record_count", "values", data, extra_config={"filter": filter, "grouping": grouping}
     )
     result = operation.execute()
-    assert_operation_parameterized_collection(operation, result, expected)
+    assert_operation_parameterized_constant(operation, result, expected)
 
 
 # TODO: Handle operation variables in other operations

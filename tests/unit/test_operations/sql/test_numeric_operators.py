@@ -2,7 +2,7 @@ import pytest
 
 from .helpers import (
     assert_operation_constant,
-    assert_operation_parameterized_collection,
+    assert_operation_parameterized_constant,
     setup_sql_operations,
 )
 
@@ -56,4 +56,4 @@ def test_sql_maximum(data, op, expected):
 def test_sql_maximum_grouping(data, op, expected):
     operation = setup_sql_operations(op, "values", data, extra_config={"grouping": ["grp"]})
     result = operation.execute()
-    assert_operation_parameterized_collection(operation, result, expected)
+    assert_operation_parameterized_constant(operation, result, expected)

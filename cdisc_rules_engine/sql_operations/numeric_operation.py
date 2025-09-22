@@ -48,4 +48,4 @@ class SqlNumericOperation(SqlBaseOperation):
             query = f"""SELECT {self.function}({column_id}) AS value
                         FROM {dataset_id}
                         {combined_where}"""
-            return SqlOperationResult(query=query, type="collection", subtype="Num", params=params)
+            return SqlOperationResult(query=query, type="constant", subtype="Num", params=params)
