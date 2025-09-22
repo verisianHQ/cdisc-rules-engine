@@ -4,8 +4,8 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 36 (4.7%)
-- **Clean rules**: 726 (95.3%)
+- **Rules with any errors**: 34 (4.5%)
+- **Clean rules**: 728 (95.5%)
 
 **Error Breakdown by Category:**
 
@@ -30,7 +30,7 @@
 9.  **valid_codelist_dates**: 2 failures across 1 rules
 10. **domain_is_custom**: 1 failures across 1 rules
 
-## Execution Errors by Type (14 unique error types, 140 total failures across 36 rule occurrences)
+## Execution Errors by Type (12 unique error types, 129 total failures across 34 rule occurrences)
 
 1.  **An unknown exception has occurred**: 80 failures across 19 rules
 2.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
@@ -38,14 +38,11 @@
 4.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
 5.  **SQL error in less_than_or_equal_to operator**: 4 failures across 2 rules
 6.  **Rule format error**: 15 failures across 1 rules
-7.  **SQL error in not_prefix_matches_regex operator**: 8 failures across 1 rules
-8.  **SQL error in suffix_matches_regex operator**: 3 failures across 1 rules
-9.  **SQL error in empty_within_except_last_row operator**: 2 failures across 1 rules
-10. **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
-11. **SQL error in date_less_than operator**: 2 failures across 1 rules
-12. **SQL error in date_greater_than operator**: 2 failures across 1 rules
-13. **SQL error in matches_regex operator**: 2 failures across 1 rules
-14. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
-
+7.  **SQL error in empty_within_except_last_row operator**: 2 failures across 1 rules
+8.  **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
+9.  **SQL error in date_less_than operator**: 2 failures across 1 rules
+10. **SQL error in date_greater_than operator**: 2 failures across 1 rules
+11. **SQL error in matches_regex operator**: 2 failures across 1 rules
+12. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
 
 ## SQL vs Old Engine Discrepancies
