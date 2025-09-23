@@ -104,5 +104,6 @@ def generate_operators_analysis_report(operators_in_rules: Set[str]) -> None:
             analysis_report.append(row)
         analysis_report.append("")
 
-    with open("tests/resources/rules/operators_analysis_report.md", "w", encoding="utf-8") as f:
+    output_path = Path("tests/resources/rules") / "operators_analysis_report.md"
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(analysis_report))
