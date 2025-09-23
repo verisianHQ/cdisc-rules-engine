@@ -5,7 +5,7 @@ import inspect
 from cdisc_rules_engine.check_operators.sql.postgresql_operators import PostgresQLOperators
 
 
-def find_rules_without_operators(rules_dir: str = "tests/resources/rules") -> List[Dict]:
+def find_rules_without_operators() -> List[Dict]:
     """
     Find rules that don't have any check operators.
     Args:
@@ -13,7 +13,7 @@ def find_rules_without_operators(rules_dir: str = "tests/resources/rules") -> Li
     Returns:
         List of rules without check operators, each with core_id and rule_id
     """
-    rules_path = Path(rules_dir) / "rules.json"
+    rules_path = Path("tests/resources/rules") / "rules.json"
     if not rules_path.exists():
         return []
 
