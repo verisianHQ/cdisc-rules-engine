@@ -1,49 +1,14 @@
-from typing import Set, Dict, List
+from typing import Set
 from pathlib import Path
 import json
 from cdisc_rules_engine.check_operators.sql.postgresql_operators import PostgresQLOperators
 
 
-def find_rules_without_operators(rules_dir: str = "tests/resources/rules") -> List[Dict]:
-    """
-    Find rules that don't have any check operators.
-
-    Args:
-        rules_dir: Directory containing the rules JSON files
-
-    Returns:
-        List of rules without check operators, each with core_id and rule_id
-    """
-    rules_path = Path(rules_dir) / "rules.json"
-    if not rules_path.exists():
-        return []
-
-    with open(rules_path, "r") as f:
-        all_rules = json.load(f)
-
-    rules_without_operators = []
-    for rule in all_rules:
-        if not rule.get("check_operators"):
-            rules_without_operators.append(
-                {
-                    "core_id": rule.get("core-id", "N/A"),
-                    "cdisc_rule_id": rule.get("cdisc_rule_id", "N/A"),
-                    "standard": rule.get("standard", "N/A"),
-                    "status": rule.get("status", "N/A"),
-                    "in_cache": rule.get("in_cache", False),
-                }
-            )
-
-    return rules_without_operators
-
-
-def generate_operators_analysis_report(operators_in_rules: Set[str], output_path: str) -> None:
+def generate_operators_analysis_report(operators_in_rules: Set[str]) -> None:
     """
     Generate a markdown report analyzing operator implementation status.
-
     Args:
         operators_in_rules: Set of operator names found in rules
-        output_path: Path where the report should be saved
     """
     all_operators_list = sorted(list(operators_in_rules))
 
@@ -52,7 +17,24 @@ def generate_operators_analysis_report(operators_in_rules: Set[str], output_path
     missing_operators = sorted(list(set(all_operators_list) - implemented_operators))
     extra_operators = sorted(list(implemented_operators - set(all_operators_list)))
 
-    rules_without_operators = find_rules_without_operators()
+    # Find rules without operators (inline logic)
+    rules_path = Path("tests/resources/rules") / "rules.json"
+    rules_without_operators = []
+    if rules_path.exists():
+        with open(rules_path, "r") as f:
+            all_rules = json.load(f)
+
+        for rule in all_rules:
+            if not rule.get("check_operators"):
+                rules_without_operators.append(
+                    {
+                        "core_id": rule.get("core-id", "N/A"),
+                        "cdisc_rule_id": rule.get("cdisc_rule_id", "N/A"),
+                        "standard": rule.get("standard", "N/A"),
+                        "status": rule.get("status", "N/A"),
+                        "in_cache": rule.get("in_cache", False),
+                    }
+                )
 
     analysis_report = []
     analysis_report.append("# 🔍 Check Operators Analysis Report")
@@ -108,5 +90,6 @@ def generate_operators_analysis_report(operators_in_rules: Set[str], output_path
             analysis_report.append(row)
         analysis_report.append("")
 
+    output_path = Path("tests/resources/rules") / "operators_analysis_report.md"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(analysis_report))
