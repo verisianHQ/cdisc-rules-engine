@@ -57167,13 +57167,89 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBSCAT is equal to domain dataset label.",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
+                                        "row": 1,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 71,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 72,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 73,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 74,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 75,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 76,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 77,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 78,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 79,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBSCAT": "LABORATORY TEST RESULTS"
+                                        }
                                     }
                                 ]
                             }
@@ -57272,12 +57348,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57299,13 +57372,89 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMSCAT is equal to domain dataset label.",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "Concomitant/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMSCAT": "CONCOMITANT/PRIOR MEDICATIONS"
+                                        }
                                     }
                                 ]
                             }
@@ -57404,12 +57553,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57434,15 +57580,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57458,12 +57599,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57485,15 +57623,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57509,12 +57642,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78028,13 +78158,89 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "LBCAT is equal to DOMAIN.",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
+                                        "row": 1,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 71,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 72,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 73,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 74,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "Laboratory Test Results"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 75,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 76,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 77,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 78,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "LABORATORY TEST RESULTS"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 79,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "LBCAT": "LABORATORY TEST RESULTS"
+                                        }
                                     }
                                 ]
                             }
@@ -78133,12 +78339,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78160,13 +78363,89 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMCAT is equal to DOMAIN.",
+                                "number_errors": 10,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "CMCAT": "Concomitant/Prior Medications"
+                                        }
                                     }
                                 ]
                             }
@@ -78265,12 +78544,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78295,15 +78571,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -78319,12 +78590,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -78346,15 +78614,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation domain_label is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -78370,12 +78633,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -79704,7 +79964,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -79732,21 +79992,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "mh.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$mids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -79795,7 +80041,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -79999,21 +80245,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$mids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -80094,7 +80326,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -80266,21 +80498,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "mh.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$mids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -80385,7 +80603,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -80533,21 +80751,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "vs.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$mids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -80660,7 +80864,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -80800,21 +81004,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ta.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$mids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -80850,7 +81040,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -80937,7 +81127,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -81232,7 +81422,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -81519,7 +81709,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -81790,7 +81980,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$MIDS_EXISTS": "Not in dataset"
+                                            "$MIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -93301,7 +93491,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93346,12 +93536,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$stype_interventional']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -93388,7 +93578,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93399,7 +93589,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93410,7 +93600,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93478,7 +93668,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 56,
                                                     "TSGRPID": "1",
                                                     "TSPARMCD": "TRT",
                                                     "TSVAL": null
@@ -93502,7 +93692,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 56,
                                                     "TSGRPID": "2",
                                                     "TSPARMCD": "TRT",
                                                     "TSVAL": null
@@ -93526,7 +93716,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 56,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "TRT",
                                                     "TSVAL": null
@@ -93625,7 +93815,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 54,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93636,7 +93826,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 54,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93715,7 +93905,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -93760,12 +93950,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$stype_interventional']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -93802,7 +93992,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -93813,7 +94003,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -93824,7 +94014,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -93835,7 +94025,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "LENGTH",
                                             "TSVAL": "P28W"
@@ -93914,7 +94104,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": "1",
                                                     "TSPARMCD": "INTMODEL",
                                                     "TSVAL": null
@@ -93938,7 +94128,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": "2",
                                                     "TSPARMCD": "INTMODEL",
                                                     "TSVAL": null
@@ -93962,7 +94152,7 @@
                                                 "SEQ": 4,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "INTTYPE",
                                                     "TSVAL": null
@@ -93986,7 +94176,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "LENGTH",
                                                     "TSVAL": "P28W"
@@ -94085,7 +94275,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 55,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -94096,7 +94286,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 55,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -94175,7 +94365,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94220,12 +94410,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$stype_interventional']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -94262,7 +94452,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94273,7 +94463,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94284,7 +94474,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94295,7 +94485,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "LENGTH",
                                             "TSVAL": "P28W"
@@ -94374,7 +94564,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": "2",
                                                     "TSPARMCD": "INTTYPE",
                                                     "TSVAL": null
@@ -94398,7 +94588,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "INTTYPE",
                                                     "TSVAL": null
@@ -94422,7 +94612,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "INTTYPE",
                                                     "TSVAL": null
@@ -94446,7 +94636,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "LENGTH",
                                                     "TSVAL": "P28W"
@@ -94545,7 +94735,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 55,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94556,7 +94746,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 55,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94636,7 +94826,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94681,12 +94871,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$hltsubji_y']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -94723,7 +94913,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 54,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94734,7 +94924,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 54,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Eczema"
@@ -94804,7 +94994,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 60,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94815,7 +95005,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 60,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94826,7 +95016,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 60,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94837,7 +95027,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 60,
                                             "TSGRPID": "4",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94848,7 +95038,7 @@
                                         "SEQ": 5,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 60,
                                             "TSGRPID": "4",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "NOT HEALTHY"
@@ -94938,7 +95128,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$HLTSUBJI_Y": "Not in dataset",
+                                                    "$HLTSUBJI_Y": 60,
                                                     "TSGRPID": "1",
                                                     "TSPARMCD": "TDIGRP",
                                                     "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94962,7 +95152,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$HLTSUBJI_Y": "Not in dataset",
+                                                    "$HLTSUBJI_Y": 60,
                                                     "TSGRPID": "2",
                                                     "TSPARMCD": "TDIGRP",
                                                     "TSVAL": "HEALTHY"
@@ -94986,7 +95176,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$HLTSUBJI_Y": "Not in dataset",
+                                                    "$HLTSUBJI_Y": 60,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "TDIGRP",
                                                     "TSVAL": "HEALTHY"
@@ -95010,7 +95200,7 @@
                                                 "SEQ": 4,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$HLTSUBJI_Y": "Not in dataset",
+                                                    "$HLTSUBJI_Y": 60,
                                                     "TSGRPID": "4",
                                                     "TSPARMCD": "TDIGRP",
                                                     "TSVAL": "HEALTHY"
@@ -95034,7 +95224,7 @@
                                                 "SEQ": 5,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$HLTSUBJI_Y": "Not in dataset",
+                                                    "$HLTSUBJI_Y": 60,
                                                     "TSGRPID": "4",
                                                     "TSPARMCD": "TDIGRP",
                                                     "TSVAL": "NOT HEALTHY"
@@ -95133,7 +95323,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 55,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Alzheimer's Disease (Disorder)"
@@ -95191,7 +95381,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": "Not in dataset",
+                                            "$HLTSUBJI_Y": 54,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Alzheimer's Disease (Disorder)"
@@ -95669,7 +95859,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95714,12 +95904,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$stype_interventional']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -95756,7 +95946,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95767,7 +95957,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95824,7 +96014,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 56,
                                                     "TSGRPID": "2",
                                                     "TSPARMCD": "PCLAS",
                                                     "TSVAL": null
@@ -95848,7 +96038,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 56,
                                                     "TSGRPID": "3",
                                                     "TSPARMCD": "PCLAS",
                                                     "TSVAL": null
@@ -95947,7 +96137,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 56,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -97112,13 +97302,18 @@
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "SEENDTC is null when element is not the last.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in empty_within_except_last_row operator",
-                                        "message": "empty_within_except_last_row check_operator not implemented"
+                                        "row": 12,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SEENDTC": null,
+                                            "SESTDTC": "2013-02-19"
+                                        }
                                     }
                                 ]
                             }
@@ -97146,12 +97341,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97176,15 +97368,10 @@
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in empty_within_except_last_row operator",
-                                        "message": "empty_within_except_last_row check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97200,12 +97387,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97254,52 +97438,101 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "FADY is not calculated correctly even though the date portion of FADTC is complete, the date portion of DM.RFSTDTC is a complete date, and FADY is not empty.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "$val_dy": 18,
+                                            "FADTC": "2012-12-02",
+                                            "FADY": 35.0,
+                                            "RFSTDTC": "2012-11-15"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "$val_dy": 5,
+                                            "FADTC": "2013-10-12",
+                                            "FADY": 3.0,
+                                            "RFSTDTC": "2013-10-08"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "$val_dy": -34,
+                                            "FADTC": "2012-12-02",
+                                            "FADY": -30.0,
+                                            "RFSTDTC": "2013-01-05"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "$val_dy": 206,
+                                            "FADTC": "2014-12-02",
+                                            "FADY": 230.0,
+                                            "RFSTDTC": "2014-05-11"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ie.xpt",
                                 "domain": "IE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "IEDY is not calculated correctly even though the date portion of IEDTC is complete, the date portion of DM.RFSTDTC is a complete date, and IEDY is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": -3,
+                                            "IEDTC": "2022-03-17",
+                                            "IEDY": -4.0,
+                                            "RFSTDTC": "2022-03-20"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "LBDY is not calculated correctly even though the date portion of LBDTC is complete, the date portion of DM.RFSTDTC is a complete date, and LBDY is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": 11,
+                                            "LBDTC": "2022-03-30",
+                                            "LBDY": 2.0,
+                                            "RFSTDTC": "2022-03-20"
+                                        }
                                     }
                                 ]
                             }
@@ -97410,12 +97643,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97437,13 +97667,20 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "LBDY is not calculated correctly even though the date portion of LBDTC is complete, the date portion of DM.RFSTDTC is a complete date, and LBDY is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": 1,
+                                            "LBDTC": "2012-11-30",
+                                            "LBDY": 2.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
                                     }
                                 ]
                             },
@@ -97500,9 +97737,22 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "dm.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in sqldaydatavalidatoroperation operation",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "column or relation does not exist",
+                                            "old_value": "dmdtc"
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -97526,13 +97776,20 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "DMDY is not calculated correctly even though the date portion of DMDTC is complete, the date portion of DM.RFSTDTC is a complete date, and DMDY is not empty.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "$val_dy": -1,
+                                            "DMDTC": "2012-11-29",
+                                            "DMDY": -5.0,
+                                            "RFSTDTC": "2012-11-30"
+                                        }
                                     }
                                 ]
                             }
@@ -97562,12 +97819,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97592,54 +97846,34 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
                                 "domain": "IE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97679,12 +97913,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97706,15 +97937,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -97757,9 +97983,22 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "dm.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in sqldaydatavalidatoroperation operation",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "column or relation does not exist",
+                                            "old_value": "dmdtc"
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -97783,15 +98022,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_dy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -97807,12 +98041,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -97900,7 +98131,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": "Not in dataset",
+                                            "$ADDON_Y": 52,
                                             "TSGRPID": null,
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -97945,12 +98176,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$addon_y']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 52,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -97987,7 +98218,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": "Not in dataset",
+                                            "$ADDON_Y": 52,
                                             "TSGRPID": "DRUG A",
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98032,12 +98263,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$addon_y']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 52,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -98074,7 +98305,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": "Not in dataset",
+                                            "$ADDON_Y": 57,
                                             "TSGRPID": "DRUG A",
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98085,7 +98316,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": "Not in dataset",
+                                            "$ADDON_Y": 57,
                                             "TSGRPID": null,
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98142,7 +98373,7 @@
                                                 "SEQ": null,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$ADDON_Y": "Not in dataset",
+                                                    "$ADDON_Y": 57,
                                                     "TSGRPID": "DRUG A",
                                                     "TSPARMCD": "CURTRT",
                                                     "TSVAL": null
@@ -98166,7 +98397,7 @@
                                                 "SEQ": null,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$ADDON_Y": "Not in dataset",
+                                                    "$ADDON_Y": 57,
                                                     "TSGRPID": null,
                                                     "TSPARMCD": "CURTRT",
                                                     "TSVAL": null
@@ -101134,13 +101365,42 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMSTDY is not properly calculated per study day algorithm",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_stdy."
+                                        "row": 7,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "$val_stdy": 45,
+                                            "CMSTDTC": "2013-02-18",
+                                            "CMSTDY": null,
+                                            "RFSTDTC": "2013-01-05"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "$val_stdy": -447,
+                                            "CMSTDTC": "2013-02-18",
+                                            "CMSTDY": 45.0,
+                                            "RFSTDTC": "2014-05-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "$val_stdy": -799,
+                                            "CMSTDTC": "2011-07-15",
+                                            "CMSTDY": -511.0,
+                                            "RFSTDTC": "2013-09-21"
+                                        }
                                     }
                                 ]
                             }
@@ -101200,12 +101460,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101238,15 +101495,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_stdy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101270,12 +101522,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101317,26 +101566,73 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "AEENDY is not properly calculated per study day algorithm",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_endy."
+                                        "row": 1,
+                                        "SEQ": 2,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "$val_endy": -1,
+                                            "AEENDTC": "2022-03-19",
+                                            "AEENDY": -2.0,
+                                            "RFSTDTC": "2022-03-20"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "$val_endy": 1,
+                                            "AEENDTC": "2022-03-20",
+                                            "AEENDY": 0.0,
+                                            "RFSTDTC": "2022-03-20"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "CMENDY is not properly calculated per study day algorithm",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_endy."
+                                        "row": 7,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "$val_endy": 126,
+                                            "CMENDTC": "2013-05-10",
+                                            "CMENDY": null,
+                                            "RFSTDTC": "2013-01-05"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "$val_endy": 10,
+                                            "CMENDTC": "2014-05-20",
+                                            "CMENDY": 11.0,
+                                            "RFSTDTC": "2014-05-11"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "$val_endy": -108,
+                                            "CMENDTC": "2013-06-05",
+                                            "CMENDY": -107.0,
+                                            "RFSTDTC": "2013-09-21"
+                                        }
                                     }
                                 ]
                             },
@@ -101435,12 +101731,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101465,15 +101758,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_endy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -101486,15 +101774,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "Unsupported variable type: table for variable $val_endy."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101526,12 +101809,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -101595,7 +101875,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101640,12 +101920,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$hltsubji_n']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 51,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -101682,7 +101962,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 57,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101693,7 +101973,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 57,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101704,7 +101984,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 57,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101831,7 +102111,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 54,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101889,7 +102169,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": "Not in dataset",
+                                            "$HLTSUBJI_N": 51,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -110705,7 +110985,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "$max_dsstdtc": "Not in dataset",
+                                            "$max_dsstdtc": "2022-01-19",
                                             "AESTDTC": "2022-02-20"
                                         }
                                     }
@@ -110743,19 +111023,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['$max_dsstdtc']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "2022-01-19"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -113742,8 +114010,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$age_count": "Not in dataset",
-                                            "$agetxt_count": "Not in dataset",
+                                            "$age_count": 9,
+                                            "$agetxt_count": 9,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -113753,8 +114021,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$age_count": "Not in dataset",
-                                            "$agetxt_count": "Not in dataset",
+                                            "$age_count": 9,
+                                            "$agetxt_count": 9,
                                             "TSPARMCD": "AGETXT",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -113810,8 +114078,8 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$age_count": "Not in dataset",
-                                                    "$agetxt_count": "Not in dataset",
+                                                    "$age_count": 9,
+                                                    "$agetxt_count": 9,
                                                     "TSPARMCD": "AGE",
                                                     "TSVAL": "NonEmpty"
                                                 }
@@ -113834,8 +114102,8 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$age_count": "Not in dataset",
-                                                    "$agetxt_count": "Not in dataset",
+                                                    "$age_count": 9,
+                                                    "$agetxt_count": 9,
                                                     "TSPARMCD": "AGETXT",
                                                     "TSVAL": "NonEmpty"
                                                 }
@@ -113890,8 +114158,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$age_count": "Not in dataset",
-                                            "$agetxt_count": "Not in dataset",
+                                            "$age_count": 11,
+                                            "$agetxt_count": 11,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -114487,7 +114755,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$crmdur_count": "Not in dataset",
+                                            "$crmdur_count": 9,
                                             "TSPARMCD": "CRMDUR",
                                             "TSVAL": null
                                         }
@@ -114530,12 +114798,12 @@
                                             "new_type": "str",
                                             "old_value": null,
                                             "new_value": "None"
-                                        },
+                                        }
+                                    },
+                                    "values_changed": {
                                         "root[0]['value']['$crmdur_count']": {
-                                            "old_type": "int",
-                                            "new_type": "str",
-                                            "old_value": 1,
-                                            "new_value": "Not in dataset"
+                                            "new_value": 9,
+                                            "old_value": 1
                                         }
                                     }
                                 }
@@ -114760,7 +115028,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -114770,7 +115038,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": "N"
                                         }
@@ -114780,7 +115048,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "PCLASS",
                                             "TSVAL": "asdf"
                                         }
@@ -114790,7 +115058,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "STYPE",
                                             "TSVAL": "NOT"
                                         }
@@ -114800,7 +115068,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "46"
                                         }
@@ -114810,7 +115078,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DCUTDTC",
                                             "TSVAL": "2021-12-02 00:00:00"
                                         }
@@ -114820,7 +115088,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "25"
                                         }
@@ -114830,7 +115098,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "50"
                                         }
@@ -114840,7 +115108,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "10"
                                         }
@@ -114850,7 +115118,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "20"
                                         }
@@ -114860,7 +115128,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSFRM",
                                             "TSVAL": "CAPSULE"
                                         }
@@ -115004,7 +115272,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "INTMODEL",
                                                     "TSVAL": "NonEmpty"
                                                 }
@@ -115026,7 +115294,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DOSFRM",
                                                     "TSVAL": "CAPSULE"
                                                 }
@@ -115048,7 +115316,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "INTTYPE",
                                                     "TSVAL": "N"
                                                 }
@@ -115070,7 +115338,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "PCLASS",
                                                     "TSVAL": "asdf"
                                                 }
@@ -115092,7 +115360,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "STYPE",
                                                     "TSVAL": "NOT"
                                                 }
@@ -115114,7 +115382,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "AGE",
                                                     "TSVAL": "46"
                                                 }
@@ -115136,7 +115404,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DCUTDTC",
                                                     "TSVAL": "2021-12-02 00:00:00"
                                                 }
@@ -115158,7 +115426,7 @@
                                                 "SEQ": 1,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DOSE",
                                                     "TSVAL": "25"
                                                 }
@@ -115180,7 +115448,7 @@
                                                 "SEQ": 2,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DOSE",
                                                     "TSVAL": "50"
                                                 }
@@ -115202,7 +115470,7 @@
                                                 "SEQ": 3,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DOSE",
                                                     "TSVAL": "10"
                                                 }
@@ -115224,7 +115492,7 @@
                                                 "SEQ": 4,
                                                 "USUBJID": "None",
                                                 "value": {
-                                                    "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                                    "$STYPE_INTERVENTIONAL": 11,
                                                     "TSPARMCD": "DOSE",
                                                     "TSVAL": "20"
                                                 }
@@ -115275,7 +115543,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": "nonempty"
                                         }
@@ -115285,7 +115553,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
                                         }
@@ -115295,7 +115563,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "PCLASS",
                                             "TSVAL": null
                                         }
@@ -115305,7 +115573,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "STYPE",
                                             "TSVAL": "INTERVENTIONAL"
                                         }
@@ -115315,7 +115583,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "46"
                                         }
@@ -115325,7 +115593,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DCUTDTC",
                                             "TSVAL": "2021-12-02 00:00:00"
                                         }
@@ -115335,7 +115603,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "25"
                                         }
@@ -115345,7 +115613,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": null
                                         }
@@ -115355,7 +115623,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "10"
                                         }
@@ -115365,7 +115633,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "20"
                                         }
@@ -115375,7 +115643,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSFRM",
                                             "TSVAL": "CAPSULE"
                                         }
@@ -115453,7 +115721,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -115463,7 +115731,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": "N"
                                         }
@@ -115473,7 +115741,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "asdf"
                                         }
@@ -115483,7 +115751,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "STYPE",
                                             "TSVAL": "INTERVENTIONAL"
                                         }
@@ -115493,7 +115761,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "46"
                                         }
@@ -115503,7 +115771,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DCUTDTC",
                                             "TSVAL": "2021-12-02 00:00:00"
                                         }
@@ -115513,7 +115781,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "25"
                                         }
@@ -115523,7 +115791,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "50"
                                         }
@@ -115533,7 +115801,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "10"
                                         }
@@ -115543,7 +115811,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "20"
                                         }
@@ -115553,7 +115821,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": "Not in dataset",
+                                            "$STYPE_INTERVENTIONAL": 11,
                                             "TSPARMCD": "DOSFRM",
                                             "TSVAL": "CAPSULE"
                                         }
@@ -118598,7 +118866,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -118802,21 +119070,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$relmids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -118897,7 +119151,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -119069,21 +119323,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "mh.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$relmids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -119188,7 +119428,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -119336,21 +119576,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "vs.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$relmids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -119463,7 +119689,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -119603,21 +119829,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ta.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$relmids_exists']": {
-                                            "old_type": "bool",
-                                            "new_type": "str",
-                                            "old_value": true,
-                                            "new_value": "Not in dataset"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -119661,7 +119873,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -119932,7 +120144,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -120227,7 +120439,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -120514,7 +120726,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
@@ -120785,7 +120997,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "$RELMIDS_EXISTS": "Not in dataset"
+                                            "$RELMIDS_EXISTS": true
                                         }
                                     }
                                 ]
