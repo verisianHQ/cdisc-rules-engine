@@ -9,6 +9,7 @@ from cdisc_rules_engine.sql_operations.day_data_validator import SqlDayDataValid
 from cdisc_rules_engine.sql_operations.numeric_operation import (
     SqlNumericOperation,
 )
+from cdisc_rules_engine.sql_operations.max_date import SqlMaxDateOperation
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 
@@ -30,7 +31,7 @@ class SqlOperationsFactory:
         "get_parent_model_column_order": None,
         "map": None,
         "max": lambda params, ds: SqlNumericOperation(params, ds, "MAX"),
-        "max_date": None,
+        "max_date": lambda params, ds: SqlMaxDateOperation(params, ds),
         "mean": lambda params, ds: SqlNumericOperation(params, ds, "AVG"),
         "min": lambda params, ds: SqlNumericOperation(params, ds, "MIN"),
         "min_date": None,

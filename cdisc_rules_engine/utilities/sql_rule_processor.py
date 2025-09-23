@@ -356,6 +356,7 @@ class SQLRuleProcessor:
                 target=target_variable,
                 standard=data_service.ig_specs.get("standard"),
                 standard_version=data_service.ig_specs.get("standard_version"),
+                grouping=operation.get("group"),
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
