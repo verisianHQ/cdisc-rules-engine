@@ -4,8 +4,8 @@
 
 - Total rules without check operators: 297
 - Total unique operators found in rules: 58
-- Total implemented PostgreSQL operators: 77
-- Missing operators (in rules but not implemented): 4
+- Total implemented PostgreSQL operators: 78
+- Missing operators (in rules but not implemented): 3
 - Extra operators (implemented but not used in rules): 23
 
 ## ✅ Implementation Status
@@ -14,7 +14,6 @@
 
 | Operator                          | Status             |
 | --------------------------------- | ------------------ |
-| `empty_within_except_last_row`    | ❌ Not Implemented |
 | `inconsistent_enumerated_columns` | ❌ Not Implemented |
 | `is_not_valid_reference`          | ❌ Not Implemented |
 | `shares_no_elements_with`         | ❌ Not Implemented |
