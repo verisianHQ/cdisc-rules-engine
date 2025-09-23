@@ -7,15 +7,16 @@
 - **Rules with any errors**: 34 (4.5%)
 - **Clean rules**: 728 (95.5%)
 
+
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 1
+- Rules with **operator errors**: 0
 - Rules with **operation errors**: 14
 - Rules with **other errors**: 19
 
-## Missing Operators (1 operators, 2 total failures across 1 rule occurrences)
+## Missing Operators
 
-1.  **empty_within_except_last_row**: 2 failures across 1 rules
+No missing operator errors found!
 
 ## Missing Operations (10 operations, 58 total failures across 14 rule occurrences)
 
