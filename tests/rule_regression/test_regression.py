@@ -6,11 +6,12 @@ from dotenv import load_dotenv
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
-from rule_regression.regression import (
+from tests.rule_regression.regression import (
     delete_files_in_directory,
     output_engine_results_json,
     run_single_rule_regression,
 )
+from tests.rule_regression.operator_analysis import generate_operators_analysis_report
 from scripts.run_sql_validation import sql_run_single_rule_validation
 
 load_dotenv()
@@ -19,9 +20,22 @@ load_dotenv()
 def test_regression_all_rules(pytestconfig, get_core_rules_df, get_core_rule):
     regression_df = get_core_rules_df()
     regression_json = []
+    all_check_operators = set()
+
     for _, row in regression_df.iterrows():
         rule_reg = run_single_rule_regression(row, get_core_rule)
         regression_json.append(rule_reg)
+
+        # Extract and add check operators to the set
+        check_operators = rule_reg.get("check_operators", [])
+        if check_operators:
+            all_check_operators.update(check_operators)
+
+    # Generate and save the operators analysis report
+    analysis_file_path = str(pytestconfig.rootpath) + "/tests/resources/rules/check_operators_analysis.md"
+    generate_operators_analysis_report(all_check_operators, analysis_file_path)
+
+    # Keep original JSON structure
     with open(
         str(pytestconfig.rootpath) + "/tests/resources/rules/rules.json",
         "w",
