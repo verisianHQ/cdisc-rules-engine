@@ -4,19 +4,18 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 37 (4.9%)
-- **Clean rules**: 725 (95.1%)
+- **Rules with any errors**: 36 (4.7%)
+- **Clean rules**: 726 (95.3%)
 
 **Error Breakdown by Category:**
 
-- Rules with **operator errors**: 2
+- Rules with **operator errors**: 1
 - Rules with **operation errors**: 14
 - Rules with **other errors**: 21
 
-## Missing Operators (2 operators, 11 total failures across 2 rule occurrences)
+## Missing Operators (1 operators, 2 total failures across 1 rule occurrences)
 
-1.  **not_prefix_matches_regex**: 8 failures across 1 rules
-2.  **suffix_matches_regex**: 3 failures across 1 rules
+1.  **empty_within_except_last_row**: 2 failures across 1 rules
 
 ## Missing Operations (10 operations, 58 total failures across 14 rule occurrences)
 
@@ -31,7 +30,7 @@
 9.  **valid_codelist_dates**: 2 failures across 1 rules
 10. **domain_is_custom**: 1 failures across 1 rules
 
-## Execution Errors by Type (14 unique error types, 156 total failures across 38 rule occurrences)
+## Execution Errors by Type (13 unique error types, 147 total failures across 37 rule occurrences)
 
 1.  **An unknown exception has occurred**: 80 failures across 19 rules
 2.  **SQL error in not_equal_to operator**: 18 failures across 3 rules
@@ -40,12 +39,11 @@
 5.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
 6.  **SQL error in less_than_or_equal_to operator**: 4 failures across 2 rules
 7.  **Rule format error**: 15 failures across 1 rules
-8.  **SQL error in not_prefix_matches_regex operator**: 8 failures across 1 rules
-9.  **SQL error in suffix_matches_regex operator**: 3 failures across 1 rules
-10. **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
-11. **SQL error in date_less_than operator**: 2 failures across 1 rules
-12. **SQL error in date_greater_than operator**: 2 failures across 1 rules
-13. **SQL error in matches_regex operator**: 2 failures across 1 rules
-14. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
+8.  **SQL error in empty_within_except_last_row operator**: 2 failures across 1 rules
+9.  **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
+10. **SQL error in date_less_than operator**: 2 failures across 1 rules
+11. **SQL error in date_greater_than operator**: 2 failures across 1 rules
+12. **SQL error in matches_regex operator**: 2 failures across 1 rules
+13. **SQL error in sqldistinctoperation operation**: 2 failures across 1 rules
 
 ## SQL vs Old Engine Discrepancies
