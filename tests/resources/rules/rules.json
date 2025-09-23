@@ -60781,13 +60781,18 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "RFXSTDTC does not equal the earliest value of EX.EXSTDTC",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation min_date is not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "$min_ex_exstdtc": "2012-11-30",
+                                            "RFXSTDTC": "2012-12-01"
+                                        }
                                     }
                                 ]
                             },
@@ -60831,12 +60836,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90079,13 +90081,20 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "DM.RFICDTC is not equal to the earliest DSSTDTC, when DSTERM indicates Informed consent obtained.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation min_date is not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "015246-076-0003-00003",
+                                        "value": {
+                                            "$min_ds_dsstdtc": "2018-03-06",
+                                            "DSDECOD": "INFORMED CONSENT OBTAINED",
+                                            "DSSTDTC": "2018-03-06",
+                                            "RFICDTC": "2018-05-20"
+                                        }
                                     }
                                 ]
                             }
@@ -90135,11 +90144,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -90172,15 +90181,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation min_date is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -90204,12 +90208,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
