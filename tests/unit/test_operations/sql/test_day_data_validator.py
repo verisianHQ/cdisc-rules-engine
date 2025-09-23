@@ -99,7 +99,7 @@ def test_sql_dy_calculation(current_data, dm_data, expected):
                     "2022-12-31T23:59:59",
                 ],
             },
-            0,  # Now returns simple constant 0, not parameterized
+            0,
         ),
     ],
 )
