@@ -1,6 +1,7 @@
 from typing import Set, Dict, List
 from pathlib import Path
 import json
+import inspect
 from cdisc_rules_engine.check_operators.sql.postgresql_operators import PostgresQLOperators
 
 
@@ -35,6 +36,56 @@ def find_rules_without_operators(rules_dir: str = "tests/resources/rules") -> Li
     return rules_without_operators
 
 
+def check_operator_implementation_status() -> Dict[str, bool]:
+    """
+    Check which operators are actually implemented vs just raising NotImplementedError.
+    This version uses a mock data service to avoid instantiation issues.
+    Returns:
+        Dict mapping operator names to their implementation status (True = implemented, False = not implemented)
+    """
+    implementation_status = {}
+
+    from unittest.mock import MagicMock
+
+    for operator_name, operator_factory in PostgresQLOperators._operator_map.items():
+        try:
+            mock_data_service = MagicMock()
+            mock_data_service.get_dataset_metadata.return_value = {}
+
+            dummy_data = {
+                "df": None,
+                "dataset_id": "test",
+                "data_service": mock_data_service,
+                "column_prefix_map": {},
+                "value_level_metadata": [],
+                "column_codelist_map": {},
+                "codelist_term_maps": [],
+                "operation_variables": {},
+            }
+
+            operator_instance = operator_factory(dummy_data)
+            if hasattr(operator_instance, "execute_operator"):
+                method = operator_instance.execute_operator
+
+                try:
+                    source = inspect.getsource(method)
+                    is_implemented = "NotImplementedError" not in source
+                except (OSError, TypeError):
+                    # If we can't get source, assume it's implemented
+                    is_implemented = True
+            else:
+                # If no execute_operator method, consider it not implemented
+                is_implemented = False
+
+            implementation_status[operator_name] = is_implemented
+
+        except Exception:
+            # If we can't instantiate or check the operator, assume it's not implemented
+            implementation_status[operator_name] = False
+
+    return implementation_status
+
+
 def generate_operators_analysis_report(operators_in_rules: Set[str]) -> None:
     """
     Generate a markdown report analyzing operator implementation status.
@@ -43,7 +94,10 @@ def generate_operators_analysis_report(operators_in_rules: Set[str]) -> None:
     """
     all_operators_list = sorted(list(operators_in_rules))
 
-    implemented_operators = set(PostgresQLOperators._operator_map.keys())
+    # Check which operators are actually implemented (not raising NotImplementedError)
+    implementation_status = check_operator_implementation_status()
+    implemented_operators = {op for op, is_impl in implementation_status.items() if is_impl}
+    print(f"Implemented operators: {implemented_operators}")
 
     missing_operators = sorted(list(set(all_operators_list) - implemented_operators))
     extra_operators = sorted(list(implemented_operators - set(all_operators_list)))
