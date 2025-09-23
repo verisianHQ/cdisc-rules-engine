@@ -35,7 +35,7 @@ class SqlNumericOperation(SqlBaseOperation):
             params = {}
             for i, col in enumerate(grouping_columns):
                 param_name = f"${i + 1}"
-                where_conditions.append(f"{col.hash} = {param_name}")
+                where_conditions.append(f"({col.hash} = {param_name} OR ({col.hash} IS NULL AND {param_name} IS NULL))")
                 params[param_name] = col.name
 
             where_clause_parts = []

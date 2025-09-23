@@ -8,7 +8,7 @@ from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
 
-from .helpers import assert_operation_parameterized_constant
+from .helpers import assert_operation_constant, assert_operation_parameterized_constant
 
 
 @pytest.mark.parametrize(
@@ -99,11 +99,7 @@ def test_sql_dy_calculation(current_data, dm_data, expected):
                     "2022-12-31T23:59:59",
                 ],
             },
-            [
-                {"params": {"$1": 1}, "value": [0]},
-                {"params": {"$1": 2}, "value": [0]},
-                {"params": {"$1": 3}, "value": [0]},
-            ],
+            0,  # Now returns simple constant 0, not parameterized
         ),
     ],
 )
@@ -115,8 +111,7 @@ def test_sql_dy_no_dm_domain(current_data, expected):
     params = SqlOperationParams(domain="EX", target="EXSTDTC", standard="", standard_version="")
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
-
-    assert_operation_parameterized_constant(operation, result, expected)
+    assert_operation_constant(operation, result, expected)
 
 
 @pytest.mark.parametrize(

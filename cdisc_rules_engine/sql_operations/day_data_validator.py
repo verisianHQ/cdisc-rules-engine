@@ -20,11 +20,8 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
 
         dm_table = self.data_service.pgi.schema.get_table("DM")
         if not dm_table:
-            # Return 0 for the specific row if DM doesn't exist
-            id_col = self.data_service.pgi.schema.get_column_hash(self.params.domain, "id")
-            query = f"SELECT 0 AS value FROM {current_table.hash} WHERE {id_col} = $1"
-            return SqlOperationResult(query=query, type="constant", subtype="Num", params={"$1": "id"})
-
+            # Return 0 if DM doesn't exist
+            return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
         joined_table = SqlJoinMerge.perform_join(
             pgi=self.data_service.pgi,
             left=current_table,

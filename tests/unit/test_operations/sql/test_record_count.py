@@ -137,7 +137,7 @@ def test_filtered_record_count(data, filter, expected):
         (
             {
                 "STUDYID": ["CDISC01", "CDISC01", "CDISC01", "CDISC02", "CDISC02"],
-                "DOMAIN": ["AE", "MH", "MH", "MH", "MH"],
+                "DOMAIN": ["AE", None, None, None, None],
                 "values": ["TEST1", "TEST2", "TEST1", "TEST1", "TEST1"],
                 "AESEQ": [1, 1, 1, 1, 1],
             },
@@ -145,8 +145,8 @@ def test_filtered_record_count(data, filter, expected):
             ["STUDYID", "DOMAIN"],
             [
                 {"params": {"$1": "CDISC01", "$2": "AE"}, "value": [1]},
-                {"params": {"$1": "CDISC01", "$2": "MH"}, "value": [2]},
-                {"params": {"$1": "CDISC02", "$2": "MH"}, "value": [2]},
+                {"params": {"$1": "CDISC01", "$2": None}, "value": [2]},
+                {"params": {"$1": "CDISC02", "$2": None}, "value": [2]},
             ],
         ),
     ],
