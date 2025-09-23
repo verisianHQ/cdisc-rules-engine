@@ -161,3 +161,11 @@ def generate_operators_analysis_report(operators_in_rules: Set[str]) -> None:
     output_path = Path("tests/resources/rules") / "operators_analysis_report.md"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(analysis_report))
+
+    # Format the report with Prettier
+    import subprocess
+
+    try:
+        subprocess.run(["npx", "prettier", "--write", str(output_path)], check=True)
+    except subprocess.CalledProcessError:
+        pass
