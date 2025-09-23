@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -11,117 +11,177 @@ class SqlSuppMerge:
         pgi: PostgresQLInterface,
         original: SqlTableSchema,
         supp: SqlTableSchema,
+        domain: str,
     ) -> SqlTableSchema:
         """
-        Adds the additional variables defined by the SUPP merge.
+        Adds the additional variables defined by the SUPP merge to the input dataset.
 
         The output table will have all of the columns from the left table as before.
-        All of the columns of the right table will be present under the name `<right>.<column_name>` (e.g. DM.ABC).
-        Any columns from the right table which aren't present in the left table will also be aliased,
-        so they will be available as `<column_name>` (e.g. ABC).
-
-        Example:
-        Table A: USUBJID, AGE
-        Table B: USUBJID, NAME, AGE
-        Result: USUBJID, AGE, B.NAME, B.AGE, NAME (aliased from B.AGE)
+        Any columns defined in QNAM will be added as columns to the output table.
+        Any cells which do not have a corresponding record in SUPP will be set to NULL.
         """
-        if len(pivot_left) != len(pivot_right):
-            raise ValueError("Pivot columns must have the same length.")
 
-        # Ensure everything is lowercase for consistency
-        pivot_left = [col.lower() for col in pivot_left]
-        pivot_right = [col.lower() for col in pivot_right]
+        required_supp_columns = SqlSuppMerge._get_required_supp_columns(domain)
+        required_original_columns = SqlSuppMerge._get_required_original_columns(pgi, supp, domain)
+        new_columns = SqlSuppMerge._determine_new_columns(pgi, supp)
 
-        # Build the join condition
-        join_conditions = []
-        for l_var, r_var in zip(pivot_left, pivot_right):
-            left_col_hash = left.get_column_hash(l_var)
-            right_col_hash = right.get_column_hash(r_var)
-            if left_col_hash is None or right_col_hash is None:
-                raise ValueError(f"Column {l_var} or {r_var} not found in the respective schemas.")
-            join_conditions.append(f"l.{left_col_hash} = r.{right_col_hash}")
+        SqlSuppMerge._validate_merge(original, supp, required_original_columns, required_supp_columns, new_columns)
 
-        name = f"{left.name}_{type}_{right.name}_ON_{'_'.join(join_conditions)}"
+        name = f"{original.name}_SUPP"
+        schema = SqlTableSchema.from_join(name)
 
         # Check if the table already exists
         if pgi.schema.get_table(name) is not None:
             return pgi.schema.get_table(name)
 
         # Build the new schema
-        schema, left_columns, right_columns = SqlJoinMerge._join_schemas(
-            name=name,
-            left=left,
-            right=right,
-            pivot_left=pivot_left,
-            pivot_right=pivot_right,
-        )
-
-        if len(right_columns) == 0:
-            raise ValueError("No columns to join from the right table.")
+        schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns)
 
         pgi.create_table(schema)
 
-        selected_left_columns = [f"l.{old_hash} AS {new_hash}" for old_hash, new_hash in left_columns]
-        selected_right_columns = [f"r.{old_hash} AS {new_hash}" for old_hash, new_hash in right_columns]
-        target_columns = [new_hash for _, new_hash in (left_columns + right_columns)]
+        queries = []
 
-        join_condition = " AND ".join(join_conditions)
-        query = f"""
-            INSERT INTO {schema.hash} ({', '.join(target_columns)})
+        # Copy everything from original table
+        new_selectors = ", ".join(schema.get_column_hash(col) for col, _ in original.get_columns() if col != "id")
+        old_selectors = ", ".join(schema.hash for _, schema in original.get_columns() if schema.name != "id")
+        queries.append(
+            f"""
+            INSERT INTO {schema.hash} ({new_selectors})
                 SELECT
-                    {', '.join(selected_left_columns)}
-                    ,
-                    {', '.join(selected_right_columns)}
-                FROM {left.hash} l
-                {type} JOIN {right.hash} r ON {join_condition}
-        """
+                    {old_selectors}
+                FROM {original.hash}"""
+        )
 
-        pgi.execute_sql(query)
+        # Splitting each new column into its own query to avoid a the arbitrarily large number of
+        # joins which would be required to do everything in one go
+        for linking_clauses in SqlSuppMerge._get_linking_clauses(original, supp, required_original_columns):
+            for col in new_columns:
+                queries.append(
+                    f"""
+                    UPDATE {schema.hash} AS original
+                        SET {schema.get_column_hash(col)} = supp.{supp.get_column_hash("QVAL")}
+                        FROM {supp.hash} AS supp
+                        WHERE {linking_clauses}
+                            AND supp.{supp.get_column_hash("QNAM")} = '{col}'"""
+                )
+
+        pgi.execute_many(queries)
 
         return schema
 
     @staticmethod
-    def _join_schemas(
+    def _build_schemas(
         name: str,
-        left: SqlTableSchema,
-        right: SqlTableSchema,
-        pivot_left: list[str],
-        pivot_right: list[str],
-    ) -> Tuple[SqlTableSchema, List[Tuple[str, str]], List[Tuple[str, str]]]:
-        """Join two SQL table schemas based on specified pivot columns."""
-        if len(pivot_left) != len(pivot_right):
-            raise ValueError("Pivot columns must have the same length.")
+        original: SqlTableSchema,
+        new_columns: List[str],
+    ) -> SqlTableSchema:
+        """Build the output schema."""
 
         joined_schema = SqlTableSchema.from_join(name)
-        left_output_columns = []
-        right_output_columns = []
 
-        # Add all of the left table's columns
-        for name, column in left.get_columns():
+        # Add all of the original table's columns
+        for name, column in original.get_columns():
             if name == "id":
                 continue
             joined_schema.add_column(column)
-            left_output_columns.append((column.hash, column.hash))
 
-        # Add all of the non-pivot columns from the left table
-        for name, column in right.get_columns():
+        # Add the new columns
+        for column in new_columns:
             if name == "id":
                 continue
-            if name in pivot_right:
-                continue
 
-            new_column_name = f"{right.name}.{name}"
-            if joined_schema.has_column(new_column_name):
-                # Skipping duplicated column
-                continue
-
-            # Add the main column schema
-            new_col_schema = SqlColumnSchema.generated(column=new_column_name, type=column.type)
+            # NOTE: All values in QVAL are Char, so all new columns will be Char type
+            new_col_schema = SqlColumnSchema.generated(column=column, type="Char")
             joined_schema.add_column(new_col_schema)
-            right_output_columns.append((column.hash, new_col_schema.hash))
 
-            # Alias the shortened column name
-            if not joined_schema.has_column(name):
-                joined_schema.add_column(SqlColumnSchema.alias(name, new_col_schema))
+        return joined_schema
 
-        return joined_schema, left_output_columns, right_output_columns
+    @staticmethod
+    def _validate_merge(
+        original: SqlTableSchema,
+        supp: SqlTableSchema,
+        required_original_columns: List[str],
+        required_supp_columns: List[str],
+        new_columns: List[str],
+    ):
+        """
+        Validates the merge by checking if the original and supp schemas have the required columns.
+        """
+        for col in required_supp_columns:
+            if not supp.has_column(col):
+                raise ValueError(f"SUPP MERGE: SUPP schema is missing required column: {col}")
+
+        for col in ["STUDYID", "DOMAIN", "USUBJID"]:
+            if not original.has_column(col):
+                raise ValueError(f"SUPP MERGE: Original schema is missing required base column: {col}")
+
+        for col in required_original_columns:
+            if not original.has_column(col):
+                raise ValueError(f"SUPP MERGE: Original schema is missing required column: {col}")
+
+        for col in new_columns:
+            if original.has_column(col):
+                raise ValueError(f"SUPP MERGE: Column already exists in original table: {col}")
+
+    @staticmethod
+    def _get_required_supp_columns(domain: bool) -> List[str]:
+        """
+        Returns the list of required columns in the supp dataset for the SUPP merge.
+        SUPPDM does not require IDVAR or IDVARVAL, as USUBJID if already unique.
+        """
+        if domain == "DM":
+            return ["STUDYID", "RDOMAIN", "USUBJID"]
+        else:
+            return ["STUDYID", "RDOMAIN", "USUBJID", "IDVAR", "IDVARVAL"]
+
+    @staticmethod
+    def _get_required_original_columns(pgi: PostgresQLInterface, supp: SqlTableSchema, domain: bool) -> List[str]:
+        """
+        Returns the list of required columns in the original dataset for the SUPP merge.
+        DM does not require any extra columns as USUBJID if already unique.
+        """
+        if domain == "DM":
+            return []
+        else:
+            if not supp.has_column("IDVAR"):
+                raise ValueError("SUPP MERGE: SUPP schema is missing required column: IDVAR")
+
+            pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash}")
+            result = pgi.fetch_all()
+            return [row["col"] for row in result]
+
+    @staticmethod
+    def _get_linking_clauses(
+        original: SqlTableSchema,
+        supp: SqlTableSchema,
+        required_original_columns: List[str],
+    ) -> List[str]:
+        """
+        Returns the list of linking clauses for the where clause.
+        """
+        default_clauses = " AND ".join(
+            [
+                f"original.{original.get_column_hash("STUDYID")} = supp.{supp.get_column_hash("STUDYID")}",
+                f"original.{original.get_column_hash("DOMAIN")} = supp.{supp.get_column_hash("RDOMAIN")}",
+                f"original.{original.get_column_hash("USUBJID")} = supp.{supp.get_column_hash("USUBJID")}",
+            ]
+        )
+
+        if len(required_original_columns) == 0:
+            return [default_clauses]
+
+        return [
+            f"""{default_clauses}
+                AND supp.{supp.get_column_hash("IDVAR")} = '{col}'
+                AND original.{original.get_column_hash(col)}::text = supp.{supp.get_column_hash("IDVARVAL")}"""
+            for col in required_original_columns
+        ]
+
+    @staticmethod
+    def _determine_new_columns(pgi: PostgresQLInterface, supp_table: SqlTableSchema) -> List[str]:
+        """
+        Determines the new columns that will be added to the schema after the join.
+        """
+        pgi.execute_sql(f"SELECT DISTINCT {supp_table.get_column_hash("QNAM")} AS col FROM {supp_table.hash}")
+        result = pgi.fetch_all()
+        return [row["col"] for row in result]
