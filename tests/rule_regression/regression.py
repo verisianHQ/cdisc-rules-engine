@@ -58,7 +58,6 @@ def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optio
     processor = SQLRuleProcessor
     check_operators = processor.extract_operators_from_conditions(conditions)
     rule_regression["check_operators"] = check_operators or []
-
     if not rule or not processor.valid_rule_structure(rule):
         rule_regression["in_cache"] = False
         return rule_regression
