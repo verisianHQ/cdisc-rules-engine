@@ -4,16 +4,15 @@ from .helpers import (
     setup_sql_operations,
 )
 import pytest
-import pandas as pd
 
 
 @pytest.mark.parametrize(
     "data, expected",
     [
-        ({"dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}, pd.to_datetime("2022-01-05").isoformat()),
+        ({"dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}, "2022-01-05"),
         ({"dates": [None, None]}, ""),
-        ({"dates": ["1999-12-31", "2000-01-01", "1999-01-01"]}, pd.to_datetime("2000-01-01").isoformat()),
-        ({"dates": ["2023-06-15"]}, pd.to_datetime("2023-06-15").isoformat()),
+        ({"dates": ["1999-12-31", "2000-01-01", "1999-01-01"]}, "2000-01-01"),
+        ({"dates": ["2023-06-15"]}, "2023-06-15"),
     ],
 )
 def test_max_date(data, expected):
@@ -28,30 +27,30 @@ def test_max_date(data, expected):
         (
             {"grp": [1, 1, 2, 2], "dates": ["2001-01-01", "2022-01-05", "2010-12-12", "2023-01-01"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2022-01-05").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2023-01-01").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2022-01-05"]},
+                {"params": {"$1": 2}, "value": ["2023-01-01"]},
             ],
         ),
         (
             {"grp": [1, 1, 2], "dates": ["2001-01-01", None, "2010-12-12"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2001-01-01").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2010-12-12").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2001-01-01"]},
+                {"params": {"$1": 2}, "value": ["2010-12-12"]},
             ],
         ),
         (
             {"grp": [1, 1, 2], "dates": [None, None, "2010-12-12"]},
             [
                 {"params": {"$1": 1}, "value": [""]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2010-12-12").isoformat()]},
+                {"params": {"$1": 2}, "value": ["2010-12-12"]},
             ],
         ),
         (
             {"grp": [1, 2, 3], "dates": ["2020-01-01", "2021-12-31", "2019-06-15"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2020-01-01").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2021-12-31").isoformat()]},
-                {"params": {"$1": 3}, "value": [pd.to_datetime("2019-06-15").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2020-01-01"]},
+                {"params": {"$1": 2}, "value": ["2021-12-31"]},
+                {"params": {"$1": 3}, "value": ["2019-06-15"]},
             ],
         ),
     ],
@@ -65,10 +64,10 @@ def test_max_date_grouping(data, expected):
 @pytest.mark.parametrize(
     "data, expected",
     [
-        ({"dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}, pd.to_datetime("2001-01-01").isoformat()),
+        ({"dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}, "2001-01-01"),
         ({"dates": [None, None]}, ""),
-        ({"dates": ["1999-12-31", "2000-01-01", "1999-01-01"]}, pd.to_datetime("1999-01-01").isoformat()),
-        ({"dates": ["2023-06-15"]}, pd.to_datetime("2023-06-15").isoformat()),
+        ({"dates": ["1999-12-31", "2000-01-01", "1999-01-01"]}, "1999-01-01"),
+        ({"dates": ["2023-06-15"]}, "2023-06-15"),
     ],
 )
 def test_min_date(data, expected):
@@ -83,30 +82,30 @@ def test_min_date(data, expected):
         (
             {"grp": [1, 1, 2, 2], "dates": ["2001-01-01", "2022-01-05", "2010-12-12", "2023-01-01"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2001-01-01").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2010-12-12").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2001-01-01"]},
+                {"params": {"$1": 2}, "value": ["2010-12-12"]},
             ],
         ),
         (
             {"grp": [1, 1, 2], "dates": ["2001-01-01", None, "2010-12-12"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2001-01-01").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2010-12-12").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2001-01-01"]},
+                {"params": {"$1": 2}, "value": ["2010-12-12"]},
             ],
         ),
         (
             {"grp": [1, 1, 2], "dates": [None, None, "2010-12-12"]},
             [
                 {"params": {"$1": 1}, "value": [""]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2010-12-12").isoformat()]},
+                {"params": {"$1": 2}, "value": ["2010-12-12"]},
             ],
         ),
         (
             {"grp": [1, 2, 3], "dates": ["2020-01-01", "2021-12-31", "2019-06-15"]},
             [
-                {"params": {"$1": 1}, "value": [pd.to_datetime("2020-01-01").isoformat()]},
-                {"params": {"$1": 2}, "value": [pd.to_datetime("2021-12-31").isoformat()]},
-                {"params": {"$1": 3}, "value": [pd.to_datetime("2019-06-15").isoformat()]},
+                {"params": {"$1": 1}, "value": ["2020-01-01"]},
+                {"params": {"$1": 2}, "value": ["2021-12-31"]},
+                {"params": {"$1": 3}, "value": ["2019-06-15"]},
             ],
         ),
     ],
