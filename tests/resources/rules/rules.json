@@ -38050,12 +38050,12 @@
                                         }
                                     },
                                     {
-                                        "row": 18,
+                                        "row": 17,
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "TSVCDREF": "CDISC",
-                                            "TSVCDVER": "2020-03-27"
+                                            "TSVCDREF": null,
+                                            "TSVCDVER": "2019-03-01"
                                         }
                                     },
                                     {
@@ -38111,37 +38111,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[1]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        },
-                                        "root[1]['value']['tsvcdref']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "CDISC"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[1]['row']": {
-                                            "new_value": 18,
-                                            "old_value": 17
-                                        },
-                                        "root[1]['value']['tsvcdver']": {
-                                            "new_value": "2020-03-27",
-                                            "old_value": "2019-03-01"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -40838,7 +40808,7 @@
                                 "domain": "LB",
                                 "execution_status": "success",
                                 "execution_message": "VISITNUM is not among VISITNUM in SV domain.",
-                                "number_errors": 2,
+                                "number_errors": 32,
                                 "errors": [
                                     {
                                         "row": 4,
@@ -40854,6 +40824,246 @@
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "VISITNUM": 64.0
+                                        }
+                                    },
+                                    {
+                                        "row": 395,
+                                        "SEQ": 103,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 396,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 397,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 398,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 399,
+                                        "SEQ": 107,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 400,
+                                        "SEQ": 108,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 401,
+                                        "SEQ": 109,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 402,
+                                        "SEQ": 110,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 403,
+                                        "SEQ": 111,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 404,
+                                        "SEQ": 112,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 405,
+                                        "SEQ": 113,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 406,
+                                        "SEQ": 114,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 407,
+                                        "SEQ": 115,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 408,
+                                        "SEQ": 116,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 409,
+                                        "SEQ": 117,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 410,
+                                        "SEQ": 118,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 411,
+                                        "SEQ": 119,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 412,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 413,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 414,
+                                        "SEQ": 122,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 415,
+                                        "SEQ": 123,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 416,
+                                        "SEQ": 124,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 417,
+                                        "SEQ": 125,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 418,
+                                        "SEQ": 126,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 419,
+                                        "SEQ": 127,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 420,
+                                        "SEQ": 128,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 421,
+                                        "SEQ": 129,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 422,
+                                        "SEQ": 130,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 423,
+                                        "SEQ": 131,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 424,
+                                        "SEQ": 132,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
                                         }
                                     }
                                 ]
@@ -40910,25 +41120,13 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "success",
-                                "execution_message": "VISITNUM is not among VISITNUM in SV domain.",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 13,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "VISITNUM": 101.0
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "VISITNUM": 201.0
-                                        }
+                                        "error": "SQL error in is_not_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -40936,9 +41134,122 @@
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "VISITNUM is not among VISITNUM in SV domain.",
+                                "number_errors": 14,
+                                "errors": [
+                                    {
+                                        "row": 16,
+                                        "SEQ": 16,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "VISITNUM": 6.0
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 17,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "VISITNUM": 6.0
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 18,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "VISITNUM": 6.0
+                                        }
+                                    },
+                                    {
+                                        "row": 137,
+                                        "SEQ": 16,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 138,
+                                        "SEQ": 17,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 139,
+                                        "SEQ": 18,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 174,
+                                        "SEQ": 53,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 175,
+                                        "SEQ": 54,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 176,
+                                        "SEQ": 55,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 210,
+                                        "SEQ": 89,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 211,
+                                        "SEQ": 90,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 212,
+                                        "SEQ": 91,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 236,
+                                        "SEQ": 115,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 247,
+                                        "SEQ": 126,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -41396,10 +41707,23 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "tv.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in is_not_contained_by operator",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "column or relation does not exist",
+                                            "old_value": "usubjid"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -50379,12 +50703,12 @@
                                         }
                                     },
                                     {
-                                        "row": 15,
-                                        "SEQ": 7,
+                                        "row": 14,
+                                        "SEQ": 6,
                                         "USUBJID": "CDISC016",
                                         "value": {
-                                            "AEDECOD": null,
-                                            "AESCAT": null
+                                            "AEDECOD": "Conjunctival Haemorrhage",
+                                            "AESCAT": "CONJUNCTIVAL HAEMORRHAGE"
                                         }
                                     }
                                 ]
@@ -50530,37 +50854,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[13]['value']['aedecod']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "Conjunctival Haemorrhage",
-                                            "new_value": null
-                                        },
-                                        "root[13]['value']['aescat']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "CONJUNCTIVAL HAEMORRHAGE",
-                                            "new_value": null
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[13]['row']": {
-                                            "new_value": 15,
-                                            "old_value": 14
-                                        },
-                                        "root[13]['seq']": {
-                                            "new_value": 7,
-                                            "old_value": 6
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -67093,7 +67387,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in does_not_contain operator",
-                                        "message": "'$ds_dsdecod'"
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             }
@@ -67197,7 +67491,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in does_not_contain operator",
-                                        "message": "'$ds_dsdecod'"
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             }
@@ -77266,27 +77560,27 @@
                                         }
                                     },
                                     {
-                                        "row": 25,
-                                        "SEQ": 25,
+                                        "row": 24,
+                                        "SEQ": 24,
                                         "USUBJID": "123101",
                                         "value": {
-                                            "EPOCH": "TREATMENT"
+                                            "EPOCH": "TREATMENT I"
                                         }
                                     },
                                     {
-                                        "row": 30,
-                                        "SEQ": 30,
+                                        "row": 29,
+                                        "SEQ": 29,
                                         "USUBJID": "123101",
                                         "value": {
-                                            "EPOCH": "FOLLOW-UP"
+                                            "EPOCH": "TREATMENT I"
                                         }
                                     },
                                     {
-                                        "row": 34,
-                                        "SEQ": 34,
+                                        "row": 33,
+                                        "SEQ": 33,
                                         "USUBJID": "123101",
                                         "value": {
-                                            "EPOCH": "FOLLOW-UP"
+                                            "EPOCH": "TREATMENT I"
                                         }
                                     },
                                     {
@@ -77828,65 +78122,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "values_changed": {
-                                        "root[4]['row']": {
-                                            "new_value": 34,
-                                            "old_value": 24
-                                        },
-                                        "root[4]['seq']": {
-                                            "new_value": 34,
-                                            "old_value": 24
-                                        },
-                                        "root[4]['value']['epoch']": {
-                                            "new_value": "follow-up",
-                                            "old_value": "treatment i"
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 30,
-                                                "SEQ": 30,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "EPOCH": "FOLLOW-UP"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 29,
-                                                "SEQ": 29,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "EPOCH": "TREATMENT I"
-                                                }
-                                            }
-                                        }
-                                    },
-                                    "iterable_item_added": {
-                                        "root[4]": {
-                                            "row": 25,
-                                            "SEQ": 25,
-                                            "USUBJID": "123101",
-                                            "value": {
-                                                "EPOCH": "TREATMENT"
-                                            }
-                                        }
-                                    },
-                                    "iterable_item_removed": {
-                                        "root[6]": {
-                                            "row": 33,
-                                            "SEQ": 33,
-                                            "USUBJID": "123101",
-                                            "value": {
-                                                "EPOCH": "TREATMENT I"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -93447,7 +93683,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 51,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93481,27 +93717,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$stype_interventional']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -93534,7 +93750,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93545,7 +93761,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93556,7 +93772,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
+                                            "$STYPE_INTERVENTIONAL": 2,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TRT",
                                             "TSVAL": null
@@ -93612,87 +93828,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 43,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 56,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 43,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 45,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 56,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 45,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 54,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 56,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 54,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 2,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "TRT",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -93763,32 +93899,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = TRT is empty.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 51,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 54,
-                                            "TSGRPID": "1",
-                                            "TSPARMCD": "TRT",
-                                            "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 52,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 54,
-                                            "TSGRPID": "3",
-                                            "TSPARMCD": "TRT",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -93804,10 +93917,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -93861,7 +93971,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 51,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -93895,27 +94005,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$stype_interventional']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -93944,11 +94034,22 @@
                                 "number_errors": 4,
                                 "errors": [
                                     {
+                                        "row": 18,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": 2,
+                                            "TSGRPID": null,
+                                            "TSPARMCD": "INTMODEL",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
                                         "row": 19,
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
@@ -93959,32 +94060,21 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
                                         }
                                     },
                                     {
-                                        "row": 21,
-                                        "SEQ": 4,
+                                        "row": 22,
+                                        "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 2,
                                             "TSGRPID": null,
-                                            "TSPARMCD": "INTTYPE",
+                                            "TSPARMCD": "INTMODEL",
                                             "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
-                                            "TSGRPID": null,
-                                            "TSPARMCD": "LENGTH",
-                                            "TSVAL": "P28W"
                                         }
                                     }
                                 ]
@@ -94048,111 +94138,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 19,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 18,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 2,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 20,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 19,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 21,
-                                                "SEQ": 4,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 20,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 23,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "LENGTH",
-                                                    "TSVAL": "P28W"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 22,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 2,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94223,32 +94209,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTMODEL is empty.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 19,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 55,
-                                            "TSGRPID": "1",
-                                            "TSPARMCD": "INTMODEL",
-                                            "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 20,
-                                        "SEQ": 3,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 55,
-                                            "TSGRPID": "3",
-                                            "TSPARMCD": "INTMODEL",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94264,10 +94227,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94321,7 +94281,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 51,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94355,27 +94315,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$stype_interventional']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94404,11 +94344,22 @@
                                 "number_errors": 4,
                                 "errors": [
                                     {
+                                        "row": 19,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$STYPE_INTERVENTIONAL": 1,
+                                            "TSGRPID": "1",
+                                            "TSPARMCD": "INTTYPE",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
                                         "row": 20,
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94419,7 +94370,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 2,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
@@ -94430,21 +94381,10 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
+                                            "$STYPE_INTERVENTIONAL": 2,
                                             "TSGRPID": null,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 57,
-                                            "TSGRPID": null,
-                                            "TSPARMCD": "LENGTH",
-                                            "TSVAL": "P28W"
                                         }
                                     }
                                 ]
@@ -94508,111 +94448,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 20,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 19,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 21,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 20,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 22,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 21,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 2,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 23,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "LENGTH",
-                                                    "TSVAL": "P28W"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 22,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 2,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94683,32 +94519,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = INTTYPE is empty.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 19,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 55,
-                                            "TSGRPID": "1",
-                                            "TSPARMCD": "INTTYPE",
-                                            "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 20,
-                                        "SEQ": 3,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 55,
-                                            "TSGRPID": "3",
-                                            "TSPARMCD": "INTTYPE",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94724,10 +94537,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94782,7 +94592,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 51,
+                                            "$HLTSUBJI_Y": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94816,27 +94626,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$hltsubji_y']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94862,28 +94652,17 @@
                                 "domain": "TS",
                                 "execution_status": "success",
                                 "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
-                                "number_errors": 2,
+                                "number_errors": 1,
                                 "errors": [
                                     {
                                         "row": 47,
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 54,
+                                            "$HLTSUBJI_Y": 1,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
-                                        }
-                                    },
-                                    {
-                                        "row": 48,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_Y": 54,
-                                            "TSGRPID": "3",
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": "Eczema"
                                         }
                                     }
                                 ]
@@ -94914,10 +94693,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -94950,7 +94726,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 60,
+                                            "$HLTSUBJI_Y": 1,
                                             "TSGRPID": "1",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
@@ -94961,7 +94737,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 60,
+                                            "$HLTSUBJI_Y": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94972,7 +94748,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 60,
+                                            "$HLTSUBJI_Y": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94983,7 +94759,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 60,
+                                            "$HLTSUBJI_Y": 2,
                                             "TSGRPID": "4",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "HEALTHY"
@@ -94994,7 +94770,7 @@
                                         "SEQ": 5,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_Y": 60,
+                                            "$HLTSUBJI_Y": 2,
                                             "TSGRPID": "4",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": "NOT HEALTHY"
@@ -95072,135 +94848,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 50,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 60,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 50,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 1,
-                                                    "TSGRPID": "1",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "Patients with Probable Mild to Moderate Alzheimers Disease"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 51,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 60,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 51,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 1,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 52,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 60,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 52,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 1,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 53,
-                                                "SEQ": 4,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 60,
-                                                    "TSGRPID": "4",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 53,
-                                                "SEQ": 4,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 2,
-                                                    "TSGRPID": "4",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "HEALTHY"
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 54,
-                                                "SEQ": 5,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 60,
-                                                    "TSGRPID": "4",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "NOT HEALTHY"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 54,
-                                                "SEQ": 5,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$HLTSUBJI_Y": 2,
-                                                    "TSGRPID": "4",
-                                                    "TSPARMCD": "TDIGRP",
-                                                    "TSVAL": "NOT HEALTHY"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -95271,21 +94919,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 49,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_Y": 55,
-                                            "TSGRPID": null,
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": "Alzheimer's Disease (Disorder)"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -95301,10 +94937,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -95329,21 +94962,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = Y but TSVAL for TSPARMCD = TDIGRP is not empty or does not equal HEALTHY SUBJECTS.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 48,
-                                        "SEQ": 3,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_Y": 54,
-                                            "TSGRPID": "3",
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": "Alzheimer's Disease (Disorder)"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -95359,10 +94980,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -95815,7 +95433,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 51,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95849,27 +95467,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$stype_interventional']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -95902,7 +95500,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95913,7 +95511,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "PCLAS",
                                             "TSVAL": null
@@ -95958,63 +95556,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 30,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 56,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "PCLAS",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 30,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "2",
-                                                    "TSPARMCD": "PCLAS",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 31,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 56,
-                                                    "TSGRPID": "3",
-                                                    "TSPARMCD": "PCLAS",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 31,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 1,
-                                                    "TSGRPID": "3",
-                                                    "TSPARMCD": "PCLAS",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -96085,21 +95627,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = STYPE and TSVAL = INTERVENTIONAL but TSVAL for TSPARMCD = PCLAS is empty when PCLAS is applicable.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 32,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 56,
-                                            "TSGRPID": "2",
-                                            "TSPARMCD": "PCLAS",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96115,10 +95645,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -98087,7 +97614,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": 52,
+                                            "$ADDON_Y": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98121,27 +97648,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$addon_y']": {
-                                            "new_value": 52,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -98174,7 +97681,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": 52,
+                                            "$ADDON_Y": 1,
                                             "TSGRPID": "DRUG A",
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98208,27 +97715,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$addon_y']": {
-                                            "new_value": 52,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -98261,7 +97748,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": 57,
+                                            "$ADDON_Y": 1,
                                             "TSGRPID": "DRUG A",
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98272,7 +97759,7 @@
                                         "SEQ": null,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$ADDON_Y": 57,
+                                            "$ADDON_Y": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "CURTRT",
                                             "TSVAL": null
@@ -98317,63 +97804,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 8,
-                                                "SEQ": null,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$ADDON_Y": 57,
-                                                    "TSGRPID": "DRUG A",
-                                                    "TSPARMCD": "CURTRT",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 8,
-                                                "SEQ": null,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$ADDON_Y": 1,
-                                                    "TSGRPID": "DRUG A",
-                                                    "TSPARMCD": "CURTRT",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 11,
-                                                "SEQ": null,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$ADDON_Y": 57,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "CURTRT",
-                                                    "TSVAL": null
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 11,
-                                                "SEQ": null,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$ADDON_Y": 1,
-                                                    "TSGRPID": null,
-                                                    "TSPARMCD": "CURTRT",
-                                                    "TSVAL": null
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -101429,7 +100860,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": 51,
+                                            "$HLTSUBJI_N": 1,
                                             "TSGRPID": null,
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101463,27 +100894,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$hltsubji_n']": {
-                                            "new_value": 51,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -101509,25 +100920,14 @@
                                 "domain": "TS",
                                 "execution_status": "success",
                                 "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
-                                "number_errors": 3,
+                                "number_errors": 2,
                                 "errors": [
-                                    {
-                                        "row": 49,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_N": 57,
-                                            "TSGRPID": "1",
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": null
-                                        }
-                                    },
                                     {
                                         "row": 50,
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": 57,
+                                            "$HLTSUBJI_N": 1,
                                             "TSGRPID": "2",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101538,7 +100938,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$HLTSUBJI_N": 57,
+                                            "$HLTSUBJI_N": 1,
                                             "TSGRPID": "3",
                                             "TSPARMCD": "TDIGRP",
                                             "TSVAL": null
@@ -101583,10 +100983,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -101657,21 +101054,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 47,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_N": 54,
-                                            "TSGRPID": "2",
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101687,10 +101072,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -101715,21 +101097,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "A record exists in TS where TSPARMCD = HLTSUBJI and TSVAL = N but TSVAL for TSPARMCD = TDIGRP is empty.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 45,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$HLTSUBJI_N": 51,
-                                            "TSGRPID": null,
-                                            "TSPARMCD": "TDIGRP",
-                                            "TSVAL": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -101745,10 +101115,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -104154,7 +103521,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in not_matches_regex operator",
-                                        "message": "'variable_label'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -104249,7 +103616,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in not_matches_regex operator",
-                                        "message": "'variable_label'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -105451,7 +104818,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in does_not_contain operator",
-                                        "message": "'$ds_dsdecod'"
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             },
@@ -105530,7 +104897,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in does_not_contain operator",
-                                        "message": "'$ds_dsdecod'"
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             },
@@ -113054,9 +112421,20 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "TSPARMCD = RANDQT record is not present",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$rand_count": "Operation variable not found",
+                                            "$trt_count": 1,
+                                            "TSPARMCD": "TRT"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -113085,8 +112463,25 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "ts.xpt": {
+                                    "type_changes": {
+                                        "root[0]['usubjid']": {
+                                            "old_type": "NoneType",
+                                            "new_type": "str",
+                                            "old_value": null,
+                                            "new_value": "None"
+                                        }
+                                    },
+                                    "values_changed": {
+                                        "root[0]['value']['$rand_count']": {
+                                            "new_value": "operation variable not found",
+                                            "old_value": "not in dataset"
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -113111,9 +112506,30 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "TSPARMCD = RANDQT record is not present",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$rand_count": "Operation variable not found",
+                                            "$trt_count": 1,
+                                            "TSPARMCD": "TRT"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$rand_count": "Operation variable not found",
+                                            "$trt_count": 1,
+                                            "TSPARMCD": "RAND"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -113152,8 +112568,57 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "ts.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 1,
+                                                "SEQ": 1,
+                                                "USUBJID": "None",
+                                                "value": {
+                                                    "$rand_count": "Operation variable not found",
+                                                    "$trt_count": 1,
+                                                    "TSPARMCD": "TRT"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 1,
+                                                "SEQ": 1,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$rand_count": "Not in dataset",
+                                                    "$trt_count": 1,
+                                                    "TSPARMCD": "TRT"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 2,
+                                                "SEQ": 1,
+                                                "USUBJID": "None",
+                                                "value": {
+                                                    "$rand_count": "Operation variable not found",
+                                                    "$trt_count": 1,
+                                                    "TSPARMCD": "RAND"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 2,
+                                                "SEQ": 1,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$rand_count": "Not in dataset",
+                                                    "$trt_count": 1,
+                                                    "TSPARMCD": "RAND"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -113564,8 +113029,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$age_count": 9,
-                                            "$agetxt_count": 9,
+                                            "$age_count": 1,
+                                            "$agetxt_count": 1,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -113575,8 +113040,8 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$age_count": 9,
-                                            "$agetxt_count": 9,
+                                            "$age_count": 1,
+                                            "$agetxt_count": 1,
                                             "TSPARMCD": "AGETXT",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -113620,63 +113085,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$age_count": 9,
-                                                    "$agetxt_count": 9,
-                                                    "TSPARMCD": "AGE",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$age_count": 1,
-                                                    "$agetxt_count": 1,
-                                                    "TSPARMCD": "AGE",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$age_count": 9,
-                                                    "$agetxt_count": 9,
-                                                    "TSPARMCD": "AGETXT",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$age_count": 1,
-                                                    "$agetxt_count": 1,
-                                                    "TSPARMCD": "AGETXT",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -113704,21 +113113,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "AGE and AGETXT are in the list of TSPARAMCDs with TSVAL populated.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$age_count": 11,
-                                            "$agetxt_count": 11,
-                                            "TSPARMCD": "AGE",
-                                            "TSVAL": "NonEmpty"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -113734,10 +113131,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -114309,7 +113703,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$crmdur_count": 9,
+                                            "$crmdur_count": 1,
                                             "TSPARMCD": "CRMDUR",
                                             "TSVAL": null
                                         }
@@ -114341,27 +113735,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "type_changes": {
-                                        "root[0]['usubjid']": {
-                                            "old_type": "NoneType",
-                                            "new_type": "str",
-                                            "old_value": null,
-                                            "new_value": "None"
-                                        }
-                                    },
-                                    "values_changed": {
-                                        "root[0]['value']['$crmdur_count']": {
-                                            "new_value": 9,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -114582,7 +113956,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -114592,7 +113966,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": "N"
                                         }
@@ -114602,7 +113976,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "PCLASS",
                                             "TSVAL": "asdf"
                                         }
@@ -114612,7 +113986,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "STYPE",
                                             "TSVAL": "NOT"
                                         }
@@ -114622,7 +113996,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "46"
                                         }
@@ -114632,7 +114006,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DCUTDTC",
                                             "TSVAL": "2021-12-02 00:00:00"
                                         }
@@ -114642,7 +114016,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "25"
                                         }
@@ -114652,7 +114026,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "50"
                                         }
@@ -114662,7 +114036,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "10"
                                         }
@@ -114672,7 +114046,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "20"
                                         }
@@ -114682,7 +114056,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 0,
                                             "TSPARMCD": "DOSFRM",
                                             "TSVAL": "CAPSULE"
                                         }
@@ -114814,257 +114188,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "INTMODEL",
-                                                    "TSVAL": "NonEmpty"
-                                                }
-                                            }
-                                        },
-                                        "root[10]": {
-                                            "new_value": {
-                                                "row": 11,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DOSFRM",
-                                                    "TSVAL": "CAPSULE"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 11,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DOSFRM",
-                                                    "TSVAL": "CAPSULE"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": "N"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "INTTYPE",
-                                                    "TSVAL": "N"
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 3,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "PCLASS",
-                                                    "TSVAL": "asdf"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "PCLASS",
-                                                    "TSVAL": "asdf"
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 4,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "STYPE",
-                                                    "TSVAL": "NOT"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 4,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "STYPE",
-                                                    "TSVAL": "NOT"
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 5,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "AGE",
-                                                    "TSVAL": "46"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 5,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "AGE",
-                                                    "TSVAL": "46"
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 6,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DCUTDTC",
-                                                    "TSVAL": "2021-12-02 00:00:00"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 6,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DCUTDTC",
-                                                    "TSVAL": "2021-12-02 00:00:00"
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 7,
-                                                "SEQ": 1,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "25"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 7,
-                                                "SEQ": 1,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "25"
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 8,
-                                                "SEQ": 2,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "50"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 8,
-                                                "SEQ": 2,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "50"
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 9,
-                                                "SEQ": 3,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 9,
-                                                "SEQ": 3,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "10"
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 10,
-                                                "SEQ": 4,
-                                                "USUBJID": "None",
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 11,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "20"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 10,
-                                                "SEQ": 4,
-                                                "USUBJID": null,
-                                                "value": {
-                                                    "$STYPE_INTERVENTIONAL": 0,
-                                                    "TSPARMCD": "DOSE",
-                                                    "TSVAL": "20"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -115090,24 +114214,14 @@
                                 "domain": "TS",
                                 "execution_status": "success",
                                 "execution_message": "The set  ('INTMODEL’, 'INTTYPE','PCLASS') is not in the list of TSPARAMCD with TSVAL populated.",
-                                "number_errors": 11,
+                                "number_errors": 2,
                                 "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "INTMODEL",
-                                            "TSVAL": "nonempty"
-                                        }
-                                    },
                                     {
                                         "row": 2,
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": null
                                         }
@@ -115117,89 +114231,9 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "PCLASS",
                                             "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "STYPE",
-                                            "TSVAL": "INTERVENTIONAL"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "AGE",
-                                            "TSVAL": "46"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DCUTDTC",
-                                            "TSVAL": "2021-12-02 00:00:00"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DOSE",
-                                            "TSVAL": "25"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DOSE",
-                                            "TSVAL": null
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 3,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DOSE",
-                                            "TSVAL": "10"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 4,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DOSE",
-                                            "TSVAL": "20"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 1,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
-                                            "TSPARMCD": "DOSFRM",
-                                            "TSVAL": "CAPSULE"
                                         }
                                     }
                                 ]
@@ -115239,10 +114273,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -115275,7 +114306,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "INTMODEL",
                                             "TSVAL": "NonEmpty"
                                         }
@@ -115285,7 +114316,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "INTTYPE",
                                             "TSVAL": "N"
                                         }
@@ -115295,7 +114326,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "asdf"
                                         }
@@ -115305,7 +114336,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "STYPE",
                                             "TSVAL": "INTERVENTIONAL"
                                         }
@@ -115315,7 +114346,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "AGE",
                                             "TSVAL": "46"
                                         }
@@ -115325,7 +114356,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DCUTDTC",
                                             "TSVAL": "2021-12-02 00:00:00"
                                         }
@@ -115335,7 +114366,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "25"
                                         }
@@ -115345,7 +114376,7 @@
                                         "SEQ": 2,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "50"
                                         }
@@ -115355,7 +114386,7 @@
                                         "SEQ": 3,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "10"
                                         }
@@ -115365,7 +114396,7 @@
                                         "SEQ": 4,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DOSE",
                                             "TSVAL": "20"
                                         }
@@ -115375,7 +114406,7 @@
                                         "SEQ": 1,
                                         "USUBJID": "None",
                                         "value": {
-                                            "$STYPE_INTERVENTIONAL": 11,
+                                            "$STYPE_INTERVENTIONAL": 1,
                                             "TSPARMCD": "DOSFRM",
                                             "TSVAL": "CAPSULE"
                                         }
@@ -115457,9 +114488,142 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "TSVALNF is not equal to NA when TSPARAMCD=INDIC",
+                                "number_errors": 11,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "HLTSUBJI",
+                                            "TSVAL": "Y",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "INDIC",
+                                            "TSVAL": null,
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "ADDON",
+                                            "TSVAL": "N",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "AGEMAX",
+                                            "TSVAL": "P75Y",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DCUTDESC",
+                                            "TSVAL": "Database Lock",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DCUTDTC",
+                                            "TSVAL": "2021-12-02 00:00:00",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "25",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "50",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "10",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "20",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSFRM",
+                                            "TSVAL": "CAPSULE",
+                                            "TSVALNF": null
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115608,10 +114772,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -115639,9 +114800,142 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "TSVALNF is not equal to NA when TSPARAMCD=INDIC",
+                                "number_errors": 11,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "HLTSUBJI",
+                                            "TSVAL": "Y",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "INDIC",
+                                            "TSVAL": null,
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "ADDON",
+                                            "TSVAL": "N",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "AGEMAX",
+                                            "TSVAL": "P75Y",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DCUTDESC",
+                                            "TSVAL": "Database Lock",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DCUTDTC",
+                                            "TSVAL": "2021-12-02 00:00:00",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "25",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "50",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "10",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 4,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSE",
+                                            "TSVAL": "20",
+                                            "TSVALNF": null
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "$HLTSUBJI": 1,
+                                            "$INDIC": 0,
+                                            "TSPARMCD": "DOSFRM",
+                                            "TSVAL": "CAPSULE",
+                                            "TSVALNF": null
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115790,10 +115084,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -124737,12 +124028,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in less_than_or_equal_to operator",
-                                        "message": "column or relation does not exist"
+                                        "error": "SQL error in sqlnumericoperation operation",
+                                        "message": "'NoneType' object has no attribute 'hash'"
                                     }
                                 ]
                             }
@@ -124799,9 +124090,28 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "$suppdm_race_count": 0,
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "$suppdm_race_count": 0,
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -124825,7 +124135,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -124858,9 +124171,28 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "$suppdm_race_count": 0,
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "$suppdm_race_count": 0,
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -124884,7 +124216,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -124909,12 +124244,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in less_than_or_equal_to operator",
-                                        "message": "column or relation does not exist"
+                                        "error": "SQL error in sqlnumericoperation operation",
+                                        "message": "'NoneType' object has no attribute 'hash'"
                                     }
                                 ]
                             }
