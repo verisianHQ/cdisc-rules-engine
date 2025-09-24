@@ -24,12 +24,12 @@ class SqlDateOperation(SqlBaseOperation):
                             CASE
                                 WHEN {self.function}(CASE
                                     WHEN {column_id} IS NULL OR {column_id} = '' THEN NULL
-                                    ELSE {column_id}::timestamp
+                                    ELSE {column_id}::date
                                 END) IS NULL THEN ''
                                 ELSE TO_CHAR({self.function}(CASE
                                     WHEN {column_id} IS NULL OR {column_id} = '' THEN NULL
-                                    ELSE {column_id}::timestamp
-                                END), 'YYYY-MM-DD"T"HH24:MI:SS')
+                                    ELSE {column_id}::date
+                                END), 'YYYY-MM-DD')
                             END, ''
                         ) AS value
                         FROM {dataset_id}"""
@@ -61,12 +61,12 @@ class SqlDateOperation(SqlBaseOperation):
                             CASE
                                 WHEN {self.function}(CASE
                                     WHEN {column_id} IS NULL OR {column_id} = '' THEN NULL
-                                    ELSE {column_id}::timestamp
+                                    ELSE {column_id}::date
                                 END) IS NULL THEN ''
                                 ELSE TO_CHAR({self.function}(CASE
                                     WHEN {column_id} IS NULL OR {column_id} = '' THEN NULL
-                                    ELSE {column_id}::timestamp
-                                END), 'YYYY-MM-DD"T"HH24:MI:SS')
+                                    ELSE {column_id}::date
+                                END), 'YYYY-MM-DD')
                             END, ''
                         ) AS value
                         FROM {dataset_id}

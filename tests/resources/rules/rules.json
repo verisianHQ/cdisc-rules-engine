@@ -43081,7 +43081,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-03-13T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-03-13",
                                             "SSDTC": "2021-03-12",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43091,7 +43091,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-05-09T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-05-09",
                                             "SSDTC": "2021-04-09",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43101,7 +43101,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC004",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-06-01T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-06-01",
                                             "SSDTC": "2021-05-02",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43121,7 +43121,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC009",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-08-16T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-08-16",
                                             "SSDTC": "2021-08-13",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43238,7 +43238,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC002",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-03-12T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-03-12",
                                             "SSDTC": "2021-03-12",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43248,7 +43248,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC003",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-04-09T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-04-09",
                                             "SSDTC": "2021-04-09",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43258,7 +43258,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC004",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-04-25T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-04-25",
                                             "SSDTC": "2021-05-02",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -43268,7 +43268,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC007",
                                         "value": {
-                                            "$max_ds_dsstdtc": "2021-01-04T00:00:00",
+                                            "$max_ds_dsstdtc": "2021-01-04",
                                             "SSDTC": "2021-07-02",
                                             "SSSTRESC": "DEAD"
                                         }
@@ -60559,8 +60559,8 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "$max_ex_exendtc": "2013-01-22T00:00:00",
-                                            "$max_ex_exstdtc": "2013-01-23T00:00:00",
+                                            "$max_ex_exendtc": "2013-01-22",
+                                            "$max_ex_exstdtc": "2013-01-23",
                                             "RFXENDTC": "2013-01-24"
                                         }
                                     }
@@ -60607,23 +60607,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['$max_ex_exendtc']": {
-                                            "new_value": "2013-01-22t00:00:00",
-                                            "old_value": "2013-01-22"
-                                        },
-                                        "root[0]['value']['$max_ex_exstdtc']": {
-                                            "new_value": "2013-01-23t00:00:00",
-                                            "old_value": "2013-01-23"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -60651,20 +60635,9 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "RFXENDTC does not equal the latest value of EX.EXSTDTC or EX.EXENDTC",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "$max_ex_exendtc": "2013-01-23T00:00:00",
-                                            "$max_ex_exstdtc": "2013-01-23T00:00:00",
-                                            "RFXENDTC": "2013-01-23"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
@@ -60696,10 +60669,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -60724,20 +60694,9 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "RFXENDTC does not equal the latest value of EX.EXSTDTC or EX.EXENDTC",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "$max_ex_exendtc": "2013-01-22T00:00:00",
-                                            "$max_ex_exstdtc": "2013-01-23T00:00:00",
-                                            "RFXENDTC": "2013-01-23"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
@@ -60769,10 +60728,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -60834,7 +60790,7 @@
                                         "SEQ": null,
                                         "USUBJID": "CDISC001",
                                         "value": {
-                                            "$min_ex_exstdtc": "2012-11-30T00:00:00",
+                                            "$min_ex_exstdtc": "2012-11-30",
                                             "RFXSTDTC": "2012-12-01"
                                         }
                                     }
@@ -60880,19 +60836,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['$min_ex_exstdtc']": {
-                                            "new_value": "2012-11-30t00:00:00",
-                                            "old_value": "2012-11-30"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -90138,9 +90082,21 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "DM.RFICDTC is not equal to the earliest DSSTDTC, when DSTERM indicates Informed consent obtained.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "015246-076-0003-00003",
+                                        "value": {
+                                            "$min_ds_dsstdtc": "2018-03-06",
+                                            "DSDECOD": "INFORMED CONSENT OBTAINED",
+                                            "DSSTDTC": "2018-03-06",
+                                            "RFICDTC": "2018-05-20"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
