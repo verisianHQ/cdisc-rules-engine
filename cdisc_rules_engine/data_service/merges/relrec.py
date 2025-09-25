@@ -37,24 +37,7 @@ class SqlRelrecMerge:
         relationships = SqlRelrecMerge._filter_relrec_for_domain(pgi, relrec, domain)
 
         if not relationships:
-            # No relationships found, return original dataset
-            schema = SqlTableSchema.from_join(name)
-            for _, column in original.get_columns():
-                schema.add_column(column)
-            pgi.create_table(schema)
-
-            # Copy original data
-            source_columns = [col.hash for col_name, col in original.get_columns() if col_name != "id"]
-            target_columns = [col.hash for col_name, col in schema.get_columns() if col_name != "id"]
-            query = f"""
-                INSERT INTO {schema.hash} ({', '.join(target_columns)})
-                SELECT {', '.join(source_columns)}
-                FROM {original.hash}
-                ORDER BY id
-            """
-            pgi.execute_sql(query)
-
-            return schema
+            return original
 
         # Build the merged schema with renamed columns
         schema = SqlRelrecMerge._build_merged_schema(pgi, name, original, relationships, wildcard)
