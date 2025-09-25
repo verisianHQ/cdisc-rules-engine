@@ -102063,12 +102063,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'AE' not found in schema."
                                     }
                                 ]
                             },
@@ -102076,12 +102076,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'LB' not found in schema."
                                     }
                                 ]
                             },
@@ -102089,12 +102089,12 @@
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'EC' not found in schema."
                                     }
                                 ]
                             }
@@ -102408,12 +102408,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'AE' not found in schema."
                                     }
                                 ]
                             },
@@ -102421,12 +102421,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'LB' not found in schema."
                                     }
                                 ]
                             },
@@ -102434,12 +102434,12 @@
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'EC' not found in schema."
                                     }
                                 ]
                             },
