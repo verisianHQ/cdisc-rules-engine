@@ -39,9 +39,8 @@ class SqlRelrecMerge:
         if not relationships:
             # No relationships found, return original dataset
             schema = SqlTableSchema.from_join(name)
-            for col_name, column in original.get_columns():
-                if col_name != "id":
-                    schema.add_column(column)
+            for _, column in original.get_columns():
+                schema.add_column(column)
             pgi.create_table(schema)
 
             # Copy original data
@@ -171,10 +170,9 @@ class SqlRelrecMerge:
         """
         schema = SqlTableSchema.from_join(name)
 
-        # Add all original columns
-        for col_name, column in original.get_columns():
-            if col_name != "id":
-                schema.add_column(column)
+        # Add all original columns including id
+        for _, column in original.get_columns():
+            schema.add_column(column)
 
         # For each unique right domain, determine what columns to add
         right_domains = set(rel["rdomain_right"] for rel in relationships)
@@ -262,14 +260,6 @@ class SqlRelrecMerge:
         return domain_relationships
 
     @staticmethod
-    def _find_domain_table(pgi: PostgresQLInterface, domain: str) -> SqlTableSchema:
-        """Find the table schema for a given domain."""
-        for table_name, table_schema in pgi.schema.get_tables():
-            if table_name.lower().startswith(domain.lower()):
-                return table_schema
-        return None
-
-    @staticmethod
     def _build_domain_queries(
         pgi: PostgresQLInterface,
         schema: SqlTableSchema,
@@ -280,7 +270,7 @@ class SqlRelrecMerge:
         """Build queries for all domain relationships."""
         queries = []
         for right_domain, domain_rels in domain_relationships.items():
-            right_table = SqlRelrecMerge._find_domain_table(pgi, right_domain)
+            right_table = pgi.schema.get_table(right_domain.lower())
             if right_table:
                 query = SqlRelrecMerge._build_single_domain_query(
                     pgi, schema, original, right_table, right_domain, domain_rels, wildcard
@@ -315,19 +305,14 @@ class SqlRelrecMerge:
         if not union_parts:
             return None
 
-        # Find first column for ordering
-        first_original_col = None
-        for col_name, col in original.get_columns():
-            if col_name != "id":
-                first_original_col = col.hash
-                break
+        id_col_hash = original.get_column_hash("id")
 
         return f"""
             INSERT INTO {schema.hash} ({', '.join(target_columns)})
-            SELECT * FROM (
+            SELECT {', '.join(target_columns)} FROM (
                 {' UNION '.join(union_parts)}
             ) AS merged_data
-            ORDER BY {first_original_col}
+            ORDER BY {id_col_hash}
         """
 
     @staticmethod
@@ -339,8 +324,8 @@ class SqlRelrecMerge:
 
         # Original table columns
         for col_name, col in original.get_columns():
+            original_selects.append(f"o.{col.hash}")
             if col_name != "id":
-                original_selects.append(f"o.{col.hash}")
                 target_columns.append(col.hash)
 
         # Right table columns (renamed)
