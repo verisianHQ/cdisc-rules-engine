@@ -116376,13 +116376,19 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset and \"Other, specify\" value was coded.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AEDECOD": null,
+                                            "AETERM": "FATIGUE",
+                                            "RELREC.FAOBJ": "ERROR"
+                                        }
                                     }
                                 ]
                             },
@@ -116452,11 +116458,20 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "ae.xpt": {
+                                    "values_changed": {
+                                        "root[0]['row']": {
+                                            "new_value": 2,
+                                            "old_value": 3
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116489,15 +116504,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -116553,12 +116563,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116600,39 +116607,63 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and CMDECOD is not null, but FAOBJ is not equal to CMDECOD.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDECOD": "TEST",
+                                            "RELREC.FAOBJ": "ASPIRINA"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and AEDECOD is not null, but FAOBJ is not equal to AEDECOD.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AEDECOD": "TEST",
+                                            "RELREC.FAOBJ": "ERYTHEMA"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and FADECOD is not null, but FAOBJ is not equal to FADECOD.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADECOD": "TEST",
+                                            "RELREC.FAOBJ": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADECOD": "TEST",
+                                            "RELREC.FAOBJ": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -116722,11 +116753,25 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "fa.xpt": {
+                                    "iterable_item_added": {
+                                        "root[1]": {
+                                            "row": 3,
+                                            "SEQ": 1,
+                                            "USUBJID": "CDISC001",
+                                            "value": {
+                                                "FADECOD": "TEST",
+                                                "RELREC.FAOBJ": "Not in dataset"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -116751,41 +116796,26 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
@@ -116833,12 +116863,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
