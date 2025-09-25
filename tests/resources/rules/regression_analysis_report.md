@@ -4,14 +4,14 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 28 (3.7%)
-- **Clean rules**: 734 (96.3%)
+- **Rules with any errors**: 33 (4.3%)
+- **Clean rules**: 729 (95.7%)
 
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 0
 - Rules with **operation errors**: 8
-- Rules with **other errors**: 20
+- Rules with **other errors**: 25
 
 ## Missing Operators
 
@@ -27,9 +27,9 @@ No missing operator errors found!
 6.  **valid_codelist_dates**: 2 failures across 1 rules
 7.  **domain_is_custom**: 1 failures across 1 rules
 
-## Execution Errors by Type (13 unique error types, 112 total failures across 28 rule occurrences)
+## Execution Errors by Type (13 unique error types, 125 total failures across 33 rule occurrences)
 
-1.  **An unknown exception has occurred**: 64 failures across 13 rules
+1.  **An unknown exception has occurred**: 77 failures across 18 rules
 2.  **SQL error in is_incomplete_date operator**: 10 failures across 2 rules
 3.  **SQL error in not_matches_regex operator**: 4 failures across 2 rules
 4.  **SQL error in does_not_contain operator**: 4 failures across 2 rules

@@ -87523,55 +87523,14 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "SUPPDM",
-                                "execution_status": "success",
-                                "execution_message": "Multiple races are collected in SUPPDM but RACE in DM does not equal \"MULTIPLE\".",
-                                "number_errors": 5,
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QNAM": "RACE1",
-                                            "RACE": "WHITE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QNAM": "RACE11",
-                                            "RACE": "WHITE"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "QNAM": "RACE10",
-                                            "RACE": "WHITE"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "QNAM": "RACEA",
-                                            "RACE": "WHITE"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC010",
-                                        "value": {
-                                            "QNAM": "RACEBL",
-                                            "RACE": "BLACK"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             },
@@ -87651,9 +87610,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": true,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87678,10 +87640,15 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -87713,9 +87680,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -87737,10 +87707,15 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -87772,9 +87747,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103702,81 +103680,13 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
-                                "number_errors": 8,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 21,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 22,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 24,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": null,
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 189,
-                                        "SEQ": 29,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 190,
-                                        "SEQ": 20,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 191,
-                                        "SEQ": 19,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 192,
-                                        "SEQ": 18,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             },
@@ -103830,11 +103740,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103859,81 +103769,13 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
-                                "number_errors": 8,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 21,
-                                        "SEQ": 5,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 22,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 190,
-                                        "SEQ": 20,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 191,
-                                        "SEQ": 19,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 192,
-                                        "SEQ": 18,
-                                        "USUBJID": "CDISC-TEST-002",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 266,
-                                        "SEQ": 4,
-                                        "USUBJID": "CDISC-TEST-011",
-                                        "value": {
-                                            "AESMIE": "N",
-                                            "QNAM": "AESOSP"
-                                        }
-                                    },
-                                    {
-                                        "row": 267,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC-TEST-011",
-                                        "value": {
-                                            "AESMIE": null,
-                                            "QNAM": "AESOSP"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             },
@@ -103968,11 +103810,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111550,36 +111392,13 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": "Ethnicity has been collected but the values is not mapped to \"HISPANIC OR LATINO\" or \"NOT HISPANIC OR LATINO\"",
-                                "number_errors": 3,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "S004",
-                                        "value": {
-                                            "CETHNIC": "Not in dataset",
-                                            "ETHNIC": "XXXXXXX"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "S003",
-                                        "value": {
-                                            "CETHNIC": "Not in dataset",
-                                            "ETHNIC": "NOT HISPANIC"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "S001",
-                                        "value": {
-                                            "CETHNIC": "Not in dataset",
-                                            "ETHNIC": "HISPANIC"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
@@ -111634,24 +111453,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 4,
-                                            "old_value": 1
-                                        },
-                                        "root[2]['row']": {
-                                            "new_value": 2,
-                                            "old_value": 4
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111684,10 +111490,15 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -111711,9 +111522,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115532,25 +115346,13 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": "Ethnicity(CETHNIC) has been collected as \"Spanish origin\" but the values in DM is not mapped to \"HISPANIC OR LATINO\"",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "S002",
-                                        "value": {
-                                            "ETHNIC": "LATINO"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "S003",
-                                        "value": {
-                                            "ETHNIC": "NOT HISPANIC"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
@@ -115594,52 +115396,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "ETHNIC": "LATINO"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "ETHNIC": "LATINO"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "ETHNIC": "NOT HISPANIC"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "ETHNIC": "NOT HISPANIC"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115672,10 +115433,15 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115699,9 +115465,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115752,25 +115521,13 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": "Haitin or Negro was collected in CRACE but RACE does not have the value as BLACK OR AFRICAN AMERICAN",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "S002",
-                                        "value": {
-                                            "RACE": "WHITE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "S003",
-                                        "value": {
-                                            "RACE": "BLACK OR\nAFRICAN"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
@@ -115814,52 +115571,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "RACE": "WHITE"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "RACE": "WHITE"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "RACE": "BLACK OR\nAFRICAN"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "RACE": "BLACK OR\nAFRICAN"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115892,10 +115608,15 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -115919,9 +115640,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -123449,7 +123173,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
@@ -123522,10 +123246,15 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -123549,9 +123278,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -123581,25 +123313,13 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "success",
-                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "RACE": "MULTIPLE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "RACE": "MULTIPLE"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
@@ -123643,24 +123363,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "iterable_item_added": {
-                                        "root[0]": {
-                                            "row": 1,
-                                            "SEQ": null,
-                                            "USUBJID": "CDISC009",
-                                            "value": {
-                                                "RACE": "MULTIPLE"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -123688,7 +123395,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Joins with relationship domains are not supported yet"
                                     }
                                 ]
                             }
