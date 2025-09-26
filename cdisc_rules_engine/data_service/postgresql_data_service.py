@@ -159,10 +159,7 @@ class PostgresQLDataService:
         left_id = dataset_metadata.dataset_id
 
         for merge_spec in datasets:
-            domain_name = merge_spec.get("domain_name")
-            if not domain_name or domain_name == "None":
-                continue  # Skip merge specs without domain_name or with None as string
-            right: str = domain_name.lower()
+            right: str = merge_spec.get("domain_name").lower()
             # TODO: The spec -> rule conversion doesn't maintain the `is_relationship` boolean
             # so we have to infer it here for now.
             is_relationship = merge_spec.get("relationship_columns", None) is not None
@@ -170,10 +167,7 @@ class PostgresQLDataService:
 
             # TODO: This only handles simple joins for now
             # Priority order: Child -> Dataset Type -> Relationship -> Join
-            if is_child:
-                # Child datasets always use simple join merge, regardless of other properties
-                left_id = self._do_join_merge(left=left_id, right=right, merge_spec=merge_spec, rule=rule)
-            elif right == "relrec":
+            if right == "relrec":
                 left_id = self._do_relrec_merge(
                     original=left_id,
                     relrec_dataset=right,
@@ -181,7 +175,7 @@ class PostgresQLDataService:
                     merge_spec=merge_spec,
                     rule=rule,
                 )
-            elif right.startswith("supp"):
+            elif right.startswith("supp") and not is_child:
                 left_id = self._do_supp_merge(
                     original=left_id, target=right, dataset_metadata=dataset_metadata, merge_spec=merge_spec, rule=rule
                 )
@@ -241,19 +235,10 @@ class PostgresQLDataService:
                 f"Tried to SUPP merge {dataset_metadata.domain}, but could not find corresponding SUPP dataset."
             )
 
-        # Get table schemas with validation
-        original_schema = self.pgi.schema.get_table(original)
-        if not original_schema:
-            raise ValueError(f"SUPP merge: Original table '{original}' not found in schema")
-
-        supp_schema = self.pgi.schema.get_table(supp_dataset.name)
-        if not supp_schema:
-            raise ValueError(f"SUPP merge: SUPP table '{supp_dataset.name}' not found in schema")
-
         return SqlSuppMerge.perform_join(
             pgi=self.pgi,
-            original=original_schema,
-            supp=supp_schema,
+            original=self.pgi.schema.get_table(original),
+            supp=self.pgi.schema.get_table(supp_dataset.name),
             domain=dataset_metadata.domain,
         ).name
 
