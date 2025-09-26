@@ -56816,7 +56816,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -56829,7 +56829,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -56842,7 +56842,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -56991,7 +56991,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57004,7 +57004,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57017,7 +57017,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57054,7 +57054,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             }
@@ -57158,7 +57158,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57171,7 +57171,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57184,7 +57184,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             },
@@ -57213,7 +57213,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
                                     }
                                 ]
                             }
@@ -57297,7 +57297,7 @@
                                             "old_value": "column not found in data"
                                         },
                                         "root[0]['message']": {
-                                            "new_value": "joins with relationship domains are not supported yet",
+                                            "new_value": "'nonetype' object has no attribute 'get_column_hash'",
                                             "old_value": "idvar"
                                         }
                                     }
@@ -92051,7 +92051,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
                                     }
                                 ]
                             },
@@ -92167,7 +92167,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
                                     }
                                 ]
                             },
@@ -92234,7 +92234,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
                                     }
                                 ]
                             },
@@ -114265,15 +114265,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppae.xpt",
@@ -114325,11 +114320,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114354,15 +114349,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppae.xpt",
@@ -114394,12 +114384,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -123511,12 +123498,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "error": "SQL error in is_not_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -123609,12 +123596,12 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "error": "SQL error in is_not_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -128733,15 +128720,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -128783,11 +128765,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128820,15 +128802,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -128852,12 +128829,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128908,15 +128882,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -128958,11 +128927,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128995,15 +128964,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -129027,12 +128991,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -137210,7 +137171,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "Tried to SUPP merge DM, but could not find corresponding SUPP dataset."
                                     }
                                 ]
                             }
@@ -137283,13 +137244,25 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC007",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
                                     }
                                 ]
                             }
@@ -137316,11 +137289,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -137350,13 +137323,25 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
                                     }
                                 ]
                             }
@@ -137400,11 +137385,24 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "dm.xpt": {
+                                    "iterable_item_added": {
+                                        "root[0]": {
+                                            "row": 1,
+                                            "SEQ": null,
+                                            "USUBJID": "CDISC008",
+                                            "value": {
+                                                "RACE": "MULTIPLE"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -137432,7 +137430,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Joins with relationship domains are not supported yet"
+                                        "message": "Tried to SUPP merge DM, but could not find corresponding SUPP dataset."
                                     }
                                 ]
                             }
