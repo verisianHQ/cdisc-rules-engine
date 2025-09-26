@@ -41766,7 +41766,7 @@
                                 "domain": "LB",
                                 "execution_status": "success",
                                 "execution_message": "Verify that LBTOXGR value is not from a numeric scale",
-                                "number_errors": 3,
+                                "number_errors": 2,
                                 "errors": [
                                     {
                                         "row": 1,
@@ -41775,15 +41775,6 @@
                                         "value": {
                                             "LBTOX": null,
                                             "LBTOXGR": "Grade 2"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 2,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "LBTOX": null,
-                                            "LBTOXGR": "Grade II"
                                         }
                                     },
                                     {
@@ -41830,10 +41821,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -87447,19 +87435,9 @@
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
                                 "execution_status": "success",
-                                "execution_message": "TSPARMCD = \"RANDQT\" but TSVAL is not a number between 0 and 1.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 35,
-                                        "SEQ": 2,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "TSPARMCD": "RANDQT",
-                                            "TSVAL": "1"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -87475,10 +87453,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
