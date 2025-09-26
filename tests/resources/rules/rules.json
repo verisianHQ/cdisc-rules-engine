@@ -3161,28 +3161,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "TRLOC": ""
+                                            "TRLOC": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tr.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['trloc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -3236,28 +3222,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "TRLOC": ""
+                                            "TRLOC": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tr.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['trloc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -4925,28 +4897,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AESTAT": ""
+                                            "AESTAT": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['aestat']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -7379,7 +7337,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AGOCCUR": "",
+                                            "AGOCCUR": null,
                                             "AGPRESP": "Not in dataset"
                                         }
                                     }
@@ -7397,7 +7355,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMOCCUR": "",
+                                            "CMOCCUR": null,
                                             "CMPRESP": "Not in dataset"
                                         }
                                     }
@@ -7415,7 +7373,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "ECOCCUR": "",
+                                            "ECOCCUR": null,
                                             "ECPRESP": "Not in dataset"
                                         }
                                     }
@@ -7441,7 +7399,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MLOCCUR": "",
+                                            "MLOCCUR": null,
                                             "MLPRESP": "Not in dataset"
                                         }
                                     }
@@ -7459,7 +7417,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "PROCCUR": "",
+                                            "PROCCUR": null,
                                             "PRPRESP": "Not in dataset"
                                         }
                                     }
@@ -7584,58 +7542,7 @@
                             "dataset_mismatch": false,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ag.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['agoccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmoccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "ec.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['ecoccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "ml.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['mloccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "pr.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['proccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -13640,28 +13547,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBTOX": ""
+                                            "LBTOX": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbtox']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -14979,28 +14872,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMREASND": ""
+                                            "CMREASND": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmreasnd']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -18325,28 +18204,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMMETHOD": ""
+                                            "CMMETHOD": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmmethod']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -18465,28 +18330,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMUSCHFL": ""
+                                            "CMUSCHFL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmuschfl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -18540,28 +18391,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBUSCHFL": ""
+                                            "LBUSCHFL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbuschfl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -18723,28 +18560,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBRSTIND": ""
+                                            "LBRSTIND": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbrstind']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -18863,28 +18686,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBRSTMOD": ""
+                                            "LBRSTMOD": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbrstmod']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19003,28 +18812,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBIMPLBL": ""
+                                            "LBIMPLBL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbimplbl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19143,28 +18938,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBDTHREL": ""
+                                            "LBDTHREL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbdthrel']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19283,28 +19064,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBEXCLFL": ""
+                                            "LBEXCLFL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbexclfl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19423,28 +19190,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBREASEX": ""
+                                            "LBREASEX": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbreasex']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19563,28 +19316,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "FETUSID": ""
+                                            "FETUSID": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['fetusid']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -19703,28 +19442,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "RPHASE": ""
+                                            "RPHASE": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['rphase']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -20725,28 +20450,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AGETXT": ""
+                                            "AGETXT": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['agetxt']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -20865,28 +20576,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "SPECIES": ""
+                                            "SPECIES": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['species']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -21005,28 +20702,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "STRAIN": ""
+                                            "STRAIN": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['strain']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -21145,28 +20828,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "SBSTRAIN": ""
+                                            "SBSTRAIN": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['sbstrain']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -21623,28 +21292,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBIMPLBL": ""
+                                            "LBIMPLBL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbimplbl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -21763,28 +21418,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AEREASND": ""
+                                            "AEREASND": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['aereasnd']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -21903,28 +21544,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "TRPORTOT": ""
+                                            "TRPORTOT": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tr.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['trportot']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -22043,28 +21670,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "TRDIR": ""
+                                            "TRDIR": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tr.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['trdir']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -22480,28 +22093,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AESTAT": ""
+                                            "AESTAT": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['aestat']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -23139,28 +22738,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMENTPT": ""
+                                            "CMENTPT": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmentpt']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -26578,7 +26163,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AEDIR": "",
+                                            "AEDIR": null,
                                             "AELOC": "Not in dataset"
                                         }
                                     }
@@ -26602,21 +26187,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['aedir']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -29009,7 +28580,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "DTHFL": "",
+                                            "DTHFL": null,
                                             "USUBJID": "CDISC002"
                                         }
                                     }
@@ -29025,21 +28596,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['dthfl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -29615,28 +29172,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "AEEVDTYP": ""
+                                            "AEEVDTYP": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['aeevdtyp']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -30540,7 +30083,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMOCCUR": "",
+                                            "CMOCCUR": null,
                                             "CMPRESP": "Y"
                                         }
                                     }
@@ -30558,7 +30101,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MHOCCUR": "",
+                                            "MHOCCUR": null,
                                             "MHPRESP": "Y"
                                         }
                                     }
@@ -30566,31 +30109,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmoccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "mh.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['mhoccur']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -41964,7 +41483,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMENRTPT": "",
+                                            "CMENRTPT": null,
                                             "CMENTPT": "Not in dataset"
                                         }
                                     }
@@ -41972,21 +41491,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmenrtpt']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -49011,7 +48516,7 @@
                                         "USUBJID": null,
                                         "value": {
                                             "MIDS": "Not in dataset",
-                                            "MIDSDTC": ""
+                                            "MIDSDTC": null
                                         }
                                     }
                                 ]
@@ -49042,21 +48547,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "vs.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['midsdtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -59964,28 +59455,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "FTDTHREL": ""
+                                            "FTDTHREL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ft.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['ftdthrel']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -62262,28 +61739,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBEXCLFL": ""
+                                            "LBEXCLFL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbexclfl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -62402,28 +61865,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBREASEX": ""
+                                            "LBREASEX": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbreasex']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -62794,28 +62243,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBNOMLBL": ""
+                                            "LBNOMLBL": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbnomlbl']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -62934,28 +62369,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "LBRESLOC": ""
+                                            "LBRESLOC": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['lbresloc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -84985,7 +84406,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CMDTC": ""
+                                            "CMDTC": null
                                         }
                                     }
                                 ]
@@ -85002,7 +84423,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CEDTC": ""
+                                            "CEDTC": null
                                         }
                                     }
                                 ]
@@ -85053,7 +84474,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "SEDTC": ""
+                                            "SEDTC": null
                                         }
                                     }
                                 ]
@@ -85070,7 +84491,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "SVDTC": ""
+                                            "SVDTC": null
                                         }
                                     }
                                 ]
@@ -85087,7 +84508,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "SMDTC": ""
+                                            "SMDTC": null
                                         }
                                     }
                                 ]
@@ -85104,78 +84525,14 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "DMDTC": ""
+                                            "DMDTC": null
                                         }
                                     }
                                 ]
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cmdtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "ce.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['cedtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "se.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['sedtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "sv.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['svdtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "sm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['smdtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                },
-                                "dm.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['dmdtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -117116,7 +116473,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CEENDTC": ""
+                                            "CEENDTC": null
                                         }
                                     }
                                 ]
@@ -117224,21 +116581,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ce.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['ceendtc']": {
-                                            "old_type": "str",
-                                            "new_type": "NoneType",
-                                            "old_value": "",
-                                            "new_value": null
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
