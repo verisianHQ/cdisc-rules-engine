@@ -35463,8 +35463,44 @@
                                 "domain": "VS",
                                 "execution_status": "success",
                                 "execution_message": "VSTPT and VSTPTNUM do not have a one-to-one relationship",
-                                "number_errors": 2,
+                                "number_errors": 6,
                                 "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTPT": "10MIN POSTDOSE",
+                                            "VSTPTNUM": null
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTPT": null,
+                                            "VSTPTNUM": null
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTPT": "PREDOSE",
+                                            "VSTPTNUM": null
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "VSTPT": "PREDOSE",
+                                            "VSTPTNUM": -1.0
+                                        }
+                                    },
                                     {
                                         "row": 5,
                                         "SEQ": 6,
@@ -35590,10 +35626,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -107324,7 +107357,7 @@
                                 "domain": "AE",
                                 "execution_status": "success",
                                 "execution_message": "AELLTCD and AELLT do not have a one-to-one relationship",
-                                "number_errors": 4,
+                                "number_errors": 6,
                                 "errors": [
                                     {
                                         "row": 2,
@@ -107360,6 +107393,24 @@
                                         "value": {
                                             "AELLT": null,
                                             "AELLTCD": 10019211.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 840,
+                                        "USUBJID": "CDISC-TEST-052",
+                                        "value": {
+                                            "AELLT": "Hypertension",
+                                            "AELLTCD": 10020772.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 843,
+                                        "USUBJID": "CDISC-TEST-052",
+                                        "value": {
+                                            "AELLT": "Hypertension",
+                                            "AELLTCD": null
                                         }
                                     }
                                 ]
@@ -107433,10 +107484,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
