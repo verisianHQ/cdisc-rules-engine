@@ -356,6 +356,8 @@ class SQLRuleProcessor:
                 target=target_variable,
                 standard=data_service.ig_specs.get("standard"),
                 standard_version=data_service.ig_specs.get("standard_version"),
+                grouping=operation.get("group"),
+                filter=operation.get("filter"),
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
@@ -506,3 +508,34 @@ class SQLRuleProcessor:
             if key not in rule:
                 return False
         return True
+
+    @staticmethod
+    def extract_operators_from_conditions(conditions) -> List[str]:
+        """
+        Extracts all unique operators from rule conditions.
+        Handles nested conditions recursively.
+        """
+        operators = set()
+
+        if not conditions:
+            return []
+        for key, condition_list in conditions.items():
+            if isinstance(condition_list, list):
+                for condition in condition_list:
+                    if isinstance(condition, dict):
+                        operator = condition.get("operator")
+                        if operator:
+                            operators.add(operator)
+                        # Handle nested conditions
+                        for nested_key in ["all", "any", "not"]:
+                            if nested_key in condition:
+                                nested_operators = SQLRuleProcessor.extract_operators_from_conditions(
+                                    {nested_key: condition[nested_key]}
+                                )
+                                operators.update(nested_operators)
+                    elif hasattr(condition, "get_conditions"):
+                        # Recursive call for ConditionInterface objects
+                        nested_operators = SQLRuleProcessor.extract_operators_from_conditions(condition)
+                        operators.update(nested_operators)
+
+        return sorted(list(operators))
