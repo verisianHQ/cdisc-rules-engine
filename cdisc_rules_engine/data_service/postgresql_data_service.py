@@ -166,7 +166,6 @@ class PostgresQLDataService:
             is_child = bool(merge_spec.get("child"))
 
             # TODO: This only handles simple joins for now
-            # Priority order: Child -> Dataset Type -> Relationship -> Join
             if right == "relrec":
                 left_id = self._do_relrec_merge(
                     original=left_id,
