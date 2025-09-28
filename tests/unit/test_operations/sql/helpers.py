@@ -31,14 +31,16 @@ def setup_sql_operations(
     data_service = PostgresQLDataService.instance()
     PostgresQLDataService.add_test_dataset(data_service, table_name=TEST_TABLE_NAME, column_data=column_data)
 
-    params = SqlOperationParams(
-        domain=TEST_TABLE_NAME,
-        target=target,
-        # TODO: When relevant
-        standard="",
-        standard_version="",
-        **extra_config,
-    )
+    # Set default values, but allow override from extra_config
+    default_params = {
+        "domain": TEST_TABLE_NAME,
+        "target": target,
+        "standard": "",
+        "standard_version": "",
+    }
+    default_params.update(extra_config)
+
+    params = SqlOperationParams(**default_params)
     return SqlOperationsFactory.get_service(operation, params, data_service)
 
 
