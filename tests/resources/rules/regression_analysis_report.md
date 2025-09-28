@@ -20,7 +20,7 @@ No missing operator errors found!
 ## Missing Operations (7 operations, 42 total failures across 8 rule occurrences)
 
 1.  **variable_count**: 20 failures across 2 rules
-2.  **get_column_order_from_dataset**: 6 failures across 1 rules
+2.  **get_model_filtered_variables**: 6 failures across 1 rules
 3.  **get_model_column_order**: 5 failures across 1 rules
 4.  **extract_metadata**: 4 failures across 1 rules
 5.  **get_parent_model_column_order**: 4 failures across 1 rules
