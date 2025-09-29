@@ -28,8 +28,6 @@ class IsOrderedSetOperator(BaseSqlOperator):
                 if not value_is_literal
                 else self._constant_sql(value)
             )
-
-            name_column = self._column_sql(name)
             value_column = self._column_sql(value) if not value_is_literal else self._constant_sql(value)
 
             dataset_is_ordered = f"""
@@ -48,8 +46,6 @@ class IsOrderedSetOperator(BaseSqlOperator):
                 return f"""
                 CASE
                     WHEN {self._is_empty_sql(name)} THEN FALSE
-                    WHEN {name_column} IS NULL THEN TRUE
-                    WHEN {value_column} IS NULL THEN FALSE
                     ELSE NOT ({dataset_is_ordered})
                 END
                 """
@@ -57,8 +53,6 @@ class IsOrderedSetOperator(BaseSqlOperator):
                 return f"""
                 CASE
                     WHEN {self._is_empty_sql(name)} THEN FALSE
-                    WHEN {name_column} IS NULL THEN FALSE
-                    WHEN {value_column} IS NULL THEN FALSE
                     ELSE {dataset_is_ordered}
                 END
                 """
