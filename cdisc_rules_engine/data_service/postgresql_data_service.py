@@ -165,8 +165,10 @@ class PostgresQLDataService:
             is_relationship = merge_spec.get("relationship_columns", None) is not None
             is_child = bool(merge_spec.get("child"))
 
+            if is_child:
+                raise NotImplementedError("Child merges are not supported yet in SQL implementation")
             # TODO: This only handles simple joins for now
-            if right == "relrec":
+            elif right == "relrec":
                 left_id = self._do_relrec_merge(
                     original=left_id,
                     relrec_dataset=right,
@@ -174,7 +176,7 @@ class PostgresQLDataService:
                     merge_spec=merge_spec,
                     rule=rule,
                 )
-            elif right.startswith("supp") and not is_child:
+            elif right.startswith("supp"):
                 left_id = self._do_supp_merge(
                     original=left_id, target=right, dataset_metadata=dataset_metadata, merge_spec=merge_spec, rule=rule
                 )
@@ -282,50 +284,25 @@ class PostgresQLDataService:
 
         This handles relationship datasets like RELSUB, CO, SQ, or any dataset with relationship_columns.
         """
-        if not relationship_dataset:
-            raise ValueError("Relationship dataset name is required but was None")
         # Find the relationship dataset
         relationship_data = next(
             (
                 dataset
                 for dataset in self.datasets
-                if (dataset.name and dataset.name.upper() == relationship_dataset.upper())
-                or (dataset.domain and dataset.domain.upper() == relationship_dataset.upper())
+                if dataset.name.upper() == relationship_dataset.upper()
+                or dataset.domain.upper() == relationship_dataset.upper()
             ),
             None,
         )
         if not relationship_data:
             raise ValueError(f"Tried to relationship merge with {relationship_dataset}, but could not find dataset.")
 
-        # Get relationship columns configuration
         relationship_columns = merge_spec.get("relationship_columns", {})
-        if not relationship_columns:
-            raise ValueError(
-                f"Relationship merge requires relationship_columns specification for {relationship_dataset}"
-            )
-
-        # Validate required relationship column keys
-        required_keys = ["column_with_names", "column_with_values"]
-        missing_keys = [key for key in required_keys if not relationship_columns.get(key)]
-        if missing_keys:
-            raise ValueError(
-                f"Relationship merge missing required keys {missing_keys} "
-                f"in relationship_columns for {relationship_dataset}"
-            )
-
-        # Get table schemas with validation
-        original_schema = self.pgi.schema.get_table(original)
-        if not original_schema:
-            raise ValueError(f"Relationship merge: Original table '{original}' not found in schema")
-
-        relationship_schema = self.pgi.schema.get_table(relationship_data.name)
-        if not relationship_schema:
-            raise ValueError(f"Relationship merge: Relationship table '{relationship_data.name}' not found in schema")
 
         return SqlRelationshipMerge.perform_join(
             pgi=self.pgi,
-            original=original_schema,
-            relationship_dataset=relationship_schema,
+            original=self.pgi.schema.get_table(original),
+            relationship_dataset=self.pgi.schema.get_table(relationship_data.name),
             domain=relationship_dataset.upper(),
             relationship_columns=relationship_columns,
         ).name

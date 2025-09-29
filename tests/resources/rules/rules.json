@@ -56816,7 +56816,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -56829,7 +56829,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -56842,7 +56842,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -56991,7 +56991,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57004,7 +57004,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57017,7 +57017,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57054,7 +57054,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             }
@@ -57158,7 +57158,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57171,7 +57171,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57184,7 +57184,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             },
@@ -57213,7 +57213,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "'NoneType' object has no attribute 'get_column_hash'"
+                                        "message": "Child merges are not supported yet in SQL implementation"
                                     }
                                 ]
                             }
@@ -57297,7 +57297,7 @@
                                             "old_value": "column not found in data"
                                         },
                                         "root[0]['message']": {
-                                            "new_value": "'nonetype' object has no attribute 'get_column_hash'",
+                                            "new_value": "child merges are not supported yet in sql implementation",
                                             "old_value": "idvar"
                                         }
                                     }
@@ -92051,7 +92051,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
+                                        "message": "'NoneType' object has no attribute 'upper'"
                                     }
                                 ]
                             },
@@ -92167,7 +92167,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
+                                        "message": "'NoneType' object has no attribute 'upper'"
                                     }
                                 ]
                             },
@@ -92234,7 +92234,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Relationship merge failed for suppdm with dm: Column not found in data: IDVAR"
+                                        "message": "'NoneType' object has no attribute 'upper'"
                                     }
                                 ]
                             },
