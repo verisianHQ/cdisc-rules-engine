@@ -2,7 +2,6 @@ import pytest
 
 from .helpers import create_sql_operators
 
-# Test data for shares_at_least_one_element_with
 SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
     (
         {"target": ["A", "B", "C", "D"], "comparator": ["A", "Y", "Z", "W"]},
@@ -36,7 +35,6 @@ SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
     ),
 ]
 
-# Test data for shares_exactly_one_element_with
 SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
     (
         {"target": ["A", "B", "C", "D"], "comparator": ["A", "Y", "Z", "W"]},
@@ -65,7 +63,6 @@ SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
     ),
 ]
 
-# Test data for shares_no_elements_with
 SHARES_NO_ELEMENTS_TEST_DATA = [
     (
         {"target": ["A", "B", "C", "D"], "comparator": ["X", "Y", "Z", "W"]},
@@ -90,6 +87,31 @@ SHARES_NO_ELEMENTS_TEST_DATA = [
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$date"},
+        True,
+    ),
+    (
+        {"target_col": ["X", "Y", "Z"]},
+        {"target": "target_col", "comparator": "$constant"},
+        True,
+    ),
+    (
+        {"target_col": ["A", "Y", "Z"]},
+        {"target": "target_col", "comparator": "$constant"},
+        False,
+    ),
+    (
+        {"comparator_col": ["X", "Y", "Z"]},
+        {"target": "$constant", "comparator": "comparator_col"},
+        True,
+    ),
+    (
+        {"dummy": ["value"]},
+        {"target": "$constant", "comparator": "$date"},
+        True,
+    ),
+    (
+        {"dummy": ["value"]},
+        {"target": "$list", "comparator": "$date"},
         True,
     ),
 ]
@@ -125,7 +147,6 @@ def test_sql_shares_no_elements_with(data, params, expected_result):
     assert result == expected_result
 
 
-# Edge cases for all operators
 SHARES_EDGE_CASES = [
     (
         {"target": ["A"], "comparator": ["A"]},
