@@ -12,31 +12,38 @@ class IsOrderedSetOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         name = self.replace_prefix(other_value.get("target"))
-        name_column = self._column_sql(name)
         value = other_value.get("comparator")
         value_is_literal = other_value.get("value_is_literal", False)
         if not value_is_literal:
             value = self.replace_prefix(value)
-        value_column = self._column_sql(value) if not value_is_literal else self._constant_sql(value)
         if self.invert:
             operator_name = f"{name}_is_not_ordered_set_within_{value}"
         else:
             operator_name = f"{name}_is_ordered_set_within_{value}"
 
         def sql():
-            table_ref = self._table_sql()
+            name_hash = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, name)
+            value_hash = (
+                self.sql_data_service.pgi.schema.get_column_hash(self.table_id, value)
+                if not value_is_literal
+                else self._constant_sql(value)
+            )
+
+            name_column = self._column_sql(name)
+            value_column = self._column_sql(value) if not value_is_literal else self._constant_sql(value)
+
             dataset_is_ordered = f"""
             NOT EXISTS (
                 SELECT 1
-                FROM {table_ref} t1
-                INNER JOIN {table_ref} t2 ON t1.{value_column} = t2.{value_column}
-                WHERE t1.{name_column} IS NOT NULL
-                  AND t2.{name_column} IS NOT NULL
-                  AND t1.ctid < t2.ctid
-                  AND t1.{name_column} > t2.{name_column}
+                FROM {self.table_id} t1
+                INNER JOIN {self.table_id} t2 ON t1.{value_hash} = t2.{value_hash}
+                WHERE t1.{value_hash} = {value_column}
+                AND t1.{name_hash} IS NOT NULL
+                AND t2.{name_hash} IS NOT NULL
+                AND t1.ctid < t2.ctid
+                AND t1.{name_hash} > t2.{name_hash}
             )
             """
-
             if self.invert:
                 return f"""
                 CASE

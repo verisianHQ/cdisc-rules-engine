@@ -28,7 +28,7 @@ is_ordered_set_test_data = [
         "target",
         "groupby",
         False,
-        [False, False, False, False],
+        [False, False, True, True],
     ),
     (
         {"target": ["A", "B", "C"], "groupby": ["X", "Y", "Z"]},
@@ -56,7 +56,7 @@ is_ordered_set_test_data = [
         "target",
         "groupby",
         False,
-        [False, False, False, False, False, False],
+        [True, True, False, False, True, True],
     ),
 ]
 
@@ -87,7 +87,7 @@ is_not_ordered_set_test_data = [
         "target",
         "groupby",
         False,
-        [True, True, True, True],
+        [True, True, False, False],
     ),
     (
         {"target": ["A", "B", "C"], "groupby": ["X", "Y", "Z"]},
