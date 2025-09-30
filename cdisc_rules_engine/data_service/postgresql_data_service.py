@@ -160,14 +160,12 @@ class PostgresQLDataService:
 
         for merge_spec in datasets:
             right: str = merge_spec.get("domain_name").lower()
-            # TODO: The spec -> rule conversion doesn't maintain the `is_relationship` boolean
-            # so we have to infer it here for now.
-            is_relationship = merge_spec.get("relationship_columns", None) is not None
             is_child = bool(merge_spec.get("child"))
+
+            is_relationship_dataset = self._is_relationship_dataset(right)
 
             if is_child:
                 raise NotImplementedError("Child merges are not supported yet in SQL implementation")
-            # TODO: This only handles simple joins for now
             elif right == "relrec":
                 left_id = self._do_relrec_merge(
                     original=left_id,
@@ -180,7 +178,7 @@ class PostgresQLDataService:
                 left_id = self._do_supp_merge(
                     original=left_id, target=right, dataset_metadata=dataset_metadata, merge_spec=merge_spec, rule=rule
                 )
-            elif right in ("relsub", "co", "sq") or is_relationship:
+            elif is_relationship_dataset:
                 left_id = self._do_relationship_merge(
                     original=left_id,
                     relationship_dataset=right,
@@ -192,6 +190,20 @@ class PostgresQLDataService:
                 left_id = self._do_join_merge(left=left_id, right=right, merge_spec=merge_spec, rule=rule)
 
         return left_id
+
+    def _is_relationship_dataset(self, dataset_name: str) -> bool:
+        """
+        Check if a dataset is a relationship dataset.
+        """
+        dataset_name_upper = dataset_name.upper()
+        if dataset_name_upper in ["RELREC", "RELSUB", "CO"]:
+            return True
+        elif dataset_name_upper.startswith("SUPP"):
+            return True
+        elif dataset_name_upper.startswith("SQ"):
+            return True
+        else:
+            return False
 
     def _do_join_merge(self, left: str, right: str, merge_spec: dict, rule: dict) -> str:
         """
@@ -254,7 +266,7 @@ class PostgresQLDataService:
             (
                 dataset
                 for dataset in self.datasets
-                if dataset.name.upper() == "RELREC" or dataset.domain.upper() == "RELREC"
+                if dataset.name.upper() == "RELREC" or (dataset.domain and dataset.domain.upper() == "RELREC")
             ),
             None,
         )
@@ -290,7 +302,7 @@ class PostgresQLDataService:
                 dataset
                 for dataset in self.datasets
                 if dataset.name.upper() == relationship_dataset.upper()
-                or dataset.domain.upper() == relationship_dataset.upper()
+                or (dataset.domain and dataset.domain.upper() == relationship_dataset.upper())
             ),
             None,
         )

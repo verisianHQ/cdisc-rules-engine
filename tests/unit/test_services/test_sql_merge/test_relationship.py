@@ -212,7 +212,7 @@ class TestSqlRelationshipMerge:
             )
 
     def test_validation_missing_relationship_columns(self):
-        """Test validation when relationship columns don't exist."""
+        """Test that missing relationship columns are handled gracefully with simple merge."""
         data_service = PostgresQLDataService.instance()
         original_schema = PostgresQLDataService.add_test_dataset(
             data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"]
@@ -221,16 +221,19 @@ class TestSqlRelationshipMerge:
             data_service, "relationship", SIMPLE_RELATIONSHIP_DATA["relationship"]
         )
 
-        # Remove required relationship column
+        # Remove relationship column - should trigger simple merge path
         relationship_schema._columns.pop("idvar", None)
 
         relationship_columns = {"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"}
 
-        with pytest.raises(ValueError, match=r"Right \(relationship\) schema missing column"):
-            SqlRelationshipMerge.perform_join(
-                pgi=data_service.pgi,
-                original=original_schema,
-                relationship_dataset=relationship_schema,
-                domain="RELSUB",
-                relationship_columns=relationship_columns,
-            )
+        # Should not raise - missing columns trigger simple merge
+        result = SqlRelationshipMerge.perform_join(
+            pgi=data_service.pgi,
+            original=original_schema,
+            relationship_dataset=relationship_schema,
+            domain="RELSUB",
+            relationship_columns=relationship_columns,
+        )
+
+        # Verify the simple merge path was used (table name contains "SIMPLE")
+        assert "SIMPLE" in result.name.upper()
