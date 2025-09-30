@@ -84,13 +84,7 @@ class SqlRelationshipMerge:
         if not column_with_values or str(column_with_values).strip() == "":
             raise ValueError(f"RELATIONSHIP MERGE: column_with_values is required but was: {column_with_values}")
 
-        # Note: We don't validate that IDVAR/IDVARVAL columns exist in the relationship dataset
-        # because _has_empty_relationship_columns handles missing columns gracefully.
-        # If columns are missing or empty, the simple merge path will be used.
-        # This matches Python's behavior where accessing missing columns would fail at runtime,
-        # but empty columns are handled by the check at data_processor.py lines 137-141.
-
-        # Check for DOMAIN/RDOMAIN compatibility - allow more flexible combinations
+        # Column existence validated in _has_empty_relationship_columns; missing columns trigger simple merge
         if relationship_dataset.has_column("RDOMAIN") and not (
             original.has_column("DOMAIN") or original.has_column("RDOMAIN")
         ):
@@ -105,12 +99,10 @@ class SqlRelationshipMerge:
         column_with_names: str,
         column_with_values: str,
     ) -> bool:
-        """Check if all relationship columns are empty (like SUPP logic)."""
-        # Add null safety before calling get_column_hash
+        """Check if all relationship columns are empty."""
         if not column_with_names or not column_with_values:
             return True
 
-        # Validate columns exist before getting their hashes
         if not relationship_dataset.has_column(column_with_names) or not relationship_dataset.has_column(
             column_with_values
         ):
@@ -149,17 +141,15 @@ class SqlRelationshipMerge:
         if pgi.schema.get_table(name) is not None:
             return pgi.schema.get_table(name)
 
-        # Build schema with domain suffixes
         schema = SqlRelationshipMerge._build_merged_schema(original, relationship_dataset, domain, name)
         pgi.create_table(schema)
 
-        # Simple outer join on STUDYID, USUBJID
         left_cols = [col.hash for col_name, col in original.get_columns() if col_name != "id"]
         right_cols = []
         target_cols = left_cols.copy()
 
         for col_name, col in relationship_dataset.get_columns():
-            if col_name in ["id", "STUDYID", "USUBJID"]:  # Skip join keys and id
+            if col_name in ["id", "STUDYID", "USUBJID"]:
                 continue
 
             suffixed_name = f"{col_name}.{domain}"
@@ -189,27 +179,23 @@ class SqlRelationshipMerge:
         domain: str,
         name: str,
     ) -> SqlTableSchema:
-        """Build merged schema following join.py patterns with domain suffixes."""
+        """Build merged schema with domain suffixes."""
         schema = SqlTableSchema.from_join(name)
 
-        # Add all original columns first (like join.py)
         for col_name, column in original.get_columns():
             if col_name == "id":
                 continue
             schema.add_column(column)
 
-        # Add relationship dataset columns with domain suffix (like join.py)
         for col_name, column in relationship_dataset.get_columns():
-            if col_name in ["id", "STUDYID", "USUBJID"]:  # Skip join keys and id
+            if col_name in ["id", "STUDYID", "USUBJID"]:
                 continue
 
-            # Add suffixed column (e.g., POOLID.RELSUB)
             suffixed_name = f"{col_name}.{domain}"
             if not schema.has_column(suffixed_name):
                 new_col_schema = SqlColumnSchema.generated(column=suffixed_name, type=column.type)
                 schema.add_column(new_col_schema)
 
-                # Add alias for unsuffixed name if not already present (like join.py)
                 if not schema.has_column(col_name):
                     schema.add_column(SqlColumnSchema.alias(col_name, new_col_schema))
 
@@ -225,26 +211,17 @@ class SqlRelationshipMerge:
         column_with_names: str,
         column_with_values: str,
     ):
-        """
-        Execute the relationship merge following Python's three-step process:
-        1. Filter by match keys (USUBJID) existence in relationship dataset
-        2. Filter by RDOMAIN and IDVAR/IDVARVAL columns
-        3. Perform OUTER join with first IDVAR value as additional join key
-        """
-        # Build the filtered left subquery with all three filter steps
+        """Execute relationship merge: filter original dataset, then outer join with first IDVAR as join key."""
         filtered_left_query = SqlRelationshipMerge._build_filtered_left_subquery(
             pgi, original, relationship_dataset, column_with_names, column_with_values
         )
 
-        # Get first IDVAR value for dynamic join (Step 3 from Python)
         first_idvar = SqlRelationshipMerge._get_first_idvar_value(pgi, relationship_dataset, column_with_names)
 
-        # Build select clauses
         left_columns, right_columns, target_columns = SqlRelationshipMerge._build_select_clauses(
             original, relationship_dataset, schema, domain
         )
 
-        # Build join conditions
         values_hash = relationship_dataset.get_column_hash(column_with_values)
         left_studyid = original.get_column_hash("STUDYID")
         right_studyid = relationship_dataset.get_column_hash("STUDYID")
@@ -256,12 +233,10 @@ class SqlRelationshipMerge:
             f"l.{left_usubjid} = r.{right_usubjid}",
         ]
 
-        # Add dynamic join column if first IDVAR exists in original (Python logic)
         if first_idvar and original.has_column(first_idvar):
             col_hash = original.get_column_hash(first_idvar)
             join_conditions.append(f"l.{col_hash}::text = r.{values_hash}::text")
 
-        # Build and execute the query
         query = f"""
             INSERT INTO {schema.hash} ({', '.join(target_columns)})
             SELECT {', '.join(left_columns + right_columns)}
@@ -279,27 +254,17 @@ class SqlRelationshipMerge:
         column_with_names: str,
         column_with_values: str,
     ) -> str:
-        """
-        Build filtered left subquery matching Python's three-step filtering:
-        1. Filter by match keys existence in relationship dataset
-        2. Filter by RDOMAIN (DOMAIN in left matches RDOMAIN values in right)
-        3. Filter by IDVAR/IDVARVAL columns (only columns mentioned in IDVAR)
-        """
+        """Build filtered left subquery: match keys, RDOMAIN, and IDVAR/IDVARVAL filtering."""
         filters = []
 
-        # STEP 1: Match key filter (filter_dataset_by_match_keys_of_other_dataset)
-        # Keep only rows where USUBJID exists in relationship dataset
         match_key_filter = SqlRelationshipMerge._build_match_key_filter(original, relationship_dataset)
         if match_key_filter:
             filters.append(match_key_filter)
 
-        # STEP 2a: RDOMAIN filter (filter_parent_dataset_by_supp_dataset_rdomain)
         rdomain_filter = SqlRelationshipMerge._build_rdomain_filter(original, relationship_dataset)
         if rdomain_filter:
             filters.append(rdomain_filter)
 
-        # STEP 2b: IDVAR/IDVARVAL filter (filter_dataset_by_nested_columns_of_other_dataset)
-        # Only filter columns that are mentioned in IDVAR column
         idvar_filter = SqlRelationshipMerge._build_idvar_filter(
             pgi, original, relationship_dataset, column_with_names, column_with_values
         )
@@ -314,16 +279,7 @@ class SqlRelationshipMerge:
         original: SqlTableSchema,
         relationship_dataset: SqlTableSchema,
     ) -> str:
-        """
-        STEP 1: Filter left dataset to only rows where match keys exist in right dataset.
-        Python equivalent: filter_dataset_by_match_keys_of_other_dataset()
-
-        Note: In Python, if match_keys are empty, this filter returns all rows (no filtering).
-        For relationship datasets, match_keys are typically empty, so we return empty filter.
-        """
-        # For relationship merges, match_keys are typically empty
-        # When match_keys are empty in Python, filter_dataset_by_match_keys_of_other_dataset
-        # does set_index([]) which returns all rows - so we skip this filter
+        """Match keys typically empty for relationship merges, so return empty filter."""
         return ""
 
     @staticmethod
@@ -331,11 +287,7 @@ class SqlRelationshipMerge:
         original: SqlTableSchema,
         relationship_dataset: SqlTableSchema,
     ) -> str:
-        """
-        STEP 2a: Filter by RDOMAIN.
-        Python equivalent: filter_parent_dataset_by_supp_dataset_rdomain()
-        Keep only rows where DOMAIN matches RDOMAIN values in relationship dataset.
-        """
+        """Filter by RDOMAIN: keep only rows where DOMAIN matches RDOMAIN values."""
         if not original.has_column("DOMAIN") or not relationship_dataset.has_column("RDOMAIN"):
             return ""
 
@@ -357,17 +309,8 @@ class SqlRelationshipMerge:
         column_with_values: str,
     ) -> str:
         """
-        STEP 2b: Filter by IDVAR/IDVARVAL columns.
-        Python equivalent: filter_dataset_by_nested_columns_of_other_dataset()
-
-        Only filters columns that are mentioned in the IDVAR column.
-        For each unique IDVAR value (e.g., "AESEQ", "AESEV"), filter where that
-        column's values match the corresponding IDVARVAL values.
-
-        Example:
-            IDVAR = ["AESEQ", "AESEQ", "AESEV"]
-            IDVARVAL = ["1", "2", "MILD"]
-            Result: original.AESEQ IN ('1', '2') AND original.AESEV IN ('MILD')
+        Filter by IDVAR/IDVARVAL: only filter columns mentioned in IDVAR column.
+        Example: IDVAR=["AESEQ","AESEV"], IDVARVAL=["1","MILD"] → AESEQ IN ('1') AND AESEV IN ('MILD')
         """
         if not relationship_dataset.has_column(column_with_names) or not relationship_dataset.has_column(
             column_with_values
@@ -377,7 +320,6 @@ class SqlRelationshipMerge:
         names_hash = relationship_dataset.get_column_hash(column_with_names)
         values_hash = relationship_dataset.get_column_hash(column_with_values)
 
-        # Get distinct IDVAR values (column names to filter on)
         query = f"""
             SELECT DISTINCT {names_hash} as idvar_col
             FROM {relationship_dataset.hash}
@@ -389,7 +331,6 @@ class SqlRelationshipMerge:
         if not idvar_columns:
             return ""
 
-        # Build filter for each column mentioned in IDVAR
         column_filters = []
         for row in idvar_columns:
             idvar_col = row.get("idvar_col")
@@ -398,8 +339,6 @@ class SqlRelationshipMerge:
 
             col_hash = original.get_column_hash(idvar_col)
 
-            # Get all IDVARVAL values for this IDVAR column
-            # Filter: original.column IN (SELECT IDVARVAL WHERE IDVAR = 'column')
             column_filter = f"""
                 {original.hash}.{col_hash}::text IN (
                     SELECT r.{values_hash}::text
@@ -410,7 +349,6 @@ class SqlRelationshipMerge:
             """
             column_filters.append(column_filter)
 
-        # Combine with AND (matching Python's behavior)
         if column_filters:
             return f"({' AND '.join(column_filters)})"
 
@@ -422,10 +360,7 @@ class SqlRelationshipMerge:
         relationship_dataset: SqlTableSchema,
         column_with_names: str,
     ) -> str:
-        """
-        Get the first non-empty IDVAR value.
-        Python equivalent: right_dataset[column_with_names][0]
-        """
+        """Get first non-empty IDVAR value for dynamic join."""
         if not relationship_dataset.has_column(column_with_names):
             return None
 
@@ -448,21 +383,19 @@ class SqlRelationshipMerge:
 
     @staticmethod
     def _build_select_clauses(original, relationship_dataset, schema, domain):
-        """Build select clauses for both tables following join.py patterns."""
+        """Build select clauses for both tables with domain suffixes."""
         left_columns = []
         right_columns = []
         target_columns = []
 
-        # Original table columns
         for col_name, col in original.get_columns():
             if col_name == "id":
                 continue
             left_columns.append(f"l.{col.hash}")
             target_columns.append(col.hash)
 
-        # Right table columns with domain suffix
         for col_name, col in relationship_dataset.get_columns():
-            if col_name in ["id", "STUDYID", "USUBJID"]:  # Skip join keys and id
+            if col_name in ["id", "STUDYID", "USUBJID"]:
                 continue
 
             suffixed_name = f"{col_name}.{domain}"
