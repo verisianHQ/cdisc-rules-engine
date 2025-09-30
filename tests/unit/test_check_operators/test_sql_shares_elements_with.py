@@ -52,6 +52,11 @@ SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
         True,
     ),
     (
+        {"target": ["A", "B", "C", "D"], "comparator": ["A", "Y", "C", "W"]},
+        {"target": "target", "comparator": "comparator"},
+        False,
+    ),
+    (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$constant"},
         True,
@@ -59,7 +64,7 @@ SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$list"},
-        True,
+        False,
     ),
 ]
 
@@ -170,6 +175,12 @@ SHARES_EDGE_CASES = [
         {"target": ["1", "2", "3"], "comparator": ["1", "4", "5"]},
         True,
         True,
+        False,
+    ),
+    (
+        {"target": ["A", "B", "C"], "comparator": ["A", "B", "X"]},
+        True,
+        False,
         False,
     ),
 ]

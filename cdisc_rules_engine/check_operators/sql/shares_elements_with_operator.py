@@ -67,6 +67,8 @@ class SharesElementsWithOperator(BaseSqlOperator):
         # Determine value types for routing
         target_is_collection = self._is_collection_variable(target)
         comparator_is_collection = self._is_collection_variable(comparator)
+        target_is_column = isinstance(target, str) and not target_is_collection
+        comparator_is_column = isinstance(comparator, str) and not comparator_is_collection
 
         # Handle collection vs collection
         if target_is_collection and comparator_is_collection:
@@ -82,6 +84,12 @@ class SharesElementsWithOperator(BaseSqlOperator):
             target_sql = self._sql(target)
             target_empty_sql = self._is_empty_sql(target, alias=False)
             return self._build_collection_vs_value_query(comparator, target_sql, target_empty_sql, False)
+
+        # Handle column vs column comparison (both are column names)
+        elif target_is_column and comparator_is_column:
+            target_sql = self._sql(target)
+            comparator_sql = self._sql(comparator)
+            return self._build_column_vs_column_query(target, target_sql, comparator, comparator_sql)
 
         # Handle simple value vs simple value
         else:
@@ -103,7 +111,18 @@ class SharesElementsWithOperator(BaseSqlOperator):
                 AND {target_sql} = {comparator_sql}
             ) as result
             """
-        else:  # at_least_one or exactly_one
+        elif self.operation_type == "at_least_one":
+            return f"""
+            SELECT EXISTS (
+                SELECT 1 FROM {self._table_sql()} AS co
+                WHERE NOT ({target_empty_sql})
+                AND NOT ({comparator_empty_sql})
+                AND {target_sql} = {comparator_sql}
+            ) as result
+            """
+        elif self.operation_type == "exactly_one":
+            # For simple values, exactly_one is the same as at_least_one
+            # since there can only be 0 or 1 shared element when comparing single values
             return f"""
             SELECT EXISTS (
                 SELECT 1 FROM {self._table_sql()} AS co
@@ -140,13 +159,64 @@ class SharesElementsWithOperator(BaseSqlOperator):
             """
         elif self.operation_type == "exactly_one":
             return f"""
-            SELECT EXISTS (
-                SELECT 1 FROM {target_collection_sql} AS target_values(value)
+            SELECT (
+                SELECT COUNT(DISTINCT target_values.value)
+                FROM {target_collection_sql} AS target_values(value)
                 JOIN {comparator_collection_sql} AS comparator_values(value)
                 ON target_values.value = comparator_values.value
                 WHERE target_values.value IS NOT NULL AND target_values.value != ''
                 AND comparator_values.value IS NOT NULL AND comparator_values.value != ''
+            ) = 1 as result
+            """
+
+    def _build_column_vs_column_query(self, target, target_sql, comparator, comparator_sql):
+        """Build query for column vs column comparison.
+
+        When comparing two columns, we need to check how many distinct values
+        appear in both columns across all rows.
+        """
+        target_empty_sql = self._is_empty_sql(target, alias=False)
+        comparator_empty_sql = self._is_empty_sql(comparator, alias=False)
+
+        if self.operation_type == "no_elements":
+            return f"""
+            SELECT NOT EXISTS (
+                SELECT 1 FROM {self._table_sql()} AS co
+                WHERE NOT ({target_empty_sql})
+                AND NOT ({comparator_empty_sql})
+                AND {target_sql} IN (
+                    SELECT DISTINCT {comparator_sql}
+                    FROM {self._table_sql()} AS co2
+                    WHERE NOT ({comparator_empty_sql.replace('co.', 'co2.')})
+                )
             ) as result
+            """
+        elif self.operation_type == "at_least_one":
+            return f"""
+            SELECT EXISTS (
+                SELECT 1 FROM {self._table_sql()} AS co
+                WHERE NOT ({target_empty_sql})
+                AND NOT ({comparator_empty_sql})
+                AND {target_sql} IN (
+                    SELECT DISTINCT {comparator_sql}
+                    FROM {self._table_sql()} AS co2
+                    WHERE NOT ({comparator_empty_sql.replace('co.', 'co2.')})
+                )
+            ) as result
+            """
+        elif self.operation_type == "exactly_one":
+            return f"""
+            SELECT (
+                SELECT COUNT(DISTINCT {target_sql})
+                FROM {self._table_sql()} AS co
+                WHERE NOT ({target_empty_sql})
+                AND NOT ({comparator_empty_sql})
+                AND {target_sql} IN (
+                    SELECT DISTINCT {comparator_sql}
+                    FROM {self._table_sql()} AS co2
+                    WHERE NOT ({comparator_empty_sql.replace('co.', 'co2.')})
+                )
+            ) = 1 as result
             """
 
     def _build_collection_vs_value_query(self, collection_var, value_sql, value_empty_sql, target_is_collection):
@@ -179,13 +249,14 @@ class SharesElementsWithOperator(BaseSqlOperator):
             """
         elif self.operation_type == "exactly_one":
             return f"""
-            SELECT EXISTS (
-                SELECT 1 FROM {self._table_sql()} AS co
+            SELECT (
+                SELECT COUNT(*)
+                FROM {self._table_sql()} AS co
                 WHERE NOT ({value_empty_sql})
                 AND EXISTS (
                     SELECT 1 FROM {collection_sql} AS collection_values(value)
                     WHERE collection_values.value = {value_sql}
                     AND collection_values.value IS NOT NULL AND collection_values.value != ''
                 )
-            ) as result
+            ) = 1 as result
             """
