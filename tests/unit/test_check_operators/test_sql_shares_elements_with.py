@@ -33,6 +33,11 @@ SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
         {"target": "$list", "comparator": "target_col"},
         True,
     ),
+    (
+        {"dummy": ["value"]},
+        {"target": "$list", "comparator": "$list"},
+        True,
+    ),
 ]
 
 SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
@@ -118,6 +123,11 @@ SHARES_NO_ELEMENTS_TEST_DATA = [
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$date"},
         True,
+    ),
+    (
+        {"dummy": ["value"]},
+        {"target": "$list", "comparator": "$list"},
+        False,
     ),
 ]
 
