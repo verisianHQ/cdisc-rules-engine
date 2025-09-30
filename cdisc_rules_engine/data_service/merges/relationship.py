@@ -13,7 +13,6 @@ class SqlRelationshipMerge:
         relationship_columns: dict,
     ) -> SqlTableSchema:
         """
-        Perform relationship merge following Python's three-step process:
         1. Filter by match keys of relationship dataset
         2. Filter by RDOMAIN and relationship columns (SUPP-style filtering)
         3. Merge with full outer join and domain suffixes
@@ -48,13 +47,10 @@ class SqlRelationshipMerge:
             return schema
 
         except ValueError as e:
-            # Re-raise validation errors with context
             raise ValueError(
                 f"Relationship merge failed for {original.name} with {relationship_dataset.name}: {str(e)}"
             )
         except Exception as e:
-            # For any other unexpected errors, return the original dataset to prevent complete failure
-            # This matches the behavior in other merge implementations
             raise RuntimeError(f"Relationship merge encountered unexpected error for {original.name}: {str(e)}")
 
     @staticmethod
@@ -69,15 +65,12 @@ class SqlRelationshipMerge:
             if not original.has_column(col):
                 raise ValueError(f"RELATIONSHIP MERGE: Original schema missing required column: {col}")
 
-        # Validate relationship_columns parameter
         if not relationship_columns:
             raise ValueError("RELATIONSHIP MERGE: relationship_columns parameter is required but was None or empty")
 
-        # Check relationship columns exist with defensive null checks
         column_with_names = relationship_columns.get("column_with_names")
         column_with_values = relationship_columns.get("column_with_values")
 
-        # Add explicit null/empty checks before using column names
         if not column_with_names or str(column_with_names).strip() == "":
             raise ValueError(f"RELATIONSHIP MERGE: column_with_names is required but was: {column_with_names}")
 
