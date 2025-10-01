@@ -1,7 +1,3 @@
-from cdisc_rules_engine.data_service.postgresql_data_service import (
-    PostgresQLDataService,
-)
-from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.dataset_names import SqlDatasetNamesOperation
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinctOperation
 from cdisc_rules_engine.sql_operations.domain_label import SqlDomainLabelOperation
@@ -13,9 +9,6 @@ from cdisc_rules_engine.sql_operations.numeric_operation import (
 from cdisc_rules_engine.sql_operations.date_operation import SqlDateOperation
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
-from cdisc_rules_engine.models.library_metadata_container import (
-    LibraryMetadataContainer,
-)
 from cdisc_rules_engine.sql_operations.dataset_column_order import SqlDatasetColumnOrderOperation
 
 
@@ -73,15 +66,30 @@ class SqlOperationsFactory:
     def get_service(
         cls,
         name: str,
-        params: SqlOperationParams,
-        data_service: PostgresQLDataService,
-        library_metadata=LibraryMetadataContainer,
+        **kwargs,
     ) -> SqlBaseOperation:
+        """Get instance of SQL operation that matches operation specified in params"""
+        required_args = {
+            "params",
+            "data_service",
+            "library_metadata",
+        }
+        if not required_args.issubset(kwargs.keys()):
+            raise ValueError(f"One of the following required key word arguments is missing: " f"{required_args}")
         if name in cls._operations_map:
             operation = cls._operations_map.get(name)
             if operation is None:
                 raise NotImplementedError(f"Operation {name} is not implemented")
-            return operation(params, data_service, library_metadata=library_metadata)
+
+            # Check if operation is a lambda function or a class
+            if callable(operation) and hasattr(operation, "__name__") and operation.__name__ == "<lambda>":
+                # For lambda functions, call with params and data_service only
+                return operation(kwargs.get("params"), kwargs.get("data_service"))
+            else:
+                # For classes, call with all parameters including library_metadata
+                return operation(
+                    kwargs.get("params"), kwargs.get("data_service"), library_metadata=kwargs.get("library_metadata")
+                )
 
         raise ValueError(
             f"Operation name must be in  {list(cls._operations_map.keys())}, " f"given operation name is {name}"
