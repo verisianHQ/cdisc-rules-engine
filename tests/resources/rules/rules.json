@@ -27466,7 +27466,405 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": "AGCAT should not be null when AGSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "XYZ-001-001",
+                                        "value": {
+                                            "AGCAT": null,
+                                            "AGSCAT": "DFAJF"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": "CMCAT should not be null when CMSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC-0002",
+                                        "value": {
+                                            "CMCAT": null,
+                                            "CMSCAT": "PRIOR DMARDS"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": "SUCAT should not be null when SUSCAT is populated",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "SUCAT": null,
+                                            "SUSCAT": "TOBACCO"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "SUCAT": null,
+                                            "SUSCAT": "CAFFEINE"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": "AECAT should not be null when AESCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "AECAT": null,
+                                            "AESCAT": "NEUROLOGIC"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000103, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": "EGCAT should not be null when EGSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "EGCAT": null,
+                                            "EGSCAT": "INTERVAL"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": "FACAT should not be null when FASCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "FACAT": null,
+                                            "FASCAT": "GERD"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": "AGCAT should not be null when AGSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "XYZ-001-001",
+                                        "value": {
+                                            "AGCAT": null,
+                                            "AGSCAT": "DFAJF"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": "CMCAT should not be null when CMSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC-0002",
+                                        "value": {
+                                            "CMCAT": null,
+                                            "CMSCAT": "PRIOR DMARDS"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": "SUCAT should not be null when SUSCAT is populated",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "SUCAT": null,
+                                            "SUSCAT": "TOBACCO"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "SUCAT": null,
+                                            "SUSCAT": "CAFFEINE"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": "AECAT should not be null when AESCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "1234005",
+                                        "value": {
+                                            "AECAT": null,
+                                            "AESCAT": "NEUROLOGIC"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": "EGCAT should not be null when EGSCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "EGCAT": null,
+                                            "EGSCAT": "INTERVAL"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": "FACAT should not be null when FASCAT is populated",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "FACAT": null,
+                                            "FASCAT": "GERD"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27479,7 +27877,267 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000103, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27509,7 +28167,377 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": "CMSCAT exists in a dataset, but CMCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "CMCAT": "Not in dataset",
+                                            "CMSCAT": "PRIOR DMARDS"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": "EXSCAT exists in a dataset, but EXCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "EXCAT": "Not in dataset",
+                                            "EXSCAT": "HIGHLIGHTED DOSE"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000104, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": "MHSCAT exists in a dataset, but MHCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "MHCAT": "Not in dataset",
+                                            "MHSCAT": "RESPIRATORY"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": "EGSCAT exists in a dataset, but EGCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "EGCAT": "Not in dataset",
+                                            "EGSCAT": "INTERVAL"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": "FASCAT exists in a dataset, but FACAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "FACAT": "Not in dataset",
+                                            "FASCAT": "GERD"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": "CMSCAT exists in a dataset, but CMCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "CMCAT": "Not in dataset",
+                                            "CMSCAT": "PRIOR DMARDS"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": "EXSCAT exists in a dataset, but EXCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "EXCAT": "Not in dataset",
+                                            "EXSCAT": "HIGHLIGHTED DOSE"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "success",
+                                "execution_message": "BESCAT exists in a dataset, but BECAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "BECAT": "Not in dataset",
+                                            "BESCAT": "COLLECTION"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": "MHSCAT exists in a dataset, but MHCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "MHCAT": "Not in dataset",
+                                            "MHSCAT": "RESPIRATORY"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": "EGSCAT exists in a dataset, but EGCAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "EGCAT": "Not in dataset",
+                                            "EGSCAT": "INTERVAL"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": "FASCAT exists in a dataset, but FACAT does not exist.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "FACAT": "Not in dataset",
+                                            "FASCAT": "GERD"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
@@ -27522,7 +28550,267 @@
                     "engine_regression": {
                         "define_xml_present": false,
                         "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "datasets_dataset_errors: Data list cannot be empty"
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000104, dataset=BE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ag.xpt",
+                                "domain": "AG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ex.xpt",
+                                "domain": "EX",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ml.xpt",
+                                "domain": "ML",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "pr.xpt",
+                                "domain": "PR",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "su.xpt",
+                                "domain": "SU",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "be.xpt",
+                                "domain": "BE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ce.xpt",
+                                "domain": "CE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "ds.xpt",
+                                "domain": "DS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "da.xpt",
+                                "domain": "DA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "eg.xpt",
+                                "domain": "EG",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
                     }
                 }
             }
