@@ -103376,7 +103376,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             },
@@ -103389,7 +103389,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             },
@@ -103402,7 +103402,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             }
@@ -103721,7 +103721,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             },
@@ -103734,7 +103734,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             },
@@ -103747,7 +103747,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Operation get_column_order_from_dataset is not implemented"
+                                        "message": "Operation get_model_filtered_variables is not implemented"
                                     }
                                 ]
                             },

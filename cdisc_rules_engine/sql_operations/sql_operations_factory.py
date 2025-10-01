@@ -16,6 +16,7 @@ from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsO
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
 )
+from cdisc_rules_engine.sql_operations.dataset_column_order import SqlDatasetColumnOrderOperation
 
 
 class SqlOperationsFactory:
@@ -27,7 +28,7 @@ class SqlOperationsFactory:
         "distinct": SqlDistinctOperation,
         "dy": SqlDayDataValidatorOperation,
         "extract_metadata": None,
-        "get_column_order_from_dataset": None,
+        "get_column_order_from_dataset": lambda params, ds: SqlDatasetColumnOrderOperation(params, ds),
         "get_column_order_from_library": None,
         "get_codelist_attributes": None,
         "get_model_column_order": None,
