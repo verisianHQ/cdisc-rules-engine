@@ -358,9 +358,13 @@ class SQLRuleProcessor:
                 standard_version=data_service.ig_specs.get("standard_version"),
                 grouping=operation.get("group"),
                 filter=operation.get("filter"),
+                key_name=operation.get("key_name"),
+                key_value=operation.get("key_value"),
             )
 
-            operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
+            operation = SqlOperationsFactory.get_service(
+                rule_name, params=params, data_service=data_service, library_metadata=self.library_metadata
+            )
             query = operation.execute()
             output_variables[output_variable] = query
 

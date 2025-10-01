@@ -6,12 +6,16 @@ from cdisc_rules_engine.sql_operations.dataset_names import SqlDatasetNamesOpera
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinctOperation
 from cdisc_rules_engine.sql_operations.domain_label import SqlDomainLabelOperation
 from cdisc_rules_engine.sql_operations.day_data_validator import SqlDayDataValidatorOperation
+from cdisc_rules_engine.sql_operations.get_model_filtered_variables import SqlGetModelFilteredVariablesOperation
 from cdisc_rules_engine.sql_operations.numeric_operation import (
     SqlNumericOperation,
 )
 from cdisc_rules_engine.sql_operations.date_operation import SqlDateOperation
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
+from cdisc_rules_engine.models.library_metadata_container import (
+    LibraryMetadataContainer,
+)
 
 
 class SqlOperationsFactory:
@@ -27,7 +31,7 @@ class SqlOperationsFactory:
         "get_column_order_from_library": None,
         "get_codelist_attributes": None,
         "get_model_column_order": None,
-        "get_model_filtered_variables": None,
+        "get_model_filtered_variables": SqlGetModelFilteredVariablesOperation,
         "get_parent_model_column_order": None,
         "map": None,
         "max": lambda params, ds: SqlNumericOperation(params, ds, "MAX"),
@@ -70,12 +74,13 @@ class SqlOperationsFactory:
         name: str,
         params: SqlOperationParams,
         data_service: PostgresQLDataService,
+        library_metadata=LibraryMetadataContainer,
     ) -> SqlBaseOperation:
         if name in cls._operations_map:
             operation = cls._operations_map.get(name)
             if operation is None:
                 raise NotImplementedError(f"Operation {name} is not implemented")
-            return operation(params, data_service)
+            return operation(params, data_service, library_metadata=library_metadata)
 
         raise ValueError(
             f"Operation name must be in  {list(cls._operations_map.keys())}, " f"given operation name is {name}"
