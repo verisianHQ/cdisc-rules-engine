@@ -174,7 +174,7 @@ class PostgresQLDataService:
                     merge_spec=merge_spec,
                     rule=rule,
                 )
-            elif right.startswith("supp"):
+            elif right == "supp--":
                 left_id = self._do_supp_merge(
                     original=left_id, target=right, dataset_metadata=dataset_metadata, merge_spec=merge_spec, rule=rule
                 )
@@ -310,6 +310,7 @@ class PostgresQLDataService:
             raise ValueError(f"Tried to relationship merge with {relationship_dataset}, but could not find dataset.")
 
         relationship_columns = merge_spec.get("relationship_columns", {})
+        match_keys = merge_spec.get("match_key", {})
 
         return SqlRelationshipMerge.perform_join(
             pgi=self.pgi,
@@ -317,4 +318,5 @@ class PostgresQLDataService:
             relationship_dataset=self.pgi.schema.get_table(relationship_data.name),
             domain=relationship_dataset.upper(),
             relationship_columns=relationship_columns,
+            match_keys=match_keys,
         ).name

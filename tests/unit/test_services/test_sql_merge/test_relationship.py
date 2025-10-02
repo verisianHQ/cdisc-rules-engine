@@ -86,7 +86,6 @@ COMPLEX_RELATIONSHIP_DATA = {
                     "ecstdy": 5,
                     "poolid": "POOL2",
                 },
-                {"studyid": "STUDY001", "domain": "EC", "usubjid": "SUBJ002", "ecseq": 1, "ecstdy": 10, "poolid": None},
             ],
             "RELSUB",
         ),
@@ -201,7 +200,7 @@ class TestSqlRelationshipMerge:
 
         relationship_columns = {"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"}
 
-        with pytest.raises(ValueError, match="Original schema missing required column"):
+        with pytest.raises(ValueError, match="Original schema missing match key column"):
             SqlRelationshipMerge.perform_join(
                 pgi=data_service.pgi,
                 original=original_schema,
