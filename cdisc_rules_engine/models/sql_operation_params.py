@@ -42,8 +42,6 @@ class SqlOperationParams:
     # filter: dict = None
     # grouping: List[str] = None
     # grouping_aliases: List[str] = None
-    # key_name: str = None
-    # key_value: str = None
     # level: str = None
     # map: List[dict] = None
     # original_target: str = None

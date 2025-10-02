@@ -20,13 +20,12 @@ No missing operator errors found!
 ## Missing Operations (8 operations, 58 total failures across 10 rule occurrences)
 
 1.  **variable_count**: 20 failures across 2 rules
-2.  **required_variables**: 16 failures across 2 rules
-3.  **get_column_order_from_dataset**: 6 failures across 1 rules
-4.  **get_model_column_order**: 5 failures across 1 rules
-5.  **extract_metadata**: 4 failures across 1 rules
-6.  **get_parent_model_column_order**: 4 failures across 1 rules
-7.  **valid_codelist_dates**: 2 failures across 1 rules
-8.  **domain_is_custom**: 1 failures across 1 rules
+2.  **get_model_filtered_variables**: 6 failures across 1 rules
+3.  **get_model_column_order**: 5 failures across 1 rules
+4.  **extract_metadata**: 4 failures across 1 rules
+5.  **get_parent_model_column_order**: 4 failures across 1 rules
+6.  **valid_codelist_dates**: 2 failures across 1 rules
+7.  **domain_is_custom**: 1 failures across 1 rules
 
 ## Execution Errors by Type (11 unique error types, 129 total failures across 31 rule occurrences)
 
