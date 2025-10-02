@@ -22,11 +22,15 @@ class SqlDatasetColumnOrderOperation(SqlBaseOperation):
         # Filter out metadata columns and 'id' column, and convert to uppercase
         column_names = [col[0].upper() for col in columns if col[0].upper() not in METADATA_COLUMNS and col[0] != "id"]
 
-        column_array = "ARRAY[" + ", ".join([f"'{name}'" for name in column_names]) + "]"
+        if column_names:
+            # Format column names for SQL ARRAY
+            formatted_cols = [f"'{name}'" for name in column_names]
+            array_str = f"ARRAY[{', '.join(formatted_cols)}]"
+            num_rows_query = f"(SELECT COUNT(*) FROM {dataset_name})"
+            query = f"SELECT {array_str} AS value FROM generate_series(1, {num_rows_query}) AS t(id)"
+        else:
+            # Return empty array for each row
+            num_rows_query = f"(SELECT COUNT(*) FROM {dataset_name})"
+            query = f"SELECT ARRAY[]::text[] AS value FROM generate_series(1, {num_rows_query}) AS t(id)"
 
-        query = f"""
-        SELECT {column_array} AS value
-        FROM {dataset_name}
-        """
-
-        return SqlOperationResult(query, type="collection", subtype="Array")
+        return SqlOperationResult(query, type="collection", subtype="Char")
