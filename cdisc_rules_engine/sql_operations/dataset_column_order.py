@@ -22,11 +22,13 @@ class SqlDatasetColumnOrderOperation(SqlBaseOperation):
         # Filter out metadata columns and 'id' column, and convert to uppercase
         column_names = [col[0].upper() for col in columns if col[0].upper() not in METADATA_COLUMNS and col[0] != "id"]
 
-        column_array = "ARRAY[" + ", ".join([f"'{name}'" for name in column_names]) + "]"
+        if column_names:
+            # Format column names for SQL VALUES clause, escaping single quotes
+            formatted_cols = [f"('{name.replace(chr(39), chr(39) + chr(39))}')" for name in column_names]
+            values_clause = ", ".join(formatted_cols)
+            query = f"SELECT column1 AS value FROM (VALUES {values_clause}) AS t(column1)"
+        else:
+            # Return empty result set using VALUES with no rows - this is a valid empty table
+            query = "SELECT column1 AS value FROM (VALUES (NULL)) AS t(column1) WHERE FALSE"
 
-        query = f"""
-        SELECT {column_array} AS value
-        FROM {dataset_name}
-        """
-
-        return SqlOperationResult(query, type="collection", subtype="Array")
+        return SqlOperationResult(query, type="collection", subtype="Char")
