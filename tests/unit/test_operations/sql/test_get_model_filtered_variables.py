@@ -1,131 +1,187 @@
 import pytest
-from unittest.mock import patch, MagicMock
-import json
+from unittest.mock import patch
 
+from cdisc_rules_engine.data_service.postgresql_data_service import (
+    PostgresQLDataService,
+)
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
-from cdisc_rules_engine.sql_operations.sql_operations_factory import SqlOperationsFactory
+from cdisc_rules_engine.sql_operations.sql_operations_factory import (
+    SqlOperationsFactory,
+)
+from cdisc_rules_engine.enums.variable_roles import VariableRoles
+
+from .helpers import (
+    assert_operation_collection,
+)
+
+
+# Test data sets matching the original operation tests
+test_set1_variables = [
+    {
+        "name": "STUDYID",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 1,
+    },
+    {
+        "name": "DOMAIN",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 2,
+    },
+    {
+        "name": "USUBJID",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 3,
+    },
+    {
+        "name": "AETERM",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 4,
+    },
+    {
+        "name": "VISITNUM",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 17,
+    },
+    {
+        "name": "VISIT",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 18,
+    },
+    {
+        "name": "TIMING_VAR",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 33,
+    },
+]
+
+test_set2_variables = [
+    {
+        "name": "STUDYID",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 1,
+    },
+    {
+        "name": "DOMAIN",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 2,
+    },
+    {
+        "name": "USUBJID",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 3,
+    },
+    {
+        "name": "AETERM",
+        "role": VariableRoles.IDENTIFIER.value,
+        "ordinal": 4,
+    },
+    {
+        "name": "VISITNUM",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 17,
+    },
+    {
+        "name": "VISIT",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 18,
+    },
+    {
+        "name": "TIMING_VAR",
+        "role": VariableRoles.TIMING.value,
+        "ordinal": 33,
+    },
+]
 
 
 @pytest.mark.parametrize(
-    "mock_ig_variables, key_name, key_value, expected",
+    "mock_variables, key_value, expected",
     [
-        # Test filtering by role="Timing"
+        # Test set 1: Timing variables
         (
-            [("VISITNUM", "17"), ("VISIT", "18"), ("TIMING_VAR", "33")],
-            "role",
+            test_set1_variables,
             "Timing",
             ["VISITNUM", "VISIT", "TIMING_VAR"],
         ),
-        # Test filtering by role="Identifier"
-        ([("STUDYID", "1"), ("DOMAIN", "2"), ("USUBJID", "3")], "role", "Identifier", ["STUDYID", "DOMAIN", "USUBJID"]),
-        # Test with wildcard replacement
+        # Test set 2: Identifier variables
+        (
+            test_set2_variables,
+            "Identifier",
+            ["STUDYID", "DOMAIN", "USUBJID", "AETERM"],
+        ),
+        # Test with wildcard replacement - similar to original tests
         (
             [
-                ("--TERM", "1"),
+                {"name": "--TERM", "role": "Topic", "ordinal": 1},
+                {"name": "STUDYID", "role": "Identifier", "ordinal": 2},
             ],
-            "role",
             "Topic",
             ["AETERM"],  # --TERM becomes AETERM for AE domain
         ),
         # Test no matches
-        ([], "role", "NonExistentRole", []),
+        (
+            test_set1_variables,
+            "NonExistentRole",
+            [],
+        ),
+        # Test empty key/value
+        (
+            test_set1_variables,
+            "",
+            [],
+        ),
     ],
 )
-@patch("cdisc_rules_engine.data_service.postgresql_data_service.PostgresQLDataService.instance")
-def test_get_model_filtered_variables(mock_data_service_instance, mock_ig_variables, key_name, key_value, expected):
+def test_get_model_filtered_variables(mock_variables, key_value, expected):
     """Test get_model_filtered_variables operation with different filter criteria"""
+    data_service = PostgresQLDataService.instance()
 
-    # Mock data service and PostgreSQL interface
-    mock_data_service = MagicMock()
-    mock_pgi = MagicMock()
-    mock_data_service.pgi = mock_pgi
-    mock_data_service_instance.return_value = mock_data_service
-
-    # Mock database queries
-    mock_pgi.execute_sql.return_value = len(mock_ig_variables)
-    mock_pgi.fetch_all.return_value = mock_ig_variables
-
-    # Set up parameters
-    params = SqlOperationParams(
-        domain="ae", target=None, standard="sdtmig", standard_version="3-4", key_name=key_name, key_value=key_value
+    # Add test dataset matching original test structure
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="AE",
+        column_data={
+            "STUDYID": ["TEST_STUDY", "TEST_STUDY", "TEST_STUDY"],
+            "AETERM": ["test", "test", "test"],
+        },
     )
 
-    # Get operation
-    operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, mock_data_service)
-
-    # Execute operation
-    result = operation.execute()
-
-    # Verify result
-    assert result is not None
-    expected_json = json.dumps(expected)
-    # The operation returns a constant result with the JSON string
-    assert expected_json in result.query
-    assert result.type == "constant"
-
-
-@patch("cdisc_rules_engine.data_service.postgresql_data_service.PostgresQLDataService.instance")
-def test_get_model_filtered_variables_with_empty_dataset(mock_data_service_instance):
-    """Test get_model_filtered_variables with empty result"""
-    mock_ig_variables = [("AETERM", "1"), ("AEDECOD", "2")]
-
-    # Mock data service and PostgreSQL interface
-    mock_data_service = MagicMock()
-    mock_pgi = MagicMock()
-    mock_data_service.pgi = mock_pgi
-    mock_data_service_instance.return_value = mock_data_service
-
-    # Mock database queries
-    mock_pgi.execute_sql.return_value = len(mock_ig_variables)
-    mock_pgi.fetch_all.return_value = mock_ig_variables
-
-    # Set up parameters
     params = SqlOperationParams(
-        domain="ae", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value="Topic"
+        domain="AE", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value=key_value
     )
 
-    # Get operation
-    operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, mock_data_service)
+    operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, data_service)
 
-    # Execute operation
-    result = operation.execute()
-
-    # Verify result
-    assert result is not None
-    expected = ["AETERM", "AEDECOD"]
-    expected_json = json.dumps(expected)
-    # The operation returns a constant result with the JSON string
-    assert expected_json in result.query
-    assert result.type == "constant"
+    # Mock the metadata retrieval method on the operation instance
+    with patch.object(operation, "_get_variables_metadata_from_standard_model", return_value=mock_variables):
+        result = operation.execute()
+        assert_operation_collection(operation, result, expected)
 
 
-@patch("cdisc_rules_engine.data_service.postgresql_data_service.PostgresQLDataService.instance")
-def test_get_model_filtered_variables_with_exception_handling(mock_data_service_instance):
-    """Test get_model_filtered_variables when database operation fails"""
+def test_get_model_filtered_variables_exception_handling():
+    """Test get_model_filtered_variables when metadata retrieval fails"""
+    data_service = PostgresQLDataService.instance()
 
-    # Mock data service and PostgreSQL interface
-    mock_data_service = MagicMock()
-    mock_pgi = MagicMock()
-    mock_data_service.pgi = mock_pgi
-    mock_data_service_instance.return_value = mock_data_service
-
-    # Mock database query to raise exception
-    mock_pgi.execute_sql.side_effect = Exception("Database connection failed")
-
-    # Set up parameters
-    params = SqlOperationParams(
-        domain="ae", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value="Topic"
+    # Add test dataset matching original test structure
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="AE",
+        column_data={
+            "STUDYID": ["TEST_STUDY", "TEST_STUDY", "TEST_STUDY"],
+            "AETERM": ["test", "test", "test"],
+        },
     )
 
-    # Get operation
-    operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, mock_data_service)
+    params = SqlOperationParams(
+        domain="AE", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value="Topic"
+    )
 
-    # Execute operation - should return empty result on exception
-    result = operation.execute()
+    operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, data_service)
 
-    # Verify result
-    assert result is not None
-    expected_json = json.dumps([])
-    # The operation returns a constant result with the JSON string
-    assert expected_json in result.query
-    assert result.type == "constant"
+    # Mock the metadata method to raise an exception
+    with patch.object(
+        operation, "_get_variables_metadata_from_standard_model", side_effect=Exception("Metadata retrieval failed")
+    ):
+        result = operation.execute()
+
+        # Should return empty collection on exception
+        assert_operation_collection(operation, result, [])
