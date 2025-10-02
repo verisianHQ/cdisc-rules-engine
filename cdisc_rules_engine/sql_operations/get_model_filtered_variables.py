@@ -4,7 +4,7 @@ from cdisc_rules_engine.utilities import sdtm_utilities
 from typing import List
 
 
-class SqlGetModelFilteredVariablesOperation(SqlBaseOperation):
+class SqlGetModelFilteredVariables(SqlBaseOperation):
 
     def _execute_operation(self):
         """
