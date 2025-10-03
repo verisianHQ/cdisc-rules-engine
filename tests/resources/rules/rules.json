@@ -114288,9 +114288,28 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 6,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "AESMIE": null,
+                                            "QNAM": "AESOSP"
+                                        }
+                                    },
+                                    {
+                                        "row": 48,
+                                        "SEQ": 29,
+                                        "USUBJID": "CDISC-TEST-002",
+                                        "value": {
+                                            "AESMIE": "N",
+                                            "QNAM": "AESOSP"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "suppae.xpt",
@@ -114343,8 +114362,53 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "ae.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 6,
+                                                "SEQ": 1,
+                                                "USUBJID": "CDISC-TEST-001",
+                                                "value": {
+                                                    "AESMIE": null,
+                                                    "QNAM": "AESOSP"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 1,
+                                                "SEQ": 1,
+                                                "USUBJID": "CDISC-TEST-001",
+                                                "value": {
+                                                    "AESMIE": null,
+                                                    "QNAM": "AESOSP"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 48,
+                                                "SEQ": 29,
+                                                "USUBJID": "CDISC-TEST-002",
+                                                "value": {
+                                                    "AESMIE": "N",
+                                                    "QNAM": "AESOSP"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 8,
+                                                "SEQ": 29,
+                                                "USUBJID": "CDISC-TEST-002",
+                                                "value": {
+                                                    "AESMIE": "N",
+                                                    "QNAM": "AESOSP"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -123519,13 +123583,36 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Ethnicity has been collected but the values is not mapped to \"HISPANIC OR LATINO\" or \"NOT HISPANIC OR LATINO\"",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S004",
+                                        "value": {
+                                            "CETHNIC": "Not in dataset",
+                                            "ETHNIC": "XXXXXXX"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "S003",
+                                        "value": {
+                                            "CETHNIC": "Not in dataset",
+                                            "ETHNIC": "NOT HISPANIC"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "CETHNIC": "Not in dataset",
+                                            "ETHNIC": "HISPANIC"
+                                        }
                                     }
                                 ]
                             }
@@ -123580,11 +123667,24 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "dm.xpt": {
+                                    "values_changed": {
+                                        "root[0]['row']": {
+                                            "new_value": 4,
+                                            "old_value": 1
+                                        },
+                                        "root[2]['row']": {
+                                            "new_value": 2,
+                                            "old_value": 4
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -123617,15 +123717,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_not_contained_by operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -123649,12 +123744,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128743,9 +128835,26 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Ethnicity(CETHNIC) has been collected as \"Spanish origin\" but the values in DM is not mapped to \"HISPANIC OR LATINO\"",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "ETHNIC": "LATINO"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S003",
+                                        "value": {
+                                            "ETHNIC": "NOT HISPANIC"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -128788,8 +128897,49 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "dm.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 1,
+                                                "SEQ": null,
+                                                "USUBJID": "S002",
+                                                "value": {
+                                                    "ETHNIC": "LATINO"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 2,
+                                                "SEQ": null,
+                                                "USUBJID": "S002",
+                                                "value": {
+                                                    "ETHNIC": "LATINO"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 2,
+                                                "SEQ": null,
+                                                "USUBJID": "S003",
+                                                "value": {
+                                                    "ETHNIC": "NOT HISPANIC"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 3,
+                                                "SEQ": null,
+                                                "USUBJID": "S003",
+                                                "value": {
+                                                    "ETHNIC": "NOT HISPANIC"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -128905,9 +129055,26 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Haitin or Negro was collected in CRACE but RACE does not have the value as BLACK OR AFRICAN AMERICAN",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S002",
+                                        "value": {
+                                            "RACE": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S003",
+                                        "value": {
+                                            "RACE": "BLACK OR\nAFRICAN"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -128950,8 +129117,49 @@
                         "old_vs_sql": {
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "number_of_errors_mismatch": false,
+                            "diff": {
+                                "dm.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 1,
+                                                "SEQ": null,
+                                                "USUBJID": "S002",
+                                                "value": {
+                                                    "RACE": "WHITE"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 2,
+                                                "SEQ": null,
+                                                "USUBJID": "S002",
+                                                "value": {
+                                                    "RACE": "WHITE"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 2,
+                                                "SEQ": null,
+                                                "USUBJID": "S003",
+                                                "value": {
+                                                    "RACE": "BLACK OR\nAFRICAN"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 3,
+                                                "SEQ": null,
+                                                "USUBJID": "S003",
+                                                "value": {
+                                                    "RACE": "BLACK OR\nAFRICAN"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -137193,7 +137401,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Tried to SUPP merge DM, but could not find corresponding SUPP dataset."
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
                             }
@@ -137267,26 +137475,9 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "RACE": "MULTIPLE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC007",
-                                        "value": {
-                                            "RACE": "MULTIPLE"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -137310,10 +137501,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -137352,7 +137540,7 @@
                                     {
                                         "row": 1,
                                         "SEQ": null,
-                                        "USUBJID": "CDISC008",
+                                        "USUBJID": "CDISC009",
                                         "value": {
                                             "RACE": "MULTIPLE"
                                         }
@@ -137415,7 +137603,7 @@
                                         "root[0]": {
                                             "row": 1,
                                             "SEQ": null,
-                                            "USUBJID": "CDISC008",
+                                            "USUBJID": "CDISC009",
                                             "value": {
                                                 "RACE": "MULTIPLE"
                                             }
@@ -137452,7 +137640,7 @@
                                 "errors": [
                                     {
                                         "error": "An unknown exception has occurred",
-                                        "message": "Tried to SUPP merge DM, but could not find corresponding SUPP dataset."
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
                             }
