@@ -100,13 +100,13 @@ class SqlChildMerge:
         if not rdomain_values:
             return []
 
-        domain_to_metadata = {ds.domain: ds for ds in datasets}
+        rdomain_set = set(rdomain_values)
         matching_parents = []
         seen_domains = set()
-        for rdomain in rdomain_values:
-            if rdomain in domain_to_metadata and rdomain not in seen_domains:
-                matching_parents.append(domain_to_metadata[rdomain])
-                seen_domains.add(rdomain)
+        for dataset in datasets:
+            if dataset.domain in rdomain_set and dataset.domain not in seen_domains:
+                matching_parents.append(dataset)
+                seen_domains.add(dataset.domain)
         return matching_parents
 
     @staticmethod

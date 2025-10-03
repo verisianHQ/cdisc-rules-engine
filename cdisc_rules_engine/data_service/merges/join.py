@@ -77,6 +77,7 @@ class SqlJoinMerge:
                     {', '.join(selected_right_columns)}
                 FROM {left.hash} l
                 {type} JOIN {right.hash} r ON {join_condition}
+                ORDER BY l.id
         """
 
         pgi.execute_sql(query)
