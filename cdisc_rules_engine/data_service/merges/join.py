@@ -103,8 +103,10 @@ class SqlJoinMerge:
         for name, column in left.get_columns():
             if name == "id":
                 continue
+            # Skip aliases to avoid duplicate column hashes in SELECT
+            if not column.alias:
+                left_output_columns.append((column.hash, column.hash))
             joined_schema.add_column(column)
-            left_output_columns.append((column.hash, column.hash))
 
         # Add all of the non-pivot columns from the left table
         for name, column in right.get_columns():
