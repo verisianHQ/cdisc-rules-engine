@@ -4,66 +4,61 @@ import pandas as pd
 from .helpers import create_sql_operators
 
 SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
-    # Operation variable vs operation variable tests only
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$constant"},
-        pd.Series([True], dtype=bool),  # True because list [A,B] contains A which matches constant A
+        pd.Series([True], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$list"},
-        pd.Series([True], dtype=bool),  # True because list shares elements with itself
+        pd.Series([True], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$list"},
-        pd.Series([True], dtype=bool),  # True because constant A is in list [A,B]
+        pd.Series([True], dtype=bool),
     ),
 ]
 
 SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
-    # Operation variable vs operation variable tests only
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$constant"},
-        pd.Series([True], dtype=bool),  # True because exactly one element (A) is shared
+        pd.Series([True], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$list"},
-        pd.Series([False], dtype=bool),  # False because list [A,B] has 2 elements, not exactly one shared
+        pd.Series([False], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$constant"},
-        pd.Series(
-            [True], dtype=bool
-        ),  # True because exactly one element (A) is shared between list [A,B] and constant A
+        pd.Series([True], dtype=bool),
     ),
 ]
 
 SHARES_NO_ELEMENTS_TEST_DATA = [
-    # Operation variable vs operation variable tests only
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$date"},
-        pd.Series([True], dtype=bool),  # True because constant A doesn't match date 2025-09-09
+        pd.Series([True], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$date"},
-        pd.Series([True], dtype=bool),  # True because list [A,B] doesn't contain date 2025-09-09
+        pd.Series([True], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$list"},
-        pd.Series([False], dtype=bool),  # False because list shares all elements with itself
+        pd.Series([False], dtype=bool),
     ),
     (
         {"dummy": ["value"]},
         {"target": "$date", "comparator": "$constant"},
-        pd.Series([True], dtype=bool),  # True because date 2025-09-09 doesn't match constant A
+        pd.Series([True], dtype=bool),
     ),
 ]
 
@@ -99,34 +94,33 @@ def test_sql_shares_no_elements_with(data, params, expected_result):
 
 
 SHARES_EDGE_CASES = [
-    # Operation variable edge cases only
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$constant"},
-        [True],  # at_least_one: A is shared with itself
-        [True],  # exactly_one: exactly one element A is shared
-        [False],  # no_elements: A is shared, so not no elements
+        [True],
+        [True],
+        [False],
     ),
     (
         {"dummy": ["value"]},
         {"target": "$constant", "comparator": "$date"},
-        [False],  # at_least_one: no shared elements (A vs 2025-09-09)
-        [False],  # exactly_one: no shared elements
-        [True],  # no_elements: no shared elements
+        [False],
+        [False],
+        [True],
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$constant"},
-        [True],  # at_least_one: list [A,B] contains A which matches constant A
-        [True],  # exactly_one: exactly one element (A) is shared
-        [False],  # no_elements: A is shared
+        [True],
+        [True],
+        [False],
     ),
     (
         {"dummy": ["value"]},
         {"target": "$list", "comparator": "$date"},
-        [False],  # at_least_one: list [A,B] doesn't contain date 2025-09-09
-        [False],  # exactly_one: no shared elements
-        [True],  # no_elements: no shared elements
+        [False],
+        [False],
+        [True],
     ),
 ]
 

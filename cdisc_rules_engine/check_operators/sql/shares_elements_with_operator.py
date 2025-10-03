@@ -85,7 +85,6 @@ class SharesElementsWithOperator(BaseSqlOperator):
 
     def _build_shares_elements_query(self, target, comparator):
         """Build the appropriate SQL query based on operation variable types."""
-        # Since this operator only deals with operation variables, verify both are operation variables
         if not (isinstance(target, str) and target in self.operation_variables):
             raise ValueError(f"Target '{target}' is not an operation variable")
         if not (isinstance(comparator, str) and comparator in self.operation_variables):
