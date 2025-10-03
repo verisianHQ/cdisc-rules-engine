@@ -1,10 +1,3 @@
-"""
-Child merge logic for SQL implementation.
-
-Child merges perform LEFT JOIN operations where the child dataset is preserved
-and enriched with data from its parent dataset.
-"""
-
 from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -36,19 +29,6 @@ class SqlChildMerge:
 
         For datasets like RELREC with multiple RDOMAIN values, this will merge
         with ALL matching parent datasets sequentially.
-
-        Args:
-            pgi: PostgreSQL interface
-            child: Child dataset schema
-            child_domain: Domain of the child dataset
-            datasets: List of available datasets
-            merge_spec: Merge specification from rule
-
-        Returns:
-            Resulting merged table schema
-
-        Raises:
-            ValueError: If no parent dataset is found
         """
         # Find parent dataset(s)
         parent_metadatas = SqlChildMerge._find_parents(
