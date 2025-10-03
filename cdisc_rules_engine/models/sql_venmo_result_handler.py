@@ -80,8 +80,6 @@ class SqlVenmoResultHandler(BaseActions):
         """
         rows_with_error = self._get_error_rows(results)
 
-        # TODO implement methods to handle single boolean result
-
         target_columns = SqlVenmoResultHandler._get_target_columns(
             self.rule, self.dataset_metadata, self.data_service.pgi.schema.get_table(self.dataset_id)
         )
