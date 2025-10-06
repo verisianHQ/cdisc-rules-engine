@@ -43,7 +43,7 @@ class SqlBaseOperation:
         self,
         params: SqlOperationParams,
         data_service: PostgresQLDataService,
-        library_metadata: LibraryMetadataContainer,
+        library_metadata=LibraryMetadataContainer(),
     ):
         """
         Initialize the SQL base operation.
