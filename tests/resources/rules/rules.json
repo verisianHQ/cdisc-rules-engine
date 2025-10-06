@@ -56810,39 +56810,71 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBGRPID",
+                                            "IDVARVAL": "20",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "domain": "RELREC",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBSEQ",
+                                            "IDVARVAL": "320",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "AESEQ",
+                                            "IDVARVAL": "2",
+                                            "RDOMAIN": "AE",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "supplb.xpt",
-                                "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "domain": "SUPPLB",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBSEQ",
+                                            "IDVARVAL": "320",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
@@ -56955,12 +56987,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -56985,41 +57014,26 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
-                                    }
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -57049,12 +57063,12 @@
                                 "dataset": "suppdm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "SQL syntax error"
                                     }
                                 ]
                             }
@@ -57126,9 +57140,22 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "suppdm.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in not_equal_to operator",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "sql syntax error",
+                                            "old_value": ""
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -57153,38 +57180,33 @@
                                 "dataset": "co.xpt",
                                 "domain": "CO",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "\"Target column 'IDVARVAL' not found in dataset\""
                                     }
                                 ]
                             },
                             {
                                 "dataset": "relrec.xpt",
-                                "domain": "",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
-                                    }
-                                ]
+                                "domain": null,
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "\"Target column 'IDVARVAL' not found in dataset\""
                                     }
                                 ]
                             },
@@ -57208,12 +57230,12 @@
                                 "dataset": "suppdm.xpt",
                                 "domain": "DM",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Child merges are not supported yet in SQL implementation"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "\"Comparator column 'IDVAR' not found in dataset\""
                                     }
                                 ]
                             }
@@ -57286,18 +57308,42 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": true,
+                            "dataset_mismatch": false,
                             "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {
                                 "co.xpt": {
                                     "values_changed": {
                                         "root[0]['error']": {
-                                            "new_value": "an unknown exception has occurred",
+                                            "new_value": "sql error in not_equal_to operator",
                                             "old_value": "column not found in data"
                                         },
                                         "root[0]['message']": {
-                                            "new_value": "child merges are not supported yet in sql implementation",
+                                            "new_value": "\"target column 'idvarval' not found in dataset\"",
+                                            "old_value": "idvar"
+                                        }
+                                    }
+                                },
+                                "supplb.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in not_equal_to operator",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "\"target column 'idvarval' not found in dataset\"",
+                                            "old_value": "idvarval"
+                                        }
+                                    }
+                                },
+                                "suppdm.xpt": {
+                                    "values_changed": {
+                                        "root[0]['error']": {
+                                            "new_value": "sql error in not_equal_to operator",
+                                            "old_value": "column not found in data"
+                                        },
+                                        "root[0]['message']": {
+                                            "new_value": "\"comparator column 'idvar' not found in dataset\"",
                                             "old_value": "idvar"
                                         }
                                     }
@@ -59046,7 +59092,7 @@
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 2,
+                                        "SEQ": 1,
                                         "USUBJID": "001",
                                         "value": {
                                             "MIDSTYPE": "DIAGNOSIS",
@@ -59055,7 +59101,7 @@
                                     },
                                     {
                                         "row": 2,
-                                        "SEQ": 1,
+                                        "SEQ": 2,
                                         "USUBJID": "001",
                                         "value": {
                                             "MIDSTYPE": "DIAGNOSIS",
@@ -59113,55 +59159,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "sm.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": 2,
-                                                "USUBJID": "001",
-                                                "value": {
-                                                    "MIDSTYPE": "DIAGNOSIS",
-                                                    "TMRPT": "N"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "001",
-                                                "value": {
-                                                    "MIDSTYPE": "DIAGNOSIS",
-                                                    "TMRPT": "N"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": 1,
-                                                "USUBJID": "001",
-                                                "value": {
-                                                    "MIDSTYPE": "DIAGNOSIS",
-                                                    "TMRPT": "N"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": 2,
-                                                "USUBJID": "001",
-                                                "value": {
-                                                    "MIDSTYPE": "DIAGNOSIS",
-                                                    "TMRPT": "N"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -67049,7 +67047,7 @@
                                         }
                                     },
                                     {
-                                        "row": 485,
+                                        "row": 484,
                                         "SEQ": 484,
                                         "USUBJID": "CDISC-TEST-081",
                                         "value": {
@@ -67058,7 +67056,7 @@
                                         }
                                     },
                                     {
-                                        "row": 491,
+                                        "row": 490,
                                         "SEQ": 490,
                                         "USUBJID": "CDISC-TEST-082",
                                         "value": {
@@ -67067,7 +67065,7 @@
                                         }
                                     },
                                     {
-                                        "row": 497,
+                                        "row": 496,
                                         "SEQ": 496,
                                         "USUBJID": "CDISC-TEST-083",
                                         "value": {
@@ -67076,7 +67074,7 @@
                                         }
                                     },
                                     {
-                                        "row": 503,
+                                        "row": 502,
                                         "SEQ": 502,
                                         "USUBJID": "CDISC-TEST-084",
                                         "value": {
@@ -67085,7 +67083,7 @@
                                         }
                                     },
                                     {
-                                        "row": 506,
+                                        "row": 505,
                                         "SEQ": 505,
                                         "USUBJID": "CDISC-TEST-085",
                                         "value": {
@@ -67094,7 +67092,7 @@
                                         }
                                     },
                                     {
-                                        "row": 515,
+                                        "row": 514,
                                         "SEQ": 514,
                                         "USUBJID": "CDISC-TEST-086",
                                         "value": {
@@ -70016,7 +70014,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 4,
                                         "SEQ": 2,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
@@ -70073,7 +70071,7 @@
                                 "lb.xpt": {
                                     "values_changed": {
                                         "root[0]['row']": {
-                                            "new_value": 1,
+                                            "new_value": 4,
                                             "old_value": 5
                                         }
                                     }
@@ -76148,7 +76146,7 @@
                                 "errors": [
                                     {
                                         "row": 51,
-                                        "SEQ": 22,
+                                        "SEQ": 21,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "VISIT": "WEEK 26",
@@ -76157,7 +76155,7 @@
                                     },
                                     {
                                         "row": 52,
-                                        "SEQ": 21,
+                                        "SEQ": 22,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "VISIT": "WEEK 26",
@@ -76200,8 +76198,8 @@
                                 "number_errors": 11,
                                 "errors": [
                                     {
-                                        "row": 243,
-                                        "SEQ": 132,
+                                        "row": 155,
+                                        "SEQ": 34,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "VISIT": "WEEK 26",
@@ -76209,79 +76207,7 @@
                                         }
                                     },
                                     {
-                                        "row": 244,
-                                        "SEQ": 121,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 245,
-                                        "SEQ": 109,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 246,
-                                        "SEQ": 108,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 247,
-                                        "SEQ": 107,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 248,
-                                        "SEQ": 73,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 249,
-                                        "SEQ": 72,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 250,
-                                        "SEQ": 71,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 251,
-                                        "SEQ": 36,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "VISIT": "WEEK 26",
-                                            "VISITNUM": 13.0
-                                        }
-                                    },
-                                    {
-                                        "row": 252,
+                                        "row": 156,
                                         "SEQ": 35,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -76290,8 +76216,80 @@
                                         }
                                     },
                                     {
+                                        "row": 157,
+                                        "SEQ": 36,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 192,
+                                        "SEQ": 71,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 193,
+                                        "SEQ": 72,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 194,
+                                        "SEQ": 73,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 228,
+                                        "SEQ": 107,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 229,
+                                        "SEQ": 108,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 230,
+                                        "SEQ": 109,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 242,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "VISIT": "WEEK 26",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
                                         "row": 253,
-                                        "SEQ": 34,
+                                        "SEQ": 132,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "VISIT": "WEEK 26",
@@ -76746,279 +76744,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "oe.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 51,
-                                                "SEQ": 22,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 51,
-                                                "SEQ": 21,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 52,
-                                                "SEQ": 21,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 52,
-                                                "SEQ": 22,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "vs.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 243,
-                                                "SEQ": 132,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 155,
-                                                "SEQ": 34,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[10]": {
-                                            "new_value": {
-                                                "row": 253,
-                                                "SEQ": 34,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 253,
-                                                "SEQ": 132,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 244,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 156,
-                                                "SEQ": 35,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 245,
-                                                "SEQ": 109,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 157,
-                                                "SEQ": 36,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 246,
-                                                "SEQ": 108,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 192,
-                                                "SEQ": 71,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 247,
-                                                "SEQ": 107,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 193,
-                                                "SEQ": 72,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 248,
-                                                "SEQ": 73,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 194,
-                                                "SEQ": 73,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 249,
-                                                "SEQ": 72,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 228,
-                                                "SEQ": 107,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 250,
-                                                "SEQ": 71,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 229,
-                                                "SEQ": 108,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 251,
-                                                "SEQ": 36,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 230,
-                                                "SEQ": 109,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 252,
-                                                "SEQ": 35,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 242,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "VISIT": "WEEK 26",
-                                                    "VISITNUM": 13.0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -77375,7 +77101,7 @@
                                         }
                                     },
                                     {
-                                        "row": 538,
+                                        "row": 537,
                                         "SEQ": 315,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77384,7 +77110,7 @@
                                         }
                                     },
                                     {
-                                        "row": 539,
+                                        "row": 538,
                                         "SEQ": 316,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77393,7 +77119,7 @@
                                         }
                                     },
                                     {
-                                        "row": 540,
+                                        "row": 539,
                                         "SEQ": 317,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77402,7 +77128,7 @@
                                         }
                                     },
                                     {
-                                        "row": 541,
+                                        "row": 540,
                                         "SEQ": 318,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77411,7 +77137,7 @@
                                         }
                                     },
                                     {
-                                        "row": 542,
+                                        "row": 541,
                                         "SEQ": 319,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77420,7 +77146,7 @@
                                         }
                                     },
                                     {
-                                        "row": 543,
+                                        "row": 542,
                                         "SEQ": 320,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77429,7 +77155,7 @@
                                         }
                                     },
                                     {
-                                        "row": 544,
+                                        "row": 543,
                                         "SEQ": 321,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77438,7 +77164,7 @@
                                         }
                                     },
                                     {
-                                        "row": 545,
+                                        "row": 544,
                                         "SEQ": 322,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77517,8 +77243,8 @@
                                 "number_errors": 22,
                                 "errors": [
                                     {
-                                        "row": 111,
-                                        "SEQ": 121,
+                                        "row": 31,
+                                        "SEQ": 31,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77526,8 +77252,8 @@
                                         }
                                     },
                                     {
-                                        "row": 112,
-                                        "SEQ": 111,
+                                        "row": 32,
+                                        "SEQ": 32,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77535,8 +77261,8 @@
                                         }
                                     },
                                     {
-                                        "row": 113,
-                                        "SEQ": 100,
+                                        "row": 33,
+                                        "SEQ": 33,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77544,43 +77270,7 @@
                                         }
                                     },
                                     {
-                                        "row": 114,
-                                        "SEQ": 99,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 115,
-                                        "SEQ": 98,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 116,
-                                        "SEQ": 67,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 117,
-                                        "SEQ": 66,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 118,
+                                        "row": 65,
                                         "SEQ": 65,
                                         "USUBJID": "CDISC004",
                                         "value": {
@@ -77589,8 +77279,8 @@
                                         }
                                     },
                                     {
-                                        "row": 119,
-                                        "SEQ": 33,
+                                        "row": 66,
+                                        "SEQ": 66,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77598,8 +77288,44 @@
                                         }
                                     },
                                     {
-                                        "row": 120,
-                                        "SEQ": 32,
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77608,7 +77334,7 @@
                                     },
                                     {
                                         "row": 121,
-                                        "SEQ": 31,
+                                        "SEQ": 121,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77616,8 +77342,8 @@
                                         }
                                     },
                                     {
-                                        "row": 232,
-                                        "SEQ": 131,
+                                        "row": 152,
+                                        "SEQ": 31,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -77625,79 +77351,7 @@
                                         }
                                     },
                                     {
-                                        "row": 233,
-                                        "SEQ": 120,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 234,
-                                        "SEQ": 106,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 235,
-                                        "SEQ": 105,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 236,
-                                        "SEQ": 104,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 237,
-                                        "SEQ": 70,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 238,
-                                        "SEQ": 69,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 239,
-                                        "SEQ": 68,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 240,
-                                        "SEQ": 33,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 241,
+                                        "row": 153,
                                         "SEQ": 32,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -77706,8 +77360,80 @@
                                         }
                                     },
                                     {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
                                         "row": 242,
-                                        "SEQ": 31,
+                                        "SEQ": 131,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78269,491 +77995,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "values_changed": {
-                                        "root[22]['row']": {
-                                            "new_value": 538,
-                                            "old_value": 537
-                                        },
-                                        "root[23]['row']": {
-                                            "new_value": 539,
-                                            "old_value": 538
-                                        },
-                                        "root[24]['row']": {
-                                            "new_value": 540,
-                                            "old_value": 539
-                                        },
-                                        "root[25]['row']": {
-                                            "new_value": 541,
-                                            "old_value": 540
-                                        },
-                                        "root[26]['row']": {
-                                            "new_value": 542,
-                                            "old_value": 541
-                                        },
-                                        "root[27]['row']": {
-                                            "new_value": 543,
-                                            "old_value": 542
-                                        },
-                                        "root[28]['row']": {
-                                            "new_value": 544,
-                                            "old_value": 543
-                                        },
-                                        "root[29]['row']": {
-                                            "new_value": 545,
-                                            "old_value": 544
-                                        }
-                                    }
-                                },
-                                "vs.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 111,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 31,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[10]": {
-                                            "new_value": {
-                                                "row": 121,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 121,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[11]": {
-                                            "new_value": {
-                                                "row": 232,
-                                                "SEQ": 131,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 152,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[12]": {
-                                            "new_value": {
-                                                "row": 233,
-                                                "SEQ": 120,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 153,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[13]": {
-                                            "new_value": {
-                                                "row": 234,
-                                                "SEQ": 106,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 154,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[14]": {
-                                            "new_value": {
-                                                "row": 235,
-                                                "SEQ": 105,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 186,
-                                                "SEQ": 68,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[15]": {
-                                            "new_value": {
-                                                "row": 236,
-                                                "SEQ": 104,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 187,
-                                                "SEQ": 69,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[16]": {
-                                            "new_value": {
-                                                "row": 237,
-                                                "SEQ": 70,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 188,
-                                                "SEQ": 70,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[17]": {
-                                            "new_value": {
-                                                "row": 238,
-                                                "SEQ": 69,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 219,
-                                                "SEQ": 104,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[18]": {
-                                            "new_value": {
-                                                "row": 239,
-                                                "SEQ": 68,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 220,
-                                                "SEQ": 105,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[19]": {
-                                            "new_value": {
-                                                "row": 240,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 221,
-                                                "SEQ": 106,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 112,
-                                                "SEQ": 111,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 32,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[20]": {
-                                            "new_value": {
-                                                "row": 241,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 232,
-                                                "SEQ": 120,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[21]": {
-                                            "new_value": {
-                                                "row": 242,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 242,
-                                                "SEQ": 131,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 113,
-                                                "SEQ": 100,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 33,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 114,
-                                                "SEQ": 99,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 65,
-                                                "SEQ": 65,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 115,
-                                                "SEQ": 98,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 66,
-                                                "SEQ": 66,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 116,
-                                                "SEQ": 67,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 67,
-                                                "SEQ": 67,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 117,
-                                                "SEQ": 66,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 98,
-                                                "SEQ": 98,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 118,
-                                                "SEQ": 65,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 99,
-                                                "SEQ": 99,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 119,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 100,
-                                                "SEQ": 100,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 120,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 111,
-                                                "SEQ": 111,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -78864,8 +78106,8 @@
                                 "number_errors": 22,
                                 "errors": [
                                     {
-                                        "row": 111,
-                                        "SEQ": 121,
+                                        "row": 31,
+                                        "SEQ": 31,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78873,8 +78115,8 @@
                                         }
                                     },
                                     {
-                                        "row": 112,
-                                        "SEQ": 111,
+                                        "row": 32,
+                                        "SEQ": 32,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78882,8 +78124,8 @@
                                         }
                                     },
                                     {
-                                        "row": 113,
-                                        "SEQ": 100,
+                                        "row": 33,
+                                        "SEQ": 33,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78891,43 +78133,7 @@
                                         }
                                     },
                                     {
-                                        "row": 114,
-                                        "SEQ": 99,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 115,
-                                        "SEQ": 98,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 116,
-                                        "SEQ": 67,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 117,
-                                        "SEQ": 66,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 118,
+                                        "row": 65,
                                         "SEQ": 65,
                                         "USUBJID": "CDISC004",
                                         "value": {
@@ -78936,8 +78142,8 @@
                                         }
                                     },
                                     {
-                                        "row": 119,
-                                        "SEQ": 33,
+                                        "row": 66,
+                                        "SEQ": 66,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78945,8 +78151,44 @@
                                         }
                                     },
                                     {
-                                        "row": 120,
-                                        "SEQ": 32,
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78955,7 +78197,7 @@
                                     },
                                     {
                                         "row": 121,
-                                        "SEQ": 31,
+                                        "SEQ": 121,
                                         "USUBJID": "CDISC004",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78963,8 +78205,8 @@
                                         }
                                     },
                                     {
-                                        "row": 232,
-                                        "SEQ": 131,
+                                        "row": 152,
+                                        "SEQ": 31,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -78972,79 +78214,7 @@
                                         }
                                     },
                                     {
-                                        "row": 233,
-                                        "SEQ": 120,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 234,
-                                        "SEQ": 106,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 235,
-                                        "SEQ": 105,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 236,
-                                        "SEQ": 104,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 237,
-                                        "SEQ": 70,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 238,
-                                        "SEQ": 69,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 239,
-                                        "SEQ": 68,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 240,
-                                        "SEQ": 33,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "SVPRESP": "Y",
-                                            "VISITNUM": 12.0
-                                        }
-                                    },
-                                    {
-                                        "row": 241,
+                                        "row": 153,
                                         "SEQ": 32,
                                         "USUBJID": "CDISC005",
                                         "value": {
@@ -79053,8 +78223,80 @@
                                         }
                                     },
                                     {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
                                         "row": 242,
-                                        "SEQ": 31,
+                                        "SEQ": 131,
                                         "USUBJID": "CDISC005",
                                         "value": {
                                             "SVPRESP": "Y",
@@ -79371,450 +78613,6 @@
                                         "root[0]['message']": {
                                             "new_value": "column visitnum or visitnum not found in the respective schemas.",
                                             "old_value": "visitnum"
-                                        }
-                                    }
-                                },
-                                "vs.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 111,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 31,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[10]": {
-                                            "new_value": {
-                                                "row": 121,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 121,
-                                                "SEQ": 121,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[11]": {
-                                            "new_value": {
-                                                "row": 232,
-                                                "SEQ": 131,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 152,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[12]": {
-                                            "new_value": {
-                                                "row": 233,
-                                                "SEQ": 120,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 153,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[13]": {
-                                            "new_value": {
-                                                "row": 234,
-                                                "SEQ": 106,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 154,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[14]": {
-                                            "new_value": {
-                                                "row": 235,
-                                                "SEQ": 105,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 186,
-                                                "SEQ": 68,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[15]": {
-                                            "new_value": {
-                                                "row": 236,
-                                                "SEQ": 104,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 187,
-                                                "SEQ": 69,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[16]": {
-                                            "new_value": {
-                                                "row": 237,
-                                                "SEQ": 70,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 188,
-                                                "SEQ": 70,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[17]": {
-                                            "new_value": {
-                                                "row": 238,
-                                                "SEQ": 69,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 219,
-                                                "SEQ": 104,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[18]": {
-                                            "new_value": {
-                                                "row": 239,
-                                                "SEQ": 68,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 220,
-                                                "SEQ": 105,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[19]": {
-                                            "new_value": {
-                                                "row": 240,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 221,
-                                                "SEQ": 106,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 112,
-                                                "SEQ": 111,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 32,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[20]": {
-                                            "new_value": {
-                                                "row": 241,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 232,
-                                                "SEQ": 120,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[21]": {
-                                            "new_value": {
-                                                "row": 242,
-                                                "SEQ": 31,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 242,
-                                                "SEQ": 131,
-                                                "USUBJID": "CDISC005",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 113,
-                                                "SEQ": 100,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 33,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 114,
-                                                "SEQ": 99,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 65,
-                                                "SEQ": 65,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 115,
-                                                "SEQ": 98,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 66,
-                                                "SEQ": 66,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 116,
-                                                "SEQ": 67,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 67,
-                                                "SEQ": 67,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 117,
-                                                "SEQ": 66,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 98,
-                                                "SEQ": 98,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 118,
-                                                "SEQ": 65,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 99,
-                                                "SEQ": 99,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 119,
-                                                "SEQ": 33,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 100,
-                                                "SEQ": 100,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 120,
-                                                "SEQ": 32,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 111,
-                                                "SEQ": 111,
-                                                "USUBJID": "CDISC004",
-                                                "value": {
-                                                    "SVPRESP": "Y",
-                                                    "VISITNUM": 12.0
-                                                }
-                                            }
                                         }
                                     }
                                 }
@@ -93328,57 +92126,17 @@
                                 "number_errors": 7,
                                 "errors": [
                                     {
-                                        "row": 5,
-                                        "SEQ": 4,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "LBDTC": "2006-05",
-                                            "LBDY": 213.0,
-                                            "RFSTDTC": "2005-10-13T10:15"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 3,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "LBDTC": null,
-                                            "LBDY": 141.0,
-                                            "RFSTDTC": "2005-10-13T10:15"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
+                                        "row": 1,
                                         "SEQ": 1,
-                                        "USUBJID": "123101",
+                                        "USUBJID": "123102",
                                         "value": {
-                                            "LBDTC": "2005-09",
+                                            "LBDTC": "2005-09-28",
                                             "LBDY": -15.0,
-                                            "RFSTDTC": "2005-10-13T10:15"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 7,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": null,
-                                            "LBDY": 141.0,
                                             "RFSTDTC": "2005-10"
                                         }
                                     },
                                     {
-                                        "row": 11,
-                                        "SEQ": 6,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": null,
-                                            "LBDY": 1.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
+                                        "row": 5,
                                         "SEQ": 5,
                                         "USUBJID": "123102",
                                         "value": {
@@ -93388,13 +92146,53 @@
                                         }
                                     },
                                     {
-                                        "row": 16,
-                                        "SEQ": 1,
+                                        "row": 6,
+                                        "SEQ": 6,
                                         "USUBJID": "123102",
                                         "value": {
-                                            "LBDTC": "2005-09-28",
-                                            "LBDY": -15.0,
+                                            "LBDTC": null,
+                                            "LBDY": 1.0,
                                             "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 7,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": null,
+                                            "LBDY": 141.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 1,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": "2005-09",
+                                            "LBDY": -15.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 3,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": null,
+                                            "LBDY": 141.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 4,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": "2006-05",
+                                            "LBDY": 213.0,
+                                            "RFSTDTC": "2005-10-13T10:15"
                                         }
                                     }
                                 ]
@@ -93560,164 +92358,6 @@
                                         "root[0]['message']": {
                                             "new_value": "column or relation does not exist",
                                             "old_value": "exdy"
-                                        }
-                                    }
-                                },
-                                "lb.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 5,
-                                                "SEQ": 4,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2006-05",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 6,
-                                                "SEQ": 3,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 5,
-                                                "SEQ": 5,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 8,
-                                                "SEQ": 1,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-09",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 6,
-                                                "SEQ": 6,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 10,
-                                                "SEQ": 7,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 7,
-                                                "SEQ": 7,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 11,
-                                                "SEQ": 6,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 9,
-                                                "SEQ": 1,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-09",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 12,
-                                                "SEQ": 5,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 11,
-                                                "SEQ": 3,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 16,
-                                                "SEQ": 1,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 12,
-                                                "SEQ": 4,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2006-05",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10-13T10:15"
-                                                }
-                                            }
                                         }
                                     }
                                 }
@@ -93890,37 +92530,7 @@
                                 "number_errors": 14,
                                 "errors": [
                                     {
-                                        "row": 13,
-                                        "SEQ": 4,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "LBDTC": null,
-                                            "LBDY": 213.0,
-                                            "RFSTDTC": "2005-10-13"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 3,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "LBDTC": "2006-03",
-                                            "LBDY": 141.0,
-                                            "RFSTDTC": "2005-10-13"
-                                        }
-                                    },
-                                    {
-                                        "row": 15,
-                                        "SEQ": 2,
-                                        "USUBJID": "123101",
-                                        "value": {
-                                            "LBDTC": "2005-10",
-                                            "LBDY": 1.0,
-                                            "RFSTDTC": "2005-10-13"
-                                        }
-                                    },
-                                    {
-                                        "row": 16,
+                                        "row": 1,
                                         "SEQ": 1,
                                         "USUBJID": "123101",
                                         "value": {
@@ -93930,87 +92540,47 @@
                                         }
                                     },
                                     {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": "2005-10",
+                                            "LBDY": 1.0,
+                                            "RFSTDTC": "2005-10-13"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": "2006-03",
+                                            "LBDY": 141.0,
+                                            "RFSTDTC": "2005-10-13"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "123101",
+                                        "value": {
+                                            "LBDTC": null,
+                                            "LBDY": 213.0,
+                                            "RFSTDTC": "2005-10-13"
+                                        }
+                                    },
+                                    {
                                         "row": 17,
-                                        "SEQ": 36,
+                                        "SEQ": 27,
                                         "USUBJID": "123102",
                                         "value": {
-                                            "LBDTC": "2005-10-13",
-                                            "LBDY": 1.0,
+                                            "LBDTC": "2005-09-28",
+                                            "LBDY": -15.0,
                                             "RFSTDTC": "2005-10"
                                         }
                                     },
                                     {
                                         "row": 18,
-                                        "SEQ": 35,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2005-09-28",
-                                            "LBDY": -15.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 19,
-                                        "SEQ": 34,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2006-05-13",
-                                            "LBDY": 213.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 20,
-                                        "SEQ": 33,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2006-03-02",
-                                            "LBDY": 141.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 21,
-                                        "SEQ": 32,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2005-10-13",
-                                            "LBDY": 1.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 22,
-                                        "SEQ": 31,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2005-09-28",
-                                            "LBDY": -15.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 23,
-                                        "SEQ": 30,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2006-05-13",
-                                            "LBDY": 213.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 24,
-                                        "SEQ": 29,
-                                        "USUBJID": "123102",
-                                        "value": {
-                                            "LBDTC": "2006-03-02",
-                                            "LBDY": 141.0,
-                                            "RFSTDTC": "2005-10"
-                                        }
-                                    },
-                                    {
-                                        "row": 25,
                                         "SEQ": 28,
                                         "USUBJID": "123102",
                                         "value": {
@@ -94020,12 +92590,82 @@
                                         }
                                     },
                                     {
-                                        "row": 26,
-                                        "SEQ": 27,
+                                        "row": 19,
+                                        "SEQ": 29,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2006-03-02",
+                                            "LBDY": 141.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 20,
+                                        "SEQ": 30,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2006-05-13",
+                                            "LBDY": 213.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 21,
+                                        "SEQ": 31,
                                         "USUBJID": "123102",
                                         "value": {
                                             "LBDTC": "2005-09-28",
                                             "LBDY": -15.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": 32,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2005-10-13",
+                                            "LBDY": 1.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": 33,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2006-03-02",
+                                            "LBDY": 141.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 34,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2006-05-13",
+                                            "LBDY": 213.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 35,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2005-09-28",
+                                            "LBDY": -15.0,
+                                            "RFSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": 36,
+                                        "USUBJID": "123102",
+                                        "value": {
+                                            "LBDTC": "2005-10-13",
+                                            "LBDY": 1.0,
                                             "RFSTDTC": "2005-10"
                                         }
                                     }
@@ -94212,318 +92852,6 @@
                                         "root[0]['message']": {
                                             "new_value": "column or relation does not exist",
                                             "old_value": "dmdy"
-                                        }
-                                    }
-                                },
-                                "lb.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 13,
-                                                "SEQ": 4,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-01",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            }
-                                        },
-                                        "root[10]": {
-                                            "new_value": {
-                                                "row": 23,
-                                                "SEQ": 30,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-05-13",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 23,
-                                                "SEQ": 33,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-03-02",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[11]": {
-                                            "new_value": {
-                                                "row": 24,
-                                                "SEQ": 29,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-03-02",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 24,
-                                                "SEQ": 34,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-05-13",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[12]": {
-                                            "new_value": {
-                                                "row": 25,
-                                                "SEQ": 28,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 25,
-                                                "SEQ": 35,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[13]": {
-                                            "new_value": {
-                                                "row": 26,
-                                                "SEQ": 27,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 26,
-                                                "SEQ": 36,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 14,
-                                                "SEQ": 3,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2006-03",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": 2,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-10",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 15,
-                                                "SEQ": 2,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-10",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": 3,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2006-03",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 16,
-                                                "SEQ": 1,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": "2005-01",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 4,
-                                                "SEQ": 4,
-                                                "USUBJID": "123101",
-                                                "value": {
-                                                    "LBDTC": null,
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10-13"
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 17,
-                                                "SEQ": 36,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 17,
-                                                "SEQ": 27,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 18,
-                                                "SEQ": 35,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 18,
-                                                "SEQ": 28,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 19,
-                                                "SEQ": 34,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-05-13",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 19,
-                                                "SEQ": 29,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-03-02",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 20,
-                                                "SEQ": 33,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-03-02",
-                                                    "LBDY": 141.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 20,
-                                                "SEQ": 30,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2006-05-13",
-                                                    "LBDY": 213.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 21,
-                                                "SEQ": 32,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 21,
-                                                "SEQ": 31,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 22,
-                                                "SEQ": 31,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-09-28",
-                                                    "LBDY": -15.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 22,
-                                                "SEQ": 32,
-                                                "USUBJID": "123102",
-                                                "value": {
-                                                    "LBDTC": "2005-10-13",
-                                                    "LBDY": 1.0,
-                                                    "RFSTDTC": "2005-10"
-                                                }
-                                            }
                                         }
                                     }
                                 }
