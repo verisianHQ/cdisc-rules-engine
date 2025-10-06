@@ -26,11 +26,9 @@ class SqlDatasetColumnOrderOperation(SqlBaseOperation):
             # Format column names for SQL ARRAY
             formatted_cols = [f"'{name}'" for name in column_names]
             array_str = f"ARRAY[{', '.join(formatted_cols)}]"
-            num_rows_query = f"(SELECT COUNT(*) FROM {dataset_name})"
-            query = f"SELECT {array_str} AS value FROM generate_series(1, {num_rows_query}) AS t(id)"
+            query = f"SELECT {array_str} AS value"
         else:
-            # Return empty array for each row
-            num_rows_query = f"(SELECT COUNT(*) FROM {dataset_name})"
-            query = f"SELECT ARRAY[]::text[] AS value FROM generate_series(1, {num_rows_query}) AS t(id)"
+            # Return empty array
+            query = "SELECT ARRAY[]::text[] AS value"
 
         return SqlOperationResult(query, type="collection", subtype="Char")

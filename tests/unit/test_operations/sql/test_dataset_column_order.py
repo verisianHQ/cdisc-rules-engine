@@ -17,7 +17,6 @@ import pytest
             },
             [
                 ["STUDYID", "DOMAIN", "AESEQ", "USUBJID"],
-                ["STUDYID", "DOMAIN", "AESEQ", "USUBJID"],
             ],
         ),
         (
@@ -27,7 +26,6 @@ import pytest
                 "SUBJID": ["ID1", "ID2"],
             },
             [
-                ["DOMAIN", "USUBJID", "SUBJID"],
                 ["DOMAIN", "USUBJID", "SUBJID"],
             ],
         ),
