@@ -4,14 +4,14 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 37 (4.9%)
-- **Clean rules**: 725 (95.1%)
+- **Rules with any errors**: 32 (4.2%)
+- **Clean rules**: 730 (95.8%)
 
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 2
 - Rules with **operation errors**: 13
-- Rules with **other errors**: 22
+- Rules with **other errors**: 17
 
 ## Missing Operators (2 operators, 6 total failures across 2 rule occurrences)
 
@@ -31,21 +31,22 @@
 9.  **valid_codelist_dates**: 2 failures across 1 rules
 10. **domain_is_custom**: 1 failures across 1 rules
 
-## Execution Errors by Type (14 unique error types, 165 total failures across 37 rule occurrences)
+## Execution Errors by Type (15 unique error types, 145 total failures across 32 rule occurrences)
 
-1.  **An unknown exception has occurred**: 106 failures across 21 rules
+1.  **An unknown exception has occurred**: 82 failures across 15 rules
 2.  **SQL error in is_incomplete_date operator**: 12 failures across 2 rules
 3.  **SQL error in not_matches_regex operator**: 8 failures across 2 rules
 4.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
 5.  **Rule format error**: 15 failures across 1 rules
-6.  **SQL error in target_is_not_sorted_by operator**: 4 failures across 1 rules
-7.  **SQL error in less_than_or_equal_to operator**: 3 failures across 1 rules
-8.  **SQL error in is_not_contained_by operator**: 2 failures across 1 rules
-9.  **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
-10. **SQL error in date_less_than operator**: 2 failures across 1 rules
-11. **SQL error in inconsistent_enumerated_columns operator**: 2 failures across 1 rules
-12. **SQL error in date_greater_than operator**: 2 failures across 1 rules
-13. **SQL error in matches_regex operator**: 2 failures across 1 rules
-14. **SQL error in is_not_unique_set operator**: 1 failures across 1 rules
+6.  **SQL error in not_equal_to operator**: 4 failures across 1 rules
+7.  **SQL error in target_is_not_sorted_by operator**: 4 failures across 1 rules
+8.  **SQL error in less_than_or_equal_to operator**: 3 failures across 1 rules
+9.  **SQL error in is_not_contained_by operator**: 2 failures across 1 rules
+10. **SQL error in sqldaydatavalidatoroperation operation**: 2 failures across 1 rules
+11. **SQL error in date_less_than operator**: 2 failures across 1 rules
+12. **SQL error in inconsistent_enumerated_columns operator**: 2 failures across 1 rules
+13. **SQL error in date_greater_than operator**: 2 failures across 1 rules
+14. **SQL error in matches_regex operator**: 2 failures across 1 rules
+15. **SQL error in is_not_unique_set operator**: 1 failures across 1 rules
 
 ## SQL vs Old Engine Discrepancies
