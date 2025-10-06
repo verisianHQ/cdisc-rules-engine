@@ -63,6 +63,24 @@ COMPLEX_RELATIONSHIP_DATA = {
     },
 }
 
+MIXED_RDOMAIN_DATA = {
+    "original": {
+        "STUDYID": ["STUDY001", "STUDY001"],
+        "DOMAIN": ["EC", "EC"],
+        "USUBJID": ["SUBJ001", "SUBJ002"],
+        "ECSEQ": [1, 1],
+        "ECSTDY": [5, 10],
+    },
+    "relationship": {
+        "STUDYID": ["STUDY001", "STUDY001", "STUDY001"],
+        "RDOMAIN": ["EC", "EC", "AE"],
+        "USUBJID": ["SUBJ001", "SUBJ002", "SUBJ003"],
+        "IDVAR": ["", "", ""],
+        "IDVARVAL": ["", "", ""],
+        "POOLID": ["POOL1", "POOL2", "POOL3"],
+    },
+}
+
 
 @pytest.mark.parametrize(
     "data, expected, domain",
@@ -107,6 +125,36 @@ COMPLEX_RELATIONSHIP_DATA = {
                     "ecseq": 1,
                     "ecstdy": 10,
                     "poolid": "POOL2",
+                },
+            ],
+            "RELSUB",
+        ),
+        (
+            MIXED_RDOMAIN_DATA,
+            [
+                {
+                    "studyid": "STUDY001",
+                    "domain": "EC",
+                    "usubjid": "SUBJ001",
+                    "ecseq": 1.0,
+                    "ecstdy": 5.0,
+                    "poolid": "POOL1",
+                },
+                {
+                    "studyid": "STUDY001",
+                    "domain": "EC",
+                    "usubjid": "SUBJ002",
+                    "ecseq": 1.0,
+                    "ecstdy": 10.0,
+                    "poolid": "POOL2",
+                },
+                {
+                    "studyid": None,
+                    "domain": None,
+                    "usubjid": None,
+                    "ecseq": None,
+                    "ecstdy": None,
+                    "poolid": "POOL3",
                 },
             ],
             "RELSUB",

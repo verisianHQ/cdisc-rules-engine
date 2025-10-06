@@ -140,10 +140,8 @@ class SqlRelationshipMerge:
         """Perform simple outer join when relationship columns are empty."""
         name = f"{original.name}_REL_{domain}_SIMPLE"
 
-        # TEMPORARILY DISABLED: Check if already exists
-        # TODO: Re-enable caching after testing
-        # if pgi.schema.get_table(name) is not None:
-        #     return pgi.schema.get_table(name)
+        if pgi.schema.get_table(name) is not None:
+            return pgi.schema.get_table(name)
 
         schema = SqlRelationshipMerge._build_merged_schema(original, relationship_dataset, domain, name, match_keys)
         pgi.create_table(schema)

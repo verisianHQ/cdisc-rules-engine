@@ -160,9 +160,8 @@ class PostgresQLDataService:
 
         for merge_spec in datasets:
             right: str = merge_spec.get("domain_name").lower()
+            is_relationship = merge_spec.get("relationship_columns", None) is not None
             is_child = bool(merge_spec.get("child"))
-
-            is_relationship_dataset = self._is_relationship_dataset(right)
 
             if is_child:
                 raise NotImplementedError("Child merges are not supported yet in SQL implementation")
@@ -178,7 +177,7 @@ class PostgresQLDataService:
                 left_id = self._do_supp_merge(
                     original=left_id, target=right, dataset_metadata=dataset_metadata, merge_spec=merge_spec, rule=rule
                 )
-            elif is_relationship_dataset:
+            elif is_relationship:
                 left_id = self._do_relationship_merge(
                     original=left_id,
                     relationship_dataset=right,
@@ -190,20 +189,6 @@ class PostgresQLDataService:
                 left_id = self._do_join_merge(left=left_id, right=right, merge_spec=merge_spec, rule=rule)
 
         return left_id
-
-    def _is_relationship_dataset(self, dataset_name: str) -> bool:
-        """
-        Check if a dataset is a relationship dataset.
-        """
-        dataset_name_upper = dataset_name.upper()
-        if dataset_name_upper in ["RELREC", "RELSUB", "CO"]:
-            return True
-        elif dataset_name_upper.startswith("SUPP"):
-            return True
-        elif dataset_name_upper.startswith("SQ"):
-            return True
-        else:
-            return False
 
     def _do_join_merge(self, left: str, right: str, merge_spec: dict, rule: dict) -> str:
         """
