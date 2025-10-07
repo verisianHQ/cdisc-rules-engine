@@ -1,5 +1,11 @@
 from abc import abstractmethod
 
+from cdisc_rules_engine.constants.permissibility import (
+    REQUIRED,
+    PERMISSIBILITY_KEY,
+    REQUIRED_MODEL_VARIABLES,
+    SEQ_VARIABLE,
+)
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -104,6 +110,19 @@ class SqlBaseOperation:
                 raise ValueError(f"Unsupported filter value type: {type(value)} for column {column}")
 
         return "WHERE " + " AND ".join(where_clauses) if where_clauses else ""
+
+    def _get_allowed_variable_permissibility(self, variable_metadata):
+        variable_name = variable_metadata.get("name")
+        if PERMISSIBILITY_KEY in variable_metadata:
+            return variable_metadata[PERMISSIBILITY_KEY]
+        elif variable_name in REQUIRED_MODEL_VARIABLES:
+            return REQUIRED
+        elif variable_name.replace("--", self.params.domain) == SEQ_VARIABLE.replace("--", self.params.domain):
+            return REQUIRED
+
+        from cdisc_rules_engine.constants.permissibility import PERMISSIBLE
+
+        return PERMISSIBLE
 
     @staticmethod
     def _replace_variable_wildcards(variables_metadata, domain):

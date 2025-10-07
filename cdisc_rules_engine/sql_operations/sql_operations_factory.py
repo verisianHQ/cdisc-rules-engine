@@ -13,6 +13,7 @@ from cdisc_rules_engine.sql_operations.date_operation import SqlDateOperation
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 from cdisc_rules_engine.sql_operations.dataset_column_order import SqlDatasetColumnOrderOperation
+from cdisc_rules_engine.sql_operations.required_variables import SqlRequiredVariablesOperation
 from cdisc_rules_engine.models.library_metadata_container import LibraryMetadataContainer
 
 
@@ -51,7 +52,7 @@ class SqlOperationsFactory:
         "variable_is_null": None,
         "domain_is_custom": None,
         "domain_label": SqlDomainLabelOperation,
-        "required_variables": None,
+        "required_variables": SqlRequiredVariablesOperation,
         "expected_variables": None,
         "permissible_variables": None,
         "study_domains": None,
