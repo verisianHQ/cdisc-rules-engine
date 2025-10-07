@@ -1,9 +1,4 @@
-import pandas as pd
 from .base_sql_operator import BaseSqlOperator
-from business_rules.utils import (
-    is_valid_date,
-)
-from cdisc_rules_engine.utilities.utils import dates_overlap, parse_date
 
 
 class TargetIsSortedByOperator(BaseSqlOperator):
@@ -11,83 +6,134 @@ class TargetIsSortedByOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         """
-        Checking the sort order based on comparators, including date overlap checks
+        Checks if target values are sorted correctly based on comparator columns.
+
+        For each group (defined by 'within'), verifies that target values follow
+        the expected order when rows are sorted by comparator columns. Also handles
+        date overlap validation for partial dates.
+
+        Args:
+            other_value: Dictionary containing:
+                - target: The target column to check sorting of
+                - within: The column to group by
+                - comparator: List of dictionaries with:
+                    - name: Column name to sort by
+                    - sort_order: "ASC" or "DESC"
+                    - null_position: "first" or "last"
+
+        Returns:
+            Boolean series indicating if each record meets the sorting condition
         """
-        """target: str = self.replace_prefix(other_value.get("target"))
-        within: str = self.replace_prefix(other_value.get("within"))
-        columns = other_value["comparator"]
-        result = pd.Series([True] * len(self.validation_df), index=self.validation_df.index)
-        pandas = isinstance(self.validation_df, PandasDataset)
-        for col in columns:
-            comparator: str = self.replace_prefix(col["name"])
-            ascending: bool = col["sort_order"].lower() != "desc"
-            na_pos: str = col["null_position"]
-            sorted_df = self.validation_df[[target, within, comparator]].sort_values(
-                by=[within, comparator], ascending=ascending, na_position=na_pos
+        target = self.replace_prefix(other_value.get("target"))
+        within = self.replace_prefix(other_value.get("within"))
+        comparators = other_value["comparator"]
+
+        if not all([target, within, comparators]):
+            raise ValueError("Missing required parameters: target, within, or comparator")
+
+        comparator_parts = []
+        for comp in comparators:
+            name = self.replace_prefix(comp["name"])
+            order = comp["sort_order"].upper()
+            null_pos = comp["null_position"]
+            comparator_parts.append(f"{name}_{order}_{null_pos}")
+
+        cache_key = f"{target}_is_sorted_by_{'_'.join(comparator_parts)}_within_{within}"
+
+        def sql(table_name, column_name):
+            order_by_parts = []
+            for i, comp in enumerate(comparators):
+                comp_name = self.replace_prefix(comp["name"])
+                sort_order = comp["sort_order"].upper()
+                null_pos = comp["null_position"].upper()
+
+                comp_sql = self._column_sql(comp_name, alias=False)
+                order_part = f"{comp_sql} {sort_order}"
+                if null_pos == "FIRST":
+                    order_part += " NULLS FIRST"
+                else:
+                    order_part += " NULLS LAST"
+                order_by_parts.append(order_part)
+
+            order_by_clause = ", ".join(order_by_parts)
+
+            # Get first comparator for checking NULL values
+            first_comp = comparators[0]
+            first_comp_name = self.replace_prefix(first_comp["name"])
+            first_comp_sql = self._column_sql(first_comp_name, alias=False)
+
+            return f"""
+            -- Check if target is sorted correctly by comparator columns within groups
+            WITH sorted_with_positions AS (
+                SELECT
+                    id,
+                    {self._column_sql(target, alias=False)} AS target_val,
+                    {self._column_sql(within, alias=False)} AS within_val,
+                    {first_comp_sql} AS comp_val,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY {self._column_sql(within, alias=False)}
+                        ORDER BY {order_by_clause}
+                    ) AS sorted_position,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY {self._column_sql(within, alias=False)}
+                        ORDER BY {order_by_clause}
+                    ) AS expected_index
+                FROM {table_name}
+            ),
+            target_order AS (
+                SELECT
+                    id,
+                    target_val,
+                    within_val,
+                    comp_val,
+                    sorted_position,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY within_val
+                        ORDER BY
+                            CASE WHEN target_val IS NULL THEN 1 ELSE 0 END,
+                            target_val
+                    ) AS target_sorted_position
+                FROM sorted_with_positions
+            ),
+            basic_check AS (
+                SELECT
+                    id,
+                    CASE
+                        -- If comparator is NULL, always mark as False (matches original safe_compare logic)
+                        WHEN comp_val IS NULL THEN false
+                        -- Check if the positions match (target order = expected order)
+                        ELSE sorted_position = target_sorted_position
+                    END AS is_valid
+                FROM target_order
+            ),
+            date_overlap_check AS (
+                SELECT
+                    s1.id,
+                    CASE
+                        WHEN s1.comp_val IS NULL OR s2.comp_val IS NULL THEN true
+                        WHEN s1.comp_val ~ '^[0-9]{{4}}$' AND s2.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}'
+                             AND s2.comp_val LIKE s1.comp_val || '%' THEN false
+                        WHEN s1.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}$'
+                             AND s2.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}'
+                             AND s2.comp_val LIKE s1.comp_val || '%' THEN false
+                        WHEN s2.comp_val ~ '^[0-9]{{4}}$' AND s1.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}'
+                             AND s1.comp_val LIKE s2.comp_val || '%' THEN false
+                        WHEN s2.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}$'
+                             AND s1.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}'
+                             AND s1.comp_val LIKE s2.comp_val || '%' THEN false
+                        ELSE true
+                    END AS date_overlap_ok
+                FROM sorted_with_positions s1
+                LEFT JOIN sorted_with_positions s2 ON s1.within_val = s2.within_val
+                    AND s2.sorted_position = s1.sorted_position + 1
             )
-            grouped_df = sorted_df.groupby(within)
+            UPDATE {table_name} t
+            SET {column_name} = (
+                SELECT (b.is_valid AND d.date_overlap_ok)
+                FROM basic_check b
+                JOIN date_overlap_check d ON b.id = d.id
+                WHERE b.id = t.id
+            )
+            """
 
-            # Check basic sort order, remove multiindex from series
-            basic_sort_check = grouped_df.apply(lambda x: self.check_basic_sort_order(x, target, comparator, ascending))
-            if pandas:
-                basic_sort_check = basic_sort_check.reset_index(level=0, drop=True)
-            else:
-                basic_sort_check = basic_sort_check.reset_index(drop=True)
-            result = result & basic_sort_check
-
-            # Check date overlaps, remove multiindex from series
-            date_overlap_check = grouped_df.apply(lambda x: self.check_date_overlaps(x, target, comparator))
-            if pandas:
-                date_overlap_check = date_overlap_check.reset_index(level=0, drop=True)
-            else:
-                date_overlap_check = date_overlap_check.reset_index(drop=True)
-            result = result & date_overlap_check
-
-            # handle edge case where a dataframe is returned
-            if isinstance(result, (pd.DataFrame, dd.DataFrame)):
-                if isinstance(result, dd.DataFrame):
-                    result = result.compute()
-                result = result.squeeze()
-        return result"""
-        raise NotImplementedError("target_is_sorted_by check_operator not implemented")
-
-    def check_basic_sort_order(self, group, target, comparator, ascending):
-        target_values = group[target].tolist()
-        comparator_values = group[comparator].tolist()
-        is_sorted = pd.Series(True, index=group.index)
-
-        def safe_compare(x, index):
-            if pd.isna(x):
-                is_sorted[index] = False
-                return "9999-12-31" if ascending else "0001-01-01"
-            return x
-
-        expected_order = sorted(
-            range(len(comparator_values)),
-            key=lambda k: safe_compare(comparator_values[k], group.index[k]),
-            reverse=not ascending,
-        )
-        actual_order = sorted(range(len(target_values)), key=lambda k: target_values[k])
-
-        for i, (exp, act) in enumerate(zip(expected_order, actual_order)):
-            if exp != act:
-                is_sorted.iloc[i] = False
-
-        return is_sorted
-
-    def check_date_overlaps(self, group, target, comparator):
-        comparator_values = group[comparator].tolist()
-        is_sorted = pd.Series(True, index=group.index)
-
-        for i in range(len(comparator_values) - 1):
-            if is_valid_date(comparator_values[i]) and is_valid_date(comparator_values[i + 1]):
-                date1, prec1 = parse_date(comparator_values[i])
-                date2, prec2 = parse_date(comparator_values[i + 1])
-                if prec1 != prec2:
-                    overlaps, less_precise = dates_overlap(date1, prec1, date2, prec2)
-                    if overlaps and date1.startswith(less_precise):
-                        is_sorted.iloc[i] = False
-                    elif overlaps and date2.startswith(less_precise):
-                        is_sorted.iloc[i + 1] = False
-
-        return is_sorted
+        return self._do_complex_check_operator(cache_key, sql)
