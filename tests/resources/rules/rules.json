@@ -111559,13 +111559,49 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "TSVALn is null when TSVAL(n+1) is populated.",
+                                "number_errors": 4,
                                 "errors": [
                                     {
-                                        "error": "SQL error in inconsistent_enumerated_columns operator",
-                                        "message": "inconsistent_enumerated_columns check_operator not implemented"
+                                        "row": 22,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSGRPID": "EFFICACY",
+                                            "TSPARMCD": "OBJPRIM",
+                                            "TSVAL": null
+                                        }
+                                    },
+                                    {
+                                        "row": 24,
+                                        "SEQ": 1,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSGRPID": "EFFICACY",
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSVAL": "To assess the dose-dependent improvement in subject depression. Improved scores on the Patient Health Questionnaire(PHQ-9) and the Hamilton Depression Rating Scale(HAMD 17) will indicate improvements,"
+                                        }
+                                    },
+                                    {
+                                        "row": 25,
+                                        "SEQ": 2,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSGRPID": "EFFICACY",
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSVAL": "To assess the dose-dependent improvements in satisfaction with subjects' lives as a whole. Improved scores on the Satisfaction With Life Survery (SWLS) will indicate improvements."
+                                        }
+                                    },
+                                    {
+                                        "row": 26,
+                                        "SEQ": 3,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "TSGRPID": "EFFICACY",
+                                            "TSPARMCD": "OUTMSPRI",
+                                            "TSVAL": "To assess the dose-dependent improvements in subject memory and learning. Improved scores on the Auditory Verbal Learning Test (AVLT-REY) will indicate improvements."
+                                        }
                                     }
                                 ]
                             }
@@ -111624,12 +111660,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111654,15 +111687,10 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in inconsistent_enumerated_columns operator",
-                                        "message": "inconsistent_enumerated_columns check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -111678,12 +111706,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
