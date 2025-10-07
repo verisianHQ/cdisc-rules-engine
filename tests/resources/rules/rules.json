@@ -105440,28 +105440,46 @@
                             {
                                 "dataset": "sm.xpt",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "SMSEQ is not chronological (based on SMSTDTC) within USUBJID",
+                                "number_errors": 3,
                                 "errors": [
                                     {
-                                        "error": "SQL error in target_is_not_sorted_by operator",
-                                        "message": "target_is_sorted_by check_operator not implemented"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "SMSEQ": 1.0,
+                                            "SMSTDTC": "2005-10"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "SMSEQ": 2.0,
+                                            "SMSTDTC": "2005-10-08"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "001",
+                                        "value": {
+                                            "SMSEQ": 3.0,
+                                            "SMSTDTC": "2005-10-06"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in target_is_not_sorted_by operator",
-                                        "message": "target_is_sorted_by check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -105513,12 +105531,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -105543,28 +105558,18 @@
                             {
                                 "dataset": "sm.xpt",
                                 "domain": "SM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in target_is_not_sorted_by operator",
-                                        "message": "target_is_sorted_by check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "se.xpt",
                                 "domain": "SE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in target_is_not_sorted_by operator",
-                                        "message": "target_is_sorted_by check_operator not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -105588,12 +105593,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
