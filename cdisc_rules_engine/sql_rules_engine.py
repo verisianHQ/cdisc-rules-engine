@@ -37,6 +37,7 @@ from cdisc_rules_engine.models.validation_error_container import (
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -55,7 +56,11 @@ def clean_postgres_message(message: str) -> str:
 
 
 class SQLRulesEngine:
-    def __init__(self, data_service: PostgresQLDataService, standards_context: BaseStandardsContext):
+    def __init__(
+        self,
+        data_service: PostgresQLDataService,
+        standards_context: BaseStandardsContext,
+    ):
         self.data_service = data_service
         self.standards_context = standards_context
 
@@ -148,57 +153,50 @@ class SQLRulesEngine:
         dataset_metadata: SQLDatasetMetadata,
     ) -> List[Union[dict, str]]:
         """
-         This function is an entrypoint for rule validation.
-        It defines a rule validator based on its type and calls it.
+        This function is an entrypoint for rule validation.
+        It uses the sql_builder_factory to get the correct data source
+        (table or view) and then executes the rule against it.
         """
-        # Update rule for certain rule types
-        # SPECIAL CASES FOR RULE TYPES ###############################
-        # TODO: Handle these special cases better.
-        # if self.library_metadata:
-        #     kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-        #     kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
-        # if rule.get("rule_type") == RuleTypes.DEFINE_ITEM_METADATA_CHECK.value:
-        #     if self.library_metadata:
-        #         kwargs["variable_codelist_map"] = self.library_metadata.variable_codelist_map
-        #         kwargs["codelist_term_maps"] = self.library_metadata.get_all_ct_package_metadata()
-        # elif (
-        #     rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value
-        #     or rule.get("rule_type") == RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value
-        # ):
-        #     self.rule_processor.add_comparator_to_rule_conditions(rule, comparator=None, target_prefix="define_")
-        # elif rule.get("rule_type") == RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value:
-        #     value_level_metadata: List[dict] = self.get_define_xml_value_level_metadata(
-        #         dataset_metadata.full_path, dataset_metadata.unsplit_name
-        #     )
-        #     kwargs["value_level_metadata"] = value_level_metadata
+        try:
+            # 1. Get the correct builder from the factory based on the rule type
+            builder = sql_builder_factory.get_service(
+                rule_type=rule.get("rule_type"),
+                rule=rule,
+                data_service=self.data_service,
+                dataset_metadata=dataset_metadata,
+                library_metadata=self.library_metadata,
+            )
 
-        # elif rule.get("rule_type") == RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value:
-        #     library_metadata: dict = self.library_metadata.variables_metadata.get(dataset_metadata.domain, {})
-        #     define_metadata: List[dict] = builder.get_define_xml_variables_metadata()
-        #     targets: List[str] = self.data_processor.filter_dataset_columns_by_metadata_and_rule(
-        #         dataset.columns.tolist(), define_metadata, library_metadata, rule
-        #     )
-        #     rule_copy = deepcopy(rule)
-        # updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(rule_copy["conditions"], targets)
-        #     rule_copy["conditions"].set_conditions(updated_conditions)
-        #     # When duplicating conditions,
-        #     # rule should be copied to prevent updates to concurrent rule executions
-        #     return self.execute_rule(rule_copy, datasets, dataset_metadata, **kwargs)
+            # 2. Use the builder to get the name of the table/view to validate against
+            dataset_id_to_validate = builder.get_dataset_id()
 
-        # logger.info(f"Using dataset build by: {builder.__class__}")
-        return self.execute_rule(rule, dataset_metadata)
+        except NotImplementedError as e:
+            # Gracefully handle rules that are not yet supported by the SQL engine
+            logger.warning(f"Skipping rule due to unimplemented rule type: {e}")
+            return [
+                ValidationErrorContainer(
+                    status=ExecutionStatus.SKIPPED.value,
+                    message=str(e),
+                    dataset=dataset_metadata.filename,
+                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
+                ).to_representation()
+            ]
+
+        # 3. Pass the CORRECT dataset_id (which could be a view) to execute_rule
+        return self.execute_rule(rule, dataset_metadata, dataset_id_to_validate)
 
     def execute_rule(
         self,
         rule: dict,
         dataset_metadata: SQLDatasetMetadata,
-        value_level_metadata: List[dict] = [],
-        variable_codelist_map: dict = {},
-        codelist_term_maps: list = [],
+        dataset_id_to_validate: str,  # <-- The table/view name from the builder
+        value_level_metadata: List[dict] = None,
+        variable_codelist_map: dict = None,
+        codelist_term_maps: list = None,
         ct_packages: list = None,
     ) -> List[str]:
         """
-        Executes the given rule on a given dataset.
+        Executes the given rule on a given dataset (or a view of it).
         """
         # Add conditions to rule for all variables if variables: all appears in condition
         rule_copy = deepcopy(rule)
@@ -213,12 +211,9 @@ class SQLRulesEngine:
             rule_copy, dataset_metadata.domain, data_service=self.data_service, standards_context=self.standards_context
         )
 
-        # Apply any joins
-        dataset_id = self.data_service.get_dataset_for_rule(dataset_metadata, rule_copy)
-
         # Translator between venmo and the check operators
         venmo_object = SqlVenmoObject(
-            dataset_id=dataset_id,
+            dataset_id=dataset_id_to_validate,  # Use the name provided by the builder
             data_service=self.data_service,
             column_prefix_map={"--": dataset_metadata.domain},
             operation_variables=operation_variables,
@@ -226,14 +221,14 @@ class SQLRulesEngine:
 
         results = []
         run(
-            serialize_rule(rule_copy),  # engine expects a JSON serialized dict
+            serialize_rule(rule_copy),
             defined_variables=venmo_object,
             defined_actions=SqlVenmoResultHandler(
                 results,
                 dataset_metadata=dataset_metadata,
                 rule=rule,
                 data_service=self.data_service,
-                dataset_id=dataset_id,
+                dataset_id=dataset_id_to_validate,  # Use the name provided by the builder
                 operation_variables=operation_variables,
             ),
         )
