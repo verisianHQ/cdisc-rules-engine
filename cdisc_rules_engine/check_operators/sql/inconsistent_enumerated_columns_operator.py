@@ -118,6 +118,6 @@ class InconsistentEnumeratedColumnsOperator(BaseSqlOperator):
         col_sql = self._column_sql(column, alias=False)
 
         if column_schema and column_schema.type == "Num":
-            return f"{col_sql} IS NOT NULL"
+            return f"({col_sql} IS NOT NULL)"
         else:
             return f"({col_sql} IS NOT NULL AND {col_sql} != '')"
