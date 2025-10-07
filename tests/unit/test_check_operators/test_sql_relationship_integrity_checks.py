@@ -354,7 +354,6 @@ def test_non_empty_within_except_last_row(data, params, expected_result):
 
 
 TARGET_IS_SORTED_BY_DATA = [
-    # Basic ascending sort - valid
     (
         {
             "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
@@ -374,7 +373,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [True, True, True, True, True],
     ),
-    # Basic descending sort - mixed results
     (
         {
             "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
@@ -394,7 +392,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [False, False, False, True, False],
     ),
-    # Numeric USUBJID - ascending sort
     (
         {
             "USUBJID": [123, 456, 456, 123, 123],
@@ -414,7 +411,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [True, True, True, True, True],
     ),
-    # Invalid sort order
     (
         {
             "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
@@ -434,7 +430,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [True, False, False, True, True],
     ),
-    # Multiple comparators - valid
     (
         {
             "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
@@ -464,7 +459,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [True, True, True, True, True],
     ),
-    # Multiple comparators with mixed sort orders - some invalid
     (
         {
             "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
@@ -494,7 +488,6 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [True, True, True, False, False],
     ),
-    # Null values - some invalid
     (
         {
             "USUBJID": [123, 456, 456, 123, 123],
@@ -535,6 +528,45 @@ TARGET_IS_SORTED_BY_DATA = [
             "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
         },
         [False, False, True, False, True, True],
+    ),
+    # Invalid date formats - incomplete patterns (YYYY-, YYYY-MM-)
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002"],
+            "SESEQ": [1, 2, 3, 1, 2],
+            "SESTDTC": [
+                "2006-",
+                "2006-06-02",
+                "2006-06-03",
+                "2007-05-",
+                "2007-05-01",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
+        },
+        [False, True, True, False, True],
+    ),
+    # Invalid date formats - time uncertainty patterns (-:)
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC002", "CDISC002"],
+            "SESEQ": [1, 2, 1, 2],
+            "SESTDTC": [
+                "2006-06-01T10:-:",
+                "2006-06-02",
+                "2007-05-01T-:30",
+                "2007-05-02",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
+        },
+        [False, True, False, True],
     ),
 ]
 
