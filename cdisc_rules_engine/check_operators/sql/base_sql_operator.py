@@ -142,9 +142,6 @@ class BaseSqlOperator:
         Fetches data from a SQL table and returns it as a pandas Series,
         so we can pass it to Venmo.
 
-        For Domain Presence Check rules: When validating against a derived table
-        (e.g., domains_catalog_table with 1 row) while the actual dataset has
-        multiple rows, broadcast the single value to match the original dataset length.
         """
         # Fetch all of the rows
         self.sql_data_service.pgi.execute_sql(
@@ -154,20 +151,6 @@ class BaseSqlOperator:
 
         # Fix off-by-one
         return_series = pd.Series(data={item["id"] - 1: item["data"] for item in sql_results})
-
-        # If validating against a different table (e.g., domains_catalog_table),
-        # broadcast single-row results to match the original dataset length
-        if self.table_id != self.original_dataset_id and len(return_series) == 1:
-            # Get the row count of the original dataset
-            original_table_hash = self.sql_data_service.pgi.schema.get_table_hash(self.original_dataset_id)
-            if original_table_hash:
-                self.sql_data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {original_table_hash};")
-                count_result = self.sql_data_service.pgi.fetch_all()
-                original_row_count = count_result[0]["count"]
-
-                # Broadcast the single value to all rows
-                single_value = return_series.iloc[0]
-                return_series = pd.Series([single_value] * original_row_count, index=range(original_row_count))
 
         return return_series
 
