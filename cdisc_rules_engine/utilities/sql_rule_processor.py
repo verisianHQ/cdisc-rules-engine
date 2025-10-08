@@ -22,7 +22,6 @@ class SQLRuleProcessor:
 
     @staticmethod
     def perform_rule_operations(
-        self,
         rule: dict,
         current_domain: str,
         data_service: PostgresQLDataService,

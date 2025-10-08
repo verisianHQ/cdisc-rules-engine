@@ -22,7 +22,7 @@ from cdisc_rules_engine.models.library_metadata_container import (
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
-from cdisc_rules_engine.utilities.utils import is_ap_domain
+from cdisc_rules_engine.utilities.utils import is_ap_domain, search_in_list_of_dicts
 
 
 class SdtmStandardsContext(BaseStandardsContext):
@@ -49,6 +49,11 @@ class SdtmStandardsContext(BaseStandardsContext):
         return []
 
     def get_domain_label(self, domain: str):
+        standard_data = self.library_metadata.standard_metadata
+        for c in standard_data.get("classes", []):
+            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
+            if domain_details:
+                return domain_details.get("label", "")
         return ""
 
     # TODO: Replace SDTMDatasetMetadata with a more generic metadata container

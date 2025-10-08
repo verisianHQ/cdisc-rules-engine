@@ -72,7 +72,10 @@ class SQLRulesEngine:
 
             is_suitable, reason = self.standards_context.within_rule_scope(
                 rule,
-                dataset_metadata,
+                next(
+                    (metadata for metadata in self.data_service.datasets if metadata.name.lower() == pp_ds_id.lower()),
+                    None,
+                ),
             )
             if is_suitable:
                 if dataset_metadata.unsplit_name in results and "domains" in rule:
