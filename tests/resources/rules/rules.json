@@ -25525,7 +25525,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 14,
+                                        "row": 5,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -25569,19 +25569,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "sv.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 14,
-                                            "old_value": 5
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -70014,7 +70002,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 4,
+                                        "row": 5,
                                         "SEQ": 2,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
@@ -70064,19 +70052,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "lb.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 4,
-                                            "old_value": 5
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -70601,7 +70577,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 10,
+                                        "row": 2,
                                         "SEQ": null,
                                         "USUBJID": "CDISC002",
                                         "value": {
@@ -70643,19 +70619,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 10,
-                                            "old_value": 2
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -70782,7 +70746,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 3,
+                                        "row": 1,
                                         "SEQ": null,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -70832,19 +70796,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 3,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -70955,7 +70907,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 3,
+                                        "row": 1,
                                         "SEQ": null,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -71005,19 +70957,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 3,
-                                            "old_value": 1
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -112645,7 +112585,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 6,
+                                        "row": 1,
                                         "SEQ": 1,
                                         "USUBJID": "CDISC-TEST-001",
                                         "value": {
@@ -112654,7 +112594,7 @@
                                         }
                                     },
                                     {
-                                        "row": 48,
+                                        "row": 8,
                                         "SEQ": 29,
                                         "USUBJID": "CDISC-TEST-002",
                                         "value": {
@@ -112713,55 +112653,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 6,
-                                                "SEQ": 1,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "AESMIE": null,
-                                                    "QNAM": "AESOSP"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": 1,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "AESMIE": null,
-                                                    "QNAM": "AESOSP"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 48,
-                                                "SEQ": 29,
-                                                "USUBJID": "CDISC-TEST-002",
-                                                "value": {
-                                                    "AESMIE": "N",
-                                                    "QNAM": "AESOSP"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 8,
-                                                "SEQ": 29,
-                                                "USUBJID": "CDISC-TEST-002",
-                                                "value": {
-                                                    "AESMIE": "N",
-                                                    "QNAM": "AESOSP"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -121941,12 +121833,12 @@
                                 "number_errors": 3,
                                 "errors": [
                                     {
-                                        "row": 2,
+                                        "row": 1,
                                         "SEQ": null,
-                                        "USUBJID": "S004",
+                                        "USUBJID": "S001",
                                         "value": {
                                             "CETHNIC": "Not in dataset",
-                                            "ETHNIC": "XXXXXXX"
+                                            "ETHNIC": "HISPANIC"
                                         }
                                     },
                                     {
@@ -121961,10 +121853,10 @@
                                     {
                                         "row": 4,
                                         "SEQ": null,
-                                        "USUBJID": "S001",
+                                        "USUBJID": "S004",
                                         "value": {
                                             "CETHNIC": "Not in dataset",
-                                            "ETHNIC": "HISPANIC"
+                                            "ETHNIC": "XXXXXXX"
                                         }
                                     }
                                 ]
@@ -122019,23 +121911,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 4,
-                                            "old_value": 1
-                                        },
-                                        "root[2]['row']": {
-                                            "new_value": 2,
-                                            "old_value": 4
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -126409,7 +126285,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 3,
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -126420,7 +126296,7 @@
                                         }
                                     },
                                     {
-                                        "row": 2,
+                                        "row": 4,
                                         "SEQ": 4,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -126501,7 +126377,7 @@
                                     "values_changed": {
                                         "root[0]": {
                                             "new_value": {
-                                                "row": 1,
+                                                "row": 3,
                                                 "SEQ": 3,
                                                 "USUBJID": "CDISC001",
                                                 "value": {
@@ -126525,7 +126401,7 @@
                                         },
                                         "root[1]": {
                                             "new_value": {
-                                                "row": 2,
+                                                "row": 4,
                                                 "SEQ": 4,
                                                 "USUBJID": "CDISC001",
                                                 "value": {
@@ -126892,7 +126768,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 3,
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -126903,7 +126779,7 @@
                                         }
                                     },
                                     {
-                                        "row": 2,
+                                        "row": 4,
                                         "SEQ": 4,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -127192,7 +127068,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 2,
                                         "SEQ": null,
                                         "USUBJID": "S002",
                                         "value": {
@@ -127200,7 +127076,7 @@
                                         }
                                     },
                                     {
-                                        "row": 2,
+                                        "row": 3,
                                         "SEQ": null,
                                         "USUBJID": "S003",
                                         "value": {
@@ -127248,51 +127124,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "ETHNIC": "LATINO"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "ETHNIC": "LATINO"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "ETHNIC": "NOT HISPANIC"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "ETHNIC": "NOT HISPANIC"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -127412,7 +127244,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 2,
                                         "SEQ": null,
                                         "USUBJID": "S002",
                                         "value": {
@@ -127420,7 +127252,7 @@
                                         }
                                     },
                                     {
-                                        "row": 2,
+                                        "row": 3,
                                         "SEQ": null,
                                         "USUBJID": "S003",
                                         "value": {
@@ -127468,51 +127300,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "RACE": "WHITE"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S002",
-                                                "value": {
-                                                    "RACE": "WHITE"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "RACE": "BLACK OR\nAFRICAN"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "S003",
-                                                "value": {
-                                                    "RACE": "BLACK OR\nAFRICAN"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -127758,7 +127546,7 @@
                                         }
                                     },
                                     {
-                                        "row": 2,
+                                        "row": 3,
                                         "SEQ": 3,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -127852,19 +127640,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "values_changed": {
-                                        "root[1]['row']": {
-                                            "new_value": 2,
-                                            "old_value": 3
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -128973,7 +128749,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 2,
+                                        "row": 3,
                                         "SEQ": 2,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -129049,19 +128825,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['row']": {
-                                            "new_value": 2,
-                                            "old_value": 3
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -129249,7 +129013,7 @@
                                         }
                                     },
                                     {
-                                        "row": 3,
+                                        "row": 1,
                                         "SEQ": 1,
                                         "USUBJID": "CDISC001",
                                         "value": {
@@ -129344,24 +129108,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "fa.xpt": {
-                                    "iterable_item_added": {
-                                        "root[1]": {
-                                            "row": 3,
-                                            "SEQ": 1,
-                                            "USUBJID": "CDISC001",
-                                            "value": {
-                                                "FADECOD": "TEST",
-                                                "RELREC.FAOBJ": "Not in dataset"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -133565,7 +133312,7 @@
                                 "number_errors": 14,
                                 "errors": [
                                     {
-                                        "row": 3,
+                                        "row": 1,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133577,7 +133324,7 @@
                                         }
                                     },
                                     {
-                                        "row": 6,
+                                        "row": 2,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133589,7 +133336,7 @@
                                         }
                                     },
                                     {
-                                        "row": 8,
+                                        "row": 3,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133601,7 +133348,7 @@
                                         }
                                     },
                                     {
-                                        "row": 11,
+                                        "row": 4,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133613,7 +133360,7 @@
                                         }
                                     },
                                     {
-                                        "row": 13,
+                                        "row": 5,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133625,7 +133372,7 @@
                                         }
                                     },
                                     {
-                                        "row": 16,
+                                        "row": 6,
                                         "SEQ": null,
                                         "USUBJID": "1201001",
                                         "value": {
@@ -133637,7 +133384,7 @@
                                         }
                                     },
                                     {
-                                        "row": 20,
+                                        "row": 7,
                                         "SEQ": null,
                                         "USUBJID": "1201002",
                                         "value": {
@@ -133649,7 +133396,7 @@
                                         }
                                     },
                                     {
-                                        "row": 22,
+                                        "row": 8,
                                         "SEQ": null,
                                         "USUBJID": "1201002",
                                         "value": {
@@ -133661,7 +133408,7 @@
                                         }
                                     },
                                     {
-                                        "row": 25,
+                                        "row": 10,
                                         "SEQ": null,
                                         "USUBJID": "1201002",
                                         "value": {
@@ -133673,7 +133420,7 @@
                                         }
                                     },
                                     {
-                                        "row": 27,
+                                        "row": 11,
                                         "SEQ": null,
                                         "USUBJID": "1201002",
                                         "value": {
@@ -133685,7 +133432,7 @@
                                         }
                                     },
                                     {
-                                        "row": 29,
+                                        "row": 12,
                                         "SEQ": null,
                                         "USUBJID": "1201002",
                                         "value": {
@@ -133697,7 +133444,7 @@
                                         }
                                     },
                                     {
-                                        "row": 36,
+                                        "row": 14,
                                         "SEQ": null,
                                         "USUBJID": "1201003",
                                         "value": {
@@ -133709,7 +133456,7 @@
                                         }
                                     },
                                     {
-                                        "row": 38,
+                                        "row": 15,
                                         "SEQ": null,
                                         "USUBJID": "1201003",
                                         "value": {
@@ -133721,7 +133468,7 @@
                                         }
                                     },
                                     {
-                                        "row": 41,
+                                        "row": 16,
                                         "SEQ": null,
                                         "USUBJID": "1201003",
                                         "value": {
@@ -135891,7 +135638,7 @@
                                 "number_errors": 2,
                                 "errors": [
                                     {
-                                        "row": 1,
+                                        "row": 2,
                                         "SEQ": null,
                                         "USUBJID": "CDISC009",
                                         "value": {
@@ -135947,23 +135694,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "iterable_item_added": {
-                                        "root[0]": {
-                                            "row": 1,
-                                            "SEQ": null,
-                                            "USUBJID": "CDISC009",
-                                            "value": {
-                                                "RACE": "MULTIPLE"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
