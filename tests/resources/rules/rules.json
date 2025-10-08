@@ -101959,8 +101959,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "IS"
                                         }
@@ -101980,8 +101980,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -102001,8 +102001,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
