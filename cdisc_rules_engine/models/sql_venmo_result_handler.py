@@ -211,7 +211,11 @@ class SqlVenmoResultHandler(BaseActions):
         sequence_value = row.get(schema.get_column_hash(sequence_column))
         sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
-        row_id = row.get("id")
+        source_row_hash = schema.get_column_hash("source_row_number")
+        if source_row_hash and source_row_hash in row:
+            row_id = row.get(source_row_hash)
+        else:
+            row_id = row.get("id")
 
         values = {}
         for column in sorted(target_columns.keys()):
@@ -220,10 +224,8 @@ class SqlVenmoResultHandler(BaseActions):
                 continue
 
             if column.startswith("$"):
-                # Handle operation variables
                 value = self._evaluate_operation_variable(column, row, schema)
             else:
-                # Handle regular table columns
                 value = row.get(schema.get_column_hash(column))
 
             if value is None or value in NULL_FLAVORS:
@@ -233,7 +235,7 @@ class SqlVenmoResultHandler(BaseActions):
 
         return ValidationErrorEntity(
             dataset=self.dataset_metadata.filename,
-            row=row_id,
+            row=int(row_id),  # This now uses source_row_number
             usubjid=usubjid,
             sequence=sequence,
             value=values,
