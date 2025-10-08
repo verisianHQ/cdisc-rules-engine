@@ -20,6 +20,7 @@ class SQLRuleProcessor:
     #         return None
     #     return f"{ct_package_type.lower()}ct"
 
+    @staticmethod
     def perform_rule_operations(
         self,
         rule: dict,

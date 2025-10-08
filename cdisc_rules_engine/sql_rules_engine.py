@@ -56,7 +56,6 @@ def clean_postgres_message(message: str) -> str:
 
 class SQLRulesEngine:
     def __init__(self, data_service: PostgresQLDataService, standards_context: BaseStandardsContext):
-        self.rule_processor = SQLRuleProcessor()
         self.data_service = data_service
         self.standards_context = standards_context
 
@@ -207,7 +206,7 @@ class SQLRulesEngine:
         rule_copy["conditions"].set_conditions(updated_conditions)
 
         # Apply any operations
-        operation_variables = self.rule_processor.perform_rule_operations(
+        operation_variables = SQLRuleProcessor.perform_rule_operations(
             rule_copy, dataset_metadata.domain, data_service=self.data_service, standards_context=self.standards_context
         )
 

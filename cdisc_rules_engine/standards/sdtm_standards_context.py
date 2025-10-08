@@ -16,6 +16,9 @@ from cdisc_rules_engine.constants.domains import (
     SUPPLEMENTARY_DOMAINS,
 )
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
+from cdisc_rules_engine.models.library_metadata_container import (
+    LibraryMetadataContainer,
+)
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
@@ -23,6 +26,9 @@ from cdisc_rules_engine.utilities.utils import is_ap_domain
 
 
 class SdtmStandardsContext(BaseStandardsContext):
+    def __init__(self, library_metadata: LibraryMetadataContainer):
+        super().__init__()
+        self.library_metadata = library_metadata
 
     def derive_domain(self, filename: str):
         filename = filename.lower()
@@ -41,6 +47,9 @@ class SdtmStandardsContext(BaseStandardsContext):
     def get_domain_variables(self, domain: str):
         # TODO: Fetch from metadata
         return []
+
+    def get_domain_label(self, domain: str):
+        return ""
 
     # TODO: Replace SDTMDatasetMetadata with a more generic metadata container
     def within_rule_scope(self, rule: dict, metadata: SDTMDatasetMetadata):
