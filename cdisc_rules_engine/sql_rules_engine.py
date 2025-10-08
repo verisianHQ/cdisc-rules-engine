@@ -71,6 +71,11 @@ class SQLRulesEngine:
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
 
+        # Collect all dataset metadata for builders that need it (e.g., DomainListDatasetBuilder)
+        all_datasets = [
+            self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
+        ]
+
         # iterate through all pre-processed user datasets
         for pp_ds_id in self.data_service.get_uploaded_dataset_ids():
             dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
@@ -87,7 +92,9 @@ class SQLRulesEngine:
                     include_split = rule["domains"].get("include_split_datasets", False)
                     if not include_split:
                         continue  # handling split datasets
-                results[dataset_metadata.unsplit_name] = self.validate_single_dataset(rule, dataset_metadata)
+                results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
+                    rule, dataset_metadata, all_datasets
+                )
             else:
                 logger.info(f"Skipped dataset {dataset_metadata.dataset_name}. Reason: {reason}")
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
@@ -103,6 +110,7 @@ class SQLRulesEngine:
         self,
         rule: dict,
         dataset_metadata: SQLDatasetMetadata,
+        datasets: List[SQLDatasetMetadata],
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint to validation process.
@@ -114,7 +122,7 @@ class SQLRulesEngine:
             f"datasets={self.data_service.get_uploaded_dataset_ids()}."
         )
         try:
-            result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata)
+            result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata, datasets)
             logger.info(f"Validated dataset {dataset_metadata.dataset_name}. Result = {result}")
             if result:
                 return result
@@ -151,45 +159,31 @@ class SQLRulesEngine:
         self,
         rule: dict,
         dataset_metadata: SQLDatasetMetadata,
+        datasets: List[SQLDatasetMetadata],
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint for rule validation.
         It uses the sql_builder_factory to get the correct data source
-        (table or view) and then executes the rule against it.
+        and then executes the rule against it.
         """
-        try:
-            # 1. Get the correct builder from the factory based on the rule type
-            builder = sql_builder_factory.get_service(
-                rule_type=rule.get("rule_type"),
-                rule=rule,
-                data_service=self.data_service,
-                dataset_metadata=dataset_metadata,
-                library_metadata=self.library_metadata,
-            )
+        builder = sql_builder_factory.get_service(
+            rule_type=rule.get("rule_type"),
+            rule=rule,
+            data_service=self.data_service,
+            dataset_metadata=dataset_metadata,
+            datasets=datasets,
+            library_metadata=self.library_metadata,
+        )
 
-            # 2. Use the builder to get the name of the table/view to validate against
-            dataset_id_to_validate = builder.get_dataset_id()
+        dataset_id = builder.get_dataset_id()
 
-        except NotImplementedError as e:
-            # Gracefully handle rules that are not yet supported by the SQL engine
-            logger.warning(f"Skipping rule due to unimplemented rule type: {e}")
-            return [
-                ValidationErrorContainer(
-                    status=ExecutionStatus.SKIPPED.value,
-                    message=str(e),
-                    dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
-                ).to_representation()
-            ]
-
-        # 3. Pass the CORRECT dataset_id (which could be a view) to execute_rule
-        return self.execute_rule(rule, dataset_metadata, dataset_id_to_validate)
+        return self.execute_rule(rule, dataset_metadata, dataset_id)
 
     def execute_rule(
         self,
         rule: dict,
         dataset_metadata: SQLDatasetMetadata,
-        dataset_id_to_validate: str,  # <-- The table/view name from the builder
+        dataset_id: str,
         value_level_metadata: List[dict] = None,
         variable_codelist_map: dict = None,
         codelist_term_maps: list = None,
@@ -213,7 +207,8 @@ class SQLRulesEngine:
 
         # Translator between venmo and the check operators
         venmo_object = SqlVenmoObject(
-            dataset_id=dataset_id_to_validate,  # Use the name provided by the builder
+            dataset_id=dataset_id,
+            original_dataset_id=dataset_metadata.dataset_id,
             data_service=self.data_service,
             column_prefix_map={"--": dataset_metadata.domain},
             operation_variables=operation_variables,
@@ -228,7 +223,7 @@ class SQLRulesEngine:
                 dataset_metadata=dataset_metadata,
                 rule=rule,
                 data_service=self.data_service,
-                dataset_id=dataset_id_to_validate,  # Use the name provided by the builder
+                dataset_id=dataset_id,
                 operation_variables=operation_variables,
             ),
         )

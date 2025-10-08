@@ -77,6 +77,7 @@ class BaseSqlOperator:
         self.original_data = data
         self.validation_df: DatasetInterface = data.get("df", PandasDataset(data=pd.DataFrame()))
         self.table_id: str = data["dataset_id"]
+        self.original_dataset_id: str = data.get("original_dataset_id", self.table_id)
         self.sql_data_service: PostgresQLDataService = data["data_service"]
         self.column_prefix_map = data.get("column_prefix_map", {})
         self.value_level_metadata = data.get("value_level_metadata", [])
@@ -140,6 +141,10 @@ class BaseSqlOperator:
         """
         Fetches data from a SQL table and returns it as a pandas Series,
         so we can pass it to Venmo.
+
+        For Domain Presence Check rules: When validating against a derived table
+        (e.g., domains_catalog_table with 1 row) while the actual dataset has
+        multiple rows, broadcast the single value to match the original dataset length.
         """
         # Fetch all of the rows
         self.sql_data_service.pgi.execute_sql(
@@ -149,33 +154,68 @@ class BaseSqlOperator:
 
         # Fix off-by-one
         return_series = pd.Series(data={item["id"] - 1: item["data"] for item in sql_results})
+
+        # If validating against a different table (e.g., domains_catalog_table),
+        # broadcast single-row results to match the original dataset length
+        if self.table_id != self.original_dataset_id and len(return_series) == 1:
+            # Get the row count of the original dataset
+            original_table_hash = self.sql_data_service.pgi.schema.get_table_hash(self.original_dataset_id)
+            if original_table_hash:
+                self.sql_data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {original_table_hash};")
+                count_result = self.sql_data_service.pgi.fetch_all()
+                original_row_count = count_result[0]["count"]
+
+                # Broadcast the single value to all rows
+                single_value = return_series.iloc[0]
+                return_series = pd.Series([single_value] * original_row_count, index=range(original_row_count))
+
         return return_series
 
     def _do_check_operator(self, new_column: str, sql_subquery_fn):
         # Handles simple checks by creating a column and updating it with a scalar subquery.
-        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
+        # When validating against a derived table (e.g., domains_catalog_table),
+        # prefix the column name with original_dataset_id to avoid conflicts
+        column_name = self._get_scoped_column_name(new_column)
+
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, column_name)
         if not exists:
             self.sql_data_service.pgi.add_column(
-                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
+                table=self.table_id, schema=SqlColumnSchema.generated(column_name, "Bool")
             )
 
             subquery = sql_subquery_fn()
             query = f"""UPDATE
                 {self._table_sql()} AS {CHECK_OPERATOR_TABLE_ALIAS}
-                SET {self._column_sql(new_column, alias=False)} = ({subquery});"""
+                SET {self._column_sql(column_name, alias=False)} = ({subquery});"""
             self.sql_data_service.pgi.execute_sql(query)
-        return self._fetch_for_venmo(new_column)
+        return self._fetch_for_venmo(column_name)
 
     def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
         # Handles complex checks by creating a column and populating it with a full custom query.
-        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
+        # When validating against a derived table (e.g., domains_catalog_table),
+        # prefix the column name with original_dataset_id to avoid conflicts
+        column_name = self._get_scoped_column_name(new_column)
+
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, column_name)
         if not exists:
             self.sql_data_service.pgi.add_column(
-                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
+                table=self.table_id, schema=SqlColumnSchema.generated(column_name, "Bool")
             )
-            query = sql_full_query_fn(self._table_sql(), self._column_sql(new_column, alias=False))
+            query = sql_full_query_fn(self._table_sql(), self._column_sql(column_name, alias=False))
             self.sql_data_service.pgi.execute_sql(query)
-        return self._fetch_for_venmo(new_column)
+        return self._fetch_for_venmo(column_name)
+
+    def _get_scoped_column_name(self, column_name: str) -> str:
+        """
+        Get a scoped column name to avoid conflicts when validating multiple datasets
+        against the same derived table (e.g., domains_catalog_table).
+
+        When table_id != original_dataset_id (validating against derived table),
+        prefix the column name with the original_dataset_id to make it unique per dataset.
+        """
+        if self.table_id != self.original_dataset_id:
+            return f"{self.original_dataset_id}_{column_name}"
+        return column_name
 
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)

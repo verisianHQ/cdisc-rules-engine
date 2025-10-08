@@ -16,9 +16,10 @@ class SqlVenmoObject(BaseVariables):
     names to their implementations.
     """
 
-    def __init__(self, dataset_id: str, data_service: PostgresQLDataService, **params):
+    def __init__(self, dataset_id: str, data_service: PostgresQLDataService, original_dataset_id: str = None, **params):
         self.dataset_id = dataset_id
         self.data_service = data_service
+        self.original_dataset_id = original_dataset_id
         self.params = params
 
     # common variables
@@ -26,6 +27,7 @@ class SqlVenmoObject(BaseVariables):
     def get_dataset(self) -> dict:
         return {
             "dataset_id": self.dataset_id,
+            "original_dataset_id": self.original_dataset_id,
             "data_service": self.data_service,
             **self.params,
         }

@@ -1,3 +1,5 @@
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     SqlBaseDatasetBuilder,
 )
@@ -21,30 +23,35 @@ class SqlDomainListDatasetBuilder(SqlBaseDatasetBuilder):
         The table has one row with each domain as a column containing its filename.
         """
         table_name = "domains_catalog_table"
-        self.data_service.pgi.execute_sql(f"DROP TABLE IF EXISTS {table_name};")
 
-        # 2. Get a list of all available domains from the data_metadata table
-        domains_query = """
-        SELECT DISTINCT dataset_domain, dataset_filename
-        FROM data_metadata
-        WHERE dataset_domain IS NOT NULL
-        ORDER BY dataset_domain;
-        """
-        self.data_service.pgi.execute_sql(domains_query)
-        domains = self.data_service.pgi.fetch_all()
+        if self.data_service.pgi.schema.get_table(table_name) is not None:
+            return table_name
 
-        if not domains:
-            # No domains found, create an empty table
-            create_table_sql = f"CREATE TABLE {table_name} (_placeholder INT);"
+        # Build domain list from uploaded datasets (same as Python implementation)
+        # Python: {ds.unsplit_name: ds.filename for ds in self.datasets}
+        domain_dict = {}
+        for ds in self.datasets:
+            if ds.domain:  # Only include datasets with a domain
+                domain_dict[ds.unsplit_name] = ds.filename
+
+        schema = SqlTableSchema.static(table_name)
+
+        if domain_dict:
+            for domain in domain_dict.keys():
+                schema.add_column(SqlColumnSchema.generated(domain, "Char"))
         else:
-            # 3. Build the column list for the wide table's SELECT statement
-            column_selects = [f"'{row['dataset_filename']}'::TEXT AS {row['dataset_domain']}" for row in domains]
+            schema.add_column(SqlColumnSchema.generated("_placeholder", "Num"))
 
-            # 4. Use CREATE TABLE AS SELECT to create and populate the table in one step
-            create_table_sql = f"""
-            CREATE TABLE {table_name} AS
-            SELECT {', '.join(column_selects)};
+        self.data_service.pgi.create_table(schema)
+
+        if domain_dict:
+            columns = [schema.get_column_hash(domain) for domain in domain_dict.keys()]
+            values = [f"'{filename}'" for filename in domain_dict.values()]
+
+            insert_sql = f"""
+                INSERT INTO {schema.hash} ({', '.join(columns)})
+                VALUES ({', '.join(values)});
             """
+            self.data_service.pgi.execute_sql(insert_sql)
 
-        self.data_service.pgi.execute_sql(create_table_sql)
         return table_name

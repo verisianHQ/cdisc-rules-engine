@@ -63,9 +63,6 @@ class SqlDatasetBuilderFactory:
         Falls back to SqlContentsDatasetBuilder (Record Data) as default.
         Raises NotImplementedError for explicitly unimplemented rule types.
         """
-        # Check if this rule type is explicitly marked as unimplemented
-        if rule_type in self._unimplemented_types:
-            raise NotImplementedError(f"Rule type '{rule_type}' is not yet implemented in SQL engine.")
 
         # Get builder class from map, default to SqlContentsDatasetBuilder
         builder_class = self._builders_map.get(rule_type, SqlContentsDatasetBuilder)

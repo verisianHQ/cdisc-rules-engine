@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
     SQLDatasetMetadata,
@@ -10,10 +11,18 @@ class SqlBaseDatasetBuilder(ABC):
     Base class for SQL dataset builders.
     """
 
-    def __init__(self, rule: dict, data_service: PostgresQLDataService, dataset_metadata: SQLDatasetMetadata, **kwargs):
+    def __init__(
+        self,
+        rule: dict,
+        data_service: PostgresQLDataService,
+        dataset_metadata: SQLDatasetMetadata,
+        datasets: List[SQLDatasetMetadata] = None,
+        **kwargs,
+    ):
         self.rule = rule
         self.data_service = data_service
         self.dataset_metadata = dataset_metadata
+        self.datasets = datasets or []
         # Store any additional kwargs
         for key, value in kwargs.items():
             setattr(self, key, value)
