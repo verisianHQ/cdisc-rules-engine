@@ -172,7 +172,6 @@ class SQLRulesEngine:
             data_service=self.data_service,
             dataset_metadata=dataset_metadata,
             datasets=datasets,
-            library_metadata=self.library_metadata,
         )
 
         dataset_id = builder.get_dataset_id()
