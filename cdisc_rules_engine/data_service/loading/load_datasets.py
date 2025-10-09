@@ -37,7 +37,6 @@ class SqlDatasetLoader:
             # TODO: INDEX
 
             first_record = None
-            row_counter = 0
 
             for chunk_data in reader.read():
                 # force lowercase on columns
@@ -49,9 +48,8 @@ class SqlDatasetLoader:
                         "This column is automatically generated and should not be in source data."
                     )
 
-                for row in chunk_data:
-                    row_counter += 1
-                    row["source_row_number"] = row_counter
+                for idx, row in enumerate(chunk_data, start=1):
+                    row["source_row_number"] = idx
 
                 if not first_record:
                     first_record = chunk_data[0] if chunk_data else None

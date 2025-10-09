@@ -109,7 +109,6 @@ class PostgresQLDataService:
         row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
         row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
 
-        # ADD source_row_number to each row
         for idx, row in enumerate(row_dicts, start=1):
             row["source_row_number"] = idx
 
