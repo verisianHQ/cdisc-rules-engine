@@ -6,6 +6,7 @@ from business_rules.actions import BaseActions, rule_action
 from business_rules.fields import FIELD_TEXT
 
 from cdisc_rules_engine.constants import NULL_FLAVORS
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
     SQLDatasetMetadata,
@@ -211,7 +212,7 @@ class SqlVenmoResultHandler(BaseActions):
         sequence_value = row.get(schema.get_column_hash(sequence_column))
         sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
-        source_row_hash = schema.get_column_hash("source_row_number")
+        source_row_hash = schema.get_column_hash(SOURCE_ROW_NUMBER)
         if not source_row_hash or source_row_hash not in row:
             raise ValueError(
                 f"source_row_number not found in row data for table {schema.name}. "

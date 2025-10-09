@@ -17,10 +17,6 @@ class SqlTableSchema:
         id_column = SqlColumnSchema(name="id", hash="id", type="Num")
         self.add_column(id_column)
 
-        if source == "data":
-            source_row_column = SqlColumnSchema(name="source_row_number", hash="source_row_number", type="Num")
-            self.add_column(source_row_column)
-
     def add_column(self, data: SqlColumnSchema) -> None:
         self._columns[data.name.lower()] = data
 
