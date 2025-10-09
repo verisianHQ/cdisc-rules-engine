@@ -20,6 +20,15 @@ class SqlTestDatasetLoader:
         table_name = test_dataset["name"].lower()
         row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
 
+        if row_dicts and "source_row_number" in row_dicts[0]:
+            raise ValueError(
+                f"Test dataset '{table_name}' contains reserved column 'source_row_number'. "
+                "This column is automatically generated and should not be in test data."
+            )
+
+        for idx, row in enumerate(row_dicts, start=1):
+            row["source_row_number"] = idx
+
         schema = SqlTableSchema.from_metadata(test_dataset)
         pgi.create_table(schema)
         pgi.insert_data(table_name=table_name, data=row_dicts)

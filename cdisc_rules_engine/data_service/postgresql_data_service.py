@@ -96,12 +96,22 @@ class PostgresQLDataService:
         if len(set(lengths)) != 1:
             raise ValueError("All input data columns must have the same length")
 
+        if "source_row_number" in [k.lower() for k in column_data.keys()]:
+            raise ValueError(
+                f"Test dataset '{table_name}' contains reserved column 'source_row_number'. "
+                "This column is automatically generated and should not be in test data."
+            )
+
         # Create schema and table:
         schema_row = {
             col.lower(): next((val for val in values if val is not None), "") for col, values in column_data.items()
         }
         row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
         row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
+
+        # ADD source_row_number to each row
+        for idx, row in enumerate(row_dicts, start=1):
+            row["source_row_number"] = idx
 
         schema = SqlTableSchema.from_data(table_name, schema_row)
         data_service.pgi.create_table(schema)

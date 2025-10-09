@@ -167,10 +167,6 @@ class PostgresQLInterface:
             if not self.db:
                 raise RuntimeError("Database not initialised. Call init_database() first.")
 
-            for idx, row in enumerate(data, start=1):
-                if "source_row_number" not in row:
-                    row["source_row_number"] = idx
-
             schema = self.schema.get_table(table_name)
             if not schema:
                 raise ValueError(f"Table {table_name} does not exist in the schema")

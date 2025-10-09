@@ -212,10 +212,13 @@ class SqlVenmoResultHandler(BaseActions):
         sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
         source_row_hash = schema.get_column_hash("source_row_number")
-        if source_row_hash and source_row_hash in row:
-            row_id = row.get(source_row_hash)
-        else:
-            row_id = row.get("id")
+        if not source_row_hash or source_row_hash not in row:
+            raise ValueError(
+                f"source_row_number not found in row data for table {schema.name}. "
+                f"Data loading issue. All data tables must have source_row_number."
+            )
+
+        row_id = row.get(source_row_hash)
 
         values = {}
         for column in sorted(target_columns.keys()):
@@ -235,7 +238,7 @@ class SqlVenmoResultHandler(BaseActions):
 
         return ValidationErrorEntity(
             dataset=self.dataset_metadata.filename,
-            row=int(row_id),  # This now uses source_row_number
+            row=int(row_id),
             usubjid=usubjid,
             sequence=sequence,
             value=values,

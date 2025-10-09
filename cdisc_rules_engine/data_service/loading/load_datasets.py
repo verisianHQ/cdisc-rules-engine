@@ -37,10 +37,22 @@ class SqlDatasetLoader:
             # TODO: INDEX
 
             first_record = None
+            row_counter = 0
 
             for chunk_data in reader.read():
                 # force lowercase on columns
                 chunk_data = [{k.lower(): v for k, v in row.items()} for row in chunk_data]
+
+                if chunk_data and "source_row_number" in chunk_data[0]:
+                    raise ValueError(
+                        f"Dataset file '{file_path.name}' contains reserved column 'source_row_number'. "
+                        "This column is automatically generated and should not be in source data."
+                    )
+
+                for row in chunk_data:
+                    row_counter += 1
+                    row["source_row_number"] = row_counter
+
                 if not first_record:
                     first_record = chunk_data[0] if chunk_data else None
                 pgi.insert_data(table_name, chunk_data)
