@@ -160,17 +160,19 @@ class PostgresQLInterface:
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
     ) -> Optional[int]:
         """Insert Python data into a table"""
+        if not self.db:
+            raise RuntimeError("Database not initialised. Call init_database() first.")
+
+        schema = self.schema.get_table(table_name)
+        if not schema:
+            raise ValueError(f"Table {table_name} does not exist in the schema")
+
         if isinstance(data, dict):
-            query = SQLSerialiser.insert_dict(table_name, data)
-            return self.execute_sql(query)
+            query = SQLSerialiser.insert_dict(schema, data)
+            self.execute_sql(query)
+            logger.info(f"Inserted 1 row into {table_name}")
+            return 1
         else:
-            if not self.db:
-                raise RuntimeError("Database not initialised. Call init_database() first.")
-
-            schema = self.schema.get_table(table_name)
-            if not schema:
-                raise ValueError(f"Table {table_name} does not exist in the schema")
-
             query = SQLSerialiser.insert_many_dicts(schema, data)
             rows = self.execute_sql(query)
             logger.info(f"Inserted {rows} rows into {table_name}")
