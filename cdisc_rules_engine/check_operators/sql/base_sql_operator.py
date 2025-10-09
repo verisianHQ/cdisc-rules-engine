@@ -1,3 +1,4 @@
+import hashlib
 import traceback
 from abc import abstractmethod
 from functools import wraps
@@ -77,7 +78,6 @@ class BaseSqlOperator:
         self.original_data = data
         self.validation_df: DatasetInterface = data.get("df", PandasDataset(data=pd.DataFrame()))
         self.table_id: str = data["dataset_id"]
-        self.original_dataset_id: str = data.get("original_dataset_id", self.table_id)
         self.sql_data_service: PostgresQLDataService = data["data_service"]
         self.column_prefix_map = data.get("column_prefix_map", {})
         self.value_level_metadata = data.get("value_level_metadata", [])
@@ -156,49 +156,49 @@ class BaseSqlOperator:
 
     def _do_check_operator(self, new_column: str, sql_subquery_fn):
         # Handles simple checks by creating a column and updating it with a scalar subquery.
-        # When validating against a derived table (e.g., domains_catalog_table),
-        # prefix the column name with original_dataset_id to avoid conflicts
-        column_name = self._get_scoped_column_name(new_column)
-
-        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, column_name)
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
             self.sql_data_service.pgi.add_column(
-                table=self.table_id, schema=SqlColumnSchema.generated(column_name, "Bool")
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
             )
 
             subquery = sql_subquery_fn()
             query = f"""UPDATE
                 {self._table_sql()} AS {CHECK_OPERATOR_TABLE_ALIAS}
-                SET {self._column_sql(column_name, alias=False)} = ({subquery});"""
+                SET {self._column_sql(new_column, alias=False)} = ({subquery});"""
             self.sql_data_service.pgi.execute_sql(query)
-        return self._fetch_for_venmo(column_name)
+        return self._fetch_for_venmo(new_column)
 
     def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
         # Handles complex checks by creating a column and populating it with a full custom query.
-        # When validating against a derived table (e.g., domains_catalog_table),
-        # prefix the column name with original_dataset_id to avoid conflicts
-        column_name = self._get_scoped_column_name(new_column)
-
-        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, column_name)
+        exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
             self.sql_data_service.pgi.add_column(
-                table=self.table_id, schema=SqlColumnSchema.generated(column_name, "Bool")
+                table=self.table_id, schema=SqlColumnSchema.generated(new_column, "Bool")
             )
-            query = sql_full_query_fn(self._table_sql(), self._column_sql(column_name, alias=False))
+            query = sql_full_query_fn(self._table_sql(), self._column_sql(new_column, alias=False))
             self.sql_data_service.pgi.execute_sql(query)
-        return self._fetch_for_venmo(column_name)
+        return self._fetch_for_venmo(new_column)
 
-    def _get_scoped_column_name(self, column_name: str) -> str:
+    def _get_cache_key_component(self, value) -> str:
         """
-        Get a scoped column name to avoid conflicts when validating multiple datasets
-        against the same derived table (e.g., domains_catalog_table).
+        Get a cache-safe component for column naming.
+        If value is an operation variable, hash its resolved query.
+        Otherwise, return the value as a string.
 
-        When table_id != original_dataset_id (validating against derived table),
-        prefix the column name with the original_dataset_id to make it unique per dataset.
+        This ensures that different operation results (e.g., SELECT TRUE vs SELECT FALSE)
+        get different cache keys, preventing incorrect cache reuse across datasets.
         """
-        if self.table_id != self.original_dataset_id:
-            return f"{self.original_dataset_id}_{column_name}"
-        return column_name
+        if isinstance(value, str) and value in self.operation_variables:
+            # Get the resolved query from the operation variable
+            op_var = self.operation_variables[value]
+            resolved_query = op_var.query
+
+            # Hash the query to create a unique, fixed-length identifier
+            query_hash = hashlib.md5(resolved_query.encode()).hexdigest()[:8]
+            return f"op_{query_hash}"
+
+        return str(value)
 
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)

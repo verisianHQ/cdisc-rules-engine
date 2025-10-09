@@ -208,7 +208,6 @@ class SQLRulesEngine:
         # Translator between venmo and the check operators
         venmo_object = SqlVenmoObject(
             dataset_id=dataset_id,
-            original_dataset_id=dataset_metadata.dataset_id,
             data_service=self.data_service,
             column_prefix_map={"--": dataset_metadata.domain},
             operation_variables=operation_variables,
