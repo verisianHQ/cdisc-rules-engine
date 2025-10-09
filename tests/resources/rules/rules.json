@@ -12851,10 +12851,15 @@
                             {
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ag_var_metadata. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
@@ -12883,10 +12888,15 @@
                             {
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ml_var_metadata. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "pr.xpt",
@@ -12907,10 +12917,15 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ae_var_metadata. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "be.xpt",
@@ -12955,10 +12970,15 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table mh_var_metadata. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -13115,11 +13135,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46628,34 +46648,26 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ae_var_metadata. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
                             {
                                 "dataset": "apmhe.xpt",
                                 "domain": "APMHE",
-                                "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table apmhe_var_metadata. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -46663,18 +46675,9 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46725,28 +46728,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['variable_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "aedecod00"
-                                        }
-                                    }
-                                },
-                                "apmhe.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['variable_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "mhprespfl"
-                                        }
-                                    }
-                                }
-                            }
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -46772,52 +46758,25 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "APRELSUB",
+                                "domain": null,
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46849,10 +46808,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -46877,52 +46833,25 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMH",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46954,10 +46883,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -47025,10 +46951,15 @@
                             {
                                 "dataset": "pp.xpt",
                                 "domain": "PP",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -47078,11 +47009,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -48898,10 +48829,15 @@
                             {
                                 "dataset": "ms.xpt",
                                 "domain": "MS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -48927,11 +48863,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -81828,10 +81764,15 @@
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -81865,11 +81806,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -81981,10 +81922,15 @@
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82018,11 +81964,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -82928,17 +82874,13 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             }
@@ -82965,9 +82907,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83005,17 +82950,13 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -83218,9 +83159,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83290,17 +83234,13 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -83471,9 +83411,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83567,17 +83510,13 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -83724,9 +83663,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -83828,17 +83770,13 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -83977,9 +83915,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -84005,18 +83946,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "tm.xpt",
@@ -84049,8 +83981,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84092,18 +84024,9 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
@@ -84312,8 +84235,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84387,18 +84310,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
@@ -84575,8 +84489,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84674,18 +84588,9 @@
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
@@ -84838,8 +84743,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84945,18 +84850,9 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "te.xpt",
@@ -85101,8 +84997,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -101899,8 +101795,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "IS"
                                         }
@@ -101920,8 +101816,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -101941,8 +101837,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -111172,15 +111068,13 @@
                             {
                                 "dataset": "ts.xpt",
                                 "domain": "TS",
-                                "execution_status": "success",
-                                "execution_message": "DM dataset is missing.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {}
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             }
@@ -111211,25 +111105,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ts.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']": {
-                                            "new_value": {},
-                                            "old_value": {
-                                                "TS": "ts.xpt",
-                                                "results": true,
-                                                "source_filename": "ts.xpt",
-                                                "source_row_number": 1
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112129,12 +112009,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ae_var_metadata. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             }
@@ -112221,12 +112101,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ae_var_metadata. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             }
@@ -112313,12 +112193,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table ae_var_metadata. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             }
@@ -112407,15 +112287,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112431,12 +112306,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112458,15 +112330,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112482,12 +112349,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112509,15 +112373,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112533,12 +112392,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -124164,28 +124020,9 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "success",
-                                "execution_message": "EX is not present in study when study includes protocol-specified study treatment",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "ABC1001",
-                                        "value": {}
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 1,
-                                        "USUBJID": "ABC2001",
-                                        "value": {}
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 2,
-                                        "USUBJID": "ABC2001",
-                                        "value": {}
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -124201,10 +124038,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -129799,17 +129633,13 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -130012,9 +129842,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130084,17 +129917,13 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -130265,9 +130094,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130361,17 +130193,13 @@
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -130518,9 +130346,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130622,17 +130453,13 @@
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "source_row_number not found in row data for table domains_catalog_table. Data loading issue. All data tables must have source_row_number."
                                     }
                                 ]
                             },
@@ -130771,9 +130598,12 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130807,18 +130637,9 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
@@ -131035,8 +130856,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131078,18 +130899,9 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
@@ -131298,8 +131110,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131373,18 +131185,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
@@ -131561,8 +131364,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131660,18 +131463,9 @@
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
@@ -131824,8 +131618,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131931,18 +131725,9 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "te.xpt",
@@ -132087,8 +131872,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
