@@ -242,13 +242,23 @@ class SqlVenmoResultHandler(BaseActions):
         sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
         source_row_hash = schema.get_column_hash(SOURCE_ROW_NUMBER)
-        if not source_row_hash or source_row_hash not in row:
-            raise ValueError(
-                f"source_row_number not found in row data for table {schema.name}. "
-                f"Data loading issue. All data tables must have source_row_number."
-            )
 
-        row_id = row.get(source_row_hash)
+        # Determine row_id based on table source type
+        if schema.source == "data":
+            # Original data tables MUST have source_row_number (enforced by PR #400)
+            if not source_row_hash or source_row_hash not in row:
+                raise ValueError(
+                    f"source_row_number not found in row data for table {schema.name}. "
+                    f"Data loading issue. All original data tables must have source_row_number."
+                )
+            row_id = row.get(source_row_hash)
+        elif schema.source == "derived":
+            if source_row_hash and source_row_hash in row:
+                row_id = row.get(source_row_hash)
+            else:
+                row_id = row.get("id")
+        else:  # schema.source == "static"
+            row_id = row.get("id")
 
         values = {}
         for column in sorted(target_columns.keys()):
