@@ -118842,7 +118842,7 @@
                                 "domain": "DM",
                                 "execution_status": "success",
                                 "execution_message": "RFSTDTC is greater than RFENDTC",
-                                "number_errors": 2,
+                                "number_errors": 3,
                                 "errors": [
                                     {
                                         "row": 1,
@@ -118860,6 +118860,15 @@
                                         "value": {
                                             "RFENDTC": "2018-11-06",
                                             "RFSTDTC": "2018-11-06T12:00"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "RFENDTC": "2006-01-16",
+                                            "RFSTDTC": "2006-03"
                                         }
                                     }
                                 ]
@@ -118906,10 +118915,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -119662,14 +119668,32 @@
                                 "domain": "DM",
                                 "execution_status": "success",
                                 "execution_message": "RFICDTC is greater than RFSTDTC",
-                                "number_errors": 1,
+                                "number_errors": 3,
                                 "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "RFICDTC": "2018-05",
+                                            "RFSTDTC": "2018-04-17T09:25"
+                                        }
+                                    },
                                     {
                                         "row": 3,
                                         "SEQ": null,
                                         "USUBJID": "CDISC003",
                                         "value": {
                                             "RFICDTC": "2018-04-22",
+                                            "RFSTDTC": "2018-04-18T09:30"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "RFICDTC": "2019",
                                             "RFSTDTC": "2018-04-18T09:30"
                                         }
                                     }
@@ -119717,10 +119741,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -119812,7 +119833,7 @@
                                 "domain": "DM",
                                 "execution_status": "success",
                                 "execution_message": "RFXSTDTC is greater than RFXENDTC",
-                                "number_errors": 2,
+                                "number_errors": 3,
                                 "errors": [
                                     {
                                         "row": 1,
@@ -119830,6 +119851,15 @@
                                         "value": {
                                             "RFXENDTC": "2018-07-18T11:15",
                                             "RFXSTDTC": "2018-08-18T09:30"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC006",
+                                        "value": {
+                                            "RFXENDTC": "2018-04",
+                                            "RFXSTDTC": "2018-04-17"
                                         }
                                     }
                                 ]
@@ -119876,10 +119906,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -120404,9 +120431,19 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "AESTDTC is greater than AEENDTC",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC003",
+                                        "value": {
+                                            "AEENDTC": "2018-06-14",
+                                            "AESTDTC": "2019"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",

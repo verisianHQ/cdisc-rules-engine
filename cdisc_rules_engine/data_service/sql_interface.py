@@ -148,9 +148,15 @@ class PostgresQLInterface:
         query = f"""UPDATE {self.schema.get_table_hash(table)}
             SET {date_column_schema.hash} =
                 (CASE
-                WHEN {col_schema.hash} IS NOT NULL
-                  AND {col_schema.hash} ~ '{COMPLETE_DATE_REGEX}'
+                WHEN {col_schema.hash} IS NULL OR {col_schema.hash} = '' THEN NULL
+                WHEN {col_schema.hash} ~ '{COMPLETE_DATE_REGEX}'
                     THEN CAST({col_schema.hash} as TIMESTAMP)
+                WHEN {col_schema.hash} ~ '^-?[0-9]{{4}}-[0-9]{{2}}$'
+                    AND CAST(RIGHT({col_schema.hash}, 2) AS INTEGER) BETWEEN 1 AND 12
+                    THEN CAST(CONCAT({col_schema.hash}, '-01') as TIMESTAMP)
+                WHEN {col_schema.hash} ~ '^-?[0-9]{{4}}$'
+                    AND CAST({col_schema.hash} AS INTEGER) BETWEEN 1 AND 9999
+                    THEN CAST(CONCAT({col_schema.hash}, '-01-01') as TIMESTAMP)
                 ELSE NULL
                 END);"""
         self.execute_sql(query)
