@@ -7479,7 +7479,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CEOCCUR": "",
+                                            "CEOCCUR": null,
                                             "CEPRESP": "Not in dataset"
                                         }
                                     }
@@ -7513,7 +7513,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "HOOCCUR": "",
+                                            "HOOCCUR": null,
                                             "HOPRESP": "Not in dataset"
                                         }
                                     }
@@ -7531,7 +7531,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MHOCCUR": "",
+                                            "MHOCCUR": null,
                                             "MHPRESP": "Not in dataset"
                                         }
                                     }
@@ -13115,7 +13115,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -46849,7 +46849,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": false,
                             "number_of_errors_mismatch": true,
                             "diff": {}
@@ -84049,7 +84049,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -84312,7 +84312,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -84575,7 +84575,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -84838,7 +84838,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -85101,7 +85101,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -90412,7 +90412,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -101899,8 +101899,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "IS"
                                         }
@@ -101920,8 +101920,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -101941,8 +101941,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "CO",
-                                                ""
+                                                "",
+                                                "CO"
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -101951,7 +101951,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -102063,7 +102063,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -106274,7 +106274,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -106360,7 +106360,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -107818,7 +107818,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -107949,7 +107949,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -131035,7 +131035,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -131298,7 +131298,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -131561,7 +131561,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -131824,7 +131824,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -132087,7 +132087,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": true,
                             "diff": {}
                         },
@@ -132198,7 +132198,16 @@
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
                             "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "diff": {
+                                "apdrug1ex.xpt": {
+                                    "values_changed": {
+                                        "root[0]['value']['dataset_name']": {
+                                            "new_value": "not in dataset",
+                                            "old_value": "apdrug1ex"
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
