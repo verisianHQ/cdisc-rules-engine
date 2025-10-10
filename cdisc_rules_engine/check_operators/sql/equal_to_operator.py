@@ -93,10 +93,8 @@ class EqualToOperator(BaseSqlOperator):
                         ELSE {target} = {comparator}
                     END"""
 
-        target_key = self._get_cache_key_component(original_target)
-        comparator_key = self._get_cache_key_component(original_comparator)
         return self._do_check_operator(
-            f"{target_key}={comparator_key}_{invert}_{case_insensitive}_{type_insensitive}", sql
+            f"{original_target}={original_comparator}_{invert}_{case_insensitive}_{type_insensitive}", sql
         )
 
     def _check_equality_reference(
@@ -161,8 +159,6 @@ class EqualToOperator(BaseSqlOperator):
             sql += "ELSE FALSE END"
             return sql
 
-        target_key = self._get_cache_key_component(original_target)
-        pivot_key = self._get_cache_key_component(pivot_column)
         return self._do_check_operator(
-            f"{target_key}_ref=_{pivot_key}_{invert}_{case_insensitive}_{type_insensitive}", sql
+            f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
         )

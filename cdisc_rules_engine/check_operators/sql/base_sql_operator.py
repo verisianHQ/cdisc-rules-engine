@@ -156,6 +156,8 @@ class BaseSqlOperator:
 
     def _do_check_operator(self, new_column: str, sql_subquery_fn):
         # Handles simple checks by creating a column and updating it with a scalar subquery.
+        new_column = self._resolve_operation_variables_in_cache_key(new_column)
+
         exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
             self.sql_data_service.pgi.add_column(
@@ -171,6 +173,8 @@ class BaseSqlOperator:
 
     def _do_complex_check_operator(self, new_column: str, sql_full_query_fn):
         # Handles complex checks by creating a column and populating it with a full custom query.
+        new_column = self._resolve_operation_variables_in_cache_key(new_column)
+
         exists = self.sql_data_service.pgi.schema.column_exists(self.table_id, new_column)
         if not exists:
             self.sql_data_service.pgi.add_column(
@@ -199,6 +203,17 @@ class BaseSqlOperator:
             return f"op_{query_hash}"
 
         return str(value)
+
+    def _resolve_operation_variables_in_cache_key(self, cache_key: str) -> str:
+        """
+        Replace operation variable names ($variable) in cache key with their query hashes.
+        """
+        result = cache_key
+        for var_name in self.operation_variables:
+            if var_name in result:
+                var_hash = self._get_cache_key_component(var_name)
+                result = result.replace(var_name, var_hash)
+        return result
 
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
