@@ -7479,7 +7479,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "CEOCCUR": "",
+                                            "CEOCCUR": null,
                                             "CEPRESP": "Not in dataset"
                                         }
                                     }
@@ -7513,7 +7513,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "HOOCCUR": "",
+                                            "HOOCCUR": null,
                                             "HOPRESP": "Not in dataset"
                                         }
                                     }
@@ -7531,7 +7531,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "MHOCCUR": "",
+                                            "MHOCCUR": null,
                                             "MHPRESP": "Not in dataset"
                                         }
                                     }
@@ -12852,9 +12852,18 @@
                                 "dataset": "ag.xpt",
                                 "domain": "AG",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Variable label length should be less than or equal to 40 characters",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_label": "Unique Subject Identifier Subject Identif"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
@@ -12884,9 +12893,18 @@
                                 "dataset": "ml.xpt",
                                 "domain": "ML",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Variable label length should be less than or equal to 40 characters",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_label": "Unique Subject Identifier Unique Subject "
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "pr.xpt",
@@ -12908,9 +12926,18 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Variable label length should be less than or equal to 40 characters",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_label": "Reported Term for the Adverse Event in std"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "be.xpt",
@@ -12956,9 +12983,18 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Variable label length should be less than or equal to 40 characters",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "variable_label": "Reported Term for the Medical History in this study"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -13115,8 +13151,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -46637,7 +46673,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "variable_name": "Not in dataset"
+                                            "variable_name": "AEDECOD00"
                                         }
                                     }
                                 ]
@@ -46654,7 +46690,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "variable_name": "Not in dataset"
+                                            "variable_name": "MHPRESPFL"
                                         }
                                     }
                                 ]
@@ -46663,18 +46699,9 @@
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46724,27 +46751,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['variable_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "aedecod00"
-                                        }
-                                    }
-                                },
-                                "apmhe.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['variable_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "mhprespfl"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -46772,52 +46779,25 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aprelsub.xpt",
-                                "domain": "APRELSUB",
+                                "domain": null,
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46849,10 +46829,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -46877,52 +46854,25 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
                                 "domain": "APMH",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
                                 "execution_status": "success",
-                                "execution_message": "Variable name length is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "variable_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -46954,10 +46904,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -47026,9 +46973,18 @@
                                 "dataset": "pp.xpt",
                                 "domain": "PP",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "PP dataset is present in  study, but PC dataset is not present in study.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "PP": "pp.xpt"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -47077,10 +47033,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -48899,9 +48852,18 @@
                                 "dataset": "ms.xpt",
                                 "domain": "MS",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "The MB dataset is not present when the MS dataset is present.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "MS": "ms.xpt"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -48926,10 +48888,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -81829,9 +81788,18 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "EXVAMT is present when EC exists.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$EXVAMT_EXISTS": true
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -81864,10 +81832,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -81982,9 +81947,18 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "EXVAMTU is present when EC domain exists.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$EXVAMTU_EXISTS": true
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82017,10 +81991,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -84005,18 +83976,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "tm.xpt",
@@ -84049,8 +84011,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84092,18 +84054,9 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
@@ -84312,8 +84265,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84387,18 +84340,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
@@ -84575,8 +84519,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84674,18 +84618,9 @@
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
@@ -84838,8 +84773,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -84945,18 +84880,9 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when MIDS variable is present in one of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$MIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "te.xpt",
@@ -85101,8 +85027,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -90412,7 +90338,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -101951,7 +101877,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -102063,7 +101989,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -106274,7 +106200,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -106360,7 +106286,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -107818,7 +107744,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -107949,7 +107875,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
+                            "dataset_mismatch": true,
                             "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
                             "diff": {}
@@ -112128,13 +112054,49 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Variable label is not in title case.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "study identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "domain abbreviation"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "unique subject identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "serious event"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "causality"
+                                        }
                                     }
                                 ]
                             }
@@ -112193,12 +112155,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112220,13 +112179,49 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Variable label is not in title case.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "Study identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "domain abbreviation"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "unique subject identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "serious event"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "causality"
+                                        }
                                     }
                                 ]
                             }
@@ -112285,12 +112280,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112312,13 +112304,49 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Variable label is not in title case.",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "Study identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "domain abbreviation"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "unique subject identifier"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "serious event"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_label": "causality"
+                                        }
                                     }
                                 ]
                             }
@@ -112377,12 +112405,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112407,15 +112432,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112431,12 +112451,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112458,15 +112475,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112482,12 +112494,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -112509,15 +112518,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -112533,12 +112537,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -124201,28 +124202,9 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "success",
-                                "execution_message": "EX is not present in study when study includes protocol-specified study treatment",
-                                "number_errors": 3,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "ABC1001",
-                                        "value": {}
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 1,
-                                        "USUBJID": "ABC2001",
-                                        "value": {}
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 2,
-                                        "USUBJID": "ABC2001",
-                                        "value": {}
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -124238,10 +124220,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
@@ -130844,18 +130823,9 @@
                                 "dataset": "sv.xpt",
                                 "domain": "SV",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "cm.xpt",
@@ -131072,8 +131042,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131115,18 +131085,9 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
@@ -131335,8 +131296,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131410,18 +131371,9 @@
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
@@ -131598,8 +131550,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131697,18 +131649,9 @@
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
@@ -131861,8 +131804,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -131968,18 +131911,9 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "success",
-                                "execution_message": "TM dataset is missing when RELMIDS variable is present in any of the dataset.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$RELMIDS_EXISTS": true
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "te.xpt",
@@ -132124,8 +132058,8 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "sql_overall_result": "success",
@@ -132235,7 +132169,16 @@
                             "dataset_mismatch": false,
                             "execution_status_mismatch": false,
                             "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "diff": {
+                                "apdrug1ex.xpt": {
+                                    "values_changed": {
+                                        "root[0]['value']['dataset_name']": {
+                                            "new_value": "not in dataset",
+                                            "old_value": "apdrug1ex"
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
