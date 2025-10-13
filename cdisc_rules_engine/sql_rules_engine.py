@@ -79,7 +79,7 @@ class SQLRulesEngine:
 
         # iterate through all pre-processed user datasets
         for pp_ds_id in self.data_service.get_uploaded_dataset_ids():
-            dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
+            dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id, self.standards_context)
 
             is_suitable, reason = self.standards_context.within_rule_scope(
                 rule,

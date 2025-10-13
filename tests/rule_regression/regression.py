@@ -12,7 +12,8 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
-from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
+from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
+from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.standards.standards_factory import StandardsFactory
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
@@ -557,8 +558,6 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
             # Step 7: Create a TestDataset object and append it to the list
             test_datasets.append(
                 TestDataset(
-                    filename=filename,
-                    filepath=filename,
                     name=filename.split(".")[0].upper(),
                     label=label,
                     variables=variables,
@@ -571,10 +570,10 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
 
 def extract_variables(
     dataset_df: pd.DataFrame,
-) -> Tuple[list[TestVariableMetadata], dict]:
+) -> Tuple[list[VariableMetadata], dict]:
     variables = []
     col_type_dict = {}
-    for col in dataset_df.columns:
+    for i, col in enumerate(dataset_df.columns):
         var_name = col  # Name from row 0
         if col.startswith("Unnamed:"):
             continue
@@ -583,15 +582,14 @@ def extract_variables(
         var_length = dataset_df[col].iloc[2]  # Length from row 3
         var_format = ""  # Format is always empty
 
+        if var_type not in ["Char", "Num"]:
+            raise ValueError("Unknown variable type: " + var_type)
+
         # Create a variable dictionary
         variables.append(
-            {
-                "name": var_name,
-                "label": var_label,
-                "type": var_type,
-                "length": var_length,
-                "format": var_format,
-            }
+            VariableMetadata(
+                name=var_name, label=var_label, type=var_type, length=var_length, format=var_format, order=i + 1
+            )
         )
 
         # collect appropriate column type for SQL

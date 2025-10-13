@@ -1,6 +1,6 @@
 import pytest
 
-from cdisc_rules_engine.readers.data_reader import DataReader
+from cdisc_rules_engine.readers.data_readers.base_data_reader import DataReader
 
 ADAM_DOMAINS = ["ADAE", "ADEF", "ADSL", "ADTTE"]
 SDTM_DOMAINS = ["AE", "DM", "EX", "LB", "SUPPDM", "TA", "TD", "TE", "TI", "TS", "TV", "XP"]

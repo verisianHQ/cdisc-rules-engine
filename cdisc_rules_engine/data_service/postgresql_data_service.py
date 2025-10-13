@@ -23,9 +23,11 @@ from cdisc_rules_engine.data_service.startup.populate_terminology import (
     populate_terminology,
 )
 from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
+from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema, SqlColumnSchema
+from cdisc_rules_engine.models.sql.table_schema import SqlColumnSchema, SqlTableSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
+from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 
 SCHEMA_PATH = Path(__file__).parent / "schemas"
 
@@ -42,7 +44,7 @@ class SQLDatasetMetadata:
     domain: str
     is_supp: bool
     rdomain: str
-    variables: list[str]
+    variables: list[VariableMetadata]
     is_split: bool = False
 
 
@@ -135,36 +137,25 @@ class PostgresQLDataService:
     def get_uploaded_dataset_ids(self) -> list[str]:
         return [dataset.name for dataset in self.datasets]
 
-    def get_dataset_metadata(self, dataset_id: str) -> SQLDatasetMetadata:
-
+    def get_dataset_metadata(self, dataset_id: str, standards_context: BaseStandardsContext) -> SQLDatasetMetadata:
         tmp = next((metadata for metadata in self.datasets if metadata.name.lower() == dataset_id.lower()), None)
         if not tmp:
             return None
-
-        # Query data_metadata to get variable names
-        query = f"""
-            SELECT var_name
-            FROM data_metadata
-            WHERE dataset_id = '{dataset_id.lower()}'
-            ORDER BY id;
-        """
-        self.pgi.execute_sql(query=query)
-        results = self.pgi.fetch_all()
-        variables = [res["var_name"] for res in results] if results else []
-
+        domain = standards_context.derive_domain(tmp.name)
         return SQLDatasetMetadata(
-            filename=tmp.filename,
-            filepath=str(tmp.full_path),
+            filename=tmp.name,
+            filepath=str(tmp.name),
             dataset_id=tmp.name,
             table_hash=tmp.name,
             dataset_name=tmp.name,
             dataset_label=tmp.label,
             unsplit_name=tmp.name,
-            domain=tmp.domain,
-            is_supp=tmp.is_supp,
-            rdomain=tmp.rdomain,
-            variables=variables,
-            is_split=tmp.is_split,
+            domain=domain,
+            # Clearly not going to stay here
+            is_supp=domain == "SUPPQUAL",
+            rdomain=self.name[4:].upper() if domain.startswith("supp") else None,
+            variables=tmp.variables,
+            is_split=tmp.name.startswith(domain.lower()) and tmp.name != domain.lower(),
         )
 
     def get_dataset_for_rule(self, dataset_metadata: SQLDatasetMetadata, rule: dict) -> str:
