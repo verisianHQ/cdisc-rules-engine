@@ -78366,8 +78366,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Column visitnum or visitnum not found in the respective schemas."
+                                        "error": "Column not found in data",
+                                        "message": "VISITNUM"
                                     }
                                 ]
                             },
@@ -78942,23 +78942,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "an unknown exception has occurred",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column visitnum or visitnum not found in the respective schemas.",
-                                            "old_value": "visitnum"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -136924,7 +136908,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "Validation error",
                                         "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
@@ -137147,7 +137131,7 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
+                                        "error": "Validation error",
                                         "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
