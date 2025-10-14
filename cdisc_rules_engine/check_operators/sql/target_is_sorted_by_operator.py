@@ -4,7 +4,7 @@ from .base_sql_operator import BaseSqlOperator
 class TargetIsSortedByOperator(BaseSqlOperator):
     """Operator for checking if target is sorted by specified criteria."""
 
-    def _is_valid_date_sql(self, date_column):
+    def _is_invalid_date_sql(self, date_column):
         """
         Check if a date is invalid using simple SQL logic.
         Returns SQL expression that evaluates to TRUE if the date is invalid, FALSE if valid.
@@ -77,10 +77,18 @@ class TargetIsSortedByOperator(BaseSqlOperator):
 
             order_by_clause = ", ".join(order_by_parts)
 
-            # Get first comparator for checking NULL values
+            # Get first comparator for checking NULL values and null positioning
             first_comp = comparators[0]
             first_comp_name = self.replace_prefix(first_comp["name"])
             first_comp_sql = self._column_sql(first_comp_name, alias=False)
+            first_comp_null_pos = first_comp["null_position"].upper()
+
+            # Build target ordering that respects the same null positioning as comparators
+            first_comp_null_pos = first_comp["null_position"].upper()
+            if first_comp_null_pos == "FIRST":
+                target_order_clause = "target_val NULLS FIRST"
+            else:
+                target_order_clause = "target_val NULLS LAST"
 
             return f"""
             -- Check if target is sorted correctly by comparator columns within groups
@@ -93,11 +101,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                     ROW_NUMBER() OVER (
                         PARTITION BY {self._column_sql(within, alias=False)}
                         ORDER BY {order_by_clause}
-                    ) AS sorted_position,
-                    ROW_NUMBER() OVER (
-                        PARTITION BY {self._column_sql(within, alias=False)}
-                        ORDER BY {order_by_clause}
-                    ) AS expected_index
+                    ) AS sorted_position
                 FROM {table_name}
             ),
             target_order AS (
@@ -109,9 +113,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                     sorted_position,
                     ROW_NUMBER() OVER (
                         PARTITION BY within_val
-                        ORDER BY
-                            CASE WHEN target_val IS NULL THEN 1 ELSE 0 END,
-                            target_val
+                        ORDER BY {target_order_clause}
                     ) AS target_sorted_position
                 FROM sorted_with_positions
             ),
@@ -119,8 +121,8 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                 SELECT
                     id,
                     CASE
-                        -- If comparator is NULL or invalid date, always mark as False
-                        WHEN comp_val IS NULL OR ({self._is_valid_date_sql("comp_val")}) THEN false
+                        -- If comparator is non-null but invalid date, always mark as False
+                        WHEN comp_val IS NOT NULL AND ({self._is_invalid_date_sql("comp_val")}) THEN false
                         -- Check if the positions match (target order = expected order)
                         ELSE sorted_position = target_sorted_position
                     END AS is_valid
@@ -131,8 +133,8 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                     s1.id,
                     CASE
                         -- Use invalid_date operator logic to check if dates are valid before checking overlaps
-                        WHEN ({self._is_valid_date_sql("s1.comp_val")}) OR
-                             ({self._is_valid_date_sql("s2.comp_val")}) THEN true
+                        WHEN ({self._is_invalid_date_sql("s1.comp_val")}) OR
+                             ({self._is_invalid_date_sql("s2.comp_val")}) THEN true
                         WHEN s1.comp_val ~ '^[0-9]{{4}}$' AND s2.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}'
                              AND s2.comp_val LIKE s1.comp_val || '%' THEN false
                         WHEN s1.comp_val ~ '^[0-9]{{4}}-[0-9]{{2}}$'

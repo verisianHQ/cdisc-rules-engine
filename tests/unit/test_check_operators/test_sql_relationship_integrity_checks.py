@@ -499,7 +499,7 @@ TARGET_IS_SORTED_BY_DATA = [
             "within": "USUBJID",
             "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
         },
-        [True, False, True, False, True],
+        [True, True, True, True, True],  # All should be True - the sorting is actually correct
     ),
     # Partial dates with overlaps - some invalid due to date overlap issues
     (
@@ -567,6 +567,34 @@ TARGET_IS_SORTED_BY_DATA = [
             "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
         },
         [False, True, False, True],
+    ),
+    # Test null_position = "first" - NULLs should come before non-NULLs
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002", "CDISC002"],
+            "SESEQ": [1, 2, 3, 1, 2, 3],
+            "SESTDTC": [None, "2006-06-01", "2006-06-02", None, "2007-01-01", "2007-01-02"],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "first"}],
+        },
+        [True, True, True, True, True, True],
+    ),
+    # Test null_position = "last" - NULLs should come after non-NULLs
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002", "CDISC002"],
+            "SESEQ": [1, 2, 3, 1, 2, 3],
+            "SESTDTC": ["2006-06-01", "2006-06-02", None, "2007-01-01", "2007-01-02", None],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
+        },
+        [True, True, True, True, True, True],
     ),
 ]
 
