@@ -294,9 +294,8 @@ class SqlRelrecMerge:
 
         return f"""
             INSERT INTO {schema.hash} ({', '.join(target_columns)})
-            SELECT DISTINCT ON ({id_col_hash}) {', '.join(target_columns)}
-            FROM (
-                {' UNION ALL '.join(union_parts)}
+            SELECT {', '.join(target_columns)} FROM (
+                {' UNION '.join(union_parts)}
             ) AS merged_data
             ORDER BY {id_col_hash}
         """
