@@ -114,7 +114,13 @@ class BaseSqlOperator:
         if isinstance(value, str):
             for prefix, replacement in self.column_prefix_map.items():
                 if value.startswith(prefix) and replacement is not None:
-                    return value.replace(prefix, replacement, 1)
+                    # return value.replace(prefix, replacement, 1)
+                    replaced = value.replace(prefix, replacement, 1)
+                    if not self._exists(replaced) and "**" in value:
+                        wildcard_col = value.replace("**", self.column_prefix_map.get("--", "") + "**")
+                        if self._exists(wildcard_col):
+                            return wildcard_col
+                    return replaced
         return value
 
     def replace_all_prefixes(self, values: List[str]) -> List[str]:
