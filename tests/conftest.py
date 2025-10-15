@@ -1269,6 +1269,7 @@ def get_python_executable():
 @pytest.fixture
 def get_sample_lb_dataset() -> TestDataset:
     return TestDataset(
+        filename="lb.xpt",
         name="LB",
         label="Laboratory Test Results",
         variables=[
@@ -1285,6 +1286,7 @@ def get_sample_lb_dataset() -> TestDataset:
 @pytest.fixture
 def get_sample_supp_dataset() -> TestDataset:
     return TestDataset(
+        filename="suppdm.xpt",
         name="SUPPDM",
         label="Supplemental Demographics Domain",
         variables=[
@@ -1320,6 +1322,7 @@ def get_sample_supp_dataset() -> TestDataset:
 def get_sample_dm_dataset() -> TestDataset:
     """Provides a sample DM dataset for SUPPDM to reference."""
     return TestDataset(
+        filename="dm.xpt",
         name="DM",
         label="Demographics",
         variables=[

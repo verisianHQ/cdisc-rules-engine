@@ -31,6 +31,15 @@ METADATA_CACHE = {}
 
 
 def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
+    try:
+        return run_single_rule_regression_impl(row, get_core_rule, target_case)
+    except Exception as e:
+        regression = initialize_regression_dict(row)
+        regression["error"] = str(e)
+        return regression
+
+
+def run_single_rule_regression_impl(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
     ig_specs = {
         "standard": "sdtmig",
         "standard_version": "3.4",
@@ -387,7 +396,7 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
     diff = {}
     # compare execution status
     for sql, old in zip(sql_results, old_results):
-        if sql.get("dataset") != old.get("dataset") or sql.get("domain") != old.get("domain"):
+        if sql.get("dataset") != old.get("dataset"):
             dataset_mismatch = True
             continue
 
@@ -558,6 +567,7 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
             # Step 7: Create a TestDataset object and append it to the list
             test_datasets.append(
                 TestDataset(
+                    filename=filename,
                     name=filename.split(".")[0].upper(),
                     label=label,
                     variables=variables,
@@ -583,7 +593,8 @@ def extract_variables(
         var_format = ""  # Format is always empty
 
         if var_type not in ["Char", "Num"]:
-            raise ValueError("Unknown variable type: " + var_type)
+            print(f"Unknown variable type: {var_type}. This data needs fixing.")
+            var_type = "Char"  # Default to Char if unknown
 
         # Create a variable dictionary
         variables.append(

@@ -40,6 +40,7 @@ class BaseDataReader(ABC):
         """Read only the metadata."""
         path = Path(self.file_path)
         return DatasetMetadata2(
+            filename=path.name.lower(),
             name=path.name.lower().replace(self._get_extension(), ""),
             variables=self._extract_variable_metadata(reader),
             # TODO: How to extract this?

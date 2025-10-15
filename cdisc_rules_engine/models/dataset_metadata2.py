@@ -16,6 +16,7 @@ class VariableMetadata:
 
 @dataclass
 class DatasetMetadata2:
+    filename: str
     name: str
     label: str
     variables: List[VariableMetadata]

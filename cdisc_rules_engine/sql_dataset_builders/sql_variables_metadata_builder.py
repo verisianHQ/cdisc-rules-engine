@@ -41,16 +41,14 @@ class SqlVariablesMetadataBuilder(SqlBaseDatasetBuilder):
         rows = []
 
         for variable in self.dataset_metadata.variables:
-            rows.append(
-                {
-                    "variable_name": variable.name.upper(),
-                    "variable_order_number": variable.order,
-                    "variable_label": variable.label,
-                    "variable_size": variable.length,
-                    "variable_data_type": variable.type,
-                    "variable_format": variable.format,
-                }
-            )
+            row = {}
+            row["variable_name"] = variable.name.upper()
+            row["variable_order_number"] = variable.order
+            row["variable_label"] = variable.label
+            row["variable_size"] = variable.length
+            row["variable_data_type"] = variable.type
+            row["variable_format"] = variable.format
+            rows.append(row)
 
         self.data_service.pgi.insert_data(table_name, rows)
         return table_name

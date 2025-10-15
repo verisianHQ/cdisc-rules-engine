@@ -22,9 +22,10 @@ from cdisc_rules_engine.data_service.startup.populate_standards import (
 from cdisc_rules_engine.data_service.startup.populate_terminology import (
     populate_terminology,
 )
-from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
-from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
-from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
+from cdisc_rules_engine.models.dataset_metadata2 import (
+    DatasetMetadata2,
+    VariableMetadata,
+)
 from cdisc_rules_engine.models.sql.table_schema import SqlColumnSchema, SqlTableSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
@@ -52,7 +53,7 @@ class PostgresQLDataService:
 
     def __init__(self, postgres_interface: PostgresQLInterface):
         self.pgi = postgres_interface
-        self.datasets: List[DatasetMetadata] = []
+        self.datasets: List[DatasetMetadata2] = []
 
     @classmethod
     def instance(cls) -> "PostgresQLDataService":
@@ -119,16 +120,20 @@ class PostgresQLDataService:
         data_service.pgi.insert_data(table_name=table_name, data=row_dicts)
 
         data_service.datasets.append(
-            SDTMDatasetMetadata(
-                file_size=0,
-                filename=f"{table_name}.xpt",
-                full_path=f"/test/{table_name}.xpt",
-                label=f"Test {table_name} Dataset",
+            DatasetMetadata2(
                 name=table_name,
-                record_count=len(row_dicts),
-                modification_date=None,
-                original_path=None,
-                first_record=row_dicts[0],
+                label=f"Test {table_name} Dataset",
+                variables=[
+                    VariableMetadata(
+                        name=col,
+                        order=i + 1,
+                        label=f"Test {col} Variable",
+                        length=200,
+                        type="Char" if isinstance(next((val for val in values if val is not None), ""), str) else "Num",
+                        format="",
+                    )
+                    for i, (col, values) in enumerate(column_data.items())
+                ],
             )
         )
 
@@ -143,8 +148,8 @@ class PostgresQLDataService:
             return None
         domain = standards_context.derive_domain(tmp.name)
         return SQLDatasetMetadata(
-            filename=tmp.name,
-            filepath=str(tmp.name),
+            filename=tmp.filename,
+            filepath=tmp.filename,
             dataset_id=tmp.name,
             table_hash=tmp.name,
             dataset_name=tmp.name,
