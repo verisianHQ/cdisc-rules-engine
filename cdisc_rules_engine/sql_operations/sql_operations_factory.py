@@ -18,7 +18,6 @@ from cdisc_rules_engine.sql_operations.numeric_operation import (
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 from cdisc_rules_engine.sql_operations.get_model_filtered_variables import SqlGetModelFilteredVariables
-from cdisc_rules_engine.models.library_metadata_container import LibraryMetadataContainer
 
 
 class SqlOperationsFactory:
