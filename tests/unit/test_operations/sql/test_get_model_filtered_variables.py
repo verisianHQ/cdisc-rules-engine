@@ -9,6 +9,9 @@ from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
 from cdisc_rules_engine.enums.variable_roles import VariableRoles
+from cdisc_rules_engine.standards.default_standards_context import (
+    DefaultStandardsContext,
+)
 
 from .helpers import (
     assert_operation_collection,
@@ -146,7 +149,7 @@ def test_get_model_filtered_variables(mock_variables, key_value, expected):
     )
 
     params = SqlOperationParams(
-        domain="AE", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value=key_value
+        domain="AE", target=None, standards_context=DefaultStandardsContext(), key_name="role", key_value=key_value
     )
 
     operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, data_service)
@@ -172,7 +175,7 @@ def test_get_model_filtered_variables_exception_handling():
     )
 
     params = SqlOperationParams(
-        domain="AE", target=None, standard="sdtmig", standard_version="3-4", key_name="role", key_value="Topic"
+        domain="AE", target=None, standards_context=DefaultStandardsContext(), key_name="role", key_value="Topic"
     )
 
     operation = SqlOperationsFactory.get_service("get_model_filtered_variables", params, data_service)
