@@ -4,9 +4,9 @@
 
 - Total rules without check operators: 297
 - Total unique operators found in rules: 58
-- Total implemented PostgreSQL operators: 83
+- Total implemented PostgreSQL operators: 84
 - Missing operators (in rules but not implemented): 1
-- Extra operators (implemented but not used in rules): 26
+- Extra operators (implemented but not used in rules): 27
 
 ## ✅ Implementation Status
 
