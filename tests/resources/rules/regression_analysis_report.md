@@ -4,8 +4,8 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 31 (4.1%)
-- **Clean rules**: 731 (95.9%)
+- **Rules with any errors**: 32 (4.2%)
+- **Clean rules**: 730 (95.8%)
 
 **Error Breakdown by Category:**
 
