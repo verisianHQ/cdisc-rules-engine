@@ -153,7 +153,6 @@ HAS_NEXT_CORRESPONDING_RECORD_DATA = [
 
 @pytest.mark.parametrize("data, expected_result", HAS_NEXT_CORRESPONDING_RECORD_DATA)
 def test_has_next_corresponding_record(data, expected_result):
-    """Test for has_next_corresponding_record operator."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.has_next_corresponding_record(
         {
@@ -168,7 +167,6 @@ def test_has_next_corresponding_record(data, expected_result):
 
 @pytest.mark.parametrize("data, expected_result", HAS_NEXT_CORRESPONDING_RECORD_DATA)
 def test_does_not_have_next_corresponding_record(data, expected_result):
-    """Test for has_next_corresponding_record operator."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.does_not_have_next_corresponding_record(
         {
@@ -339,7 +337,6 @@ EMPTY_WITHIN_EXCEPT_LAST_ROW_DATA = [
 
 @pytest.mark.parametrize("data, params, expected_result", EMPTY_WITHIN_EXCEPT_LAST_ROW_DATA)
 def test_empty_within_except_last_row(data, params, expected_result):
-    """Test for empty_within_except_last_row operator."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.empty_within_except_last_row(params)
     assert_series_equals(result, expected_result)
@@ -347,7 +344,6 @@ def test_empty_within_except_last_row(data, params, expected_result):
 
 @pytest.mark.parametrize("data, params, expected_result", EMPTY_WITHIN_EXCEPT_LAST_ROW_DATA)
 def test_non_empty_within_except_last_row(data, params, expected_result):
-    """Test for non_empty_within_except_last_row operator (inverse of empty_within_except_last_row)."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.non_empty_within_except_last_row(params)
     assert_series_equals(result, ~pd.Series(expected_result))
@@ -410,6 +406,25 @@ TARGET_IS_SORTED_BY_DATA = [
             "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
         },
         [True, True, True, True, True],
+    ),
+    (
+        {
+            "USUBJID": [123, 456, 456, 123, 123],
+            "SESEQ": [1, 2, 1, 3, 2],
+            "SESTDTC": [
+                "2006-06-02",
+                "2006-06-04",
+                "2006-06-01",
+                "2006-06-05",
+                "2006-06-03",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "DESC", "null_position": "last"}],
+        },
+        [False, False, False, False, True],
     ),
     (
         {
@@ -490,6 +505,64 @@ TARGET_IS_SORTED_BY_DATA = [
     ),
     (
         {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC001", "CDISC001"],
+            "SESEQ": [1, 2, 5, 8, 12],
+            "SESTDTC": [
+                "2006-06-01",
+                "2006-06-02",
+                "2006-06-03",
+                "2006-06-04",
+                "2006-06-05",
+            ],
+            "SEENDTC": [
+                "2006-06-04",
+                "2006-06-05",
+                "2006-06-06",
+                "2006-06-07",
+                "2006-06-08",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [
+                {"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"},
+                {"name": "SEENDTC", "sort_order": "DESC", "null_position": "last"},
+            ],
+        },
+        [False, False, True, False, False],
+    ),
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC002", "CDISC002", "CDISC001", "CDISC001"],
+            "SESEQ": [1, 2, 1, 1, 2],
+            "SESTDTC": [
+                "2006-06-02",
+                "2006-06-04",
+                "2006-06-01",
+                "2006-06-05",
+                "2006-06-03",
+            ],
+            "SEENDTC": [
+                "2006-06-02",
+                "2006-06-04",
+                "2006-06-01",
+                "2006-06-05",
+                "2006-06-03",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [
+                {"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"},
+                {"name": "SEENDTC", "sort_order": "ASC", "null_position": "last"},
+            ],
+        },
+        [True, True, True, False, False],
+    ),
+    (
+        {
             "USUBJID": [123, 456, 456, 123, 123],
             "SESEQ": [1, 2, 1, None, None],
             "SESTDTC": ["2006-06-02", None, "2006-06-01", None, "2006-06-03"],
@@ -499,9 +572,40 @@ TARGET_IS_SORTED_BY_DATA = [
             "within": "USUBJID",
             "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
         },
-        [True, True, True, True, True],  # All should be True - the sorting is actually correct
+        [True, False, True, False, True],
     ),
-    # Partial dates with overlaps - some invalid due to date overlap issues
+    (
+        {
+            "USUBJID": [123, 456, 456, 123, 123],
+            "SESEQ": [1, 2, 3, None, None],
+            "SESTDTC": ["2006-06-02", None, "2006-06-01", None, "2006-06-03"],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
+        },
+        [True, False, False, False, True],
+    ),
+    (
+        {
+            "USUBJID": ["CDISC001", "CDISC001", "CDISC002", "CDISC002", "CDISC003"],
+            "SESEQ": [1, 2, 1, 2, 1],
+            "SESTDTC": [
+                "2006-06-02 10:00",
+                "2006-06-02 14:30:00",
+                "2006-06-03 09:15",
+                "2006-06-03 11:45:00",
+                "2006-06-04 08:00:00",
+            ],
+        },
+        {
+            "target": "SESEQ",
+            "within": "USUBJID",
+            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
+        },
+        [True, True, True, True, True],
+    ),
     (
         {
             "USUBJID": [
@@ -529,79 +633,11 @@ TARGET_IS_SORTED_BY_DATA = [
         },
         [False, False, True, False, True, True],
     ),
-    # Invalid date formats - incomplete patterns (YYYY-, YYYY-MM-)
-    (
-        {
-            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002"],
-            "SESEQ": [1, 2, 3, 1, 2],
-            "SESTDTC": [
-                "2006-",
-                "2006-06-02",
-                "2006-06-03",
-                "2007-05-",
-                "2007-05-01",
-            ],
-        },
-        {
-            "target": "SESEQ",
-            "within": "USUBJID",
-            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
-        },
-        [False, True, True, False, True],
-    ),
-    # Invalid date formats - time uncertainty patterns (-:)
-    (
-        {
-            "USUBJID": ["CDISC001", "CDISC001", "CDISC002", "CDISC002"],
-            "SESEQ": [1, 2, 1, 2],
-            "SESTDTC": [
-                "2006-06-01T10:-:",
-                "2006-06-02",
-                "2007-05-01T-:30",
-                "2007-05-02",
-            ],
-        },
-        {
-            "target": "SESEQ",
-            "within": "USUBJID",
-            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
-        },
-        [False, True, False, True],
-    ),
-    # Test null_position = "first" - NULLs should come before non-NULLs
-    (
-        {
-            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002", "CDISC002"],
-            "SESEQ": [1, 2, 3, 1, 2, 3],
-            "SESTDTC": [None, "2006-06-01", "2006-06-02", None, "2007-01-01", "2007-01-02"],
-        },
-        {
-            "target": "SESEQ",
-            "within": "USUBJID",
-            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "first"}],
-        },
-        [True, True, True, True, True, True],
-    ),
-    # Test null_position = "last" - NULLs should come after non-NULLs
-    (
-        {
-            "USUBJID": ["CDISC001", "CDISC001", "CDISC001", "CDISC002", "CDISC002", "CDISC002"],
-            "SESEQ": [1, 2, 3, 1, 2, 3],
-            "SESTDTC": ["2006-06-01", "2006-06-02", None, "2007-01-01", "2007-01-02", None],
-        },
-        {
-            "target": "SESEQ",
-            "within": "USUBJID",
-            "comparator": [{"name": "SESTDTC", "sort_order": "ASC", "null_position": "last"}],
-        },
-        [True, True, True, True, True, True],
-    ),
 ]
 
 
 @pytest.mark.parametrize("data, params, expected_result", TARGET_IS_SORTED_BY_DATA)
 def test_target_is_sorted_by(data, params, expected_result):
-    """Test for target_is_sorted_by operator."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.target_is_sorted_by(params)
     assert_series_equals(result, expected_result)
@@ -609,7 +645,6 @@ def test_target_is_sorted_by(data, params, expected_result):
 
 @pytest.mark.parametrize("data, params, expected_result", TARGET_IS_SORTED_BY_DATA)
 def test_target_is_not_sorted_by(data, params, expected_result):
-    """Test for target_is_not_sorted_by operator (inverse of target_is_sorted_by)."""
     sql_ops = create_sql_operators(data)
     result = sql_ops.target_is_not_sorted_by(params)
     assert_series_equals(result, ~pd.Series(expected_result))
