@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
+from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+
 
 @dataclass
 class SqlOperationParams:
@@ -12,12 +14,13 @@ class SqlOperationParams:
     # Required parameters (no defaults) first
     domain: str
     target: str
-    standard: str
-    standard_version: str
+    standards_context: BaseStandardsContext
 
     # Optional parameters with defaults
     grouping: List[str] = None
     filter: dict = None
+    key_name: str = None
+    key_value: str = None
 
     # standard_substandard: str = None
     # attribute_name: str = None
@@ -40,8 +43,6 @@ class SqlOperationParams:
     # filter: dict = None
     # grouping: List[str] = None
     # grouping_aliases: List[str] = None
-    # key_name: str = None
-    # key_value: str = None
     # level: str = None
     # map: List[dict] = None
     # original_target: str = None

@@ -1,8 +1,8 @@
-import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Union
 
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER
 from cdisc_rules_engine.data_service.loading.load_datasets import SqlDatasetLoader
 from cdisc_rules_engine.data_service.loading.load_test_datasets import (
     SqlTestDatasetLoader,
@@ -24,12 +24,8 @@ from cdisc_rules_engine.data_service.startup.populate_terminology import (
 )
 from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema, SqlColumnSchema
 from cdisc_rules_engine.models.test_dataset import TestDataset
-from cdisc_rules_engine.utilities.ig_specification import IGSpecification
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 SCHEMA_PATH = Path(__file__).parent / "schemas"
 
@@ -52,13 +48,12 @@ class SQLDatasetMetadata:
 
 class PostgresQLDataService:
 
-    def __init__(self, postgres_interface: PostgresQLInterface, standard: IGSpecification):
+    def __init__(self, postgres_interface: PostgresQLInterface):
         self.pgi = postgres_interface
         self.datasets: List[DatasetMetadata] = []
-        self.ig_specs = standard
 
     @classmethod
-    def instance(cls, standard: IGSpecification = None) -> "PostgresQLDataService":
+    def instance(cls) -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
@@ -66,7 +61,7 @@ class PostgresQLDataService:
         pgi = PostgresQLInterface()
         pgi.init_database()
 
-        instance = cls(postgres_interface=pgi, standard=standard)
+        instance = cls(postgres_interface=pgi)
         pgi.execute_sql_file(str(SCHEMA_PATH / "clinical_data_metadata_schema.sql"))
         populate_terminology(pgi)
         populate_codelists(pgi)
@@ -74,21 +69,19 @@ class PostgresQLDataService:
         return instance
 
     @classmethod
-    def from_list_of_testdatasets(
-        cls, test_datasets: list[TestDataset], standard: IGSpecification = None
-    ) -> "PostgresQLDataService":
+    def from_list_of_testdatasets(cls, test_datasets: list[TestDataset]) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance(standard)
+        instance = cls.instance()
         instance.datasets += SqlTestDatasetLoader.load_test_datasets(instance.pgi, test_datasets)
         return instance
 
     @classmethod
-    def from_dataset_paths(cls, datasets_path: Path, standard: IGSpecification = None) -> "PostgresQLDataService":
-        instance = cls.instance(standard)
-        instance.datasets += SqlDatasetLoader.load_datasets(instance.pgi, datasets_path)
+    def from_dataset_paths(cls, dataset_paths: List[str]) -> "PostgresQLDataService":
+        instance = cls.instance()
+        instance.datasets += SqlDatasetLoader.load_datasets(instance.pgi, dataset_paths)
         return instance
 
     @staticmethod
@@ -100,6 +93,12 @@ class PostgresQLDataService:
         if len(set(lengths)) != 1:
             raise ValueError("All input data columns must have the same length")
 
+        if SOURCE_ROW_NUMBER in [k.lower() for k in column_data.keys()]:
+            raise ValueError(
+                f"Test dataset '{table_name}' contains reserved column 'source_row_number'. "
+                "This column is automatically generated and should not be in test data."
+            )
+
         # Create schema and table:
         schema_row = {
             col.lower(): next((val for val in values if val is not None), "") for col, values in column_data.items()
@@ -107,7 +106,12 @@ class PostgresQLDataService:
         row_dicts = [dict(zip(column_data, values)) for values in zip(*column_data.values())]
         row_dicts = [{k.lower(): v for k, v in row.items()} for row in row_dicts]
 
+        for idx, row in enumerate(row_dicts, start=1):
+            row[SOURCE_ROW_NUMBER] = idx
+
         schema = SqlTableSchema.from_data(table_name, schema_row)
+        source_row_column = SqlColumnSchema(name=SOURCE_ROW_NUMBER, hash=SOURCE_ROW_NUMBER, type="Num")
+        schema.add_column(source_row_column)
         data_service.pgi.create_table(schema)
 
         data_service.pgi.insert_data(table_name=table_name, data=row_dicts)
@@ -136,6 +140,18 @@ class PostgresQLDataService:
         tmp = next((metadata for metadata in self.datasets if metadata.name.lower() == dataset_id.lower()), None)
         if not tmp:
             return None
+
+        # Query data_metadata to get variable names
+        query = f"""
+            SELECT var_name
+            FROM data_metadata
+            WHERE dataset_id = '{dataset_id.lower()}'
+            ORDER BY id;
+        """
+        self.pgi.execute_sql(query=query)
+        results = self.pgi.fetch_all()
+        variables = [res["var_name"] for res in results] if results else []
+
         return SQLDatasetMetadata(
             filename=tmp.filename,
             filepath=str(tmp.full_path),
@@ -147,7 +163,7 @@ class PostgresQLDataService:
             domain=tmp.domain,
             is_supp=tmp.is_supp,
             rdomain=tmp.rdomain,
-            variables=[],
+            variables=variables,
             is_split=tmp.is_split,
         )
 
@@ -340,3 +356,7 @@ class PostgresQLDataService:
             merge_spec=merge_spec,
         )
         return result_schema.name
+
+    # Temporarily adding this method to get the report to output
+    def read_data(self, path: str):
+        return None

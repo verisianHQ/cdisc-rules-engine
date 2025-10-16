@@ -6,6 +6,7 @@ from business_rules.actions import BaseActions, rule_action
 from business_rules.fields import FIELD_TEXT
 
 from cdisc_rules_engine.constants import NULL_FLAVORS
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
     SQLDatasetMetadata,
@@ -77,14 +78,27 @@ class SqlVenmoResultHandler(BaseActions):
     def generate_dataset_error_objects(self, message: str, results: pd.Series):
         """
         This function maps the truth series from venmo to a list of error objects.
+
+        For derived table validations (Domain Presence, Variable Metadata):
+        - Broadcast single-value Series to match original dataset length
         """
+        # Broadcast single-value Series to original dataset length
+        if len(results) == 1 and self.dataset_id != self.dataset_metadata.dataset_id:
+            # Get row count of original dataset
+            original_table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_metadata.dataset_id)
+            self.data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {original_table_hash};")
+            count_result = self.data_service.pgi.fetch_all()
+            original_row_count = count_result[0]["count"]
+
+            single_value = results.iloc[0]
+            results = pd.Series([single_value] * original_row_count, index=range(original_row_count))
+
         rows_with_error = self._get_error_rows(results)
 
-        target_columns = SqlVenmoResultHandler._get_target_columns(
-            self.rule, self.dataset_metadata, self.data_service.pgi.schema.get_table(self.dataset_id)
-        )
+        validation_schema = self.data_service.pgi.schema.get_table(self.dataset_id)
+        target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
 
-        errors_list = self._generate_errors_list(rows_with_error, target_columns)
+        errors_list = self._generate_errors_list(rows_with_error, target_columns, validation_schema)
         error_object = self._bundle_error_object(
             message=message,
             error_rows=errors_list,
@@ -93,14 +107,28 @@ class SqlVenmoResultHandler(BaseActions):
 
     def _get_error_rows(self, truth_series) -> List[dict]:
         """
-        Fetch the rows which returned TRUE
+        Fetch the rows which returned TRUE.
+
+        Query from the validation table (self.dataset_id) which contains all necessary columns:
+        - For normal rules: same as original dataset
+        - For cross-dataset rules: joined table with columns from multiple datasets
+        - For metadata rules: metadata table
         """
+        # Query from the validation table which has all the columns we need
+        table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_id)
+
+        # Get indices of TRUE values
         true_indicies = [str(i + 1) for i, x in enumerate(truth_series) if x]
+
+        if not true_indicies:
+            return []
+
+        # Query the validation table
         self.data_service.pgi.execute_sql(
-            f"""SELECT * FROM
-                {self.data_service.pgi.schema.get_table_hash(self.dataset_id)}
-            WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
+            f"""SELECT * FROM {table_hash}
+                WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
         )
+
         results = self.data_service.pgi.fetch_all()
         return list(results)
 
@@ -108,6 +136,8 @@ class SqlVenmoResultHandler(BaseActions):
         """
         Bundles the error rows into a ValidationErrorContainer.
         """
+        original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.dataset_id)
+
         return ValidationErrorContainer(
             domain=(
                 f"SUPP{self.dataset_metadata.rdomain}"
@@ -115,28 +145,29 @@ class SqlVenmoResultHandler(BaseActions):
                 else (self.dataset_metadata.domain or self.dataset_metadata.dataset_name)
             ),
             dataset=", ".join(sorted(set(error._dataset or "" for error in error_rows))),
-            targets=SqlVenmoResultHandler._get_target_columns(
-                self.rule, self.dataset_metadata, self.data_service.pgi.schema.get_table(self.dataset_id)
-            ),
+            targets=SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, original_schema),
             errors=error_rows,
             message=message.replace("--", self.dataset_metadata.domain or ""),
         )
 
-    def _generate_errors_list(self, data: List[dict], target_columns: dict[str, bool]) -> List[ValidationErrorEntity]:
+    def _generate_errors_list(
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
+    ) -> List[ValidationErrorEntity]:
         match self.rule.get("sensitivity"):
             case Sensitivity.DATASET.value:
-                return [self._build_dataset_error(data, target_columns)]
+                return [self._build_dataset_error(data, target_columns, schema)]
             case Sensitivity.RECORD.value | None:
-                return self._build_record_error_items(data, target_columns)
+                return self._build_record_error_items(data, target_columns, schema)
             case _:
                 raise ValueError(f"Invalid sensitivity value: {self.rule.get('sensitivity')}")
 
-    def _build_dataset_error(self, data: List[dict], target_columns: dict[str, bool]) -> ValidationErrorEntity:
+    def _build_dataset_error(
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
+    ) -> ValidationErrorEntity:
         """Only generate one error for rules with dataset sensitivity"""
         if len(data) == 0:
             value = {}
         else:
-            schema = self.data_service.pgi.schema.get_table(self.dataset_id)
             value = self._create_error_for_row(data[0], schema, target_columns).value
 
         return ValidationErrorEntity(
@@ -145,12 +176,11 @@ class SqlVenmoResultHandler(BaseActions):
         )
 
     def _build_record_error_items(
-        self, data: List[dict], target_columns: dict[str, bool]
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
     ) -> List[ValidationErrorEntity]:
         """
         Build a list of ValidationErrorEntity objects for each error row in the data.
         """
-        schema: SqlTableSchema = self.data_service.pgi.schema.get_table(self.dataset_id)
         return [self._create_error_for_row(row, schema, target_columns) for row in data]
 
     """def _generate_errors_by_target_presence(
@@ -211,7 +241,24 @@ class SqlVenmoResultHandler(BaseActions):
         sequence_value = row.get(schema.get_column_hash(sequence_column))
         sequence = int(sequence_value) if sequence_value is not None and sequence_value != "" else None
 
-        row_id = row.get("id")
+        source_row_hash = schema.get_column_hash(SOURCE_ROW_NUMBER)
+
+        # Determine row_id based on table source type
+        if schema.source == "data":
+            # Original data tables MUST have source_row_number (enforced by PR #400)
+            if not source_row_hash or source_row_hash not in row:
+                raise ValueError(
+                    f"source_row_number not found in row data for table {schema.name}. "
+                    f"Data loading issue. All original data tables must have source_row_number."
+                )
+            row_id = row.get(source_row_hash)
+        elif schema.source == "derived":
+            if source_row_hash and source_row_hash in row:
+                row_id = row.get(source_row_hash)
+            else:
+                row_id = row.get("id")
+        else:  # schema.source == "static"
+            row_id = row.get("id")
 
         values = {}
         for column in sorted(target_columns.keys()):
@@ -220,10 +267,8 @@ class SqlVenmoResultHandler(BaseActions):
                 continue
 
             if column.startswith("$"):
-                # Handle operation variables
                 value = self._evaluate_operation_variable(column, row, schema)
             else:
-                # Handle regular table columns
                 value = row.get(schema.get_column_hash(column))
 
             if value is None or value in NULL_FLAVORS:
@@ -233,7 +278,7 @@ class SqlVenmoResultHandler(BaseActions):
 
         return ValidationErrorEntity(
             dataset=self.dataset_metadata.filename,
-            row=row_id,
+            row=int(row_id),
             usubjid=usubjid,
             sequence=sequence,
             value=values,
