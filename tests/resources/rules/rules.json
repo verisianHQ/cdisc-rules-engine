@@ -129083,20 +129083,9 @@
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
                                 "execution_status": "success",
-                                "execution_message": "Interventions parent record exists and CMDECOD = null, but FAOBJ is not equal to CMTRT.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
-                                        "value": {
-                                            "CMDECOD": null,
-                                            "CMTRT": "ASPIRIN",
-                                            "RELREC.FAOBJ": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -129144,10 +129133,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",

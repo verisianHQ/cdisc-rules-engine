@@ -361,7 +361,7 @@ class SqlRelrecMerge:
             union_part = f"""
                 SELECT {', '.join(original_selects + right_selects)}
                 FROM {original.hash} o
-                LEFT JOIN {right_table.hash} r ON {' AND '.join(join_conditions)}
+                INNER JOIN {right_table.hash} r ON {' AND '.join(join_conditions)}
                 {where_clause}
             """
             union_parts.append(union_part)
