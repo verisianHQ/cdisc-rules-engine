@@ -57224,39 +57224,71 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBGRPID",
+                                            "IDVARVAL": "20",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBSEQ",
+                                            "IDVARVAL": "320",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "AESEQ",
+                                            "IDVARVAL": "2",
+                                            "RDOMAIN": "AE",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "supplb.xpt",
-                                "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "domain": "SUPPNone",
+                                "execution_status": "success",
+                                "execution_message": "IDVARVAL does not equal a value of the variable referenced by IDVAR in domain = RDOMAIN.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "SQL syntax error"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "IDVAR": "LBSEQ",
+                                            "IDVARVAL": "320",
+                                            "RDOMAIN": "LB",
+                                            "USUBJID": "S001"
+                                        }
                                     }
                                 ]
                             },
@@ -57369,12 +57401,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57399,41 +57428,26 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in not_equal_to operator",
-                                        "message": "SQL syntax error"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -57540,7 +57554,7 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {
                                 "suppdm.xpt": {
@@ -57580,27 +57594,22 @@
                                 "dataset": "co.xpt",
                                 "domain": "CO",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "error": "SQL error in not_equal_to operator",
+                                        "message": "\"Target column 'IDVARVAL' not found in dataset\""
                                     }
                                 ]
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
@@ -57714,17 +57723,17 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {
                                 "co.xpt": {
                                     "values_changed": {
                                         "root[0]['error']": {
-                                            "new_value": "an unknown exception has occurred",
+                                            "new_value": "sql error in not_equal_to operator",
                                             "old_value": "column not found in data"
                                         },
                                         "root[0]['message']": {
-                                            "new_value": "'testdataset' object has no attribute 'domain'",
+                                            "new_value": "\"target column 'idvarval' not found in dataset\"",
                                             "old_value": "idvar"
                                         }
                                     }
@@ -91272,14 +91281,55 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdm.xpt",
-                                "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "domain": "SUPPNone",
+                                "execution_status": "success",
+                                "execution_message": "Multiple races are collected in SUPPDM but RACE in DM does not equal \"MULTIPLE\".",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "QNAM": "RACE1",
+                                            "RACE": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "QNAM": "RACE11",
+                                            "RACE": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "QNAM": "RACE10",
+                                            "RACE": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "QNAM": "RACEA",
+                                            "RACE": "WHITE"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC010",
+                                        "value": {
+                                            "QNAM": "RACEBL",
+                                            "RACE": "BLACK"
+                                        }
                                     }
                                 ]
                             },
@@ -91359,12 +91409,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91389,15 +91436,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -91429,12 +91471,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -91456,15 +91495,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -91496,12 +91530,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102576,8 +102607,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "IS"
                                         }
@@ -102597,8 +102628,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -102618,8 +102649,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -114215,13 +114246,27 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Missing AESMIE=Y where SUPPAE.QNAM=AESOSP",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC-TEST-001",
+                                        "value": {
+                                            "AESMIE": null,
+                                            "QNAM": "AESOSP"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 29,
+                                        "USUBJID": "CDISC-TEST-002",
+                                        "value": {
+                                            "AESMIE": "N",
+                                            "QNAM": "AESOSP"
+                                        }
                                     }
                                 ]
                             },
@@ -114274,12 +114319,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114304,15 +114346,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppae.xpt",
@@ -114344,12 +114381,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -127547,13 +127581,207 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 18,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 8,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": 9,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 10,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INVALID FAOBJ",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 11,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 12,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -127630,11 +127858,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -127664,13 +127892,31 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "FATIGUE",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -127736,11 +127982,64 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "fa.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 3,
+                                                "SEQ": 3,
+                                                "USUBJID": "CDISC001",
+                                                "value": {
+                                                    "FAOBJ": "INJECTION SITE REACTION",
+                                                    "RELREC.**DECOD": "Not in dataset",
+                                                    "RELREC.**TERM": "Not in dataset",
+                                                    "RELREC.**TRT": "Not in dataset"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 3,
+                                                "SEQ": 3,
+                                                "USUBJID": "CDISC001",
+                                                "value": {
+                                                    "FAOBJ": "INJECTION SITE REACTION",
+                                                    "RELREC.**DECOD": null,
+                                                    "RELREC.**TERM": "INJECTION SITE REACTIONS",
+                                                    "RELREC.**TRT": "Not in dataset"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 4,
+                                                "SEQ": 4,
+                                                "USUBJID": "CDISC001",
+                                                "value": {
+                                                    "FAOBJ": "FATIGUE",
+                                                    "RELREC.**DECOD": "Not in dataset",
+                                                    "RELREC.**TERM": "Not in dataset",
+                                                    "RELREC.**TRT": "Not in dataset"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 4,
+                                                "SEQ": 4,
+                                                "USUBJID": "CDISC001",
+                                                "value": {
+                                                    "FAOBJ": "FATIGUE",
+                                                    "RELREC.**DECOD": "Headache",
+                                                    "RELREC.**TERM": null,
+                                                    "RELREC.**TRT": "Not in dataset"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -127770,13 +128069,20 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "INVALID VALUE FOR FAOBJ",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -127831,11 +128137,20 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "fa.xpt": {
+                                    "values_changed": {
+                                        "root[0]['value']['relrec.**trt']": {
+                                            "new_value": "not in dataset",
+                                            "old_value": "drug z"
+                                        }
+                                    }
+                                }
+                            }
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -127865,13 +128180,31 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "DRUG Z",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "NOT DRUG Z",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -127926,11 +128259,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -127963,13 +128296,207 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 18,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "FATIGUE",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "FATIGUE",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": 5,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": 6,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": 7,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": 8,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": 9,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": 10,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": 11,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": 12,
+                                        "USUBJID": "CDISC002",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -128012,11 +128539,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128046,13 +128573,31 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "INJECTION SITE REACTION",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 4,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FAOBJ": "FATIGUE",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -128095,11 +128640,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128129,13 +128674,20 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "DRUG Z",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -128178,11 +128730,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128212,13 +128764,31 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset but FAOBJ is not equal to the \"TERM\", \"TRT\" or \"DECOD\" of the parent domain.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "DRUG Z",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": 1,
+                                        "USUBJID": "ABC123-0201",
+                                        "value": {
+                                            "FAOBJ": "DRUG Z",
+                                            "RELREC.**DECOD": "Not in dataset",
+                                            "RELREC.**TERM": "Not in dataset",
+                                            "RELREC.**TRT": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -128261,11 +128831,11 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128854,13 +129424,19 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Interventions parent record exists and CMDECOD = null, but FAOBJ is not equal to CMTRT.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDECOD": null,
+                                            "CMTRT": "HYDROCORTISONE, TOPICAL",
+                                            "RELREC.FAOBJ": "ERYTHEMA"
+                                        }
                                     }
                                 ]
                             },
@@ -128937,12 +129513,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -128964,13 +129537,29 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Interventions parent record exists and CMDECOD = null, but FAOBJ is not equal to CMTRT.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDECOD": null,
+                                            "CMTRT": "ASPIRIN",
+                                            "RELREC.FAOBJ": "ASPIRINA"
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": 3,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDECOD": null,
+                                            "CMTRT": "HYDROCORTISONE, TOPICAL",
+                                            "RELREC.FAOBJ": "ERYTHEMA"
+                                        }
                                     }
                                 ]
                             },
@@ -129057,12 +129646,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -129087,15 +129673,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -129159,12 +129740,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -129186,15 +129764,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -129258,12 +129831,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -129285,15 +129855,10 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
@@ -129341,12 +129906,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130188,13 +130750,19 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Related record is present in the parent domain dataset and \"Other, specify\" value was coded.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 3,
+                                        "SEQ": 2,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AEDECOD": null,
+                                            "AETERM": "FATIGUE",
+                                            "RELREC.FAOBJ": "ERROR"
+                                        }
                                     }
                                 ]
                             },
@@ -130263,12 +130831,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130301,15 +130866,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
@@ -130365,12 +130925,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130412,39 +130969,63 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and CMDECOD is not null, but FAOBJ is not equal to CMDECOD.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "CMDECOD": "TEST",
+                                            "RELREC.FAOBJ": "ASPIRINA"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and AEDECOD is not null, but FAOBJ is not equal to AEDECOD.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "AEDECOD": "TEST",
+                                            "RELREC.FAOBJ": "ERYTHEMA"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "Parent record exists and FADECOD is not null, but FAOBJ is not equal to FADECOD.",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADECOD": "TEST",
+                                            "RELREC.FAOBJ": "Not in dataset"
+                                        }
+                                    },
+                                    {
+                                        "row": 1,
+                                        "SEQ": 1,
+                                        "USUBJID": "CDISC001",
+                                        "value": {
+                                            "FADECOD": "TEST",
+                                            "RELREC.FAOBJ": "Not in dataset"
+                                        }
                                     }
                                 ]
                             },
@@ -130533,12 +131114,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -130563,41 +131141,26 @@
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
@@ -130645,12 +131208,9 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -136905,8 +137465,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "error": "Validation error",
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
                             }
@@ -137128,8 +137688,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "'TestDataset' object has no attribute 'domain'"
+                                        "error": "Validation error",
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
                                     }
                                 ]
                             }
