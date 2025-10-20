@@ -121,6 +121,7 @@ class PostgresQLDataService:
 
         data_service.datasets.append(
             DatasetMetadata2(
+                filename=f"{table_name}.xpt",
                 name=table_name,
                 label=f"Test {table_name} Dataset",
                 variables=[
