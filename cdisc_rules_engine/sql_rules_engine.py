@@ -1,5 +1,5 @@
-import traceback
 import re
+import traceback
 from copy import deepcopy
 from typing import List, Union
 
@@ -346,7 +346,7 @@ class SQLRulesEngine:
                 column_name = match.group(1).upper()
 
                 error_obj = FailedValidationEntity(
-                    dataset=os.path.basename(dataset_path),
+                    dataset=name,
                     error="Column not found in data",
                     message=column_name,
                 )
@@ -358,14 +358,14 @@ class SQLRulesEngine:
                 if match:
                     column_name = match.group(1).upper()
                     error_obj = FailedValidationEntity(
-                        dataset=os.path.basename(dataset_path),
+                        dataset=name,
                         error="Column not found in data",
                         message=column_name,
                     )
                     message = "rule execution error"
                 else:
                     error_obj = FailedValidationEntity(
-                        dataset=os.path.basename(dataset_path),
+                        dataset=name,
                         error="Validation error",
                         message=error_message,
                     )
