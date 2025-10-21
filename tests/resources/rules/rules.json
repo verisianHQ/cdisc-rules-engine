@@ -76771,7 +76771,1854 @@
         "executability": "Fully Executable",
         "status": "Published",
         "standard_source": "SDTMIG",
-        "error": "name 'os' is not defined"
+        "core_id_is_null": false,
+        "core_id_startswith_CORE": true,
+        "check_operators": [
+            "equal_to",
+            "is_not_contained_by"
+        ],
+        "in_cache": true,
+        "rule_in_mltple_standards": [],
+        "sharepoint_source": "SDTMIG",
+        "negative_folder_path": "SDTMIG/CG0033/negative",
+        "negative_regressions": [
+            {
+                "SDTMIG/CG0033/negative/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0033/negative/01/data/unit-test-coreid-CG0033-negative.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 30,
+                                "errors": [
+                                    {
+                                        "row": 515,
+                                        "SEQ": 293,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 516,
+                                        "SEQ": 294,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 517,
+                                        "SEQ": 295,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 518,
+                                        "SEQ": 296,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 519,
+                                        "SEQ": 297,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 520,
+                                        "SEQ": 298,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 521,
+                                        "SEQ": 299,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 522,
+                                        "SEQ": 300,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 523,
+                                        "SEQ": 301,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 524,
+                                        "SEQ": 302,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 525,
+                                        "SEQ": 303,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 526,
+                                        "SEQ": 304,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 527,
+                                        "SEQ": 305,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 528,
+                                        "SEQ": 306,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 529,
+                                        "SEQ": 307,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 530,
+                                        "SEQ": 308,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 531,
+                                        "SEQ": 309,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 532,
+                                        "SEQ": 310,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 533,
+                                        "SEQ": 311,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 534,
+                                        "SEQ": 312,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 535,
+                                        "SEQ": 313,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 536,
+                                        "SEQ": 314,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 537,
+                                        "SEQ": 315,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 538,
+                                        "SEQ": 316,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 539,
+                                        "SEQ": 317,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 540,
+                                        "SEQ": 318,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 541,
+                                        "SEQ": 319,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 542,
+                                        "SEQ": 320,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 543,
+                                        "SEQ": 321,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 544,
+                                        "SEQ": 322,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 4,
+                                "errors": [
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 22,
+                                "errors": [
+                                    {
+                                        "row": 31,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": 65,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": 66,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 121,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 152,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 153,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 242,
+                                        "SEQ": 131,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 30,
+                                "errors": [
+                                    {
+                                        "row": 515,
+                                        "SEQ": 293,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 516,
+                                        "SEQ": 294,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 517,
+                                        "SEQ": 295,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 518,
+                                        "SEQ": 296,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 519,
+                                        "SEQ": 297,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 520,
+                                        "SEQ": 298,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 521,
+                                        "SEQ": 299,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 522,
+                                        "SEQ": 300,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 523,
+                                        "SEQ": 301,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 524,
+                                        "SEQ": 302,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 525,
+                                        "SEQ": 303,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 526,
+                                        "SEQ": 304,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 527,
+                                        "SEQ": 305,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 528,
+                                        "SEQ": 306,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 529,
+                                        "SEQ": 307,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 530,
+                                        "SEQ": 308,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 531,
+                                        "SEQ": 309,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 532,
+                                        "SEQ": 310,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 533,
+                                        "SEQ": 311,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 534,
+                                        "SEQ": 312,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 535,
+                                        "SEQ": 313,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 536,
+                                        "SEQ": 314,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 537,
+                                        "SEQ": 315,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 538,
+                                        "SEQ": 316,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 539,
+                                        "SEQ": 317,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 540,
+                                        "SEQ": 318,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 541,
+                                        "SEQ": 319,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 542,
+                                        "SEQ": 320,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 543,
+                                        "SEQ": 321,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 544,
+                                        "SEQ": 322,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 4,
+                                "errors": [
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 22,
+                                "errors": [
+                                    {
+                                        "row": 31,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": 65,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": 66,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 121,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 152,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 153,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 242,
+                                        "SEQ": 131,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
+                "SDTMIG/CG0033/negative/02": {
+                    "test_case_xslx_file": "SDTMIG/CG0033/negative/02/data/unit-test-coreid-CG0033-negative2.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "VISITNUM"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 4,
+                                "errors": [
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 22,
+                                "errors": [
+                                    {
+                                        "row": 31,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": 65,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": 66,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 121,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 152,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 153,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 242,
+                                        "SEQ": 131,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "VISITNUM"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 4,
+                                "errors": [
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 23,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 35,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": "For a planned visit (SVPRESP = 'Y'), non-missing VISITNUM value must be among those present in TV.VISITNUM. in TV.VISITNUM",
+                                "number_errors": 22,
+                                "errors": [
+                                    {
+                                        "row": 31,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 32,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 33,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 65,
+                                        "SEQ": 65,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 66,
+                                        "SEQ": 66,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 67,
+                                        "SEQ": 67,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 98,
+                                        "SEQ": 98,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 99,
+                                        "SEQ": 99,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 100,
+                                        "SEQ": 100,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 111,
+                                        "SEQ": 111,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 121,
+                                        "SEQ": 121,
+                                        "USUBJID": "CDISC004",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 152,
+                                        "SEQ": 31,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 153,
+                                        "SEQ": 32,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 154,
+                                        "SEQ": 33,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 186,
+                                        "SEQ": 68,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 187,
+                                        "SEQ": 69,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 188,
+                                        "SEQ": 70,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 219,
+                                        "SEQ": 104,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 220,
+                                        "SEQ": 105,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 221,
+                                        "SEQ": 106,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 232,
+                                        "SEQ": 120,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 242,
+                                        "SEQ": 131,
+                                        "USUBJID": "CDISC005",
+                                        "value": {
+                                            "SVPRESP": "Y",
+                                            "VISITNUM": 12.0
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "execution_error",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ],
+        "positive_folder_path": "SDTMIG/CG0033/positive",
+        "positive_regressions": [
+            {
+                "SDTMIG/CG0033/positive/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0033/positive/01/data/unit-test-coreid-CG0033-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "oe.xpt",
+                                "domain": "OE",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "sv.xpt",
+                                "domain": "SV",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "tv.xpt",
+                                "domain": "TV",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000270, dataset=TV",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "vs.xpt",
+                                "domain": "VS",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ]
     },
     {
         "core-id": "CORE-000271",
@@ -133691,7 +135538,292 @@
         "executability": "Fully Executable",
         "status": "Published",
         "standard_source": "SDTMIG",
-        "error": "name 'os' is not defined"
+        "core_id_is_null": false,
+        "core_id_startswith_CORE": true,
+        "check_operators": [
+            "equal_to",
+            "not_exists"
+        ],
+        "in_cache": true,
+        "rule_in_mltple_standards": [],
+        "sharepoint_source": "SDTMIG",
+        "negative_folder_path": "SDTMIG/CG0531/CORE-000844/negative",
+        "negative_regressions": [
+            {
+                "CG0531/CORE-000844/negative/01": {
+                    "test_case_xslx_file": "CG0531/CORE-000844/negative/01/data/unit-test-coreid-CG0531-negative.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Validation error",
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC008",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ],
+        "positive_folder_path": "SDTMIG/CG0531/CORE-000844/positive",
+        "positive_regressions": [
+            {
+                "CG0531/CORE-000844/positive/01": {
+                    "test_case_xslx_file": "CG0531/CORE-000844/positive/01/data/unit-test-coreid-CG0531-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000844, dataset=SUPPDM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000844, dataset=SUPPDM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
+                "CG0531/CORE-000844/positive/02": {
+                    "test_case_xslx_file": "CG0531/CORE-000844/positive/02/data/unit-test-coreid-CG0531-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000844, dataset=SUPPDM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "suppdm.xpt",
+                                "domain": "DM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000844, dataset=SUPPDM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": "RACE in DM equals 'MULTIPLE' but multiple races are not collected in SUPPDM.",
+                                "number_errors": 2,
+                                "errors": [
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "CDISC009",
+                                        "value": {
+                                            "RACE": "MULTIPLE"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "sql_overall_result": "success",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            },
+            {
+                "CG0531/CORE-000844/positive/03": {
+                    "test_case_xslx_file": "CG0531/CORE-000844/positive/03/data/unit-test-coreid-CG0531-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Validation error",
+                                        "message": "Tried to relationship merge with suppdm, but could not find dataset."
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "dm.xpt",
+                                "domain": "DM",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
+                        },
+                        "sql_overall_result": "execution_error",
+                        "old_overall_result": "success",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ]
     },
     {
         "core-id": "CORE-000845",
