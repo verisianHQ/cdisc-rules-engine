@@ -1,9 +1,9 @@
 from typing import List
 
-from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
+from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
-from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
+from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
 from cdisc_rules_engine.utilities.utils import (
     get_sided_match_keys,
     replace_pattern_in_list_of_strings,
@@ -18,7 +18,7 @@ class SqlChildMerge:
         pgi: PostgresQLInterface,
         child: SqlTableSchema,
         child_domain: str,
-        datasets: List[SDTMDatasetMetadata],
+        datasets: List[SdtmDatasetMetadata2],
         merge_spec: dict,
     ) -> SqlTableSchema:
         """
@@ -93,8 +93,8 @@ class SqlChildMerge:
     def _find_parents_by_rdomain(
         pgi: PostgresQLInterface,
         child: SqlTableSchema,
-        datasets: List[SDTMDatasetMetadata],
-    ) -> List[SDTMDatasetMetadata]:
+        datasets: List[SdtmDatasetMetadata2],
+    ) -> List[SdtmDatasetMetadata2]:
         """Find parent datasets using the RDOMAIN column."""
         rdomain_values = SqlChildMerge._get_ordered_rdomain_values(pgi, child)
         if not rdomain_values:
@@ -113,9 +113,9 @@ class SqlChildMerge:
     def _find_parents_by_match_keys(
         pgi: PostgresQLInterface,
         child: SqlTableSchema,
-        datasets: List[SDTMDatasetMetadata],
+        datasets: List[SdtmDatasetMetadata2],
         merge_spec: dict,
-    ) -> List[SDTMDatasetMetadata]:
+    ) -> List[SdtmDatasetMetadata2]:
         """Find parent datasets using match keys as a fallback."""
         match_keys = merge_spec.get("match_key", [])
         if not match_keys:
@@ -136,9 +136,9 @@ class SqlChildMerge:
     def _find_parents(
         pgi: PostgresQLInterface,
         child: SqlTableSchema,
-        datasets: List[SDTMDatasetMetadata],
+        datasets: List[SdtmDatasetMetadata2],
         merge_spec: dict,
-    ) -> List[SDTMDatasetMetadata]:
+    ) -> List[SdtmDatasetMetadata2]:
         """
         Find parent dataset(s) for a child using RDOMAIN or match keys.
         """

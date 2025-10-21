@@ -16,6 +16,7 @@ from cdisc_rules_engine.models.dataset.pandas_dataset import PandasDataset
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 
 CHECK_OPERATOR_TABLE_ALIAS = "co"
 
@@ -84,7 +85,7 @@ class BaseSqlOperator:
         self.column_codelist_map = data.get("column_codelist_map", {})
         self.codelist_term_maps = data.get("codelist_term_maps", [])
         self.operation_variables: dict[str, SqlOperationResult] = data.get("operation_variables", {})
-        self.dataset_metadata = self.sql_data_service.get_dataset_metadata(self.table_id) or {}
+        self.dataset_metadata: BaseDatasetMetadata = data.get("dataset_metadata", None)
 
     @abstractmethod
     def execute_operator(self, other_value):
@@ -233,9 +234,7 @@ class BaseSqlOperator:
             query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}"
 
         if column == DATASET_NAME:
-            dataset_name = (
-                self.dataset_metadata.dataset_name if hasattr(self.dataset_metadata, "dataset_name") else None
-            )
+            dataset_name = self.dataset_metadata.name
             if prefix is not None:
                 dataset_name = dataset_name[: int(prefix)]
             elif suffix is not None:

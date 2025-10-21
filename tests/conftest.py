@@ -8,9 +8,11 @@ import pytest
 
 from cdisc_rules_engine.config.config import ConfigService
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
+from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
 from cdisc_rules_engine.models.dataset import PandasDataset
+from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
 from cdisc_rules_engine.models.dictionaries.meddra import MedDRATermsFactory
 from cdisc_rules_engine.models.dictionaries.whodrug import WhoDrugTermsFactory
 from cdisc_rules_engine.models.external_dictionaries_container import (
@@ -19,11 +21,14 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
 )
 from cdisc_rules_engine.models.operation_params import OperationParams
 from cdisc_rules_engine.models.rule_conditions import ConditionCompositeFactory
-from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
+from cdisc_rules_engine.models.test_dataset import TestDataset
+from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.services.cache import (
     InMemoryCacheService,
 )
 from cdisc_rules_engine.services.data_services import LocalDataService
+from cdisc_rules_engine.standards.sdtm_standards_context import SdtmStandardsContext
+from scripts.script_utils import get_library_metadata_from_cache
 
 meddra_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/meddra"
 whodrug_path: str = f"{os.path.dirname(__file__)}/resources/dictionaries/whodrug"
@@ -1269,24 +1274,11 @@ def get_python_executable():
 def get_sample_lb_dataset() -> TestDataset:
     return TestDataset(
         filename="lb.xpt",
-        filepath="path/to/lb.xpt",
-        name="LB",
+        name="lb",
         label="Laboratory Test Results",
         variables=[
-            TestVariableMetadata(
-                name="DOMAIN",
-                label="Domain Abbreviation",
-                type="Char",
-                length=4,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="LBSEQ",
-                label="Sequence Number",
-                type="Num",
-                length=8,
-                format="",
-            ),
+            VariableMetadata(name="DOMAIN", label="Domain Abbreviation", type="Char", length=4, format="", order=1),
+            VariableMetadata(name="LBSEQ", label="Sequence Number", type="Num", length=8, format="", order=2),
         ],
         records={
             "DOMAIN": ["LB", "LB"],
@@ -1299,73 +1291,22 @@ def get_sample_lb_dataset() -> TestDataset:
 def get_sample_supp_dataset() -> TestDataset:
     return TestDataset(
         filename="suppdm.xpt",
-        filepath="path/to/suppdm.xpt",
-        name="SUPPDM",
+        name="suppdm",
         label="Supplemental Demographics Domain",
         variables=[
-            TestVariableMetadata(
-                name="STUDYID",
-                label="Study Identifier",
-                type="Char",
-                length=8,
-                format="",
+            VariableMetadata(name="STUDYID", label="Study Identifier", type="Char", length=8, format="", order=1),
+            VariableMetadata(
+                name="USUBJID", label="Unique Subject Identifier", type="Char", length=10, format="", order=2
             ),
-            TestVariableMetadata(
-                name="USUBJID",
-                label="Unique Subject Identifier",
-                type="Char",
-                length=10,
-                format="",
+            VariableMetadata(name="IDVAR", label="Identifying Variable", type="Char", length=16, format="", order=3),
+            VariableMetadata(
+                name="IDVARVAL", label="Identifying Variable Value", type="Char", length=16, format="", order=4
             ),
-            TestVariableMetadata(
-                name="IDVAR",
-                label="Identifying Variable",
-                type="Char",
-                length=16,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="IDVARVAL",
-                label="Identifying Variable Value",
-                type="Char",
-                length=16,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="QNAM",
-                label="Qualifier Variable Name",
-                type="Char",
-                length=4,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="QVAL",
-                label="Data Value",
-                type="Char",
-                length=4,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="DOMAIN",
-                label="Domain Abbreviation",
-                type="Char",
-                length=4,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="RDOMAIN",
-                label="Referenced Domain",
-                type="Char",
-                length=4,
-                format="",
-            ),
-            TestVariableMetadata(
-                name="LBSEQ",
-                label="Sequence Number",
-                type="Num",
-                length=8,
-                format="",
-            ),
+            VariableMetadata(name="QNAM", label="Qualifier Variable Name", type="Char", length=4, format="", order=5),
+            VariableMetadata(name="QVAL", label="Data Value", type="Char", length=4, format="", order=6),
+            VariableMetadata(name="DOMAIN", label="Domain Abbreviation", type="Char", length=4, format="", order=7),
+            VariableMetadata(name="RDOMAIN", label="Referenced Domain", type="Char", length=4, format="", order=8),
+            VariableMetadata(name="LBSEQ", label="Sequence Number", type="Num", length=8, format="", order=9),
         ],
         records={
             "STUDYID": ["CDISC01", "CDISC01"],
@@ -1386,13 +1327,14 @@ def get_sample_dm_dataset() -> TestDataset:
     """Provides a sample DM dataset for SUPPDM to reference."""
     return TestDataset(
         filename="dm.xpt",
-        filepath="path/to/dm.xpt",
         name="DM",
         label="Demographics",
         variables=[
-            TestVariableMetadata(name="STUDYID", label="Study Identifier", type="Char", length=8, format=""),
-            TestVariableMetadata(name="DOMAIN", label="Domain Abbreviation", type="Char", length=8, format=""),
-            TestVariableMetadata(name="USUBJID", label="Unique Subject Identifier", type="Char", length=12, format=""),
+            VariableMetadata(name="STUDYID", label="Study Identifier", type="Char", length=8, format="", order=1),
+            VariableMetadata(name="DOMAIN", label="Domain Abbreviation", type="Char", length=8, format="", order=2),
+            VariableMetadata(
+                name="USUBJID", label="Unique Subject Identifier", type="Char", length=12, format="", order=3
+            ),
         ],
         records={
             "STUDYID": ["CDISC01", "CDISC01"],
@@ -1400,3 +1342,32 @@ def get_sample_dm_dataset() -> TestDataset:
             "USUBJID": ["P01", "P02"],
         },
     )
+
+
+@pytest.fixture
+def sdtm_standards_context() -> SdtmStandardsContext:
+    library_metadata = get_library_metadata_from_cache(
+        Validation_args(
+            cache=os.path.join(os.path.dirname(__file__), "..", DefaultFilePaths.CACHE.value),
+            pool_size=None,
+            dataset_paths=None,
+            log_level=None,
+            report_template=None,
+            standard="SDTMIG",
+            version="3.4",
+            substandard=None,
+            controlled_terminology_package=set(),
+            output=None,
+            output_format=None,
+            raw_report=None,
+            define_version=None,
+            external_dictionaries=None,
+            rules=None,
+            local_rules=None,
+            custom_standard=None,
+            progress=None,
+            define_xml_path=None,
+            validate_xml=None,
+        )
+    )
+    return SdtmStandardsContext(library_metadata)

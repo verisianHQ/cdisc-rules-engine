@@ -12,7 +12,8 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
-from cdisc_rules_engine.models.test_dataset import TestDataset, TestVariableMetadata
+from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
+from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.standards.standards_factory import StandardsFactory
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
@@ -32,6 +33,15 @@ METADATA_CACHE = {}
 
 
 def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
+    try:
+        return run_single_rule_regression_impl(row, get_core_rule, target_case)
+    except Exception as e:
+        regression = initialize_regression_dict(row)
+        regression["error"] = str(e)
+        return regression
+
+
+def run_single_rule_regression_impl(row: pd.Series, get_core_rule, target_case: Optional[str] = None) -> list:
     ig_specs = {
         "standard": "sdtmig",
         "standard_version": "3.4",
@@ -292,14 +302,14 @@ def process_test_case_dataset(
         metadata = get_metadata(ig_specs, define_xml_file_path)
 
         # Execute rule in SQL engine
-        ds = PostgresQLDataService.from_list_of_testdatasets(data_test_datasets)
-        regression_errors["datasets_import_sql"] = "SUCCESS"
         standards_context = StandardsFactory.get_standards_context(
             ig_specs.get("standard"),
             ig_specs.get("standard_version"),
             ig_specs.get("standard_substandard"),
             library_metadata=metadata,
         )
+        ds = PostgresQLDataService.from_list_of_testdatasets(data_test_datasets, standards_context)
+        regression_errors["datasets_import_sql"] = "SUCCESS"
         sql_results = sql_run_single_rule_validation(data_service=ds, rule=rule, standards_context=standards_context)
         regression_errors["results_present_sql"] = True
         sql_regression = extract_results_regression(sql_results)
@@ -388,7 +398,7 @@ def old_vs_sql_regression_comparison(old_results: list[dict], sql_results: list[
     diff = {}
     # compare execution status
     for sql, old in zip(sql_results, old_results):
-        if sql.get("dataset") != old.get("dataset") or sql.get("domain") != old.get("domain"):
+        if sql.get("dataset") != old.get("dataset"):
             dataset_mismatch = True
             continue
 
@@ -580,7 +590,6 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
             test_datasets.append(
                 TestDataset(
                     filename=filename,
-                    filepath=filename,
                     name=filename.split(".")[0].upper(),
                     label=label,
                     variables=variables,
@@ -593,10 +602,10 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
 
 def extract_variables(
     dataset_df: pd.DataFrame,
-) -> Tuple[list[TestVariableMetadata], dict]:
+) -> Tuple[list[VariableMetadata], dict]:
     variables = []
     col_type_dict = {}
-    for col in dataset_df.columns:
+    for i, col in enumerate(dataset_df.columns):
         var_name = col  # Name from row 0
         if col.startswith("Unnamed:"):
             continue
@@ -605,15 +614,14 @@ def extract_variables(
         var_length = dataset_df[col].iloc[2]  # Length from row 3
         var_format = ""  # Format is always empty
 
+        if var_type not in ["Char", "Num"]:
+            raise ValueError(f"Unknown variable type: {var_type}. This data needs fixing.")
+
         # Create a variable dictionary
         variables.append(
-            {
-                "name": var_name,
-                "label": var_label,
-                "type": var_type,
-                "length": var_length,
-                "format": var_format,
-            }
+            VariableMetadata(
+                name=var_name, label=var_label, type=var_type, length=var_length, format=var_format, order=i + 1
+            )
         )
 
         # collect appropriate column type for SQL

@@ -7,6 +7,9 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
+from cdisc_rules_engine.standards.default_standards_context import (
+    DefaultStandardsContext,
+)
 
 TEST_TABLE_NAME = "test_table"
 
@@ -26,10 +29,13 @@ def create_sql_operators(
     Returns:
         PostgresQLOperators instance configured for testing
     """
+    standards_context = DefaultStandardsContext()
     data_service = PostgresQLDataService.instance()
 
     table_name = dataset_name or TEST_TABLE_NAME
-    PostgresQLDataService.add_test_dataset(data_service, table_name=table_name, column_data=column_data)
+    PostgresQLDataService.add_test_dataset(
+        data_service, table_name=table_name, column_data=column_data, standards_context=standards_context
+    )
 
     config = {**extra_config, "dataset_id": table_name, "data_service": data_service}
 
@@ -44,6 +50,10 @@ def create_sql_operators(
     )
     config["operation_variables"]["$empty_date"] = SqlOperationResult(
         query="SELECT NULL", type="constant", subtype="Date"
+    )
+
+    config["dataset_metadata"] = data_service.get_dataset_metadata(
+        table_name,
     )
 
     return PostgresQLOperators(config)

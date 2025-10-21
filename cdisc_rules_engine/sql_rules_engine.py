@@ -1,6 +1,5 @@
-import os
-import traceback
 import re
+import traceback
 from copy import deepcopy
 from typing import List, Union
 
@@ -11,7 +10,6 @@ from psycopg2.errors import ProgrammingError
 from cdisc_rules_engine.check_operators.sql.base_sql_operator import SqlOperatorError
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
-    SQLDatasetMetadata,
 )
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 
@@ -36,9 +34,10 @@ from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
 from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
-from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
+from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
+from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
+from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -89,20 +88,18 @@ class SQLRulesEngine:
                 ),
             )
             if is_suitable:
-                if dataset_metadata.unsplit_name in results and "domains" in rule:
-                    include_split = rule["domains"].get("include_split_datasets", False)
-                    if not include_split:
-                        continue  # handling split datasets
-                results[dataset_metadata.unsplit_name] = self.validate_single_dataset(
-                    rule, dataset_metadata, all_datasets
-                )
+                # if dataset_metadata.unsplit_name in results and "domains" in rule:
+                #     include_split = rule["domains"].get("include_split_datasets", False)
+                #     if not include_split:
+                #         continue  # handling split datasets
+                results[dataset_metadata.name] = self.validate_single_dataset(rule, dataset_metadata, all_datasets)
             else:
-                logger.info(f"Skipped dataset {dataset_metadata.dataset_name}. Reason: {reason}")
+                logger.info(f"Skipped dataset {dataset_metadata.name}. Reason: {reason}")
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     message=reason,
                     dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain or dataset_metadata.rdomain or "",
+                    domain=dataset_metadata.domain,
                 )
                 results[pp_ds_id] = [error_obj.to_representation()]
         return results
@@ -110,21 +107,17 @@ class SQLRulesEngine:
     def validate_single_dataset(
         self,
         rule: dict,
-        dataset_metadata: SQLDatasetMetadata,
-        datasets: List[SQLDatasetMetadata],
+        dataset_metadata: BaseDatasetMetadata,
+        datasets: List[BaseDatasetMetadata],
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint to validation process.
         It validates a given rule against datasets.
         """
-        logger.info(
-            f"Validating {dataset_metadata.dataset_name}. "
-            f"rule={rule}. dataset_path={dataset_metadata.filepath}. "
-            f"datasets={self.data_service.get_uploaded_dataset_ids()}."
-        )
+        logger.info(f"Validating {dataset_metadata.name}. rule={rule}.")
         try:
             result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata, datasets)
-            logger.info(f"Validated dataset {dataset_metadata.dataset_name}. Result = {result}")
+            logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
             if result:
                 return result
             else:
@@ -133,7 +126,7 @@ class SQLRulesEngine:
                     ValidationErrorContainer(
                         **{
                             "dataset": dataset_metadata.filename,
-                            "domain": dataset_metadata.domain or dataset_metadata.rdomain,
+                            "domain": dataset_metadata.domain,
                             "errors": [],
                         }
                     ).to_representation()
@@ -149,18 +142,16 @@ class SQLRulesEngine:
             {traceback.format_exc()}
             """
             )
-            error_obj: ValidationErrorContainer = self.handle_validation_exceptions(
-                e, dataset_metadata.filepath, dataset_metadata.filepath
-            )
-            error_obj.domain = dataset_metadata.domain or dataset_metadata.rdomain or ""
+            error_obj: ValidationErrorContainer = self.handle_validation_exceptions(e, dataset_metadata.filename)
+            error_obj.domain = dataset_metadata.domain
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 
     def validate_rule(
         self,
         rule: dict,
-        dataset_metadata: SQLDatasetMetadata,
-        datasets: List[SQLDatasetMetadata],
+        dataset_metadata: BaseDatasetMetadata,
+        datasets: List[BaseDatasetMetadata],
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint for rule validation.
@@ -173,6 +164,7 @@ class SQLRulesEngine:
             data_service=self.data_service,
             dataset_metadata=dataset_metadata,
             datasets=datasets,
+            standards_context=self.standards_context,
         )
 
         dataset_id = builder.get_dataset_id()
@@ -182,12 +174,8 @@ class SQLRulesEngine:
     def execute_rule(
         self,
         rule: dict,
-        dataset_metadata: SQLDatasetMetadata,
+        dataset_metadata: BaseDatasetMetadata,
         dataset_id: str,
-        value_level_metadata: List[dict] = None,
-        variable_codelist_map: dict = None,
-        codelist_term_maps: list = None,
-        ct_packages: list = None,
     ) -> List[str]:
         """
         Executes the given rule on a given dataset (or a view of it).
@@ -202,7 +190,7 @@ class SQLRulesEngine:
 
         # Apply any operations
         operation_variables = SQLRuleProcessor.perform_rule_operations(
-            rule_copy, dataset_metadata.domain, data_service=self.data_service, standards_context=self.standards_context
+            rule_copy, dataset_metadata, data_service=self.data_service, standards_context=self.standards_context
         )
 
         # Translator between venmo and the check operators
@@ -211,6 +199,7 @@ class SQLRulesEngine:
             data_service=self.data_service,
             column_prefix_map={"--": dataset_metadata.domain},
             operation_variables=operation_variables,
+            dataset_metadata=dataset_metadata,
         )
 
         results = []
@@ -237,24 +226,24 @@ class SQLRulesEngine:
     #     )
     #     return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
 
-    def handle_validation_exceptions(self, exception, dataset_path, file_name) -> ValidationErrorContainer:  # noqa
+    def handle_validation_exceptions(self, exception, name) -> ValidationErrorContainer:  # noqa
         if isinstance(exception, DatasetNotFoundError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="Dataset Not Found",
                 message=exception.message,
             )
             message = "rule execution error"
         elif isinstance(exception, RuleFormatError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="Rule format error",
                 message=exception.message,
             )
             message = "rule execution error"
         elif isinstance(exception, AssertionError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="Rule format error",
                 message="Rule contains invalid operator",
             )
@@ -262,7 +251,7 @@ class SQLRulesEngine:
         elif isinstance(exception, KeyError):
             message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="Column not found in data",
                 message=message,
             )
@@ -270,7 +259,7 @@ class SQLRulesEngine:
         elif isinstance(exception, DomainNotFoundInDefineXMLError):
             message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error=DomainNotFoundInDefineXMLError.description,
                 message=message,
             )
@@ -278,7 +267,7 @@ class SQLRulesEngine:
         elif isinstance(exception, VariableMetadataNotFoundError):
             message = ", ".join(sorted(exception.args[0].split(", ")))
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error=VariableMetadataNotFoundError.description,
                 message=message,
             )
@@ -297,52 +286,52 @@ class SQLRulesEngine:
                     errors=errors,
                     message=message,
                     status=ExecutionStatus.SUCCESS.value,
-                    dataset=os.path.basename(dataset_path),
+                    dataset=name,
                 )
             else:
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
-                    dataset=os.path.basename(dataset_path),
+                    dataset=name,
                 )
                 message = "Skipped because schema validation is off"
                 errors = [error_obj]
                 return ValidationErrorContainer(
-                    dataset=os.path.basename(dataset_path),
+                    dataset=name,
                     errors=errors,
                     message=message,
                     status=ExecutionStatus.SKIPPED.value,
                 )
         elif isinstance(exception, DomainNotFoundError):
             error_obj = ValidationErrorContainer(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 message=str(exception),
                 status=ExecutionStatus.SKIPPED.value,
             )
             message = "rule evaluation skipped - operation domain not found"
             errors = [error_obj]
             return ValidationErrorContainer(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 errors=errors,
                 message=message,
                 status=ExecutionStatus.SKIPPED.value,
             )
         elif isinstance(exception, SqlOperatorError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error=f"SQL error in {exception.operator_name} operator",
                 message=clean_postgres_message(str(exception.original_exception)),
             )
             message = "SQL operator execution error"
         elif isinstance(exception, SqlOperationError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error=f"SQL error in {exception.operation_name} operation",
                 message=clean_postgres_message(str(exception.original_exception)),
             )
             message = "SQL operation execution error"
         elif isinstance(exception, ProgrammingError):
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="PostgreSQL Error",
                 message=clean_postgres_message(str(exception)),
             )
@@ -357,7 +346,7 @@ class SQLRulesEngine:
                 column_name = match.group(1).upper()
 
                 error_obj = FailedValidationEntity(
-                    dataset=os.path.basename(dataset_path),
+                    dataset=name,
                     error="Column not found in data",
                     message=column_name,
                 )
@@ -369,28 +358,28 @@ class SQLRulesEngine:
                 if match:
                     column_name = match.group(1).upper()
                     error_obj = FailedValidationEntity(
-                        dataset=os.path.basename(dataset_path),
+                        dataset=name,
                         error="Column not found in data",
                         message=column_name,
                     )
                     message = "rule execution error"
                 else:
                     error_obj = FailedValidationEntity(
-                        dataset=os.path.basename(dataset_path),
+                        dataset=name,
                         error="Validation error",
                         message=error_message,
                     )
                     message = "rule execution error"
         else:
             error_obj = FailedValidationEntity(
-                dataset=os.path.basename(dataset_path),
+                dataset=name,
                 error="An unknown exception has occurred",
                 message=str(exception),
             )
             message = "rule execution error"
         errors = [error_obj]
         return ValidationErrorContainer(
-            dataset=os.path.basename(dataset_path),
+            dataset=name,
             errors=errors,
             message=message,
             status=ExecutionStatus.EXECUTION_ERROR.value,
