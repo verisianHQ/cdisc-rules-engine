@@ -30232,23 +30232,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "pooldef.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in prefix_matches_regex operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "domain"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -30489,23 +30473,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "pooldef.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in prefix_matches_regex operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "domain"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -35860,23 +35828,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmstdtc, dmstdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -35948,23 +35900,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmstdtc, dmstdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -43682,23 +43618,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tv.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_not_contained_by operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "usubjid"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -43818,23 +43738,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "tv.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_not_contained_by operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "usubjid"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -57553,23 +57457,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "suppdm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in not_equal_to operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "sql syntax error",
-                                            "old_value": ""
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -57722,47 +57610,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "co.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in not_equal_to operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "\"target column 'idvarval' not found in dataset\"",
-                                            "old_value": "idvar"
-                                        }
-                                    }
-                                },
-                                "supplb.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in not_equal_to operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "\"target column 'idvarval' not found in dataset\"",
-                                            "old_value": "idvarval"
-                                        }
-                                    }
-                                },
-                                "suppdm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in not_equal_to operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "\"comparator column 'idvar' not found in dataset\"",
-                                            "old_value": "idvar"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -92156,47 +92004,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "aedy"
-                                        }
-                                    }
-                                },
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                },
-                                "ex.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "exdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -92307,23 +92115,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -92674,23 +92466,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -92814,47 +92590,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ae.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "aedy"
-                                        }
-                                    }
-                                },
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                },
-                                "ex.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "exdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -92923,23 +92659,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -93008,23 +92728,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in is_incomplete_date operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdy"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -102003,8 +101707,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "IS"
                                         }
@@ -102024,8 +101728,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -102045,8 +101749,8 @@
                                         "USUBJID": null,
                                         "value": {
                                             "$study_domains": [
-                                                "",
-                                                "CO"
+                                                "CO",
+                                                ""
                                             ],
                                             "RDOMAIN": "LB"
                                         }
@@ -104265,23 +103969,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in sqldaydatavalidatoroperation operation",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -104511,23 +104199,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in sqldaydatavalidatoroperation operation",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -110677,23 +110349,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in date_less_than operator",
-                                            "old_value": "an unknown exception has occurred"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "invalid input syntax",
-                                            "old_value": "unknown string format: cmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -110765,23 +110421,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "cm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in date_less_than operator",
-                                            "old_value": "an unknown exception has occurred"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "invalid input syntax",
-                                            "old_value": "unknown string format: cmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -120493,35 +120133,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "co.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "rule format error",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "rule contains invalid operator",
-                                            "old_value": "idvar"
-                                        }
-                                    }
-                                },
-                                "suppdm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "rule format error",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "rule contains invalid operator",
-                                            "old_value": "idvar"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -122097,23 +121709,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in date_greater_than operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
@@ -122201,23 +121797,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "dm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['error']": {
-                                            "new_value": "sql error in date_greater_than operator",
-                                            "old_value": "column not found in data"
-                                        },
-                                        "root[0]['message']": {
-                                            "new_value": "column or relation does not exist",
-                                            "old_value": "dmdtc"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
