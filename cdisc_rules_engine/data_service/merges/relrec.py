@@ -128,9 +128,7 @@ class SqlRelrecMerge:
                 # Check if this looks like a domain-specific variable
                 suffix = column_upper[len(domain_upper) :]
                 # Common patterns: STDY, ENDY, DY, TM, etc.
-                if suffix in ["STDY", "ENDY", "DY", "TM", "DTC", "SEQ", "TERM", "TRT", "DECOD"] or suffix.startswith(
-                    "_"
-                ):
+                if suffix in ["STDY", "ENDY", "DY", "TM", "DTC", "SEQ"] or suffix.startswith("_"):
                     new_name = f"RELREC.{wildcard}{suffix}"
                     renamed_columns[col_name] = new_name
                 else:
