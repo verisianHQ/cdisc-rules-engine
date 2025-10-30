@@ -44,9 +44,9 @@ class SqlRequiredVariables(SqlBaseOperation):
             # Extract just the variable names from the processed metadata
             return variable_names_list
 
-        except Exception:
-            # Return empty list on error (SQL operations should not return error strings)
-            return []
+        except Exception as e:
+            # If the metadata retrieval fails, the rule can't run, so throwing error
+            raise Exception(f"Metadata retrieval failed due to error: {str(e)}")
 
     def get_allowed_variable_permissibility(self, variable_metadata: dict):
         """

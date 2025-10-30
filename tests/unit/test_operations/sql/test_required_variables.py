@@ -9,9 +9,8 @@ from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
-from cdisc_rules_engine.standards.sdtm_standards_context import (
-    SdtmStandardsContext,
-    LibraryMetadataContainer,
+from cdisc_rules_engine.standards.default_standards_context import (
+    DefaultStandardsContext,
 )
 
 from .helpers import (
@@ -68,9 +67,9 @@ test_set1_variables = [
     ],
 )
 def test_required_variables(mock_variables, expected):
-    """Test get_model_filtered_variables operation with different filter criteria"""
+    """Test required_variables operation with different filter criteria"""
     data_service = PostgresQLDataService.instance()
-    standards_context = SdtmStandardsContext(LibraryMetadataContainer())
+    standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure
     PostgresQLDataService.add_test_dataset(
@@ -98,9 +97,9 @@ def test_required_variables(mock_variables, expected):
 
 
 def test_required_variables_exception_handling():
-    """Test get_model_filtered_variables when metadata retrieval fails"""
+    """Test required_variables when metadata retrieval fails"""
     data_service = PostgresQLDataService.instance()
-    standards_context = SdtmStandardsContext(LibraryMetadataContainer())
+    standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure
     PostgresQLDataService.add_test_dataset(
@@ -123,7 +122,6 @@ def test_required_variables_exception_handling():
         "_get_variables_metadata_from_standard_model",
         side_effect=Exception("Metadata retrieval failed"),
     ):
-        result = operation.execute()
 
-        # Should return empty collection on exception
-        assert_operation_collection(operation, result, [])
+        with pytest.raises(Exception):
+            operation.execute()
