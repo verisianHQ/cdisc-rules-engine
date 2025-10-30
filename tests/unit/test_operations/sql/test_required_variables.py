@@ -10,7 +10,8 @@ from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
 from cdisc_rules_engine.standards.sdtm_standards_context import (
-    SdtmStandardsContext, LibraryMetadataContainer
+    SdtmStandardsContext,
+    LibraryMetadataContainer,
 )
 
 from .helpers import (
@@ -86,10 +87,16 @@ def test_required_variables(mock_variables, expected):
         domain="AE", target=None, standards_context=standards_context
     )
 
-    operation = SqlOperationsFactory.get_service("required_variables", params, data_service)
+    operation = SqlOperationsFactory.get_service(
+        "required_variables", params, data_service
+    )
 
     # Mock the metadata retrieval method on the operation instance
-    with patch.object(operation, "_get_variables_metadata_from_standard_model", return_value=mock_variables):
+    with patch.object(
+        operation,
+        "_get_variables_metadata_from_standard_model",
+        return_value=mock_variables,
+    ):
         result = operation.execute()
         assert_operation_collection(operation, result, expected)
 
@@ -114,11 +121,15 @@ def test_required_variables_exception_handling():
         domain="AE", target=None, standards_context=standards_context
     )
 
-    operation = SqlOperationsFactory.get_service("required_variables", params, data_service)
+    operation = SqlOperationsFactory.get_service(
+        "required_variables", params, data_service
+    )
 
     # Mock the metadata method to raise an exception
     with patch.object(
-        operation, "_get_variables_metadata_from_standard_model", side_effect=Exception("Metadata retrieval failed")
+        operation,
+        "_get_variables_metadata_from_standard_model",
+        side_effect=Exception("Metadata retrieval failed"),
     ):
         result = operation.execute()
 
