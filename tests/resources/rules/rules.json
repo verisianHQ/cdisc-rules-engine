@@ -93523,12 +93523,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93536,12 +93536,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93549,12 +93549,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93562,12 +93562,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             }
@@ -93682,12 +93682,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93695,12 +93695,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93708,12 +93708,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             },
@@ -93721,12 +93721,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $required_variables is not a constant."
                                     }
                                 ]
                             }
@@ -93818,12 +93818,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93831,12 +93831,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93844,12 +93844,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93857,12 +93857,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -94183,12 +94183,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -94196,12 +94196,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -94209,12 +94209,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -94222,12 +94222,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation required_variables is not implemented"
+                                        "error": "SQL error in is_contained_by operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
