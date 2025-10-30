@@ -1,7 +1,10 @@
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
-from cdisc_rules_engine.constants.permissibility import *
+from cdisc_rules_engine.constants.permissibility import (
+    REQUIRED, PERMISSIBLE, REQUIRED_MODEL_VARIABLES, SEQ_VARIABLE, PERMISSIBILITY_KEY
+)
 from typing import List
+
 
 class SqlRequiredVariables(SqlBaseOperation):
     def _execute_operation(self):
@@ -20,7 +23,6 @@ class SqlRequiredVariables(SqlBaseOperation):
 
         return SqlOperationResult(query=query, type="collection", subtype="Char")
 
-
     def _get_required_variables(self):
         """
         Get variables metadata from standard model and filter by 'required' permissibility.
@@ -30,10 +32,10 @@ class SqlRequiredVariables(SqlBaseOperation):
             model_variables: List[dict] = self._get_variables_metadata_from_standard_model(self.params.domain)
 
             # Filter variables by 'required' permissibility
-            required_model = [var for var in model_variables if self.get_allowed_variable_permissibility(var) == REQUIRED]
+            req_model = [var for var in model_variables if self.get_allowed_variable_permissibility(var) == REQUIRED]
 
             # Replace wildcards and extract variable names
-            variable_names_list = self._replace_variable_wildcards(required_model, self.params.domain)
+            variable_names_list = self._replace_variable_wildcards(req_model, self.params.domain)
 
             # Extract just the variable names from the processed metadata
             return variable_names_list
@@ -41,7 +43,7 @@ class SqlRequiredVariables(SqlBaseOperation):
         except Exception:
             # Return empty list on error (SQL operations should not return error strings)
             return []
-        
+
     def get_allowed_variable_permissibility(self, variable_metadata: dict):
         """
         Returns the permissibility value of a variable allowed in the current domain
@@ -57,4 +59,3 @@ class SqlRequiredVariables(SqlBaseOperation):
             return REQUIRED
 
         return PERMISSIBLE
-    

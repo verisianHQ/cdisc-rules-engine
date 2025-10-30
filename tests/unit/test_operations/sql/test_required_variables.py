@@ -9,9 +9,6 @@ from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
-from cdisc_rules_engine.standards.default_standards_context import (
-    DefaultStandardsContext,
-)
 from cdisc_rules_engine.standards.sdtm_standards_context import (
     SdtmStandardsContext, LibraryMetadataContainer
 )
@@ -59,6 +56,7 @@ test_set1_variables = [
     },
 ]
 
+
 @pytest.mark.parametrize(
     "mock_variables, expected",
     [
@@ -95,11 +93,11 @@ def test_required_variables(mock_variables, expected):
         result = operation.execute()
         assert_operation_collection(operation, result, expected)
 
+
 def test_required_variables_exception_handling():
     """Test get_model_filtered_variables when metadata retrieval fails"""
     data_service = PostgresQLDataService.instance()
     standards_context = SdtmStandardsContext(LibraryMetadataContainer())
-
 
     # Add test dataset matching original test structure
     PostgresQLDataService.add_test_dataset(

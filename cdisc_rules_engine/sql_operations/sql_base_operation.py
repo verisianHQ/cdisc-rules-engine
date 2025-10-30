@@ -19,14 +19,11 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     UnsupportedDictionaryType,
     VariableMetadataNotFoundError,
 )
-from cdisc_rules_engine.models.library_metadata_container import LibraryMetadataContainer
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.utilities import sdtm_utilities
 from cdisc_rules_engine.utilities.utils import convert_library_class_name_to_ct_class
 from cdisc_rules_engine.utilities.sdtm_utilities import get_class_and_domain_metadata
-from cdisc_rules_engine.standards.sdtm_standards_context import BaseStandardsContext
 from typing import List, Optional
 
 
@@ -208,7 +205,6 @@ class SqlBaseOperation:
         # TODO: Update to handle multiple standard types.
 
         variables_metadata = self.params.standards_context.get_domain_variables(domain)
-        
         return variables_metadata
 
     @staticmethod
