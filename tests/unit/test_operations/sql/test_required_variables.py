@@ -83,13 +83,9 @@ def test_required_variables(mock_variables, expected):
         standards_context=standards_context,
     )
 
-    params = SqlOperationParams(
-        domain="AE", target=None, standards_context=standards_context
-    )
+    params = SqlOperationParams(domain="AE", target=None, standards_context=standards_context)
 
-    operation = SqlOperationsFactory.get_service(
-        "required_variables", params, data_service
-    )
+    operation = SqlOperationsFactory.get_service("required_variables", params, data_service)
 
     # Mock the metadata retrieval method on the operation instance
     with patch.object(
@@ -117,13 +113,9 @@ def test_required_variables_exception_handling():
         standards_context=standards_context,
     )
 
-    params = SqlOperationParams(
-        domain="AE", target=None, standards_context=standards_context
-    )
+    params = SqlOperationParams(domain="AE", target=None, standards_context=standards_context)
 
-    operation = SqlOperationsFactory.get_service(
-        "required_variables", params, data_service
-    )
+    operation = SqlOperationsFactory.get_service("required_variables", params, data_service)
 
     # Mock the metadata method to raise an exception
     with patch.object(
