@@ -4,34 +4,33 @@
 
 ## Rule Error Summary (out of 762 total rules)
 
-- **Rules with any errors**: 30 (3.9%)
-- **Clean rules**: 732 (96.1%)
+- **Rules with any errors**: 28 (3.7%)
+- **Clean rules**: 734 (96.3%)
 
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 0
-- Rules with **operation errors**: 12
+- Rules with **operation errors**: 10
 - Rules with **other errors**: 18
 
 ## Missing Operators
 
 No missing operator errors found!
 
-## Missing Operations (9 operations, 76 total failures across 12 rule occurrences)
+## Missing Operations (8 operations, 56 total failures across 10 rule occurrences)
 
-1.  **variable_count**: 20 failures across 2 rules
-2.  **required_variables**: 16 failures across 2 rules
-3.  **study_domains**: 8 failures across 2 rules
-4.  **expected_variables**: 10 failures across 1 rules
-5.  **extract_metadata**: 6 failures across 1 rules
-6.  **get_model_column_order**: 6 failures across 1 rules
-7.  **domain_is_custom**: 4 failures across 1 rules
-8.  **get_parent_model_column_order**: 4 failures across 1 rules
-9.  **valid_codelist_dates**: 2 failures across 1 rules
+1.  **required_variables**: 16 failures across 2 rules
+2.  **study_domains**: 8 failures across 2 rules
+3.  **expected_variables**: 10 failures across 1 rules
+4.  **extract_metadata**: 6 failures across 1 rules
+5.  **get_model_column_order**: 6 failures across 1 rules
+6.  **domain_is_custom**: 4 failures across 1 rules
+7.  **get_parent_model_column_order**: 4 failures across 1 rules
+8.  **valid_codelist_dates**: 2 failures across 1 rules
 
-## Execution Errors by Type (16 unique error types, 134 total failures across 30 rule occurrences)
+## Execution Errors by Type (16 unique error types, 114 total failures across 28 rule occurrences)
 
-1.  **An unknown exception has occurred**: 76 failures across 12 rules
+1.  **An unknown exception has occurred**: 56 failures across 10 rules
 2.  **SQL error in is_incomplete_date operator**: 12 failures across 2 rules
 3.  **SQL error in not_equal_to operator**: 6 failures across 2 rules
 4.  **SQL error in does_not_contain operator**: 4 failures across 2 rules
