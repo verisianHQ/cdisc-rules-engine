@@ -95,7 +95,7 @@ def test_required_variables(mock_variables, expected):
         result = operation.execute()
         assert_operation_collection(operation, result, expected)
 
-def test_get_model_filtered_variables_exception_handling():
+def test_required_variables_exception_handling():
     """Test get_model_filtered_variables when metadata retrieval fails"""
     data_service = PostgresQLDataService.instance()
     standards_context = SdtmStandardsContext(LibraryMetadataContainer())
