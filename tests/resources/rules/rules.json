@@ -90583,12 +90583,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90596,12 +90596,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90609,12 +90609,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90622,12 +90622,12 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'suppqual' not found in schema."
                                     }
                                 ]
                             },
@@ -90635,12 +90635,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             }
@@ -90915,12 +90915,12 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90928,12 +90928,12 @@
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90941,12 +90941,12 @@
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             },
@@ -90954,12 +90954,12 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operation execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in sqldatasetcolumnorderoperation operation",
+                                        "message": "Dataset 'suppqual' not found in schema."
                                     }
                                 ]
                             },
@@ -90967,12 +90967,12 @@
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation expected_variables is not implemented"
+                                        "error": "SQL error in not_contains_all operator",
+                                        "message": "Variable $expected_variables is not a constant."
                                     }
                                 ]
                             }
