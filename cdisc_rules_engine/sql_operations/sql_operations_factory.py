@@ -19,6 +19,8 @@ from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperatio
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 from cdisc_rules_engine.sql_operations.get_model_filtered_variables import SqlGetModelFilteredVariables
 from cdisc_rules_engine.sql_operations.required_variables import SqlRequiredVariables
+from cdisc_rules_engine.sql_operations.expected_variables import SqlExpectedVariables
+from cdisc_rules_engine.sql_operations.permissible_variables import SqlPermissibleVariables
 
 
 class SqlOperationsFactory:
@@ -57,8 +59,8 @@ class SqlOperationsFactory:
         "domain_is_custom": None,
         "domain_label": SqlDomainLabelOperation,
         "required_variables": SqlRequiredVariables,
-        "expected_variables": None,
-        "permissible_variables": None,
+        "expected_variables": SqlExpectedVariables,
+        "permissible_variables": SqlPermissibleVariables,
         "study_domains": None,
         "valid_codelist_dates": None,
         "label_referenced_variable_metadata": None,
