@@ -4,6 +4,13 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
+from cdisc_rules_engine.constants.permissibility import (
+    REQUIRED,
+    PERMISSIBLE,
+    REQUIRED_MODEL_VARIABLES,
+    SEQ_VARIABLE,
+    PERMISSIBILITY_KEY,
+)
 from typing import List
 
 
@@ -47,3 +54,17 @@ class SqlPermissibilityOperation(SqlBaseOperation):
         except Exception as e:
             # If the metadata retrieval fails, the rule can't run, so throwing error
             raise Exception(f"Metadata retrieval failed due to error: {str(e)}")
+
+    def _get_allowed_variable_permissibility(self, variable_metadata: dict):
+        """
+        Returns the permissibility value of a variable allowed in the current domain
+        """
+        variable_name = variable_metadata.get("name")
+        if PERMISSIBILITY_KEY in variable_metadata:
+            return variable_metadata[PERMISSIBILITY_KEY]
+        elif variable_name in REQUIRED_MODEL_VARIABLES:
+            return REQUIRED
+        elif variable_name.replace("--", self.params.domain) == SEQ_VARIABLE.replace("--", self.params.domain):
+            return REQUIRED
+
+        return PERMISSIBLE

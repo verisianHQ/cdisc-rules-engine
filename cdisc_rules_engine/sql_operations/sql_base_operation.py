@@ -25,13 +25,6 @@ from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.utilities.utils import convert_library_class_name_to_ct_class
 from cdisc_rules_engine.utilities.sdtm_utilities import get_class_and_domain_metadata
 from typing import List, Optional
-from cdisc_rules_engine.constants.permissibility import (
-    REQUIRED,
-    PERMISSIBLE,
-    REQUIRED_MODEL_VARIABLES,
-    SEQ_VARIABLE,
-    PERMISSIBILITY_KEY,
-)
 
 
 class SqlOperationError(Exception):
@@ -213,20 +206,6 @@ class SqlBaseOperation:
 
         variables_metadata = self.params.standards_context.get_domain_variables(domain)
         return variables_metadata
-
-    def _get_allowed_variable_permissibility(self, variable_metadata: dict):
-        """
-        Returns the permissibility value of a variable allowed in the current domain
-        """
-        variable_name = variable_metadata.get("name")
-        if PERMISSIBILITY_KEY in variable_metadata:
-            return variable_metadata[PERMISSIBILITY_KEY]
-        elif variable_name in REQUIRED_MODEL_VARIABLES:
-            return REQUIRED
-        elif variable_name.replace("--", self.params.domain) == SEQ_VARIABLE.replace("--", self.params.domain):
-            return REQUIRED
-
-        return PERMISSIBLE
 
     @staticmethod
     def _replace_variable_wildcards(variables_metadata, domain):
