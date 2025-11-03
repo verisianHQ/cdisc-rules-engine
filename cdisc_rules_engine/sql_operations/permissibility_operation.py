@@ -15,12 +15,12 @@ class SqlPermissibilityOperation(SqlBaseOperation):
 
     def _execute_operation(self):
 
-        permissible_variables = self._get_permissible_variables()
+        perm_variables = self._get_perm_variables()
 
         # Convert the list to individual rows in SQL
-        if permissible_variables and isinstance(permissible_variables, list):
+        if perm_variables and isinstance(perm_variables, list):
             # Format variable names for SQL VALUES clause, escaping single quotes
-            formatted_vars = [f"('{var.replace(chr(39), chr(39) + chr(39))}')" for var in permissible_variables]
+            formatted_vars = [f"('{var.replace(chr(39), chr(39) + chr(39))}')" for var in perm_variables]
             values_clause = ", ".join(formatted_vars)
             query = f"SELECT column1 AS value FROM (VALUES {values_clause}) AS t(column1)"
         else:
@@ -29,11 +29,11 @@ class SqlPermissibilityOperation(SqlBaseOperation):
 
         return SqlOperationResult(query=query, type="collection", subtype="Char")
 
-    def _get_permissible_variables(self):
+    def _get_perm_variables(self):
         try:
             model_variables: List[dict] = self._get_variables_metadata_from_standard_model(self.params.domain)
 
-            # Filter variables by 'permissible' permissibility
+            # Filter variables by permissibility
             perm_model = [
                 var for var in model_variables if self._get_allowed_variable_permissibility(var) == self.permissibility
             ]
