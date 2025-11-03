@@ -1,10 +1,18 @@
+from cdisc_rules_engine.data_service.postgresql_data_service import (
+    PostgresQLDataService,
+)
+from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
-from cdisc_rules_engine.constants.permissibility import PERMISSIBLE
 from typing import List
 
 
-class SqlPermissibleVariables(SqlBaseOperation):
+class SqlPermissibilityOperation(SqlBaseOperation):
+
+    def __init__(self, params: SqlOperationParams, data_service: PostgresQLDataService, permissibility: str):
+        super().__init__(params, data_service)
+        self.permissibility = permissibility
+
     def _execute_operation(self):
 
         permissible_variables = self._get_permissible_variables()
@@ -22,16 +30,12 @@ class SqlPermissibleVariables(SqlBaseOperation):
         return SqlOperationResult(query=query, type="collection", subtype="Char")
 
     def _get_permissible_variables(self):
-        """
-        Get variables metadata from standard model and filter by 'permissible' permissibility.
-        """
         try:
-            # Use the new SQL base operation method
             model_variables: List[dict] = self._get_variables_metadata_from_standard_model(self.params.domain)
 
             # Filter variables by 'permissible' permissibility
             perm_model = [
-                var for var in model_variables if self._get_allowed_variable_permissibility(var) == PERMISSIBLE
+                var for var in model_variables if self._get_allowed_variable_permissibility(var) == self.permissibility
             ]
 
             # Replace wildcards and extract variable names
