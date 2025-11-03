@@ -4,8 +4,9 @@ from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperatio
 
 class SqlVariableCountOperation(SqlBaseOperation):
     def _execute_operation(self):
-        all_tables = self.data_service.pgi.schema.get_tables()
-        data_tables = [(name, schema) for name, schema in all_tables if schema.source == "data"]
+        all_dataset_metadata = [
+            self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
+        ]
 
         target = self.params.target
         domain = self.params.domain.upper()
@@ -16,13 +17,13 @@ class SqlVariableCountOperation(SqlBaseOperation):
             wildcard_target = target
 
         count = 0
-        for table_name, table_schema in data_tables:
+        for dataset_metadata in all_dataset_metadata:
             if wildcard_target.startswith("--"):
-                target_variable = table_name.upper() + wildcard_target[2:]
+                target_variable = dataset_metadata.name.upper() + wildcard_target[2:]
             else:
                 target_variable = wildcard_target
 
-            if table_schema.has_column(target_variable):
+            if any([target_variable == var.name for var in dataset_metadata.variables]):
                 count += 1
 
         query = f"SELECT {count} AS value"
