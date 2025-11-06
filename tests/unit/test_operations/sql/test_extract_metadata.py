@@ -115,7 +115,7 @@ def test_size_extract_metadata(mock_datasets, expected):
 @pytest.mark.parametrize(
     "mock_datasets",
     [
-        (test_size_dataset_metadata, Exception),
+        (test_size_dataset_metadata),
     ],
 )
 def test_extract_metadata_exception_handling(mock_datasets):
