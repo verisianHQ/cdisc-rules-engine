@@ -8,8 +8,21 @@ class SqlExtractMetadataOperation(SqlBaseOperation):
 
         dataset_metadata = self._get_full_dataset_metadata()
 
-        target_value = [getattr(dm, MetadataMappings(self.params.target).name) for dm in dataset_metadata]
-        final_val = target_value[0] if target_value else ""
+        try:
+            target_value = [
+                getattr(
+                    dm,
+                    (
+                        (MetadataMappings(self.params.target).name)
+                        if self.params.target in [member.value for member in MetadataMappings]
+                        else self.params.target
+                    ),
+                )
+                for dm in dataset_metadata
+            ]
+            final_val = target_value[0] if target_value else ""
+        except Exception as e:
+            raise Exception(f"Metadata extraction of {self.params.target} failed due to error {str(e)}")
 
         return SqlOperationResult(
             query=f"SELECT '{final_val.replace('\'', '\'\'')}' AS value", type="constant", subtype="Char"
