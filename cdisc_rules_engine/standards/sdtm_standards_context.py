@@ -98,7 +98,11 @@ class SdtmStandardsContext(BaseStandardsContext):
             if domain_details:
                 variables_metadata = domain_details.get("datasetVariables", [])
                 if variables_metadata:
-                    variables_metadata.sort(key=lambda item: int(item["ordinal"]))
+                    variables_metadata.sort(
+                        key=lambda item: (
+                            int(item.get("ordinal")) if item.get("ordinal") else int(item.get("order_number"))
+                        )
+                    )
                     return variables_metadata
         return []
 

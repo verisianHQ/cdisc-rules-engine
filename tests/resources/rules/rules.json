@@ -109337,39 +109337,51 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable is not an allowed variable for an Observation Class",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "AESTDYXX"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable is not an allowed variable for an Observation Class",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCDXX"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable is not an allowed variable for an Observation Class",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSPIDXX"
+                                        }
                                     }
                                 ]
                             }
@@ -109430,13 +109442,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -109458,13 +109467,17 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "Variable is not an allowed variable for an Observation Class",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
+                                        "row": 22,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "AESTDYXX"
+                                        }
                                     }
                                 ]
                             }
@@ -109491,13 +109504,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -109522,28 +109532,18 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation get_model_column_order is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -109567,13 +109567,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111462,7 +111459,18 @@
                                                 "AESHOSP",
                                                 "AESLIFE"
                                             ],
-                                            "$timing_variables": null
+                                            "$timing_variables": [
+                                                "TAETORD",
+                                                "EPOCH",
+                                                "AESTDTC",
+                                                "AEENDTC",
+                                                "AESTDY",
+                                                "AEENDY",
+                                                "AEDUR",
+                                                "AEENRF",
+                                                "AEENRTPT",
+                                                "AEENTPT"
+                                            ]
                                         }
                                     }
                                 ]
@@ -111516,7 +111524,24 @@
                                                 "LBDRVFL",
                                                 "LBCLSIG"
                                             ],
-                                            "$timing_variables": null
+                                            "$timing_variables": [
+                                                "VISITNUM",
+                                                "VISIT",
+                                                "VISITDY",
+                                                "TAETORD",
+                                                "EPOCH",
+                                                "LBDTC",
+                                                "LBENDTC",
+                                                "LBDY",
+                                                "LBENDY",
+                                                "LBTPT",
+                                                "LBTPTNUM",
+                                                "LBELTM",
+                                                "LBTPTREF",
+                                                "LBRFTDTC",
+                                                "LBPTFL",
+                                                "LBPDUR"
+                                            ]
                                         }
                                     }
                                 ]
@@ -111551,7 +111576,20 @@
                                                 "ECPSTRG",
                                                 "ECPSTRGU"
                                             ],
-                                            "$timing_variables": null
+                                            "$timing_variables": [
+                                                "TAETORD",
+                                                "EPOCH",
+                                                "ECSTDTC",
+                                                "ECENDTC",
+                                                "ECSTDY",
+                                                "ECENDY",
+                                                "ECDUR",
+                                                "ECTPT",
+                                                "ECTPTNUM",
+                                                "ECELTM",
+                                                "ECTPTREF",
+                                                "ECRFTDTC"
+                                            ]
                                         }
                                     }
                                 ]
@@ -111840,179 +111878,280 @@
                             "number_of_errors_mismatch": false,
                             "diff": {
                                 "ae.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$timing_variables']": {
-                                            "old_type": "list",
-                                            "new_type": "NoneType",
-                                            "old_value": [
-                                                "VISITNUM",
-                                                "VISIT",
-                                                "VISITDY",
-                                                "TAETORD",
-                                                "EPOCH",
-                                                "RPHASE",
-                                                "RPPLDY",
-                                                "RPPLSTDY",
-                                                "RPPLENDY",
-                                                "AEDTC",
-                                                "AESTDTC",
-                                                "AEENDTC",
-                                                "AEDY",
-                                                "AESTDY",
-                                                "AEENDY",
-                                                "AENOMDY",
-                                                "AENOMLBL",
-                                                "AERPDY",
-                                                "AERPSTDY",
-                                                "AERPENDY",
-                                                "AEXDY",
-                                                "AEXSTDY",
-                                                "AEXENDY",
-                                                "AECHDY",
-                                                "AECHSTDY",
-                                                "AECHENDY",
-                                                "AEDUR",
-                                                "AETPT",
-                                                "AETPTNUM",
-                                                "AEELTM",
-                                                "AETPTREF",
-                                                "AERFTDTC",
-                                                "AESTRF",
-                                                "AEENRF",
-                                                "AEEVLINT",
-                                                "AEEVINTX",
-                                                "AESTRTPT",
-                                                "AESTTPT",
-                                                "AEENRTPT",
-                                                "AEENTPT",
-                                                "MIDS",
-                                                "RELMIDS",
-                                                "MIDSDTC",
-                                                "AESTINT",
-                                                "AEENINT",
-                                                "AEDETECT",
-                                                "AEPTFL",
-                                                "AEPDUR"
-                                            ],
-                                            "new_value": null
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": null,
+                                                "SEQ": null,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$dataset_variables": [
+                                                        "STUDYID",
+                                                        "DOMAIN",
+                                                        "USUBJID",
+                                                        "AESEQ",
+                                                        "AETERM",
+                                                        "AEMODIFY",
+                                                        "AEDECOD",
+                                                        "AEBODSYS",
+                                                        "AESEV",
+                                                        "AESER",
+                                                        "AEACN",
+                                                        "AEREL",
+                                                        "AEOUT",
+                                                        "AESCONG",
+                                                        "AESDISAB",
+                                                        "AESDTH",
+                                                        "AESHOSP",
+                                                        "AESLIFE"
+                                                    ],
+                                                    "$timing_variables": [
+                                                        "TAETORD",
+                                                        "EPOCH",
+                                                        "AESTDTC",
+                                                        "AEENDTC",
+                                                        "AESTDY",
+                                                        "AEENDY",
+                                                        "AEDUR",
+                                                        "AEENRF",
+                                                        "AEENRTPT",
+                                                        "AEENTPT"
+                                                    ]
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": null,
+                                                "SEQ": null,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$dataset_variables": [
+                                                        "STUDYID",
+                                                        "DOMAIN",
+                                                        "USUBJID",
+                                                        "AESEQ",
+                                                        "AETERM",
+                                                        "AEMODIFY",
+                                                        "AEDECOD",
+                                                        "AEBODSYS",
+                                                        "AESEV",
+                                                        "AESER",
+                                                        "AEACN",
+                                                        "AEREL",
+                                                        "AEOUT",
+                                                        "AESCONG",
+                                                        "AESDISAB",
+                                                        "AESDTH",
+                                                        "AESHOSP",
+                                                        "AESLIFE"
+                                                    ],
+                                                    "$timing_variables": [
+                                                        "VISITNUM",
+                                                        "VISIT",
+                                                        "VISITDY",
+                                                        "TAETORD",
+                                                        "EPOCH",
+                                                        "RPHASE",
+                                                        "RPPLDY",
+                                                        "RPPLSTDY",
+                                                        "RPPLENDY",
+                                                        "AEDTC",
+                                                        "AESTDTC",
+                                                        "AEENDTC",
+                                                        "AEDY",
+                                                        "AESTDY",
+                                                        "AEENDY",
+                                                        "AENOMDY",
+                                                        "AENOMLBL",
+                                                        "AERPDY",
+                                                        "AERPSTDY",
+                                                        "AERPENDY",
+                                                        "AEXDY",
+                                                        "AEXSTDY",
+                                                        "AEXENDY",
+                                                        "AECHDY",
+                                                        "AECHSTDY",
+                                                        "AECHENDY",
+                                                        "AEDUR",
+                                                        "AETPT",
+                                                        "AETPTNUM",
+                                                        "AEELTM",
+                                                        "AETPTREF",
+                                                        "AERFTDTC",
+                                                        "AESTRF",
+                                                        "AEENRF",
+                                                        "AEEVLINT",
+                                                        "AEEVINTX",
+                                                        "AESTRTPT",
+                                                        "AESTTPT",
+                                                        "AEENRTPT",
+                                                        "AEENTPT",
+                                                        "MIDS",
+                                                        "RELMIDS",
+                                                        "MIDSDTC",
+                                                        "AESTINT",
+                                                        "AEENINT",
+                                                        "AEDETECT",
+                                                        "AEPTFL",
+                                                        "AEPDUR"
+                                                    ]
+                                                }
+                                            }
                                         }
                                     }
                                 },
                                 "lb.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$timing_variables']": {
-                                            "old_type": "list",
-                                            "new_type": "NoneType",
-                                            "old_value": [
-                                                "VISITNUM",
-                                                "VISIT",
-                                                "VISITDY",
-                                                "TAETORD",
-                                                "EPOCH",
-                                                "RPHASE",
-                                                "RPPLDY",
-                                                "RPPLSTDY",
-                                                "RPPLENDY",
-                                                "LBDTC",
-                                                "LBSTDTC",
-                                                "LBENDTC",
-                                                "LBDY",
-                                                "LBSTDY",
-                                                "LBENDY",
-                                                "LBNOMDY",
-                                                "LBNOMLBL",
-                                                "LBRPDY",
-                                                "LBRPSTDY",
-                                                "LBRPENDY",
-                                                "LBXDY",
-                                                "LBXSTDY",
-                                                "LBXENDY",
-                                                "LBCHDY",
-                                                "LBCHSTDY",
-                                                "LBCHENDY",
-                                                "LBDUR",
-                                                "LBTPT",
-                                                "LBTPTNUM",
-                                                "LBELTM",
-                                                "LBTPTREF",
-                                                "LBRFTDTC",
-                                                "LBSTRF",
-                                                "LBENRF",
-                                                "LBEVLINT",
-                                                "LBEVINTX",
-                                                "LBSTRTPT",
-                                                "LBSTTPT",
-                                                "LBENRTPT",
-                                                "LBENTPT",
-                                                "MIDS",
-                                                "RELMIDS",
-                                                "MIDSDTC",
-                                                "LBSTINT",
-                                                "LBENINT",
-                                                "LBDETECT",
-                                                "LBPTFL",
-                                                "LBPDUR"
-                                            ],
-                                            "new_value": null
-                                        }
+                                    "iterable_item_removed": {
+                                        "root[0]['value']['$timing_variables'][5]": "RPHASE",
+                                        "root[0]['value']['$timing_variables'][6]": "RPPLDY",
+                                        "root[0]['value']['$timing_variables'][7]": "RPPLSTDY",
+                                        "root[0]['value']['$timing_variables'][8]": "RPPLENDY",
+                                        "root[0]['value']['$timing_variables'][10]": "LBSTDTC",
+                                        "root[0]['value']['$timing_variables'][13]": "LBSTDY",
+                                        "root[0]['value']['$timing_variables'][15]": "LBNOMDY",
+                                        "root[0]['value']['$timing_variables'][16]": "LBNOMLBL",
+                                        "root[0]['value']['$timing_variables'][17]": "LBRPDY",
+                                        "root[0]['value']['$timing_variables'][18]": "LBRPSTDY",
+                                        "root[0]['value']['$timing_variables'][19]": "LBRPENDY",
+                                        "root[0]['value']['$timing_variables'][20]": "LBXDY",
+                                        "root[0]['value']['$timing_variables'][21]": "LBXSTDY",
+                                        "root[0]['value']['$timing_variables'][22]": "LBXENDY",
+                                        "root[0]['value']['$timing_variables'][23]": "LBCHDY",
+                                        "root[0]['value']['$timing_variables'][24]": "LBCHSTDY",
+                                        "root[0]['value']['$timing_variables'][25]": "LBCHENDY",
+                                        "root[0]['value']['$timing_variables'][26]": "LBDUR",
+                                        "root[0]['value']['$timing_variables'][32]": "LBSTRF",
+                                        "root[0]['value']['$timing_variables'][33]": "LBENRF",
+                                        "root[0]['value']['$timing_variables'][34]": "LBEVLINT",
+                                        "root[0]['value']['$timing_variables'][35]": "LBEVINTX",
+                                        "root[0]['value']['$timing_variables'][36]": "LBSTRTPT",
+                                        "root[0]['value']['$timing_variables'][37]": "LBSTTPT",
+                                        "root[0]['value']['$timing_variables'][38]": "LBENRTPT",
+                                        "root[0]['value']['$timing_variables'][39]": "LBENTPT",
+                                        "root[0]['value']['$timing_variables'][40]": "MIDS",
+                                        "root[0]['value']['$timing_variables'][41]": "RELMIDS",
+                                        "root[0]['value']['$timing_variables'][42]": "MIDSDTC",
+                                        "root[0]['value']['$timing_variables'][43]": "LBSTINT",
+                                        "root[0]['value']['$timing_variables'][44]": "LBENINT",
+                                        "root[0]['value']['$timing_variables'][45]": "LBDETECT"
                                     }
                                 },
                                 "ec.xpt": {
-                                    "type_changes": {
-                                        "root[0]['value']['$timing_variables']": {
-                                            "old_type": "list",
-                                            "new_type": "NoneType",
-                                            "old_value": [
-                                                "VISITNUM",
-                                                "VISIT",
-                                                "VISITDY",
-                                                "TAETORD",
-                                                "EPOCH",
-                                                "RPHASE",
-                                                "RPPLDY",
-                                                "RPPLSTDY",
-                                                "RPPLENDY",
-                                                "ECDTC",
-                                                "ECSTDTC",
-                                                "ECENDTC",
-                                                "ECDY",
-                                                "ECSTDY",
-                                                "ECENDY",
-                                                "ECNOMDY",
-                                                "ECNOMLBL",
-                                                "ECRPDY",
-                                                "ECRPSTDY",
-                                                "ECRPENDY",
-                                                "ECXDY",
-                                                "ECXSTDY",
-                                                "ECXENDY",
-                                                "ECCHDY",
-                                                "ECCHSTDY",
-                                                "ECCHENDY",
-                                                "ECDUR",
-                                                "ECTPT",
-                                                "ECTPTNUM",
-                                                "ECELTM",
-                                                "ECTPTREF",
-                                                "ECRFTDTC",
-                                                "ECSTRF",
-                                                "ECENRF",
-                                                "ECEVLINT",
-                                                "ECEVINTX",
-                                                "ECSTRTPT",
-                                                "ECSTTPT",
-                                                "ECENRTPT",
-                                                "ECENTPT",
-                                                "MIDS",
-                                                "RELMIDS",
-                                                "MIDSDTC",
-                                                "ECSTINT",
-                                                "ECENINT",
-                                                "ECDETECT",
-                                                "ECPTFL",
-                                                "ECPDUR"
-                                            ],
-                                            "new_value": null
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": null,
+                                                "SEQ": null,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$dataset_variables": [
+                                                        "STUDYID",
+                                                        "DOMAIN",
+                                                        "USUBJID",
+                                                        "SPDEVID",
+                                                        "ECSEQ",
+                                                        "ECTRT",
+                                                        "ECPRESP",
+                                                        "ECOCCUR",
+                                                        "ECDOSE",
+                                                        "ECDOSU",
+                                                        "ECDOSFRM",
+                                                        "ECDOSFRQ",
+                                                        "ECROUTE",
+                                                        "ECLOT",
+                                                        "ECPSTRG",
+                                                        "ECPSTRGU"
+                                                    ],
+                                                    "$timing_variables": [
+                                                        "TAETORD",
+                                                        "EPOCH",
+                                                        "ECSTDTC",
+                                                        "ECENDTC",
+                                                        "ECSTDY",
+                                                        "ECENDY",
+                                                        "ECDUR",
+                                                        "ECTPT",
+                                                        "ECTPTNUM",
+                                                        "ECELTM",
+                                                        "ECTPTREF",
+                                                        "ECRFTDTC"
+                                                    ]
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": null,
+                                                "SEQ": null,
+                                                "USUBJID": null,
+                                                "value": {
+                                                    "$dataset_variables": [
+                                                        "STUDYID",
+                                                        "DOMAIN",
+                                                        "USUBJID",
+                                                        "SPDEVID",
+                                                        "ECSEQ",
+                                                        "ECTRT",
+                                                        "ECPRESP",
+                                                        "ECOCCUR",
+                                                        "ECDOSE",
+                                                        "ECDOSU",
+                                                        "ECDOSFRM",
+                                                        "ECDOSFRQ",
+                                                        "ECROUTE",
+                                                        "ECLOT",
+                                                        "ECPSTRG",
+                                                        "ECPSTRGU"
+                                                    ],
+                                                    "$timing_variables": [
+                                                        "VISITNUM",
+                                                        "VISIT",
+                                                        "VISITDY",
+                                                        "TAETORD",
+                                                        "EPOCH",
+                                                        "RPHASE",
+                                                        "RPPLDY",
+                                                        "RPPLSTDY",
+                                                        "RPPLENDY",
+                                                        "ECDTC",
+                                                        "ECSTDTC",
+                                                        "ECENDTC",
+                                                        "ECDY",
+                                                        "ECSTDY",
+                                                        "ECENDY",
+                                                        "ECNOMDY",
+                                                        "ECNOMLBL",
+                                                        "ECRPDY",
+                                                        "ECRPSTDY",
+                                                        "ECRPENDY",
+                                                        "ECXDY",
+                                                        "ECXSTDY",
+                                                        "ECXENDY",
+                                                        "ECCHDY",
+                                                        "ECCHSTDY",
+                                                        "ECCHENDY",
+                                                        "ECDUR",
+                                                        "ECTPT",
+                                                        "ECTPTNUM",
+                                                        "ECELTM",
+                                                        "ECTPTREF",
+                                                        "ECRFTDTC",
+                                                        "ECSTRF",
+                                                        "ECENRF",
+                                                        "ECEVLINT",
+                                                        "ECEVINTX",
+                                                        "ECSTRTPT",
+                                                        "ECSTTPT",
+                                                        "ECENRTPT",
+                                                        "ECENTPT",
+                                                        "MIDS",
+                                                        "RELMIDS",
+                                                        "MIDSDTC",
+                                                        "ECSTINT",
+                                                        "ECENINT",
+                                                        "ECDETECT",
+                                                        "ECPTFL",
+                                                        "ECPDUR"
+                                                    ]
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -112045,130 +112184,25 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": "No timing variable is provided",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$dataset_variables": [
-                                                "STUDYID",
-                                                "DOMAIN",
-                                                "USUBJID",
-                                                "AESEQ",
-                                                "AETERM",
-                                                "AEMODIFY",
-                                                "AEDECOD",
-                                                "AEBODSYS",
-                                                "AESEV",
-                                                "AESER",
-                                                "AEACN",
-                                                "AEREL",
-                                                "AEOUT",
-                                                "AESCONG",
-                                                "AESDISAB",
-                                                "AESDTH",
-                                                "AESHOSP",
-                                                "AESLIFE",
-                                                "AEENRF"
-                                            ],
-                                            "$timing_variables": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
                                 "execution_status": "success",
-                                "execution_message": "No timing variable is provided",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$dataset_variables": [
-                                                "STUDYID",
-                                                "DOMAIN",
-                                                "USUBJID",
-                                                "LBSEQ",
-                                                "LBGRPID",
-                                                "LBTESTCD",
-                                                "LBTEST",
-                                                "LBTSTCND",
-                                                "LBCAT",
-                                                "LBSCAT",
-                                                "LBORRES",
-                                                "LBORRESU",
-                                                "LBRESSCL",
-                                                "LBRESTYP",
-                                                "LBCOLSRT",
-                                                "LBORNRLO",
-                                                "LBORNRHI",
-                                                "LBLLOD",
-                                                "LBSTRESC",
-                                                "LBSTRESN",
-                                                "LBSTRESU",
-                                                "LBSTNRLO",
-                                                "LBSTNRHI",
-                                                "LBSTNRC",
-                                                "LBNRIND",
-                                                "LBSTAT",
-                                                "LBREASND",
-                                                "LBLOINC",
-                                                "LBSPEC",
-                                                "LBMETHOD",
-                                                "LBTMTHSN",
-                                                "LBLOBXFL",
-                                                "LBFAST",
-                                                "LBDRVFL",
-                                                "LBCLSIG",
-                                                "LBPDUR"
-                                            ],
-                                            "$timing_variables": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ec.xpt",
                                 "domain": "EC",
                                 "execution_status": "success",
-                                "execution_message": "No timing variable is provided",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$dataset_variables": [
-                                                "STUDYID",
-                                                "DOMAIN",
-                                                "USUBJID",
-                                                "SPDEVID",
-                                                "ECSEQ",
-                                                "ECTRT",
-                                                "ECPRESP",
-                                                "ECOCCUR",
-                                                "ECDOSE",
-                                                "ECDOSU",
-                                                "ECDOSFRM",
-                                                "ECDOSFRQ",
-                                                "ECROUTE",
-                                                "ECLOT",
-                                                "ECPSTRG",
-                                                "ECPSTRGU",
-                                                "EPOCH"
-                                            ],
-                                            "$timing_variables": null
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ie.xpt",
@@ -112216,10 +112250,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
