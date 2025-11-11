@@ -8,7 +8,5 @@ class SqlDomainIsCustomOperation(SqlBaseOperation):
         Return a bool indicating whether the domain is custom
         """
         standard_metadata = self.params.standards_context.get_standard_metadata()
-        domain_is_custom = self.params.domain not in standard_metadata
-        return SqlOperationResult(
-            query=f"SELECT '{domain_is_custom.replace('\'', '\'\'')}' AS value", type="constant", subtype="Char"
-        )
+        domain_is_custom = self.params.domain not in standard_metadata.get("domains", {})
+        return SqlOperationResult(query=f"SELECT {domain_is_custom} AS value", type="constant", subtype="Bool")
