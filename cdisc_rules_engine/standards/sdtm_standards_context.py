@@ -106,6 +106,14 @@ class SdtmStandardsContext(BaseStandardsContext):
                     return variables_metadata
         return []
 
+    def get_model_metadata(self):
+        model_metadata = self.library_metadata.model_metadata
+        return model_metadata
+
+    def get_standard_metadata(self):
+        standard_metadata = self.library_metadata.standard_metadata
+        return standard_metadata
+
     def get_domain_label(self, domain: str):
         standard_data = self.library_metadata.standard_metadata
         for c in standard_data.get("classes", []):
