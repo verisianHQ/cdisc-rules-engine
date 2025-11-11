@@ -19,9 +19,6 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        """
-        Create unpivoted dataset with dataset metadata and return table name.
-        """
         table_name = f"{self.dataset_metadata.name}_values_with_dataset_metadata"
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
@@ -66,7 +63,7 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
                     f"""
                     SELECT
                         ROW_NUMBER() OVER () as row_number,
-                        '{col_name}' as variable_name,
+                        '{col_name.upper()}' as variable_name,
                         CAST({col_hash} AS TEXT) as variable_value,
                         '{dataset_location}' as dataset_location,
                         '{dataset_name}' as dataset_name,
@@ -91,5 +88,11 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
             """
 
             self.data_service.pgi.execute_sql(insert_query)
+
+        # fetch the entire table to ensure it was created correctly
+        # fetch_query = f"SELECT * FROM {schema.hash};"
+        # self.data_service.pgi.execute_sql(fetch_query)
+        # fetch_result = self.data_service.pgi.fetch_all()
+        # raise ValueError(fetch_result)
 
         return table_name

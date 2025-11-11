@@ -16,9 +16,6 @@ class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        """
-        Create merged variable metadata table and return table name.
-        """
         table_name = f"{self.dataset_metadata.name}_var_metadata_with_library"
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
@@ -91,7 +88,7 @@ class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
         return table_name
 
     def _get_library_variables_metadata(self):
-        """Get library metadata for the domain, similar to BaseDatasetBuilder.get_library_variables_metadata"""
+        """Get library metadata for the domain"""
         if not self.dataset_metadata.domain and self.dataset_metadata.is_supp and self.dataset_metadata.rdomain:
             domain = "SUPPQUAL"
         elif (

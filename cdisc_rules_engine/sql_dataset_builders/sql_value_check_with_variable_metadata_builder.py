@@ -19,9 +19,6 @@ class SqlValueCheckWithVariableMetadataBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        """
-        Create unpivoted dataset with variable metadata and return table name.
-        """
         table_name = f"{self.dataset_metadata.name}_values_with_variable_metadata"
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
@@ -90,7 +87,7 @@ class SqlValueCheckWithVariableMetadataBuilder(SqlBaseDatasetBuilder):
                     f"""
                     SELECT
                         ROW_NUMBER() OVER () as row_number,
-                        '{col_name}' as variable_name,
+                        '{col_name.upper()}' as variable_name,
                         CAST({col_hash} AS TEXT) as variable_value,
                         '{var_label}' as variable_label,
                         '{var_data_type}' as variable_data_type,
