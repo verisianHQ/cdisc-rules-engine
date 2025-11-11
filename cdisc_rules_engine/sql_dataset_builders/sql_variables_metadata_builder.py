@@ -20,10 +20,14 @@ class SqlVariablesMetadataBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
+        """
+        Create variable metadata table for this dataset and return table name.
+        """
         table_name = f"{self.dataset_metadata.name}_var_metadata"
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
 
+        # Create table schema with required columns
         schema = SqlTableSchema.static(table_name)
         schema.add_column(SqlColumnSchema.generated("variable_name", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_order_number", "Num"))

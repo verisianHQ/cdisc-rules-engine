@@ -89,10 +89,4 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
 
             self.data_service.pgi.execute_sql(insert_query)
 
-        # fetch the entire table to ensure it was created correctly
-        # fetch_query = f"SELECT * FROM {schema.hash};"
-        # self.data_service.pgi.execute_sql(fetch_query)
-        # fetch_result = self.data_service.pgi.fetch_all()
-        # raise ValueError(fetch_result)
-
         return table_name
