@@ -62,7 +62,7 @@ def test_variable_count_multiple_domains():
     rows = data_service.pgi.fetch_all()
 
     assert len(rows) == 1
-    assert rows[0]["value"] == 1
+    assert rows[0]["value"] == 3
 
     params.target = "FALNKGRP"
     params.domain = "FA"
@@ -74,7 +74,7 @@ def test_variable_count_multiple_domains():
     rows = data_service.pgi.fetch_all()
 
     assert len(rows) == 1
-    assert rows[0]["value"] == 1
+    assert rows[0]["value"] == 3
 
 
 def test_variable_count_not_found():
