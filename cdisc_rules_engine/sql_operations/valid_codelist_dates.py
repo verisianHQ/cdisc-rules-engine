@@ -5,7 +5,11 @@ from cdisc_rules_engine.constants.standard_package_mappings import STANDARD_PACK
 
 class SqlValidCodelistDates(SqlBaseOperation):
     """
-    Returns the valid terminology package dates for a given standard
+    Returns the valid terminology package dates for a given standard.
+    The package dates are obtained from the standard library metadata,
+    and filtered according to either the standard or a custom list of
+    ct_package_types from the rule.
+
     Ex:
         Given a list of terminology packages:
             [sdtmct-2023-10-26, sdtmct-2023-12-13,
@@ -13,9 +17,8 @@ class SqlValidCodelistDates(SqlBaseOperation):
         and standard: sdtmig
         the operation will return ["2023-10-26", "2023-12-13"]
 
-    The default standard (obtained from the validation parameter) can
-    be overridden using the optional `ct_package_types` operation
-    parameter.
+    The default standard can be overridden using the optional
+    `ct_package_types` operation parameter.
     Ex:
         Given the same list of terminology packages
         and `ct_package_types`: ["SDTM", "CDASH"]
