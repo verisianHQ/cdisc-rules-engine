@@ -35,6 +35,14 @@ class BaseStandardsContext(ABC):
         pass
 
     @abstractmethod
+    def get_ct_packages(self):
+        pass
+
+    @abstractmethod
+    def get_domain_metadata(self, domain: str):
+        pass
+
+    @abstractmethod
     def within_rule_scope(self, scope: dict[str, Any], metadata: DatasetMetadata2):
         pass
 
