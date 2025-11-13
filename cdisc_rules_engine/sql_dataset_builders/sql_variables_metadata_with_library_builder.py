@@ -3,7 +3,6 @@ from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     SqlBaseDatasetBuilder,
 )
-from cdisc_rules_engine.utilities import sdtm_utilities
 
 
 class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
@@ -86,39 +85,3 @@ class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
             self.data_service.pgi.insert_data(table_name, rows)
 
         return table_name
-
-    def _get_library_variables_metadata(self):
-        """Get library metadata for the domain"""
-        if not self.dataset_metadata.domain and self.dataset_metadata.is_supp and self.dataset_metadata.rdomain:
-            domain = "SUPPQUAL"
-        elif (
-            not self.dataset_metadata.domain
-            and not self.dataset_metadata.rdomain
-            and "rel" in self.dataset_metadata.name.lower()
-        ):
-            if self.dataset_metadata.name.lower().startswith("ap") and self.dataset_metadata.name.lower()[
-                2:
-            ].startswith("rel"):
-                domain = self.dataset_metadata.name[2:]
-            else:
-                domain = self.dataset_metadata.name
-        else:
-            domain = self.dataset_metadata.domain
-
-        variables = sdtm_utilities.get_variables_metadata_from_standard(
-            domain=domain, library_metadata=self.standards_context.library_metadata
-        )  # library_metadata not in base abs but exists for sdtm standards context
-
-        column_name_mapping = {
-            "ordinal": "order_number",
-            "simpleDatatype": "data_type",
-        }
-
-        for var in variables:
-            # replace -- with domain code if it exists
-            var["name"] = var["name"].replace("--", self.dataset_metadata.domain or "")
-            for key, new_key in column_name_mapping.items():
-                if key in var:
-                    var[new_key] = var.pop(key)
-
-        return variables
