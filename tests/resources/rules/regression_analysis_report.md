@@ -10,8 +10,8 @@
 **Error Breakdown by Category:**
 
 - Rules with **operator errors**: 0
-- Rules with **operation errors**: 10
-- Rules with **other errors**: 18
+- Rules with **operation errors**: 6
+- Rules with **other errors**: 22
 
 ## Missing Operators
 

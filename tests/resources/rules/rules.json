@@ -99252,13 +99252,17 @@
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "RELREC.RDOMAIN does not represent a dataset present in the study",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "S001",
+                                        "value": {
+                                            "RDOMAIN": "LB"
+                                        }
                                     }
                                 ]
                             },
@@ -99309,13 +99313,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -99348,15 +99349,10 @@
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
@@ -99412,13 +99408,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102459,39 +102452,66 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "RDOMAIN does not represent a dataset present in the study.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$study_domains": [
+                                                "CO",
+                                                "RELREC",
+                                                "SUPPQUAL"
+                                            ],
+                                            "RDOMAIN": "IS"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "RDOMAIN does not represent a dataset present in the study.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$study_domains": [
+                                                "CO",
+                                                "RELREC",
+                                                "SUPPQUAL"
+                                            ],
+                                            "RDOMAIN": "LB"
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_status": "success",
+                                "execution_message": "RDOMAIN does not represent a dataset present in the study.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$study_domains": [
+                                                "CO",
+                                                "RELREC",
+                                                "SUPPQUAL"
+                                            ],
+                                            "RDOMAIN": "LB"
+                                        }
                                     }
                                 ]
                             }
@@ -102565,12 +102585,40 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "co.xpt": {
+                                    "iterable_item_added": {
+                                        "root[0]['value']['$study_domains'][1]": "RELREC",
+                                        "root[0]['value']['$study_domains'][2]": "SUPPQUAL"
+                                    },
+                                    "iterable_item_removed": {
+                                        "root[0]['value']['$study_domains'][0]": ""
+                                    }
+                                },
+                                "relrec.xpt": {
+                                    "iterable_item_added": {
+                                        "root[0]['value']['$study_domains'][1]": "RELREC",
+                                        "root[0]['value']['$study_domains'][2]": "SUPPQUAL"
+                                    },
+                                    "iterable_item_removed": {
+                                        "root[0]['value']['$study_domains'][0]": ""
+                                    }
+                                },
+                                "supplb.xpt": {
+                                    "iterable_item_added": {
+                                        "root[0]['value']['$study_domains'][1]": "RELREC",
+                                        "root[0]['value']['$study_domains'][2]": "SUPPQUAL"
+                                    },
+                                    "iterable_item_removed": {
+                                        "root[0]['value']['$study_domains'][0]": ""
+                                    }
+                                }
+                            }
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -102595,41 +102643,26 @@
                             {
                                 "dataset": "co.xpt",
                                 "domain": "CO",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "relrec.xpt",
                                 "domain": "RELREC",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation study_domains is not implemented"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -102677,13 +102710,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106202,12 +106232,12 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106345,12 +106375,12 @@
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106407,12 +106437,12 @@
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106490,12 +106520,12 @@
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106542,12 +106572,12 @@
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -106610,12 +106640,12 @@
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPQUAL",
                                 "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "An unknown exception has occurred",
-                                        "message": "Operation extract_metadata is not implemented"
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
