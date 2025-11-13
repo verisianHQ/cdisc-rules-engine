@@ -20,7 +20,7 @@ class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
 
-        library_metadata = self._get_library_variables_metadata()
+        library_metadata = self.standards_context.get_library_variables_metadata(self.dataset_metadata)
 
         schema = SqlTableSchema.static(table_name)
 
