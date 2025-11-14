@@ -57786,7 +57786,7 @@
                         "old_vs_sql": {
                             "equal": true
                         },
-                        "whitelisted": false,
+                        "whitelisted": true,
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
@@ -57937,7 +57937,7 @@
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
-                        "whitelisted": false,
+                        "whitelisted": true,
                         "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
@@ -58091,7 +58091,7 @@
                         "old_vs_sql": {
                             "equal": true
                         },
-                        "whitelisted": false,
+                        "whitelisted": true,
                         "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
@@ -135649,7 +135649,7 @@
                                 }
                             }
                         },
-                        "whitelisted": false,
+                        "whitelisted": true,
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
@@ -135744,7 +135744,7 @@
                         "old_vs_sql": {
                             "equal": true
                         },
-                        "whitelisted": false,
+                        "whitelisted": true,
                         "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
