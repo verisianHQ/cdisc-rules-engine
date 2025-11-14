@@ -23,7 +23,7 @@ class BaseStandardsContext(ABC):
         pass
 
     @abstractmethod
-    def get_domain_metadata(self, domain: str):
+    def get_domain_metadata(self, domain: str) -> dict:
         pass
 
     @abstractmethod
@@ -44,10 +44,6 @@ class BaseStandardsContext(ABC):
 
     @abstractmethod
     def get_ct_packages(self):
-        pass
-
-    @abstractmethod
-    def get_domain_metadata(self, domain: str):
         pass
 
     @abstractmethod

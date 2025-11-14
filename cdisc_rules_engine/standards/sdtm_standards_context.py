@@ -100,13 +100,20 @@ class SdtmStandardsContext(BaseStandardsContext):
             return variable.replace("--", dataset_metadata.domain_code)
         return variable
 
-    def get_domain_metadata(self, domain: str):
+    def get_domain_metadata(self, domain: str) -> dict:
         standard_data = self.get_standard_metadata()
         for c in standard_data.get("classes", []):
             domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
             if domain_details:
                 return domain_details
-        return []
+        # If not found, and domain is SUPP-- or SQ--, fall back to SUPPQUAL if it is present
+        # Could be more efficiently done in a single passthrough, but will leave the rewrite until fully confirmed
+        # wrt SUPP domain handling
+        if domain.startswith("SUPP") or domain.startswith("SQ"):
+            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == "SUPPQUAL")
+            if domain_details:
+                return domain_details
+        return {}
 
     def get_domain_variables(self, domain: str):
         domain_details = self.get_domain_metadata(domain)
@@ -138,14 +145,6 @@ class SdtmStandardsContext(BaseStandardsContext):
     def get_ct_packages(self):
         ct_packages = self.library_metadata.published_ct_packages
         return ct_packages
-
-    def get_domain_metadata(self, domain: str):
-        standard_data = self.library_metadata.standard_metadata
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
-            if domain_details:
-                return domain_details
-        return {}
 
     def within_rule_scope(self, rule: dict, metadata: DatasetMetadata2):
         """Check if rule is suitable and return reason if not"""

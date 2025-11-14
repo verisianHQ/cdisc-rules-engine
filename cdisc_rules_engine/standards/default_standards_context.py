@@ -23,8 +23,8 @@ class DefaultStandardsContext(BaseStandardsContext):
     def derive_domain(self, filename: str):
         return filename.upper()
 
-    def get_domain_metadata(self, domain: str):
-        return []
+    def get_domain_metadata(self, domain: str) -> dict:
+        return {}
 
     def get_domain_variables(self, domain: str):
         return []
@@ -39,9 +39,6 @@ class DefaultStandardsContext(BaseStandardsContext):
         return ""
 
     def get_ct_packages(self):
-        return []
-
-    def get_domain_metadata(self, domain: str):
         return []
 
     def within_rule_scope(self, scope: dict[str, Any], metadata: DatasetMetadata2):
