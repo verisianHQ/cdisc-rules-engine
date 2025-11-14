@@ -26,6 +26,7 @@ from cdisc_rules_engine.constants.permissibility import (
 )
 from cdisc_rules_engine.sql_operations.study_domains import SqlStudyDomainsOperation
 from cdisc_rules_engine.sql_operations.get_model_column_order import SqlGetModelColumnOrder
+from cdisc_rules_engine.sql_operations.get_parent_model_column_order import SqlGetParentModelColumnOrderOperation
 
 
 class SqlOperationsFactory:
@@ -42,7 +43,7 @@ class SqlOperationsFactory:
         "get_codelist_attributes": None,
         "get_model_column_order": SqlGetModelColumnOrder,
         "get_model_filtered_variables": SqlGetModelFilteredVariables,
-        "get_parent_model_column_order": None,
+        "get_parent_model_column_order": SqlGetParentModelColumnOrderOperation,
         "map": None,
         "max": lambda params, ds: SqlNumericOperation(params, ds, "MAX"),
         "max_date": lambda params, ds: SqlDateOperation(params, ds, "MAX"),

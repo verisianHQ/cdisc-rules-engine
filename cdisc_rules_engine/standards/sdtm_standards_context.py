@@ -40,7 +40,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         return SdtmDatasetMetadata2(
             **source.__dict__,
             domain=domain,
-            is_supp=domain == "SUPPQUAL",
+            is_supp=(domain.startswith("SUPP") or domain.startswith("SQ")),
             is_split=self.derive_is_split(source.name, domain),
             rdomain=self.derive_rdomain(source.name),
             domain_code=self.derive_domain_code(domain),
@@ -50,7 +50,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         filename = filename.lower()
 
         if filename.startswith("supp") or filename.startswith("sq"):
-            return "SUPPQUAL"
+            return filename.upper()
         elif filename.startswith("relrec"):
             return "RELREC"
         elif filename.startswith("relspec"):
@@ -70,6 +70,10 @@ class SdtmStandardsContext(BaseStandardsContext):
 
     def derive_domain_code(self, domain: str):
         """Derive the domain code for this domain"""
+        if domain.startswith("SUPP"):
+            return domain[4:]
+        if domain.startswith("SQ"):
+            return domain[2:]
         if domain == "SUPPQUAL":
             return "Q"
         if domain in ["RELREC", "RELSPEC", "RELSUB"]:
@@ -91,19 +95,25 @@ class SdtmStandardsContext(BaseStandardsContext):
             return variable.replace("--", dataset_metadata.domain_code)
         return variable
 
-    def get_domain_variables(self, domain: str):
-        standard_data = self.library_metadata.standard_metadata
+    def get_domain_metadata(self, domain: str):
+        standard_data = self.get_standard_metadata()
         for c in standard_data.get("classes", []):
             domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
             if domain_details:
-                variables_metadata = domain_details.get("datasetVariables", [])
-                if variables_metadata:
-                    variables_metadata.sort(
-                        key=lambda item: (
-                            int(item.get("ordinal")) if item.get("ordinal") else int(item.get("order_number"))
-                        )
+                return domain_details
+        return []
+
+    def get_domain_variables(self, domain: str):
+        domain_details = self.get_domain_metadata(domain)
+        if domain_details:
+            variables_metadata = domain_details.get("datasetVariables", [])
+            if variables_metadata:
+                variables_metadata.sort(
+                    key=lambda item: (
+                        int(item.get("ordinal")) if item.get("ordinal") else int(item.get("order_number"))
                     )
-                    return variables_metadata
+                )
+                return variables_metadata
         return []
 
     def get_model_metadata(self):
@@ -115,11 +125,9 @@ class SdtmStandardsContext(BaseStandardsContext):
         return standard_metadata
 
     def get_domain_label(self, domain: str):
-        standard_data = self.library_metadata.standard_metadata
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
-            if domain_details:
-                return domain_details.get("label", "")
+        domain_details = self.get_domain_metadata(domain)
+        if domain_details:
+            return domain_details.get("label", "")
         return ""
 
     def within_rule_scope(self, rule: dict, metadata: DatasetMetadata2):
@@ -158,7 +166,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             # Gate: Only merge if domain_name matches current dataset
             domain_name = merge_spec.get("domain_name")
 
-            is_general_supp_merge = domain_name == "SUPP--" and dataset_metadata.is_supp
+            is_general_supp_merge = domain_name.startswith("SUPP") and dataset_metadata.is_supp
             domain_matches = domain_name.upper() == dataset_metadata.domain.upper()
 
             if is_general_supp_merge or domain_matches:
@@ -328,7 +336,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         #     or is_ap_domain(dataset_metadata.domain or dataset_metadata.rdomain or dataset_metadata.name)
         # )
         if "SUPP--" in domains_to_check or "SQ--" in domains_to_check:
-            if domain == "SUPPQUAL":
+            if domain[0:4] == "SUPP" or domain[0:2] == "SQ":
                 return True
         if "AP--" in domains_to_check or "APFA--" in domains_to_check:
             if domain == "AP":

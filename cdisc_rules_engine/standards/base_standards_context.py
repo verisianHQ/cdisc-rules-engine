@@ -15,7 +15,15 @@ class BaseStandardsContext(ABC):
         pass
 
     @abstractmethod
+    def derive_rdomain(self, name: str) -> str:
+        pass
+
+    @abstractmethod
     def replace_domain_code(self, dataset_metadata: BaseDatasetMetadata, variable: str) -> str:
+        pass
+
+    @abstractmethod
+    def get_domain_metadata(self, domain: str):
         pass
 
     @abstractmethod
