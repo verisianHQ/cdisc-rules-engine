@@ -28,7 +28,6 @@ class SqlGetModelColumnOrder(SqlBaseOperation):
             # Replace wildcards and extract variable names
             variable_names_list = self._replace_variable_wildcards(model_variables, self.params.domain)
 
-            # Extract just the variable names from the processed metadata
             return variable_names_list
 
         except Exception as e:
