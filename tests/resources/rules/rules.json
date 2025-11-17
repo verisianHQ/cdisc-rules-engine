@@ -111256,9 +111256,21 @@
                                                 "AESDISAB",
                                                 "AESDTH",
                                                 "AESHOSP",
-                                                "AESLIFE"
+                                                "AESLIFE",
+                                                "_SOURCE_DS"
                                             ],
                                             "$timing_variables": [
+<<<<<<< HEAD
+=======
+                                                "AESTDTC",
+                                                "AEENDTC",
+                                                "AESTDY",
+                                                "AEENDY",
+                                                "AEDUR",
+                                                "AEENRF",
+                                                "AEENRTPT",
+                                                "AEENTPT",
+>>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",
@@ -111359,9 +111371,24 @@
                                                 "LBLOBXFL",
                                                 "LBFAST",
                                                 "LBDRVFL",
-                                                "LBCLSIG"
+                                                "LBCLSIG",
+                                                "_SOURCE_DS"
                                             ],
                                             "$timing_variables": [
+<<<<<<< HEAD
+=======
+                                                "LBDTC",
+                                                "LBENDTC",
+                                                "LBDY",
+                                                "LBENDY",
+                                                "LBTPT",
+                                                "LBTPTNUM",
+                                                "LBELTM",
+                                                "LBTPTREF",
+                                                "LBRFTDTC",
+                                                "LBPTFL",
+                                                "LBPDUR",
+>>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",
@@ -111443,9 +111470,23 @@
                                                 "ECROUTE",
                                                 "ECLOT",
                                                 "ECPSTRG",
-                                                "ECPSTRGU"
+                                                "ECPSTRGU",
+                                                "_SOURCE_DS"
                                             ],
                                             "$timing_variables": [
+<<<<<<< HEAD
+=======
+                                                "ECSTDTC",
+                                                "ECENDTC",
+                                                "ECSTDY",
+                                                "ECENDY",
+                                                "ECDUR",
+                                                "ECTPT",
+                                                "ECTPTNUM",
+                                                "ECELTM",
+                                                "ECTPTREF",
+                                                "ECRFTDTC",
+>>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",

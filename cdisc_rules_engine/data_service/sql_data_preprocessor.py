@@ -3,13 +3,15 @@ Data Preprocessor for SDTM and ADaM clinical data.
 """
 
 import json
+import re
 from collections import defaultdict
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
-from cdisc_rules_engine.data_service.postgresql_data_service import (
-    PostgresQLDataService,
-)
+if TYPE_CHECKING:
+    from cdisc_rules_engine.data_service.postgresql_data_service import (
+        PostgresQLDataService,
+    )
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.services import logger
 
@@ -26,6 +28,189 @@ class SqlDataPreprocessor:
         self._relrec_catalog: Optional[List[Dict]] = None
         self._co_catalog: Optional[List[Dict]] = None
         self._supp_catalog: Optional[List[Dict]] = None
+
+    @staticmethod
+    def detect_split_datasets(dataset_names: List[str]) -> Dict[str, List[str]]:
+        """
+        Detect split datasets by naming convention.
+
+        Detection rules from SDTMIG v3.4 Section 4.1.7:
+        - AE -> not split (domain only)
+        - AE1, AE2 -> split (domain + number)
+        - SUPPAE1 -> split (SUPP + domain + digit)
+        - FACM, FAEG -> split Findings About (FA + 2-char parent domain code)
+        - SUPPQS36, SUPPQSPI, SUPPFACM -> split supplemental qualifiers
+        """
+        split_groups = defaultdict(list)
+
+        datasets = [name.lower() for name in dataset_names]
+
+        for dataset in datasets:
+            unsplit_name = SqlDataPreprocessor._get_unsplit_name(dataset)
+
+            if unsplit_name != dataset:
+                split_groups[unsplit_name].append(dataset)
+
+        return {k: v for k, v in split_groups.items() if len(v) > 1}
+
+    @staticmethod
+    def _get_unsplit_name(dataset_name: str) -> str:
+        """
+        Extract the unsplit (logical) name from a dataset name.
+        """
+        dataset = dataset_name.lower()
+
+        # Pattern 1: Domain + digit(s) (e.g., AE1, AE2, QS36)
+        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return match.group(1)
+
+        # Pattern 2: SUPP + domain + digit (e.g., SUPPAE1, SUPPQS2)
+        match = re.match(r"^supp([a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return f"supp{match.group(1)}"
+
+        # Pattern 3: FA + 2-char parent domain (e.g., FACM, FAEG)
+        match = re.match(r"^fa([a-z]{2})$", dataset)
+        if match:
+            return "fa"
+
+        # Pattern 4: SUPP + FA + parent domain (e.g., SUPPFACM, SUPPFAEG)
+        match = re.match(r"^suppfa([a-z]{2})$", dataset)
+        if match:
+            return "suppfa"
+
+        # Pattern 5: SQ (Supplemental Qualifiers) + suffix
+        match = re.match(r"^sq([a-z]+\d*)$", dataset)
+        if match:
+            return "sq"
+
+        # Pattern 6: Domain + letter suffix (e.g., QSA, QSB for questionnaires)
+        match = re.match(r"^([a-z]{2,4})([a-z])$", dataset)
+        if match:
+            base = match.group(1)
+            suffix = match.group(2)
+            if len(base) >= 2 and len(suffix) == 1:
+                return base
+        return dataset
+
+    @staticmethod
+    def populate_metadata_for_datasets(pgi: PostgresQLInterface, dataset_metadata_list: List[Dict[str, Any]]) -> None:
+        """Populate data_metadata table with dataset information including split detection."""
+        if not dataset_metadata_list:
+            logger.warning("No dataset metadata provided for population")
+            return
+
+        logger.info(f"Populating metadata for {len(dataset_metadata_list)} datasets")
+
+        dataset_names = [ds["dataset_id"] for ds in dataset_metadata_list]
+        split_groups = SqlDataPreprocessor.detect_split_datasets(dataset_names)
+        split_map = {part: unsplit for unsplit, parts in split_groups.items() for part in parts}
+        split_totals = {unsplit: len(parts) for unsplit, parts in split_groups.items()}
+        timestamp = datetime.now().astimezone()
+
+        for ds_meta in dataset_metadata_list:
+            SqlDataPreprocessor._insert_dataset_metadata(pgi, ds_meta, split_map, split_totals, timestamp)
+
+        logger.info(f"Metadata population complete. {len(split_groups)} split dataset groups")
+        for unsplit_name, parts in split_groups.items():
+            logger.info(f"  {unsplit_name}: {len(parts)} parts - {', '.join(parts)}")
+
+    @staticmethod
+    def _insert_dataset_metadata(
+        pgi: PostgresQLInterface,
+        ds_meta: Dict[str, Any],
+        split_map: Dict[str, str],
+        split_totals: Dict[str, int],
+        timestamp: datetime,
+    ) -> None:
+        """Insert metadata for a single dataset."""
+        dataset_id = ds_meta["dataset_id"].lower()
+        unsplit_name = split_map.get(dataset_id, dataset_id)
+        is_split = dataset_id in split_map
+
+        split_part_number, total_split_parts = SqlDataPreprocessor._get_split_info(
+            dataset_id, unsplit_name, is_split, split_totals
+        )
+        is_supp, rdomain = SqlDataPreprocessor._get_supp_info(dataset_id)
+        domain = SqlDataPreprocessor._get_domain(ds_meta, is_supp, unsplit_name)
+
+        variables = ds_meta.get("variables", [])
+        table_hash = ds_meta.get("table_hash", dataset_id)
+
+        for var in variables:
+            insert_query = """
+                INSERT INTO public.data_metadata (
+                    created_at, updated_at, dataset_filename, dataset_filepath,
+                    dataset_id, table_hash, dataset_name, dataset_label, dataset_domain,
+                    dataset_is_supp, dataset_rdomain, dataset_is_split, dataset_unsplit_name,
+                    dataset_split_part_number, dataset_total_split_parts, preprocessing_stage,
+                    var_name, var_label, var_type, var_length, var_format
+                ) VALUES (
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                )
+            """
+            values = (
+                timestamp,
+                timestamp,
+                ds_meta.get("dataset_filename", f"{dataset_id}.xpt"),
+                ds_meta.get("dataset_filepath", ""),
+                dataset_id,
+                table_hash,
+                ds_meta.get("dataset_name", dataset_id.upper()),
+                ds_meta.get("dataset_label"),
+                domain,
+                is_supp,
+                rdomain,
+                is_split,
+                unsplit_name,
+                split_part_number,
+                total_split_parts,
+                "raw",
+                var.get("name", "").upper(),
+                var.get("label"),
+                var.get("type"),
+                var.get("length"),
+                var.get("format"),
+            )
+            pgi.execute_sql(insert_query, values)
+
+    @staticmethod
+    def _get_split_info(dataset_id: str, unsplit_name: str, is_split: bool, split_totals: Dict[str, int]) -> tuple:
+        """Get split part number and total parts."""
+        if not is_split:
+            return None, None
+
+        base_len = len(unsplit_name)
+        suffix = dataset_id[base_len:]
+        match = re.search(r"\d+", suffix)
+        if match:
+            split_part_number = int(match.group())
+        else:
+            match = re.search(r"([a-z])$", suffix)
+            split_part_number = ord(match.group(1)) - ord("a") + 1 if match else None
+
+        total_split_parts = split_totals.get(unsplit_name)
+        return split_part_number, total_split_parts
+
+    @staticmethod
+    def _get_supp_info(dataset_id: str) -> tuple:
+        """Determine if dataset is SUPP and get rdomain."""
+        is_supp = dataset_id.startswith("supp") or dataset_id.startswith("sq")
+        rdomain = None
+        if is_supp and dataset_id.startswith("supp") and len(dataset_id) > 4:
+            rdomain_match = re.match(r"supp([a-z]{2,4})", dataset_id)
+            if rdomain_match:
+                rdomain = rdomain_match.group(1).upper()
+        return is_supp, rdomain
+
+    @staticmethod
+    def _get_domain(ds_meta: Dict[str, Any], is_supp: bool, unsplit_name: str) -> str:
+        """Get domain for dataset."""
+        domain = ds_meta.get("dataset_domain")
+        if not domain and not is_supp:
+            domain = unsplit_name.upper()[:2] if len(unsplit_name) >= 2 else unsplit_name.upper()
+        return domain
 
     def preprocess_all(self) -> Dict[str, Any]:
         """Execute all preprocessing stages in sequence and store results."""
@@ -119,295 +304,209 @@ class SqlDataPreprocessor:
 
         self.pgi.execute_sql(validation_errors_table)
 
-    def _validate_relationships(self) -> Dict[str, Any]:
-        """Validate relationships per CG0371."""
-        logger.info("Validating relationships (CG0371)")
+    def _process_split_datasets(self) -> Dict[str, Any]:
+        """
+        Concatenate split datasets into single logical datasets.
+        """
+        logger.info("Processing split datasets")
 
-        validation_results = {"relrec_validated": False, "co_validated": False, "supp_validated": False, "errors": []}
-
-        relrec_errors = self._validate_relrec_relationships()
-        validation_results["relrec_validated"] = len(relrec_errors) == 0
-        validation_results["errors"].extend(relrec_errors)
-
-        co_errors = self._validate_co_relationships()
-        validation_results["co_validated"] = len(co_errors) == 0
-        validation_results["errors"].extend(co_errors)
-
-        supp_errors = self._validate_supp_relationships()
-        validation_results["supp_validated"] = len(supp_errors) == 0
-        validation_results["errors"].extend(supp_errors)
-
-        if validation_results["errors"]:
-            logger.warning(f"Found {len(validation_results['errors'])} validation errors")
-            for error in validation_results["errors"]:
-                logger.warning(f"Validation error: {error}")
-
-        return validation_results
-
-    def _validate_relrec_relationships(self) -> List[Dict[str, Any]]:
-        """Validate RELREC dataset relationships per CG0371."""
-        errors = []
-
-        check_query = """
-            SELECT dataset_id
+        query = """
+            SELECT DISTINCT
+                dataset_unsplit_name,
+                COUNT(DISTINCT dataset_id) as part_count,
+                array_agg(DISTINCT dataset_id ORDER BY dataset_id) as dataset_parts
             FROM public.data_metadata
-            WHERE dataset_domain = 'RELREC'
+            WHERE dataset_is_split = true
+            GROUP BY dataset_unsplit_name
+            HAVING COUNT(DISTINCT dataset_id) > 1
+        """
+
+        self.pgi.execute_sql(query)
+        split_groups = self.pgi.fetch_all()
+
+        if not split_groups:
+            logger.info("No split datasets found")
+            return {
+                "groups_processed": 0,
+                "total_parts_concatenated": 0,
+                "source_tracking_added": True,
+            }
+
+        processed_count = 0
+
+        for group in split_groups:
+            unsplit_name = group["dataset_unsplit_name"]
+            part_count = group["part_count"]
+            dataset_parts = group["dataset_parts"]
+
+            logger.info(f"Concatenating {part_count} parts for {unsplit_name}: {', '.join(dataset_parts)}")
+
+            self._concatenate_split_parts(unsplit_name, dataset_parts)
+            processed_count += 1
+
+        logger.info(f"Split dataset processing complete: {processed_count} groups processed")
+
+        return {
+            "groups_processed": processed_count,
+            "total_parts_concatenated": sum(g["part_count"] for g in split_groups) if split_groups else 0,
+            "source_tracking_added": True,
+        }
+
+    def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
+        """
+        Concatenate multiple dataset parts into a single table.
+        """
+        if not dataset_parts:
+            logger.warning(f"No parts to concatenate for {unsplit_name}")
+            return
+
+        logger.info(f"Creating concatenated table: {unsplit_name}")
+
+        union_parts = []
+        for part in dataset_parts:
+            union_parts.append(
+                f"""
+                SELECT *
+                FROM public.{part}
+            """
+            )
+
+        union_query = " UNION ALL ".join(union_parts)
+
+        create_query = f"""
+            CREATE TABLE IF NOT EXISTS public.{unsplit_name} AS
+            WITH concatenated AS (
+                {union_query}
+            )
+            SELECT * FROM concatenated
+            ORDER BY _source_ds, source_row_number
+        """
+
+        self.pgi.execute_sql(create_query)
+
+        index_queries = [
+            f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_ds
+                ON public.{unsplit_name}(_source_ds)
+            """,
+            f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_row
+                ON public.{unsplit_name}(source_row_number)
+            """,
+        ]
+
+        check_cols_query = """
+            SELECT column_name
+            FROM information_schema.columns
+            WHERE table_schema = 'public'
+            AND table_name = %s
+            AND column_name IN ('studyid', 'usubjid')
+        """
+        self.pgi.execute_sql(check_cols_query, (unsplit_name,))
+        domain_cols = self.pgi.fetch_all()
+
+        if len(domain_cols) == 2:
+            index_queries.append(
+                f"""
+                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid
+                ON public.{unsplit_name}(studyid, usubjid)
+            """
+            )
+
+        for idx_query in index_queries:
+            self.pgi.execute_sql(idx_query)
+
+        self._add_concatenated_dataset_metadata(unsplit_name, dataset_parts)
+
+        logger.info(f"Concatenated dataset: {unsplit_name}")
+
+    def _add_concatenated_dataset_metadata(self, unsplit_name: str, source_parts: List[str]) -> None:
+        """
+        Add metadata entries for the newly created concatenated dataset.
+        """
+        timestamp = datetime.now().astimezone()
+
+        column_query = f"""
+            SELECT column_name, data_type
+            FROM information_schema.columns
+            WHERE table_schema = 'public'
+            AND table_name = '{unsplit_name}'
+        """
+
+        self.pgi.execute_sql(column_query)
+        columns = self.pgi.fetch_all()
+
+        domain_query = """
+            SELECT DISTINCT dataset_domain, dataset_label
+            FROM public.data_metadata
+            WHERE dataset_id = %s
             LIMIT 1
         """
-        self.pgi.execute_sql(check_query)
-        if not self.pgi._last_results:
-            return errors  # query failed
+        self.pgi.execute_sql(domain_query, (source_parts[0],))
+        domain_info = self.pgi.fetch_one()
 
-        check_result = self.pgi.fetch_one()
-        if not check_result:
-            errors.append({"type": "RELREC", "error": "No RELREC dataset found"})
-            return errors
+        domain = domain_info["dataset_domain"] if domain_info else unsplit_name.upper()[:2]
+        dataset_label = domain_info["dataset_label"] if domain_info else None
 
-        relrec_table = dict(check_result)["dataset_id"]
+        for column in columns:
+            var_check_query = """
+                SELECT var_name
+                FROM public.data_metadata
+                WHERE dataset_id = %s
+                AND var_name = %s
+                LIMIT 1
+            """
+            self.pgi.execute_sql(var_check_query, (unsplit_name, column["column_name"].upper()))
+            existing_var = self.pgi.fetch_one()
 
-        errors.extend(self._validate_relrec_schema(relrec_table))
-        errors.extend(self._validate_relrec_values(relrec_table))
-
-        return errors
-
-    def _validate_relrec_schema(self, relrec_table: str) -> List[Dict[str, Any]]:
-        """Validate that the table (RDOMAIN) and column (IDVAR) referenced in RELREC exist."""
-        errors = []
-        validation_query = f"""
-            WITH relrec_data AS (
-                SELECT studyid, usubjid, relid, rdomain, idvar, idvarval
-                FROM public.{relrec_table}
-                WHERE idvar IS NOT NULL AND idvarval IS NOT NULL
-            )
-            SELECT
-                r.studyid, r.usubjid, r.relid, r.rdomain, r.idvar, r.idvarval,
-                CASE
-                    WHEN NOT EXISTS (
-                        SELECT 1 FROM information_schema.tables
-                        WHERE table_schema = 'public' AND table_name = LOWER(r.rdomain)
-                    ) THEN 'Domain table does not exist'
-                    WHEN NOT EXISTS (
-                        SELECT 1 FROM information_schema.columns
-                        WHERE table_schema = 'public' AND table_name = LOWER(r.rdomain)
-                        AND column_name = LOWER(r.idvar)
-                    ) THEN 'IDVAR column does not exist in domain'
-                    ELSE NULL
-                END as validation_error
-            FROM relrec_data r
-            WHERE EXISTS (
-                SELECT 1 FROM information_schema.tables
-                WHERE table_schema = 'public' AND table_name = LOWER(r.rdomain)
-            )
-        """
-        self.pgi.execute_sql(validation_query)
-        validation_results = self.pgi.fetch_all()
-
-        if validation_results:
-            for row in validation_results:
-                if row[6]:  # validation_error is not None
-                    errors.append(
-                        {
-                            "type": "RELREC",
-                            "studyid": row[0],
-                            "usubjid": row[1],
-                            "relid": row[2],
-                            "rdomain": row[3],
-                            "idvar": row[4],
-                            "idvarval": row[5],
-                            "error": row[6],
-                        }
+            if not existing_var:
+                insert_query = """
+                    INSERT INTO public.data_metadata (
+                        created_at,
+                        updated_at,
+                        dataset_filename,
+                        dataset_filepath,
+                        dataset_id,
+                        table_hash,
+                        dataset_name,
+                        dataset_label,
+                        dataset_domain,
+                        dataset_is_split,
+                        dataset_unsplit_name,
+                        dataset_preprocessed,
+                        preprocessing_stage,
+                        source_dataset_ids,
+                        concatenation_timestamp,
+                        var_name,
+                        var_type
+                    ) VALUES (
+                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
                     )
-        return errors
-
-    def _validate_relrec_values(self, relrec_table: str) -> List[Dict[str, Any]]:
-        """Validate that the value (IDVARVAL) referenced in RELREC exists in the target table."""
-        errors = []
-        value_check_query = f"""
-            SELECT studyid, usubjid, relid, rdomain, idvar, idvarval
-            FROM public.{relrec_table}
-            WHERE idvar IS NOT NULL AND idvarval IS NOT NULL
-        """
-        self.pgi.execute_sql(value_check_query)
-        value_check_results = self.pgi.fetch_all()
-
-        if value_check_results:
-            for row in value_check_results:
-                studyid, usubjid, relid, rdomain, idvar, idvarval = row
-                parent_check_query = f"""
-                    SELECT COUNT(*)
-                    FROM public.{rdomain.lower()}
-                    WHERE studyid = %s AND usubjid = %s AND {idvar.lower()} = %s
                 """
-                try:
-                    self.pgi.execute_sql(parent_check_query, (studyid, usubjid, idvarval))
-                    parent_check_result = self.pgi.fetch_one()
-                    if not parent_check_result["exists"]:
-                        errors.append(
-                            {
-                                "type": "RELREC",
-                                "studyid": studyid,
-                                "usubjid": usubjid,
-                                "relid": relid,
-                                "rdomain": rdomain,
-                                "idvar": idvar,
-                                "idvarval": idvarval,
-                                "error": f"IDVARVAL '{idvarval}' not found in {rdomain}.{idvar}",
-                            }
-                        )
-                except Exception as e:
-                    logger.debug(f"Could not validate {rdomain}.{idvar}: {e}")
-        return errors
 
-    def _validate_co_relationships(self) -> List[Dict[str, Any]]:
-        """Validate comment domain relationships per CG0371."""
-        errors = []
+                values = (
+                    timestamp,
+                    timestamp,
+                    f"{unsplit_name}.xpt",
+                    "concatenated",
+                    unsplit_name,
+                    unsplit_name,  # table_hash
+                    unsplit_name.upper(),
+                    dataset_label,
+                    domain,
+                    False,
+                    unsplit_name,
+                    timestamp,
+                    "split_processed",
+                    source_parts,
+                    timestamp,
+                    column["column_name"].upper(),
+                    column["data_type"],
+                )
 
-        co_query = """
-            SELECT DISTINCT dataset_id, dataset_domain
-            FROM public.data_metadata
-            WHERE dataset_domain LIKE 'CO%'
-        """
+                self.pgi.execute_sql(insert_query, values)
 
-        self.pgi.execute_sql(co_query)
-
-        co_results = self.pgi.fetch_all()
-        if not co_results:
-            return errors
-
-        for co_table, co_domain in co_results:
-            validation_query = f"""
-                SELECT
-                    studyid,
-                    usubjid,
-                    rdomain,
-                    idvar,
-                    idvarval
-                FROM public.{co_table}
-                WHERE idvar IS NOT NULL
-                AND idvarval IS NOT NULL
-            """
-
-            self.pgi.execute_sql(validation_query)
-
-            if self.pgi._last_results:
-                for row in self.pgi._last_results:
-                    studyid, usubjid, rdomain, idvar, idvarval = row
-
-                    try:
-                        parent_check = f"""
-                            SELECT COUNT(*)
-                            FROM public.{rdomain.lower()}
-                            WHERE studyid = %s
-                            AND usubjid = %s
-                            AND {idvar.lower()} = %s
-                        """
-
-                        self.pgi.execute_sql(parent_check, (studyid, usubjid, idvarval))
-
-                        result = self.pgi.fetch_one()
-                        if result and dict(result)["count"] == 0:
-                            errors.append(
-                                {
-                                    "type": "CO",
-                                    "domain": co_domain,
-                                    "studyid": studyid,
-                                    "usubjid": usubjid,
-                                    "rdomain": rdomain,
-                                    "idvar": idvar,
-                                    "idvarval": idvarval,
-                                    "error": f"IDVARVAL '{idvarval}' not found in {rdomain}.{idvar}",
-                                }
-                            )
-                    except Exception as e:
-                        logger.debug(f"Could not validate CO relationship: {e}")
-
-        return errors
-
-    def _validate_supp_relationships(self) -> List[Dict[str, Any]]:
-        """Validate SUPP (Supplemental Qualifiers) relationships per CG0371."""
-        errors = []
-
-        supp_query = """
-            SELECT DISTINCT dataset_id, dataset_domain, dataset_rdomain
-            FROM public.data_metadata
-            WHERE dataset_is_supp = true
-               OR dataset_id LIKE 'supp%'
-        """
-
-        self.pgi.execute_sql(supp_query)
-
-        if not self.pgi._last_results:
-            return errors
-
-        for supp_table, supp_domain, rdomain in self.pgi._last_results:
-            validation_query = f"""
-                SELECT
-                    studyid,
-                    usubjid,
-                    rdomain,
-                    idvar,
-                    idvarval
-                FROM public.{supp_table}
-                WHERE idvar IS NOT NULL
-                AND idvarval IS NOT NULL
-            """
-
-            self.pgi.execute_sql(validation_query)
-
-            if self.pgi._last_results:
-                for row in self.pgi._last_results:
-                    studyid, usubjid, rdomain_val, idvar, idvarval = row
-
-                    target_domain = rdomain_val or rdomain
-
-                    if not target_domain:
-                        continue
-
-                    try:
-                        parent_check = f"""
-                            SELECT COUNT(*)
-                            FROM public.{target_domain.lower()}
-                            WHERE studyid = %s
-                            AND usubjid = %s
-                            AND {idvar.lower()} = %s
-                        """
-
-                        self.pgi.execute_sql(parent_check, (studyid, usubjid, idvarval))
-
-                        result = self.pgi.fetch_one()
-                        if result and dict(result)["count"] == 0:
-                            errors.append(
-                                {
-                                    "type": "SUPP",
-                                    "domain": supp_domain,
-                                    "studyid": studyid,
-                                    "usubjid": usubjid,
-                                    "rdomain": target_domain,
-                                    "idvar": idvar,
-                                    "idvarval": idvarval,
-                                    "error": f"IDVARVAL '{idvarval}' not found in {target_domain}.{idvar}",
-                                }
-                            )
-                    except Exception as e:
-                        logger.debug(f"Could not validate SUPP relationship: {e}")
-
-        return errors
-
-    def process_rule_driven_merges(self, rule_spec: Dict) -> Optional[str]:
-        """Perform merges based on rule specifications."""
-        datasets = rule_spec.get("datasets", [])
-
-        for dataset_spec in datasets:
-            domain_name = dataset_spec.get("domain_name") or dataset_spec.get("domain")
-
-            if domain_name == "RELREC":
-                return self._perform_relrec_merge(dataset_spec, rule_spec)
-            elif domain_name and domain_name.startswith("CO"):
-                return self._perform_co_merge(dataset_spec, rule_spec)
-            elif domain_name in ["SUPP--", "SUPPQUAL"] or (domain_name and domain_name.startswith("SUPP")):
-                return self._perform_supp_merge(dataset_spec, rule_spec)
-
-        return None
+        logger.info(f"Added metadata for concatenated dataset: {unsplit_name}")
 
     def _validate_idvar_idvarval(
         self, table_name: str, relationship_type: str, rdomain_col: str = "rdomain"
@@ -560,107 +659,6 @@ class SqlDataPreprocessor:
                     )
 
         return errors
-
-    def _process_split_datasets(self) -> Dict[str, Any]:
-        """Concatenate split datasets into single logical datasets."""
-        logger.info("Processing split datasets")
-
-        query = """
-            SELECT DISTINCT
-                dataset_unsplit_name,
-                COUNT(DISTINCT dataset_id) as part_count,
-                array_agg(DISTINCT dataset_id ORDER BY dataset_id) as dataset_parts
-            FROM public.data_metadata
-            WHERE dataset_is_split = true
-            GROUP BY dataset_unsplit_name
-            HAVING COUNT(DISTINCT dataset_id) > 1
-        """
-
-        self.pgi.execute_sql(query)
-        split_groups = self.pgi.fetch_all()
-
-        processed_count = 0
-
-        for group in split_groups:
-            unsplit_name = group["dataset_unsplit_name"]
-            part_count = group["part_count"]
-            dataset_parts = group["dataset_parts"]
-
-            logger.info(f"Concatenating {part_count} parts for {unsplit_name}")
-
-            self._concatenate_split_parts(unsplit_name, dataset_parts)
-            processed_count += 1
-
-        return {
-            "groups_processed": processed_count,
-            "total_parts_concatenated": sum(g["part_count"] for g in split_groups) if split_groups else 0,
-            "source_tracking_added": True,
-        }
-
-    def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
-        """Concatenate multiple dataset parts into a single table."""
-        if not dataset_parts:
-            logger.warning(f"No parts to concatenate for {unsplit_name}")
-            return
-
-        union_parts = []
-        for part in dataset_parts:
-            union_parts.append(
-                f"""
-                SELECT
-                    *,
-                    '{part}' as source_dataset_id,
-                    '{unsplit_name}' as unsplit_dataset_name,
-                    ROW_NUMBER() OVER (PARTITION BY '{part}' ORDER BY
-                        CASE
-                            WHEN EXISTS (SELECT 1 FROM public.{part} WHERE usubjid IS NOT NULL LIMIT 1)
-                            THEN usubjid
-                            ELSE NULL
-                        END,
-                        CASE
-                            WHEN EXISTS (SELECT 1 FROM public.{part} WHERE studyid IS NOT NULL LIMIT 1)
-                            THEN studyid
-                            ELSE NULL
-                        END
-                    ) as source_row_number
-                FROM public.{part}
-            """
-            )
-
-        union_query = " UNION ALL ".join(union_parts)
-
-        create_query = f"""
-            CREATE TABLE IF NOT EXISTS public.{unsplit_name} AS
-            WITH concatenated AS (
-                {union_query}
-            )
-            SELECT * FROM concatenated
-            ORDER BY
-                source_dataset_id,
-                source_row_number
-        """
-
-        self.pgi.execute_sql(create_query)
-
-        index_queries = [
-            f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_dataset
-                ON public.{unsplit_name}(source_dataset_id)
-            """,
-            f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_row
-                ON public.{unsplit_name}(source_row_number)
-            """,
-            f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_unsplit_name
-                ON public.{unsplit_name}(unsplit_dataset_name)
-            """,
-        ]
-
-        for idx_query in index_queries:
-            self.pgi.execute_sql(idx_query)
-
-        logger.info(f"Created concatenated dataset: {unsplit_name}")
 
     def _build_relrec_catalog(self) -> Dict[str, Any]:
         """Build RELREC relationship catalog with CG0371 validation."""
@@ -1457,44 +1455,8 @@ class SqlDataPreprocessor:
                 self.pgi.execute_sql(insert_query, (run_id, timestamp, stage, json.dumps(results[stage]), None, None))
 
     @staticmethod
-    def run(data_service: PostgresQLDataService):
+    def run(data_service: "PostgresQLDataService") -> None:
         logger.info("Starting data preprocessing")
-        preprocessor = SqlDataPreprocessor(data_service)
+        preprocessor = SqlDataPreprocessor(data_service.pgi)
         preprocessing_results = preprocessor.preprocess_all()
         logger.info(f"Preprocessing completed: {preprocessing_results}")
-
-    # TODO: Dumping here for now in case it's useful
-    # def dataset_needs_preprocessing(self, dataset_id: str) -> bool:
-    #     """Check if a dataset needs preprocessing based on its characteristics."""
-    #     query = """
-    #         SELECT
-    #             dataset_is_split,
-    #             dataset_domain,
-    #             preprocessing_stage
-    #         FROM public.data_metadata
-    #         WHERE dataset_id = %s
-    #         LIMIT 1
-    #     """
-
-    #     self.pgi.execute_sql(query, (dataset_id.lower(),))
-    #     result = self.pgi.fetch_one()
-
-    #     if not result:
-    #         return False
-
-    #     is_split = result["dataset_is_split"]
-    #     domain = result["dataset_domain"]
-    #     stage = result["preprocessing_stage"]
-
-    #     # Needs preprocessing if:
-    #     # - It's a split dataset that hasn't been processed
-    #     # - It's a relationship domain (RELREC, CO*, SUPP*) not yet cataloged
-    #     # - It's in 'raw' stage
-    #     needs_preprocessing = (
-    #         (is_split and stage == "raw")
-    #         or (domain and domain in ["RELREC"] and stage == "raw")
-    #         or (domain and domain.startswith("CO") and stage == "raw")
-    #         or (self._is_supp_dataset(dataset_id) and stage == "raw")
-    #     )
-
-    #     return needs_preprocessing

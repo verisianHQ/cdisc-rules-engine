@@ -6,6 +6,8 @@ from cdisc_rules_engine.constants.classes import (
     FINDINGS_ABOUT,
     INTERVENTIONS,
     RELATIONSHIP,
+    DETECTABLE_CLASSES,
+    GENERAL_OBSERVATIONS_CLASS,
 )
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
