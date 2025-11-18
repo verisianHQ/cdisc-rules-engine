@@ -201,7 +201,7 @@ def test_concatenate_simple_splits():
             SELECT 1 FROM information_schema.columns
             WHERE table_schema = 'public'
             AND table_name = 'ae'
-            AND column_name = '_source_ds'
+            AND column_name = 'source_ds'
         )
     """
     data_service.pgi.execute_sql(check_column_query)
@@ -216,7 +216,7 @@ def test_concatenate_simple_splits():
 
 
 def test_source_ds_column_values():
-    """Test that _SOURCE_DS column contains correct source dataset names."""
+    """Test that SOURCE_DS column contains correct source dataset names."""
     data_service = PostgresQLDataService.instance()
     standards_context = TestSdtmStandardsContext()
 
@@ -227,13 +227,13 @@ def test_source_ds_column_values():
     preprocessor._process_split_datasets()
 
     query = """
-        SELECT DISTINCT _source_ds
+        SELECT DISTINCT source_ds
         FROM ae
-        ORDER BY _source_ds
+        ORDER BY source_ds
     """
     data_service.pgi.execute_sql(query)
     sources = data_service.pgi.fetch_all()
-    source_values = {row["_source_ds"] for row in sources}
+    source_values = {row["source_ds"] for row in sources}
 
     assert source_values == {"AE1", "AE2", "AE3"}
 
@@ -295,9 +295,9 @@ def test_concatenate_letter_suffix_splits():
 
     assert results["groups_processed"] == 1
 
-    query = "SELECT DISTINCT _source_ds FROM qs ORDER BY _source_ds"
+    query = "SELECT DISTINCT source_ds FROM qs ORDER BY source_ds"
     data_service.pgi.execute_sql(query)
-    sources = {row["_source_ds"] for row in data_service.pgi.fetch_all()}
+    sources = {row["source_ds"] for row in data_service.pgi.fetch_all()}
     assert sources == {"QSA", "QSB"}
 
 
@@ -402,7 +402,7 @@ def test_query_concatenated_dataset():
     preprocessor._process_split_datasets()
 
     query = """
-        SELECT usubjid, aeterm, _source_ds
+        SELECT usubjid, aeterm, source_ds
         FROM ae
         WHERE usubjid = '001'
     """
@@ -413,11 +413,11 @@ def test_query_concatenated_dataset():
     result = results[0]
     assert result["usubjid"] == "001"
     assert result["aeterm"] == "Headache"
-    assert result["_source_ds"] == "AE1"
+    assert result["source_ds"] == "AE1"
 
 
 def test_filter_by_source_ds():
-    """Test filtering concatenated dataset by _SOURCE_DS."""
+    """Test filtering concatenated dataset by SOURCE_DS."""
     data_service = PostgresQLDataService.instance()
     standards_context = TestSdtmStandardsContext()
 
@@ -430,7 +430,7 @@ def test_filter_by_source_ds():
     query = """
         SELECT COUNT(*) as count
         FROM ae
-        WHERE _source_ds = 'AE1'
+        WHERE source_ds = 'AE1'
     """
     data_service.pgi.execute_sql(query)
     result = data_service.pgi.fetch_one()

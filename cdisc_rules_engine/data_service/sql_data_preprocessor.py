@@ -241,8 +241,8 @@ class SqlDataPreprocessor:
         self.pgi.execute_sql(create_query)
 
         index_queries = [
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_DS} " f"ON public.{unsplit_name}({SOURCE_DS})",
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_ROW_NUMBER} "
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_{SOURCE_DS} " f"ON public.{unsplit_name}({SOURCE_DS})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_{SOURCE_ROW_NUMBER} "
             f"ON public.{unsplit_name}({SOURCE_ROW_NUMBER})",
         ]
 
