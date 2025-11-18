@@ -241,10 +241,9 @@ class SqlDataPreprocessor:
         self.pgi.execute_sql(create_query)
 
         index_queries = [
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_DS} \
-                ON public.{unsplit_name}({SOURCE_DS})",
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_ROW_NUMBER} \
-                ON public.{unsplit_name}(SOURCE_ROW_NUMBER)",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_DS} " f"ON public.{unsplit_name}({SOURCE_DS})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_ROW_NUMBER} "
+            f"ON public.{unsplit_name}({SOURCE_ROW_NUMBER})",
         ]
 
         check_cols_query = """
@@ -259,8 +258,8 @@ class SqlDataPreprocessor:
 
         if len(domain_cols) == 2:
             index_queries.append(
-                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid"
-                "ON public.{unsplit_name}(studyid, usubjid)"
+                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid "
+                f"ON public.{unsplit_name}(studyid, usubjid)"
             )
 
         for idx_query in index_queries:
