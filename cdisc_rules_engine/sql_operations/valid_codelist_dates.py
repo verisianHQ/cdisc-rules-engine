@@ -42,7 +42,6 @@ class SqlValidCodelistDates(SqlBaseOperation):
                 )
             )
         )
-        print(sorted_ct_packages)
 
         if sorted_ct_packages and isinstance(sorted_ct_packages, list):
             table_values_clause = ", ".join([f"('{pkg}')" for pkg in set(sorted_ct_packages)])
