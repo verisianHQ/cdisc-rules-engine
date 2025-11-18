@@ -3,7 +3,6 @@ Data Preprocessor for SDTM and ADaM clinical data.
 """
 
 import json
-import re
 from collections import defaultdict
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
@@ -12,7 +11,10 @@ if TYPE_CHECKING:
     from cdisc_rules_engine.data_service.postgresql_data_service import (
         PostgresQLDataService,
     )
-from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+    from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER, SOURCE_DS
+from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2, VariableMetadata
 from cdisc_rules_engine.services import logger
 
 
@@ -22,195 +24,14 @@ class SqlDataPreprocessor:
     Operations should be performed at data ingestion time.
     """
 
-    def __init__(self, postgres_interface: PostgresQLInterface):
-        self.pgi = postgres_interface
+    def __init__(self, data_service: "PostgresQLDataService", standards_context: "BaseStandardsContext"):
+        self.data_service = data_service
+        self.standards_context = standards_context
+        self.pgi = data_service.pgi
         self._merged_datasets_cache: Set[str] = set()
         self._relrec_catalog: Optional[List[Dict]] = None
         self._co_catalog: Optional[List[Dict]] = None
         self._supp_catalog: Optional[List[Dict]] = None
-
-    @staticmethod
-    def detect_split_datasets(dataset_names: List[str]) -> Dict[str, List[str]]:
-        """
-        Detect split datasets by naming convention.
-
-        Detection rules from SDTMIG v3.4 Section 4.1.7:
-        - AE -> not split (domain only)
-        - AE1, AE2 -> split (domain + number)
-        - SUPPAE1 -> split (SUPP + domain + digit)
-        - FACM, FAEG -> split Findings About (FA + 2-char parent domain code)
-        - SUPPQS36, SUPPQSPI, SUPPFACM -> split supplemental qualifiers
-        """
-        split_groups = defaultdict(list)
-
-        datasets = [name.lower() for name in dataset_names]
-
-        for dataset in datasets:
-            unsplit_name = SqlDataPreprocessor._get_unsplit_name(dataset)
-
-            if unsplit_name != dataset:
-                split_groups[unsplit_name].append(dataset)
-
-        return {k: v for k, v in split_groups.items() if len(v) > 1}
-
-    @staticmethod
-    def _get_unsplit_name(dataset_name: str) -> str:
-        """
-        Extract the unsplit (logical) name from a dataset name.
-        """
-        dataset = dataset_name.lower()
-
-        # Pattern 1: Domain + digit(s) (e.g., AE1, AE2, QS36)
-        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # Pattern 2: SUPP + domain + digit (e.g., SUPPAE1, SUPPQS2)
-        match = re.match(r"^supp([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return f"supp{match.group(1)}"
-
-        # Pattern 3: FA + 2-char parent domain (e.g., FACM, FAEG)
-        match = re.match(r"^fa([a-z]{2})$", dataset)
-        if match:
-            return "fa"
-
-        # Pattern 4: SUPP + FA + parent domain (e.g., SUPPFACM, SUPPFAEG)
-        match = re.match(r"^suppfa([a-z]{2})$", dataset)
-        if match:
-            return "suppfa"
-
-        # Pattern 5: SQ (Supplemental Qualifiers) + suffix
-        match = re.match(r"^sq([a-z]+\d*)$", dataset)
-        if match:
-            return "sq"
-
-        # Pattern 6: Domain + letter suffix (e.g., QSA, QSB for questionnaires)
-        match = re.match(r"^([a-z]{2,4})([a-z])$", dataset)
-        if match:
-            base = match.group(1)
-            suffix = match.group(2)
-            if len(base) >= 2 and len(suffix) == 1:
-                return base
-        return dataset
-
-    @staticmethod
-    def populate_metadata_for_datasets(pgi: PostgresQLInterface, dataset_metadata_list: List[Dict[str, Any]]) -> None:
-        """Populate data_metadata table with dataset information including split detection."""
-        if not dataset_metadata_list:
-            logger.warning("No dataset metadata provided for population")
-            return
-
-        logger.info(f"Populating metadata for {len(dataset_metadata_list)} datasets")
-
-        dataset_names = [ds["dataset_id"] for ds in dataset_metadata_list]
-        split_groups = SqlDataPreprocessor.detect_split_datasets(dataset_names)
-        split_map = {part: unsplit for unsplit, parts in split_groups.items() for part in parts}
-        split_totals = {unsplit: len(parts) for unsplit, parts in split_groups.items()}
-        timestamp = datetime.now().astimezone()
-
-        for ds_meta in dataset_metadata_list:
-            SqlDataPreprocessor._insert_dataset_metadata(pgi, ds_meta, split_map, split_totals, timestamp)
-
-        logger.info(f"Metadata population complete. {len(split_groups)} split dataset groups")
-        for unsplit_name, parts in split_groups.items():
-            logger.info(f"  {unsplit_name}: {len(parts)} parts - {', '.join(parts)}")
-
-    @staticmethod
-    def _insert_dataset_metadata(
-        pgi: PostgresQLInterface,
-        ds_meta: Dict[str, Any],
-        split_map: Dict[str, str],
-        split_totals: Dict[str, int],
-        timestamp: datetime,
-    ) -> None:
-        """Insert metadata for a single dataset."""
-        dataset_id = ds_meta["dataset_id"].lower()
-        unsplit_name = split_map.get(dataset_id, dataset_id)
-        is_split = dataset_id in split_map
-
-        split_part_number, total_split_parts = SqlDataPreprocessor._get_split_info(
-            dataset_id, unsplit_name, is_split, split_totals
-        )
-        is_supp, rdomain = SqlDataPreprocessor._get_supp_info(dataset_id)
-        domain = SqlDataPreprocessor._get_domain(ds_meta, is_supp, unsplit_name)
-
-        variables = ds_meta.get("variables", [])
-        table_hash = ds_meta.get("table_hash", dataset_id)
-
-        for var in variables:
-            insert_query = """
-                INSERT INTO public.data_metadata (
-                    created_at, updated_at, dataset_filename, dataset_filepath,
-                    dataset_id, table_hash, dataset_name, dataset_label, dataset_domain,
-                    dataset_is_supp, dataset_rdomain, dataset_is_split, dataset_unsplit_name,
-                    dataset_split_part_number, dataset_total_split_parts, preprocessing_stage,
-                    var_name, var_label, var_type, var_length, var_format
-                ) VALUES (
-                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-                )
-            """
-            values = (
-                timestamp,
-                timestamp,
-                ds_meta.get("dataset_filename", f"{dataset_id}.xpt"),
-                ds_meta.get("dataset_filepath", ""),
-                dataset_id,
-                table_hash,
-                ds_meta.get("dataset_name", dataset_id.upper()),
-                ds_meta.get("dataset_label"),
-                domain,
-                is_supp,
-                rdomain,
-                is_split,
-                unsplit_name,
-                split_part_number,
-                total_split_parts,
-                "raw",
-                var.get("name", "").upper(),
-                var.get("label"),
-                var.get("type"),
-                var.get("length"),
-                var.get("format"),
-            )
-            pgi.execute_sql(insert_query, values)
-
-    @staticmethod
-    def _get_split_info(dataset_id: str, unsplit_name: str, is_split: bool, split_totals: Dict[str, int]) -> tuple:
-        """Get split part number and total parts."""
-        if not is_split:
-            return None, None
-
-        base_len = len(unsplit_name)
-        suffix = dataset_id[base_len:]
-        match = re.search(r"\d+", suffix)
-        if match:
-            split_part_number = int(match.group())
-        else:
-            match = re.search(r"([a-z])$", suffix)
-            split_part_number = ord(match.group(1)) - ord("a") + 1 if match else None
-
-        total_split_parts = split_totals.get(unsplit_name)
-        return split_part_number, total_split_parts
-
-    @staticmethod
-    def _get_supp_info(dataset_id: str) -> tuple:
-        """Determine if dataset is SUPP and get rdomain."""
-        is_supp = dataset_id.startswith("supp") or dataset_id.startswith("sq")
-        rdomain = None
-        if is_supp and dataset_id.startswith("supp") and len(dataset_id) > 4:
-            rdomain_match = re.match(r"supp([a-z]{2,4})", dataset_id)
-            if rdomain_match:
-                rdomain = rdomain_match.group(1).upper()
-        return is_supp, rdomain
-
-    @staticmethod
-    def _get_domain(ds_meta: Dict[str, Any], is_supp: bool, unsplit_name: str) -> str:
-        """Get domain for dataset."""
-        domain = ds_meta.get("dataset_domain")
-        if not domain and not is_supp:
-            domain = unsplit_name.upper()[:2] if len(unsplit_name) >= 2 else unsplit_name.upper()
-        return domain
 
     def preprocess_all(self) -> Dict[str, Any]:
         """Execute all preprocessing stages in sequence and store results."""
@@ -305,57 +126,97 @@ class SqlDataPreprocessor:
         self.pgi.execute_sql(validation_errors_table)
 
     def _process_split_datasets(self) -> Dict[str, Any]:
-        """
-        Concatenate split datasets into single logical datasets.
-        """
+        """Concatenate split datasets into single logical datasets."""
         logger.info("Processing split datasets")
 
-        query = """
-            SELECT DISTINCT
-                dataset_unsplit_name,
-                COUNT(DISTINCT dataset_id) as part_count,
-                array_agg(DISTINCT dataset_id ORDER BY dataset_id) as dataset_parts
-            FROM public.data_metadata
-            WHERE dataset_is_split = true
-            GROUP BY dataset_unsplit_name
-            HAVING COUNT(DISTINCT dataset_id) > 1
-        """
+        dataset_names = [ds.name.lower() for ds in self.data_service.datasets]
 
-        self.pgi.execute_sql(query)
-        split_groups = self.pgi.fetch_all()
+        split_groups = self.standards_context.detect_split_datasets(dataset_names)
 
         if not split_groups:
             logger.info("No split datasets found")
             return {
                 "groups_processed": 0,
                 "total_parts_concatenated": 0,
-                "source_tracking_added": True,
+                "concatenated_datasets": [],
             }
 
         processed_count = 0
+        concatenated_datasets = []
+        total_parts = 0
 
-        for group in split_groups:
-            unsplit_name = group["dataset_unsplit_name"]
-            part_count = group["part_count"]
-            dataset_parts = group["dataset_parts"]
-
-            logger.info(f"Concatenating {part_count} parts for {unsplit_name}: {', '.join(dataset_parts)}")
+        for unsplit_name, dataset_parts in split_groups.items():
+            logger.info(f"Concatenating {len(dataset_parts)} parts for {unsplit_name}: {', '.join(dataset_parts)}")
 
             self._concatenate_split_parts(unsplit_name, dataset_parts)
+
+            metadata = self._create_metadata_from_split_parts(unsplit_name, dataset_parts)
+            if metadata:
+                transformed_metadata = self.standards_context.transform_dataset_metadata(metadata)
+                concatenated_datasets.append(metadata.name)
+                self.data_service.datasets.append(transformed_metadata)
+                logger.info(f"Added concatenated dataset metadata: {metadata.name}")
+
             processed_count += 1
+            total_parts += len(dataset_parts)
 
         logger.info(f"Split dataset processing complete: {processed_count} groups processed")
 
         return {
             "groups_processed": processed_count,
-            "total_parts_concatenated": sum(g["part_count"] for g in split_groups) if split_groups else 0,
-            "source_tracking_added": True,
+            "total_parts_concatenated": total_parts,
+            "concatenated_datasets": concatenated_datasets,  # Changed from concatenated_metadata
         }
 
+    def _create_metadata_from_split_parts(
+        self, unsplit_name: str, source_parts: List[str]
+    ) -> Optional[DatasetMetadata2]:
+        """Create metadata object by merging split part metadata."""
+
+        part_metadata = []
+        for part_name in source_parts:
+            part_meta = next((ds for ds in self.data_service.datasets if ds.name.lower() == part_name.lower()), None)
+            if part_meta:
+                part_metadata.append(part_meta)
+            else:
+                logger.warning(f"Could not find metadata for split part: {part_name}")
+
+        if not part_metadata:
+            logger.error(f"No metadata found for any split parts of {unsplit_name}")
+            return None
+
+        first_part = part_metadata[0]
+
+        merged_variables = []
+        seen_vars = set()
+
+        for part in part_metadata:
+            for var in part.variables:
+                var_name = var.name.upper()
+                if var_name not in seen_vars:
+                    merged_variables.append(
+                        VariableMetadata(
+                            name=var_name,
+                            label=var.label,
+                            type=var.type,
+                            length=var.length,
+                            format=var.format,
+                            order=var.order,
+                        )
+                    )
+                    seen_vars.add(var_name)
+
+        metadata = DatasetMetadata2(
+            filename=f"{unsplit_name}.xpt",
+            name=unsplit_name.upper(),
+            label=first_part.label,
+            variables=merged_variables,
+        )
+
+        return metadata
+
     def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
-        """
-        Concatenate multiple dataset parts into a single table.
-        """
+        """Concatenate multiple dataset parts into a single table."""
         if not dataset_parts:
             logger.warning(f"No parts to concatenate for {unsplit_name}")
             return
@@ -364,12 +225,7 @@ class SqlDataPreprocessor:
 
         union_parts = []
         for part in dataset_parts:
-            union_parts.append(
-                f"""
-                SELECT *
-                FROM public.{part}
-            """
-            )
+            union_parts.append(f"SELECT * FROM public.{part}")
 
         union_query = " UNION ALL ".join(union_parts)
 
@@ -379,20 +235,16 @@ class SqlDataPreprocessor:
                 {union_query}
             )
             SELECT * FROM concatenated
-            ORDER BY _source_ds, source_row_number
+            ORDER BY {SOURCE_DS}, {SOURCE_ROW_NUMBER}
         """
 
         self.pgi.execute_sql(create_query)
 
         index_queries = [
-            f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_ds
-                ON public.{unsplit_name}(_source_ds)
-            """,
-            f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_row
-                ON public.{unsplit_name}(source_row_number)
-            """,
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_DS} \
+                ON public.{unsplit_name}({SOURCE_DS})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}{SOURCE_ROW_NUMBER} \
+                ON public.{unsplit_name}(SOURCE_ROW_NUMBER)",
         ]
 
         check_cols_query = """
@@ -407,106 +259,14 @@ class SqlDataPreprocessor:
 
         if len(domain_cols) == 2:
             index_queries.append(
-                f"""
-                CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid
-                ON public.{unsplit_name}(studyid, usubjid)
-            """
+                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid"
+                "ON public.{unsplit_name}(studyid, usubjid)"
             )
 
         for idx_query in index_queries:
             self.pgi.execute_sql(idx_query)
 
-        self._add_concatenated_dataset_metadata(unsplit_name, dataset_parts)
-
         logger.info(f"Concatenated dataset: {unsplit_name}")
-
-    def _add_concatenated_dataset_metadata(self, unsplit_name: str, source_parts: List[str]) -> None:
-        """
-        Add metadata entries for the newly created concatenated dataset.
-        """
-        timestamp = datetime.now().astimezone()
-
-        column_query = f"""
-            SELECT column_name, data_type
-            FROM information_schema.columns
-            WHERE table_schema = 'public'
-            AND table_name = '{unsplit_name}'
-        """
-
-        self.pgi.execute_sql(column_query)
-        columns = self.pgi.fetch_all()
-
-        domain_query = """
-            SELECT DISTINCT dataset_domain, dataset_label
-            FROM public.data_metadata
-            WHERE dataset_id = %s
-            LIMIT 1
-        """
-        self.pgi.execute_sql(domain_query, (source_parts[0],))
-        domain_info = self.pgi.fetch_one()
-
-        domain = domain_info["dataset_domain"] if domain_info else unsplit_name.upper()[:2]
-        dataset_label = domain_info["dataset_label"] if domain_info else None
-
-        for column in columns:
-            var_check_query = """
-                SELECT var_name
-                FROM public.data_metadata
-                WHERE dataset_id = %s
-                AND var_name = %s
-                LIMIT 1
-            """
-            self.pgi.execute_sql(var_check_query, (unsplit_name, column["column_name"].upper()))
-            existing_var = self.pgi.fetch_one()
-
-            if not existing_var:
-                insert_query = """
-                    INSERT INTO public.data_metadata (
-                        created_at,
-                        updated_at,
-                        dataset_filename,
-                        dataset_filepath,
-                        dataset_id,
-                        table_hash,
-                        dataset_name,
-                        dataset_label,
-                        dataset_domain,
-                        dataset_is_split,
-                        dataset_unsplit_name,
-                        dataset_preprocessed,
-                        preprocessing_stage,
-                        source_dataset_ids,
-                        concatenation_timestamp,
-                        var_name,
-                        var_type
-                    ) VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-                    )
-                """
-
-                values = (
-                    timestamp,
-                    timestamp,
-                    f"{unsplit_name}.xpt",
-                    "concatenated",
-                    unsplit_name,
-                    unsplit_name,  # table_hash
-                    unsplit_name.upper(),
-                    dataset_label,
-                    domain,
-                    False,
-                    unsplit_name,
-                    timestamp,
-                    "split_processed",
-                    source_parts,
-                    timestamp,
-                    column["column_name"].upper(),
-                    column["data_type"],
-                )
-
-                self.pgi.execute_sql(insert_query, values)
-
-        logger.info(f"Added metadata for concatenated dataset: {unsplit_name}")
 
     def _validate_idvar_idvarval(
         self, table_name: str, relationship_type: str, rdomain_col: str = "rdomain"
@@ -536,7 +296,7 @@ class SqlDataPreprocessor:
                 {
                     "type": f"CG0371_{relationship_type}_STRUCTURE",
                     "table": table_name,
-                    "row_number": -1,  # -1 indicates not a row-level error (e.g. missing columns)
+                    "row_number": -1,
                     "error": f"Required columns (idvar, idvarval, or {rdomain_col}) missing in {table_name}",
                 }
             )
@@ -566,7 +326,7 @@ class SqlDataPreprocessor:
         if not records:
             return errors
 
-        by_domain = defaultdict(list)  # grouping by parent domain here to minimise queries
+        by_domain = defaultdict(list)
         for record in records:
             by_domain[record["rdomain"].lower()].append(record)
 
@@ -1455,8 +1215,8 @@ class SqlDataPreprocessor:
                 self.pgi.execute_sql(insert_query, (run_id, timestamp, stage, json.dumps(results[stage]), None, None))
 
     @staticmethod
-    def run(data_service: "PostgresQLDataService") -> None:
+    def run(data_service: "PostgresQLDataService", standards_context: "BaseStandardsContext") -> None:
         logger.info("Starting data preprocessing")
-        preprocessor = SqlDataPreprocessor(data_service.pgi)
+        preprocessor = SqlDataPreprocessor(data_service, standards_context)
         preprocessing_results = preprocessor.preprocess_all()
         logger.info(f"Preprocessing completed: {preprocessing_results}")

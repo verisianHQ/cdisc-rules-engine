@@ -1,4 +1,6 @@
-from typing import Any, List, Tuple
+from collections import defaultdict
+import re
+from typing import Any, List, Tuple, Dict
 
 from cdisc_rules_engine.constants.classes import (
     EVENTS,
@@ -685,3 +687,67 @@ class SdtmStandardsContext(BaseStandardsContext):
             merge_spec=merge_spec,
         )
         return result_schema.name
+
+    def detect_split_datasets(self, dataset_names: List[str]) -> Dict[str, List[str]]:
+        """
+        Detect split datasets by name.
+        """
+        split_groups = defaultdict(list)
+
+        datasets = [name.lower() for name in dataset_names]
+
+        for dataset in datasets:
+            unsplit_name = self._get_unsplit_name(dataset)
+
+            if unsplit_name != dataset:
+                split_groups[unsplit_name].append(dataset)
+
+        return {k: v for k, v in split_groups.items() if len(v) > 1}
+
+    def _get_unsplit_name(self, dataset_name: str) -> str:
+        """
+        Extract the unsplit (logical) name from a dataset name following
+        SDTMIG v3.4 naming conventions.
+
+        Detection rules from SDTMIG v3.4 Section 4.1.7:
+        - AE -> not split (domain only)
+        - AE1, AE2 -> split (domain + number/letter suffix)
+        - SUPPAE1 -> split (SUPP + domain + digit)
+        - FACM, FAEG -> split Findings About (FA + 2-char parent domain code)
+        - SUPPQS36, SUPPQSPI, SUPPFACM -> split supplemental qualifiers
+        """
+        dataset = dataset_name.lower()
+
+        # Pattern 1: Domain + digit(s) (e.g. AE1, AE2, QS36)
+        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return match.group(1)
+
+        # Pattern 2: SUPP + domain + digit (e.g. SUPPAE1, SUPPQS2)
+        match = re.match(r"^supp([a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return f"supp{match.group(1)}"
+
+        # Pattern 3: FA + 2-char parent domain (e.g. FACM, FAEG)
+        match = re.match(r"^fa([a-z]{2})$", dataset)
+        if match:
+            return "fa"
+
+        # Pattern 4: SUPP + FA + parent domain (e.g. SUPPFACM, SUPPFAEG)
+        match = re.match(r"^suppfa([a-z]{2})$", dataset)
+        if match:
+            return "suppfa"
+
+        # Pattern 5: SQ (Supplemental Qualifiers) + suffix
+        match = re.match(r"^sq([a-z]+\d*)$", dataset)
+        if match:
+            return "sq"
+
+        # Pattern 6: Domain + letter suffix (e.g. QSA, QSB for questionnaires)
+        match = re.match(r"^([a-z]{2,4})([a-z])$", dataset)
+        if match:
+            base = match.group(1)
+            suffix = match.group(2)
+            if len(base) >= 2 and len(suffix) == 1:
+                return base
+        return dataset

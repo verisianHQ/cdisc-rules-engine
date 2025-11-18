@@ -96481,6 +96481,19 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in non_empty operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96695,7 +96708,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -96776,6 +96789,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in non_empty operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -96797,7 +96823,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107846,6 +107872,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in matches_regex operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107883,7 +107922,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108572,6 +108611,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "ss.xpt",
+                                "domain": "SS",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in exists operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108891,7 +108943,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108960,6 +109012,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "ss.xpt",
+                                "domain": "SS",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in exists operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -109005,7 +109070,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -109082,6 +109147,19 @@
                                     {
                                         "error": "SQL error in is_not_unique_set operator",
                                         "message": "No valid columns found for uniqueness check."
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ss.xpt",
+                                "domain": "SS",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in exists operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -111256,12 +111334,9 @@
                                                 "AESDISAB",
                                                 "AESDTH",
                                                 "AESHOSP",
-                                                "AESLIFE",
-                                                "_SOURCE_DS"
+                                                "AESLIFE"
                                             ],
                                             "$timing_variables": [
-<<<<<<< HEAD
-=======
                                                 "AESTDTC",
                                                 "AEENDTC",
                                                 "AESTDY",
@@ -111270,7 +111345,6 @@
                                                 "AEENRF",
                                                 "AEENRTPT",
                                                 "AEENTPT",
->>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",
@@ -111371,12 +111445,9 @@
                                                 "LBLOBXFL",
                                                 "LBFAST",
                                                 "LBDRVFL",
-                                                "LBCLSIG",
-                                                "_SOURCE_DS"
+                                                "LBCLSIG"
                                             ],
                                             "$timing_variables": [
-<<<<<<< HEAD
-=======
                                                 "LBDTC",
                                                 "LBENDTC",
                                                 "LBDY",
@@ -111388,7 +111459,6 @@
                                                 "LBRFTDTC",
                                                 "LBPTFL",
                                                 "LBPDUR",
->>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",
@@ -111470,12 +111540,9 @@
                                                 "ECROUTE",
                                                 "ECLOT",
                                                 "ECPSTRG",
-                                                "ECPSTRGU",
-                                                "_SOURCE_DS"
+                                                "ECPSTRGU"
                                             ],
                                             "$timing_variables": [
-<<<<<<< HEAD
-=======
                                                 "ECSTDTC",
                                                 "ECENDTC",
                                                 "ECSTDY",
@@ -111486,7 +111553,6 @@
                                                 "ECELTM",
                                                 "ECTPTREF",
                                                 "ECRFTDTC",
->>>>>>> 4297bff (initial first draft + unit tests + regression)
                                                 "VISITNUM",
                                                 "VISIT",
                                                 "VISITDY",
@@ -132695,9 +132761,31 @@
                                 "dataset": "aplbe.xpt",
                                 "domain": "AP",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "dataset_name": "Not in dataset"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "aplb.xpt",
+                                "domain": "AP",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in longer_than operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -132719,7 +132807,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
