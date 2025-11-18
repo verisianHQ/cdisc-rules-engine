@@ -4,6 +4,7 @@ Data Preprocessor for SDTM and ADaM clinical data.
 
 import json
 from collections import defaultdict
+from copy import deepcopy
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Set
 
@@ -152,9 +153,8 @@ class SqlDataPreprocessor:
 
             metadata = self._create_metadata_from_split_parts(unsplit_name, dataset_parts)
             if metadata:
-                transformed_metadata = self.standards_context.transform_dataset_metadata(metadata)
                 concatenated_datasets.append(metadata.name)
-                self.data_service.datasets.append(transformed_metadata)
+                self.data_service.datasets.append(metadata)
                 logger.info(f"Added concatenated dataset metadata: {metadata.name}")
 
             processed_count += 1
@@ -165,7 +165,7 @@ class SqlDataPreprocessor:
         return {
             "groups_processed": processed_count,
             "total_parts_concatenated": total_parts,
-            "concatenated_datasets": concatenated_datasets,  # Changed from concatenated_metadata
+            "concatenated_datasets": concatenated_datasets,
         }
 
     def _create_metadata_from_split_parts(
@@ -206,12 +206,11 @@ class SqlDataPreprocessor:
                     )
                     seen_vars.add(var_name)
 
-        metadata = DatasetMetadata2(
-            filename=f"{unsplit_name}.xpt",
-            name=unsplit_name.upper(),
-            label=first_part.label,
-            variables=merged_variables,
-        )
+        metadata = deepcopy(first_part)
+        file_type = first_part.filename.split(".")[-1].lower()
+        metadata.filename = f"{unsplit_name}.{file_type}"
+        metadata.name = unsplit_name.upper()
+        metadata.variables = merged_variables
 
         return metadata
 
