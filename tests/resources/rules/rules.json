@@ -82596,7 +82596,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "SUPPAPFAMH"
                                         }
                                     }
                                 ]
@@ -82624,19 +82624,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "suppapfamh.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['dataset_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "suppapfamh"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -82670,7 +82658,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "SUPPDMMMM"
                                         }
                                     }
                                 ]
@@ -82698,19 +82686,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "suppdmmmm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['dataset_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "suppdmmmm"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -82739,18 +82715,9 @@
                                 "dataset": "sqapfamh.xpt",
                                 "domain": "SQAP",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSQAP dataset is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82766,10 +82733,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -82795,18 +82759,9 @@
                                 "dataset": "suppdmdm.xpt",
                                 "domain": "SUPPDM",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSUPPDM dataset is greater than 8.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -82822,10 +82777,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -93815,52 +93767,279 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "At least one Required variable has a null value",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "STUDYID",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "USUBJID",
+                                            "variable_value": null
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "At least one Required variable has a null value",
+                                "number_errors": 8,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 41,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 42,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 43,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 44,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 45,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 46,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 47,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 48,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EXTRT",
+                                            "variable_value": null
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "At least one Required variable has a null value",
+                                "number_errors": 5,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 139,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSEQ",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 140,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSEQ",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 141,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSEQ",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 142,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSEQ",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 143,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "LBSEQ",
+                                            "variable_value": null
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "At least one Required variable has a null value",
+                                "number_errors": 12,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 15,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 16,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 17,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 18,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "ARMCD",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 55,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 56,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 57,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 58,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 59,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
+                                    },
+                                    {
+                                        "row": 60,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "variable_name": "EPOCH",
+                                            "variable_value": null
+                                        }
                                     }
                                 ]
                             }
@@ -94149,13 +94328,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94180,54 +94356,34 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ta.xpt",
                                 "domain": "TA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_contained_by operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94267,13 +94423,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94316,22 +94469,14 @@
                                 "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
-                                "number_errors": 2,
+                                "number_errors": 1,
                                 "errors": [
                                     {
                                         "row": 1,
                                         "SEQ": null,
-                                        "USUBJID": "CDISC01.100008",
+                                        "USUBJID": "None",
                                         "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100014",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "SUPPQSCQI"
                                         }
                                     }
                                 ]
@@ -94341,22 +94486,14 @@
                                 "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
-                                "number_errors": 2,
+                                "number_errors": 1,
                                 "errors": [
                                     {
                                         "row": 1,
                                         "SEQ": null,
-                                        "USUBJID": "CDISC01.100008",
+                                        "USUBJID": "None",
                                         "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100014",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "SUPPQSSWLS"
                                         }
                                     }
                                 ]
@@ -94424,51 +94561,17 @@
                                 "dataset": "suppqscq.xpt",
                                 "domain": "SUPPQS",
                                 "execution_status": "success",
-                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100014",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "suppqssw.xpt",
                                 "domain": "SUPPQS",
                                 "execution_status": "success",
-                                "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100008",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC01.100014",
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -99462,34 +99565,6 @@
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "lb.xpt",
-                                "domain": "LB",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "ec.xpt",
-                                "domain": "EC",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            }
-                        ],
-                        "dataset_import_old": "SUCCESS",
-                        "results_present_old": true,
-                        "results_old": [
-                            {
-                                "dataset": "ae.xpt",
-                                "domain": "AE",
-                                "execution_status": "success",
                                 "execution_message": "The label of the variable does not correspond to the label in the IG",
                                 "number_errors": 1,
                                 "errors": [
@@ -99544,60 +99619,6 @@
                                 ]
                             }
                         ],
-                        "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
-                        },
-                        "whitelisted": false,
-                        "sql_overall_result": "success",
-                        "old_overall_result": "success",
-                        "validated_results_folder_exists": false,
-                        "validation_file": "",
-                        "validation_file_validation": "",
-                        "old_result_validation": "invalid",
-                        "sql_results_validation": "invalid"
-                    }
-                }
-            }
-        ],
-        "positive_folder_path": "SDTMIG/CG0303/positive",
-        "positive_regressions": [
-            {
-                "SDTMIG/CG0303/positive/01": {
-                    "test_case_xslx_file": "SDTMIG/CG0303/positive/01/data/unit-test-coreid-CG0303-positive.xlsx",
-                    "engine_regression": {
-                        "define_xml_present": false,
-                        "datasets_conversion": "SUCCESS",
-                        "datasets_import_sql": "SUCCESS",
-                        "results_present_sql": true,
-                        "results_sql": [
-                            {
-                                "dataset": "ae.xpt",
-                                "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "lb.xpt",
-                                "domain": "LB",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "ec.xpt",
-                                "domain": "EC",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            }
-                        ],
                         "dataset_import_old": "SUCCESS",
                         "results_present_old": true,
                         "results_old": [
@@ -99649,6 +99670,115 @@
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
+                        "old_overall_result": "execution_error",
+                        "validated_results_folder_exists": false,
+                        "validation_file": "",
+                        "validation_file_validation": "",
+                        "old_result_validation": "invalid",
+                        "sql_results_validation": "invalid"
+                    }
+                }
+            }
+        ],
+        "positive_folder_path": "SDTMIG/CG0303/positive",
+        "positive_regressions": [
+            {
+                "SDTMIG/CG0303/positive/01": {
+                    "test_case_xslx_file": "SDTMIG/CG0303/positive/01/data/unit-test-coreid-CG0303-positive.xlsx",
+                    "engine_regression": {
+                        "define_xml_present": false,
+                        "datasets_conversion": "SUCCESS",
+                        "datasets_import_sql": "SUCCESS",
+                        "results_present_sql": true,
+                        "results_sql": [
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            }
+                        ],
+                        "dataset_import_old": "SUCCESS",
+                        "results_present_old": true,
+                        "results_old": [
+                            {
+                                "dataset": "ae.xpt",
+                                "domain": "AE",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "lb.xpt",
+                                "domain": "LB",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "ec.xpt",
+                                "domain": "EC",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "Column not found in data",
+                                        "message": "ordinal"
+                                    }
+                                ]
+                            }
+                        ],
+                        "old_vs_sql": {
+                            "equal": true
+                        },
+                        "whitelisted": false,
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106725,14 +106855,14 @@
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100018",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "qs1",
                                                 "qsae"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "QS1"
                                         }
                                     }
                                 ]
@@ -106746,14 +106876,14 @@
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100018",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "qs1",
                                                 "qsae"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "QSAE"
                                         }
                                     }
                                 ]
@@ -106827,227 +106957,19 @@
                                 "domain": "MH",
                                 "execution_status": "success",
                                 "execution_message": "Split dataset is present but the two-Letter parent domain is missing.",
-                                "number_errors": 17,
+                                "number_errors": 1,
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "mhlb",
                                                 "dm",
                                                 "ex"
                                             ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC003",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC006",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC007",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC010",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC011",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC012",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC013",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC014",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 15,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC016",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 16,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC017",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 17,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC018",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "MHLB"
                                         }
                                     }
                                 ]
@@ -107112,10 +107034,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -107149,8 +107068,8 @@
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100018",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "qs1",
@@ -107158,7 +107077,7 @@
                                                 "qs",
                                                 "ae"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "QS1"
                                         }
                                     }
                                 ]
@@ -107172,8 +107091,8 @@
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC01.100018",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "qs1",
@@ -107181,7 +107100,7 @@
                                                 "qs",
                                                 "ae"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "QSAE"
                                         }
                                     }
                                 ]
@@ -107254,12 +107173,12 @@
                                 "domain": "MH",
                                 "execution_status": "success",
                                 "execution_message": "Split dataset is present but the two-Letter parent domain is missing.",
-                                "number_errors": 17,
+                                "number_errors": 1,
                                 "errors": [
                                     {
                                         "row": 1,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC001",
+                                        "SEQ": null,
+                                        "USUBJID": "None",
                                         "value": {
                                             "$list_dataset_names": [
                                                 "mhlb",
@@ -107267,231 +107186,7 @@
                                                 "dm",
                                                 "ex"
                                             ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC002",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC003",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC004",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC005",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC006",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC007",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC010",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 11,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC011",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 12,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC012",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 13,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC013",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 14,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC014",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 15,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC016",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 16,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC017",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    },
-                                    {
-                                        "row": 17,
-                                        "SEQ": 1,
-                                        "USUBJID": "CDISC018",
-                                        "value": {
-                                            "$list_dataset_names": [
-                                                "mhlb",
-                                                "mh",
-                                                "dm",
-                                                "ex"
-                                            ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "MHLB"
                                         }
                                     }
                                 ]
@@ -107674,7 +107369,7 @@
                                             "$list_dataset_names": [
                                                 "facm"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "FACM"
                                         }
                                     }
                                 ]
@@ -107705,19 +107400,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "facm.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['dataset_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "facm"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -107764,7 +107447,7 @@
                                                 "facm",
                                                 "fa1"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "FACM"
                                         }
                                     }
                                 ]
@@ -107849,7 +107532,7 @@
                                                 "facm",
                                                 "cm"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "FACM"
                                         }
                                     }
                                 ]
@@ -107927,7 +107610,7 @@
                                                 "famh",
                                                 "mh"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "FACM"
                                         }
                                     }
                                 ]
@@ -107958,7 +107641,7 @@
                                                 "famh",
                                                 "mh"
                                             ],
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "FAMH"
                                         }
                                     }
                                 ]
@@ -132696,18 +132379,9 @@
                                 "dataset": "apdm.xpt",
                                 "domain": "AP",
                                 "execution_status": "success",
-                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apdrug1ex.xpt",
@@ -132721,7 +132395,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "dataset_name": "Not in dataset"
+                                            "dataset_name": "APDRUG1EX"
                                         }
                                     }
                                 ]
@@ -132757,19 +132431,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {
-                                "apdrug1ex.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['dataset_name']": {
-                                            "new_value": "not in dataset",
-                                            "old_value": "apdrug1ex"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -132798,35 +132460,17 @@
                                 "dataset": "aplbs.xpt",
                                 "domain": "AP",
                                 "execution_status": "success",
-                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aplbe.xpt",
                                 "domain": "AP",
                                 "execution_status": "success",
-                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
