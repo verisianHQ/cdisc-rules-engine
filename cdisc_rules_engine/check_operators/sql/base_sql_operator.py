@@ -229,6 +229,16 @@ class BaseSqlOperator:
     ) -> str:
         query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
 
+        # TODO: Throwing this temporarily, so we can determine which errors
+        # are actually postgres errors and which are just rules which run on
+        # optional variables without checking
+
+        # Discussed moving this to above `if alias:` with Aaron as it is failing
+        # to catch any None queries that have an alias, but doing so caused loads
+        # of regression changes, so for now just logging
+        if query is None:
+            raise KeyError(column)
+
         # Prepend the table alias
         if alias:
             query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}"
@@ -240,16 +250,6 @@ class BaseSqlOperator:
             elif suffix is not None:
                 dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
             return self._constant_sql(dataset_name, lowercase=lowercase)
-
-        # TODO: Throwing this temporarily, so we can determine which errors
-        # are actually postgres errors and which are just rules which run on
-        # optional variables without checking
-
-        # Discussed moving this to above `if alias:` with Aaron as it is failing
-        # to catch any None queries that have an alias, but doing so caused loads
-        # of regression changes, so for now just logging
-        if query is None:
-            raise KeyError(column)
 
         if lowercase:
             query = f"LOWER({query})"

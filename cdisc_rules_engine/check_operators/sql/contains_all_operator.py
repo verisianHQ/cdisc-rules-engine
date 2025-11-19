@@ -36,19 +36,22 @@ class ContainsAllOperator(BaseSqlOperator):
             cache_key = f"{target_column}_contains_all_list"
 
             def sql():
-                values_clause = ", ".join(f"({self._constant_sql(v)})" for v in comparator)
-                return f"""CASE WHEN (
-                              SELECT COUNT(DISTINCT val)
-                              FROM (VALUES {values_clause}) AS comparator_values(val)
-                              WHERE val IN (
-                                  SELECT DISTINCT {self._column_sql(target_column, alias=False)}
-                                  FROM {self._table_sql()}
-                                  WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
-                              )
-                          ) = {len(comparator)}
-                          THEN true
-                          ELSE false
-                          END"""
+                try:
+                    values_clause = ", ".join(f"({self._constant_sql(v)})" for v in comparator)
+                    return f"""CASE WHEN (
+                                  SELECT COUNT(DISTINCT val)
+                                  FROM (VALUES {values_clause}) AS comparator_values(val)
+                                  WHERE val IN (
+                                      SELECT DISTINCT {self._column_sql(target_column, alias=False)}
+                                      FROM {self._table_sql()}
+                                      WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+                                  )
+                              ) = {len(comparator)}
+                              THEN true
+                              ELSE false
+                              END"""
+                except KeyError:
+                    return "FALSE"
 
         return self._do_check_operator(cache_key, sql)
 
@@ -72,25 +75,28 @@ class ContainsAllOperator(BaseSqlOperator):
         collection_sql = self._collection_sql(comparator)
 
         def sql():
-            return f"""CASE WHEN (
-                          SELECT COUNT(DISTINCT column1)
-                          FROM {collection_sql} AS op_var
-                          WHERE column1 IS NOT NULL
-                          AND column1 != ''
-                          AND column1 IN (
-                              SELECT DISTINCT {self._column_sql(target_column, alias=False)}
-                              FROM {self._table_sql()}
-                              WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+            try:
+                return f"""CASE WHEN (
+                              SELECT COUNT(DISTINCT column1)
+                              FROM {collection_sql} AS op_var
+                              WHERE column1 IS NOT NULL
+                              AND column1 != ''
+                              AND column1 IN (
+                                  SELECT DISTINCT {self._column_sql(target_column, alias=False)}
+                                  FROM {self._table_sql()}
+                                  WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+                              )
+                          ) = (
+                              SELECT COUNT(DISTINCT column1)
+                              FROM {collection_sql} AS op_var
+                              WHERE column1 IS NOT NULL
+                              AND column1 != ''
                           )
-                      ) = (
-                          SELECT COUNT(DISTINCT column1)
-                          FROM {collection_sql} AS op_var
-                          WHERE column1 IS NOT NULL
-                          AND column1 != ''
-                      )
-                      THEN true
-                      ELSE false
-                      END"""
+                          THEN true
+                          ELSE false
+                          END"""
+            except KeyError:
+                return "FALSE"
 
         return self._do_check_operator(cache_key, sql)
 
@@ -99,14 +105,17 @@ class ContainsAllOperator(BaseSqlOperator):
         constant_sql = self._constant_sql(comparator)
 
         def sql():
-            return f"""CASE WHEN {constant_sql} IN (
-                          SELECT DISTINCT {self._column_sql(target_column, alias=False)}
-                          FROM {self._table_sql()}
-                          WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
-                      )
-                      THEN true
-                      ELSE false
-                      END"""
+            try:
+                return f"""CASE WHEN {constant_sql} IN (
+                              SELECT DISTINCT {self._column_sql(target_column, alias=False)}
+                              FROM {self._table_sql()}
+                              WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+                          )
+                          THEN true
+                          ELSE false
+                          END"""
+            except KeyError:
+                return "FALSE"
 
         return self._do_check_operator(cache_key, sql)
 
@@ -117,23 +126,26 @@ class ContainsAllOperator(BaseSqlOperator):
         cache_key = f"{target_column}_contains_all_{comparator_column}"
 
         def sql():
-            return f"""CASE WHEN (
-                          SELECT COUNT(DISTINCT {self._column_sql(comparator_column, alias=False)})
-                          FROM {self._table_sql()}
-                          WHERE NOT ({self._is_empty_sql(comparator_column, alias=False)})
-                          AND {self._column_sql(comparator_column, alias=False)} IN (
-                              SELECT DISTINCT {self._column_sql(target_column, alias=False)}
+            try:
+                return f"""CASE WHEN (
+                              SELECT COUNT(DISTINCT {self._column_sql(comparator_column, alias=False)})
                               FROM {self._table_sql()}
-                              WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+                              WHERE NOT ({self._is_empty_sql(comparator_column, alias=False)})
+                              AND {self._column_sql(comparator_column, alias=False)} IN (
+                                  SELECT DISTINCT {self._column_sql(target_column, alias=False)}
+                                  FROM {self._table_sql()}
+                                  WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
+                              )
+                          ) = (
+                              SELECT COUNT(DISTINCT {self._column_sql(comparator_column, alias=False)})
+                              FROM {self._table_sql()}
+                              WHERE NOT ({self._is_empty_sql(comparator_column, alias=False)})
                           )
-                      ) = (
-                          SELECT COUNT(DISTINCT {self._column_sql(comparator_column, alias=False)})
-                          FROM {self._table_sql()}
-                          WHERE NOT ({self._is_empty_sql(comparator_column, alias=False)})
-                      )
-                      THEN true
-                      ELSE false
-                      END"""
+                          THEN true
+                          ELSE false
+                          END"""
+            except KeyError:
+                return "FALSE"
 
         return self._do_check_operator(cache_key, sql)
 

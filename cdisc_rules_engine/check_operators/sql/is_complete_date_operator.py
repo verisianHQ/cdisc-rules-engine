@@ -11,11 +11,14 @@ class IsCompleteDateOperator(BaseSqlOperator):
         op_name = f"{target}_is_complete_date"
 
         def sql():
-            return f"""CASE WHEN
-                NOT ({self._is_empty_sql(target)})
-                AND {self._column_sql(target)} ~ '{COMPLETE_DATE_REGEX}'
-                THEN true
-                ELSE false
-                END"""
+            if self._exists(op_name):
+                return f"""CASE WHEN
+                    NOT ({self._is_empty_sql(target)})
+                    AND {self._column_sql(target)} ~ '{COMPLETE_DATE_REGEX}'
+                    THEN true
+                    ELSE false
+                    END"""
+            else:
+                return "FALSE"
 
         return self._do_check_operator(op_name, sql)
