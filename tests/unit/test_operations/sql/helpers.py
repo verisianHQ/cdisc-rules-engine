@@ -46,13 +46,13 @@ def setup_sql_operations(
         data_service,
         table_name=TEST_TABLE_NAME,
         column_data=column_data,
-        standards_context=standards_context_dict.get(standards_context, DefaultStandardsContext()),
+        standards_context=standards_context_dict.get(standards_context),
     )
 
     params = SqlOperationParams(
         domain=TEST_TABLE_NAME,
         target=target,
-        standards_context=standards_context_dict.get(standards_context, DefaultStandardsContext()),
+        standards_context=standards_context_dict.get(standards_context),
         **extra_config,
     )
 
