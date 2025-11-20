@@ -1,22 +1,31 @@
+import pandas as pd
 import os
 import re
 
-import pandas as pd
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 
 XLSX_FILE_EXTENSIONS = [".xlsx"]
 
 # warnings.filterwarnings("ignore")
 
 
-def validate_folder_structure(rtype: str, root_folder: str, rule_id: str) -> list[str]:
-    error_messages = []
+def validate_folder_structure(
+    rtype: str,
+    root_folder: str,
+    rule_id: str,
+    error_messages: list[str],
+    missing_lib_sheets: list[str],
+    missing_ds_sheets: list[str],
+) -> list[str]:
     # Define the expected folder structure
-    pos_neg_folder_names = ["positive", "negative"]
+    pos_neg_folder_names = ["positive", "negative", "skipped"]
     data_results_folder_names = ["data", "results"]
 
     # Check if root folder exists
     if not os.path.exists(root_folder):
-        error_messages.append(f"{rtype}:{rule_id}: Root folder '{root_folder}' does not exist.")
+        error_messages.append(f"{rtype}:{rule_id}: root folder is missing: <{root_folder}>.")
 
     validate_rule_id_folder(error_messages, root_folder, pos_neg_folder_names, rtype, rule_id)
 
@@ -25,7 +34,8 @@ def validate_folder_structure(rtype: str, root_folder: str, rule_id: str) -> lis
         pos_neg_folder_path = os.path.join(root_folder, pos_neg_folder)
 
         if not os.path.exists(pos_neg_folder_path):
-            error_messages.append(f"{rtype}:{rule_id}: Folder '{pos_neg_folder}' is missing.")
+            if pos_neg_folder != "skipped":
+                error_messages.append(f"{rtype}:{rule_id}: required folder is missing: <{pos_neg_folder}>.")
             continue
 
         validate_pos_neg_folder(error_messages, pos_neg_folder_path, pos_neg_folder, rtype, rule_id)
@@ -35,6 +45,8 @@ def validate_folder_structure(rtype: str, root_folder: str, rule_id: str) -> lis
 
         validate_two_digit_folders(
             error_messages,
+            missing_lib_sheets,
+            missing_ds_sheets,
             maybe_two_digit_folders,
             pos_neg_folder_path,
             data_results_folder_names,
@@ -52,15 +64,11 @@ def validate_rule_id_folder(
     # Ensure no files in ruleid folder level
     for file in os.scandir(root_folder):
         if file.is_file() and not file.name.startswith("."):
-            error_messages.append(
-                f"{rtype}:{rule_id}: File {file.name} found in rule root folder, which is not allowed."
-            )
+            error_messages.append(f"{rtype}:{rule_id}: File found in rule root folder: <{file.name}>.")
 
     for f in os.scandir(root_folder):
-        if f.is_dir() and f.name not in pos_neg_folder_names:
-            error_messages.append(
-                f"{rtype}:{rule_id}: Unexpected folder '{f.name}' found in rule root folder, which is not allowed."
-            )
+        if f.is_dir() and f.name not in ["dev", "archive", *pos_neg_folder_names]:
+            error_messages.append(f"{rtype}:{rule_id}: Unexpected folder in root folder: <'{f.name}'>.")
 
 
 def validate_pos_neg_folder(
@@ -69,13 +77,13 @@ def validate_pos_neg_folder(
     # Ensure no files in positive/negative folder level directly
     for file in os.scandir(pos_neg_folder_path):
         if file.is_file() and not file.name.startswith("."):
-            error_messages.append(
-                f"{rtype}:{rule_id}: File {file.name} found in '{pos_neg_folder}', which is not allowed."
-            )
+            error_messages.append(f"{rtype}:{rule_id}: Unexpected file found in <{pos_neg_folder}>: <{file.name}>.")
 
 
 def validate_two_digit_folders(
-    error_messages: list,
+    error_messages: list[str],
+    missing_lib_sheets: list[str],
+    missing_ds_sheets: list[str],
     maybe_two_digit_folders: list,
     pos_neg_folder_path: str,
     data_results_folder_names: list,
@@ -84,7 +92,7 @@ def validate_two_digit_folders(
     rule_id: str,
 ):
     if "01" not in maybe_two_digit_folders:
-        error_messages.append(f"{rtype}:{rule_id}: Required folder '01' is missing in '{pos_neg_folder}'.")
+        error_messages.append(f"{rtype}:{rule_id}: required folder is missing: <{pos_neg_folder}/01>")
 
     two_digit_regex = re.compile(r"^\d{2}$")
     for maybe_two_digit_folder in maybe_two_digit_folders:
@@ -93,8 +101,8 @@ def validate_two_digit_folders(
         # Check all subfolders for two-digit naming
         if not two_digit_regex.match(maybe_two_digit_folder):
             error_messages.append(
-                f"{rtype}:{rule_id}: Folder '{maybe_two_digit_folder}' in '{pos_neg_folder}' "
-                f"does not match two-digit naming."
+                f"{rtype}:{rule_id}: test case folder does not match two-digit naming: "
+                f"<{pos_neg_folder}/{maybe_two_digit_folder}>."
             )
             continue
 
@@ -105,8 +113,7 @@ def validate_two_digit_folders(
         for f in os.scandir(two_digit_folder_path):
             if f.is_dir() and f.name not in data_results_folder_names:
                 error_messages.append(
-                    f"{rtype}:{rule_id}: Unexpected folder '{f.name}' found in '{two_digit_folder}' "
-                    f"under '{pos_neg_folder}'."
+                    f"{rtype}:{rule_id}: Unexpected folder found: <{pos_neg_folder}/{two_digit_folder}/{f.name}>"
                 )
 
         for subfolder_name in data_results_folder_names:
@@ -114,8 +121,7 @@ def validate_two_digit_folders(
             subfolder_data_results_path = os.path.join(two_digit_folder_path, subfolder_name)
             if not os.path.exists(subfolder_data_results_path):
                 error_messages.append(
-                    f"{rtype}:{rule_id}: Subfolder '{subfolder_name}' is missing in '{two_digit_folder}' "
-                    f"under '{pos_neg_folder}'."
+                    f"{rtype}:{rule_id}: Subfolder missing: <{pos_neg_folder}/{two_digit_folder}/{subfolder_name}>."
                 )
                 continue
 
@@ -124,6 +130,8 @@ def validate_two_digit_folders(
             if subfolder_name == "data":
                 data_folder_validation(
                     error_messages,
+                    missing_lib_sheets,
+                    missing_ds_sheets,
                     subfolder_data_results_path,
                     two_digit_folder,
                     rtype,
@@ -145,54 +153,85 @@ def validate_two_digit_folders(
 
 
 def data_folder_validation(
-    error_messages: list,
+    error_messages: list[str],
+    missing_lib_sheets: list[str],
+    missing_ds_sheets: list[str],
     subfolder_data_results_path: str,
     two_digit_folder: str,
     rtype: str,
     rule_id: str,
     pos_neg_folder: str,
 ):
-    found_xlsx = any(f.is_file() and is_xlsx_file(f.name) for f in os.scandir(subfolder_data_results_path))
+    xlsx_files_in_folder = [f for f in os.scandir(subfolder_data_results_path) if f.is_file() and is_xlsx_file(f.name)]
+    found_xlsx = any(xlsx_files_in_folder)
     if not found_xlsx:
         error_messages.append(
-            f"{rtype}:{rule_id}: Missing '.xlsx' file in 'data' folder under '{two_digit_folder}' "
-            f"in '{pos_neg_folder}'."
+            f"{rtype}:{rule_id}: Missing '.xlsx' file in: <{pos_neg_folder}/{two_digit_folder}/data>."
+        )
+    if len(xlsx_files_in_folder) > 1:
+        error_messages.append(
+            f"{rtype}:{rule_id}: Multiple '.xlsx' files in: <{pos_neg_folder}/{two_digit_folder}/data>."
         )
 
-    found_valid_xlsx = any(
-        f.is_file() and is_xlsx_file(f.name) and validate_xlsx_file(f) for f in os.scandir(subfolder_data_results_path)
-    )
-    if not found_valid_xlsx:
-        # print("No valid '.xlsx' file found in 'data' folder under ")
-        error_messages.append(
-            f"{rtype}:{rule_id}: No valid (must have Library and Datasets sheets) '.xlsx' file "
-            f"found in 'data' folder under '{two_digit_folder}' in '{pos_neg_folder}'."
+    for f in xlsx_files_in_folder:
+        validate_xlsx_file(
+            error_messages, missing_lib_sheets, missing_ds_sheets, f, rtype, rule_id, pos_neg_folder, two_digit_folder
         )
 
     for file in os.scandir(subfolder_data_results_path):
-        if file.is_file() and not (is_xlsx_file(file.name) or file.name.lower() == "define.xml"):
+        if file.is_file() and not (is_xlsx_file(file.name) or is_xml_file(file.name)):
             error_messages.append(
-                f"{rtype}:{rule_id}: Non-xlsx and non-'define.xml' file found"
-                f"in 'data' folder under '{two_digit_folder}' in '{pos_neg_folder}'."
+                f"{rtype}:{rule_id}: Non-xlsx and non-xml file found in: " f"<{pos_neg_folder}/{two_digit_folder}/data>"
             )
 
     for f in os.scandir(subfolder_data_results_path):
         if f.is_dir():
             error_messages.append(
-                f"{rtype}:{rule_id}: Unexpected folder '{f.name}' "
-                f"found in '{two_digit_folder}/data' under '{pos_neg_folder}'."
+                f"{rtype}:{rule_id}: Unexpected folder found: <{pos_neg_folder}/{two_digit_folder}/data/{f.name}>"
             )
 
 
-def validate_xlsx_file(file_name: os.DirEntry) -> bool:
-    xlsx_data = pd.ExcelFile(file_name)
+def validate_xlsx_file(
+    error_messages: list,
+    missing_lib_sheets: list,
+    missing_ds_sheets: list,
+    f: os.DirEntry,
+    rtype: str,
+    rule_id: str,
+    pos_neg_folder: str,
+    two_digit_folder: str,
+):
     try:
-        pd.read_excel(xlsx_data, sheet_name="Library")
-        pd.read_excel(xlsx_data, sheet_name="Datasets")
-    except ValueError:
-        # print(f"File {file_name.name} does not contain required sheets 'Library' and 'Datasets'.")
-        return False
-    return True
+        xlsx_data = pd.ExcelFile(f)
+        try:
+            pd.read_excel(xlsx_data, sheet_name="Library")
+        except ValueError:
+            error_messages.append(
+                f"{rtype}:{rule_id}: Missing Library sheet in: " f"<{pos_neg_folder}/{two_digit_folder}/data/{f.name}>"
+            )
+            missing_lib_sheets.append(f"{rule_id}/{pos_neg_folder}/{two_digit_folder}/data/{f.name}")
+        try:
+            pd.read_excel(xlsx_data, sheet_name="Datasets")
+        except ValueError:
+            error_messages.append(
+                f"{rtype}:{rule_id}: Missing Datasets sheet in: " f"<{pos_neg_folder}/{two_digit_folder}/data/{f.name}>"
+            )
+            missing_ds_sheets.append(f"{rule_id}/{pos_neg_folder}/{two_digit_folder}/data/{f.name}")
+    except TypeError as te:
+        if "extLst" in str(te):
+            print(f"FORMATTING ISSUE IN: {f}")
+        error_messages.append(
+            f"{rtype}:{rule_id}: Invalid xlsx file due to formatting/set filters: "
+            f"<{pos_neg_folder}/{two_digit_folder}/data/{f.name}>"
+        )
+    except ValueError as ve:
+        if "file format cannot be determined" in str(ve):
+            print(f"FILE FORMAT ISSUE: {f}")
+            error_messages.append(
+                f"{rtype}:{rule_id}: Invalid xlsx file format: " f"<{pos_neg_folder}/{two_digit_folder}/data/{f.name}>"
+            )
+        else:
+            raise
 
 
 def results_folder_validation(
@@ -207,15 +246,13 @@ def results_folder_validation(
     for file in os.scandir(subfolder_data_results_path):
         if file.is_file() and not (is_xlsx_file(file.name) or file.name.endswith(json_extension)):
             error_messages.append(
-                f"{rtype}:{rule_id}: Non-xlsx/json file found in 'results' folder "
-                f"under '{two_digit_folder}' in '{pos_neg_folder}'."
+                f"{rtype}:{rule_id}: Non-xlsx and non-xml file found in: "
+                f"<{pos_neg_folder}/{two_digit_folder}/results>"
             )
     for f in os.scandir(subfolder_data_results_path):
         if f.is_dir():
             error_messages.append(
-                f"{rtype}:{rule_id}: Unexpected folder '{f.name}' "
-                f"found in '{two_digit_folder}/results' "
-                f"under '{pos_neg_folder}'."
+                f"{rtype}:{rule_id}: Unexpected folder found: <{pos_neg_folder}/{two_digit_folder}/results/{f.name}>"
             )
 
 
@@ -227,14 +264,28 @@ def is_xlsx_file(file_name: str) -> bool:
     return any(file_name.lower().endswith(ext) for ext in XLSX_FILE_EXTENSIONS)
 
 
+def is_xml_file(file_name: str) -> bool:
+    return file_name.lower().endswith(".xml")
+
+
 def print_invalid(rtype: str, path: str):
     error_messages = []
+    missing_lib_sheets = []
+    missing_ds_sheets = []
     root_folder = f"{path}/{rtype}/"
     subfolders = get_immediate_subfolders(root_folder)
     for rulefolder in subfolders:
-        error_messages.extend(validate_folder_structure(rtype, root_folder + rulefolder, rule_id=rulefolder))
+        validate_folder_structure(
+            rtype,
+            root_folder + rulefolder,
+            rule_id=rulefolder,
+            error_messages=error_messages,
+            missing_lib_sheets=missing_lib_sheets,
+            missing_ds_sheets=missing_ds_sheets,
+        )
 
-    error_messages = [msg for msg in error_messages if "must have" in msg]
+    # error_messages = [msg for msg in error_messages if "Unexpected file" in msg]
+    # error_messages = [msg for msg in error_messages if "folder" in msg]
     print(f"Found {len(error_messages)} issues in {rtype} folder structure.")
 
     output_file = f"{path}/___{rtype}_sharepoint_issues.txt"
@@ -242,9 +293,20 @@ def print_invalid(rtype: str, path: str):
         for item in error_messages:
             f.write(f"{item}\n")
 
+    missing_lib_file = f"{path}/___{rtype}_missing_lib.txt"
+    with open(missing_lib_file, "w", encoding="utf-8") as f:
+        for item in missing_lib_sheets:
+            f.write(f"{item}\n")
 
-sp_path = os.path.expanduser("~") + "/Data/core-sharepoint"
+    missing_ds_file = f"{path}/___{rtype}_missing_ds.txt"
+    with open(missing_ds_file, "w", encoding="utf-8") as f:
+        for item in missing_ds_sheets:
+            f.write(f"{item}\n")
+
+
+sp_path = os.path.expanduser("~") + "/data/CORE/CDISC_Sharepoint_dump_20250916"
+# print_invalid("script_testing", sp_path)
 print_invalid("SDTMIG", sp_path)
-print_invalid("ADAMIG", sp_path)
-print_invalid("FDA Business Rules", sp_path)
-print_invalid("FDA Validator Rules", sp_path)
+# print_invalid("ADAMIG", sp_path)
+# print_invalid("FDA Business Rules", sp_path)
+# print_invalid("FDA Validator Rules", sp_path)

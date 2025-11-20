@@ -23,6 +23,7 @@ RULE_DEPTH = 2
 TYPE_DEPTH = RULE_DEPTH + 1
 CASE_DEPTH = TYPE_DEPTH + 1
 DATA_DEPTH = CASE_DEPTH + 2
+POSNEGFOLDERS = ["negative", "positive", "skipped"]
 
 METADATA_CACHE = {}
 
@@ -65,7 +66,7 @@ def run_single_rule_regression(row: pd.Series, get_core_rule, target_case: Optio
             p = paths[0]
             rule_regression["sharepoint_source"] = p.split("/")[-RULE_DEPTH : -(RULE_DEPTH - 1)][0]
 
-            for case in ["negative", "positive"]:
+            for case in POSNEGFOLDERS:
                 case_path = p + f"/{case}"
                 if os.path.exists(case_path):
                     run_test_cases(rule_regression, case, case_path, ig_specs, rule, target_case)
