@@ -33,41 +33,68 @@ class PrefixSuffixEqualToOperator(BaseSqlOperator):
         cache_key = f"{target_column}_{mode}_equal_to_{str(comparator).replace(' ', '_')}_{value_is_literal}_{length}"
 
         def sql():
+            target_sql = self._get_target_sql(target_column, length, mode)
+            if target_sql is None:
+                return "FALSE"
 
-            if mode == "prefix":
-                target_sql = self._column_sql(target_column, prefix=length)
-            else:
-                target_sql = self._column_sql(target_column, suffix=length)
+            domain_result = self._handle_domain_comparator(comparator, value_is_literal, target_column, target_sql)
+            if domain_result is not None:
+                return domain_result
 
-            # Handle special case for DOMAIN comparator
-            if comparator == DOMAIN and not value_is_literal:
-                domain_value = self.column_prefix_map.get("--", "")
-                if domain_value:
-                    return f"""NOT ({self._is_empty_sql(target_column)})
-                              AND LOWER({target_sql}) = LOWER({self._constant_sql(domain_value)})"""
-                else:
-                    return "FALSE"
+            if self._is_multi_value_comparator(comparator):
+                return self._build_multi_value_sql(target_column, target_sql, comparator)
 
-            # Determine data source and whether to use EXISTS pattern
-            if isinstance(comparator, list):
-                data_source = f"(VALUES {', '.join(f'({self._constant_sql(v)})' for v in comparator)})"
-            elif (
-                isinstance(comparator, str)
-                and comparator in self.operation_variables
-                and self.operation_variables[comparator].type == "collection"
-            ):
-                data_source = self._collection_sql(comparator)
-            else:
-                # Single value comparison
-                comparator_sql = self._sql(comparator, value_is_literal=value_is_literal)
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND LOWER({target_sql}) = LOWER({comparator_sql})"""
-
-            # Multi-value comparison using EXISTS
-            return f"""NOT ({self._is_empty_sql(target_column)})
-                      AND EXISTS (
-                          SELECT 1 FROM {data_source} AS values_table(value)
-                          WHERE LOWER({target_sql}) = LOWER(values_table.value)
-                      )"""
+            return self._build_single_value_sql(target_column, target_sql, comparator, value_is_literal)
 
         return self._do_check_operator(cache_key, sql)
+
+    def _get_target_sql(self, target_column, length, mode):
+        """Get the target SQL expression with prefix or suffix applied."""
+        try:
+            if mode == "prefix":
+                return self._column_sql(target_column, prefix=length)
+            else:
+                return self._column_sql(target_column, suffix=length)
+        except KeyError:
+            return None
+
+    def _handle_domain_comparator(self, comparator, value_is_literal, target_column, target_sql):
+        """Handle special case for DOMAIN comparator. Returns SQL or None if not applicable."""
+        if comparator == DOMAIN and not value_is_literal:
+            domain_value = self.column_prefix_map.get("--", "")
+            if domain_value:
+                return f"""NOT ({self._is_empty_sql(target_column)})
+                          AND LOWER({target_sql}) = LOWER({self._constant_sql(domain_value)})"""
+            else:
+                return "FALSE"
+        return None
+
+    def _is_multi_value_comparator(self, comparator):
+        """Check if comparator is a list or collection variable."""
+        if isinstance(comparator, list):
+            return True
+        if isinstance(comparator, str) and comparator in self.operation_variables:
+            return self.operation_variables[comparator].type == "collection"
+        return False
+
+    def _build_multi_value_sql(self, target_column, target_sql, comparator):
+        """Build SQL for multi-value comparison (list or collection)."""
+        if isinstance(comparator, list):
+            data_source = f"(VALUES {', '.join(f'({self._constant_sql(v)})' for v in comparator)})"
+        else:
+            data_source = self._collection_sql(comparator)
+
+        return f"""NOT ({self._is_empty_sql(target_column)})
+                  AND EXISTS (
+                      SELECT 1 FROM {data_source} AS values_table(value)
+                      WHERE LOWER({target_sql}) = LOWER(values_table.value)
+                  )"""
+
+    def _build_single_value_sql(self, target_column, target_sql, comparator, value_is_literal):
+        """Build SQL for single value comparison."""
+        try:
+            comparator_sql = self._sql(comparator, value_is_literal=value_is_literal)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND LOWER({target_sql}) = LOWER({comparator_sql})"""
+        except KeyError:
+            return "FALSE"

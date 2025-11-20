@@ -8,6 +8,9 @@ class HasDifferentValuesOperator(BaseSqlOperator):
         target_column = other_value.get("target").lower()
         operation_name = f"{target_column}_has_different_values"
 
+        if not self._exists(target_column):
+            return self._do_check_operator(operation_name, lambda: "FALSE")
+
         return self._do_check_operator(
             operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {self._table_sql()}) > 1"
         )

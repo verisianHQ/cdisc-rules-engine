@@ -28,8 +28,13 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         """Handle when comparator is a single column name."""
         comparator_column = self.replace_prefix(comparator).lower()
 
-        if not self._exists(comparator_column):
-            raise ValueError(f"Comparator column '{comparator}' does not exist in the dataset.")
+        if not self._exists(target_column) or not self._exists(comparator_column):
+            cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
+
+            def generate_update_query(db_table: str, db_column: str) -> str:
+                return f"UPDATE {db_table} SET {db_column} = FALSE"
+
+            return self._do_complex_check_operator(cache_key, generate_update_query)
 
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
 
@@ -71,8 +76,23 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         for comp in comparators:
             comp_col = self.replace_prefix(comp).lower()
             if not self._exists(comp_col):
-                raise ValueError(f"Comparator column '{comp}' does not exist in the dataset.")
+                cache_key = f"{target_column}_inconsistent_across_{
+                    '_'.join([self.replace_prefix(c).lower() for c in comparators])
+                }"
+
+                def generate_update_query(db_table: str, db_column: str) -> str:
+                    return f"UPDATE {db_table} SET {db_column} = FALSE"
+
+                return self._do_complex_check_operator(cache_key, generate_update_query)
             comparator_columns.append(comp_col)
+
+        if not self._exists(target_column):
+            cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
+
+            def generate_update_query(db_table: str, db_column: str) -> str:
+                return f"UPDATE {db_table} SET {db_column} = FALSE"
+
+            return self._do_complex_check_operator(cache_key, generate_update_query)
 
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
 
