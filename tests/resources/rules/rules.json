@@ -94532,36 +94532,41 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": "LNKGRP variable is not found in any of the other domains.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$VARIABLE_COUNT": 1,
-                                            "FALNKGRP": "CDISC001 - 1"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94603,10 +94608,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94628,28 +94636,28 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": "LNKGRP variable is not found in any of the other domains.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$VARIABLE_COUNT": 1,
-                                            "AELNKGRP": "A"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94683,10 +94691,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94711,26 +94722,41 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94762,10 +94788,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94787,18 +94816,28 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94822,10 +94861,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -110802,36 +110844,41 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": "LNKID variable is only found in one domain.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$VARIABLE_COUNT": 1,
-                                            "FALNKID": "CDISC001 - 1"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -110873,10 +110920,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -110898,26 +110948,26 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": "LNKID variable is only found in one domain.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "$VARIABLE_COUNT": 1,
-                                            "FALNKID": "CDISC001 - 1"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
                                     }
                                 ]
                             }
@@ -110953,10 +111003,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -110981,26 +111034,41 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "vs.xpt",
                                 "domain": "VS",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -111032,10 +111100,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -111057,18 +111128,28 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation variable_count is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -111092,10 +111173,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
