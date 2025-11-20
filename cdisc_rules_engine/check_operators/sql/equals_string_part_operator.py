@@ -15,7 +15,11 @@ class EqualsStringPartOperator(BaseSqlOperator):
         column with a regex
         """
         target = self.replace_prefix(other_value.get("target"))
-        target_column = self._column_sql(target)
+        try:
+            target_column = self._column_sql(target)
+        except KeyError:
+            target_column = None
+
         comparator = other_value.get("comparator")
         regex = other_value.get("regex")
         value_is_literal = other_value.get("value_is_literal", False)
@@ -23,9 +27,12 @@ class EqualsStringPartOperator(BaseSqlOperator):
         if not value_is_literal:
             comparator = self.replace_prefix(comparator)
 
-        comparator_column = (
-            self._column_sql(comparator) if not value_is_literal else self._sql(comparator, value_is_literal=True)
-        )
+        try:
+            comparator_column = (
+                self._column_sql(comparator) if not value_is_literal else self._sql(comparator, value_is_literal=True)
+            )
+        except KeyError:
+            comparator_column = None
 
         if self.invert:
             operator_name = f"{target}_does_not_equal_string_part_{comparator}_{regex}"
@@ -33,6 +40,9 @@ class EqualsStringPartOperator(BaseSqlOperator):
             operator_name = f"{target}_equals_string_part_{comparator}_{regex}"
 
         def sql():
+            if target_column is None or comparator_column is None:
+                return "TRUE" if self.invert else "FALSE"
+
             extracted_part = f"(regexp_match({comparator_column}::text, '{regex}'))[1]"
             equality_check = f"{target_column}::text = {extracted_part}"
 

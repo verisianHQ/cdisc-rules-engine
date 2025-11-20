@@ -33,10 +33,16 @@ class EqualToOperator(BaseSqlOperator):
             comparator = self.replace_prefix(comparator)
 
         if value_is_reference:
-            if not self._exists(target):
-                raise KeyError(f"Target column '{target}' not found in dataset")
-            if not self._exists(comparator):
-                raise KeyError(f"Comparator column '{comparator}' not found in dataset")
+            target_exists = self._exists(target)
+            comparator_exists = self._exists(comparator)
+
+            if not target_exists or not comparator_exists:
+                cache_key = f"{target}_ref=_{comparator}_{self.invert}_{self.case_insensitive}_{type_insensitive}"
+
+                def sql():
+                    return "TRUE" if self.invert else "FALSE"
+
+                return self._do_check_operator(cache_key, sql)
 
             return self._check_equality_reference(
                 target,
@@ -68,14 +74,21 @@ class EqualToOperator(BaseSqlOperator):
         Beware of empty values.
         See truth table above for details.
         """
-        target = self._sql(original_target, lowercase=case_insensitive)
-        comparator = self._sql(original_comparator, lowercase=case_insensitive, value_is_literal=value_is_literal)
+        try:
+            target = self._sql(original_target, lowercase=case_insensitive)
+            comparator = self._sql(original_comparator, lowercase=case_insensitive, value_is_literal=value_is_literal)
 
-        if type_insensitive:
-            target = f"""CAST({target} AS TEXT)"""
-            comparator = f"""CAST({comparator} AS TEXT)"""
+            if type_insensitive:
+                target = f"""CAST({target} AS TEXT)"""
+                comparator = f"""CAST({comparator} AS TEXT)"""
+        except KeyError:
+            target = None
+            comparator = None
 
         def sql():
+            if target is None or comparator is None:
+                return "TRUE" if invert else "FALSE"
+
             if invert:
                 return f"""CASE
                         WHEN {self._is_empty_sql(original_target)}
@@ -109,56 +122,83 @@ class EqualToOperator(BaseSqlOperator):
         Beware of empty values.
         See truth table above for details.
 
-        This method implements equality testing by reference, ie you specifiy a pivot
+        This method implements equality testing by reference, i.e. you specify a pivot
         column, that column is then used to look up which other column to compare
         that row against. The way we handle that in SQL is by finding out all of the
         columns that could be referenced (the DISTINCT values of the pivot column),
         and then generating a CASE statement that checks each of those values.
         """
-        target_col = self._column_sql(original_target, lowercase=case_insensitive, alias=True)
-        pivot_col = self._column_sql(pivot_column, alias=False)
+        target_col, pivot_col, comparison_values = self._prepare_reference_columns(
+            original_target, pivot_column, case_insensitive, type_insensitive
+        )
 
-        if type_insensitive:
-            target_col = f"""CAST({target_col} AS TEXT)"""
+        def sql():
+            if target_col is None or pivot_col is None:
+                return "TRUE" if invert else "FALSE"
 
-        # Find all of the values of the pivot column -> all columns to compare against
-        self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {pivot_col} col FROM {self._table_sql()};")
-        comparison_values = self.sql_data_service.pgi.fetch_all()
-        comparison_values = [item["col"].lower() for item in comparison_values]
-        comparison_values = filter(self._exists, comparison_values)
+            return self._build_reference_case_statement(
+                pivot_col, comparison_values, original_target, case_insensitive, type_insensitive, invert
+            )
 
-        # This builds up the case statement for a simple column comparison
-        def single_comparison_sql(original_c):
+        return self._do_check_operator(
+            f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
+        )
+
+    def _prepare_reference_columns(self, original_target, pivot_column, case_insensitive, type_insensitive):
+        """Prepare columns and comparison values for reference equality check."""
+        try:
+            target_col = self._column_sql(original_target, lowercase=case_insensitive, alias=True)
+            pivot_col = self._column_sql(pivot_column, alias=False)
+
+            if type_insensitive:
+                target_col = f"""CAST({target_col} AS TEXT)"""
+
+            # Find all of the values of the pivot column -> all columns to compare against
+            self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {pivot_col} col FROM {self._table_sql()};")
+            comparison_values = self.sql_data_service.pgi.fetch_all()
+            comparison_values = [item["col"].lower() for item in comparison_values]
+            comparison_values = list(filter(self._exists, comparison_values))
+
+            return target_col, pivot_col, comparison_values
+        except KeyError:
+            return None, None, []
+
+    def _build_reference_case_statement(
+        self, pivot_col, comparison_values, original_target, case_insensitive, type_insensitive, invert
+    ):
+        """Build the CASE statement for reference equality checking."""
+        sql = "CASE "
+        for c in comparison_values:
+            comparison_sql = self._single_comparison_sql(c, original_target, case_insensitive, type_insensitive, invert)
+            sql += f"WHEN LOWER({pivot_col}) = '{c.lower()}' THEN ({comparison_sql}) "
+        sql += "ELSE FALSE END"
+        return sql
+
+    def _single_comparison_sql(self, original_c, original_target, case_insensitive, type_insensitive, invert):
+        """Build SQL for a single column comparison in reference equality."""
+        try:
             c = self._column_sql(original_c, lowercase=case_insensitive, alias=True)
+            target_col = self._column_sql(original_target, lowercase=case_insensitive, alias=True)
 
             if type_insensitive:
                 c = f"""CAST({c} AS TEXT)"""
+                target_col = f"""CAST({target_col} AS TEXT)"""
+        except KeyError:
+            return "TRUE" if invert else "FALSE"
 
-            if invert:
-                return f"""CASE
+        if invert:
+            return f"""CASE
                         WHEN {self._is_empty_sql(original_target)}
-                            THEN {self._is_empty_sql(original_c)}
+                            THEN NOT ({self._is_empty_sql(original_c)})
                         WHEN {self._is_empty_sql(original_c)}
                             THEN TRUE
                         ELSE {target_col} != {c}
                     END"""
-            else:
-                return f"""CASE
+        else:
+            return f"""CASE
                         WHEN {self._is_empty_sql(original_target)}
                             THEN FALSE
                         WHEN {self._is_empty_sql(original_c)}
                             THEN FALSE
                         ELSE {target_col} = {c}
                     END"""
-
-        def sql():
-            sql = "CASE "
-            # Build a CASE statement for each possible column
-            for c in comparison_values:
-                sql += f"WHEN LOWER({pivot_col}) = '{c.lower()}' THEN ({single_comparison_sql(c)}) "
-            sql += "ELSE FALSE END"
-            return sql
-
-        return self._do_check_operator(
-            f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
-        )
