@@ -98483,51 +98483,26 @@
                             {
                                 "dataset": "zm.xpt",
                                 "domain": "ZM",
-                                "execution_status": "success",
-                                "execution_message": "First 2 characters of prefixed variable within custom domain do not match the DOMAIN value.",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$domain_list": [
-                                                "ZM"
-                                            ],
-                                            "variable_name": "AEINDC"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$domain_list": [
-                                                "ZM"
-                                            ],
-                                            "variable_name": "CMDOSE"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation domain_is_custom is not implemented"
                                     }
                                 ]
                             },
                             {
                                 "dataset": "zb.xpt",
                                 "domain": "ZB",
-                                "execution_status": "success",
-                                "execution_message": "First 2 characters of prefixed variable within custom domain do not match the DOMAIN value.",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 8,
-                                        "SEQ": null,
-                                        "USUBJID": "None",
-                                        "value": {
-                                            "$domain_list": [
-                                                "ZB"
-                                            ],
-                                            "variable_name": "LBORRES"
-                                        }
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation domain_is_custom is not implemented"
                                     }
                                 ]
                             }
@@ -98588,10 +98563,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98616,18 +98594,28 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation domain_is_custom is not implemented"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "zb.xpt",
                                 "domain": "ZB",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation domain_is_custom is not implemented"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98651,10 +98639,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
