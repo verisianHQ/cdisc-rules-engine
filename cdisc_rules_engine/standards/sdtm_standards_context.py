@@ -292,7 +292,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             # Gate: Only merge if domain_name matches current dataset
             domain_name = merge_spec.get("domain_name")
 
-            is_general_supp_merge = dataset_metadata.is_supp
+            is_general_supp_merge = domain_name.startswith("SUPP") and dataset_metadata.is_supp
             domain_matches = domain_name.upper() == dataset_metadata.domain.upper()
 
             if is_general_supp_merge or domain_matches:
