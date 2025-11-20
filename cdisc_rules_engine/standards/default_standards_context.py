@@ -44,9 +44,6 @@ class DefaultStandardsContext(BaseStandardsContext):
     def get_model_variables(self, domain: str):
         return []
 
-    def get_library_variables_metadata(self, dataset_metadata: BaseDatasetMetadata) -> list:
-        return []
-
     def within_rule_scope(self, scope: dict[str, Any], metadata: DatasetMetadata2):
         # TODO: Should do a domain check
         return True
