@@ -28,36 +28,62 @@ class IsContainedByOperator(BaseSqlOperator):
         prefix = other_value.get("prefix", None)
         suffix = other_value.get("suffix", None)
 
-        column = self._column_sql(target_column, lowercase=self.case_insensitive, prefix=prefix, suffix=suffix)
+        try:
+            column = self._column_sql(target_column, lowercase=self.case_insensitive, prefix=prefix, suffix=suffix)
+        except KeyError:
+            column = None
 
         cache_key = (
             f"{target_column}_contained_by_{comparator}_{value_is_literal}_{self.case_insensitive}_{prefix}_{suffix}"
         )
 
-        if isinstance(comparator, list) or (isinstance(comparator, str) and comparator in self.operation_variables):
+        if self._is_collection_comparator(comparator):
+            return self._handle_collection_comparator(target_column, column, comparator, cache_key)
+        elif self._is_column_comparator(comparator, value_is_literal):
+            return self._handle_column_comparator(target_column, column, comparator, cache_key)
+        else:
+            return self._handle_literal_comparator(other_value)
 
-            def sql():
-                return f"""NOT ({self._is_empty_sql(target_column)})
+    def _is_collection_comparator(self, comparator):
+        """Check if comparator is a list or operation variable collection."""
+        return isinstance(comparator, list) or (isinstance(comparator, str) and comparator in self.operation_variables)
+
+    def _is_column_comparator(self, comparator, value_is_literal):
+        """Check if comparator is a column name."""
+        return isinstance(comparator, str) and not value_is_literal and self._exists(comparator)
+
+    def _handle_collection_comparator(self, target_column, column, comparator, cache_key):
+        """Handle list or collection operation variable comparators."""
+
+        def sql():
+            if column is None:
+                return "FALSE"
+            return f"""NOT ({self._is_empty_sql(target_column)})
                           AND {column} IN {self._collection_sql(comparator, lowercase=self.case_insensitive)}"""
 
-        elif isinstance(comparator, str) and not value_is_literal and self._exists(comparator):
+        return self._do_check_operator(cache_key, sql)
 
-            def sql():
+    def _handle_column_comparator(self, target_column, column, comparator, cache_key):
+        """Handle column name comparators."""
+
+        def sql():
+            if column is None:
+                return "FALSE"
+            try:
+                comparator_col = self._column_sql(comparator, lowercase=self.case_insensitive, alias=False)
                 return f"""NOT ({self._is_empty_sql(target_column)})
                           AND {column} IN (
-                              SELECT DISTINCT {self._column_sql(comparator,
-                                                                lowercase=self.case_insensitive, alias=False)}
+                              SELECT DISTINCT {comparator_col}
                               FROM {self._table_sql()}
                               WHERE NOT ({self._is_empty_sql(comparator, alias=False)})
                           )"""
-
-        else:
-            return EqualToOperator(self.original_data, case_insensitive=self.case_insensitive).execute_operator(
-                {
-                    "target": other_value.get("target"),
-                    "comparator": comparator,
-                    "value_is_literal": True,
-                }
-            )
+            except KeyError:
+                return "FALSE"
 
         return self._do_check_operator(cache_key, sql)
+
+    def _handle_literal_comparator(self, other_value):
+        """Handle literal value comparators using EqualToOperator."""
+        return EqualToOperator(self.original_data, case_insensitive=self.case_insensitive).execute_operator(
+            {"target": other_value.get("target"), "comparator": other_value.get("comparator"), "value_is_literal": True}
+        )
