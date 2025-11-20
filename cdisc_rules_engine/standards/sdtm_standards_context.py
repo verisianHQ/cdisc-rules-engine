@@ -28,6 +28,7 @@ from cdisc_rules_engine.utilities.utils import (
     convert_library_class_name_to_ct_class,
     search_in_list_of_dicts,
 )
+from cdisc_rules_engine.utilities import sdtm_utilities
 
 
 class SdtmStandardsContext(BaseStandardsContext):
@@ -54,8 +55,11 @@ class SdtmStandardsContext(BaseStandardsContext):
     def derive_domain(self, filename: str):
         filename = filename.lower()
 
-        if filename.startswith("supp") or filename.startswith("sq"):
-            return filename.upper()
+        # may need to consider FA and QS here?
+        if filename.startswith("supp"):
+            return filename[0:6].upper()
+        elif filename.startswith("sq"):
+            return filename[0:4].upper()
         elif filename.startswith("relrec"):
             return "RELREC"
         elif filename.startswith("relspec"):
@@ -146,6 +150,55 @@ class SdtmStandardsContext(BaseStandardsContext):
         ct_packages = self.library_metadata.published_ct_packages
         return ct_packages
 
+    def get_model_variables(self, domain: str, class_nm: str = None):
+        # For SQL operations, use a simplified version that works with available metadata
+        model_details = self.get_model_metadata()
+
+        # Handle SUPP domain normalization like the original function
+        if domain and (domain.upper().startswith("SUPP") or domain.upper().startswith("SQ")) and len(domain) > 2:
+            domain = "SUPPQUAL"
+
+        domain_details = sdtm_utilities.get_model_domain_metadata(model_details, domain)
+        variables_metadata = []
+        class_name = None
+
+        if domain_details:
+            # Domain found in the model
+            class_name = convert_library_class_name_to_ct_class(domain_details["_links"]["parentClass"]["title"])
+            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
+            variables_metadata = domain_details.get("datasetVariables", [])
+            if variables_metadata:
+                variables_metadata.sort(key=lambda item: int(item["ordinal"]))
+        else:
+            # Domain not found in the model. Use the new get_dataset_class method
+            class_name = class_nm
+
+            if class_name is None:
+                # Fall back to General Observations class for unknown domains
+                from cdisc_rules_engine.constants.classes import GENERAL_OBSERVATIONS_CLASS
+
+                class_name = GENERAL_OBSERVATIONS_CLASS
+
+            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
+
+        # Apply class-specific logic for detectable classes
+        from cdisc_rules_engine.constants.classes import DETECTABLE_CLASSES
+
+        if class_name and class_name in DETECTABLE_CLASSES:
+            (
+                identifiers_metadata,
+                class_variables_metadata,
+                timing_metadata,
+            ) = sdtm_utilities.get_allowed_class_variables(model_details, class_details)
+            # Identifiers are added to the beginning and Timing to the end
+            variables_metadata = class_variables_metadata
+            if identifiers_metadata:
+                variables_metadata = identifiers_metadata + variables_metadata
+            if timing_metadata:
+                variables_metadata = variables_metadata + timing_metadata
+
+        return variables_metadata
+
     def within_rule_scope(self, rule: dict, metadata: DatasetMetadata2):
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
@@ -182,7 +235,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             # Gate: Only merge if domain_name matches current dataset
             domain_name = merge_spec.get("domain_name")
 
-            is_general_supp_merge = domain_name.startswith("SUPP") and dataset_metadata.is_supp
+            is_general_supp_merge = dataset_metadata.is_supp
             domain_matches = domain_name.upper() == dataset_metadata.domain.upper()
 
             if is_general_supp_merge or domain_matches:

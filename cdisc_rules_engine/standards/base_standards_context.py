@@ -47,6 +47,10 @@ class BaseStandardsContext(ABC):
         pass
 
     @abstractmethod
+    def get_model_variables(self, domain: str):
+        pass
+
+    @abstractmethod
     def within_rule_scope(self, scope: dict[str, Any], metadata: DatasetMetadata2):
         pass
 

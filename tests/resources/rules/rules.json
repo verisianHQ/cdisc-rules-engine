@@ -82586,9 +82586,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppapfamh.xpt",
-                                "domain": "SUPPAPFAMH",
+                                "domain": "SUPPAP",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSUPPAPFAMH dataset is greater than 8.",
+                                "execution_message": "Length of dataset name of SUPPSUPPAP dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -82660,9 +82660,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdmmmm.xpt",
-                                "domain": "SUPPDMMMM",
+                                "domain": "SUPPDM",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSUPPDMMMM dataset is greater than 8.",
+                                "execution_message": "Length of dataset name of SUPPSUPPDM dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -82737,9 +82737,9 @@
                         "results_sql": [
                             {
                                 "dataset": "sqapfamh.xpt",
-                                "domain": "SQAPFAMH",
+                                "domain": "SQAP",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSQAPFAMH dataset is greater than 8.",
+                                "execution_message": "Length of dataset name of SUPPSQAP dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -82793,9 +82793,9 @@
                         "results_sql": [
                             {
                                 "dataset": "suppdmdm.xpt",
-                                "domain": "SUPPDMDM",
+                                "domain": "SUPPDM",
                                 "execution_status": "success",
-                                "execution_message": "Length of dataset name of SUPPSUPPDMDM dataset is greater than 8.",
+                                "execution_message": "Length of dataset name of SUPPSUPPDM dataset is greater than 8.",
                                 "number_errors": 1,
                                 "errors": [
                                     {
@@ -94313,7 +94313,7 @@
                         "results_sql": [
                             {
                                 "dataset": "suppqscqi.xpt",
-                                "domain": "SUPPQSCQI",
+                                "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
                                 "number_errors": 2,
@@ -94338,7 +94338,7 @@
                             },
                             {
                                 "dataset": "suppqsswls.xpt",
-                                "domain": "SUPPQSSWLS",
+                                "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
                                 "number_errors": 2,
@@ -94422,7 +94422,7 @@
                         "results_sql": [
                             {
                                 "dataset": "suppqscq.xpt",
-                                "domain": "SUPPQSCQ",
+                                "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
                                 "number_errors": 2,
@@ -94447,7 +94447,7 @@
                             },
                             {
                                 "dataset": "suppqssw.xpt",
-                                "domain": "SUPPQSSW",
+                                "domain": "SUPPQS",
                                 "execution_status": "success",
                                 "execution_message": "Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length",
                                 "number_errors": 2,
@@ -103421,7 +103421,7 @@
                             },
                             {
                                 "dataset": "suppqscg.xpt",
-                                "domain": "SUPPQSCG",
+                                "domain": "SUPPQS",
                                 "execution_status": "skipped",
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=SUPPQSCG",
                                 "number_errors": 0,
@@ -104477,7 +104477,7 @@
                             },
                             {
                                 "dataset": "suppqscg.xpt",
-                                "domain": "SUPPQSCG",
+                                "domain": "SUPPQS",
                                 "execution_status": "skipped",
                                 "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000527, dataset=SUPPQSCG",
                                 "number_errors": 0,
@@ -106475,7 +106475,7 @@
                         "results_sql": [
                             {
                                 "dataset": "supplbch.xpt",
-                                "domain": "SUPPLBCH",
+                                "domain": "SUPPLB",
                                 "execution_status": "execution_error",
                                 "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
@@ -106678,7 +106678,7 @@
                         "results_sql": [
                             {
                                 "dataset": "supplbch.xpt",
-                                "domain": "SUPPLBCH",
+                                "domain": "SUPPLB",
                                 "execution_status": "execution_error",
                                 "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
