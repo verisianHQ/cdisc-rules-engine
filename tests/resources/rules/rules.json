@@ -107547,28 +107547,18 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107614,13 +107604,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107691,28 +107678,18 @@
                             {
                                 "dataset": "qs.xpt",
                                 "domain": "QS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107742,7 +107719,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107787,41 +107764,26 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107859,7 +107821,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107881,15 +107843,10 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_is_not_contained_by operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -107927,7 +107884,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107971,9 +107928,21 @@
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Parent domain referenced in Findings About dataset name is not present in the study",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$list_dataset_names": [
+                                                "facm"
+                                            ],
+                                            "dataset_name": "FACM"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108001,10 +107970,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -108029,23 +107995,32 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_equal_to operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Parent domain referenced in Findings About dataset name is not present in the study",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$list_dataset_names": [
+                                                "fa",
+                                                "facm",
+                                                "fa1"
+                                            ],
+                                            "dataset_name": "FACM"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "fa1.xpt",
@@ -108089,7 +108064,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108115,22 +108090,30 @@
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_message": "Parent domain referenced in Findings About dataset name is not present in the study",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$list_dataset_names": [
+                                                "facm",
+                                                "cm"
+                                            ],
+                                            "dataset_name": "FACM"
+                                        }
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "cm.xpt",
                                 "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_equal_to operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108155,12 +108138,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108183,43 +108166,63 @@
                                 "dataset": "facm.xpt",
                                 "domain": "FA",
                                 "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
-                            },
-                            {
-                                "dataset": "cm.xpt",
-                                "domain": "CM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_message": "Parent domain referenced in Findings About dataset name is not present in the study",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in prefix_equal_to operator",
-                                        "message": "string index out of range"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$list_dataset_names": [
+                                                "facm",
+                                                "cm",
+                                                "famh",
+                                                "mh"
+                                            ],
+                                            "dataset_name": "FACM"
+                                        }
                                     }
                                 ]
                             },
                             {
-                                "dataset": "famh.xpt",
-                                "domain": "FA",
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
                                 "execution_status": "success",
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
                             },
                             {
-                                "dataset": "mh.xpt",
-                                "domain": "MH",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "dataset": "famh.xpt",
+                                "domain": "FA",
+                                "execution_status": "success",
+                                "execution_message": "Parent domain referenced in Findings About dataset name is not present in the study",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in prefix_equal_to operator",
-                                        "message": "string index out of range"
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "$list_dataset_names": [
+                                                "facm",
+                                                "cm",
+                                                "famh",
+                                                "mh"
+                                            ],
+                                            "dataset_name": "FAMH"
+                                        }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -108252,12 +108255,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": true,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108279,15 +108282,10 @@
                             {
                                 "dataset": "fa.xpt",
                                 "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_equal_to operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "apmh.xpt",
@@ -108319,13 +108317,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114491,15 +114486,10 @@
                             {
                                 "dataset": "ab.xpt",
                                 "domain": "AB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_not_equal_to operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -114525,12 +114515,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114553,18 +114543,9 @@
                                 "dataset": "alb.xpt",
                                 "domain": "AL",
                                 "execution_status": "success",
-                                "execution_message": "Dataset name does not begin with DOMAIN value",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "ALB"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -114589,7 +114570,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
+                            "diff": {}
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -114617,15 +114601,10 @@
                             {
                                 "dataset": "lb.xpt",
                                 "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_not_equal_to operator",
-                                        "message": "string index out of range"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -114641,13 +114620,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",

@@ -231,7 +231,7 @@ class BaseSqlOperator:
             dataset_name = self.dataset_metadata.name
             if prefix:
                 prefix = int(prefix)
-                dataset_name = dataset_name[prefix] if prefix > 0 else ""
+                dataset_name = dataset_name[:prefix] if prefix > 0 else ""
             if suffix:
                 suffix = int(suffix)
                 dataset_name = dataset_name[-suffix:] if suffix > 0 else ""
