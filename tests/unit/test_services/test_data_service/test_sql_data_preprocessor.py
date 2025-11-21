@@ -2,17 +2,10 @@
 Unit tests for SqlDataPreprocessor split dataset functionality.
 """
 
-import re
-from collections import defaultdict
-from typing import Dict, List
-
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
-from cdisc_rules_engine.standards.default_standards_context import (
-    DefaultStandardsContext,
-)
 
 SIMPLE_SPLIT_AE_DATA = {
     "ae1": {
@@ -101,77 +94,15 @@ NON_SPLIT_DATA = {
     },
 }
 
-
-class TestSdtmStandardsContext(DefaultStandardsContext):
-    """
-    Test SDTM standards context with split detection implementation
-    without requiring library metadata args.
-    """
-
-    def detect_split_datasets(self, dataset_names: List[str]) -> Dict[str, List[str]]:
-        """Detect split datasets by naming convention."""
-        split_groups = defaultdict(list)
-
-        datasets = [name.lower() for name in dataset_names]
-
-        for dataset in datasets:
-            unsplit_name = self._get_unsplit_name(dataset)
-
-            if unsplit_name != dataset:
-                split_groups[unsplit_name].append(dataset)
-
-        return {k: v for k, v in split_groups.items() if len(v) > 1}
-
-    @staticmethod
-    def _get_unsplit_name(dataset_name: str) -> str:
-        """Extract the unsplit (logical) name from a dataset name."""
-        dataset = dataset_name.lower()
-
-        # Pattern 1: Domain + digit(s) (e.g., AE1, AE2, QS36)
-        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # Pattern 2: SUPP + domain + digit (e.g., SUPPAE1, SUPPQS2)
-        match = re.match(r"^supp([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return f"supp{match.group(1)}"
-
-        # Pattern 3: FA + 2-char parent domain (e.g., FACM, FAEG)
-        match = re.match(r"^fa([a-z]{2})$", dataset)
-        if match:
-            return "fa"
-
-        # Pattern 4: SUPP + FA + parent domain (e.g., SUPPFACM, SUPPFAEG)
-        match = re.match(r"^suppfa([a-z]{2})$", dataset)
-        if match:
-            return "suppfa"
-
-        # Pattern 5: SQ (Supplemental Qualifiers) + suffix
-        match = re.match(r"^sq([a-z]+\d*)$", dataset)
-        if match:
-            return "sq"
-
-        # Pattern 6: Domain + letter suffix (e.g., QSA, QSB for questionnaires)
-        match = re.match(r"^([a-z]{2,4})([a-z])$", dataset)
-        if match:
-            base = match.group(1)
-            suffix = match.group(2)
-            if len(base) >= 2 and len(suffix) == 1:
-                return base
-
-        return dataset
-
-
 # ============================================================================
 # Concatenation Tests
 # ============================================================================
 
 
-def test_concatenate_simple_splits():
+def test_concatenate_simple_splits(sdtm_standards_context):
     """Test concatenation of simple split datasets."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -215,10 +146,10 @@ def test_concatenate_simple_splits():
     assert row_count == expected_count
 
 
-def test_source_ds_column_values():
+def test_source_ds_column_values(sdtm_standards_context):
     """Test that SOURCE_DS column contains correct source dataset names."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -238,10 +169,10 @@ def test_source_ds_column_values():
     assert source_values == {"AE1", "AE2", "AE3"}
 
 
-def test_concatenate_supp_splits():
+def test_concatenate_supp_splits(sdtm_standards_context):
     """Test concatenation of SUPP split datasets."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SPLIT_SUPP_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -258,10 +189,10 @@ def test_concatenate_supp_splits():
     assert count == expected
 
 
-def test_concatenate_fa_splits():
+def test_concatenate_fa_splits(sdtm_standards_context):
     """Test concatenation of FA (Findings About) splits."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SPLIT_FA_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -282,10 +213,10 @@ def test_concatenate_fa_splits():
     assert exists is True
 
 
-def test_concatenate_letter_suffix_splits():
+def test_concatenate_letter_suffix_splits(sdtm_standards_context):
     """Test concatenation of letter suffix splits (questionnaires)."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SPLIT_QS_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -301,10 +232,10 @@ def test_concatenate_letter_suffix_splits():
     assert sources == {"QSA", "QSB"}
 
 
-def test_multiple_split_groups_simultaneously():
+def test_multiple_split_groups_simultaneously(sdtm_standards_context):
     """Test processing multiple split groups in one preprocessing run."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     all_data = {**SIMPLE_SPLIT_AE_DATA, **SPLIT_SUPP_DATA}
 
@@ -333,10 +264,10 @@ def test_multiple_split_groups_simultaneously():
 # ============================================================================
 
 
-def test_no_split_datasets():
+def test_no_split_datasets(sdtm_standards_context):
     """Test preprocessing when no split datasets exist."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in NON_SPLIT_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -348,10 +279,10 @@ def test_no_split_datasets():
     assert results["total_parts_concatenated"] == 0
 
 
-def test_empty_datasets_list():
+def test_empty_datasets_list(sdtm_standards_context):
     """Test preprocessing with no datasets loaded."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     data_service.datasets = []
 
@@ -367,10 +298,10 @@ def test_empty_datasets_list():
 # ============================================================================
 
 
-def test_full_preprocessing_pipeline():
+def test_full_preprocessing_pipeline(sdtm_standards_context):
     """Test the complete preprocessing pipeline."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -390,10 +321,10 @@ def test_full_preprocessing_pipeline():
     assert results["split_processing"]["groups_processed"] == 1
 
 
-def test_query_concatenated_dataset():
+def test_query_concatenated_dataset(sdtm_standards_context):
     """Test querying a concatenated dataset."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -416,10 +347,10 @@ def test_query_concatenated_dataset():
     assert result["source_ds"] == "AE1"
 
 
-def test_filter_by_source_ds():
+def test_filter_by_source_ds(sdtm_standards_context):
     """Test filtering concatenated dataset by SOURCE_DS."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
@@ -439,10 +370,10 @@ def test_filter_by_source_ds():
     assert result["count"] == expected
 
 
-def test_metadata_created_for_concatenated_datasets():
+def test_metadata_created_for_concatenated_datasets(sdtm_standards_context):
     """Test that metadata is properly created for concatenated datasets."""
     data_service = PostgresQLDataService.instance()
-    standards_context = TestSdtmStandardsContext()
+    standards_context = sdtm_standards_context
 
     for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
         PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
