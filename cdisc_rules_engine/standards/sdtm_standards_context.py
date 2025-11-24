@@ -708,39 +708,32 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
-
-        Detection rules from SDTMIG v3.4 Section 4.1.7:
-        - AE -> not split (domain only)
-        - AE1, AE2 -> split (domain + alphanumeric char suffix)
-        - SUPPAE1 -> split (SUPP + domain + alphanumeric char suffix)
-        - FACM, FAEG -> split Findings About (FA + 2-char parent domain code)
-        - SUPPQS36, SUPPQSPI, SUPPFACM -> split supplemental qualifiers
         """
         dataset = dataset_name.lower()
 
-        # Pattern 1: Domain + alphanumeric char suffix
-        match = re.match(r"^([a-z]{2,4})([a-z0-9]+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # Pattern 2: SUPP + domain + alphanumeric char suffix
-        match = re.match(r"^supp([a-z]{2,4})([a-z0-9]+)$", dataset)
-        if match:
-            return f"supp{match.group(1)}"
-
-        # Pattern 3: FA + 2-char parent domain (e.g. FACM, FAEG)
-        match = re.match(r"^fa([a-z]{2})$", dataset)
-        if match:
-            return "fa"
-
-        # Pattern 4: SUPP + FA + parent domain (e.g. SUPPFACM, SUPPFAEG)
+        # supp + fa + parent domain (e.g. suppfacm, suppfaeg)
         match = re.match(r"^suppfa([a-z]{2})$", dataset)
         if match:
             return "suppfa"
 
-        # Pattern 5: SQ (Supplemental Qualifiers) + suffix
+        # supp + domain + alphanumeric suffix (e.g. suppae1, suppae2)
+        match = re.match(r"^supp([a-z]{2,4})([a-z0-9]+)$", dataset)
+        if match:
+            return f"supp{match.group(1)}"
+
+        # fa + 2-char parent domain (e.g. facm, faeg)
+        match = re.match(r"^fa([a-z]{2})$", dataset)
+        if match:
+            return "fa"
+
+        # sq (supplemental qualifiers) + suffix
         match = re.match(r"^sq([a-z]+\d*)$", dataset)
         if match:
             return "sq"
+
+        # domain + alphanumeric suffix (e.g. ae1, ae2, dmae1)
+        match = re.match(r"^([a-z]{2,4})([a-z0-9]+)$", dataset)
+        if match:
+            return match.group(1)
 
         return dataset

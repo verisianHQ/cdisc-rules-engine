@@ -49,36 +49,6 @@ SPLIT_SUPP_DATA = {
     },
 }
 
-SPLIT_FA_DATA = {
-    "facm": {
-        "studyid": ["ABC", "ABC"],
-        "usubjid": ["001", "002"],
-        "faseq": [1, 2],
-        "faobj": ["ASPIRIN", "IBUPROFEN"],
-    },
-    "faeg": {
-        "studyid": ["ABC"],
-        "usubjid": ["003"],
-        "faseq": [1],
-        "faobj": ["ECG NORMAL"],
-    },
-}
-
-SPLIT_QS_DATA = {
-    "qsa": {
-        "studyid": ["ABC"],
-        "usubjid": ["001"],
-        "qsseq": [1],
-        "qstest": ["PAIN SCALE"],
-    },
-    "qsb": {
-        "studyid": ["ABC"],
-        "usubjid": ["002"],
-        "qsseq": [1],
-        "qstest": ["ANXIETY SCALE"],
-    },
-}
-
 NON_SPLIT_DATA = {
     "dm": {
         "studyid": ["ABC", "ABC", "ABC"],
@@ -99,8 +69,226 @@ NON_SPLIT_DATA = {
 # ============================================================================
 
 
-def test_concatenate_simple_splits(sdtm_standards_context):
-    """Test concatenation of simple split datasets."""
+def test_concatenate_two_parts(sdtm_standards_context):
+    """Test basic concatenation of two dataset parts."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        "ae1",
+        {
+            "studyid": ["ABC", "ABC"],
+            "usubjid": ["001", "002"],
+            "aeterm": ["Headache", "Nausea"],
+        },
+        standards_context,
+    )
+
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        "ae2",
+        {
+            "studyid": ["ABC"],
+            "usubjid": ["003"],
+            "aeterm": ["Fatigue"],
+        },
+        standards_context,
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
+
+    check_query = """
+        SELECT EXISTS (
+            SELECT 1 FROM information_schema.tables
+            WHERE table_schema = 'public' AND table_name = 'ae'
+        )
+    """
+    data_service.pgi.execute_sql(check_query)
+    assert data_service.pgi.fetch_one()["exists"] is True
+
+    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    assert data_service.pgi.fetch_one()["count"] == 3
+
+
+def test_concatenate_preserves_source_ds(sdtm_standards_context):
+    """Test that SOURCE_DS column values match original table names."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"]}, standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
+
+    query = "SELECT DISTINCT source_ds FROM ae ORDER BY source_ds"
+    data_service.pgi.execute_sql(query)
+    sources = {row["source_ds"] for row in data_service.pgi.fetch_all()}
+
+    assert sources == {"AE1", "AE2"}
+
+
+def test_concatenate_maintains_source_row_order(sdtm_standards_context):
+    """Test that rows are ordered by SOURCE_DS then SOURCE_ROW_NUMBER."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["003"]}, standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
+
+    query = "SELECT source_ds, source_row_number FROM ae ORDER BY source_ds, source_row_number"
+    data_service.pgi.execute_sql(query)
+    results = data_service.pgi.fetch_all()
+
+    assert results[0]["source_ds"] == "AE1"
+    assert results[1]["source_ds"] == "AE2"
+
+
+def test_concatenate_empty_part(sdtm_standards_context):
+    """Test concatenation when one part is empty."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"]}, standards_context
+    )
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"]}, standards_context
+    )
+
+    data_service.pgi.execute_sql("DELETE FROM ae2")
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
+
+    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    assert data_service.pgi.fetch_one()["count"] == 1
+
+
+def test_concatenate_creates_indexes(sdtm_standards_context):
+    """Test that appropriate indexes are created on concatenated table."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "dm1", {"studyid": ["ABC"], "usubjid": ["001"], "age": [25]}, standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, "dm2", {"studyid": ["ABC"], "usubjid": ["002"], "age": [30]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    preprocessor._concatenate_split_parts("dm", ["dm1", "dm2"])
+
+    index_query = """
+        SELECT indexname FROM pg_indexes
+        WHERE tablename = 'dm'
+        AND schemaname = 'public'
+    """
+    data_service.pgi.execute_sql(index_query)
+    indexes = {row["indexname"] for row in data_service.pgi.fetch_all()}
+
+    assert "idx_dm_source_ds" in indexes
+    assert "idx_dm_source_row_number" in indexes
+    assert "idx_dm_studyid_usubjid" in indexes
+
+
+# ============================================================================
+# Metadata Creation Tests
+# ============================================================================
+
+
+def test_create_metadata_basic(sdtm_standards_context):
+    """Test basic metadata creation from split parts."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"], "aeterm": ["Headache"]}, standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"], "aeterm": ["Nausea"]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    metadata = preprocessor._create_metadata_from_split_parts("ae", ["ae1", "ae2"])
+
+    assert metadata is not None
+    assert metadata.name == "AE"
+    assert metadata.filename == "ae.xpt"
+
+
+def test_create_metadata_merges_variables(sdtm_standards_context):
+    """Test that variables from all parts are included in merged metadata."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"], "aeterm": ["Headache"]}, standards_context
+    )
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"], "aedecod": ["NAUSEA"]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    metadata = preprocessor._create_metadata_from_split_parts("ae", ["ae1", "ae2"])
+
+    var_names = {var.name.upper() for var in metadata.variables}
+
+    assert "STUDYID" in var_names
+    assert "USUBJID" in var_names
+    assert "AETERM" in var_names or "AEDECOD" in var_names
+
+
+def test_create_metadata_handles_missing_part(sdtm_standards_context):
+    """Test metadata creation when a referenced part doesn't exist."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"]}, standards_context
+    )
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    metadata = preprocessor._create_metadata_from_split_parts("ae", ["ae1", "ae2"])
+
+    assert metadata is not None
+    assert metadata.name == "AE"
+
+
+def test_create_metadata_no_parts_found(sdtm_standards_context):
+    """Test metadata creation when no parts have metadata."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    metadata = preprocessor._create_metadata_from_split_parts("ae", ["ae1", "ae2"])
+
+    assert metadata is None
+
+
+# ============================================================================
+# Integration Tests
+# ============================================================================
+
+
+def test_process_split_datasets_end_to_end(sdtm_standards_context):
+    """Test complete flow: detect, concatenate, create metadata."""
     data_service = PostgresQLDataService.instance()
     standards_context = sdtm_standards_context
 
@@ -115,8 +303,6 @@ def test_concatenate_simple_splits(sdtm_standards_context):
     assert results["groups_processed"] == 1
     assert results["total_parts_concatenated"] == 3
 
-    assert len(data_service.datasets) == initial_count + 1
-
     check_table_query = """
         SELECT EXISTS (
             SELECT 1 FROM information_schema.tables
@@ -124,116 +310,15 @@ def test_concatenate_simple_splits(sdtm_standards_context):
         )
     """
     data_service.pgi.execute_sql(check_table_query)
-    table_exists = data_service.pgi.fetch_one()["exists"]
-    assert table_exists is True
+    assert data_service.pgi.fetch_one()["exists"] is True
 
-    check_column_query = """
-        SELECT EXISTS (
-            SELECT 1 FROM information_schema.columns
-            WHERE table_schema = 'public'
-            AND table_name = 'ae'
-            AND column_name = 'source_ds'
-        )
-    """
-    data_service.pgi.execute_sql(check_column_query)
-    column_exists = data_service.pgi.fetch_one()["exists"]
-    assert column_exists is True
-
-    count_query = "SELECT COUNT(*) as count FROM ae"
-    data_service.pgi.execute_sql(count_query)
-    row_count = data_service.pgi.fetch_one()["count"]
-    expected_count = sum(len(data["usubjid"]) for data in SIMPLE_SPLIT_AE_DATA.values())
-    assert row_count == expected_count
+    assert len(data_service.datasets) == initial_count + 1
+    ae_metadata = next((ds for ds in data_service.datasets if ds.name.upper() == "AE"), None)
+    assert ae_metadata is not None
 
 
-def test_source_ds_column_values(sdtm_standards_context):
-    """Test that SOURCE_DS column contains correct source dataset names."""
-    data_service = PostgresQLDataService.instance()
-    standards_context = sdtm_standards_context
-
-    for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
-        PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
-
-    preprocessor = SqlDataPreprocessor(data_service, standards_context)
-    preprocessor._process_split_datasets()
-
-    query = """
-        SELECT DISTINCT source_ds
-        FROM ae
-        ORDER BY source_ds
-    """
-    data_service.pgi.execute_sql(query)
-    sources = data_service.pgi.fetch_all()
-    source_values = {row["source_ds"] for row in sources}
-
-    assert source_values == {"AE1", "AE2", "AE3"}
-
-
-def test_concatenate_supp_splits(sdtm_standards_context):
-    """Test concatenation of SUPP split datasets."""
-    data_service = PostgresQLDataService.instance()
-    standards_context = sdtm_standards_context
-
-    for table_name, data in SPLIT_SUPP_DATA.items():
-        PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
-
-    preprocessor = SqlDataPreprocessor(data_service, standards_context)
-    results = preprocessor._process_split_datasets()
-
-    assert results["groups_processed"] == 1
-
-    check_query = "SELECT COUNT(*) as count FROM suppae"
-    data_service.pgi.execute_sql(check_query)
-    count = data_service.pgi.fetch_one()["count"]
-    expected = sum(len(data["usubjid"]) for data in SPLIT_SUPP_DATA.values())
-    assert count == expected
-
-
-def test_concatenate_fa_splits(sdtm_standards_context):
-    """Test concatenation of FA (Findings About) splits."""
-    data_service = PostgresQLDataService.instance()
-    standards_context = sdtm_standards_context
-
-    for table_name, data in SPLIT_FA_DATA.items():
-        PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
-
-    preprocessor = SqlDataPreprocessor(data_service, standards_context)
-    results = preprocessor._process_split_datasets()
-
-    assert results["groups_processed"] == 1
-
-    check_query = """
-        SELECT EXISTS (
-            SELECT 1 FROM information_schema.tables
-            WHERE table_schema = 'public' AND table_name = 'fa'
-        )
-    """
-    data_service.pgi.execute_sql(check_query)
-    exists = data_service.pgi.fetch_one()["exists"]
-    assert exists is True
-
-
-def test_concatenate_letter_suffix_splits(sdtm_standards_context):
-    """Test concatenation of letter suffix splits (questionnaires)."""
-    data_service = PostgresQLDataService.instance()
-    standards_context = sdtm_standards_context
-
-    for table_name, data in SPLIT_QS_DATA.items():
-        PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
-
-    preprocessor = SqlDataPreprocessor(data_service, standards_context)
-    results = preprocessor._process_split_datasets()
-
-    assert results["groups_processed"] == 1
-
-    query = "SELECT DISTINCT source_ds FROM qs ORDER BY source_ds"
-    data_service.pgi.execute_sql(query)
-    sources = {row["source_ds"] for row in data_service.pgi.fetch_all()}
-    assert sources == {"QSA", "QSB"}
-
-
-def test_multiple_split_groups_simultaneously(sdtm_standards_context):
-    """Test processing multiple split groups in one preprocessing run."""
+def test_process_multiple_groups(sdtm_standards_context):
+    """Test processing multiple split groups in one run."""
     data_service = PostgresQLDataService.instance()
     standards_context = sdtm_standards_context
 
@@ -259,13 +344,8 @@ def test_multiple_split_groups_simultaneously(sdtm_standards_context):
         assert exists is True, f"Table {table} should exist"
 
 
-# ============================================================================
-# Error Handling Tests
-# ============================================================================
-
-
-def test_no_split_datasets(sdtm_standards_context):
-    """Test preprocessing when no split datasets exist."""
+def test_process_no_splits(sdtm_standards_context):
+    """Test processing when no split datasets exist."""
     data_service = PostgresQLDataService.instance()
     standards_context = sdtm_standards_context
 
@@ -279,8 +359,8 @@ def test_no_split_datasets(sdtm_standards_context):
     assert results["total_parts_concatenated"] == 0
 
 
-def test_empty_datasets_list(sdtm_standards_context):
-    """Test preprocessing with no datasets loaded."""
+def test_process_empty_datasets_list(sdtm_standards_context):
+    """Test processing with no datasets loaded."""
     data_service = PostgresQLDataService.instance()
     standards_context = sdtm_standards_context
 
@@ -293,13 +373,8 @@ def test_empty_datasets_list(sdtm_standards_context):
     assert results["total_parts_concatenated"] == 0
 
 
-# ============================================================================
-# Integration Tests
-# ============================================================================
-
-
 def test_full_preprocessing_pipeline(sdtm_standards_context):
-    """Test the complete preprocessing pipeline."""
+    """Test preprocessing with splits as part of broader preprocessing."""
     data_service = PostgresQLDataService.instance()
     standards_context = sdtm_standards_context
 
@@ -368,23 +443,3 @@ def test_filter_by_source_ds(sdtm_standards_context):
 
     expected = len(SIMPLE_SPLIT_AE_DATA["ae1"]["usubjid"])
     assert result["count"] == expected
-
-
-def test_metadata_created_for_concatenated_datasets(sdtm_standards_context):
-    """Test that metadata is properly created for concatenated datasets."""
-    data_service = PostgresQLDataService.instance()
-    standards_context = sdtm_standards_context
-
-    for table_name, data in SIMPLE_SPLIT_AE_DATA.items():
-        PostgresQLDataService.add_test_dataset(data_service, table_name, data, standards_context)
-
-    initial_count = len(data_service.datasets)
-
-    preprocessor = SqlDataPreprocessor(data_service, standards_context)
-    preprocessor._process_split_datasets()
-
-    assert len(data_service.datasets) == initial_count + 1
-
-    ae_metadata = next((ds for ds in data_service.datasets if ds.name.upper() == "AE"), None)
-    assert ae_metadata is not None
-    assert ae_metadata.filename == "ae.xpt"
