@@ -15,4 +15,4 @@ class ReferencesCorrectCodelistOperator(BaseSqlOperator):
         raise NotImplementedError("references_correct_codelist check_operator not implemented")
 
     def _get_result_for_missing_column(self):
-        return "FALSE"
+        raise NotImplementedError("references_correct_codelist check_operator not implemented")

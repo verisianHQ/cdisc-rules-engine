@@ -27,4 +27,4 @@ class VariableMetadataEqualToOperator(BaseSqlOperator):
         raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")
 
     def _get_result_for_missing_column(self):
-        return "FALSE"
+        raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")

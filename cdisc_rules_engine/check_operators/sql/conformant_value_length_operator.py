@@ -10,3 +10,6 @@ class ConformantValueLengthOperator(BaseSqlOperator):
             results |= self.validation_df.apply(lambda row: vlm["filter"](row) and vlm["length_check"](row), axis=1)
         return self.validation_df.convert_to_series(results)"""
         raise NotImplementedError("conformant_value_length check_operator not implemented")
+
+    def _get_result_for_missing_column(self):
+        raise NotImplementedError("conformant_value_length check_operator not implemented")
