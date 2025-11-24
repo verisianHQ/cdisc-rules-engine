@@ -20,4 +20,4 @@ class ValueHasMultipleReferencesOperator(BaseSqlOperator):
         raise NotImplementedError("value_has_multiple_references check_operator not implemented")
 
     def _get_result_for_missing_column(self):
-        return "FALSE"
+        raise NotImplementedError("value_has_multiple_references check_operator not implemented")

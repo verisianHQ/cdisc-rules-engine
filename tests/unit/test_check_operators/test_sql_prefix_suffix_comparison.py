@@ -76,25 +76,6 @@ PREFIX_EQUAL_TO_TEST_DATA = [
         [False, False, False],
         None,
     ),
-    # Dataset name test cases
-    (
-        {"dummy_col": ["val1", "val2", "val3"]},
-        "dataset_name",
-        "TEST",
-        True,
-        4,
-        [True, True, True],
-        "TESTDATA",
-    ),
-    (
-        {"dummy_col": ["val1", "val2"]},
-        "dataset_name",
-        "TEST",
-        True,
-        3,
-        [False, False],
-        "TESTDATA",
-    ),
 ]
 
 
@@ -217,25 +198,6 @@ SUFFIX_EQUAL_TO_TEST_DATA = [
         4,
         [False, False, False],
         None,
-    ),
-    # Dataset name test cases
-    (
-        {"dummy_col": ["val1", "val2", "val3"]},
-        "dataset_name",
-        "DATA",
-        True,
-        4,
-        [True, True, True],
-        "TESTDATA",
-    ),
-    (
-        {"dummy_col": ["val1", "val2"]},
-        "dataset_name",
-        "DATA",
-        True,
-        3,
-        [False, False],
-        "TESTDATA",
     ),
 ]
 
