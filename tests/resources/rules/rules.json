@@ -30364,10 +30364,15 @@
                             {
                                 "dataset": "pooldef.xpt",
                                 "domain": "PO",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in prefix_matches_regex operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "di.xpt",
@@ -30452,13 +30457,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -30622,10 +30624,15 @@
                             {
                                 "dataset": "pooldef.xpt",
                                 "domain": "PO",
-                                "execution_status": "success",
-                                "execution_message": null,
-                                "number_errors": 0,
-                                "errors": []
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in prefix_matches_regex operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             },
                             {
                                 "dataset": "di.xpt",
@@ -30694,13 +30701,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -36064,7 +36068,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMSTDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -36158,7 +36162,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMSTDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -43406,7 +43410,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_not_contained_by operator",
-                                        "message": "'usubjid'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -44043,7 +44047,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_not_contained_by operator",
-                                        "message": "'usubjid'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -70758,27 +70762,13 @@
                             {
                                 "dataset": "ss.xpt",
                                 "domain": "SS",
-                                "execution_status": "success",
-                                "execution_message": "DSDECOD is not \"DEATH\", When SS.SSSTRESC = \"DEAD\".",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-076-0003-00003",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-300-0004-00002",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             }
@@ -70839,72 +70829,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ss.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": 2,
-                                                "USUBJID": "015246-076-0003-00003",
-                                                "value": {
-                                                    "$ds_dsdecod": "ADVERSE EVENT",
-                                                    "SSSTRESC": "DEAD"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": 2,
-                                                "USUBJID": "015246-076-0003-00003",
-                                                "value": {
-                                                    "$ds_dsdecod": [
-                                                        "ADVERSE EVENT",
-                                                        "ALIVE",
-                                                        "COMPLETED",
-                                                        "INFORMED CONSENT OBTAINED",
-                                                        "LAST CONTACT",
-                                                        "PROGRESSIVE DISEASE",
-                                                        "RANDOMIZED"
-                                                    ],
-                                                    "SSSTRESC": "DEAD"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 4,
-                                                "SEQ": 2,
-                                                "USUBJID": "015246-300-0004-00002",
-                                                "value": {
-                                                    "$ds_dsdecod": "ADVERSE EVENT",
-                                                    "SSSTRESC": "DEAD"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 4,
-                                                "SEQ": 2,
-                                                "USUBJID": "015246-300-0004-00002",
-                                                "value": {
-                                                    "$ds_dsdecod": [
-                                                        "ADVERSE EVENT",
-                                                        "ALIVE",
-                                                        "COMPLETED",
-                                                        "INFORMED CONSENT OBTAINED",
-                                                        "LAST CONTACT",
-                                                        "RANDOMIZED"
-                                                    ],
-                                                    "SSSTRESC": "DEAD"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -70937,27 +70867,13 @@
                             {
                                 "dataset": "ss.xpt",
                                 "domain": "SS",
-                                "execution_status": "success",
-                                "execution_message": "DSDECOD is not \"DEATH\", When SS.SSSTRESC = \"DEAD\".",
-                                "number_errors": 2,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-076-0003-00003",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-300-0004-00002",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             }
@@ -70984,12 +70900,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92540,7 +92456,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'AEDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -92553,7 +92469,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -92566,7 +92482,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'EXDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -92833,7 +92749,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -92916,7 +92832,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93271,7 +93187,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'AEDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93284,7 +93200,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93297,7 +93213,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'EXDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -93401,7 +93317,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -93463,7 +93379,7 @@
                                 "errors": [
                                     {
                                         "error": "SQL error in is_incomplete_date operator",
-                                        "message": "'DMDTC'"
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -106442,99 +106358,13 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 10,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CM"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106644,217 +106474,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "suppae.xpt": {
-                                    "values_changed": {
-                                        "root[0]": {
-                                            "new_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 1,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[1]": {
-                                            "new_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 2,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[2]": {
-                                            "new_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 3,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[3]": {
-                                            "new_value": {
-                                                "row": 4,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 4,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[4]": {
-                                            "new_value": {
-                                                "row": 5,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 5,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[5]": {
-                                            "new_value": {
-                                                "row": 6,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 6,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[6]": {
-                                            "new_value": {
-                                                "row": 7,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 7,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[7]": {
-                                            "new_value": {
-                                                "row": 8,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 8,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[8]": {
-                                            "new_value": {
-                                                "row": 9,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 9,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        },
-                                        "root[9]": {
-                                            "new_value": {
-                                                "row": 10,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPQUAL",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            },
-                                            "old_value": {
-                                                "row": 10,
-                                                "SEQ": null,
-                                                "USUBJID": "CDISC-TEST-001",
-                                                "value": {
-                                                    "$dataset_name": "SUPPAE",
-                                                    "RDOMAIN": "CM"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106876,45 +106501,13 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 4,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "MH"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -106943,12 +106536,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106970,45 +106563,13 @@
                             {
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 4,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "CH"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "LB"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "BC"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -107055,12 +106616,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107085,99 +106646,13 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 10,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 5,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 6,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 7,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 8,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 9,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
-                                    },
-                                    {
-                                        "row": 10,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC-TEST-001",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "AE"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -107196,12 +106671,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107223,36 +106698,13 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 3,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "DM"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             },
@@ -107287,12 +106739,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107314,45 +106766,13 @@
                             {
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPQUAL",
-                                "execution_status": "success",
-                                "execution_message": "RDOMAIN does not match characters 5 and 6 of the dataset name",
-                                "number_errors": 4,
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": 1,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "LB"
-                                        }
-                                    },
-                                    {
-                                        "row": 2,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "LB"
-                                        }
-                                    },
-                                    {
-                                        "row": 3,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC008",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "LB"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": null,
-                                        "USUBJID": "CDISC009",
-                                        "value": {
-                                            "$dataset_name": "SUPPQUAL",
-                                            "RDOMAIN": "LB"
-                                        }
+                                        "error": "SQL error in does_not_equal_string_part operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -107371,12 +106791,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115309,17 +114729,13 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "success",
-                                "execution_message": "When the death flag in DM is set to \"Y\", a record is not present in DS domain with DSDECOD= \"DEATH\"",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "USUBJID": "CDISC001"
-                                        }
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             },
@@ -115363,21 +114779,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
+                            "execution_status_mismatch": true,
                             "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ds.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['usubjid']": {
-                                            "new_value": "cdisc001",
-                                            "old_value": "cdisc002"
-                                        }
-                                    }
-                                }
-                            }
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -115402,17 +114809,13 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "success",
-                                "execution_message": "When the death flag in DM is set to \"Y\", a record is not present in DS domain with DSDECOD= \"DEATH\"",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "USUBJID": "CDISC001"
-                                        }
+                                        "error": "SQL error in does_not_contain operator",
+                                        "message": "Variable $ds_dsdecod is not a constant."
                                     }
                                 ]
                             },
@@ -115447,12 +114850,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
