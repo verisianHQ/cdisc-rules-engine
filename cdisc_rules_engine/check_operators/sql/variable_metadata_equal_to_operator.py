@@ -4,7 +4,7 @@ from .base_sql_operator import BaseSqlOperator
 class VariableMetadataEqualToOperator(BaseSqlOperator):
     """Operator for checking if variable metadata equals to expected value."""
 
-    def execute_operator(self, other_value):
+    def _execute_operator_impl(self, other_value):
         """
         Validates the metadata for variables,
         provided in the metadata column, is equal to
@@ -25,3 +25,6 @@ class VariableMetadataEqualToOperator(BaseSqlOperator):
         )
         return self.validation_df.convert_to_series(result)"""
         raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")
+
+    def _get_result_for_missing_column(self):
+        return "FALSE"

@@ -4,7 +4,7 @@ from .base_sql_operator import BaseSqlOperator
 class ConformantValueLengthOperator(BaseSqlOperator):
     """Operator for checking if values conform to expected length."""
 
-    def execute_operator(self, other_value):
+    def _execute_operator_impl(self, other_value):
         """results = False
         for vlm in self.value_level_metadata:
             results |= self.validation_df.apply(lambda row: vlm["filter"](row) and vlm["length_check"](row), axis=1)

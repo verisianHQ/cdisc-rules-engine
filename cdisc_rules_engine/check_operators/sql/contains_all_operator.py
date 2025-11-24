@@ -4,7 +4,7 @@ from .base_sql_operator import BaseSqlOperator
 class ContainsAllOperator(BaseSqlOperator):
     """Operator for checking if value contains all expected elements."""
 
-    def execute_operator(self, other_value):
+    def _execute_operator_impl(self, other_value):
         """
         Checks if the target column contains all values from the comparator.
 
@@ -143,3 +143,6 @@ class ContainsAllOperator(BaseSqlOperator):
             f"Invalid comparator type for contains_all operation on column '{target_column}'. "
             "Expected list, column name, or operation variable."
         )
+
+    def _get_result_for_missing_column(self):
+        return "FALSE"

@@ -8,7 +8,7 @@ class ContainsOperator(BaseSqlOperator):
         super().__init__(data)
         self.case_insensitive = case_insensitive
 
-    def execute_operator(self, other_value):
+    def _execute_operator_impl(self, other_value):
         """
         Checks if the comparator value is a substring of the target column values.
         Returns True if the comparator is found as a substring within the target column.
@@ -122,3 +122,6 @@ class ContainsOperator(BaseSqlOperator):
             f"Invalid comparator type for contains operation on column '{target_column}'. "
             f"Expected list, column name, or operation variable, but got: {type(comparator).__name__}"
         )
+
+    def _get_result_for_missing_column(self):
+        return "FALSE"

@@ -4,7 +4,7 @@ from .base_sql_operator import BaseSqlOperator
 class ValueHasMultipleReferencesOperator(BaseSqlOperator):
     """Operator for checking if value has multiple references."""
 
-    def execute_operator(self, other_value):
+    def _execute_operator_impl(self, other_value):
         """
         Requires a target column and a reference count column whose values
         are a dictionary containing the number of times that value appears.
@@ -18,3 +18,6 @@ class ValueHasMultipleReferencesOperator(BaseSqlOperator):
         )
         return self.validation_df.convert_to_series(result)"""
         raise NotImplementedError("value_has_multiple_references check_operator not implemented")
+
+    def _get_result_for_missing_column(self):
+        return "FALSE"
