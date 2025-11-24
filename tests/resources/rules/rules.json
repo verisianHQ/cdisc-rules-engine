@@ -57435,6 +57435,19 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in equal_to operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57507,7 +57520,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -57544,6 +57557,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in equal_to operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -57570,7 +57596,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -58215,6 +58241,19 @@
                                     {
                                         "error": "SQL error in not_equal_to operator",
                                         "message": "\"Comparator column 'IDVAR' not found in dataset\""
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "'NoneType' object has no attribute 'has_column'"
                                     }
                                 ]
                             }
@@ -86404,6 +86443,19 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_not_unique_relationship operator",
+                                        "message": "'QLABEL'"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86522,7 +86574,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -86559,6 +86611,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_not_unique_relationship operator",
+                                        "message": "'QLABEL'"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -86585,7 +86650,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94729,6 +94794,19 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in longer_than operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94767,7 +94845,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94825,7 +94903,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98648,6 +98726,19 @@
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000375, dataset=RELSPEC",
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in equal_to_case_insensitive operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98738,7 +98829,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -98775,6 +98866,19 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in equal_to_case_insensitive operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -98801,7 +98905,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -103555,6 +103659,14 @@
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=QSCGI2",
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=QSCG",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -103633,6 +103745,14 @@
                                 "domain": "AP",
                                 "execution_status": "skipped",
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=APMHE",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "qscg.xpt",
+                                "domain": "QS",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000510, dataset=QSCG",
                                 "number_errors": 0,
                                 "errors": []
                             }
@@ -106130,6 +106250,19 @@
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000533, dataset=SUPPDM",
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_contained_by_case_insensitive operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106165,7 +106298,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106202,6 +106335,19 @@
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000533, dataset=SUPPDM",
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in is_contained_by_case_insensitive operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106228,7 +106374,7 @@
                             "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "success",
+                        "sql_overall_result": "execution_error",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -107872,19 +108018,6 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
-                            },
-                            {
-                                "dataset": "fa.xpt",
-                                "domain": "FA",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -107922,7 +108055,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -120651,6 +120784,19 @@
                                         "message": "Rule contains invalid operator"
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in non_empty operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -120815,6 +120961,19 @@
                                         "message": "Rule contains invalid operator"
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in non_empty operator",
+                                        "message": "column or relation does not exist"
+                                    }
+                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -120977,6 +121136,19 @@
                                     {
                                         "error": "Rule format error",
                                         "message": "Rule contains invalid operator"
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "SQL operator execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "SQL error in non_empty operator",
+                                        "message": "column or relation does not exist"
                                     }
                                 ]
                             }
@@ -133599,6 +133771,19 @@
                                             ],
                                             "QNAM": "AEPRESP"
                                         }
+                                    }
+                                ]
+                            },
+                            {
+                                "dataset": "supp.xpt",
+                                "domain": "SUPPQUAL",
+                                "execution_status": "execution_error",
+                                "execution_message": "rule execution error",
+                                "number_errors": 1,
+                                "errors": [
+                                    {
+                                        "error": "An unknown exception has occurred",
+                                        "message": "Operation get_parent_model_column_order is not implemented"
                                     }
                                 ]
                             }

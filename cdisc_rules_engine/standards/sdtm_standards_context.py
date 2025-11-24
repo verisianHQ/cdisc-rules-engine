@@ -711,20 +711,20 @@ class SdtmStandardsContext(BaseStandardsContext):
 
         Detection rules from SDTMIG v3.4 Section 4.1.7:
         - AE -> not split (domain only)
-        - AE1, AE2 -> split (domain + number/letter suffix)
-        - SUPPAE1 -> split (SUPP + domain + digit)
+        - AE1, AE2 -> split (domain + alphanumeric char suffix)
+        - SUPPAE1 -> split (SUPP + domain + alphanumeric char suffix)
         - FACM, FAEG -> split Findings About (FA + 2-char parent domain code)
         - SUPPQS36, SUPPQSPI, SUPPFACM -> split supplemental qualifiers
         """
         dataset = dataset_name.lower()
 
-        # Pattern 1: Domain + digit(s) (e.g. AE1, AE2, QS36)
-        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
+        # Pattern 1: Domain + alphanumeric char suffix
+        match = re.match(r"^([a-z]{2,4})([a-z0-9]+)$", dataset)
         if match:
             return match.group(1)
 
-        # Pattern 2: SUPP + domain + digit (e.g. SUPPAE1, SUPPQS2)
-        match = re.match(r"^supp([a-z]{2,4})(\d+)$", dataset)
+        # Pattern 2: SUPP + domain + alphanumeric char suffix
+        match = re.match(r"^supp([a-z]{2,4})([a-z0-9]+)$", dataset)
         if match:
             return f"supp{match.group(1)}"
 
@@ -743,11 +743,4 @@ class SdtmStandardsContext(BaseStandardsContext):
         if match:
             return "sq"
 
-        # Pattern 6: Domain + letter suffix (e.g. QSA, QSB for questionnaires)
-        match = re.match(r"^([a-z]{2,4})([a-z])$", dataset)
-        if match:
-            base = match.group(1)
-            suffix = match.group(2)
-            if len(base) >= 2 and len(suffix) == 1:
-                return base
         return dataset
