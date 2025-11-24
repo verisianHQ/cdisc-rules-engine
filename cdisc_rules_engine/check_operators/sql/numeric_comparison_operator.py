@@ -11,23 +11,15 @@ class NumericComparisonOperator(BaseSqlOperator):
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
         comparator = self.replace_prefix(other_value.get("comparator"))
-
-        try:
-            target_column = self._sql(target)
-            comparator_column = self._sql(comparator)
-        except KeyError:
-            target_column = None
-            comparator_column = None
+        target_column = self._sql(target)
+        comparator_column = self._sql(comparator)
 
         def sql():
-            if target_column is not None and comparator_column is not None:
-                return f"""NOT ({self._is_empty_sql(target)})
-                            AND NOT ({self._is_empty_sql(comparator)})
-                            AND CAST({target_column} AS NUMERIC)
+            return f"""NOT ({self._is_empty_sql(target)})
+                        AND NOT ({self._is_empty_sql(comparator)})
+                        AND CAST({target_column} AS NUMERIC)
                                 {self.operator}
-                                CAST({comparator_column} AS NUMERIC)
-                            """
-            else:
-                return "FALSE"
+                            CAST({comparator_column} AS NUMERIC)
+                        """
 
         return self._do_check_operator(f"{target_column}{self.operator}{comparator}", sql)

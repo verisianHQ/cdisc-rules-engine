@@ -21,12 +21,7 @@ class IsOrderedSetOperator(BaseSqlOperator):
         else:
             operator_name = f"{name}_is_ordered_set_within_{value}"
 
-        columns_exist = self._exists(name) and (value_is_literal or self._exists(value))
-
         def sql():
-            if not columns_exist:
-                return "TRUE" if self.invert else "FALSE"
-
             name_hash = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, name)
             value_hash = (
                 self.sql_data_service.pgi.schema.get_column_hash(self.table_id, value)
@@ -47,7 +42,6 @@ class IsOrderedSetOperator(BaseSqlOperator):
                 AND t1.{name_hash} > t2.{name_hash}
             )
             """
-
             if self.invert:
                 return f"""
                 CASE

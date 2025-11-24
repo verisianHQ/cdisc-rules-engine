@@ -124,18 +124,9 @@ class InvalidDateOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
-
-        try:
-            target_column = self._column_sql(target)
-        except KeyError:
-            target_column = None
-
         op_name = f"{target}_is_invalid_date"
 
         def sql():
-            if target_column is None:
-                return "TRUE"
-
             return f"""
             CASE
                 -- Empty values are invalid

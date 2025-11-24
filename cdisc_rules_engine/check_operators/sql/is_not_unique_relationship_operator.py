@@ -29,53 +29,24 @@ class IsNotUniqueRelationshipOperator(BaseSqlOperator):
         3        C
         """
         target_column = self.replace_prefix(other_value.get("target"))
+        target = self._column_sql(target_column, alias=False)
         comparator = other_value.get("comparator")
-
-        if not self._exists(target_column):
-            if isinstance(comparator, list):
-                comparator_columns = [self.replace_prefix(col) for col in comparator]
-                op_name = f"{target_column}_{'_'.join(comparator_columns)}_not_unique_relationship"
-            else:
-                comparator_column = self.replace_prefix(comparator)
-                op_name = f"{target_column}_{comparator_column}_not_unique_relationship"
-
-            def generate_update_query(db_table: str, db_column: str) -> str:
-                return f"UPDATE {db_table} SET {db_column} = FALSE"
-
-            return self._do_complex_check_operator(op_name, generate_update_query)
 
         if isinstance(comparator, list):
             comparator_columns = [self.replace_prefix(col) for col in comparator]
-            if not all(self._exists(col) for col in comparator_columns):
-                op_name = f"{target_column}_{'_'.join(comparator_columns)}_not_unique_relationship"
-
-                def generate_update_query(db_table: str, db_column: str) -> str:
-                    return f"UPDATE {db_table} SET {db_column} = FALSE"
-
-                return self._do_complex_check_operator(op_name, generate_update_query)
-
             comparator_sql = [self._column_sql(col, alias=False) for col in comparator_columns]
             comparator_list = ", ".join([f"COALESCE({c}::text, '') AS {c}" for c in comparator_sql])
             concat_expr = " || '|' || ".join(
                 f"COALESCE({comparator_columns}::text, '')" for comparator_columns in comparator_sql
             )
-            op_name = f"{target_column}_{'_'.join(comparator_columns)}_not_unique_relationship"
+            op_name = f"{target}_{'_'.join(comparator_columns)}_not_unique_relationship"
         else:
             comparator_column = self.replace_prefix(comparator)
-            if not self._exists(comparator_column):
-                op_name = f"{target_column}_{comparator_column}_not_unique_relationship"
-
-                def generate_update_query(db_table: str, db_column: str) -> str:
-                    return f"UPDATE {db_table} SET {db_column} = FALSE"
-
-                return self._do_complex_check_operator(op_name, generate_update_query)
-
             comparator_sql = self._column_sql(comparator_column, alias=False)
             comparator_list = f"COALESCE({comparator_sql}::text, '') AS {comparator_sql}"
             concat_expr = f"COALESCE({comparator_sql}::text, '')"
-            op_name = f"{target_column}_{comparator_column}_not_unique_relationship"
+            op_name = f"{target}_{comparator_column}_not_unique_relationship"
 
-        target = self._column_sql(target_column, alias=False)
         target_sql = f"COALESCE({target}::text, '')"
 
         def generate_update_query(db_table: str, db_column: str) -> str:

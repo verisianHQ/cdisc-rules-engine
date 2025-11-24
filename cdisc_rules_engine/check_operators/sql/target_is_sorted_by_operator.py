@@ -51,31 +51,6 @@ class TargetIsSortedByOperator(BaseSqlOperator):
         if not all([target, within, comparators]):
             raise ValueError("Missing required parameters: target, within, or comparator")
 
-        all_columns_exist = self._check_all_columns_exist(target, within, comparators)
-        cache_key = self._build_cache_key(target, within, comparators)
-
-        if not all_columns_exist:
-            return self._handle_missing_columns(cache_key)
-
-        def sql(table_name, column_name):
-            return self._build_sorting_query(table_name, column_name, target, within, comparators)
-
-        return self._do_complex_check_operator(cache_key, sql)
-
-    def _check_all_columns_exist(self, target, within, comparators):
-        """Check if all required columns exist in the dataset."""
-        if not (self._exists(target) and self._exists(within)):
-            return False
-
-        for comp in comparators:
-            comp_name = self.replace_prefix(comp["name"])
-            if not self._exists(comp_name):
-                return False
-
-        return True
-
-    def _build_cache_key(self, target, within, comparators):
-        """Build cache key from target, within, and comparator specifications."""
         comparator_parts = []
         for comp in comparators:
             name = self.replace_prefix(comp["name"])
@@ -83,27 +58,100 @@ class TargetIsSortedByOperator(BaseSqlOperator):
             null_pos = comp["null_position"]
             comparator_parts.append(f"{name}_{order}_{null_pos}")
 
-        return f"{target}_is_sorted_by_{'_'.join(comparator_parts)}_within_{within}"
-
-    def _handle_missing_columns(self, cache_key):
-        """Handle case where required columns are missing."""
+        cache_key = f"{target}_is_sorted_by_{'_'.join(comparator_parts)}_within_{within}"
 
         def sql(table_name, column_name):
-            return f"UPDATE {table_name} SET {column_name} = FALSE"
 
-        return self._do_complex_check_operator(cache_key, sql)
+            # Build CTEs for each individual comparator check
+            comparator_ctes = []
+            comparator_columns = []
 
-    def _build_sorting_query(self, table_name, column_name, target, within, comparators):
-        """Build the complete SQL query for sorting validation."""
-        comparator_ctes, comparator_columns = self._build_comparator_ctes(table_name, target, within, comparators)
+            for i, comp in enumerate(comparators):
+                comp_name = self.replace_prefix(comp["name"])
+                comp_sql = self._column_sql(comp_name, alias=False)
+                sort_order = comp["sort_order"].upper()
+                null_pos = comp["null_position"].upper()
 
-        join_clause, validity_clause = self._build_validity_checks(comparators)
-        order_by_clause = self._build_order_by_clause(comparators)
+                # Build ORDER BY for this specific comparator
+                order_part = f"{comp_sql} {sort_order}"
+                if null_pos == "FIRST":
+                    order_part += " NULLS FIRST"
+                else:
+                    order_part += " NULLS LAST"
 
-        all_ctes = ",".join(comparator_ctes)
-        comparator_columns_sql = ", ".join(comparator_columns)
+                comparator_columns.append(f"{comp_sql} AS comp_{i}_val")
 
-        return f"""
+                # Create a CTE that checks if row positions match when sorted by comparator vs target
+                comparator_ctes.append(
+                    f"""
+            comp_{i}_presorted AS (
+                SELECT
+                    id,
+                    {self._column_sql(target, alias=False)} AS target_val,
+                    {self._column_sql(within, alias=False)} AS within_val,
+                    {comp_sql} AS comp_val,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY {self._column_sql(within, alias=False)}
+                        ORDER BY {order_part}
+                    ) - 1 AS position_in_comp_order
+                FROM {table_name}
+            ),
+            comp_{i}_sorted AS (
+                SELECT
+                    *,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY within_val
+                        ORDER BY
+                            CASE WHEN target_val IS NULL THEN 1 ELSE 0 END,
+                            target_val ASC
+                    ) - 1 AS position_in_target_order
+                FROM comp_{i}_presorted
+            ),
+            comp_{i}_check AS (
+                SELECT
+                    id,
+                    CASE
+                        -- If comparator is NULL, mark as False (old engine sets is_sorted[index]=False)
+                        WHEN comp_val IS NULL THEN false
+                        -- Check if positions match
+                        ELSE position_in_comp_order = position_in_target_order
+                    END AS is_valid_{i}
+                FROM comp_{i}_sorted
+            )"""
+                )
+
+            all_ctes = ",".join(comparator_ctes)
+
+            # Build the join to combine all comparator checks
+            join_parts = ["comp_0_check c0"]
+            validity_checks = ["c0.is_valid_0"]
+
+            for i in range(1, len(comparators)):
+                join_parts.append(f"JOIN comp_{i}_check c{i} ON c0.id = c{i}.id")
+                validity_checks.append(f"c{i}.is_valid_{i}")
+
+            join_clause = "\n                ".join(join_parts)
+            validity_clause = " AND ".join(validity_checks)
+
+            # Also need the combined sort for date overlap check
+            order_by_parts = []
+            for i, comp in enumerate(comparators):
+                comp_name = self.replace_prefix(comp["name"])
+                sort_order = comp["sort_order"].upper()
+                null_pos = comp["null_position"].upper()
+
+                comp_sql = self._column_sql(comp_name, alias=False)
+                order_part = f"{comp_sql} {sort_order}"
+                if null_pos == "FIRST":
+                    order_part += " NULLS FIRST"
+                else:
+                    order_part += " NULLS LAST"
+                order_by_parts.append(order_part)
+
+            order_by_clause = ", ".join(order_by_parts)
+            comparator_columns_sql = ", ".join(comparator_columns)
+
+            return f"""
             -- Check if target is sorted correctly by each comparator independently (matches old engine)
             WITH {all_ctes},
             basic_check AS (
@@ -155,95 +203,4 @@ class TargetIsSortedByOperator(BaseSqlOperator):
             )
             """
 
-    def _build_comparator_ctes(self, table_name, target, within, comparators):
-        """Build CTEs for each comparator check and return list of CTEs and column definitions."""
-        comparator_ctes = []
-        comparator_columns = []
-
-        for i, comp in enumerate(comparators):
-            comp_name = self.replace_prefix(comp["name"])
-            comp_sql = self._column_sql(comp_name, alias=False)
-            sort_order = comp["sort_order"].upper()
-            null_pos = comp["null_position"].upper()
-
-            order_part = f"{comp_sql} {sort_order}"
-            if null_pos == "FIRST":
-                order_part += " NULLS FIRST"
-            else:
-                order_part += " NULLS LAST"
-
-            comparator_columns.append(f"{comp_sql} AS comp_{i}_val")
-
-            cte = f"""
-            comp_{i}_presorted AS (
-                SELECT
-                    id,
-                    {self._column_sql(target, alias=False)} AS target_val,
-                    {self._column_sql(within, alias=False)} AS within_val,
-                    {comp_sql} AS comp_val,
-                    ROW_NUMBER() OVER (
-                        PARTITION BY {self._column_sql(within, alias=False)}
-                        ORDER BY {order_part}
-                    ) - 1 AS position_in_comp_order
-                FROM {table_name}
-            ),
-            comp_{i}_sorted AS (
-                SELECT
-                    *,
-                    ROW_NUMBER() OVER (
-                        PARTITION BY within_val
-                        ORDER BY
-                            CASE WHEN target_val IS NULL THEN 1 ELSE 0 END,
-                            target_val ASC
-                    ) - 1 AS position_in_target_order
-                FROM comp_{i}_presorted
-            ),
-            comp_{i}_check AS (
-                SELECT
-                    id,
-                    CASE
-                        -- If comparator is NULL, mark as False (old engine sets is_sorted[index]=False)
-                        WHEN comp_val IS NULL THEN false
-                        -- Check if positions match
-                        ELSE position_in_comp_order = position_in_target_order
-                    END AS is_valid_{i}
-                FROM comp_{i}_sorted
-            )"""
-            comparator_ctes.append(cte)
-
-        return comparator_ctes, comparator_columns
-
-    def _build_validity_checks(self, comparators):
-        """Build the join clause and validity check clause for combining comparator results."""
-        join_parts = ["comp_0_check c0"]
-        validity_checks = ["c0.is_valid_0"]
-
-        for i in range(1, len(comparators)):
-            join_parts.append(f"JOIN comp_{i}_check c{i} ON c0.id = c{i}.id")
-            validity_checks.append(f"c{i}.is_valid_{i}")
-
-        join_clause = "\n                ".join(join_parts)
-        validity_clause = " AND ".join(validity_checks)
-
-        return join_clause, validity_clause
-
-    def _build_order_by_clause(self, comparators):
-        """Build the ORDER BY clause for date overlap checking."""
-        order_by_parts = []
-
-        for comp in comparators:
-            comp_name = self.replace_prefix(comp["name"])
-            sort_order = comp["sort_order"].upper()
-            null_pos = comp["null_position"].upper()
-
-            comp_sql = self._column_sql(comp_name, alias=False)
-            order_part = f"{comp_sql} {sort_order}"
-
-            if null_pos == "FIRST":
-                order_part += " NULLS FIRST"
-            else:
-                order_part += " NULLS LAST"
-
-            order_by_parts.append(order_part)
-
-        return ", ".join(order_by_parts)
+        return self._do_complex_check_operator(cache_key, sql)

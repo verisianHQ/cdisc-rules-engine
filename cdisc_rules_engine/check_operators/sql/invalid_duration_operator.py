@@ -5,19 +5,11 @@ class InvalidDurationOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target"))
-
-        try:
-            target_column = self._column_sql(target)
-        except KeyError:
-            target_column = None
-
+        target_column = self._column_sql(target)
         negative = other_value.get("negative", False)
         operation_column = f"{target}_invalid_duration".lower()
 
         def sql_subquery():
-            if target_column is None:
-                return "TRUE"
-
             """
             These regex patterns validate ISO 8601 duration format strings.
             They are custom implementations based on the ISO 8601 standard

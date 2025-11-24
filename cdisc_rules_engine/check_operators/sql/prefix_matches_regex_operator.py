@@ -10,11 +10,7 @@ class PrefixMatchesRegexOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target")).lower()
-        try:
-            target_column = self._column_sql(target)
-        except KeyError:
-            target_column = None
-
+        target_column = self._column_sql(target)
         comparator = other_value.get("comparator")
         prefix = other_value.get("prefix")
 
@@ -24,9 +20,6 @@ class PrefixMatchesRegexOperator(BaseSqlOperator):
             operator_name = f"{target_column}_prefix_matches_regex"
 
         def sql():
-            if target_column is None:
-                return "TRUE" if self.invert else "FALSE"
-
             prefix_expr = f"LEFT({target_column}::text, {prefix})"
 
             if self.invert:

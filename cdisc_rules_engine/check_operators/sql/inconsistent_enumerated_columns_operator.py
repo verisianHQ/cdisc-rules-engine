@@ -89,9 +89,6 @@ class InconsistentEnumeratedColumnsOperator(BaseSqlOperator):
             current_col_schema = self.sql_data_service.pgi.schema.get_column(self.table_id, current_col)
             prev_col_schema = self.sql_data_service.pgi.schema.get_column(self.table_id, prev_col)
 
-            if not current_col_schema or not prev_col_schema:
-                continue
-
             current_populated = self._build_populated_condition(current_col, current_col_schema)
             prev_populated = self._build_populated_condition(prev_col, prev_col_schema)
 

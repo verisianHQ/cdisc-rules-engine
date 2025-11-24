@@ -30,15 +30,7 @@ class HasNextCorrespondingRecordOperator(BaseSqlOperator):
         if not all([target, comparator, group_by, order_by]):
             raise ValueError("Missing required parameters: target, comparator, within, or ordering")
 
-        if not all([self._exists(target), self._exists(comparator), self._exists(group_by), self._exists(order_by)]):
-            cache_key = f"{target}_has_next_corresponding_record_{comparator}_within_{group_by}_ordered_by_{order_by}"
-
-            def sql(table_name, column_name):
-                return f"UPDATE {table_name} SET {column_name} = FALSE"
-
-            return self._do_complex_check_operator(cache_key, sql)
-
-        cache_key = f"{target}_has_next_corresponding_record_{comparator}_within_{group_by}_ordered_by_{order_by}"
+        cache_key = f"{target}_has_next_corresponding_record_{comparator}_within_" f"{group_by}_ordered_by_{order_by}"
 
         def sql(table_name, column_name):
             return f"""

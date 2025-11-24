@@ -15,13 +15,6 @@ class PresentOnMultipleRowsWithinOperator(BaseSqlOperator):
 
         op_name = f"{target_column}_{within_column}_{min_count}_present_on_multiple_rows"
 
-        if not self._exists(target_column) or not self._exists(within_column):
-
-            def generate_update_query(db_table: str, db_column: str) -> str:
-                return f"UPDATE {db_table} SET {db_column} = FALSE"
-
-            return self._do_complex_check_operator(op_name, generate_update_query)
-
         def generate_update_query(db_table: str, db_column: str) -> str:
             # Construct the UPDATE query. This uses a window function to count
             # occurrences within each group and then updates each row accordingly.

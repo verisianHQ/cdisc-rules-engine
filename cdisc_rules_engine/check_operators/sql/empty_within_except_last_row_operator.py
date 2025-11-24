@@ -25,16 +25,6 @@ class EmptyWithinExceptLastRowOperator(BaseSqlOperator):
         if not all([target, comparator]):
             raise ValueError("Missing required parameters: target or comparator")
 
-        if not self._exists(target) or not self._exists(comparator) or (order_by and not self._exists(order_by)):
-            cache_key = f"{target}_empty_within_except_last_row_{comparator}"
-            if order_by:
-                cache_key += f"_ordered_by_{order_by}"
-
-            def sql(table_name, column_name):
-                return f"UPDATE {table_name} SET {column_name} = TRUE"
-
-            return self._do_complex_check_operator(cache_key, sql)
-
         cache_key = f"{target}_empty_within_except_last_row_{comparator}"
         if order_by:
             cache_key += f"_ordered_by_{order_by}"

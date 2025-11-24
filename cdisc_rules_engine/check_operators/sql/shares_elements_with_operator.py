@@ -55,10 +55,7 @@ class SharesElementsWithOperator(BaseSqlOperator):
         cache_key = f"{target}_shares_elements_{self.operation_type}_{comparator}"
 
         def sql():
-            try:
-                return self._build_shares_elements_query(target, comparator)
-            except KeyError:
-                return "TRUE" if self.operation_type == "no_elements" else "FALSE"
+            return self._build_shares_elements_query(target, comparator)
 
         return self._do_check_operator(cache_key, sql)
 

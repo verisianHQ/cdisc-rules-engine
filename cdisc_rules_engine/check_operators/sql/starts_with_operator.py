@@ -21,35 +21,32 @@ class StartsWithOperator(BaseSqlOperator):
         cache_key = f"{target_column}_starts_with_{str(comparator).replace(' ', '_')}_{value_is_literal}"
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column)
+            target_sql = self._column_sql(target_column)
 
-                # Determine data source and whether to use EXISTS pattern
-                if isinstance(comparator, tuple):
-                    if not comparator:  # Empty tuple
-                        return "FALSE"
-                    data_source = f"(VALUES {', '.join(f'({self._constant_sql(v)})' for v in comparator)})"
-                elif (
-                    isinstance(comparator, str)
-                    and comparator in self.operation_variables
-                    and self.operation_variables[comparator].type == "collection"
-                ):
-                    data_source = self._collection_sql(comparator)
-                else:
-                    # Single value comparison
-                    comparator_sql = self._sql(comparator, value_is_literal=value_is_literal)
-                    return f"""NOT ({self._is_empty_sql(target_column)})
-                              AND {comparator_sql} != ''
-                              AND {target_sql} LIKE {comparator_sql} || '%'"""
-
-                # Multi-value comparison using EXISTS
+            # Determine data source and whether to use EXISTS pattern
+            if isinstance(comparator, tuple):
+                if not comparator:  # Empty tuple
+                    return "FALSE"
+                data_source = f"(VALUES {', '.join(f'({self._constant_sql(v)})' for v in comparator)})"
+            elif (
+                isinstance(comparator, str)
+                and comparator in self.operation_variables
+                and self.operation_variables[comparator].type == "collection"
+            ):
+                data_source = self._collection_sql(comparator)
+            else:
+                # Single value comparison
+                comparator_sql = self._sql(comparator, value_is_literal=value_is_literal)
                 return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND EXISTS (
-                              SELECT 1 FROM {data_source} AS values_table(value)
-                              WHERE values_table.value != ''
-                              AND {target_sql} LIKE values_table.value || '%'
-                          )"""
-            except KeyError:
-                return "FALSE"
+                          AND {comparator_sql} != ''
+                          AND {target_sql} LIKE {comparator_sql} || '%'"""
+
+            # Multi-value comparison using EXISTS
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND EXISTS (
+                          SELECT 1 FROM {data_source} AS values_table(value)
+                          WHERE values_table.value != ''
+                          AND {target_sql} LIKE values_table.value || '%'
+                      )"""
 
         return self._do_check_operator(cache_key, sql)

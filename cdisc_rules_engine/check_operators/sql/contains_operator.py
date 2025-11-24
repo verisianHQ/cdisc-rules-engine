@@ -36,19 +36,14 @@ class ContainsOperator(BaseSqlOperator):
         cache_key = f"{target_column}_contains_list_{self.case_insensitive}"
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
-                values_sql = ", ".join(
-                    f"({self._constant_sql(v, lowercase=self.case_insensitive)})" for v in comparator
-                )
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND EXISTS (
-                              SELECT 1 FROM (VALUES {values_sql}) AS list_values(value)
-                              WHERE list_values.value != ''
-                              AND {target_sql} LIKE '%' || list_values.value || '%'
-                          )"""
-            except KeyError:
-                return "FALSE"
+            target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
+            values_sql = ", ".join(f"({self._constant_sql(v, lowercase=self.case_insensitive)})" for v in comparator)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND EXISTS (
+                          SELECT 1 FROM (VALUES {values_sql}) AS list_values(value)
+                          WHERE list_values.value != ''
+                          AND {target_sql} LIKE '%' || list_values.value || '%'
+                      )"""
 
         return self._do_check_operator(cache_key, sql)
 
@@ -71,17 +66,14 @@ class ContainsOperator(BaseSqlOperator):
         """Handle collection type operation variable."""
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
-                collection_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND EXISTS (
-                              SELECT 1 FROM {collection_sql} AS collection_values(value)
-                              WHERE collection_values.value != ''
-                              AND {target_sql} LIKE '%' || collection_values.value || '%'
-                          )"""
-            except KeyError:
-                return "FALSE"
+            target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
+            collection_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND EXISTS (
+                          SELECT 1 FROM {collection_sql} AS collection_values(value)
+                          WHERE collection_values.value != ''
+                          AND {target_sql} LIKE '%' || collection_values.value || '%'
+                      )"""
 
         return self._do_check_operator(cache_key, sql)
 
@@ -89,14 +81,11 @@ class ContainsOperator(BaseSqlOperator):
         """Handle constant type operation variable."""
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
-                comparator_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND {comparator_sql} != ''
-                          AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
-            except KeyError:
-                return "FALSE"
+            target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
+            comparator_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND {comparator_sql} != ''
+                      AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
 
         return self._do_check_operator(cache_key, sql)
 
@@ -106,14 +95,11 @@ class ContainsOperator(BaseSqlOperator):
         cache_key = f"{target_column}_contains_{comparator_column}_{self.case_insensitive}"
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
-                comparator_sql = self._column_sql(comparator, lowercase=self.case_insensitive)
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND NOT ({self._is_empty_sql(comparator)})
-                          AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
-            except KeyError:
-                return "FALSE"
+            comparator_sql = self._column_sql(comparator, lowercase=self.case_insensitive)
+            target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND NOT ({self._is_empty_sql(comparator)})
+                      AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
 
         return self._do_check_operator(cache_key, sql)
 
@@ -122,14 +108,11 @@ class ContainsOperator(BaseSqlOperator):
         cache_key = f"{target_column}_contains_literal_{comparator}_{value_is_literal}_{self.case_insensitive}"
 
         def sql():
-            try:
-                target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
-                comparator_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
-                return f"""NOT ({self._is_empty_sql(target_column)})
-                          AND {comparator_sql} != ''
-                          AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
-            except KeyError:
-                return "FALSE"
+            comparator_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
+            target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND {comparator_sql} != ''
+                      AND {target_sql} LIKE '%' || {comparator_sql} || '%'"""
 
         return self._do_check_operator(cache_key, sql)
 

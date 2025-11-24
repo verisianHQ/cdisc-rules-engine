@@ -10,11 +10,7 @@ class SuffixMatchesRegexOperator(BaseSqlOperator):
 
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target")).lower()
-        try:
-            target_column = self._column_sql(target)
-        except KeyError:
-            target_column = None
-
+        target_column = self._column_sql(target)
         comparator = other_value.get("comparator")
         suffix = other_value.get("suffix")
 
@@ -24,9 +20,6 @@ class SuffixMatchesRegexOperator(BaseSqlOperator):
             operator_name = f"{target_column}_suffix_matches_regex"
 
         def sql():
-            if target_column is None:
-                return "TRUE" if self.invert else "FALSE"
-
             suffix_expr = f"RIGHT({target_column}::text, {suffix})"
 
             if self.invert:
