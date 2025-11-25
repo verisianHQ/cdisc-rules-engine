@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 
-from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, METADATA_COLUMNS
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -264,8 +264,15 @@ class BaseSqlOperator:
         suffix: Optional[int] = None,
         alias: bool = True,
     ) -> str:
-        is_special_column = column.lower() in (DATASET_NAME, *METADATA_COLUMNS)
-        if not is_special_column and not self._exists(column):
+        if column == DATASET_NAME:
+            dataset_name = self.dataset_metadata.name
+            if prefix is not None:
+                dataset_name = dataset_name[: int(prefix)]
+            elif suffix is not None:
+                dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
+            return self._constant_sql(dataset_name, lowercase=lowercase)
+
+        if not self._exists(column):
             raise ColumnNotFoundError(
                 column_name=column,
                 table_id=self.table_id,
@@ -277,14 +284,6 @@ class BaseSqlOperator:
         # Prepend the table alias
         if alias:
             query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}"
-
-        if column == DATASET_NAME:
-            dataset_name = self.dataset_metadata.name
-            if prefix is not None:
-                dataset_name = dataset_name[: int(prefix)]
-            elif suffix is not None:
-                dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
-            return self._constant_sql(dataset_name, lowercase=lowercase)
 
         # TODO: Throwing this temporarily, so we can determine which errors
         # are actually postgres errors and which are just rules which run on
