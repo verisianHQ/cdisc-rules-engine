@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 
-from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, METADATA_COLUMNS
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -264,7 +264,8 @@ class BaseSqlOperator:
         suffix: Optional[int] = None,
         alias: bool = True,
     ) -> str:
-        if not self._exists(column):
+        is_special_column = column.lower() in (DATASET_NAME, *METADATA_COLUMNS)
+        if not is_special_column and not self._exists(column):
             raise ColumnNotFoundError(
                 column_name=column,
                 table_id=self.table_id,
