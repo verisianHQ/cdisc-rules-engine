@@ -340,5 +340,5 @@ class SharesElementsWithOperator(BaseSqlOperator):
             ) = 1
             """
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "TRUE" if self.operation_type == "no_elements" else "FALSE"

@@ -32,5 +32,5 @@ class IsOrderedSubsetOfOperator(BaseSqlOperator):
         return results"""
         raise NotImplementedError("is_ordered_subset_of check_operator not implemented")
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         raise NotImplementedError("is_ordered_subset_of check_operator not implemented")

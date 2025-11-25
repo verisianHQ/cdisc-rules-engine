@@ -144,5 +144,5 @@ class ContainsAllOperator(BaseSqlOperator):
             "Expected list, column name, or operation variable."
         )
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

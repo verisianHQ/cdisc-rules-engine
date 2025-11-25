@@ -26,5 +26,5 @@ class VariableMetadataEqualToOperator(BaseSqlOperator):
         return self.validation_df.convert_to_series(result)"""
         raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         raise NotImplementedError("variable_metadata_equal_to check_operator not implemented")

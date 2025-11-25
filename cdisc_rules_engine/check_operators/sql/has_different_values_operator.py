@@ -12,5 +12,5 @@ class HasDifferentValuesOperator(BaseSqlOperator):
             operation_name, lambda: f"(SELECT COUNT(DISTINCT {target_column}) FROM {self._table_sql()}) > 1"
         )
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

@@ -163,5 +163,5 @@ class EqualToOperator(BaseSqlOperator):
             f"{original_target}_ref=_{pivot_column}_{invert}_{case_insensitive}_{type_insensitive}", sql
         )
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

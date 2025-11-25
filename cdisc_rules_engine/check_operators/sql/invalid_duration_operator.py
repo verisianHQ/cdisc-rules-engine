@@ -44,5 +44,5 @@ class InvalidDurationOperator(BaseSqlOperator):
 
         return self._do_check_operator(operation_column, sql_subquery)
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "TRUE"

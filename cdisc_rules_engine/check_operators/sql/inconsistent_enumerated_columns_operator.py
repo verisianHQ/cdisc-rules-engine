@@ -122,5 +122,5 @@ class InconsistentEnumeratedColumnsOperator(BaseSqlOperator):
         else:
             return f"({col_sql} IS NOT NULL AND {col_sql} != '')"
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

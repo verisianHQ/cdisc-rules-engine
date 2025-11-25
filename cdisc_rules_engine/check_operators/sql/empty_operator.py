@@ -15,5 +15,5 @@ class EmptyOperator(BaseSqlOperator):
 
         return self._do_check_operator(f"{column}_empty", sql)
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "TRUE"  # matches the behaviour above but method is required for consistency

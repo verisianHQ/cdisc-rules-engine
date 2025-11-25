@@ -29,5 +29,5 @@ class StringLengthComparisonOperator(BaseSqlOperator):
             f"{target_column}_length_{self.operator}_{str(comparator).replace(' ', '_')}", sql
         )
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

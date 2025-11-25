@@ -35,5 +35,5 @@ class PresentOnMultipleRowsWithinOperator(BaseSqlOperator):
 
         return result_series
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

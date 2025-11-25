@@ -62,5 +62,5 @@ class IsContainedByOperator(BaseSqlOperator):
 
         return self._do_check_operator(cache_key, sql)
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

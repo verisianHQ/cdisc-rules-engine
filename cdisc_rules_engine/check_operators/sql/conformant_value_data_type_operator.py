@@ -16,5 +16,5 @@ class ConformantValueDataTypeOperator(BaseSqlOperator):
             ).fillna(False)
         return self.validation_df.convert_to_series(results)
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

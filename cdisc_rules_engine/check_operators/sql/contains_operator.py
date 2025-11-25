@@ -123,5 +123,5 @@ class ContainsOperator(BaseSqlOperator):
             f"Expected list, column name, or operation variable, but got: {type(comparator).__name__}"
         )
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"

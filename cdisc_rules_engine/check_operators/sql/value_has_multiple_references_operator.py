@@ -19,5 +19,5 @@ class ValueHasMultipleReferencesOperator(BaseSqlOperator):
         return self.validation_df.convert_to_series(result)"""
         raise NotImplementedError("value_has_multiple_references check_operator not implemented")
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         raise NotImplementedError("value_has_multiple_references check_operator not implemented")

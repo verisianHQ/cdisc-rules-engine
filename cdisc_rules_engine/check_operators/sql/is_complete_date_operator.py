@@ -20,5 +20,5 @@ class IsCompleteDateOperator(BaseSqlOperator):
 
         return self._do_check_operator(op_name, sql)
 
-    def _get_result_for_missing_column(self):
+    def get_result_for_missing_columns(self):
         return "FALSE"
