@@ -71152,28 +71152,9 @@
                                 "dataset": "ss.xpt",
                                 "domain": "SS",
                                 "execution_status": "success",
-                                "execution_message": "DSDECOD is not \"DEATH\", When SS.SSSTRESC = \"DEAD\".",
-                                "number_errors": 2,
-                                "errors": [
-                                    {
-                                        "row": 2,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-076-0003-00003",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
-                                    },
-                                    {
-                                        "row": 4,
-                                        "SEQ": 2,
-                                        "USUBJID": "015246-300-0004-00002",
-                                        "value": {
-                                            "$ds_dsdecod": "ADVERSE EVENT",
-                                            "SSSTRESC": "DEAD"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -71197,10 +71178,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -114965,7 +114943,7 @@
                                         "SEQ": null,
                                         "USUBJID": null,
                                         "value": {
-                                            "USUBJID": "CDISC001"
+                                            "USUBJID": "CDISC002"
                                         }
                                     }
                                 ]
@@ -115009,19 +114987,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": false,
-                            "diff": {
-                                "ds.xpt": {
-                                    "values_changed": {
-                                        "root[0]['value']['usubjid']": {
-                                            "new_value": "cdisc001",
-                                            "old_value": "cdisc002"
-                                        }
-                                    }
-                                }
-                            }
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
@@ -115050,18 +115016,9 @@
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
                                 "execution_status": "success",
-                                "execution_message": "When the death flag in DM is set to \"Y\", a record is not present in DS domain with DSDECOD= \"DEATH\"",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "USUBJID": "CDISC001"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -115093,10 +115050,7 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": false,
-                            "number_of_errors_mismatch": true,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
                         "sql_overall_result": "success",
