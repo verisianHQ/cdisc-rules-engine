@@ -10,6 +10,7 @@ from cdisc_rules_engine.data_service.loading.load_test_datasets import (
     SqlTestDatasetLoader,
 )
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.startup.populate_codelists import (
     populate_codelists,
 )
@@ -83,6 +84,7 @@ class PostgresQLDataService:
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
         ]
+        SqlDataPreprocessor.run(instance, standards_context)
         return instance
 
     @classmethod
@@ -95,7 +97,7 @@ class PostgresQLDataService:
             standards_context.transform_dataset_metadata(ds)
             for ds in SqlDatasetLoader.load_datasets(instance.pgi, dataset_paths)
         )
-
+        SqlDataPreprocessor.run(instance, standards_context)
         return instance
 
     @staticmethod
