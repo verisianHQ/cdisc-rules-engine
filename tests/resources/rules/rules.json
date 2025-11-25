@@ -94794,19 +94794,6 @@
                                         }
                                     }
                                 ]
-                            },
-                            {
-                                "dataset": "supp.xpt",
-                                "domain": "SUPPQUAL",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in longer_than operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -94845,7 +94832,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -94903,7 +94890,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -108014,6 +108001,14 @@
                             {
                                 "dataset": "mh.xpt",
                                 "domain": "MH",
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "fa.xpt",
+                                "domain": "FA",
                                 "execution_status": "success",
                                 "execution_message": null,
                                 "number_errors": 0,
@@ -132904,31 +132899,17 @@
                                 "dataset": "aplbe.xpt",
                                 "domain": "AP",
                                 "execution_status": "success",
-                                "execution_message": "Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "row": null,
-                                        "SEQ": null,
-                                        "USUBJID": null,
-                                        "value": {
-                                            "dataset_name": "Not in dataset"
-                                        }
-                                    }
-                                ]
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "aplb.xpt",
                                 "domain": "AP",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in longer_than operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -132950,7 +132931,7 @@
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
