@@ -716,23 +716,23 @@ class SdtmStandardsContext(BaseStandardsContext):
         if match:
             return "suppfa"
 
-        # supp + domain + alphanumeric suffix (e.g. suppae1, suppae2)
-        match = re.match(r"^supp([a-z]{2,4})([a-z0-9]+)$", dataset)
+        # supp + domain + numeric suffix (e.g. suppae1, suppae2)
+        match = re.match(r"^(supp[a-z]{2,4})(\d+)$", dataset)
         if match:
-            return f"supp{match.group(1)}"
+            return match.group(1)
 
         # fa + 2-char parent domain (e.g. facm, faeg)
         match = re.match(r"^fa([a-z]{2})$", dataset)
         if match:
             return "fa"
 
-        # sq (supplemental qualifiers) + suffix
-        match = re.match(r"^sq([a-z]+\d*)$", dataset)
+        # sq (supplemental qualifiers) + numeric suffix
+        match = re.match(r"^(sq[a-z]*)(\d+)$", dataset)
         if match:
-            return "sq"
+            return match.group(1)
 
-        # domain + alphanumeric suffix (e.g. ae1, ae2, dmae1)
-        match = re.match(r"^([a-z]{2,4})([a-z0-9]+)$", dataset)
+        # domain + numeric suffix (e.g. ae1, ae2, dm1)
+        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
         if match:
             return match.group(1)
 
