@@ -151,12 +151,6 @@ class SqlDataPreprocessor:
 
             self._concatenate_split_parts(unsplit_name, dataset_parts)
 
-            metadata = self._create_metadata_from_split_parts(unsplit_name, dataset_parts)
-            if metadata:
-                concatenated_datasets.append(metadata.name)
-                self.data_service.datasets.append(metadata)
-                logger.info(f"Added concatenated dataset metadata: {metadata.name}")
-
             processed_count += 1
             total_parts += len(dataset_parts)
 
