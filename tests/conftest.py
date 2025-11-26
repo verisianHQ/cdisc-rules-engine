@@ -1368,6 +1368,7 @@ def sdtm_standards_context() -> SdtmStandardsContext:
             progress=None,
             define_xml_path=None,
             validate_xml=None,
+            table_prefix="core_",
         )
     )
     return SdtmStandardsContext(library_metadata)

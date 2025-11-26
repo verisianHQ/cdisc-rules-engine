@@ -17,12 +17,13 @@ from cdisc_rules_engine.services import logger
 class PostgresQLInterface:
     """Main interface for database operations"""
 
-    def __init__(self, config: Optional[DatabaseConfigPostgres] = None):
+    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, table_prefix: str = "core_"):
         self.config = config or DatabaseConfigPostgres()
         self.db: Optional[DatabasePostgres] = None
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
+        self.table_prefix = table_prefix
 
     def init_database(self):
         """Initialise the database connection"""
@@ -38,6 +39,7 @@ class PostgresQLInterface:
 
             # drop all previously generated analysis tables
             self.execute_sql_file(str(Path(__file__).parent / "schemas" / "drop_analysis_tables.sql"))
+            self._drop_prefixed_tables()
 
         except Exception as e:
             logger.error(f"Failed to initialise database: {e}")
@@ -113,13 +115,16 @@ class PostgresQLInterface:
         self._last_results.clear()
         return results
 
-    def create_table(self, schema: SqlTableSchema) -> None:
+    def create_table(self, schema: SqlTableSchema) -> str:
         """Adds a table to the db"""
-        create_stmt = SQLSerialiser.create_table_query_from_schema(schema)
+        prefixed_schema = self._apply_prefix_to_schema(schema)
+
+        create_stmt = SQLSerialiser.create_table_query_from_schema(prefixed_schema)
         self.execute_sql(create_stmt)
 
-        self.schema.add_table(schema)
-        logger.info(f"Table {schema.name} created successfully")
+        self.schema.add_table(prefixed_schema)
+        logger.info(f"Table {prefixed_schema.name} created successfully")
+        return prefixed_schema.name
 
     def add_column(self, table: str, schema: SqlColumnSchema) -> None:
         """Adds a column to an existing table"""
@@ -215,6 +220,51 @@ class PostgresQLInterface:
         except Exception as e:
             logger.error(f"Failed to execute schema file: {e}")
             raise
+
+    def _drop_prefixed_tables(self):
+        """Drop all tables that start with the configured table_prefix"""
+        static_tables = [
+            "codelists",
+            "ig_datasets",
+            "ig_variables",
+            "standards",
+            "preprocessing_results",
+            "preprocessing_validation_errors",
+            "data_metadata",
+        ]
+
+        exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
+
+        drop_query = f"""
+            DO $$
+            DECLARE
+                r RECORD;
+            BEGIN
+                FOR r IN
+                    SELECT tablename
+                    FROM pg_tables
+                    WHERE schemaname = 'public'
+                    AND tablename LIKE '{self.table_prefix}%'
+                    AND tablename NOT IN ({exclusion_list})
+                LOOP
+                    EXECUTE format('DROP TABLE IF EXISTS %I CASCADE;', r.tablename);
+                END LOOP;
+            END $$;
+        """
+        self.execute_sql(drop_query)
+        logger.info(f"Dropped all tables with prefix '{self.table_prefix}'")
+
+    def _apply_prefix_to_schema(self, schema: SqlTableSchema) -> SqlTableSchema:
+        """Apply the table prefix to a schema's name and hash"""
+        prefixed_name = f"{self.table_prefix}{schema.name}"
+        prefixed_hash = f"{self.table_prefix}{schema.hash}"
+
+        prefixed_schema = SqlTableSchema(name=prefixed_name, hash=prefixed_hash, source=schema.source)
+
+        for _, col_schema in schema.get_columns():
+            prefixed_schema.add_column(col_schema)
+
+        return prefixed_schema
 
     def close(self):
         """Close database connections"""

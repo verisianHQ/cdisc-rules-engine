@@ -30,7 +30,7 @@ def create_sql_operators(
         PostgresQLOperators instance configured for testing
     """
     standards_context = DefaultStandardsContext()
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     table_name = dataset_name or TEST_TABLE_NAME
     PostgresQLDataService.add_test_dataset(

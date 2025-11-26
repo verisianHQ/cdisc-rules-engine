@@ -87,7 +87,9 @@ def run_sql_validation(args: Validation_args):
         standard, standard_version, standard_substandard, library_metadata
     )
 
-    data_service = PostgresQLDataService.from_dataset_paths(args.dataset_paths, standards_context=standards_context)
+    data_service = PostgresQLDataService.from_dataset_paths(
+        args.dataset_paths, standards_context=standards_context, table_prefix=args.table_prefix
+    )
 
     engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)
 

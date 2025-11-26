@@ -136,7 +136,7 @@ test_set2_variables = [
 )
 def test_get_model_filtered_variables(mock_variables, key_value, expected):
     """Test get_model_filtered_variables operation with different filter criteria"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     # Add test dataset matching original test structure
     PostgresQLDataService.add_test_dataset(
@@ -163,7 +163,7 @@ def test_get_model_filtered_variables(mock_variables, key_value, expected):
 
 def test_get_model_filtered_variables_exception_handling():
     """Test get_model_filtered_variables when metadata retrieval fails"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     # Add test dataset matching original test structure
     PostgresQLDataService.add_test_dataset(

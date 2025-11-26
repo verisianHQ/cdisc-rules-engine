@@ -20,7 +20,7 @@ class DummyStandardsContext(DefaultStandardsContext):
 
 
 def test_domain_is_custom_false():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     params = SqlOperationParams(domain="AE", target=None, standards_context=DummyStandardsContext())
     operation = SqlOperationsFactory.get_service("domain_is_custom", params, data_service)
     result = operation.execute()
@@ -28,7 +28,7 @@ def test_domain_is_custom_false():
 
 
 def test_domain_is_custom_true():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     params = SqlOperationParams(domain="ZZ", target=None, standards_context=DummyStandardsContext())
     operation = SqlOperationsFactory.get_service("domain_is_custom", params, data_service)
     result = operation.execute()

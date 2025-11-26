@@ -37,7 +37,7 @@ class DummyStandardsContext(DefaultStandardsContext):
 
 
 def test_valid_codelist_dates_with_ct_package_types():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     params = SqlOperationParams(
         domain="AE", target=None, standards_context=DummyStandardsContext(), ct_package_types=["SDTM"]
     )
@@ -47,7 +47,7 @@ def test_valid_codelist_dates_with_ct_package_types():
 
 
 def test_valid_codelist_dates_without_ct_package_types():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     params = SqlOperationParams(domain="AE", target=None, standards_context=DummyStandardsContext())
     operation = SqlOperationsFactory.get_service("valid_codelist_dates", params, data_service)
     result = operation.execute()

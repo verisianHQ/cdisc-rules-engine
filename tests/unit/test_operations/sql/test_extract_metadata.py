@@ -17,7 +17,7 @@ class DummyStandardsContext(DefaultStandardsContext):
 
 
 def test_dataset_name_extract_metadata():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DummyStandardsContext()
     params = SqlOperationParams(domain="AE", target="dataset_name", standards_context=standards_context)
     operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
@@ -26,7 +26,7 @@ def test_dataset_name_extract_metadata():
 
 
 def test_size_extract_metadata():
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DummyStandardsContext()
     params = SqlOperationParams(domain="AE", target="size", standards_context=standards_context)
     operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
@@ -36,7 +36,7 @@ def test_size_extract_metadata():
 
 def test_extract_metadata_exception_handling():
     """Test extract_metadata errors when target metadata not present (eg weight)"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DummyStandardsContext()
     params = SqlOperationParams(domain="AE", target="weight", standards_context=standards_context)
     operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)

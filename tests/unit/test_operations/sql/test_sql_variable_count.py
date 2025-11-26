@@ -6,7 +6,7 @@ from cdisc_rules_engine.sql_operations.variable_count import SqlVariableCountOpe
 
 def test_variable_count_single_domain():
     """Test when variable exists in one domain only"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     PostgresQLDataService.add_test_dataset(
         data_service,
@@ -32,7 +32,7 @@ def test_variable_count_single_domain():
 
 def test_variable_count_multiple_domains():
     """Test when variable exists in multiple domains"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     PostgresQLDataService.add_test_dataset(
         data_service,
@@ -79,7 +79,7 @@ def test_variable_count_multiple_domains():
 
 def test_variable_count_not_found():
     """Test when variable doesn't exist in any domain"""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
 
     PostgresQLDataService.add_test_dataset(
         data_service, table_name="AE", column_data={"AESEQ": [1, 2]}, standards_context=DefaultStandardsContext()

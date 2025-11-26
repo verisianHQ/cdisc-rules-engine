@@ -42,7 +42,7 @@ test_dataset_metadata = [
     ],
 )
 def test_study_domains(mock_datasets, expected):
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure
@@ -104,7 +104,7 @@ test_duplicate_dataset_metadata = [
     ],
 )
 def test_duplicate_study_domains(mock_datasets, expected):
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure
@@ -164,7 +164,7 @@ test_missing_domain_dataset_metadata = [
     ],
 )
 def test_missing_domain_study_domains(mock_datasets, expected):
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure

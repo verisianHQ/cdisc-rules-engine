@@ -55,12 +55,12 @@ class PostgresQLDataService:
         self.datasets: List[BaseDatasetMetadata] = []
 
     @classmethod
-    def instance(cls) -> "PostgresQLDataService":
+    def instance(cls, table_prefix: str = "core_") -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
         # PostgresDB setup
-        pgi = PostgresQLInterface()
+        pgi = PostgresQLInterface(table_prefix=table_prefix)
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)
@@ -78,7 +78,7 @@ class PostgresQLDataService:
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance()
+        instance = cls.instance(table_prefix="")
         instance.datasets += [
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
