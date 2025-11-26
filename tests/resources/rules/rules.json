@@ -30364,15 +30364,10 @@
                             {
                                 "dataset": "pooldef.xpt",
                                 "domain": "PO",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "di.xpt",
@@ -30457,10 +30452,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -30624,15 +30622,10 @@
                             {
                                 "dataset": "pooldef.xpt",
                                 "domain": "PO",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in prefix_matches_regex operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "di.xpt",
@@ -30701,10 +30694,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -36062,15 +36058,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -36120,10 +36111,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -36156,15 +36150,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -36193,10 +36182,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -43404,13 +43396,121 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VISITNUM is not among VISITNUM in SV domain.",
+                                "number_errors": 14,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 3.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 4.0
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 5.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 9.0
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 10.0
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 11.0
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 13.0
+                                        }
+                                    },
+                                    {
+                                        "row": 13,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 101.0
+                                        }
+                                    },
+                                    {
+                                        "row": 14,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 201.0
+                                        }
                                     }
                                 ]
                             },
@@ -43989,10 +44089,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -44041,13 +44144,105 @@
                             {
                                 "dataset": "tv.xpt",
                                 "domain": "TV",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "VISITNUM is not among VISITNUM in SV domain.",
+                                "number_errors": 12,
                                 "errors": [
                                     {
-                                        "error": "SQL error in is_not_contained_by operator",
-                                        "message": "column or relation does not exist"
+                                        "row": 1,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 1.0
+                                        }
+                                    },
+                                    {
+                                        "row": 2,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 2.0
+                                        }
+                                    },
+                                    {
+                                        "row": 3,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 3.0
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 4.0
+                                        }
+                                    },
+                                    {
+                                        "row": 5,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 5.0
+                                        }
+                                    },
+                                    {
+                                        "row": 6,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 7.0
+                                        }
+                                    },
+                                    {
+                                        "row": 7,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 8.0
+                                        }
+                                    },
+                                    {
+                                        "row": 8,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 9.0
+                                        }
+                                    },
+                                    {
+                                        "row": 9,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 10.0
+                                        }
+                                    },
+                                    {
+                                        "row": 10,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 11.0
+                                        }
+                                    },
+                                    {
+                                        "row": 11,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 12.0
+                                        }
+                                    },
+                                    {
+                                        "row": 12,
+                                        "SEQ": null,
+                                        "USUBJID": "None",
+                                        "value": {
+                                            "VISITNUM": 13.0
+                                        }
                                     }
                                 ]
                             },
@@ -44110,10 +44305,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -70772,13 +70970,27 @@
                             {
                                 "dataset": "ss.xpt",
                                 "domain": "SS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
+                                "execution_status": "success",
+                                "execution_message": "DSDECOD is not \"DEATH\", When SS.SSSTRESC = \"DEAD\".",
+                                "number_errors": 2,
                                 "errors": [
                                     {
-                                        "error": "SQL error in does_not_contain operator",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "row": 2,
+                                        "SEQ": 2,
+                                        "USUBJID": "015246-076-0003-00003",
+                                        "value": {
+                                            "$ds_dsdecod": "ADVERSE EVENT",
+                                            "SSSTRESC": "DEAD"
+                                        }
+                                    },
+                                    {
+                                        "row": 4,
+                                        "SEQ": 2,
+                                        "USUBJID": "015246-300-0004-00002",
+                                        "value": {
+                                            "$ds_dsdecod": "ADVERSE EVENT",
+                                            "SSSTRESC": "DEAD"
+                                        }
                                     }
                                 ]
                             }
@@ -70839,12 +71051,72 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
+                            "execution_status_mismatch": false,
                             "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "diff": {
+                                "ss.xpt": {
+                                    "values_changed": {
+                                        "root[0]": {
+                                            "new_value": {
+                                                "row": 2,
+                                                "SEQ": 2,
+                                                "USUBJID": "015246-076-0003-00003",
+                                                "value": {
+                                                    "$ds_dsdecod": "ADVERSE EVENT",
+                                                    "SSSTRESC": "DEAD"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 2,
+                                                "SEQ": 2,
+                                                "USUBJID": "015246-076-0003-00003",
+                                                "value": {
+                                                    "$ds_dsdecod": [
+                                                        "ADVERSE EVENT",
+                                                        "ALIVE",
+                                                        "COMPLETED",
+                                                        "INFORMED CONSENT OBTAINED",
+                                                        "LAST CONTACT",
+                                                        "PROGRESSIVE DISEASE",
+                                                        "RANDOMIZED"
+                                                    ],
+                                                    "SSSTRESC": "DEAD"
+                                                }
+                                            }
+                                        },
+                                        "root[1]": {
+                                            "new_value": {
+                                                "row": 4,
+                                                "SEQ": 2,
+                                                "USUBJID": "015246-300-0004-00002",
+                                                "value": {
+                                                    "$ds_dsdecod": "ADVERSE EVENT",
+                                                    "SSSTRESC": "DEAD"
+                                                }
+                                            },
+                                            "old_value": {
+                                                "row": 4,
+                                                "SEQ": 2,
+                                                "USUBJID": "015246-300-0004-00002",
+                                                "value": {
+                                                    "$ds_dsdecod": [
+                                                        "ADVERSE EVENT",
+                                                        "ALIVE",
+                                                        "COMPLETED",
+                                                        "INFORMED CONSENT OBTAINED",
+                                                        "LAST CONTACT",
+                                                        "RANDOMIZED"
+                                                    ],
+                                                    "SSSTRESC": "DEAD"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -70877,15 +71149,10 @@
                             {
                                 "dataset": "ss.xpt",
                                 "domain": "SS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_contain operator",
-                                        "message": "Variable $ds_dsdecod is not a constant."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -70909,13 +71176,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92460,41 +92724,26 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -92699,10 +92948,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92753,15 +93005,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -92811,10 +93058,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -92836,15 +93086,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -93163,10 +93408,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93191,41 +93439,26 @@
                             {
                                 "dataset": "ae.xpt",
                                 "domain": "AE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "ex.xpt",
                                 "domain": "EX",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -93288,10 +93521,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93321,15 +93557,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -93358,10 +93589,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -93383,15 +93617,10 @@
                             {
                                 "dataset": "dm.xpt",
                                 "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in is_incomplete_date operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -93428,10 +93657,13 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "equal": true
+                            "dataset_mismatch": false,
+                            "execution_status_mismatch": true,
+                            "number_of_errors_mismatch": false,
+                            "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "execution_error",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106368,15 +106600,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPAE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106484,12 +106711,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106511,15 +106738,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPDM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106546,12 +106768,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106573,15 +106795,10 @@
                             {
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPLB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106626,12 +106843,12 @@
                         ],
                         "old_vs_sql": {
                             "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
+                            "execution_status_mismatch": false,
+                            "number_of_errors_mismatch": true,
                             "diff": {}
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106656,15 +106873,10 @@
                             {
                                 "dataset": "suppae.xpt",
                                 "domain": "SUPPAE",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106680,13 +106892,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106708,15 +106917,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPDM",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -106748,13 +106952,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -106776,15 +106977,10 @@
                             {
                                 "dataset": "supplbch.xpt",
                                 "domain": "SUPPLB",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_equal_string_part operator",
-                                        "message": "column or relation does not exist"
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -106800,13 +106996,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114739,13 +114932,17 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
+                                "execution_status": "success",
+                                "execution_message": "When the death flag in DM is set to \"Y\", a record is not present in DS domain with DSDECOD= \"DEATH\"",
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "SQL error in does_not_contain operator",
-                                        "message": "Variable $ds_dsdecod is not a constant."
+                                        "row": null,
+                                        "SEQ": null,
+                                        "USUBJID": null,
+                                        "value": {
+                                            "USUBJID": "CDISC002"
+                                        }
                                     }
                                 ]
                             },
@@ -114788,13 +114985,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",
@@ -114819,15 +115013,10 @@
                             {
                                 "dataset": "ds.xpt",
                                 "domain": "DS",
-                                "execution_status": "execution_error",
-                                "execution_message": "SQL operator execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "SQL error in does_not_contain operator",
-                                        "message": "Variable $ds_dsdecod is not a constant."
-                                    }
-                                ]
+                                "execution_status": "success",
+                                "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "dm.xpt",
@@ -114859,13 +115048,10 @@
                             }
                         ],
                         "old_vs_sql": {
-                            "dataset_mismatch": false,
-                            "execution_status_mismatch": true,
-                            "number_of_errors_mismatch": false,
-                            "diff": {}
+                            "equal": true
                         },
                         "whitelisted": false,
-                        "sql_overall_result": "execution_error",
+                        "sql_overall_result": "success",
                         "old_overall_result": "success",
                         "validated_results_folder_exists": false,
                         "validation_file": "",

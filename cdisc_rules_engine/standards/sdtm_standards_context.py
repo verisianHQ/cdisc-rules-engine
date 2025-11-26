@@ -82,11 +82,7 @@ class SdtmStandardsContext(BaseStandardsContext):
 
     def derive_domain_code(self, domain: str):
         """Derive the domain code for this domain"""
-        if domain.startswith("SUPP"):
-            return domain[4:]
-        if domain.startswith("SQ"):
-            return domain[2:]
-        if domain == "SUPPQUAL":
+        if domain.startswith("SUPP") or domain.startswith("SQ"):
             return "Q"
         if domain in ["RELREC", "RELSPEC", "RELSUB"]:
             return ""
