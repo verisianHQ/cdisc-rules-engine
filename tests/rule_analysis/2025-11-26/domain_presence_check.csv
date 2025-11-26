@@ -1,0 +1,125 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0502,CDISC.SDTMIG.CG0502,CG0502,2.0,CG0502,2.0,CDISC,SDTMIG,3.4,2.0,RELMIDS,The temporal relationship of the observation to the Disease Milestone Instance Name in MIDS.,Model v2.0,Timing,"Cited guidance updated. Reference to model section and item updated per new style. Corrected Item to remove ""--"". Clarified wording of rule; now version 2 of rule.",- Cited Guidance:  The temporal relationship of the observation to the Disease Milestone Instance Name in MIDS.  Document: Model v2.0 Item: RELMIDS Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Raise an error when variable RELMIDS is present in any of the dataset and TM dataset is missing in a study.,TM dataset is missing when RELMIDS variable is present in any of the dataset.,,Domain Presence Check,RELMIDS,RELMIDS present in dataset,TM dataset present in study,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: $RELMIDS_EXISTS
+ operator: equal_to
+ value: true
+ - name: TM
+ operator: not_exists",,"- id: $RELMIDS_EXISTS
+ name: RELMIDS
+ operator: variable_exists
+",,,3.4,Fully Executable,,,,,,,,1.0
+CG0647,CDISC.SDTMIG.CG0647,CG0647,2.0,CG0647,1.0,CDISC,SDTMIG,3.4,2.0,,Note: Not for use with human clinical trials.,Model v2.0,5.1.3.1,"New version of rule, Trial Repro Stages Domain Code is TT, was previously identified as TJ..",- Cited Guidance: The TT dataset must not be used in human clinical trials. Document: SDTM v2.0 Section: Trial Repro Stages,SDTM and SDTMIG Conformance Rules,Study,Error,,failing,invalid,Raise an error when TT dataset is present.,TT dataset is present.,"New version of rule, Trial Repro Stages Domain Code is TT, was previously identified as TJ..",Domain Presence Check,,,TT dataset not present,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - TT",TDM,,TT,"any:
+ - name: TT
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0368,CDISC.SDTMIG.CG0368,CG0368,2.0,CG0368,1.0,CDISC,SDTMIG,3.4,2.0,,Each study must include 1 standardized set of observations in a specific structure; this is the Demographics domain described here.,Model v2.0,Demographics,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: Each study must include 1 standardized set of observations in a specific structure; this is the Demographics domain described here. Document: Model v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Study,Error,,not implemented,,Trigger error when DM dataset is not present,DM dataset is missing,"New version of rule.
+
+GEN removed from Variable Name",Domain Presence Check,,Study on human subjects,DM dataset present in study,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",SPC,,DM,"all:
+ - name:  DM 
+ operator:  not_exists 
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0191,CDISC.SDTMIG.CG0191,CG0191,2.0,CG0191,1.0,CDISC,SDTMIG,3.4,2.0," 2.6[Item 1, bullet 5]|6.3.5.4","2.6 [Item 1, bullet 5] [The domain pair uses DOMAIN as an Identifier to group parent records (e.g., MB) from child records (e.g., MS) and enables a dataset-level relationship to be described in RELREC.] | 6.3.5.4 [MS is used for representing data from drug susceptibility testing on the organisms identified in MB.]",IG v3.4,2.6|6.3.5.4,"Updated section number, fixed citation in item/guidance.","- Cited Guidance: The domain pair uses DOMAIN as an Identifier to group parent records (e.g., MB) from child records (e.g., MS) and enables a dataset-level relationship to be described in RELREC. Document: IG v3.4 Item: Item 1, bullet 5 Section:  2.6  - Cited Guidance: MS is used for representing data from drug susceptibility testing on the organisms identified in MB. Document: IG v3.4 Section: 6.3.5.4",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Trigger error if MS dataset is present and MB dataset is not present.,The MB dataset is not present when the MS dataset is present.,"New version of rule.
+
+GEN removed from Variable Name",Domain Presence Check,,MS dataset present in study,MB dataset present in study,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - MS",FND,,MS,"all:
+ - name: MS
+ operator: exists
+ - name: MB
+ operator: not_exists",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0332,CDISC.SDTMIG.CG0332,CG0332,2.0,CG0332,1.0,CDISC,SDTMIG,3.4,2.0,6,"For domains with two-letter domain codes (i.e., other than SUPPxx and RELREC), split dataset names can be up to four characters in length. For example, if splitting by --CAT, then dataset names would be the domain name plus up to two additional characters (e.g., QS36 for SF-36). If splitting Findings About by parent domain, then the dataset name would be the domain code, ""FA"", plus the two-character domain code for parent domain code (e.g., ""FACM""). The four-character dataset-name limitation allows the use of a Supplemental Qualifier dataset associated with the split dataset.",IG v3.4,4.1.7,No Change,"- Cited Guidance:  For domains with two-letter domain codes (i.e., other than SUPPxx and RELREC), split dataset names can be up to four characters in length. For example, if splitting by --CAT, then dataset names would be the domain name plus up to two additional characters (e.g., QS36 for SF-36). If splitting Findings About by parent domain, then the dataset name would be the domain code,  FA , plus the two-character domain code for parent domain code (e.g.,  FACM ). The four-character datase",SDTM and SDTMIG Conformance Rules,Domain,,,success,invalid,Verifying that split domains (i.e three/four-letter domain name) have a two-letter parent domain present in the study,Two-Letter parent domain must be present when spilt datasets are present in the study.,"New version of rule.
+
+GEN removed from Variable Name",Domain Presence Check,,Dataset name length = 3 or 4 and dataset name does not begin with 'AP' or 'FA',The first two characters of the dataset name must equal a domain that is present in the study,"
+ Include:
+ - All
+","Domains:
+ Exclude:
+ - RELREC
+ - RELSUB
+ - SUPP",ALL,,"NOT(RELREC, RELSUB, SUPP--)","all:
+ - name: dataset_name
+ operator: matches_regex
+ value: ^[A-Z][a-z0-9]{3,4}
+ - name: dataset_name
+ operator: not_prefix_matches_regex
+ prefix: 2
+ value: (ap|AP|fa|Fa)
+ - name: dataset_name
+ operator: is_not_contained_by
+ value: <Needs to be a dynamic list of two-letter domains for respective study>",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0318,CDISC.SDTMIG.CG0318,CG0318,2.0,CG0318,1.0,CDISC,SDTMIG,3.4,2.0,2.6[Item 1]|6.3.5.6.2[PP - Description/Overview],"2.6[Item 1][Note, domain pairs have been modeled for microbiology data (MB/MS domains) and PK data (PC/PP domains) to enable dataset-level relationships to be described using RELREC.]|6.3.5.6.2[PP - Description/Overview][A findings domain that contains pharmacokinetic parameters derived from pharmacokinetic concentration-time (PC) data.]",IG v3.4,2.6|6.3.5.6.2,Section change in SDTMIG v3.4,"- Cited Guidance: Note, domain pairs have been modeled for microbiology data (MB/MS domains) and PK data (PC/PP domains) to enable dataset-level relationships to be described using RELREC. Document: IG v3.4 Item:  1  Section:  2.6  - Cited Guidance: A findings domain that contains pharmacokinetic parameters derived from pharmacokinetic concentration-time (PC) data. Document: IG v3.4 Item: PP -",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"Raise an error when a PP dataset is present in study, but a PC dataset is not present in study.","PP dataset is present in study, but PC dataset is not present in study.","New version of rule.
+
+GEN removed from Variable Name",Domain Presence Check,,PP dataset present in study,PC dataset present in study,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PC
+ - PP",FND,,PC,"all:
+ - name: PP
+ operator: exists
+ - name: PC
+ operator: not_exists",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0105,CDISC.SDTMIG.CG0105,CG0105,1.0,CG0105,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 6c,"When the EC domain is implemented in conjunction with the EX domain, EXVAMT and EXVAMTU should not be used in EX; collected values instead would be represented in ECDOSE and ECDOSU.",IG v3.4,6.1.3.1,No Change,"- Cited Guidance:   When the EC domain is implemented in conjunction with the EX domain, EXVAMT and EXVAMTU should not be used in EX; collected values instead would be represented in ECDOSE and ECDOSU.   Document: IG v3.4 Item: Assumption 6c Section: 6.1.3.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when EXVAMT exists in EX domain when EC domain exists.,"EXVAMT is present, when EC domain exists.",,Domain Presence Check,EXVAMT,EC domain is present,EXVAMT not present in dataset,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - EC
+ - EX",INT,,EX,"all:
+ - name: EC
+ operator: exists
+ - name: EXVAMT
+ operator: exists
+#","# - Name: EX
+# Keys:
+# - USUBJID",,- EXVAMT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0648,CDISC.SDTMIG.CG0648,CG0648,1.0,CG0648,1.0,CDISC,SDTMIG,3.4,2.0,,Not in human clinical trials.,Model v2.0,Trial Repro Paths,New Rule,- Cited Guidance: The TP dataset must not be used in human clinical trials. Document: SDTM v2.0 Section: Trial Repro Paths,SDTM and SDTMIG Conformance Rules,Study,Error,,success,invalid,Raise an error when TP dataset is present.,TP dataset is present.,,Domain Presence Check,,,TP dataset not present,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - TP",TDM,,TP,"all:
+ - name: TP
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0646,CDISC.SDTMIG.CG0646,CG0646,1.0,CG0646,1.0,CDISC,SDTMIG,3.4,2.0,,Not in human clinical trials.,Model v2.0,Subject Repro Stages,New Rule,- Cited Guidance: The SJ dataset must not be used in human clinical trials. Document: SDTM v2.0 Section: Subject Repro Stages,SDTM and SDTMIG Conformance Rules,Study,Error,,success,invalid,Raise an error when SJ dataset is present.,SJ dataset is present.,,Domain Presence Check,,,SJ dataset not present,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - SJ",SPC,,SJ,"any:
+ - name: SJ
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0501,CDISC.SDTMIG.CG0501,CG0501,2.0,CG0501,2.0,CDISC,SDTMIG,3.4,2.0,MIDS,"The name of a specific instance of a Disease Milestone Type (MIDSTYPE) described in the Trial Disease Milestones dataset (see Section 5.1.4.3, Trial Disease Milestones). This should be unique within a subject. Used only in conjunction with RELMIDS and MIDSDTC.",Model v2.0,Timing,"Cited guidance updated. Reference to model section and item updated per new style. Corrected Item to remove ""--"". Clarified wording of rule; now version 2 of rule.","- Cited Guidance:  The name of a specific instance of a Disease Milestone Type (MIDSTYPE) described in the Trial Disease Milestones dataset (see Section 5.1.4.3, Trial Disease Milestones). This should be unique within a subject. Used only in conjunction with RELMIDS and MIDSDTC.  Document: Model v2.0 Item: MIDS Section: Timing",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when variable MIDS is present in any of the dataset and TM dataset is missing.,TM dataset is missing when MIDS variable is present in one of the dataset.,,Domain Presence Check,MIDS,MIDS present in dataset,TM dataset present in study,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: $MIDS_EXISTS
+ operator: equal_to
+ value: true
+ - name: TM
+ operator: not_exists",,"- id: $MIDS_EXISTS
+ name: MIDS
+ operator: variable_exists",,,3.4,Fully Executable,,,,,,,,1.0

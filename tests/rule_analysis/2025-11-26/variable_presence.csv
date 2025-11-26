@@ -1,0 +1,1104 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0564,CDISC.SDTMIG.CG0564,CG0564,1.0,CG0564,1.0,CDISC,SDTMIG,3.4,2.0,--AGENT,MS Domain only.,Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: MS Domain only Document: Model v2.0 Item: --AGENT Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Raise an error when --AGENT is present in a dataset other than MS.,--AGENT is present in a dataset other than MS.,,Variable Presence,--AGENT,,--AGENT not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - MS",FND,,NOT(MS),"all:
+ - name: --AGENT
+ operator: exists
+",,,- --AGENT,,3.4,Fully Executable,,,,,,,,1.0
+CG0056,CDISC.SDTMIG.CG0056,CG0056,1.0,CG0056,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--STAT,Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered.]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF.]|Interventions[--STAT][Used to indicate when a question about the occurrence of a prespecified intervention was not answered.],Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style. ,"- Cited Guidance: --PRESP, an indication that the event was prospectively stated or detailed on the CRF. --STAT, used to indicate when a question about the occurrence of a prespecified event was not answered. Document: SDTM v2.0 Section: Events - Cited Guidance: --PRESP, an indication that the intervention was prospectively stated or detailed on the CRF. --STAT, used to indicate when a question about the occurrence of a prespecified intervention was not answered. Document: SDTM",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,failing,missing,Raise an error when --PRESP is not present but --STAT is present.,--STAT is present when --PRESP is not present.,,Variable Presence,--STAT,--PRESP not present in dataset,--STAT not present in dataset,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(DS, DV, EX)","all:
+ - name: --PRESP
+ operator: not_exists
+ - name: --STAT
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0053,CDISC.SDTMIG.CG0053,CG0053,1.0,CG0053,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--STAT,--PRESP[An indication that the event or intervention was prospectively stated or detailed on the CRF.]|--OCCUR[An indication as to whether a prespecified event or intervention has occurred.],Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: --PRESP[An indication that the event or intervention was prospectively stated or detailed on the CRF.]|--OCCUR[An indication as to whether a prespecified event or intervention has occurred.] Document: SDTM v2.0 Section: Events|Interventions,SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,missing,Raise and error when --REASND is present in dataset and --PRESP is not present in dataset,--REASND should not be present in dataset when --PRESP is not present in dataset,,Variable Presence,--REASND,--PRESP not present in dataset,--REASND not present in dataset,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(DS, DV, EX)","all:
+ - name: --PRESP
+ operator: not_exists
+ - name: --REASND
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0566,CDISC.SDTMIG.CG0566,CG0566,1.0,CG0566,1.0,CDISC,SDTMIG,3.4,2.0,--CONCU,MS Domain only.,Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: MS Domain only Document: Model v2.0 Item: --CONCU Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Raise an error when --CONCU is present in a dataset other than MS.,--CONCU is present in a dataset other than MS.,,Variable Presence,--CONCU,,--CONCU not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - MS",FND,,NOT(MS),"all:
+ - name: --CONCU
+ operator: exists
+",,,- --CONCU,,3.4,Fully Executable,,,,,,,,1.0
+CG0300,CDISC.SDTMIG.CG0300,CG0300,1.0,CG0300,1.0,CDISC,SDTMIG,3.4,2.0,TR – Description/Overview,"The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information.",IG v3.4,6.3.12.2,Slight change to cited guidance,"- Cited Guidance: The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information. Document: IG v3.4 Section: 6.3.12.2 Item: TR",SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,missing,Raise an error when TRLAT is present.,TRLAT is present.,,Variable Presence,TRLAT,,TRLAT not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - TR",FND,,TR,"all:
+ - name: TRLAT
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0554,CDISC.SDTMIG.CG0554,CG0554,2.0,CG0554,1.0,CDISC,SDTMIG,3.4,2.0,,"[Identifiers][STUDYID, DOMAIN, and --SEQ are required in all domains based on one of the 3 general observation classes. Each general class domain must also include at least one of the following subject identifiers: USUBJID, SPDEVID, or POOLID.]|[Associated Persons Data][The Associated Persons Identifier (APID) will be required in all AP datasets, and will identify records as AP data.]",Model v2.0,Identifiers|Associated Persons Data,"Cited guidance updated. Reference to model section and item updated per new style.
+
+Rule retired for IGs after 3.4, replaced by a rule that addresses expanded variable list..","- Cited Guidance:  STUDYID, DOMAIN, and --SEQ are required in all domains based on one of the 3 general observation classes. Each general class domain must also include at least one of the following subject identifiers USUBJID, SPDEVID, or POOLID.  Document: Model v2.0 Section: Identifiers - Cited Guidance: The Associated Persons Identifier (APID) will be required in all AP datasets, and will identify records as AP data.  Document: Model v2.0 Section: Associated Persons Data",SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,missing,"APID is required in all Associated Persons Data. In addition to STUDYID, DOMAIN, and --SEQ being required for all domains based on one of the 3 general observation classes, one of USUBJID, APID, SPDEVID, or POOLID must also be present.","An appropriate subject identifier is not present. APID is required in all Associated Persons Data. In addition to STUDYID, DOMAIN, and --SEQ being required for all domains based on one of the 3 general observation classes, one of USUBJID, APID, SPDEVID, or POOLID must also be present.","New version of rule.
+
+Class and Variable updated to reflect that this is a requirement for General Observation Classes.
+
+Rule retired for IGs after 3.4, replaced by a rule that addresses expanded variable list..",Variable Presence,,,"STUDYID, DOMAIN, and --SEQ exist and at least one of USUBJID, APID, SPDEVID, or POOLID","
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",GEN,,ALL,"any:
+ - all:
+ - name: DOMAIN
+ operator: prefix_matches_regex
+ prefix: 2
+ value: (AP|ap)
+ - name: APID
+ operator: not_exists
+ - all:
+ - name: DOMAIN
+ operator: not_prefix_matches_regex
+ prefix: 2
+ value: (AP|ap)
+ - name: STUDYID
+ operator: exists
+ - name: --SEQ
+ operator: exists
+ - name: USUBJID
+ operator: not_exists
+ - name: SPDEVID
+ operator: not_exists
+ - name: POOLID
+ operator: not_exists",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0016,CDISC.SDTMIG.CG0016,CG0016,2.0,CG0016,1.0,CDISC,SDTMIG,3.4,2.0,,"When the study does not include the data item for an expected variable, however, a null column must still be included in the dataset, and a comment must be included in the Define-XML document to state that the study does not include the data item.",IG v3.4,4.1.5,Text for cited guidance was modified in SDTMIG v3.4,"- Cited Guidance:  When the study does not include the data item for an expected\ \ variable, however, a null column must still be included in the dataset,\n\ \ and a comment must be included in the Define-XML document to state that the\ \ study does not include the data item.  Document: SDTM v1.4 Section: 4.1.5",SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Raise an error when Variable Core Status = Expected and Variable does not exist.,SDTM Expected variable not found in the dataset.,"New version of rule.
+
+GEN removed from Variable Name, replaced with ALL",Variable Presence,ALL,Variable Core Status = Expected,Variable present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: CORE
+ operator: equal_to
+ value: Exp
+ - name: GEN
+ operator: not_exists",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0507,CDISC.SDTMIG.CG0507,CG0507,1.0,CG0507,1.0,CDISC,SDTMIG,3.4,2.0,SDTM Variables Not Allowed in SDTMIG,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+
+--USCHFL (Interventions, Events, Findings)
+--DTHREL (Findings)
+--EXCLFL (Findings)
+--REASEX (Findings)
+--IMPLBL (Findings)
+FETUSID (Identifiers)
+--DETECT (Timing Variables)
+--NOMDY (Timing Variables)
+--NOMLBL (Timing Variables)",IG v3.4,2.7,No Change,"- Cited Guidance: The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials, --USCHFL (Interventions, Events, Findings), --DTHREL (Findings), --EXCLFL (Findings), --REASEX (Findings), --IMPLBL (Findings), FETUSID (Identifiers), --DETECT (Timing Variables), --NOMDY (Timing Variables), --NOMLBL (Timing Variables) Document: IG v3.4 Item: SDTM Variables Not Allowed in SDTMIG Sectio",SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Raise an error when --USCHFL is present.,--USCHFL is present.,,Variable Presence,--USCHFL,,--USCHFL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --USCHFL
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0511,CDISC.SDTMIG.CG0511,CG0511,1.0,CG0511,1.0,CDISC,SDTMIG,3.4,2.0,SDTM Variables Not Allowed in SDTMIG,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+
+--USCHFL (Interventions, Events, Findings)
+--DTHREL (Findings)
+--EXCLFL (Findings)
+--REASEX (Findings)
+--IMPLBL (Findings)
+FETUSID (Identifiers)
+--DETECT (Timing Variables)
+--NOMDY (Timing Variables)
+--NOMLBL (Timing Variables)",IG v3.4,2.7,No Change,"- Cited Guidance: The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials --USCHFL (Interventions, Events, Findings) --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --IMPLBL (Findings) FETUSID (Identifiers) --DETECT (Timing Variables) --NOMDY (Timing Variables) --NOMLBL (Timing Variables) Document: IG v3.4 Item: SDTM Variables Not Allowed in SDTMIG Section:  2.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Raise an error when --NOMLBL is present.,--NOMLBL is present.,,Variable Presence,--NOMLBL,,--NOMLBL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --NOMLBL
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0510,CDISC.SDTMIG.CG0510,CG0510,1.0,CG0510,1.0,CDISC,SDTMIG,3.4,2.0,SDTM Variables Not Allowed in SDTMIG,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+
+--USCHFL (Interventions, Events, Findings)
+--DTHREL (Findings)
+--EXCLFL (Findings)
+--REASEX (Findings)
+--IMPLBL (Findings)
+FETUSID (Identifiers)
+--DETECT (Timing Variables)
+--NOMDY (Timing Variables)
+--NOMLBL (Timing Variables)",IG v3.4,2.7,No Change,"- Cited Guidance: The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials --USCHFL (Interventions, Events, Findings) --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --IMPLBL (Findings) FETUSID (Identifiers) --DETECT (Timing Variables) --NOMDY (Timing Variables) --NOMLBL (Timing Variables) Document: IG v3.4 Item: SDTM Variables Not Allowed in SDTMIG Section:  2.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Raise an error when --NOMDY is present.,--NOMDY is present.,,Variable Presence,--NOMDY,,--NOMDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --NOMDY
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0509,CDISC.SDTMIG.CG0509,CG0509,1.0,CG0509,1.0,CDISC,SDTMIG,3.4,2.0,SDTM Variables Not Allowed in SDTMIG,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+
+--USCHFL (Interventions, Events, Findings)
+--DTHREL (Findings)
+--EXCLFL (Findings)
+--REASEX (Findings)
+--IMPLBL (Findings)
+FETUSID (Identifiers)
+--DETECT (Timing Variables)
+--NOMDY (Timing Variables)
+--NOMLBL (Timing Variables)",IG v3.4,2.7,No Change,"- Cited Guidance: FETUSID is not be used in human clinical trials. Document: SDTM v2.0 Section: Identifiers - Cited Guidance: The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials --USCHFL (Interventions, Events, Findings) --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --IMPLBL (Findings) FETUSID (Identifiers) --DETECT (Timing Variables) --NOMDY (Timing Variables",SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,FETUSID must not be present in SDTM domains.,FETUSID is present.,,Variable Presence,FETUSID,,FETUSID not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: FETUSID
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0463,CDISC.SDTMIG.CG0463,CG0463,2.0,CG0463,2.0,CDISC,SDTMIG,3.4,2.0,Assumption 3b,"Include the Topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM",IG v3.4,2.6,Expanded text to include complete assumption.  Rule version 2,"- Cited Guidance: Include the Topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM Document: IG v3.4 Item: Assumption 3b Section:  2.6",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,Trigger error when --TRT is not present in custom interventions dataset,--TRT is not present in custom interventions dataset,,Variable Presence,--TRT,Custom domain present in study,--TRT present in custom interventions dataset,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - All",INT,,ALL,"all:
+ - name: null
+ operator: is_not_contained_by
+ prefix: 2
+ value: null
+ - name: --TRT
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0464,CDISC.SDTMIG.CG0464,CG0464,2.0,CG0464,2.0,CDISC,SDTMIG,3.4,2.0,Assumption 3b,"Include the Topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM",IG v3.4,2.6,Expanded text to include complete assumption.  Rule version 2,"- Cited Guidance: Include the Topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM Document: IG v3.4 Item: Assumption 3b Section:  2.6",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,Trigger error when --TERM is not present in custom events dataset,--TERM is not present in custom events dataset,,Variable Presence,--TERM,Custom domain present in study,--TERM present in custom events dataset,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: null
+ operator: is_not_contained_by
+ prefix: 2
+ value: null
+ - name: --TERM
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0551,CDISC.SDTMIG.CG0551,CG0551,1.0,CG0551,1.0,CDISC,SDTMIG,3.4,2.0,--STREFN,"Reference value for continuous or numeric results or findings in standard format or in standard units. --STREFN uses the same units as --STRESN, if applicable.",Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance: Reference value for continuous or numeric results or findings in standard format or in standard units. --STREFN uses the same units as --STRESN, if applicable. Document: Model v2.0 Item: --STREFN Section: Findings",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when --STREFN is not in the same units as --STRESN,--STREFN is not in the same units as --STRESN,,Variable Presence,--STREFN,,--STREFN in same units as --STRESN,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - name: --STREFN
+ operator: null
+",,,,,3.4,Not Executable,,,,,,,,1.0
+CG0552,CDISC.SDTMIG.CG0552,CG0552,1.0,CG0552,1.0,CDISC,SDTMIG,3.4,2.0,--RESLOC,Not in human clinical trials.,Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: --RESLOC is not be used in human clinical trials. Document: Model v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Raise an error when --RESLOC is present.,--RESLOC is present.,,Variable Presence,--RESLOC,,--RESLOC not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - name: --RESLOC
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0169,CDISC.SDTMIG.CG0169,CG0169,1.0,CG0169,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"When the comment text is longer than 200 characters, the first 200 characters of the comment will be in COVAL, the next 200 in COVAL1, and additional text stored as needed to COVALn. See example, Rows 3-4. ",IG v3.4,5.1,No Change,"- Cited Guidance:  When the comment text is longer than 200 characters, the first 200 characters of the comment will be in COVAL, the next 200 in COVAL1, and additional text stored as needed to COVALn. See example, Rows 3-4.   Document: IG v3.4 Item: Assumption 3 Section:  5.1",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,Trigger error when there are no comments greater than 200 characters and COVALn is present,COVALn is present in dataset when no comments are greater than 200 characters,,Variable Presence,COVAL,No comment > 200 characters,COVALn not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - CO",SPC,,CO,"all:
+ - name: COVAL1
+ operator: exists
+ - name: COVAL1
+ operator: empty",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional non-CDISC metadata,1.0
+CG0158,CDISC.SDTMIG.CG0158,CG0158,1.0,CG0158,1.0,CDISC,SDTMIG,3.4,2.0,Specification,RSUBJID will be populated with the USUBJID of the related subject or the POOLID of the related pool.,AP Guide v1.0,2.1.1,No Change,- Cited Guidance: RSUBJID will be populated with the USUBJID of the related subject or the POOLID of the related pool. Document: AP Guide v1.0 Item: Specification Section: 2.1.1,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error if relationship described is to a pool and RSUBJID is not in POOLDEF.POOLID,RSUBJID is not in POOLDEF.POOLID,,Variable Presence,RSUBJID,Relationship described is to a pool,RSUBJID in POOLDEF.POOLID,"
+ Include:
+ - Associate Persons
+","Domains:
+ Include:
+ - All",AP,,ALL,"all:
+ - name: null
+ operator: null
+ - name: RSUBJID
+ operator: is_not_contained_by
+ value: POOLDEF.POOLID",,,,,3.4,Not Executable,,,,,,Yes,,1.0
+CG0002,CDISC.SDTMIG.CG0002,CG0002,1.0,CG0002,1.0,CDISC,SDTMIG,3.4,2.0,--DUR,Used only if collected on the CRF and not derived.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: Used only if collected on the CRF and not derived. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,"Raise a message when --DUR exists in a dataset, confirm collected and not derived .","--DUR exists in a dataset, confirm collected and not derived.",,Variable Presence,--DUR,--DUR ^= null,--DUR collected and not derived,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --DUR
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,Conditional,Dependent on additional appropriate metatdata,1.0
+CG0076,CDISC.SDTMIG.CG0076,CG0076,2.0,CG0076,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 1,The DV domain is an Events model for collected protocol deviations and not for derived protocol deviations that are more likely to be part of analysis.,IG v3.4,6.2.7,Cited guidance section updated.,- Cited Guidance: The DV domain is an Events model for collected protocol deviations and not for derived protocol deviations that are more likely to be part of analysis. Document: IG v3.4 Item: Assumption 1 Section: 6.2.7,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,"Trigger error if deviation record is a derived variable, not a deviation that was collected",Deviation event must not be derived deviation,"New version of rule.
+
+GEN removed from Variable Name",Variable Presence,,,Event is not derived,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DV",EVT,,DV,"all: null
+",,,,,3.4,Not Executable,Final Review,Carlo,Final,,,Conditional,Dependent on additional appropriate metatdata,1.0
+CG0090,CDISC.SDTMIG.CG0090,CG0090,1.0,CG0090,1.0,CDISC,SDTMIG,3.4,2.0,--RFTDTC,"The actual date or date and time of a time point that acts as a fixed reference for a series of planned time points, represented in a standardized character format. The fixed reference point is in --TPTREF.",Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,"- Cited Guidance:   The actual date or date and time of a time point that acts as a fixed reference for a series of planned time points, represented in a standardized character format. The fixed reference point is in --TPTREF   Document: Model v2.0 Section: Timing",SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Raise an error when --TPTREF is not present in dataset when --RFTDTC is present.,--TPTREF is not present when --RFTDTC is present in a dataset,,Variable Presence,--TPTREF,--RFTDTC present in dataset,--TPTREF present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --RFTDTC
+ operator: exists
+ - name: --TPTREF
+ operator: not_exists",,,-  --RFTDTC  -  --TPTREF,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0098,CDISC.SDTMIG.CG0098,CG0098,1.0,CG0098,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2a,"CMTRT should only include the medication/therapy name and should not include dosage, formulation, or other qualifying information.",IG v3.4,6.1.2,No Change,"- Cited Guidance: CMTRT should only include the medication/therapy name and should not include dosage, formulation, or other qualifying information. Document: IG v3.4 Item: Assumption 2a Section: 6.1.2",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error if CMTRT contains more than just the medication name,CMTRT must record the collected medication name only,,Variable Presence,CMTRT,,CMTRT = collected medication name only,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - CM",INT,,CM,"all:
+ - name: null
+ operator: null
+ - name: null
+ operator: null",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional non-CDISC metadata,1.0
+CG0103,CDISC.SDTMIG.CG0103,CG0103,1.0,CG0103,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"Units for EXDOSE, EXDOSTOT, or EXDOSTXT representing protocol-specified values.",IG v3.4,6.1.3.1,No Change,"- Cited Guidance: Units for EXDOSE, EXDOSTOT, or EXDOSTXT representing protocol-specified values. Document: IG v3.4 Item: Specification Section: 6.1.3.1",SDTM and SDTMIG Conformance Rules,Domain,Warning,,not implemented,,Trigger error if EXDOSU not expressed in protocol-specified units,EXDOSU is not expressed using protocol-specific units,,Variable Presence,EXDOSU,,EXDOSU = protocol-specified unit,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - EX",INT,,EX,"all:
+ - name: EXDOSU
+ operator: not_equal_to
+ value: TS.TSVAL
+ - name: TS.TSPARMCD
+ operator: starts_with
+ value: DOSU",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional non-CDISC metadata,1.0
+CG0320,CDISC.SDTMIG.CG0320,CG0320,2.0,CG0320,2.0,CDISC,SDTMIG,3.4,2.0,2.6[Item 3.b.],"IG v3.4[2.6][Item 3.b.][Include the topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM.]|4.3.6[For a Findings domain, the topic variable, --TESTCD, should use Controlled Terminology (e.g., ""SYSBP"" for Systolic Blood Pressure)]",IG v3.4,2.6|4.3.6,Section change in SDTMIG v3.4 and additional cited guidance added.  Rule version 2,"- Cited Guidance: Include the topic variable from the identified general observation class (e.g., --TESTCD for Findings) in the SDTM. Document: IG v3.4 Item: Item 3.b. Section:  2.6  - Cited Guidance: For a Findings domain, the topic variable, --TESTCD, should use Controlled Terminology (e.g.,  SYSBP  for Systolic Blood Pressure) Document: IG v3.4 Section:  4.3.6",SDTM and SDTMIG Conformance Rules,Variable,Error,,not implemented,,Raise an error when variable --TESTCD is missing for custom finding domains,--TESTCD does not exist in Findings domain.,,Variable Presence,--TESTCD,Custom domain present in study,--TESTCD present in custom findings dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - BS
+ - CP
+ - CV
+ - DA
+ - DD
+ - EG
+ - FT
+ - GF
+ - IE
+ - IS
+ - LB
+ - MB
+ - MI
+ - MK
+ - MS
+ - NV
+ - OE
+ - PC
+ - PE
+ - PP
+ - QS
+ - RE
+ - RP
+ - RS
+ - SC
+ - SS
+ - TR
+ - TU
+ - UR
+ - VS",FND,,ALL,"all:
+ - name: --TESTCD
+ operator: not_exists
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0415,CDISC.SDTMIG.CG0415,CG0415,1.0,CG0415,1.0,CDISC,SDTMIG,3.4,2.0,,A trial design domain that contains each planned arm in the trial.,IG v3.4,7.2.1 TA,No Change,- Cited Guidance: A trial design domain that contains each planned arm in the trial. Document: IG 3.4 Item:    Section: 7.2.1 TA,SDTM and SDTMIG Conformance Rules,Value,Error,,not implemented,,Verify that ARMCD in TA domain is valid planned arm code,Length of ARMCD must be less than or equal to 20 characters,,Variable Presence,ARMCD,,ARMCD is a valid planned arm code,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TA",TDM,,TA,"all:
+ - name: ARMCD
+ operator: longer_than_or_equal_to
+ value: 21",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0296,CDISC.SDTMIG.CG0296,CG0296,1.0,CG0296,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"If the timing of Visits for a trial does not depend on which Arm a subject is in, then Arm should be left blank.",IG v3.4,7.3.1,No Change,"- Cited Guidance: If the timing of Visits for a trial does not depend on which Arm a subject is in, then Arm should be left blank. Document: IG v3.4 Item: Specification Section: 7.3.1",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,Trigger error when ARM is populated and the timing and number of Visits for a trial does not depend on which ARM a subject is in,,,Variable Presence,ARM,The timing and number of Visits for a trial does not depend on which ARM a subject is in,ARM = null,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TV",TDM,,TV,"all:
+ - name: null
+ operator: null
+ - name: ARM
+ operator: non_empty",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional appropriate metatdata,1.0
+CG0418,CDISC.SDTMIG.CG0418,CG0418,2.0,CG0418,1.0,CDISC,SDTMIG,3.4,2.0,TAETORD,An assigned numeric identifier that gives the planned order of the element within the trial arm of the study.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: An assigned numeric identifier that gives the planned order of the element within the trial arm of the study. Document: Model v2.0 Item: TAETORD Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,not implemented,,Trigger error when the TAETORD order of elements does not match the order in TA within ARM of the Subject,The TAETORD order of elements does not match the order in TA within ARM of the Subject,"New version of rule.
+
+Rule reworded.",Variable Presence,TAETORD,TAETORD ^= null,TAETORD values increase chronologically for the subject,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: TAETORD
+ operator: is_ordered_set
+ value: USUBJID",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0635,CDISC.SDTMIG.CG0635,,,CG0635,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --NOMDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --NOMDY is present.,--NOMDY is present.,,Variable Presence,,,,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --NOMDY
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0219,CDISC.SDTMIG.CG0219,CG0219,2.0,CG0219,1.0,CDISC,SDTMIG,3.4,2.0,,"Timing variables (SDTM Table 2.2.5) are an essential component of all SDTM subject-level domain datasets. In general, all domains based on the three general observation classes should have at least one Timing variable. In the Events or Interventions general observation class, this could be the start date of the event or intervention. In the Findings observation class, where data are usually collected at multiple visits, at least one Timing variable must be used.",IG v3.4,4.4,No Change,"- Cited Guidance: Timing variables (SDTM Table 2.2.5) are an essential component of all SDTM subject-level domain datasets. In general, all domains based on the three general observation classes should have at least one Timing variable. In the Events or Interventions general observation class, this could be the start date of the event or intervention. In the Findings observation class, where data are usually collected at multiple visits, at least one Timing variable must be used.",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Trigger error if no timing variables present in dataset,No timing variables present in dataset.,"New version of rule.
+
+GEN removed from Variable Name.",Variable Presence,,,At least one timing variable present in dataset,"
+ Include:
+ - Interventions
+ - Findings
+ - Events
+","Domains:
+ Exclude:
+ - IE
+ - SC","INT, FND, EVT",,"NOT(IE, SC)","all:
+ - name: TAETORD
+ operator: not_exists
+ - name: EPOCH
+ operator: not_exists
+ - name: --STDTC
+ operator: not_exists
+ - name: --ENDTC
+ operator: not_exists
+ - name: --DTC
+ operator: not_exists
+ - name: --STDY
+ operator: not_exists
+ - name: --ENDY
+ operator: not_exists
+ - name: --DY
+ operator: not_exists
+ - name: --DUR
+ operator: not_exists
+ - name: --TPT
+ operator: not_exists
+ - name: --TPTNUM
+ operator: not_exists
+ - name: --REPNUM
+ operator: not_exists
+ - name: --",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0329,CDISC.SDTMIG.CG0329,CG0329,1.0,CG0329,1.0,CDISC,SDTMIG,3.4,2.0,Specification|Assumption 12,Specification[Either TEENRL or TEDUR must be present for each Element.]|Assumption 12[t least one of TEENRL and TEDUR must be populated. Both may be populated.],IG v3.4,7.2.2,No Change,- Cited Guidance:  Either TEENRL or TEDUR must be populated for each Element.  Document: IG v3.4 Item: Specification Section: 7.2.2 - Cited Guidance: At least one of TEENRL and TEDUR must be populated. Both may be populated. Document: IG v3.4 Item: Assumption 12 Section: 7.2.2,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error if TEDUR is null when TEENRL is null,TEDUR cannot be null when TEENRL is null,,Variable Presence,TEDUR,TEENRL = null,TEDUR ^= null,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TE",TDM,,TE,"all:
+ - name: TEENRL
+ operator: empty
+ - name: TEDUR
+ operator: empty",,,-  TEENRL  -  TEDUR,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0304,CDISC.SDTMIG.CG0304,CG0304,1.0,CG0304,1.0,CDISC,SDTMIG,3.4,2.0,	Assumption 9,"Additional Events Qualifiers:
+The following Qualifiers would not be used in AE: --OCCUR, --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred.",IG v3.4,6.2.1,Slight change to cited guidance,"- Cited Guidance: The following Qualifiers would not be used in AE, --OCCUR, --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred. Document: IG v3.4 Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when AEREASND is present.,AEREASND is present.,,Variable Presence,AEREASND,,AEREASND not present in dataset,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - name: AEREASND
+ operator: exists
+",,,- AEREASND,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0302,CDISC.SDTMIG.CG0302,CG0302,1.0,CG0302,1.0,CDISC,SDTMIG,3.4,2.0,TR – Description/Overview,"The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information.",IG v3.4,6.3.12.2,Section change in SDTMIG v3.4,"- Cited Guidance: The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information. Document: IG v3.4 Section: 6.3.12.2 Item: TR",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when TRPORTOT is present.,TRPORTOT is present.,,Variable Presence,TRPORTOT,,TRPORTOT not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - TR",FND,,TR,"all:
+ - name: TRPORTOT
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0301,CDISC.SDTMIG.CG0301,CG0301,1.0,CG0301,1.0,CDISC,SDTMIG,3.4,2.0,TR – Description/Overview,"The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information.",IG v3.4,6.3.12.2,Section change in SDTMIG v3.4,"- Cited Guidance: The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information. Document: SDTMIG v3.4 Section: 6.3.12.2",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when TRDIR is present.,TRDIR is present.,,Variable Presence,TRDIR,,TRDIR not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - TR",FND,,TR,"all:
+ - name: TRDIR
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0299,CDISC.SDTMIG.CG0299,CG0299,1.0,CG0299,1.0,CDISC,SDTMIG,3.4,2.0,TR – Description/Overview,"The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information.",IG v3.4,6.3.12.2,Slight change to cited guidance,"- Cited Guidance: The TR domain does not include anatomical location information on each measurement/assessment record, because this would be a duplication of information already represented in TU. The multi-domain approach to representing oncology assessment data was developed largely to reduce duplication of stored information. Document: SDTM v3.4 Section: 6.3.12.2",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when TRLOC is present.,TRLOC is present when TRLOC is not included in the TR domain.,,Variable Presence,TRLOC,,TRLOC not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - TR",FND,,TR,"all:
+ - name: TRLOC
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0062,CDISC.SDTMIG.CG0062,CG0062,1.0,CG0062,1.0,CDISC,SDTMIG,3.4,2.0,--STTPT,The description or date and/or time of a time point that acts as a fixed reference for characterizing the start of an observation. This is the sponsor-defined reference point referred to by --STRTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: The description or date and/or time of a time point that acts as a fixed reference for characterizing the start of an observation. This is the sponsor-defined reference point referred to by --STRTPT. Document: Model v2.0 Item: --STTPT Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --STRTPT is present in dataset and --STTPT is not present in dataset.,"--STRTPT is present in dataset, but --STTPT is not present in dataset.",,Variable Presence,--STTPT,--STRTPT present in dataset,--STTPT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --STRTPT
+ operator: exists
+ - name: --STTPT
+ operator: not_exists",,,- --STRTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0060,CDISC.SDTMIG.CG0060,CG0060,1.0,CG0060,1.0,CDISC,SDTMIG,3.4,2.0,--STRTPT,The characterization of the start of an observation relative to a reference time point. The sponsor-defined reference time point is in --STTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: The characterization of the start of an observation relative to a reference time point. The sponsor-defined reference time point is in --STTPT. Document: Model v2.0 Item: --STRTPT Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --STTPT is present in dataset and --STRTPT is not present in dataset.,"--STTPT is present in dataset, but --STRTPT is not present in dataset.",,Variable Presence,--STRTPT,--STTPT present in dataset,--STRTPT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --STTPT
+ operator: exists
+ - name: --STRTPT
+ operator: not_exists",,,- --STTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0058,CDISC.SDTMIG.CG0058,CG0058,1.0,CG0058,1.0,CDISC,SDTMIG,3.4,2.0,--ENTPT,The description or date and/or time of a time point that acts as a fixed reference for characterizing the end of an observation. This is the sponsor-defined reference point referred to by --ENRTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: The description or date and/or time of a time point that acts as a fixed reference for characterizing the end of an observation. This is the sponsor-defined reference point referred to by --ENRTPT. Document: Model v2.0 Section: Timing Item: --ENTPT,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raises an error when --ENRTPT is present in dataset but --ENTPT is not present in dataset.,--ENTPT should be present when --ENRTPT is present in a dataset,,Variable Presence,--ENTPT,--ENRTPT present in dataset,--ENTPT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ENRTPT
+ operator: exists
+ - name: --ENTPT
+ operator: not_exists",,,- --ENRTPT - --ENTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0057,CDISC.SDTMIG.CG0057,CG0057,1.0,CG0057,1.0,CDISC,SDTMIG,3.4,2.0,--ENRTPT,The characterization of the end of an observation relative to a reference time point. The sponsor-defined reference time point is in --ENTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: (--ENRTPT) The characterization of the end of an observation relative to a reference time point. The sponsor-defined reference time point is in --ENTPT. Document: Model v2.0 Section: 2.2.5. Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --ENTPT exists in a dataset and --ENRTPT does not exist.,"--ENTPT exists in a dataset, but --ENRTPT does not exist.",,Variable Presence,--ENRTPT,--ENTPT present in dataset,--ENRTPT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ENTPT
+ operator: exists
+ - name: --ENRTPT
+ operator: not_exists",,,- --ENTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0044,CDISC.SDTMIG.CG0044,CG0044,1.0,CG0044,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 9,"The following Qualifiers would not be used in AE: --OCCUR, --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred.",IG v3.4,6.2.1,No Change,"- Cited Guidance: --> The following Qualifiers would not be used in AE;  --OCCUR ,  --STAT , and  --REASND . They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred. Document: SDTMIG v3.4 Item: Assumption 9 Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when AESTAT is present in AE dataset.,AESTAT variable is present in AE dataset.,,Variable Presence,AESTAT,,AESTAT not present in dataset,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - name: AESTAT
+ operator: exists
+",,,- AESTAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0043,CDISC.SDTMIG.CG0043,CG0043,1.0,CG0043,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 6c,"When a description of Other Medically Important Serious Adverse Events category is collected on a CRF, sponsors should place the description in the SUPPAE dataset using the standard supplemental qualifier name code AESOSP.",IG v3.4,6.2.1,No Change,"- Cited Guidance: When a description of Other Medically Important Serious Adverse Events category is collected on a CRF, sponsors should place the description in the SUPPAE dataset using the standard supplemental qualifier name code AESOSP. Document: IG v3.4 Item: Asumtpion 6c Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Variable,Warning,,success,invalid,When AESMIE=Y then SUPPAE.QNAM=AESOSP should be present,"Missing SUPPAE.QNAM=AESOSP, where AESMIE=Y",,Variable Presence,AESMIE,Record present in SUPPAE where SUPPAE.QNAM=AESOSP,AESMIE = 'Y',"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - name: AESMIE
+ operator: equal_to
+ value:  Y 
+ - name: QNAM
+ operator: equal_to
+ value: AESOSP
+ - name: QVAL
+ operator: non_empty
+","- Name: SUPPAE
+ Keys:
+ - USUBJID
+ Is Relationship: true",,- AESOSP - AESMIE,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0040,CDISC.SDTMIG.CG0040,CG0040,1.0,CG0040,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 9,"The following Qualifiers would not be used in AE: --OCCUR, --STAT, and--REASND. They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred.",IG v3.4,6.2.1,No Change,"- Cited Guidance: The following Qualifiers would not be used in AE;  --OCCUR ,  --STAT , and  --REASND . They are the only Qualifiers from the SDTM Events Class not in the AE domain. They are not permitted because the AE domain contains only records for adverse events that actually occurred. Document: SDTMIG v3.4 Item: Assumption 9 Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when AEOCCUR exists in AE dataset.,AEOCCUR is present in AE dataset.,,Variable Presence,AEOCCUR,,AEOCCUR not present in dataset,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - name: AEOCCUR
+ operator: exists
+",,,- AEOCCUR,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0116,CDISC.SDTMIG.CG0116,CG0116,2.0,CG0116,2.0,CDISC,SDTMIG,3.4,2.0,--DIR,Events[Variable Qualifer of --LOC.]|Interventions[Variable Qualifer of --LOC.]|Findings[Variable Qualifer of --LOC.],Model v2.0,Events|Interventions|Findings,"Cited guidance updated. Reference to model section and item updated per new style. 
+
+Rule retired as Findings needed to be split out.",- Cited Guidance: Variable Qualifer of --LOC. Document: Model v2.0 Item: --DIR Section: Events - Cited Guidance: Variable Qualifer of --LOC. Document: Model v2.0 Item: --DIR Section: Interventions - Cited Guidance: Variable Qualifer of --LOC. Document: Model v2.0 Item: --DIR Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"Raise an error when --LOC does not exists in a dataset, --DIR exists.","--DIR variable is present, when --LOC variable does not exist in a dataset.",Rule retired as Findings needed to be split out.,Variable Presence,--DIR,--LOC not present in dataset,--DIR not present in dataset,"
+ Include:
+ - Interventions
+ - Findings
+ - Events
+","Domains:
+ Include:
+ - All","INT, FND, EVT",,ALL,"all:
+ - name: --LOC
+ operator: not_exists
+ - name: --DIR
+ operator: exists",,,- --LOC - --DIR,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0115,CDISC.SDTMIG.CG0115,CG0115,2.0,CG0115,2.0,CDISC,SDTMIG,3.4,2.0,--PORTOT,Events[Variable Qualifer of --LOC.]|Interventions[Variable Qualifer of --LOC.]|Findings[Variable Qualifer of --LOC.],Model v2.0,Events|Interventions|Findings,"Cited guidance updated. Reference to model section and item updated per new style.
+
+Rule deprecated and replaced with two new rules: As of SDTMIG 4.0, findings have multiple qualifiers for the --LAT variable.",- Cited Guidance: Events[Variable Qualifer of --LOC.] Interventions[Variable Qualifer of --LOC.] Findings[Variable Qualifer of --LOC.] Document: Model v2.0 Item: --PORTOT Section: Events Interventions Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"Raise an error when --LOC does not exists in a dataset, --PORTOT exists.","--PORTOT variable is present, when --LOC variable does not exist in a dataset.","Rule retired and replaced with two new rules: As of SDTMIG 4.0, findings have multiple qualifiers for the --LAT variable.",Variable Presence,--PORTOT,--LOC not present in dataset,--PORTOT not present in dataset,"
+ Include:
+ - Interventions
+ - Findings
+ - Events
+","Domains:
+ Include:
+ - All","INT, FND, EVT",,ALL,"all:
+ - name: --LOC
+ operator: not_exists
+ - name: --PORTOT
+ operator: exists",,,- --LOC - --PORTOT,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0107,CDISC.SDTMIG.CG0107,CG0107,1.0,CG0107,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 6c,"When the EC domain is implemented in conjunction with the EX domain, EXVAMT and EXVAMTU would not be used in EX; collected values instead would be represented in ECDOSE and ECDOSU (and ECVAMT and ECVAMTU as needed).",IG v3.4,6.1.3.1,Cited guidance updated slightly in SDTMIG v3.4,"- Cited Guidance:  \ When the EC domain is implemented in conjunction with the EX\ \ domain, EXVAMT and EXVAMTU should not be used in EX;\n collected values instead\ \ would be represented in ECDOSE and ECDOSU.\   Document: IG v3.4 Item: Assumption 6c Section: 6.1.3.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when EXVAMTU exists in EX domain when EC domain exists.,"EXVAMTU is present, when EC domain exists.",,Variable Presence,EXVAMTU,EC domain is present,EXVAMTU not present in dataset,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - EX
+ - EC",INT,,EX,"all:
+ - name: DOMAIN
+ operator: exists
+ value:  EC 
+ - name: EXVAMTU
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0084,CDISC.SDTMIG.CG0084,CG0084,2.0,CG0084,2.0,CDISC,SDTMIG,3.4,2.0,--TOX,Events[--TOX][Variable Qualifier of --TOXGR]|Findings[--TOX][Variable Qualifier of --TOXGR],Model v2.0,Events|Findings,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: Variable Qualifier of --TOXGR Document: SDTM v2.0 Section: Events Item: --TOX - Cited Guidance: Variable Qualifier of --TOXGR Document: SDTM v2.0 Section: Findings Item: --TOX,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,"Raise an error when --TOXGR is not present in dataset, but --TOX is present",--TOX present in dataset even though --TOXGR is not,,Variable Presence,--TOX,--TOXGR not present in dataset,--TOX not present in dataset,"
+ Include:
+ - Events
+ - Findings
+","Domains:
+ Include:
+ - All","EVT, FND",,ALL,"all:
+ - name: --TOXGR
+ operator: not_exists
+ - name: --TOX # checking failure criteria; when --TOXGR is not present, but --TOX is, there s a problem because --TOX is only supposed to be there to qualify --TOXGR
+ operator: exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0091,CDISC.SDTMIG.CG0091,CG0091,1.0,CG0091,1.0,CDISC,SDTMIG,3.4,2.0,--TPT,"The description of the time when a protocol-defined activity is planned to occur, used for study data tabulation.",Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance:   The description of the time when a protocol-defined activity is planned to occur, used for study data tabulation.   Document: Model v2.0 Section: Timing Item: --TPT",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --TPT is not present but --TPTNUM is present in dataset.,--TPT is not present when --TPTNUM is present in a dataset,,Variable Presence,--TPT,--TPTNUM present in dataset,--TPT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --TPTNUM
+ operator: exists
+ - name: --TPT
+ operator: not_exists",,,- --TPTNUM - --TPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0092,CDISC.SDTMIG.CG0092,CG0092,1.0,CG0092,1.0,CDISC,SDTMIG,3.4,2.0,--TPTREF,"The description of a time point that acts as a fixed reference for a series of planned time points, used for study data tabulation. Description of the fixed reference point referred to by --ELTM, --TPTNUM, --TPT, --STINT, and --ENINT.",Model v2.0,Timing,Cited guidance updated.,"- Cited Guidance:  The description of a time point that acts as a fixed reference for a series of planned time points, used for study data tabulation.",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Raise an error when--ELTM is present but --TPTREF is not present in dataset.,--TPTREF must be present when --ELTM is present in a dataset,,Variable Presence,--TPTREF,--ELTM present in dataset,--TPTREF present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ELTM
+ operator: exists
+ - name: --TPTREF
+ operator: not_exists",,,- --ELTM - --TPTREF,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0093,CDISC.SDTMIG.CG0093,CG0093,1.0,CG0093,1.0,CDISC,SDTMIG,3.4,2.0,--TPTREF,"The description of a time point that acts as a fixed reference for a series of planned time points, used for study data tabulation. Description of the fixed reference point referred to by --ELTM, --TPTNUM, --TPT, --STINT, and --ENINT.",Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,"- Cited Guidance:  The description of a time point that acts as a fixed reference\ \ for a series of planned time points, used for study data tabulation.\_",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,"Raise an error when --ELTM, --TPTNUM, and --TPT are not present in dataset, but --TPTREF is present.","--TPTREF is present when --ELTM, --TPTNUM, and --TPT are not present.",,Variable Presence,--TPTREF,"--ELTM, --TPTNUM, and --TPT not present in dataset",--TPTREF not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ELTM
+ operator: not_exists
+ - name: --TPTNUM
+ operator: not_exists
+ - name: --TPT
+ operator: not_exists
+ - name: --TPTREF
+ operator: exists",,,- --TPTREF - --ELTM - --TPTNUM - --TPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0095,CDISC.SDTMIG.CG0095,CG0095,2.0,CG0095,2.0,CDISC,SDTMIG,3.4,2.0,--LAT,Events--LAT][Variable Qualifier of --LOC]|Interventions--LAT][Variable Qualifier of --LOC]|Findings--LAT][Variable Qualifier of --LOC],Model v2.0,Events|Interventions|Findings,"Cited guidance updated. Reference to model section and item updated per new style.
+
+Rule deprecated and replaced with two new rules: As of SDTMIG 4.0, findings have multiple qualifiers for the --LAT variable.",- Cited Guidance: Events[Variable Qualifier of --LOC]|Interventions[Variable Qualifier of --LOC]|Findings[Variable Qualifier of --LOC] Document: Model v2.0 Section: Events|Interventions|Findings Item: --LAT,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Raise an error when --LOC is not present and --LAT is present.,--LAT is present when --LOC is not present.,"Rule retired and replaced with two new rules: As of SDTMIG 4.0, findings have multiple qualifiers for the --LAT variable.",Variable Presence,--LAT,--LOC not present in dataset,--LAT not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --LOC
+ operator: not_exists
+ - name: --LAT
+ operator: exists",,,- --LOC - --LAT,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0567,CDISC.SDTMIG.CG0567,CG0567,1.0,CG0567,1.0,CDISC,SDTMIG,3.4,2.0,--EVDTYP,MH Domain only.,Model v2.0,Events,"Cited guidance updated. Reference to model section and item updated per new style.
+
+Rule retired for IGs after v3.4. Used expanded to CE.",- Cited Guidance: MH Domain only Document: Model v2.0 Item: --EVDTYP Section: Events,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --EVDTYP is present in a dataset other than MH.,--EVDTYP is present in a dataset other than MH.,Rule retired for IGs after v3.4. Used expanded to CE.,Variable Presence,--EVDTYP,,--EVDTYP not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - MH",EVT,,NOT(MH),"all:
+ - name: --EVDTYP
+ operator: exists
+",,,- --EVDTYP,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0565,CDISC.SDTMIG.CG0565,CG0565,1.0,CG0565,1.0,CDISC,SDTMIG,3.4,2.0,--CONC,MS Domain only.,Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: MS Domain only Document: Model v2.0 Item: --CONC Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --CONC is present in a dataset other than MS.,--CONC is present in a dataset other than MS.,,Variable Presence,--CONC,,--CONC not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - MS",FND,,NOT(MS),"all:
+ - name: --CONC
+ operator: exists
+",,,- --CONC,,3.4,Fully Executable,,,,,,,,1.0
+CG0542,CDISC.SDTMIG.CG0542,CG0542,1.0,CG0542,1.0,CDISC,SDTMIG,3.4,2.0,--BEATNO,EG domain only.,Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: --BEATNO is to be used in the EG domain only. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --BEATNO is present.,--BEATNO is present.,,Variable Presence,--BEATNO,,--BEATNO not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Exclude:
+ - EG",FND,,NOT(EG),"all:
+ - name: --BEATNO
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0533,CDISC.SDTMIG.CG0533,CG0533,1.0,CG0533,1.0,CDISC,SDTMIG,3.4,2.0,RPATHCD,Not in human clinical trials.,Model v2.0,Demographics,"Cited guidance updated. Reference to model section and item updated per new style.
+
+Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",- Cited Guidance: RPATHCD is not to be used in human clinical trials. Document: SDTM v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when RPATHCD is present.,RPATHCD is present.,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Variable Presence,RPATHCD,,RPATHCD not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: RPATHCD
+ operator: exists
+",,,- RPATHCD,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0535,CDISC.SDTMIG.CG0535,CG0535,2.0,CG0535,1.0,CDISC,SDTMIG,3.4,2.0,DS – Assumption 2b,"An event with DSCAT = “DISPOSITION EVENT” describes either disposition of study participation or of a study treatment.  It describes whether a subject completed study participation or a study treatment, and if not, the reason they did not complete it. Dispositions may be described for each Epoch (e.g., screening, initial treatment, washout, cross-over treatment, follow-up) or for the study as a whole. If disposition events for both study participation and study treatment(s) are to be represented, then DSSCAT provides this distinction. The value of DSSCAT is based on the sponsor's controlled terminology, however for records with DSCAT = ""DISPOSITION EVENT"",
+DSSCAT = ""STUDY PARTICIPATION"" is used to represent disposition of study participation.
+DSSCAT = ""STUDY TREATMENT"" can be used as a generic identifier when a study has only a single treatment.
+If a study has multiple treatments, then DSSCAT should name the individual treatment.",IG v3.4,6.2.3,No Change,"- Cited Guidance:  An event with DSCAT = \u201CDISPOSITION EVENT\u201D describes\ \ either disposition of study participation or of a study treatment. It describes\ \ whether a subject completed study participation or a study treatment, and\ \ if not, the reason they did not complete it. Dispositions may be described\ \ for each Epoch (e.g., screening, initial treatment, washout, cross-over treatment,\ \ follow-up) or for the study as a whole. If disposition events for both study\",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When subject has more than one record per Epoch with DSCAT = DISPOSITION EVENT, DSSCAT must be present.",DSSCAT is not present when subject has more than one record per Epoch with DSCAT =  DISPOSITION EVENT .,"New version of rule.  DSCAT must not be null.
+
+GEN removed from Variable Name.",Variable Presence,,Subject has more than one record per Epoch with DSCAT = 'DISPOSITION EVENT',DSSCAT ^= null for 'DISPOSITION EVENT' records for that EPOCH,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DS",EVT,,DS,"all:
+ - name: DSCAT
+ operator: is_not_unique_set
+ value:
+ -  USUBJID 
+ -  EPOCH 
+ - name: DSCAT
+ operator: equal_to
+ value:  DISPOSITION EVENT 
+ value_is_literal: True
+ - name: DSSCAT
+ operator: exists",,,- USUBJID,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0623,CDISC.SDTMIG.CG0623,CG0623,2.0,CG0623,1.0,CDISC,SDTMIG,3.4,2.0,--RSTIND,Not in human clinical trials.,Model v2.0,Interventions|Findings,"New Rule, Version updated to correct syntax of Class, replacing | with a comma",- Cited Guidance: Not in human clinical trials. Document: Model v2.0 Section: Interventions|Findings Item: --RSTIND,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RSTIND is present.,--RSTIND is present.,"Version updated to correct syntax of Class, replacing | with a comma",Variable Presence,--RSTIND,,--RSTIND not present in dataset,"
+ Include:
+ - Interventions
+ - Findings
+","Domains:
+ Include:
+ - All","INT, FND",,,"all:
+ - name: --RSTIND
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0661,CDISC.SDTMIG.CG0661,,,CG0661,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,"- Cited Guidance: When time points are represented in SDTMIG domains, both --TPT and --TPTNUM must be used. Document: IG v3.4 Section: 4.4.10",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --TPTNUM exists in a dataset and --TPT does not exist.,"--TPTNUM exists in a dataset, but --TPT does not exist. When time points are represented in SDTMIG domains, both --TPT and --TPTNUM must be used.",,Variable Presence,,,,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --TPTNUM
+ operator: exists
+ - name: --TPT
+ operator: not_exists",,,,,,,,,,,,,,1.0
+CG0660,CDISC.SDTMIG.CG0660,CG0660,1.0,CG0660,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 8,6.3.9.1[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.]6.3.9.2[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.]6.3.9.3.2[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.],IG v3.4,"6.3.9.1, 6.3.9.2, 6.3.9.3.2",New rule,- Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.1 - Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.2 - Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.3.2,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,--EVALID must not be used to model QRS data. This includes the  QS  and  FT  domains as well as the  RS  domain when the record pertains to a Clinical Classification Use Case). This rule has been fully executed for the QS and FT domains only.,--EVALID is present. --EVALID must not be used to model QRS data.,,Variable Presence,--EVALID,"Domain in ('QS', 'FT') or (Domain = 'RS' and it's the Clinical Classification Use Case)",--EVALID not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - QS
+ - FT
+ - RS",FND,,"QS, FT, RS","any:
+ - name: QSEVALID
+ operator: exists
+ - name: FTEVALID
+ operator: exists
+# - all:
+# - name: RSEVALID
+# operator: exists
+# - name: RSCAT
+# operator:  references_correct_codelist 
+# value:  CCCAT",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0659,CDISC.SDTMIG.CG0659,CG0659,1.0,CG0659,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 8,6.3.9.1[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.]6.3.9.2[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.]6.3.9.3.2[Assumption 8][--EVAL and --EVALID must not be used to model QRS data in SDTM.],IG v3.4,"6.3.9.1, 6.3.9.2, 6.3.9.3.2",New rule,- Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.1 - Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.2 - Cited Guidance: --EVAL and --EVALID must not be used to model QRS data in SDTM. Document: SDTMIG v3.4 Item: Assumption 8 Section: 6.3.9.3.2,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,--EVAL must not be used to model QRS data. This includes the  QS  and  FT  domains as well as the  RS  domain when the record pertains to a Clinical Classification Use Case). This rule has been fully executed for the QS and FT domains only.,--EVAL is present. --EVAL must not be used to model QRS data.,,Variable Presence,--EVAL,"Domain in ('QS', 'FT') or (Domain = 'RS' and it's the Clinical Classification Use Case)",--EVAL not present in dataset,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - QS
+ - FT
+ - RS",FND,,"QS, FT, RS","any:
+ - name: QSEVAL
+ operator: exists
+ - name: FTEVAL
+ operator: exists
+# - all:
+# - name: RSEVAL
+# operator: exists
+# - name: RSCAT
+# operator:  references_correct_codelist 
+# value:  CCCAT",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0644,CDISC.SDTMIG.CG0644,,,CG0644,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: SBSTRAIN is not be used in human clinical trials. Document: SDTM v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when SBSTRAIN is present.,SBSTRAIN is present.,,Variable Presence,,,,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",,,,"all:
+ - name: SBSTRAIN
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0643,CDISC.SDTMIG.CG0643,,,CG0643,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: STRAIN is not be used in human clinical trials. Document: SDTM v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when STRAIN is present.,STRAIN is present.,,Variable Presence,,,,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",,,,"all:
+ - name: STRAIN
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0642,CDISC.SDTMIG.CG0642,,,CG0642,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: SPECIES is not be used in human clinical trials. Document: SDTM v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when SPECIES is present.,SPECIES is present.,,Variable Presence,,,,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",,,,"all:
+ - name: SPECIES
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0641,CDISC.SDTMIG.CG0641,CG0641,1.0,CG0641,1.0,CDISC,SDTMIG,3.4,2.0,AGETXT,Not in human clinical trials.,Model v2.0,Demographics,"New Rule as of IG v3.4
+
+Rule Retired after IG v3.4, variable deprecated",- Cited Guidance: AGETXT is not be used in human clinical trials. Document: SDTM v2.0 Section: Demographics,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when AGETXT is present.,AGETXT is present.,"Rule Retired after IG v3.4, variable deprecated",Variable Presence,AGETXT,,AGETXT not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: AGETXT
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0621,CDISC.SDTMIG.CG0621,CG0621,1.0,CG0621,1.0,CDISC,SDTMIG,3.4,2.0,--METHOD,Not in human clinical trials.,Model v2.0,Interventions,New Rule. This rule replaces CG0568 for SDTMIG v3.4 because CG0621 is more broad.,- Cited Guidance: Not be used in human clinical trials. Document: SDTM v2.0 Section: Interventions Item: --METHOD,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --METHOD is present in an Interventions dataset.,--METHOD is present in an interventions domain.,,Variable Presence,--METHOD,,--METHOD not present in dataset,"
+ Include:
+ - Interventions
+","Domains:
+ Include:
+ - All",INT,,,"all:
+ - name: --METHOD
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0640,CDISC.SDTMIG.CG0640,,,CG0640,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --DETECT is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --DETECT is present.,--DETECT is present.,,Variable Presence,,,,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --DETECT
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0638,CDISC.SDTMIG.CG0638,CG0638,1.0,CG0638,1.0,CDISC,SDTMIG,3.4,2.0,--RPSTDY,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: --RPSTDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RPSTDY is present.,--RPSTDY is present.,,Variable Presence,--RPSTDY,,--RPSTDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: --RPSTDY
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0637,CDISC.SDTMIG.CG0637,CG0637,2.0,CG0637,1.0,CDISC,SDTMIG,3.4,2.0,--NOMLBL,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: --RPDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RPDY is present.,--RPDY is present.,"New Version.
+
+Corrected variable reference from --RPDY to --NOMLBL",Variable Presence,--NOMLBL,,--NOMLBL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: --RPDY
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0636,CDISC.SDTMIG.CG0636,,,CG0636,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --NOMLBL is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --NOMLBL is present.,--NOMLBL is present.,,Variable Presence,,,,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --NOMLBL
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0634,CDISC.SDTMIG.CG0634,CG0634,2.0,CG0634,1.0,CDISC,SDTMIG,3.4,2.0,RPPLENDY,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: RPPLENDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Raise an error when RPPLENDY is present.,RPPLENDY is present.,"New version of rule.
+
+Corrected variable name in scope and rule.",Variable Presence,RPPLENDY,,RPPLENDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: RPPLENDY
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0633,CDISC.SDTMIG.CG0633,CG0633,1.0,CG0633,1.0,CDISC,SDTMIG,3.4,2.0,RPPLSTDY,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: RPPLSTDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when RPPLSTDY is present.,RPPLSTDY is present.,,Variable Presence,RPPLSTDY,,RPPLSTDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: RPPLSTDY
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0632,CDISC.SDTMIG.CG0632,CG0632,1.0,CG0632,1.0,CDISC,SDTMIG,3.4,2.0,RPPLDY,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: RPPLDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when RPPLDY is present.,RPPLDY is present.,,Variable Presence,RPPLDY,,RPPLDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: RPPLDY
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0631,CDISC.SDTMIG.CG0631,CG0631,1.0,CG0631,1.0,CDISC,SDTMIG,3.4,2.0,RPHASE,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: RPHASE is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when RPHASE is present.,RPHASE is present.,,Variable Presence,RPHASE,,RPHASE not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: RPHASE
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0629,CDISC.SDTMIG.CG0629,,,CG0629,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --REASEX is not be used in human clinical trials. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --REASEX is present.,--REASEX is present.,,Variable Presence,,,,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --REASEX
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0628,CDISC.SDTMIG.CG0628,,,CG0628,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --EXCLFL is not be used in human clinical trials. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --EXCLFL is present.,--EXCLFL is present.,,Variable Presence,,,,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --EXCLFL
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0627,CDISC.SDTMIG.CG0627,,,CG0627,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --DTHREL is not be used in human clinical trials. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --DTHREL is present.,--DTHREL is present.,,Variable Presence,,,,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --DTHREL
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0626,CDISC.SDTMIG.CG0626,,,CG0626,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --RESLOC is not be used in human clinical trials. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RESLOC is present.,--RESLOC is present.,,Variable Presence,,,,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --RESLOC
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0625,CDISC.SDTMIG.CG0625,,,CG0625,1.0,CDISC,SDTMIG,3.4,2.0,,,,,,- Cited Guidance: --IMPLBL is not be used in human clinical trials. Document: SDTM v2.0 Section: Findings,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --IMPLBL is present.,--IMPLBL is present.,,Variable Presence,,,,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",,,,"all:
+ - name: --IMPLBL
+ operator: exists
+",,,,,,,,,,,,,,1.0
+CG0624,CDISC.SDTMIG.CG0624,CG0624,2.0,CG0624,1.0,CDISC,SDTMIG,3.4,2.0,--RSTMOD,Not in human clinical trials.,Model v2.0,Interventions|Findings,"New Rule. Version updated to correct syntax of Class, replacing | with a comma",- Cited Guidance: Not in human clinical trials. Document: Model v2.0 Section: Interventions|Findings Item: --RSTMOD,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RSTMOD is present.,--RSTMOD is present.,"Version updated to correct syntax of Class, replacing | with a comma",Variable Presence,--RSTMOD,,--RSTMOD not present in dataset,"
+ Include:
+ - Interventions
+ - Findings
+","Domains:
+ Include:
+ - All","INT, FND",,,"all:
+ - name: --RSTMOD
+ operator: exists
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0639,CDISC.SDTMIG.CG0639,CG0639,1.0,CG0639,1.0,CDISC,SDTMIG,3.4,2.0,--RPENDY,Not in human clinical trials.,Model v2.0,Timing,New Rule,- Cited Guidance: --RPENDY is not be used in human clinical trials. Document: SDTM v2.0 Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --RPENDY is present.,--RPENDY is present.,,Variable Presence,--RPENDY,,--RPENDY not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,,"all:
+ - name: --RPENDY
+ operator: exists
+",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0508,CDISC.SDTMIG.CG0508,CG0508,1.0,CG0508,1.0,CDISC,SDTMIG,3.4,2.0,SDTM Variables Not Allowed in SDTMIG,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+
+--USCHFL (Interventions, Events, Findings)
+--DTHREL (Findings)
+--EXCLFL (Findings)
+--REASEX (Findings)
+--IMPLBL (Findings)
+FETUSID (Identifiers)
+--DETECT (Timing Variables)
+--NOMDY (Timing Variables)
+--NOMLBL (Timing Variables)",IG v3.4,2.7,No Change,"- Cited Guidance: The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials, --USCHFL (Interventions, Events, Findings), --DTHREL (Findings), --EXCLFL (Findings), --REASEX (Findings), --IMPLBL (Findings), FETUSID (Identifiers), --DETECT (Timing Variables), --NOMDY (Timing Variables), --NOMLBL (Timing Variables) Document: IG v3.4 Item: SDTM Variables Not Allowed in SDTMIG Sectio",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --IMPLBL is present.,--IMPLBL is present.,,Variable Presence,--IMPLBL,,--IMPLBL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --IMPLBL
+ operator: exists
+",,,- --IMPLBL,,3.4,Fully Executable,,,,,,,,1.0
+CG0503,CDISC.SDTMIG.CG0503,CG0503,1.0,CG0503,1.0,CDISC,SDTMIG,3.4,2.0,MIDSDTC,The start date/time of the Disease Milestone Instance Name in MIDS.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance:  The start date/time of the Disease Milestone Instance Name in MIDS.  Document: Model v2.0 Item: MIDSDTC Section: Timing,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when variable MIDSDTC is present and MIDS variable is missing.,MIDS variable is missing when MIDSDTC variable is present in a dataset.,,Variable Presence,MIDSDTC,MIDSDTC present in dataset,MIDS present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: MIDSDTC
+ operator: exists
+ - name: MIDS
+ operator: not_exists",,,- MIDSDTC - MIDS,,3.4,Fully Executable,,,,,,,,1.0
+CG0358,CDISC.SDTMIG.CG0358,CG0358,1.0,CG0358,1.0,CDISC,SDTMIG,3.4,2.0,,"The following variables can be used for non-clinical studies (SEND) but must NEVER be used in the Demographics domain for human clinical trials. However, the use of these variables is currently being evaluated in Findings
+general observation class domains being developed for use in the tabulations of virology data:
+• SPECIES (Demographics)
+• STRAIN (Demographics)
+• SBSTRAIN (Demographics)",IG v3.4,2.7,retire; new rule with DC added; update guidance location/text for 4.0,"- Cited Guidance:  The following variables can be used for non-clinical studies\ \ (SEND) but must NEVER be used in the Demographics domain for human clinical\ \ trials. However, the use of these variables is currently being evaluated\ \ in Findings general observation class domains being developed for use in the\ \ tabulations of virology data:\n SPECIES (Demographics)\n STRAIN (Demographics)\n\ \ SBSTRAIN (Demographics)  Document: IG 3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Verify variable SBSTRAIN does not exist in DM dataset,SBSTRAIN is present in DM dataset.,retire; new rule with DC added; update guidance location/text for 4.0,Variable Presence,SBSTRAIN,,SBSTRAIN not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: SBSTRAIN
+ operator: exists
+",,,- SBSTRAIN,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0356,CDISC.SDTMIG.CG0356,CG0356,1.0,CG0356,1.0,CDISC,SDTMIG,3.4,2.0,,"The following variables can be used for non-clinical studies (SEND) but must NEVER be used in the Demographics domain for human clinical trials. However, the use of these variables is currently being evaluated in Findings
+general observation class domains being developed for use in the tabulations of virology data:
+• SPECIES (Demographics)
+• STRAIN (Demographics)
+• SBSTRAIN (Demographics)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following variables can be used for non-clinical studies\ \ (SEND) but must NEVER be used in the Demographics domain for human clinical\ \ trials. However, the use of these variables is currently being evaluated\ \ in Findings general observation class domains being developed for use in the\ \ tabulations of virology data:\n SPECIES (Demographics)\n STRAIN (Demographics)\n\ \ SBSTRAIN (Demographics)  Document: IG 3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Verify variable SPECIES does not exist in DM dataset,SPECIES is present in DM dataset.,retire for IGs after v3.4; new rule with DC added,Variable Presence,SPECIES,,SPECIES not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: SPECIES
+ operator: exists
+",,,- SPECIES,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0355,CDISC.SDTMIG.CG0355,CG0355,1.0,CG0355,1.0,CDISC,SDTMIG,3.4,2.0,,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+• --DTHREL (Findings)
+• --EXCLFL (Findings)
+• --REASEX (Findings)
+• --DETECT (Findings)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)  Document: IG v3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Raise an error when --DETECT is present in dataset.,--DETECT must never be used in SDTM-based human trials,,Variable Presence,--DETECT,,--DETECT not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --DETECT
+ operator: exists
+",,,- --DETECT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0354,CDISC.SDTMIG.CG0354,CG0354,1.0,CG0354,1.0,CDISC,SDTMIG,3.4,2.0,,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+• --DTHREL (Findings)
+• --EXCLFL (Findings)
+• --REASEX (Findings)
+• --DETECT (Findings)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)  Document: IG v3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Raise an error when --REASEX is present in dataset.,--REASEX must never be used in SDTM-based human trials,,Variable Presence,--REASEX,,--REASEX not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --REASEX
+ operator: exists
+",,,- --REASEX,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0353,CDISC.SDTMIG.CG0353,CG0353,1.0,CG0353,1.0,CDISC,SDTMIG,3.4,2.0,,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+• --DTHREL (Findings)
+• --EXCLFL (Findings)
+• --REASEX (Findings)
+• --DETECT (Findings)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)  Document: IG v3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Raise an error when --EXCLFL is present in dataset.,--EXCLFL must never be used in SDTM-based human trials,,Variable Presence,--EXCLFL,,--EXCLFL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --EXCLFL
+ operator: exists
+",,,- --EXCLFL,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0352,CDISC.SDTMIG.CG0352,CG0352,1.0,CG0352,1.0,CDISC,SDTMIG,3.4,2.0,,"The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials:
+• --DTHREL (Findings)
+• --EXCLFL (Findings)
+• --REASEX (Findings)
+• --DETECT (Findings)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following SDTM variables, defined for use in non-clinical studies (SEND), must NEVER be used in the submission of SDTM-based data for human clinical trials: --DTHREL (Findings) --EXCLFL (Findings) --REASEX (Findings) --DETECT (Findings)  Document: Model v1.4 Item:     Section:  2.7",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Verifying presence of SEND variable --DTHREL,--DTHREL must never be used in SDTM-based data for human clinical trials,,Variable Presence,--DTHREL,,--DTHREL not present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --DTHREL
+ operator: exists
+",,,-  --DTHREL,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0357,CDISC.SDTMIG.CG0357,CG0357,1.0,CG0357,1.0,CDISC,SDTMIG,3.4,2.0,,"The following variables can be used for non-clinical studies (SEND) but must NEVER be used in the Demographics domain for human clinical trials. However, the use of these variables is currently being evaluated in Findings
+general observation class domains being developed for use in the tabulations of virology data:
+• SPECIES (Demographics)
+• STRAIN (Demographics)
+• SBSTRAIN (Demographics)",IG v3.4,2.7,No Change,"- Cited Guidance:  The following variables can be used for non-clinical studies\ \ (SEND) but must NEVER be used in the Demographics domain for human clinical\ \ trials. However, the use of these variables is currently being evaluated\ \ in Findings general observation class domains being developed for use in the\ \ tabulations of virology data:\n SPECIES (Demographics)\n STRAIN (Demographics)\n\ \ SBSTRAIN (Demographics)  Document: IG 3.4 Section:  2.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Verify variable STRAIN does not exist in DM dataset,STRAIN is present in DM dataset.,retire for IGs after v3.4,Variable Presence,STRAIN,,STRAIN not present in dataset,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: STRAIN
+ operator: exists
+",,,- STRAIN,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0468,CDISC.SDTMIG.CG0468,CG0468,1.0,CG0468,1.0,CDISC,SDTMIG,3.4,2.0,,"When time points are represented in SDTMIG domains, both --TPT and --TPTNUM must be used. ",IG v3.3,4.4.10,Cited guidance updated.,"- Cited Guidance:  When time points are represented in SDTMIG domains, both --TPT and --TPTNUM must be used.  Document: IG v3.3 Section: 4.4.10 Timing Variables for All Classes",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,"When --TPT is present in a dataset, --TPTNUM must also be present.",The --TPTNUM variable does not exist when --TPT does exist.,,Variable Presence,--TPTNUM,--TPT present in dataset,--TPTNUM present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name:  --TPT 
+ operator: exists
+ - name:  --TPTNUM 
+ operator: not_exists",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0467,CDISC.SDTMIG.CG0467,CG0467,1.0,CG0467,1.0,CDISC,SDTMIG,3.4,2.0,,Note that --STDTC should not be used in the Findings general observation class and is therefore blank in the following table.,IG v3.4,4.4.8,Updated text per IG v3.4.,- Cited Guidance: Note that --STDTC should not be used in the Findings general observation class and is therefore blank in the following table. Document: IG v3.4 Section: 4.4.8,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Trigger error when --STDTC is present in a Findings general observation class,--STDTC is present in a Findings general observation class,,Variable Presence,--STDTC,,--STDTC not present,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - name: --STDTC
+ operator: exists
+",,,- --STDTC,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0430,CDISC.SDTMIG.CG0430,CG0430,1.0,CG0430,1.0,CDISC,SDTMIG,3.4,2.0,--SCAT,"Interventions[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]|Events[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]|Findings[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]",Model v2.0,Interventions|Events|Findings,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance: A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT. Document: Model v2.0 Item: --SCAT Section: Interventions - Cited Guidance: A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT. Document: Model v2.0 Item: --SCAT Section: Events - Cited Guidance: A further grouping or classification of the category fo",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"Raise an error when --SCAT exists in a dataset, but --CAT does not exist.","--SCAT exists in a dataset, but --CAT does not exist.",,Variable Presence,--CAT,--SCAT present in dataset,--CAT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --SCAT
+ operator: exists
+ - name: --CAT
+ operator: not_exists",,,- --CAT - --SCAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0430,CDISC.SDTMIG.CG0430,CG0430,1.0,CG0430,1.0,CDISC,SDTMIG,3.4,2.0,--SCAT,"Interventions[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]|Events[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]|Findings[A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT.]",Model v2.0,Interventions|Events|Findings,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance: A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT. Document: Model v2.0 Item: --SCAT Section: Interventions - Cited Guidance: A further grouping or classification of the category for the topic of the finding, event, or intervention. The category is in --CAT. Document: Model v2.0 Item: --SCAT Section: Events - Cited Guidance: A further grouping or classification of the category fo",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"Raise an error when --SCAT exists in a dataset, but --CAT does not exist.","--SCAT exists in a dataset, but --CAT does not exist.",,Variable Presence,--CAT,--SCAT present in dataset,--CAT present in dataset,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --SCAT
+ operator: exists
+ - name: --CAT
+ operator: not_exists",,,- --CAT - --SCAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0404,CDISC.SDTMIG.CG0404,CG0404,2.0,CG0404,2.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--OCCUR|--STAT,"Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of ""NOT DONE"".]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF.]|Interventions[--OCCUR][An indication as to whether a prespecified intervention has occurred.]|Interventions[--STAT][Used to indicate when a question about the occurrence of a prespecified intervention was not answered. Should be null or have a value of ""NOT DONE"".]",Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: An indication that the event was prospectively stated or detailed on the CRF Document: SDTM v2.0 Item: --PRESP Section: Events - Cited Guidance: An indication as to whether a prespecified event has occurred Document: SDTM v2.0 Item: --OCCUR Section: Events - Cited Guidance: Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of  NOT DONE  Document: Model v2.0 Item: --STAT Sectio,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --PRESP is equal to  Y  and --OCCUR is empty and --STAT is not present in dataset.,--STAT is not present in dataset when --PRESP is equal to  Y  and --OCCUR is blank,,Variable Presence,--STAT,--PRESP = 'Y' and  --OCCUR = null,--STAT present in dataset,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(DS, DV, EX)","all:
+ - name: --PRESP
+ operator: equal_to
+ value:  Y 
+ - name: --OCCUR
+ operator: empty
+ - name: --STAT
+ operator: not_exists
+",,,- --PRESP - --OCCUR,,3.4,Fully Executable,,,,,,Yes,,1.0

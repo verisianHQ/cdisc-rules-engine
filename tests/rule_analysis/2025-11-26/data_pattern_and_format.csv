@@ -1,0 +1,69 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0376,CDISC.SDTMIG.CG0376,CG0376,1.0,CG0376,1.0,CDISC,SDTMIG,3.4,2.0,Specification,A fixed offset from the date provided by the variable referenced in TDANCVAR. This is used when the timing of planned cycles does not start on the exact day referenced in the variable indicated in TDANCVAR. The value of this variable will be either zero or a positive value and will be represented in ISO 8601 character format.  ,IG v3.4,7.3.2,Section change in SDTMIG v3.4,- Cited Guidance:  A fixed offset from the date provided by the variable referenced in TDANCVAR. This is used when the timing of planned cycles does not start on the exact day referenced in the variable indicated in TDANCVAR. The value of this variable will be either zero or a positive value and will be represented in ISO 8601 character format.   Document: IG v3.4 Item: Specification Section: 7.3.2,SDTM and SDTMIG Conformance Rules,Record,Warning,,failing,invalid,TDSTOFF must be equal to 0 or a positive value in ISO 8601 Duration format,TDSTOFF is not equal to zero or a positive value in ISO 8601 Duration format,,Data Pattern and Format,TDSTOFF,,TDSTOFF = 0 or positive value in ISO 8601 Duration format,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TD",TDM,,TD,"all:
+ - name: TDSTOFF
+ operator: not_equal_to
+ value: 0
+ - name: TDSTOFF
+ operator: not_matches_regex
+ value: ^P(([0-9]+Y)?([0-9]+M)?([0-9]+W)?([0-9]+D)?(T([0-9]+H)?([0-9]+M)?([0-9]+(\.?[0-9]+)?S)?))?$",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0184,CDISC.SDTMIG.CG0184,CG0184,1.0,CG0184,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"For normal range values that are character in ordinal scale or if categorical ranges were supplied (e.g., ""-1 to +1"", ""NEGATIVE TO TRACE"").",IG v3.4,6.3.5.6,Section change in SDTMIG v3.4,"- Document: IG v3.4 Section:  6.3.5.6  Item: Specification Cited Guidance: >- For normal range values that are character in ordinal scale or if categorical ranges were supplied (e.g.,  -1 to +1 ,  NEGATIVE TO TRACE ).",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,"When LBORRES is a continuous measurement, LBSTNRC should be null",LBSTNRC is populated when LBORRES is a continuous measurement,,Data Pattern and Format,LBSTNRC,LBORRES = continuous measurement,LBSTNRC = null,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - LB",FND,,LB,"all: 
+ - name: LBORRES
+ operator: matches_regex
+ value: ^[1-9]\d*(\.\d+)?$
+ - name: LBSTNRC
+ operator:  non_empty",,,- USUBJID - RFXENDTC,,3.4,Not Executable,,,,,,Conditional,Dependent on additional non-CDISC metadata,1.0
+CG0238,CDISC.SDTMIG.CG0238,CG0238,1.0,CG0238,1.0,CDISC,SDTMIG,3.4,2.0,,"Dates are generally used only as timing variables, ... but there may be occasions when it may be preferable to model a date as a result (--ORRES) in a Findings dataset. ... this situation may occasionally occur when a) a group of questions (each of which has a date response) is asked and analyzed together; or b) the Event(s) and Intervention(s) in question are not medically significant (often the case when included in questionnaires). Consider the following cases: Calculated due date, Date of last day on the job, Date of high school graduation. One approach to modeling these data would be to place the text of the question in --TEST and the response to the question, a date represented in ISO 8601 format, in --ORRES and --STRESC as long as these date results do not contain the dates of medically significant events or interventions. Again, use extreme caution when storing dates as the results of Findings. Remember, in most cases, these dates should be timing variables associated with a record in an Intervention or Events dataset.",IG v3.4,4.4.9,No Change,"- Cited Guidance:  \ Dates are generally used only as timing variables, ... but\ \ there may be occasions when it may be preferable \n to model a date as a result\ \ (--ORRES) in a Findings dataset. ... this situation may occasionally occur\ \ when \n a) a group of questions (each of which has a date response) is asked\ \ and analyzed together; or b) the Event(s) \n and Intervention(s) in question\ \ are not medically significant (often the case when included in questionnaires).\ \",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error if -ORRES is not entered in ISO 8601 date format,--ORRES date value is not in ISO 8601 date format,,Data Pattern and Format,--ORRES,Date Value,--ORRES in ISO 8601 date format,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - any:
+ - name: --TEST
+ operator: contains
+ value: date
+ - name: --TEST
+ operator: contains
+ value: Date
+ - name: --TEST
+ operator: contains
+ value: DATE
+ - name: --TEST
+ operator: contains
+ value: time
+ - name: --TEST
+ operator: contains
+ value: Time
+ - name: --TEST
+ operator: contains
+ value: TIME
+ - any:
+ - name: --ORRES
+ operator: matches_regex
+ value: ^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional appropriate metatdata,1.0
+CG0270,CDISC.SDTMIG.CG0270,CG0270,1.0,CG0270,1.0,CDISC,SDTMIG,3.4,2.0,,"When the trial summary parameter is AGEMAX, then TSVAL should have a value expressed as an ISO8601 time duration (e.g., P43Y for 43 years old or P6M for 6 months old).",IG v3.4,7.4.2.1,Citation and section updated since Appendix C1 has been replaced in SDTMIG v3.4.,"- Cited Guidance: When the trial summary parameter is AGEMAX, then TSVAL should have a value expressed as an ISO8601 time duration (e.g., P43Y for 43 years old or P6M for 6 months old). Document: IG v3.4 Section: 7.4.2.1",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when TSPARMCD =  AGEMAX  and TSVAL ^= null and TSVAL does not conform to ISO 8601,TSVAL does not conform to ISO 8601,,Data Pattern and Format,TSVAL,TSPARMCD = 'AGEMAX' and TSVAL ^= null,TSVAL conforms to ISO 8601,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TS",TDM,,TS,"all:
+ - name: TSPARMCD
+ operator: equal_to
+ value: AGEMAX
+ - name: TSVAL
+ operator: non_empty
+ - any:
+ - name: TSVAL
+ operator: matches_regex
+ value: ^P(?!$)(\d+(?:\.\d+)?Y)?(\d+(?:\.\d+)?M)?(\d+(?:\.\d+)?W)?(\d+(?:\.\d+)?D)?(T(?=\d)(\d+(?:\.\d+)?H)?(\d+(?:\.\d+)?M)?(\d+(?:\.\d+)?S)?)?$
+",,,,,3.4,Fully Executable,,,,,,Yes,,1.0

@@ -1,0 +1,491 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0334,CDISC.SDTMIG.CG0334,CG0334,2.0,CG0334,2.0,CDISC,SDTMIG,3.4,2.0,7,"Supplemental Qualifier datasets for split domains would also be split. The nomenclature would include the additional one-to-two characters used to identify the split dataset (e.g., SUPPQS36, SUPPFACM). The value of RDOMAIN in the SUPP-- datasets would be the two-character domain code (e.g., QS, FA).",IG v3.4,4.1.7,"Extraneous quotes were removed from the domain SUPP----
+
+Rule Retired for IGs after v3.4 to address the use of the NS datasets.","- Cited Guidance: Supplemental Qualifier datasets for split domains would also be split. The nomenclature would include the additional one-to-two characters used to identify the split dataset (e.g., SUPPQS36, SUPPFACM). The value of RDOMAIN in the SUPP-- datasets would be the two-character domain code (e.g., QS, FA). Document: IG v3.4 Item:  7  Section: 4.1.7",SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Trigger error when RDOMAIN does not match characters 5 and 6 of the Supplementary dataset name,RDOMAIN does not match characters 5 and 6 of the dataset name,Rule Retired for IGs after v3.4 to address the use of the NS datasets.,Consistency,RDOMAIN,Dataset name begins with 'SUPP',Value of RDOMAIN equals characters 5 and 6 of the dataset name,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - SUPP",ALL,,SUPP----,"all:
+ #Condition: Dataset name begins with  SUPP 
+ - name: dataset_name
+ operator: starts_with
+ value: SUPP
+ #Rule: Value of RDOMAIN equals characters 5 and 6 of the dataset name
+ - name: dataset_name
+ operator: ends_with #Not right 0 if this were 8 characters, we still need to only look at 5-6
+ suffix: 2
+ value: RDOMAIN",,,,,3.4,Fully Executable,NSV / Final Review,Carlo,Final,,,Yes,,1.0
+CG0548,CDISC.SDTMIG.CG0548,CG0548,1.0,CG0548,1.0,CDISC,SDTMIG,3.4,2.0,--ORREF,"--ORREF uses the same units as --ORRES, if applicable.",Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance: --ORREF uses the same units as --ORRES, if applicable. Document: Model v2.0 Item: --ORREF Section: Findings",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when --ORREF is not in the same units as --ORRES,--ORREF is not in the same units as --ORRES,,Consistency,--ORREF,,--ORREF in same units as --ORRES,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - name: --ORREF
+ operator: null
+",,,,,3.4,Not Executable,,,,,,,,1.0
+CG0555,CDISC.SDTMIG.CG0555,CG0555,1.0,CG0555,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is non-normalized and terminology for PPORRESU is not for a non-normalized parameter,Parameter is non-normalized and terminology for PPORRESU is not for a non-normalized parameter,,Consistency,PPORRESU,Parameter is non-normalized.,"Terminology is for non-normalized parameter (Codelist ""PKUNIT"")","
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: does_not_contain_case_insensitive
+ value:  norm 
+ - name: PPORRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUNIT",,,,,3.4,Partially Executable,,,,,,,,1.0
+CG0556,CDISC.SDTMIG.CG0556,CG0556,1.0,CG0556,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is normalized by dose amount and terminology for PPORRESU is not for a parameter normalized by dose amount,Parameter is normalized by dose amount and terminology for PPORRESU is not for a parameter normalized by dose amount,,Consistency,PPORRESU,Parameter is normalized by dose amount.,Terminology is for parameter normalized by dose amount,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: contains_case_insensitive
+ value:  norm by dose 
+ - name: PPORRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUDMG 
+ - name: PPORRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUDUG",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0557,CDISC.SDTMIG.CG0557,CG0557,1.0,CG0557,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is normalized by weight and terminology for PPORRESU is not for a parameter normalized by weight,Parameter is normalized by weight and terminology for PPORRESU is not for a parameter normalized by weight,,Consistency,PPORRESU,Parameter is normalized by weight.,Terminology is for parameter normalized by weight,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: contains_case_insensitive
+ value:  norm by wt 
+ - name: PPORRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUWG 
+ - name: PPORRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUWKG",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0558,CDISC.SDTMIG.CG0558,CG0558,1.0,CG0558,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is non-normalized and terminology of PPSTRESU is not for a non-normalized parameter,Parameter is non-normalized and terminology of PPSTRESU is not for a non-normalized parameter,,Consistency,PPSTRESU,Parameter is non-normalized.,Terminology is for non-normalized parameter,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: does_not_contain_case_insensitive
+ value:  norm 
+ - name: PPSTRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUNIT",,,,,3.4,Not Executable,,,,,,,,1.0
+CG0559,CDISC.SDTMIG.CG0559,CG0559,1.0,CG0559,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is normalized by dose amount and terminology of PPSTRESU is not a parameter normalized by dose amount,Parameter is normalized by dose amount and terminology of PPSTRESU is not a parameter normalized by dose amount,,Consistency,PPSTRESU,Parameter is normalized by dose amount.,Terminology is for parameter normalized by dose amount,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: contains_case_insensitive
+ value:  norm by dose 
+ - name: PPSTRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUDMG 
+ - name: PPSTRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUDUG",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0560,CDISC.SDTMIG.CG0560,CG0560,1.0,CG0560,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 3,"There are separate codelists used for PPORRESU/PPSTRESU where the choice depends on whether the value of the pharmacokinetic parameter is normalized.
+Codelist “PKUNIT” is used for non-normalized parameters.
+Codelists “PKUDMG” and “PKUDUG” are used when parameters are normalized by dose amount in milligrams or micrograms respectively.
+Codelists “PKUWG” and “PKUWKG” are used when parameters are normalized by weight in grams or kilograms respectively.
+Multiple subset codelists were created for the unique unit expressions of the same concept across codelists, this approach allows study-context appropriate use of unit values for PK analysis subtypes",IG v3.4,6.3.5.9.2,Section change in SDTMIG v3.4,- Cited Guidance:  There are separate codelists used for PPORRESU/PPSTRESU where\ \ the choice depends on whether the value of the pharmacokinetic parameter is\ \ normalized. Codelist PKUNIT is used for non-normalized parameters.\ \ Codelists PKUDMG and PKUDUG are used when parameters\ \ are normalized by dose amount in milligrams or micrograms respectively. Codelists\ \ PKUWG and PKUWKG are used when parameters are normalized\ \ by weight in grams or kilograms respectively. Multip,SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Trigger error when parameter is normalized by weight and terminology for PPSTRESU is not for a parameter not normalized by weight,Parameter is normalized by weight and terminology for PPSTRESU is not for a parameter not normalized by weight,,Consistency,PPSTRESU,Parameter is normalized by weight.,Terminology is for parameter normalized by weight,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - PP",FND,,PP,"all:
+ - name: PPTESTCD
+ operator: contains_case_insensitive
+ value:  norm by wt 
+ - name: PPSTRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUWG 
+ - name: PPSTRESU
+ operator:  does_not_use_valid_codelist_terms 
+ value:  PKUWKG",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0157,CDISC.SDTMIG.CG0157,CG0157,1.0,CG0157,1.0,CDISC,SDTMIG,3.4,2.0,Specification,RSUBJID will be populated with the USUBJID of the related subject or the POOLID of the related pool.,AP Guide v1.0,2.1.1,No Change,- Cited Guidance: Relationship described is to a study subject.RSUBJID is not in DM.USUBJID. Document: APGuidev1.0 Item: RSUBJID Section: 2.1.1,SDTM and SDTMIG Conformance Rules,Record,Error,,not implemented,,Raise an error when RSUBJID in not in DM.USUBJID,RSUBJID is not in DM.USUBJID.,,Consistency,RSUBJID,Relationship described is to a study subject,RSUBJID in DM.USUBJID,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - AP
+ - DM",AP,,ALL,"all:
+ - name: RSUBJID
+ operator: is_not_contained_by
+ value: $dm_rsubjid",,"- domain: DM
+ id: $dm_rsubjid
+ name: RSUBJID
+ operator: distinct",- APDM.RSUBJID - DM.USUBJID,,3.4,Not Executable,,,,,,Yes,,1.0
+CG0134,CDISC.SDTMIG.CG0134,CG0134,1.0,CG0134,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown.,IG v3.4,5.2,No Change,- Cited Guidance: Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown. Document: IG v3.4 Item: Specification Section:  5.2,SDTM and SDTMIG Conformance Rules,Study,Warning,,not implemented,,"When AE.AEOUT is  FATAL , DTHFL must be  Y",DTHFL is not  Y  when AE.AEOUT is  FATAL .,,Consistency,DTHFL,AE.AEOUT = 'FATAL',DTHFL = 'Y',"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: AEOUT
+ operator: equal_to
+ value:  FATAL 
+ value_is_literal: True
+ - name: DTHFL
+ operator: equal_to
+ value:  Y 
+ value_is_literal: True
+","- Name: AE
+ Keys:
+ - USUBJID
+",,- USUBJID,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0135,CDISC.SDTMIG.CG0135,CG0135,1.0,CG0135,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown.,IG v3.4,5.2,No Change,- Cited Guidance: Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown. Document: IG v3.4 Item: Specification Section:  5.2,SDTM and SDTMIG Conformance Rules,Study,Warning,,not implemented,,"When AE.AESDTH is  Y , DTHFL must be  Y",DTHFL is not  Y  when AE.AESDTH is  Y .,,Consistency,DTHFL,AE.AESDTH = 'Y',DTHFL = 'Y',"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: AESDTH
+ operator: equal_to
+ value:  Y 
+ value_is_literal: True
+ - name: DTHFL
+ operator: equal_to
+ value:  Y 
+ value_is_literal: True
+","- Name: AE
+ Keys:
+ - USUBJID
+",,- USUBJID,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0136,CDISC.SDTMIG.CG0136,CG0136,1.0,CG0136,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown.,IG v3.4,5.2,No Change,- Cited Guidance: Indicates the subject died. Should be Y or null. Should be populated even when the death date is unknown. Document: IG v3.4 Item: Specification Section:  5.2,SDTM and SDTMIG Conformance Rules,Study,Warning,,not implemented,,"When DS.DSDECOD is  DEATH , DTHFL must be  Y",DTHFL is not  Y  when DS.DECOD is  DEATH,,Consistency,DTHFL,DS.DSDECOD = 'DEATH',DTHFL = 'Y',"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: DSDECOD
+ operator: equal_to
+ value: DEATH
+ value_is_literal: True
+ - name: DTHFL
+ operator: equal_to
+ value:  Y 
+ value_is_literal: True
+","- Name: DS
+ Keys:
+ - USUBJID
+",,- USUBJID,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0665,CDISC.SDTMIG.CG0665,CG0665,2.0,CG0665,2.0,CDISC,SDTMIG,3.4,2.0,AGEU|AGETXT,[AGEU]Variable Qualifier of AGE or AGETXT.|[AGETXT]Not in human clinical trials.,Model v2.0,Demographics,"Condition updated and cited guidance updated. Replaces rule CG0432. Reference to model section and item updated per new style.
+
+Rule Retired for all IGs after v3.4, to accommodate both DM and DC.
+",- Cited Guidance:  [AGEU]Variable Qualifier of AGE or AGETXT.|[AGETXT]Not in human clinical trials.  Document: Model v2.0 Item: AGEU|AGETXT Section: Demographics,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when AGE is not blank and AGEU is blank.,AGEU is missing when AGE is provided.,"Rule Retired for all IGs after v3.4, to accommodate both DM and DC.",Consistency,AGEU,AGE ^= null,AGEU ^= null,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: AGE
+ operator: non_empty
+ - name: AGEU
+ operator: empty",,,- AGE - AGEU,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0211,CDISC.SDTMIG.CG0211,CG0211,1.0,CG0211,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 4,"If the sponsor decides that the subject's experience for a particular period of time cannot be represented with one of the planned Elements, then that period of time should be represented as an unplanned Element. The value of ETCD for an unplanned Element is “UNPLAN” and SEUPDES should be populated with a description of the unplanned Element.",IG v3.4,5.3,No Change,"- Cited Guidance: If the sponsor decides that the subject s experience for a particular period of time cannot be represented with one of the planned Elements, then that period of time should be represented as an unplanned Element. The value of ETCD for an unplanned Element is  UNPLAN  and SEUPDES should be populated with a description of the unplanned Element. Document: IG v3.4 Item: Assumption 4 Section:  5.3",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,"Raise an error when SEUPDES ^= null, ETCD ^=  UNPLAN","ETCD is not  UNPLAN , when SEUPDES is not empty",,Consistency,ETCD,SEUPDES ^= null,ETCD = 'UNPLAN',"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - SE",SPC,,SE,"all: 
+ - name: SEUPDES
+ operator: non_empty 
+ - name: ETCD
+ operator: not_equal_to
+ value:  UNPLAN",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0210,CDISC.SDTMIG.CG0210,CG0210,1.0,CG0210,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 4,"If the sponsor decides that the subject's experience for a particular period of time cannot be represented with one of the planned Elements, then that period of time should be represented as an unplanned Element. The value of ETCD for an unplanned Element is “UNPLAN” and SEUPDES should be populated with a description of the unplanned Element.",IG v3.4,5.3,No Change,"- Cited Guidance: If the sponsor decides that the subject s experience for a particular\ \ period of time cannot be represented with one of the planned Elements, then\ \ that period of time should be represented as an unplanned Element. The value\ \ of ETCD for an unplanned Element is  UNPLAN  and SEUPDES should\ \ be populated with a description of the unplanned Element. Document: IG v3.4 Item: Assumption 4 Section:  5.3",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,"Raise an error when ETCD =  UNPLAN , SEUPDES = null","Missing value for SEUPDES, when ETCD= UNPLAN",,Consistency,ETCD,SEUPDES = null,ETCD ^= 'UNPLAN',"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - SE",SPC,,SE,"all:
+ - name: SEUPDES
+ operator: empty
+ - name: ETCD
+ operator: equal_to
+ value:  UNPLAN",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0207,CDISC.SDTMIG.CG0207,CG0207,1.0,CG0207,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 8,"Since there are, by definition, no gaps between Elements, the value of SEENDTC for one Element will always be the same as the value of SESTDTC for the next Element.",IG v3.4,5.3,No Change,"- Cited Guidance: Since there are, by definition, no gaps between Elements, the value of SEENDTC for one Element will always be the same as the value of SESTDTC for the next Element. Document: IG v3.4 Item: Assumption 8 Section:  5.3",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error where SEENDTC is not equal to SESTDTC of the next element.,SEENDTC is not equal to SESTDTC of the next element.,,Consistency,SEENDTC,Next ELEMENT present in dataset,SEENDTC = SESTDTC of next ELEMENT,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - SE",SPC,,SE,"all:
+ - name: SEENDTC
+ operator: has_next_corresponding_record
+ value: SESTDTC
+ within: USUBJID
+ ordering: SESEQ",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0061,CDISC.SDTMIG.CG0061,CG0061,1.0,CG0061,1.0,CDISC,SDTMIG,3.4,2.0,--STTPT,The description or date and/or time of a time point that acts as a fixed reference for characterizing the start of an observation. This is the sponsor-defined reference point referred to by --STRTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance: The description or date and/or time of a time point that acts as a fixed reference for characterizing the start of an observation. This is the sponsor-defined reference point referred to by --STRTPT. Document: Model v2.0 Item: --STTPT Section: Timing,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --STRTPT is completed and --STTPT is not completed.,"--STRTPT is completed, but --STTPT is not completed.",,Consistency,--STTPT,--STRTPT ^= null,--STTPT ^= null,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --STRTPT
+ operator: non_empty
+ - name: --STTPT
+ operator: empty
+",,,- --STRTPT - --STTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0046,CDISC.SDTMIG.CG0046,CG0046,1.0,CG0046,1.0,CDISC,SDTMIG,3.4,2.0,--ENRTPT,The characterization of the end of an observation relative to a reference time point. The sponsor-defined reference time point is in --ENTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: The characterization of the end of an observation relative to a reference time point. The sponsor-defined reference time point is in --ENTPT. Document: Model v2.0 Item: --ENRTPT Section: Timing,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --ENRTPT is completed and --ENTPT is not completed.,"--ENRTPT is completed, but --ENTPT is not completed.",,Consistency,--ENTPT,--ENRTPT ^= null,--ENTPT ^= null,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ENRTPT
+ operator: non_empty
+ - name: --ENTPT
+ operator: empty
+",,,- --ENRTPT - --ENTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0045,CDISC.SDTMIG.CG0045,CG0045,1.0,CG0045,1.0,CDISC,SDTMIG,3.4,2.0,--ENTPT,The description or date and/or time of a time point that acts as a fixed reference for characterizing the end of an observation. This is the sponsor-defined reference point referred to by --ENRTPT.,Model v2.0,Timing,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: --> The description or date and/or time of a time point that acts as a fixed reference for characterizing the end of an observation. This is the sponsor-defined reference point referred to by --ENRTPT. Document: Model v2.0 Item: --ENTPT Section: Timing,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --ENTPT is completed and --ENRTPT is not completed.,"--ENTPT is completed, but --ENRTPT is not completed.",,Consistency,--ENRTPT,--ENTPT ^= null,--ENRTPT ^= null,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --ENTPT
+ operator: non_empty
+ - name: --ENRTPT
+ operator: empty",,,- --ENRTPT - --ENTPT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0086,CDISC.SDTMIG.CG0086,CG0086,1.0,CG0086,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--OCCUR|--STAT,"Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of ""NOT DONE"".]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Interventions[--OCCUR][An indication as to whether a prespecified intervention has occurred.]|Interventions[--STAT][Used to indicate when a question about the occurrence of a prespecified intervention was not answered. Should be null or have a value of ""NOT DONE"".]",Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance:  Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be  Y  or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of  NOT DONE .]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,"Raise an error when --PRESP is equal to  Y , --STAT is blank, --OCCUR is present in dataset and --OCCUR is blank",--OCCUR is blank when --PRESP is equal to  Y  and --STAT is not provided.,,Consistency,--OCCUR,--PRESP = 'Y' and --STAT = null and --OCCUR is present in dataset,--OCCUR ^= null,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - AE
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(AE, DS, DV, EX)","all:
+ - name: --PRESP
+ operator: equal_to
+ value:  Y 
+ - name: --STAT
+ operator: empty
+ - name: --OCCUR
+ operator: exists
+ - name: --OCCUR
+ operator: empty
+",,,- --PRESP - --OCCUR - --STAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0087,CDISC.SDTMIG.CG0087,CG0087,1.0,CG0087,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--OCCUR|--STAT,"Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of ""NOT DONE"".]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Interventions[--OCCUR][An indication as to whether a prespecified intervention has occurred.]|Interventions[--STAT][Used to indicate when a question about the occurrence of a prespecified intervention was not answered. Should be null or have a value of ""NOT DONE"".]",Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance:  Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be  Y  or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of  NOT DONE .]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --PRESP is not equals to  Y  and --OCCUR is present in dataset or --STAT is equal to  NOT DONE  and --OCCUR is not blank,--OCCUR should only be provided when --PRESP is equal to  Y .,,Consistency,--OCCUR,(--PRESP ^= 'Y' and --OCCUR is present in dataset) or (--STAT=NOT DONE),--OCCUR = null,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - AE
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(AE, DS, DV, EX)","all: 
+ - any:
+ - all:
+ - name: --PRESP
+ operator: not_equal_to
+ value:  Y 
+ - name: --OCCUR
+ operator: exists
+ - name: --OCCUR
+ operator: non_empty
+ - all:
+ - name: --STAT
+ operator: equal_to
+ value:  NOT DONE  
+ - all:
+ - name: --OCCUR
+ operator: non_empty
+
+",,,- --PRESP - --OCCUR - --STAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0089,CDISC.SDTMIG.CG0089,CG0089,1.0,CG0089,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--OCCUR,"Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Interventions[--OCCUR][An indication as to whether a prespecified intervention has occurred.]",Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance:  Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be  Y  or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]  Document: Model v2.0 Section: Events - Cited Guidance:  Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values should be  Y  or null.]|Interventions[--OCCUR][An indication as to whether a prespecified inter,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --OCCUR is not empty and --PRESP is not equal to  Y .,--PRESP should be populated as  Y  when --OCCUR is provided.,,Consistency,--PRESP,--OCCUR ^= null,--PRESP = 'Y',"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - AE
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(AE, DS, DV, EX)","all:
+ - name: --OCCUR
+ operator: non_empty
+ - name: --PRESP
+ operator: not_equal_to
+ value:  Y",,,- --PRESP - --OCCUR,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0088,CDISC.SDTMIG.CG0088,CG0088,1.0,CG0088,1.0,CDISC,SDTMIG,3.4,2.0,--PRESP|--OCCUR|--STAT,"Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of ""NOT DONE"".]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values should be ""Y"" or null.]|Interventions[--OCCUR][An indication as to whether a prespecified intervention has occurred.]|Interventions[--STAT][Used to indicate when a question about the occurrence of a prespecified intervention was not answered. Should be null or have a value of ""NOT DONE"".]",Model v2.0,Events|Interventions,Cited guidance updated. Reference to model section and item updated per new style. ,- Cited Guidance:  Events[--PRESP][An indication that the event was prospectively stated or detailed on the CRF. Values should be  Y  or null.]|Events|[--OCCUR][An indication as to whether a prespecified event has occurred.]|Events[--STAT][Used to indicate when a question about the occurrence of a prespecified event was not answered. Should be null or have a value of  NOT DONE .]|Interventions[--PRESP][An indication that the intervention was prospectively stated or detailed on the CRF. Values,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise an error when --PRESP does not exists in a dataset and --OCCUR exist.,--PRESP is missing in dataset when --OCCUR is present.,,Consistency,--OCCUR,--PRESP not present in dataset,--OCCUR not present in dataset,"
+ Include:
+ - Events
+ - Interventions
+","Domains:
+ Exclude:
+ - AE
+ - DS
+ - DV
+ - EX","EVT, INT",,"NOT(AE, DS, DV, EX)","all:
+ - name: --PRESP
+ operator: not_exists
+ - name: --OCCUR
+ operator: exists",,,- --PRESP - --OCCUR,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0666,CDISC.SDTMIG.CG0666,CG0666,2.0,CG0666,2.0,CDISC,SDTMIG,3.4,2.0,AGEU|AGETXT,[AGEU]Variable Qualifier of AGE or AGETXT.|[AGETXT]Not in human clinical trials.,Model v2.0,Demographics,Condition updated and cited guidance updated. Replaces rule CG0433. Reference to model section and item updated per new style.,- Cited Guidance:  [AGEU]Variable Qualifier of AGE or AGETXT.|[AGETXT]Not in human clinical trials.  Document: Model v2.0 Item: AGEU|AGETXT Section: Demographics,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when AGEU is not blank and AGE is blank.,AGE is missing when AGEU is provided.,retire; create new rule for DC and DM incorporate AGETXT into the rule as noted,Consistency,AGE,AGEU ^= null,AGE ^= null,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: AGEU
+ operator: non_empty
+ - name: AGE
+ operator: empty",,,- AGE - AGEU,CG0433,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0601,CDISC.SDTMIG.CG0601,CG0601,1.0,CG0601,1.0,CDISC,SDTMIG,3.4,2.0,,"When findings are collected about an event or intervention, and the name of the event or intervention is collected in an ""Other, specify"" CRF field, the value in --OBJ variable depends on whether the FA record has a parent record and whether the ""Other, specify"" value was coded.",IG v3.4,4.2.7.4,New Rule,"- Cited Guidance:  When findings are collected about an event or intervention, and\ \ the name of the event or intervention is collected in an\_\\\ Other, specify\\\ \  CRF field, the value in --OBJ variable depends on whether the FA record has\ \ a parent\_record and whether the \\\ Other, specify\\\  value was coded.  Document: IG v3.4 Section: 4.2.7.4",SDTM and SDTMIG Conformance Rules,Record,,,success,invalid,"Verify that for finding collected in a \ Other, specify\  CRF field a related parent record exist",,,Consistency,--OBJ,Events parent record exists and DECOD = null,--OBJ = --TERM,"
+ Include:
+ - Findings About
+","Domains:
+ Include:
+ - All",FND,,FA,"all:
+ - name: --DECOD
+ operator: empty
+ - name: null
+ operator: null
+ - name: null
+ operator: null",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0540,CDISC.SDTMIG.CG0540,CG0540,2.0,CG0540,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 1,"The Disposition dataset provides an accounting for all subjects who entered the study and may include protocol milestones, such as randomization, as well as the subject's completion status or reason for discontinuation for the entire study or each phase or segment of the study, including screening and post-treatment follow-up.",IG v3.4,6.2.3,No Change,"- Cited Guidance: The Disposition dataset provides an accounting for all subjects who entered the study and may include protocol milestones, such as randomization, as well as the subject s completion status or reason for discontinuation for the entire study or each phase or segment of the study, including screening and post-treatment follow-up. Document: IG v3.4 Item: Assumption 1 Section: 6.2.3",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When ACTARMCD is populated, disposition data for subject must be present",There are no DS records for subject who was assigned treatment,"New version of rule.
+
+GEN removed from Variable Name",Consistency,,DM.ACTARMCD not null,DS records present for subject,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",EVT,,DS,"all:
+ - name: ACTARMCD
+ operator: non_empty
+ - name:  USUBJID 
+ operator:  is_not_contained_by 
+ value:  $ds_usubjid",,"- operator:  distinct 
+ domain:  DS 
+ name:  USUBJID 
+ id:  $ds_usubjid",- USUBJID,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0530,CDISC.SDTMIG.CG0530,CG0530,1.0,CG0530,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Required for all randomized subjects; null for screen failures or unassigned subjects.,IG v3.4,5.2,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",- Cited Guidance:  Required for all randomized subjects; null for screen failures or unassigned subjects.  Document: IG v3.4 Item: Specification Section:  5.2,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when ARMNRS is not blank and RFENDTC is provided.,RFENDTC is not blank when ARMNRS is provided.,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Consistency,RFENDTC,ARMNRS ^= null,RFENDTC = null,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: ARMNRS
+ operator: non_empty
+ - name: RFENDTC
+ operator: non_empty",,,- ARMNRS - RFENDTC,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0529,CDISC.SDTMIG.CG0529,CG0529,1.0,CG0529,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Required for all randomized subjects; null for screen failures or unassigned subjects.,IG v3.4,5.2,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",- Cited Guidance:  Required for all randomized subjects; null for screen failures or unassigned subjects.  Document: IG v3.4 Item: Specification Section:  5.2,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when ARM is not empty and RFENDTC is empty.,RFENDTC is missing when ARM is provided.,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Consistency,RFENDTC,ARM ^= null,RFENDTC ^= null,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: ARM
+ operator: non_empty
+ - name: RFENDTC
+ operator: empty",,,- ARM - RFENDTC,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0518,CDISC.SDTMIG.CG0518,CG0518,1.0,CG0518,1.0,CDISC,SDTMIG,3.4,2.0,Specification|ACTARM CDISC Notes,"With the exception of studies which use multistage Arm assignments, must be a value of ARM in the Trial Arms Dataset. If the subject was not assigned to an Arm or followed a course not described by any planned arm, ARM is null and ARMNRS is populated.",IG v3.4,5.2,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.","- Cited Guidance: With the exception of studies which use multistage Arm assignments, must be a value of ARM in the Trial Arms Dataset. If the subject was not assigned to an Arm or followed a course not described by any planned arm, ARM is null and ARMNRS is populated.  Document: SDTMIG v3.4 Item: Specification and ACTARM CDISC Notes Section:  5.2",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When study does not use multi-stage arm assignments and ARM is populated, ARM must be present in TA.ARM. This rule has been executed to identify all cases when ARM is not present in TA.ARM and therefore acknowledges that false positives may be recorded when multi-stage arm assignments are in use.",ARM value in DM dataset is not among the values of ARM variable in TA dataset. This is allowed only in a multistage study with incomplete ARM assignment. Please confirm if your study is a multistage assignment study,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Consistency,ARM,Study does not use multi-stage arm assignments and ACTARM ^= null,ARM in TA.ARM,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: ACTARM
+ operator: non_empty
+ - name: ARM
+ operator: non_empty
+ - name: ARM
+ operator: is_not_contained_by
+ value: $ta_arm",,"- operator: distinct
+ domain: TA
+ name: ARM
+ id: $ta_arm
+",- ARM,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0516,CDISC.SDTMIG.CG0516,CG0516,1.0,CG0516,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"With the exception of studies which use multi-stage Arm assignments, must be a value of ARMCD in the Trial Arms Dataset.  If the subject was not assigned to an Arm, ARMCD is null and ARMNRS is populated",IG v3.4,5.2,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.","- Cited Guidance: With the exception of studies which use multi-stage Arm assignments, must be a value of ARMCD in the Trial Arms Dataset. If the subject was not assigned to an Arm, ARMCD is null and ARMNRS is populated Document: IG v3.4 Item: Specification Section:  5.2",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When study does not use multi-stage arm assignments and ARMCD is populated, ARMCD must be present in TA.ARMCD. This rule has been executed to identify all cases when ARMCD is not present in TA.ARMCD and therefore acknowledges that false positives may be recorded when multi-stage arm assignments are in use.",ARMCD is not present in TA.ARMCD,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Consistency,ARMCD,Study does not use multi-stage arm assignments and ARMCD ^= null,ARMCD in TA.ARMCD,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: ARMCD
+ operator: non_empty
+ - name: ARMCD
+ operator: is_not_contained_by
+ value: $ta_armcd",,"- domain: TA
+ id: $ta_armcd
+ name: ARMCD
+ operator: distinct
+",,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0514,CDISC.SDTMIG.CG0514,CG0514,1.0,CG0514,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"With the exception of studies which use multi-stage Arm assignments, must be a value of ARM in the Trial Arms Dataset.
+If the subject was not assigned to an Arm or followed a course not described by any planned Arm, ACTARM is null and ARMNRS is populated.
+",IG v3.4,5.2,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.","- Cited Guidance: With the exception of studies which use multi-stage Arm assignments, must be a value of ARM in the Trial Arms Dataset. If the subject was not assigned to an Arm or followed a course not described by any planned Arm, ACTARM is null and ARMNRS is populated. Document: IG v3.4 Item: Specification Section:  5.2",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When study does not use multi-stage arm assignments and ACTARM is populated, ACTARM must be present in TA.ARM. This rule has been executed to identify all cases when ACTARM is not present in TA.ARM and therefore acknowledges that false positives may be recorded when multi-stage arm assignments are in use.",ACTARM value in DM dataset is not among the values of ARM variable in the TA dataset. This is allowed only in a multistage study with incomplete ARM assignment. Please confirm if your study is a multistage assignment study.,"Rule retired for IGs after 3.4, replaced by a rule that addresses both DM and DC.",Consistency,ACTARM,Study does not use multi-stage arm assignments and ACTARM ^= null,ACTARM in TA.ARM,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: ACTARM
+ operator: non_empty
+ - name: ACTARM
+ operator: is_not_contained_by
+ value: $ta_arm",,"- operator: distinct
+ domain: TA
+ name: ARM
+ id: $ta_arm
+",- ACTARM,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0397,CDISC.SDTMIG.CG0397,CG0397,1.0,CG0397,1.0,CDISC,SDTMIG,3.4,2.0,|Specification,"Model v2.0[Findings][The standardized result of the measurement, test, or examination in character format. --STRESC should store all results or findings in character format; if results are numeric, they should also be stored in numeric format in --STRESN. If various tests have results ""NONE"", ""NEG"", and ""NEGATIVE"" in --ORRES and these results effectively have the same meaning, they could be represented in standard format in --STRESC as ""NEGATIVE"".]|IG v3.4[6.3.5.3][Contains the result value for all findings, copied or derived from LBORRES in a standard format or standard units.]",Model v2.0|IG v3.4,Findings|6.3.5.3,SDTMIG v3.4 does not have generic language as v3.3 did; however this language is found in the --STRESC description for each domain (including the language for LB found in 6.3.5.3),"- Cited Guidance:  Model v2.0[Findings][The standardized result of the measurement, test, or examination in character format. --STRESC should store all results or findings in character format; if results are numeric, they should also be stored in numeric format in --STRESN. If various tests have results  NONE ,  NEG , and  NEGATIVE  in --ORRES and these results effectively have the same meaning, they could be represented in standard format in --STRESC as  NEGATIVE .]|IG v3.4[6.3.5.3][Contains",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when the value for --STRESC is null.,--STRESC should not be blank when either --ORRES is provided or --DRVFL =  Y  .,,Consistency,--STRESC,--ORRES ^= null or --DRVFL = 'Y',--STRESC ^= null,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - any:
+ - name: --ORRES
+ operator: non_empty
+ - name: --DRVFL
+ operator: equal_to
+ value:  Y  
+ - all:
+ - name: --STRESC
+ operator: empty",,,- --ORRES - --DRVFL - --STRESC,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0413,CDISC.SDTMIG.CG0413,CG0413,1.0,CG0413,1.0,CDISC,SDTMIG,3.4,2.0,,"Each study subject domain dataset is distinguished by a unique, 2-character code that should be used consistently throughout the submission. This code, which is stored in the SDTM variable named DOMAIN, is used in the dataset name, as the value of the DOMAIN variable in that dataset, and as a prefix for most variable names in that dataset.",Model v2.0,Study Subject Data,Cited guidance updated. Reference to model section updated.,"- Cited Guidance: Each study subject domain dataset is distinguished by a unique, 2-character code that should be used consistently throughout the submission. This code, which is stored in the SDTM variable named DOMAIN, is used in the dataset name, as the value of the DOMAIN variable in that dataset, and as a prefix for most variable names in that dataset. Document: Model v2.0 Section: Study Subject Data",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Trigger error when dataset name does not begin with DOMAIN value,Dataset name does not begin with DOMAIN value,,Consistency,DOMAIN,,Dataset name begins with DOMAIN value,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: DOMAIN
+ operator: exists
+ - name:  dataset_name 
+ operator: prefix_matches_regex
+ prefix: 2
+ value: DOMAIN",,,,,3.4,Fully Executable,,,,,,Yes,,1.0

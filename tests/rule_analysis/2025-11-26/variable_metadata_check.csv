@@ -1,0 +1,113 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0017,CDISC.SDTMIG.CG0017,CG0017,3.0,CG0017,2.0,CDISC,SDTMIG,3.4,2.0,Item 6,"4.1.7[For domains with two-letter domain codes (i.e., other than SUPPxx and RELREC), split dataset names can be up to four characters in length... The four-character dataset-name limitation allows the use of a Supplemental Qualifier dataset associated with the split dataset]|2[AP domain codes are therefore four characters long.]",IG v3.4|AP Guide v1.0,4.1.7|2,"Retired from IGs after v3.4, replaced by rule accommodating NS datasets","- Cited Guidance:  For domains with two-letter domain codes (i.e., other than SUPPxx and RELREC), split dataset names can be up to four characters in length... The four-character dataset-name limitation allows the use of a Supplemental Qualifier dataset associated with the split dataset  Document: IG v3.4 Item:  6  Section: 4.1.7 - Cited Guidance: AP domain codes are therefore four characters long. Document: AP Guide v1.0 Section:  2",SDTM and SDTMIG Conformance Rules,Dataset,Error,,failing,invalid,Trigger warning when a split dataset (excluding supplemental qualifiers) does not have a length of 3 or 4 characters,Split dataset name is not 3 or 4 characters in length,"New version of rule.
+
+GEN removed from Variable Name
+
+Retired from IGs after v3.4, replaced by rule accommodating NS datasets",Variable Metadata Check,,Non-Supplemental Qualifier datasets,Split dataset names length > 2 and <= 4,"
+ Include:
+ - All
+","Domains:
+ include_split_datasets: true
+ Exclude:
+ - SUPP--
+ - AP--",NOT (AP),,ALL,"all:
+ - name: dataset_name
+ operator: does_not_contain_case_insensitive
+ value: SUPP
+ - any:
+ - name: dataset_name
+ operator: shorter_than
+ value: 3
+ - name: dataset_name
+ operator: longer_than
+ value: 4",,,,,3.4,Fully Executable,NSV / Final Review,Carlo,Final,,,Yes,,1.0
+CG0010,CDISC.SDTMIG.CG0010,CG0010,3.0,CG0010,2.0,CDISC,SDTMIG,3.4,2.0,,Each variable can be classified according to its Role. A Role determines the type of information conveyed by the variable about each distinct observation and how it can be used. Variables can be classified into five major roles.,IG v3.4,2.1,"""Metadata attribute of"" added into the rule.",- Cited Guidance: Each variable can be classified according to its Role. A Role determines the type of information conveyed by the variable about each distinct observation and how it can be used. Variables can be classified into five major roles. Document: IG v3.4 Section:  2.1,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,not implemented,,"Trigger warning when metadata attribute of variable role does not equal the IG role for domain in IG, or model role (for custom domains)","Metadata attribute of variable role does not equal the IG role for domain in IG, or model role (for custom domains)","New version of rule.
+
+GEN removed from Variable Name, replaced with ALL",Variable Metadata Check,ALL,,"Metadata attribute of Variable Role = IG Role for domains in IG, Metadata attribute of Variable Role = Model Role for custom domains","
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: null
+ operator: not_equal_to
+ value: null
+ - name: null
+ operator: not_equal_to
+ value: Model Role for custom domains
+",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,2.0
+CG0311,CDISC.SDTMIG.CG0311,CG0311,2.0,CG0311,1.0,CDISC,SDTMIG,3.4,2.0,,"Variable descriptive names (labels), up to 40 characters, should be provided as data variable labels for all variables, including Supplemental Qualifier variables.",IG v3.4,4.2.1,No Change,"- Cited Guidance: Variable descriptive names (labels), up to 40 characters, should be provided as data variable labels for all variables, including Supplemental Qualifier variables. Document: IG v3.4 Section: 4.2.1",SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,Raise and error if Variable label length > 40 characters,Variable label length should be less than or equal to 40 characters,"New version of rule.
+
+GEN removed from Variable Name, replaced with ALL",Variable Metadata Check,ALL,,Variable label length <= 40,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name:  variable_label 
+ operator: longer_than
+ value: 40",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0310,CDISC.SDTMIG.CG0310,CG0310,2.0,CG0310,1.0,CDISC,SDTMIG,3.4,2.0,,"In some cases, the standard variable name will be shortened to meet the 8-character variable name requirement...",IG v3.4,4.2.8.3,No Change,"- Cited Guidance: In some cases, the standard variable name will be shortened to meet the 8-character variable name requirement... Document: IG v3.4 Section: 4.2.8.3",SDTM and SDTMIG Conformance Rules,Variable,Error,,success,invalid,Raise an error when variable name length is greater than 8.,Variable name length is greater than 8.,"New version of rule.
+
+GEN removed from Variable Name, replaced with ALL",Variable Metadata Check,ALL,,Variable name length <= 8,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: variable_name
+ operator: longer_than
+ value: 8",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0297,CDISC.SDTMIG.CG0297,CG0297,1.0,CG0297,1.0,CDISC,SDTMIG,3.4,2.0,Specification,ARMCD is limited to 20 characters and does not have special character restrictions.,IG v3.4,7.3.1,No Change,- Cited Guidance: ARMCD is limited to 20 characters and does not have special character restrictions. Document: IG v3.4 Item: Specification Section: 7.3.1,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,The length of ARMCD is limited to 20 characters.,Length of ARMCD is greater than 20,,Variable Metadata Check,ARMCD,,ARMCD value length <= 20,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TV",TDM,,TV,"all:
+ - name: ARMCD
+ operator: longer_than
+ value: 20
+",,,- ARMCD,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0018,CDISC.SDTMIG.CG0018,CG0018,2.0,CG0018,1.0,CDISC,SDTMIG,3.4,2.0,7,Supplemental Qualifier datasets for split domains would also be split. The nomenclature would include the additional one-to-two characters used to identify the split dataset.,IG v3.4,4.1.7,No Change,- Cited Guidance: Supplemental Qualifier datasets for split domains would also be split. The nomenclature would include the additional one-to-two characters used to identify the split dataset. Document: IG v3.4 Item:  7  Section: 4.1.7,SDTM and SDTMIG Conformance Rules,Dataset,Error,,success,invalid,"When a supplemental qualifier dataset is associated with a split dataset, the dataset name length must not be greater than 8 characters.",Supplemental qualifier dataset associated with a split dataset is greater than 8 characters in length,"New version of rule.
+
+GEN removed from Variable Name",Variable Metadata Check,,Supplemental Qualifier datasets,Split dataset names length <= 8,"
+ Include:
+ - All
+","Domains:
+ include_split_datasets: true
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: dataset_name
+ operator: starts_with
+ value: SUPP
+ - name: dataset_name
+ operator: longer_than
+ value: 8",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0650,CDISC.SDTMIG.CG0650,CG0650,2.0,CG0650,1.0,CDISC,SDTMIG,3.4,2.0,AP Guide v1.0[Section 2][Bullet 1]|IG v3.4[4.1.7][Item 6],"AP Guide v1.0[2][Associated Persons datasets are given a prefix of AP-- to identify the data as AP data to and distinguish them from study subject data.]|IG v3.4[2.1.4][Item 6][For example, if splitting by --CAT, then dataset names would be the domain name plus up to two additional characters (e.g., QS36 for SF-36).]",AP Guide v1.0|IG v3.4,2|4.1.7,"New Rule as of IGv3.4
+
+Retired for IG versions after 3.4",- Cited Guidance: Supplemental Qualifier datasets for split domains would also be split. The nomenclature would include the additional one-to-two characters used to identify the split dataset. Document: IG v3.4 Item:  7  Section: 4.1.7,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,"When an Associated Persons non-supplemental qualifier dataset is associated with a split dataset, the dataset name length must be greater than 4 and less than, or equal to, 6.","Associated Persons non-supplemental qualifier dataset associated with a split dataset does not have a dataset name with a length greater than 4 and less than, or equal to, 6.","New version of rule.
+
+GEN removed from Variable Name",Variable Metadata Check,,Non-Supplemental Qualifier datasets,Split dataset names length > 4 and <= 6,"
+ Include:
+ - All
+","Domains:
+ include_split_datasets: true
+ Include:
+ - AP--",AP,,ALL,"any:
+ - name: dataset_name
+ operator: longer_than
+ value: 6
+ - name: dataset_name
+ operator: shorter_than
+ value: 4",,,,,3.4,Fully Executable,NSV / Final Review,Carlo,Final,,,,,1.0
+CG0359,CDISC.SDTMIG.CG0359,CG0359,2.0,CG0359,1.0,CDISC,SDTMIG,3.4,2.0,3h,"Use title case for all labels (title case means to capitalize the first letter of every word except for articles, prepositions, and conjunctions).",IG v3.4,2.6,No Change,"- Cited Guidance: Use title case for all labels (title case means to capitalize the first letter of every word except for articles, prepositions, and conjunctions). Document: IG v3.4 Item: 3h Section:  2.6",SDTM and SDTMIG Conformance Rules,Variable,Warning,,success,invalid,Trigger error when variable label is not in title case,Variable label is not in title case,"New version of rule.
+
+GEN removed from Variable Name, replaced with ALL",Variable Metadata Check,ALL,,Variable labels are in title case,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name:  variable_label 
+ operator: not_matches_regex
+ value: ^\s*[A-Z]\S*\s*((a|an|the|and|but|or|for|in|of|on|with|([A-Z]\S*))\s*)*$",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0

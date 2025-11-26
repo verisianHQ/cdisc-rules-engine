@@ -1,0 +1,131 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0563,CDISC.SDTMIG.CG0563,CG0563,1.0,CG0563,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"Used to indicate a derived record (e.g., a record that represents the average of other records such as a computed baseline). Should be ""Y"" or null.",IG v3.4,6.3.9.3,"Citation and section updated to SDTMIG v3.4.
+
+Rule retired for IGs after v3.4. This is explicitly a disallowed use in SDTMIG v4.0, section 4.1.12.","- Cited Guidance: Used to indicate a derived record (e.g., a record that represents the average of other records such as a computed baseline). Should be  Y  or null. Document: SDTMIG v3.4 Section: Section 6.3.9.3",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,Raise an error when record is derived in a data collection tool and RSDRVFL is not equal to  Y,Record is derived in a data collection tool and RSDRVFL is not equal to  Y,"Rule retired for IGs after v3.4. This is explicitly a disallowed use in SDTMIG v4.0, section 4.1.12.",Functional Dependency,RSDRFVL,Record is derived in a data collection tool.,RSDRVFL = 'Y',"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - RS",FND,,RS,"all:
+ - name: null
+ operator: null
+ - name: RSDRVFL
+ operator: not_equal_to
+ value: Y",,,,,3.4,Not Executable,Final Review,Carlo,Final,,,,,1.0
+CG0175,CDISC.SDTMIG.CG0175,CG0175,1.0,CG0175,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 1,"The intent of the domain model is to collect responses to only those criteria that the subject did not meet, and not the responses to all criteria. ",IG v3.4,6.3.4,No Change,"- Cited Guidance:  The intent of the domain model is to collect responses to only\ \ those criteria that the subject did not meet, and not the responses to all\ \ criteria.\_  Document: SDTMIG v3.4 Item: Assumption 1 Section: 6.3.4",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Verify the value for IEORRES is Y,IEORRES = N for an exclusion criteria. Only exclusion criteria not met should be included in IE domain.,,Functional Dependency,IEORRES,IECAT = 'EXCLUSION',IEORRES = 'Y',"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - IE",FND,,IE,"all:
+ - name: IECAT
+ operator: equal_to
+ value: EXCLUSION
+ - name: IEORRES
+ operator: equal_to
+ value:  N",,,- IECAT - IEORRES,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0172,CDISC.SDTMIG.CG0172,CG0172,2.0,CG0172,2.0,CDISC,SDTMIG,3.4,2.0,Assumption 1,"Subject Status does not contain details about the circumstances of a subject's status. The response to the status assessment may trigger collection of additional details, but those details are to be stored in appropriate separate domains. For example, if a subject's survival status is ""DEAD"", the date of death must be stored in DM and within a final disposition record in DS. Only the status collection date, the status question, and the status response are stored in SS.",IG v3.4,6.3.11,No Change,"- Cited Guidance:  Subject Status does not contain details about the circumstances\ \ of a subject s status. The response to the status assessment may trigger\ \ collection of additional details, but those details are to be stored in appropriate\ \ separate domains. For example,\_if a subject s survival status\_is \ DEAD\ \ , the date of death must be stored in DM and within a final disposition record\ \ in DS. Only the status collection date, the status question, and the status\ \",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when SSSTRESC =  DEAD  and SSDTC < max DS.DSSTDTC.,"SSSTRESC =  DEAD , but SSDTC < max DS.DSSTDTC.",,Functional Dependency,SSDTC,SSSTRESC = 'DEAD',SSDTC >= all DS.DSSTDTC,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - SS",FND,,SS,"all:
+ - name: SSSTRESC
+ operator: equal_to
+ value: DEAD
+ value_is_literal: true
+ - name: SSDTC
+ operator: date_less_than
+ value: $max_ds_dsstdtc 
+",,"- operator: max_date 
+ domain: DS
+ name: DSSTDTC
+ id: $max_ds_dsstdtc
+ group:
+ - USUBJID",- SSSTRESC - SSDTC - $max_ds_dsstdtc,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0171,CDISC.SDTMIG.CG0171,CG0171,1.0,CG0171,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 1,"Subject Status does not contain details about the circumstances of a subject's status. The response to the status assessment may trigger collection of additional details, but those details are to be stored in appropriate separate domains. For example, if a subject's survival status is ""DEAD"", the date of death must be stored in DM and within a final disposition record in DS. Only the status collection date, the status question, and the status response are stored in SS.",IG v3.4,6.3.11,No Change,"- Cited Guidance:  Subject Status does not contain details about the circumstances\ \ of a subject s status. The response to the status assessment may trigger\ \ collection of additional details, but those details are to be stored in appropriate\ \ separate domains. For example,\_if a subject s survival status\_is \ DEAD\ \ , the date of death must be stored in DM and within a final disposition record\ \ in DS. Only the status collection date, the status question, and the status\ \",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when SSSTRESC =  DEAD  and SSDTC < DM.DTHDTC.,"SSSTRESC =  DEAD , but SSDTC < DM.DTHDTC.",,Functional Dependency,SSDTC,SSSTRESC = 'DEAD',SSDTC >= DM.DTHDTC,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - SS",FND,,SS,"all:
+ - name: SSSTRESC
+ operator: equal_to
+ value: DEAD
+ value_is_literal: true
+ - name: SSDTC
+ operator: date_less_than
+ value: DTHDTC
+","- Name: DM
+ Keys:
+ - USUBJID
+",,- SSSTRESC - SSDTC - DTHDTC,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0042,CDISC.SDTMIG.CG0042,CG0042,1.0,CG0042,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 6a,"If categories of serious events are collected secondarily to a leading question, as in the example below, the values of the variables that capture reasons an event is considered serious (i.e., AESCAN, AESCONG, etc.) may be null. For example, if Serious is answered ""No, "" the values for these variables may be null. However, if Serious is answered ""Yes, "" at least one of them will have a ""Y"" response.",IG v3.4,6.2.1,No Change,"- Cited Guidance:  If categories of serious events are collected secondarily to\ \ a leading question, as in the example below, the values of the variables\ \ that capture reasons an event is considered serious (i.e., AESCAN, AESCONG,\ \ etc.) may be null. For example, if Serious = \ No\ , the values for these\ \ variables may be null. However, if Serious = \ Yes\ , at least one of them\ \ will have a \ Y\  response.\n\n\n   Document: IG v3.4 Item: Assumption 6a Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"Select record where AESCAN and AESCONG and AESDISAB and AESDTH and AESHOSP and AESLIFE and AESOD and AESMIE ^=  Y  However, AESER ^=  N","If AESER =  N  then none of the seriousness criteria (AESCAN, AESCONG, AESDISAB, AESDTH, AESHOSP, AESLIFE, AESOD, AESMIE) could be equal to  Y .",,Functional Dependency,AESER,AESCAN ^= 'Y' and AESCONG ^= 'Y' and AESDISAB ^= 'Y' and AESDTH ^= 'Y' and AESHOSP ^= 'Y' and AESLIFE ^= 'Y' and AESOD ^= 'Y' and AESMIE ^= 'Y',AESER = 'N',"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - name: AESER
+ operator: not_equal_to
+ value:  N 
+ - all:
+ - any:
+ - name: AESCAN
+ operator: not_exists
+ - name: AESCAN
+ operator: not_equal_to
+ value:  Y 
+ - any:
+ - name: AESCONG
+ operator: not_exists
+ - name: AESCONG
+ operator: not_equal_to
+ value:  Y 
+ - any:
+ - name: AESDISAB
+ operator: not_exists
+ - name: AESDISAB
+ operator: not_equal_to
+ value:  Y 
+ - any:
+ - name: AESDTH
+ operator: not_exists
+ - name: AESDTH
+ operator: not_equal_to
+ value:  Y 
+ - any:",,,- AESER - AESCAN - AESCONG - AESDISAB - AESDTH - AESHOSP - AESLIFE - AESOD - AESMIE,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0041,CDISC.SDTMIG.CG0041,CG0041,1.0,CG0041,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 6a,"If categories of serious events are collected secondarily to a leading question, as in the example below, the values of the variables that capture reasons an event is considered serious (i.e., AESCAN, AESCONG, etc.) may be null. For example, if Serious is answered ""No, "" the values for these variables may be null. However, if Serious is answered ""Yes, "" at least one of them will have a ""Y"" response.",IG v3.4,6.2.1,No Change,"- Cited Guidance: If categories of serious events are collected secondarily to a leading question, as in the example below, the values of the variables that capture reasons an event is considered serious (i.e., AESCAN, AESCONG, etc.) may be null. For example, if Serious is answered  No , the values for these variables maybe null. However, if Serious is answered  Yes , at least one of them will have a  Y  response. Document: SDTMIG v3.4 Item: Assumption 6a Section: 6.2.1",SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,"Raise an error when AESCAN, AESCONG, AESDISAB, AESDTH, AESHOSP, AESLIFE, AESOD or AESMIE =  Y  and AESER =  N  or is empty.","At least one of the Seriousness criteria (AESCAN, AESCONG, AESDISAB, AESDTH, AESHOSP, AESLIFE, AESOD or AESMIE) =  Y , but AESER =  N  or empty.",,Functional Dependency,AESER,AESCAN = 'Y' or AESCONG = 'Y' or AESDISAB = 'Y' or AESDTH = 'Y' or AESHOSP = 'Y' or AESLIFE = 'Y' or AESOD = 'Y' or AESMIE = 'Y',AESER = 'Y',"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - AE",EVT,,AE,"all:
+ - any:
+ - name: AESCAN
+ operator: equal_to
+ value:  Y 
+ - name: AESCONG
+ operator: equal_to
+ value:  Y 
+ - name: AESDISAB
+ operator: equal_to
+ value:  Y 
+ - name: AESDTH
+ operator: equal_to
+ value:  Y 
+ - name: AESHOSP
+ operator: equal_to
+ value:  Y 
+ - name: AESLIFE
+ operator: equal_to
+ value:  Y 
+ - name: AESOD
+ operator: equal_to
+ value:  Y 
+ - name: AESMIE
+ operator: equal_to
+ value:  Y 
+ - name: AESER
+ operator: not_equal_to
+ value:  Y",,,- AETERM - AESTDTC - AESER - AESCAN - AESCONG - AESDISAB - AESDTH - AESHOSP - AESLIFE - AESOD - AESMIE,,3.4,Fully Executable,,,,,,Yes,,1.0

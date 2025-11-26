@@ -1,0 +1,348 @@
+Rule_Id,Core_Id,Rule_ID,Rule_ID_Version,Rule_Identifier_Id,Rule_Identifier_Rule_Version,Authority_Organization,Standards_Name,Standards_Version,Rule_Identifier_Conformance_Guide_Version,Cited_Item,Cited_Guidance,Cited_Doc,Cited_Section,Release_Notes,Citations,References_Origin,Sensitivity,Severity,verisian_comment,verisian_status,verisian_validity,Description,Outcome_Message,Discussion_Notes,Rule_Type,Variable,Condition,Rule,Scopes_Classes,Scopes_Domains,Class,Subclass,Dataset_or_Domain,Check,Match_Datasets,Operations,Outcome_Output_Variables,Related_Rule(s),Rule_Set,Jira_Executability,Team,Assigned_To,Update_Status,CORE_Programmability_Status,CORE_Programmability_Comments,Historical_Programmable,Historical_Programmable_Flag_Comment,Core_Version
+CG0562,CDISC.SDTMIG.CG0562,CG0562,1.0,CG0562,1.0,CDISC,SDTMIG,3.4,2.0,--REPNUM,"The instance number of a test that is repeated within a given timeframe for the same test. The level of granularity can vary (e.g., within a time point or within a visit).",Model v2.0,Findings,Cited guidance updated. Reference to model section and item updated per new style.,"- Cited Guidance: The instance number of a test that is repeated within a given timeframe for the same test. The level of granularity can vary (e.g., within a time point or within a visit). Document: SDTM v2.0 Item: --REPNUM Section: Findings",SDTM and SDTMIG Conformance Rules,Record,Warning,,not implemented,,"Raise an error when REPNUM is in the dataset and there are multiple records for a subject for a test within the timeframe identified by the timing variables on the record, and --REPNUM is null or not unique per subject per test per timing variables.",--REPNUM is null or is not unique per subject per test per timing variables.,,Uniqueness,--REPNUM,"REPNUM is in the dataset, and the are multiple records for a subject for a test within the timeframe identified by the timing variables on the record",--REPNUM ^= null and unique per subject per test per the timing variables,"
+ Include:
+ - Findings
+","Domains:
+ Include:
+ - All",FND,,ALL,"all:
+ - name: --REPNUM
+ operator: exists
+ - name: --REPNUM
+ operator: is_not_unique_set
+ value:
+ - USUBJID
+ - --TESTCD
+ - VISITNUM
+ - --VISIT
+ - VISITDY
+ - TAETORD
+ - EPOCH
+ - --DTC
+ - --STDTC
+ - --ENDTC
+ - --DY
+ - --STDY
+ - --ENDY
+ - --XDY
+ - --XSTDY
+ - --XENDY
+ - --CHDY
+ - --CHSTDY
+ - --CHENDY
+ - --DUR
+ - --TPT
+ - --TPTNUM
+ - --ELTM
+ - --TPTREF
+ - --RFTDTC
+ - --STRF
+ - --ENRF
+ - --EVLINT
+ - --EVINTX
+ - --STRTPT
+ - --STTPT
+ - --ENRTPT
+ - --ENTPT
+ - MIDS",,,,,3.4,Fully Executable,,,,,,,,1.0
+CG0250,CDISC.SDTMIG.CG0250,CG0250,1.0,CG0250,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 12,"EPOCH may be used as a timing variable in other datasets, such as EX and DS, and values of EPOCH must be different for different epochs. ",IG v3.4,7.2.1,Expanded cited guidance to a full sentence.,"- Cited Guidance:  EPOCH may be used as a timing variable in other datasets, such as EX and DS, and values of EPOCH must be different for different epochs.   Document: IG v3.4 Item: Assumption 12 Section: 7.2.1",SDTM and SDTMIG Conformance Rules,Study,Warning,,not implemented,,Trigger error when at least one EPOCH is associated with more than one conceptual trial period,At least one EPOCH is associated with more than one conceptual trial period,,Uniqueness,EPOCH,,Each value of EPOCH is not associated with more than one conceptual trial period,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TA",TDM,,TA,"all:
+ - name: null
+ operator: null
+",,,,,3.4,Not Executable,,,,,,Conditional,Dependent on additional appropriate metatdata,1.0
+CG0200,CDISC.SDTMIG.CG0200,CG0200,2.0,CG0200,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"All records for the same USUBJID that have the same RELID are considered ""related/associated.""",IG v3.4,8.2.1,No Change,- Cited Guidance: All records for the same USUBJID that have the same RELID are considered  related/associated.  Document: IG v3.4 Item: Specification Section: 8.2.1,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"Within a subject, each unique RELID should be present on multiple RELREC records",Unique RELID is NOT present on multiple RELREC records within a subject.,"New version of Rule.
+
+Corrected Class from Special Purpose to Relationship",Uniqueness,RELID,,Within a subject each unique RELID is present on multiple RELREC records,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - RELREC",REL,,RELREC,"all:
+ - operator:  not_present_on_multiple_rows_within 
+ target:  RELID 
+ within:  USUBJID",,,,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0336,CDISC.SDTMIG.CG0336,CG0336,1.0,CG0336,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --CAT = DOMAIN.,--CAT is equal to DOMAIN.,,Uniqueness,--CAT,,--CAT ^= Domain Name,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --CAT
+ operator: equal_to_case_insensitive
+ value: DOMAIN",,,- --CAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0325,CDISC.SDTMIG.CG0325,CG0325,2.0,CG0325,2.0,CDISC,SDTMIG,3.4,2.0,Assumption 13,Note that Elements that have different start and end rules are different Elements and must have different values of ELEMENT and ETCD.,IG v3.4,7.2.2,No Change,- Cited Guidance: Note that Elements that have different start and end rules are different Elements and must have different values of ELEMENT and ETCD. Document: IG v3.4 Item: Assumption 13 Section: 7.2.2,SDTM and SDTMIG Conformance Rules,Value,Warning,,success,invalid,"The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is should be unique for each ETCD.","The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is not unique for each ETCD",,Uniqueness,ETCD,,"The combination of ELEMENT, TESTRL, TEENRL, and TEDUR is unique for each ETCD","
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TE",TDM,,TE,"all:
+ - name: ETCD
+ operator: is_not_unique_relationship
+ value:
+ - ELEMENT
+ - TESTRL
+ - TEENRL
+ - TEDUR",,,,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0307,CDISC.SDTMIG.CG0307,CG0307,1.0,CG0307,1.0,CDISC,SDTMIG,3.4,2.0,Specification,TSPARMCD (the companion to TSPARM),IG v3.4,7.4.2,No Change,- Cited Guidance:    TSPARMCD (the companion to TSPARM)    Document: IG v3.4 Item: Specification Section: 7.4.2,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when TSPARM and TSPARMCD don t have a one-to-one relationship.,TSPARM and TSPARMCD don t have a one-to-one relationship.,,Uniqueness,TSPARMCD,,TSPARM and TSPARMCD have a one-to-one relationship,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TS",TDM,,TS,"all:
+ - name: TSPARM
+ operator: is_not_unique_relationship
+ value: TSPARMCD",,,- TSPARM - TSPARMCD,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0268,CDISC.SDTMIG.CG0268,CG0268,1.0,CG0268,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Sequence number given to ensure uniqueness within a dataset. Allows inclusion of multiple records for the same TSPARMCD.,IG v3.4,7.4.2,Item has changed and cited guidance has been updated.,- Cited Guidance: Sequence number given to ensure uniqueness within a dataset. Allows inclusion of multiple records for the same TSPARMCD. Document: IG v3.4 Item: Specification Section: 7.4.2,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,TSSEQ must be unique within TSPARMCD,TSSEQ is not unique within TSPARMCD,,Uniqueness,TSSEQ,TSPARMCD not unique,TSSEQ is unique for each distinct value of TSPARMCD,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TS",TDM,,TS,"all:
+ - name: TSPARMCD
+ operator: is_not_unique_set
+ value:
+ - DOMAIN
+ - name: TSSEQ
+ operator: is_not_unique_set
+ value: TSPARMCD",,,- TSSEQ - TSPARMCD,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0265,CDISC.SDTMIG.CG0265,CG0265,2.0,CG0265,1.0,CDISC,SDTMIG,3.4,2.0,Specification,TSPARAMCD[Topic]|TSVALCD[This is the code of the term in TSVAL],IG v3.4,7.4.2,"New version of rule.
+
+TSPARAMCD is required to ensure uniqueness.",- Cited Guidance: This is the code of the term in TSVAL. Document: IG v3.4 Item: Specification Section: 7.4.2,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When TSVAL and TSVALCD are populated, there must be a one-to-one relationship between TSVALCD and TSVAL",There is not a one-to-one relationship between TSVAL and TSVALCD,"New version of rule.
+
+TSPARAMCD is required to ensure uniqueness.",Uniqueness,TSVALCD,TSVAL ^= null and TSVALCD ^= null,TSVALCD and TSVAL have a one-to-one relationship.,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TS",TDM,,TS,"all:
+ - name: TSVAL
+ operator: non_empty
+ - name: TSVALCD
+ operator: non_empty
+ - name: TSVAL
+ operator: is_not_unique_relationship
+ value: TSVALCD",,,- TSVAL - TSVALCD,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0247,CDISC.SDTMIG.CG0247,CG0247,1.0,CG0247,1.0,CDISC,SDTMIG,3.4,2.0,Specification,Number that gives the order of the Element within the Arm.,IG v3.4,7.2.1,No Change,- Cited Guidance: Number that gives the order of the Element within the Arm. Document: IG v3.4 Item: Specification Section: 7.2.1,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when TAETORD is not unique within an ARM,TAETORD is not unique within ARM,,Uniqueness,TAETORD,,TAETORD is unique within an ARM,"
+ Include:
+ - Trial Design
+","Domains:
+ Include:
+ - TA",TDM,,TA,"all:
+ - name: TAETORD
+ operator: is_not_unique_set
+ value: 
+ - ARM",,,- TAETORD - ARM,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0049,CDISC.SDTMIG.CG0049,CG0049,1.0,CG0049,1.0,CDISC,SDTMIG,3.4,2.0,--DECOD|--PTCD,--DECOD[Standardized or dictionary-derived text for the description of an event or intervention. Equivalent to the Preferred Term (PT in MedDRA).]|--PTCD[The preferred term code assigned to the event from MedDRA.],Model v2.0,Events,Cited guidance updated. Reference to model section and item updated per new style.,- Cited Guidance: Standardized or dictionary-derived text for the description of an event or intervention. Equivalent to the Preferred Term (PT in MedDRA). Document: Model v2.0 Item: --DECOD Section: Events - Cited Guidance: The preferred term code assigned to the event from MedDRA. Document: Model v2.0 Item: --PTCD Section: Events,SDTM and SDTMIG Conformance Rules,Domain,Warning,,success,invalid,Trigger error when --DECOD and --PTCD do not have a one-to-one relationship,--DECOD and --PTCD do not have a one-to-one relationship,,Uniqueness,--PTCD,,--DECOD and --PTCD have a one-to-one relationship,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --PTCD
+ operator: is_not_unique_relationship
+ value: --DECOD",,,- --PTCD - --DECOD,,3.4,Fully Executable,,,,,,Conditional,Dependent on additional non-CDISC metadata,1.0
+CG0035,CDISC.SDTMIG.CG0035,CG0035,1.0,CG0035,1.0,CDISC,SDTMIG,3.4,2.0,,There should be a one-to-one relationship between values of VISIT and VISITNUM.,IG v3.4,4.4.5,No Change,- Cited Guidance: There should be a one-to-one relationship between values of VISIT and VISITNUM. Document: IG v3.4 Section: 4.4.5,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,Trigger error when VISITNUM is present in TV.VISITNUM and does not have a one-to-one relationship with VISIT,VISIT and VISITNUM do not have a one-to-one relationship,,Uniqueness,VISITNUM,VISITNUM in TV.VISITNUM,VISIT and VISITNUM have a one-to-one relationship,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: VISITNUM
+ operator: is_contained_by
+ value: $tv_visitnum
+ - name: VISIT
+ operator: is_not_unique_relationship
+ value: VISITNUM",,"- domain: TV
+ id: $tv_visitnum
+ name: VISITNUM
+ operator: distinct",- VISITNUM - VISIT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0150,CDISC.SDTMIG.CG0150,CG0150,1.0,CG0150,1.0,CDISC,SDTMIG,3.4,2.0,Specification,"Subject identifier, which must be unique within the study.",IG v3.4,5.2,Retired for IGs after SDTMIG 3.4,"- Cited Guidance: Subject identifier, which must be unique within the study. Document: IG v3.4 Item: Specification Section:  5.2",SDTM and SDTMIG Conformance Rules,Study,Error,,success,invalid,Trigger error if SUBJID is not unique,SUBJID is not unique within study,Retired for IGs after SDTMIG 3.4,Uniqueness,SUBJID,,SUBJID unique within a study,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - DM",SPC,,DM,"all:
+ - name: SUBJID
+ operator: is_not_unique_set
+ value:
+ - STUDYID",,,- SUBJID,,3.4,Fully Executable,MSI / Final Review,Carlo,Final,,,Yes,,1.0
+CG0083,CDISC.SDTMIG.CG0083,CG0083,2.0,CG0083,2.0,CDISC,SDTMIG,3.4,2.0,--BODSYS,Events[--BODSYSCD][Variable Qualifier of BODSYS],Model v2.0,Events,Cited guidance updated. Reference to model section and item updated per new style. Findings removed since BDSYCD not in Findings. ,- Cited Guidance: Events[--BODSYSCD][Variable Qualifier of BODSYS] Document: Model v2.0 Item: --BODSYS Section: Events,SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,There must be a one-to-one relationship between --BDSYSCD and --BODSYS,There is not a one-to-one relationship between --BODSYS and --BDSYSCD,,Uniqueness,--BDSYCD,,--BDSYCD and --BODSYS have a one-to-one relationship,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --BDSYCD
+ operator: exists
+ - name: --BODSYS
+ operator: exists
+ - name: --BDSYCD
+ operator: is_not_unique_relationship
+ value: --BODSYS",,,- --BODSYS - --BDSYCD,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0337,CDISC.SDTMIG.CG0337,CG0337,1.0,CG0337,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --CAT = --DECOD.,--CAT is equal to --DECOD.,,Uniqueness,--CAT,,--CAT ^= --DECOD,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --CAT
+ operator: equal_to_case_insensitive
+ value: --DECOD",,,- --DECOD - --CAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0338,CDISC.SDTMIG.CG0338,CG0338,1.0,CG0338,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --SCAT = --DECOD.,--SCAT is equal to --DECOD.,,Uniqueness,--SCAT,,--SCAT ^= --DECOD,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --SCAT
+ operator: equal_to_case_insensitive
+ value: --DECOD",,,- --DECOD - --SCAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0340,CDISC.SDTMIG.CG0340,CG0340,1.0,CG0340,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --SCAT = --BODSYS.,--SCAT is equal to --BODSYS.,,Uniqueness,--SCAT,,--SCAT ^= --BODSYS,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --SCAT
+ operator: equal_to_case_insensitive
+ value: --BODSYS",,,- --TERM - --SCAT - --BODSYS,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0545,CDISC.SDTMIG.CG0545,CG0545,1.0,CG0545,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2.a,"For Disease Milestones that can occur only once (TMRPT = ""N"") the value of MIDS may be the value in MIDSTYPE or may an abbreviated version. ",IG v3.4,5.4,Section change in IG 3.4,- Cited Guidance:  For Disease Milestones that can occur only once (TMRPT = \ N\ \ ) the value of MIDS may be the value in MIDSTYPE or may be an abbreviated version.\ \ \nSM\tMIDSTYPE\tMIDSTYPE = TM.MIDSTYPE and TM.TMRPT =  N \tMIDSTYPE is unique\ \ per subject  Document: IG v3.4 Item: Assumption 2.a Section:  5.4,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,MIDSTYPE must be unique within subject when MIDSTYPE = TM.MIDSTYPE and TM.TMRPT =  N,MIDSTYPE is not unique within subject when MIDSTYPE = TM.MIDSTYPE and TM.TMRPT =  N,,Uniqueness,MIDSTYPE,MIDSTYPE = TM.MIDSTYPE and TM.TMRPT = 'N',MIDSTYPE is unique per subject,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - SM",SPC,,SM,"all:
+ - name: TMRPT
+ operator: equal_to
+ value: N
+ - name: MIDSTYPE
+ operator: is_not_unique_set
+ value: USUBJID
+","- Name: TM
+ Keys:
+ - MIDSTYPE
+",,,,3.4,Fully Executable,,,,,,,,1.0
+CG0539,CDISC.SDTMIG.CG0539,CG0539,2.0,CG0539,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2.b.2|Assumption 2.b.3,"Assumption 2.b.2[DSSCAT = 'STUDY TREATMENT' can be used as a generic identifier when a study has only a single treatment.]|Assumption 2.b.3[If a study has multiple treatments, then DSSCAT should name the individual treatment.]",IG v3.4,6.2.3,No Change,"- Cited Guidance: DSSCAT =  STUDY TREATMENT  can be used as a generic identifier when a study has only a single treatment. Document: IG v3.4 Item: Assumption 2.b.2 Section: 6.2.3 - Cited Guidance: If a study has multiple treatments, then DSSCAT should name the individual treatment. Document: IG v3.4 Item: Assumption 2.b.3 Section: 6.2.3",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when there is more than 1 record per subject has DSSCAT =  STUDY TREATMENT,There is more than 1 record per subject has DSSCAT =  STUDY TREATMENT,"New version of rule.
+
+GEN removed from Variable Name",Uniqueness,,Subject has more than one record per Epoch with DSCAT = 'DISPOSITION EVENT',No more than 1 record per subject has DSSCAT = 'STUDY TREATMENT',"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DS",EVT,,DS,"all:
+ - name: DSCAT
+ operator: equal_to
+ value: DISPOSITION EVENT
+ value_is_literal: True
+ - name: DSSCAT
+ operator: equal_to
+ value: STUDY TREATMENT
+ - name: DSSCAT
+ operator: is_not_unique_set
+ value: USUBJID
+",,,- USUBJID - DSCAT - DSSCAT,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0538,CDISC.SDTMIG.CG0538,CG0538,2.0,CG0538,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2.b.1,"DSSCAT = ""STUDY PARTICIPATION"" is used to represent disposition of study participation",IG v3.4,6.2.3,No Change,- Cited Guidance: DSSCAT =  STUDY PARTICIPATION  is used to represent disposition of study participation Document: IG v3.4 Item: Assumption 2.b.1 Section: 6.2.3,SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when more than 1 record per subject has DSSCAT =  STUDY PARTICIPATION,There is more than 1 record per subject has DSSCAT =  STUDY PARTICIPATION,"New version of rule.
+
+GEN removed from Variable Name",Uniqueness,,Subject has more than one record per Epoch with DSCAT = 'DISPOSITION EVENT',No more than 1 record per subject has DSSCAT = 'STUDY PARTICIPATION',"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DS",EVT,,DS,"all:
+ - name: DSSCAT
+ operator: equal_to
+ value: STUDY PARTICIPATION
+ value_is_literal: True
+ - name: DSSCAT
+ operator: is_not_unique_set
+ value: USUBJID
+",,,- DSSCAT - USUBJID,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0537,CDISC.SDTMIG.CG0537,CG0537,2.0,CG0537,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2.b|Assumption 5,"Assumption 2.b[If disposition events for both study participation and study treatment(s) are to be represented, then DSSCAT provides this distinction.]|Assumption 2.b|Assumption 5[ICH E3: Section 10.1 indicates that 'the specific reason for discontinuation' should be presented, and that summaries should be 'grouped by treatment and by major reason.' The CDISC SDS Team interprets this guidance as requiring one standardized disposition term (DSDECOD) per disposition event. If multiple reasons are reported, the sponsor should identify a primary reason and use that to populate DSTERM and DSDECOD. Additional reasons should be submitted in SUPPDS.]",IG v3.4,6.2.3,No Change,"- Cited Guidance: If disposition events for both study participation and study treatment(s) are to be represented, then DSSCAT provides this distinction. Document: IG v3.4 Item: Assumption 2.b Section: 6.2.3 - Cited Guidance:  ICH E3: Section 10.1 indicates that   the specific reason for discontinuation   should be presented, and that summaries should be   grouped by treatment and by major reason.   The CDISC SDS Team interprets this guidance as requiring one standardized dispo",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when there is more than one record per subject per EPOCH,There is more than one record per subject per EPOCH,"New version of rule.
+
+GEN removed from Variable Name",Uniqueness,,DSCAT = 'DISPOSITION EVENT' and DSSCAT is NOT present in dataset.,At most one record per subject per epoch,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DS",EVT,,DS,"all:
+ - name: DSCAT
+ operator: equal_to
+ value: DISPOSITION EVENT
+ value_is_literal: True
+ - name: DSSCAT
+ operator: not_exists
+ - name: DSCAT
+ operator: is_not_unique_set
+ value: EPOCH
+",,,- DSCAT - EPCOCH,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0536,CDISC.SDTMIG.CG0536,CG0536,2.0,CG0536,1.0,CDISC,SDTMIG,3.4,2.0,Assumption 2.b|Assumption 5,"Assumption 2.b[If disposition events for both study participation and study treatment(s) are to be represented, then DSSCAT provides this distinction.]|Assumption 2.b|Assumption 5[ICH E3: Section 10.1 indicates that 'the specific reason for discontinuation' should be presented, and that summaries should be 'grouped by treatment and by major reason.' The CDISC SDS Team interprets this guidance as requiring one standardized disposition term (DSDECOD) per disposition event. If multiple reasons are reported, the sponsor should identify a primary reason and use that to populate DSTERM and DSDECOD. Additional reasons should be submitted in SUPPDS.]",IG v3.4,6.2.3,No Change,"- Cited Guidance: If disposition events for both study participation and study treatment(s) are to be represented, then DSSCAT provides this distinction. Document: IG v3.4 Item: Assumption 2.b Section: 6.2.3 - Cited Guidance:  ICH E3: Section 10.1 indicates that   the specific reason for discontinuation   should be presented, and that summaries should be   grouped by treatment and by major reason.   The CDISC SDS Team interprets this guidance as requiring one standardized dispo",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,Trigger error when there is more than one record per subject per DSSCAT per EPOCH,More than one record per subject per DSSCAT per EPOCH,"New version of rule.
+
+GEN removed from Variable Name",Uniqueness,,DSCAT = 'DISPOSITION EVENT' and DSSCAT is present in dataset.,"At most one record per subject per DSSCAT per epoch, including null values of DSSCAT","
+ Include:
+ - Events
+","Domains:
+ Include:
+ - DS",EVT,,DS,"all:
+ - name: DSCAT
+ operator: equal_to
+ value: DISPOSITION EVENT
+ value_is_literal: True
+ - name: DSSCAT
+ operator: exists
+ - name: EPOCH
+ operator: is_not_unique_set
+ value: DSSCAT
+",,,- DSSCAT - EPOCH,,3.4,Fully Executable,Final Review,Carlo,Final,,,,,1.0
+CG0350,CDISC.SDTMIG.CG0350,CG0350,1.0,CG0350,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --SCAT = DOMAIN.,--SCAT is equal to DOMAIN.,,Uniqueness,--SCAT,,--SCAT ^= Domain Name,"
+ Include:
+ - All
+","Domains:
+ Include:
+ - All",ALL,,ALL,"all:
+ - name: --SCAT
+ operator: equal_to
+ value: DOMAIN
+",,,- --SCAT,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0339,CDISC.SDTMIG.CG0339,CG0339,1.0,CG0339,1.0,CDISC,SDTMIG,3.4,2.0,,Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS.,IG v3.4,4.2.6,No Change,- Cited Guidance: Values for --CAT and --SCAT should not be redundant with the domain name or dictionary classification provided by --DECOD and --BODSYS. Document: IG v3.4 Section: 4.2.6,SDTM and SDTMIG Conformance Rules,Record,Error,,success,invalid,Raise an error when --CAT = --BODSYS.,--CAT is equal to --BODSYS.,,Uniqueness,--CAT,,--CAT ^= --BODSYS,"
+ Include:
+ - Events
+","Domains:
+ Include:
+ - All",EVT,,ALL,"all:
+ - name: --CAT
+ operator: equal_to_case_insensitive
+ value: --BODSYS",,,- --TERM - --CAT - --BODSYS,,3.4,Fully Executable,,,,,,Yes,,1.0
+CG0410,CDISC.SDTMIG.CG0410,CG0410,2.0,CG0410,2.0,CDISC,SDTMIG,3.4,2.0,[7.3.1.1 TV][TV Issues 4],"IG v3.4[5.5 SV][One record per subject per actual visit.]
+IG v3.4[7.3.1.1 TV][TV Issues 4][Some data collection is contingent on the occurrence of a ""trigger"" event, or disease milestone (see the Trial Disease Milestones (TM) dataset under Section 7.3, Schedule for Assessments (TV, TD, and TM)). When such planned data collection involves an additional clinic visit, a ""contingent"" Visit may be included in the trial visits table, with start a rule that describes the circumstances under which it will take place. Since values of VISITNUM must be assigned to all records in the Trial Visits dataset, a contingent Visit included in the Trial Visits dataset must have a VISITNUM, but the VISITNUM value may not be a ""chronological"" value, due to the uncertain timing of a contingent Visit. If contingent visits are not included in the TV dataset, then they would be treated as unplanned visits in the Subject Visits (SV) domain.]",IG v3.4,5.5|7.3.1.1,"Deprecated for IGs after 3.4, accommodating Multiple Participations","- Cited Guidance: One record per subject per actual visit. Document: IG v3.4 Item: 7.3.1.1 TV Section:  5.5  - Cited Guidance: Some data collection is contingent on the occurrence of a  trigger  event, or disease milestone (see the Trial Disease Milestones (TM) dataset under Section 7.3, Schedule for Assessments (TV, TD, and TM)). When such planned data collection involves an additional clinic visit, a  contingent  Visit may be included in the trial visits table, with start a r",SDTM and SDTMIG Conformance Rules,Record,Warning,,success,invalid,"When VISITNUM is present in TV.VISITNUM, SV.VISITNUM must be unique within subject",Scheduled or Contingent visit is not unique within subject,"Deprecated for IGs after 3.4, accommodating Multiple Participations",Uniqueness,VISITNUM,"Scheduled or Contingent visit (exists in TV)
+",VISITNUM identifies unique record within subject,"
+ Include:
+ - Special-Purpose
+","Domains:
+ Include:
+ - SV",SPC,,SV,"all:
+ - name: VISITNUM
+ operator: is_contained_by
+ value: $tv_visitnum
+ - name: VISITNUM
+ operator: is_not_unique_relationship
+ value: USUBJID",,"- domain: TV
+ id: $tv_visitnum
+ name: VISITNUM
+ operator: distinct",- USUBJID - VISITNUM,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
+CG0411,CDISC.SDTMIG.CG0411,CG0411,2.0,CG0411,1.0,CDISC,SDTMIG,3.4,2.0,,"The combined set of values for the first six columns (STUDYID…QNAM) should be unique for every record. That is, there should not be multiple records in a SUPP-- dataset for the same QNAM value, as it relates to IDVAR/IDVARVAL for a USUBJID in a domain.",IG v3.4,8.4,No Change,"- Cited Guidance:  The combined set of values for the first six columns (STUDYID\u2026\ QNAM) should be unique for every record. That is, there should not be multiple\ \ records in a SUPP-- dataset for the same QNAM value, as it relates to IDVAR/IDVARVAL\ \ for a USUBJID in a domain.  Document: IG v3.4 Section:  8.4",SDTM and SDTMIG Conformance Rules,Dataset,Warning,,success,invalid,"Trigger error when the combination of IDVAR, IDVARVAL, and QNAM is not unique per parent subject record","The combination of IDVAR, IDVARVAL, and QNAM is not unique per parent subject record","New version of rule.
+
+GEN removed from Variable Name",Uniqueness,,,"IDVAR, IDVARVAL, and QNAM a unique combination per parent subject record","
+ Include:
+ - All
+","Domains:
+ Include:
+ - SUPP",ALL,,SUPP--,"all:
+ - name: USUBJID
+ operator: is_not_unique_relationship
+ value:
+ - IDVAR
+ - IDVARVAL
+ - QNAM",,,- USUBJID - IDVAR - IDVARVAL - QNAM,,3.4,Fully Executable,Final Review,Carlo,Final,,,Yes,,1.0
