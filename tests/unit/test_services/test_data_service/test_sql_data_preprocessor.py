@@ -312,9 +312,10 @@ def test_process_split_datasets_end_to_end(sdtm_standards_context):
     data_service.pgi.execute_sql(check_table_query)
     assert data_service.pgi.fetch_one()["exists"] is True
 
-    assert len(data_service.datasets) == initial_count + 1
-    ae_metadata = next((ds for ds in data_service.datasets if ds.name.upper() == "AE"), None)
-    assert ae_metadata is not None
+    assert len(data_service.datasets) == initial_count
+
+    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    assert data_service.pgi.fetch_one()["count"] == 5
 
 
 def test_process_multiple_groups(sdtm_standards_context):
