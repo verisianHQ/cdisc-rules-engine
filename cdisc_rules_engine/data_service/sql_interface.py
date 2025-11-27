@@ -25,7 +25,7 @@ class PostgresQLInterface:
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
-        self.table_prefix = self._get_unique_prefix_uid() if table_prefix == "uid" else table_prefix
+        self.table_prefix = f"{self._get_unique_prefix_uid()}_" if table_prefix == "uid" else table_prefix
 
     def init_database(self):
         """Initialise the database connection"""
