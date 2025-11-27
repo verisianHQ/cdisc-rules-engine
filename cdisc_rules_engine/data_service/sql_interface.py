@@ -232,6 +232,8 @@ class PostgresQLInterface:
             "preprocessing_validation_errors",
             "data_metadata",
         ]
+        # TODO: these names probably need to go in their own constants file along
+        # with the constants at the top of "data_service/startup/populate_standards.py"
 
         exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
 
@@ -258,17 +260,7 @@ class PostgresQLInterface:
         """
         self.execute_sql(drop_query)
 
-        if self.table_prefix:
-            self.schema._tables = {
-                name: table
-                for name, table in self.schema._tables.items()
-                if not name.startswith(self.table_prefix.lower()) or name in [t.lower() for t in static_tables]
-            }
-        else:
-            static_tables_lower = [t.lower() for t in static_tables]
-            self.schema._tables = {
-                name: table for name, table in self.schema._tables.items() if name in static_tables_lower
-            }
+        # TODO: maybe we cycle through the schema too and drop all tables that are not in the static list
 
         logger.info(
             f"Dropped all tables with prefix '{self.table_prefix}'"
