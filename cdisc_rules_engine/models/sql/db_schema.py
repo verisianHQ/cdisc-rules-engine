@@ -1,5 +1,4 @@
 from typing import Tuple, Union
-
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -9,15 +8,25 @@ class SqlDbSchema:
 
     def __init__(self):
         self._tables: dict[str, SqlTableSchema] = {}
+        self._original_to_prefixed: dict[str, str] = {}
 
     def add_table(
         self,
         schema: SqlTableSchema,
+        original_name: str = None,
     ) -> None:
         self._tables[schema.name.lower()] = schema
+        if original_name:
+            self._original_to_prefixed[original_name.lower()] = schema.name.lower()
 
     def get_table(self, table: str) -> Union[SqlTableSchema, None]:
-        return self._tables.get(table.lower())
+        table_lower = table.lower()
+        if table_lower in self._tables:
+            return self._tables[table_lower]
+        prefixed_name = self._original_to_prefixed.get(table_lower)
+        if prefixed_name:
+            return self._tables.get(prefixed_name)
+        return None
 
     def get_tables(self) -> list[Tuple[str, SqlTableSchema]]:
         return list(self._tables.items())

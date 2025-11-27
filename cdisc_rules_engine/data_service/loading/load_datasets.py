@@ -39,7 +39,6 @@ class SqlDatasetLoader:
             schema.add_column(source_row_column)
 
             prefixed_schema = pgi.create_table(schema)
-            metadata.name = prefixed_schema.name
             # TODO: INDEX
 
             row_number = 0

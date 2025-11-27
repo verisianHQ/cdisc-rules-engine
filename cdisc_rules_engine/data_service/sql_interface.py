@@ -117,12 +117,13 @@ class PostgresQLInterface:
 
     def create_table(self, schema: SqlTableSchema) -> SqlTableSchema:
         """Adds a table to the db"""
+        original_name = schema.name
         prefixed_schema = self._apply_prefix_to_schema(schema)
 
         create_stmt = SQLSerialiser.create_table_query_from_schema(prefixed_schema)
         self.execute_sql(create_stmt)
 
-        self.schema.add_table(prefixed_schema)
+        self.schema.add_table(prefixed_schema, original_name=original_name)
         logger.info(f"Table {prefixed_schema.name} created successfully")
         return prefixed_schema
 

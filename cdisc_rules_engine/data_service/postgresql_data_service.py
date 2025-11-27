@@ -87,9 +87,9 @@ class PostgresQLDataService:
 
     @classmethod
     def from_dataset_paths(
-        cls, dataset_paths: List[str], standards_context: BaseStandardsContext
+        cls, dataset_paths, standards_context, table_prefix: str = "core_"
     ) -> "PostgresQLDataService":
-        instance = cls.instance()
+        instance = cls.instance(table_prefix=table_prefix)
 
         instance.datasets.extend(
             standards_context.transform_dataset_metadata(ds)
