@@ -35,7 +35,7 @@ class SqlTestDatasetLoader:
         schema.add_column(source_row_column)
 
         pgi.create_table(schema)
-        pgi.insert_data(table_name=schema.name, data=row_dicts)
+        pgi.insert_data(table_name=table_name, data=row_dicts)
 
         # TODO INDEX
 

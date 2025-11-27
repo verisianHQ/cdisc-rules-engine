@@ -56,7 +56,7 @@ class SqlDatasetLoader:
                 for row in chunk_data:
                     row_number += 1
                     row[SOURCE_ROW_NUMBER] = row_number
-                pgi.insert_data(schema.name, chunk_data)
+                pgi.insert_data(table_name, chunk_data)
 
             logger.info(f"Successfully loaded {file_path.name}")
 

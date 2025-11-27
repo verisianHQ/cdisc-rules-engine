@@ -145,7 +145,9 @@ class SqlRelationshipMerge:
         if pgi.schema.get_table(name) is not None:
             return pgi.schema.get_table(name)
 
-        schema = SqlRelationshipMerge._build_merged_schema(original, relationship_dataset, domain, name, match_keys)
+        schema = SqlRelationshipMerge._build_merged_schema(
+            original, relationship_dataset, domain, name, match_keys, pgi
+        )
         pgi.create_table(schema)
 
         left_cols = [col.hash for col_name, col in original.get_columns() if col_name != "id"]
