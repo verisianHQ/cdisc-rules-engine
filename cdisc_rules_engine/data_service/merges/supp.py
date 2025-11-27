@@ -37,7 +37,7 @@ class SqlSuppMerge:
         # Build the new schema
         schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns)
 
-        pgi.create_table(schema)
+        schema = pgi.create_table(schema)
 
         queries = []
 

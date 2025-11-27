@@ -52,7 +52,7 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
         schema.add_column(SqlColumnSchema.generated("record_count", "Num"))
 
-        self.data_service.pgi.create_table(schema)
+        schema = self.data_service.pgi.create_table(schema)
 
         # build UNPIVOT SQL query (postgresql doesn't have UNPIVOT so we use UNION ALL)
         if column_names:

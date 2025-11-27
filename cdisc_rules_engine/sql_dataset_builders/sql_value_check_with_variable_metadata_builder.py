@@ -53,7 +53,7 @@ class SqlValueCheckWithVariableMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("variable_format", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_value_length", "Num"))
 
-        self.data_service.pgi.create_table(schema)
+        schema = self.data_service.pgi.create_table(schema)
 
         # build UNPIVOT SQL query with variable metadata (postgresql doesn't have UNPIVOT so we use UNION ALL)
         columns_list = source_schema.get_columns()

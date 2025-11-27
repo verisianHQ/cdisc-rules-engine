@@ -91,7 +91,7 @@ COMPLEX_RELREC_DATA = {
 )
 def test_relrec_merge_column_structure(data, expected_columns, sdtm_standards_context):
     """Test that RELREC merge creates the correct column structure."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create and populate original table
@@ -121,7 +121,7 @@ def test_relrec_merge_column_structure(data, expected_columns, sdtm_standards_co
 
 def test_relrec_merge_basic_functionality(sdtm_standards_context):
     """Test basic RELREC merge functionality with simple data."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
     data = SIMPLE_RELREC_DATA
 
@@ -148,7 +148,7 @@ def test_relrec_merge_basic_functionality(sdtm_standards_context):
 
 def test_relrec_merge_no_relationships(sdtm_standards_context):
     """Test RELREC merge when no relationships exist for the domain."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create original data
@@ -188,7 +188,7 @@ def test_relrec_merge_no_relationships(sdtm_standards_context):
 
 def test_relrec_merge_wildcard_renaming(sdtm_standards_context):
     """Test that wildcard renaming works correctly."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
     data = SIMPLE_RELREC_DATA
 
@@ -215,7 +215,7 @@ def test_relrec_merge_wildcard_renaming(sdtm_standards_context):
 
 def test_relrec_validation_errors(sdtm_standards_context):
     """Test that validation errors are properly raised."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create table without required columns
@@ -248,7 +248,7 @@ def test_relrec_validation_errors(sdtm_standards_context):
 
 def test_relrec_filter_for_domain(sdtm_standards_context):
     """Test the _filter_relrec_for_domain method."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     relrec_data = {
@@ -276,7 +276,7 @@ def test_relrec_filter_for_domain(sdtm_standards_context):
 
 def test_relrec_apply_wildcard_renaming(sdtm_standards_context):
     """Test the _apply_wildcard_renaming method."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create a test domain table
@@ -305,7 +305,7 @@ def test_relrec_apply_wildcard_renaming(sdtm_standards_context):
 
 def test_relrec_merge_cg0601_scenario(sdtm_standards_context):
     """Test the specific CG0601 scenario with data type mismatch (string vs integer)."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create AE data matching CG0601 test case
@@ -381,7 +381,7 @@ def test_relrec_merge_cg0601_scenario(sdtm_standards_context):
 
 def test_relrec_merge_multiple_relationships_no_duplicates(sdtm_standards_context):
     """Test that multiple relationships for same record don't create duplicates."""
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     pgi = ds.pgi
 
     # Create original data with one record

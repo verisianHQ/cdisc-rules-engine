@@ -58,7 +58,7 @@ SIMPLE_DATA = {
     ],
 )
 def test_join(data, type, expected):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -105,7 +105,7 @@ def test_join(data, type, expected):
     ],
 )
 def test_multiple_keys(data, expected):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -139,7 +139,7 @@ def test_multiple_keys(data, expected):
     [SIMPLE_DATA],
 )
 def test_table_not_in_data(data):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -155,7 +155,7 @@ def test_table_not_in_data(data):
     [SIMPLE_DATA],
 )
 def test_column_not_in_data(data):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -171,7 +171,7 @@ def test_column_not_in_data(data):
     [SIMPLE_DATA],
 )
 def test_wrong_column_number(data):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -187,7 +187,7 @@ def test_wrong_column_number(data):
     [SIMPLE_DATA],
 )
 def test_run_twice(data):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
@@ -208,7 +208,7 @@ def test_run_twice(data):
     [SIMPLE_DATA],
 )
 def test_join_table_itself(data):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     PostgresQLDataService.add_test_dataset(ds, "l", data["left"], DefaultStandardsContext())
 
     schema = SqlJoinMerge.perform_join(
@@ -220,7 +220,7 @@ def test_join_table_itself(data):
 
 
 def test_source_row_number_preserved_through_join():
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     sv_data = {
         "STUDYID": ["STUDY1"] * 20,
         "USUBJID": ["1201001"] * 20,

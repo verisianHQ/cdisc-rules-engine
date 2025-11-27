@@ -11,7 +11,7 @@ from cdisc_rules_engine.standards.default_standards_context import (
 
 def test_invalid_table_name():
     """Test that an exception is raised when an invalid table name is used."""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     with pytest.raises(Exception) as e:
         PostgresQLDataService.add_test_dataset(
             data_service, table_name="SELECT", column_data={"key": [1]}, standards_context=DefaultStandardsContext()
@@ -21,7 +21,7 @@ def test_invalid_table_name():
 
 def test_uneven_columns():
     """Test that an exception is raised when the test data has columns with different lengths."""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     with pytest.raises(Exception) as e:
         PostgresQLDataService.add_test_dataset(
             data_service,
@@ -34,7 +34,7 @@ def test_uneven_columns():
 
 def test_invalid_column_name():
     """Test that an exception is raised when the test data has a column with an invalid name."""
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     with pytest.raises(Exception) as e:
         PostgresQLDataService.add_test_dataset(
             data_service, table_name="test", column_data={"select": [1]}, standards_context=DefaultStandardsContext()
@@ -46,7 +46,7 @@ def test_data_contains_id():
     """
     Test that an exception is raised when the test data has an 'id' column, as this is used as a row id by postgres.
     """
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     with pytest.raises(Exception) as e:
         PostgresQLDataService.add_test_dataset(
             data_service, table_name="test", column_data={"id": [1]}, standards_context=DefaultStandardsContext()
@@ -58,7 +58,7 @@ def test_adding_invalid_column():
     """
     Test that an exception is raised when trying to add an column which is reserved in SQL.
     """
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     schema = PostgresQLDataService.add_test_dataset(
         data_service, table_name="test", column_data={"key": [1]}, standards_context=DefaultStandardsContext()
     )
@@ -78,7 +78,7 @@ def test_adding_id_column():
     """
     Test that an exception is raised when trying to add an "id" column.
     """
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(table_prefix="")
     schema = PostgresQLDataService.add_test_dataset(
         data_service, table_name="test", column_data={"key": [1]}, standards_context=DefaultStandardsContext()
     )

@@ -115,7 +115,7 @@ class PostgresQLInterface:
         self._last_results.clear()
         return results
 
-    def create_table(self, schema: SqlTableSchema) -> str:
+    def create_table(self, schema: SqlTableSchema) -> SqlTableSchema:
         """Adds a table to the db"""
         prefixed_schema = self._apply_prefix_to_schema(schema)
 
@@ -124,7 +124,7 @@ class PostgresQLInterface:
 
         self.schema.add_table(prefixed_schema)
         logger.info(f"Table {prefixed_schema.name} created successfully")
-        return prefixed_schema.name
+        return prefixed_schema
 
     def add_column(self, table: str, schema: SqlColumnSchema) -> None:
         """Adds a column to an existing table"""
@@ -235,6 +235,11 @@ class PostgresQLInterface:
 
         exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
 
+        if self.table_prefix:
+            prefix_condition = f"AND tablename LIKE '{self.table_prefix}%'"
+        else:
+            prefix_condition = ""
+
         drop_query = f"""
             DO $$
             DECLARE
@@ -244,7 +249,7 @@ class PostgresQLInterface:
                     SELECT tablename
                     FROM pg_tables
                     WHERE schemaname = 'public'
-                    AND tablename LIKE '{self.table_prefix}%'
+                    {prefix_condition}
                     AND tablename NOT IN ({exclusion_list})
                 LOOP
                     EXECUTE format('DROP TABLE IF EXISTS %I CASCADE;', r.tablename);
@@ -252,7 +257,24 @@ class PostgresQLInterface:
             END $$;
         """
         self.execute_sql(drop_query)
-        logger.info(f"Dropped all tables with prefix '{self.table_prefix}'")
+
+        if self.table_prefix:
+            self.schema._tables = {
+                name: table
+                for name, table in self.schema._tables.items()
+                if not name.startswith(self.table_prefix.lower()) or name in [t.lower() for t in static_tables]
+            }
+        else:
+            static_tables_lower = [t.lower() for t in static_tables]
+            self.schema._tables = {
+                name: table for name, table in self.schema._tables.items() if name in static_tables_lower
+            }
+
+        logger.info(
+            f"Dropped all tables with prefix '{self.table_prefix}'"
+            if self.table_prefix
+            else "Dropped all non-static tables"
+        )
 
     def _apply_prefix_to_schema(self, schema: SqlTableSchema) -> SqlTableSchema:
         """Apply the table prefix to a schema's name and hash"""

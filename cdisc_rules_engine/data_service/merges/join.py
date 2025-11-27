@@ -62,7 +62,7 @@ class SqlJoinMerge:
         if len(right_columns) == 0:
             raise ValueError("No columns to join from the right table.")
 
-        pgi.create_table(schema)
+        schema = pgi.create_table(schema)
 
         selected_left_columns = [f"l.{old_hash} AS {new_hash}" for old_hash, new_hash in left_columns]
         selected_right_columns = [f"r.{old_hash} AS {new_hash}" for old_hash, new_hash in right_columns]

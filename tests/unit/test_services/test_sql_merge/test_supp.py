@@ -93,7 +93,7 @@ COMPLEX_DATA_AE = {
     ],
 )
 def test_supp_merge(data, expected, domain, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -124,7 +124,7 @@ def test_supp_merge(data, expected, domain, sdtm_standards_context):
     [SIMPLE_DATA_DM],
 )
 def test_merge_twice(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -139,7 +139,7 @@ def test_merge_twice(data, sdtm_standards_context):
     [SIMPLE_DATA_DM],
 )
 def test_original_base_column_missing(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -155,7 +155,7 @@ def test_original_base_column_missing(data, sdtm_standards_context):
     [SIMPLE_DATA_DM],
 )
 def test_supp_base_column_missing(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -171,7 +171,7 @@ def test_supp_base_column_missing(data, sdtm_standards_context):
     [SIMPLE_DATA_DM],
 )
 def test_supp_idvar_column_missing(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -185,7 +185,7 @@ def test_supp_idvar_column_missing(data, sdtm_standards_context):
     [SIMPLE_DATA_AE],
 )
 def test_original_required_column_missing(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
@@ -201,7 +201,7 @@ def test_original_required_column_missing(data, sdtm_standards_context):
     [SIMPLE_DATA_AE],
 )
 def test_original_qnam_column_already_exists(data, sdtm_standards_context):
-    ds = PostgresQLDataService.instance()
+    ds = PostgresQLDataService.instance(table_prefix="")
     o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
     s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
 
