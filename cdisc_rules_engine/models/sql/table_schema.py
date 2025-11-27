@@ -4,6 +4,7 @@ from typing import Any, Literal, Tuple, Union
 from cdisc_rules_engine.data_service.util import generate_hash
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
+from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 
 
 class SqlTableSchema:
@@ -53,23 +54,25 @@ class SqlTableSchema:
         return instance
 
     @classmethod
-    def from_metadata(cls, metadata: DatasetMetadata2) -> "SqlTableSchema":
+    def from_metadata(cls, metadata: DatasetMetadata2, pgi: "PostgresQLInterface") -> "SqlTableSchema":
         """Create a SqlTableSchema from its metadata."""
         # Check for reserved column names in user data
         for column in metadata.variables:
             if column.name.lower() == "id":
                 raise ValueError("Column name 'id' is reserved for primary key in SQL tables.")
 
-        instance = cls(metadata.name.lower(), metadata.name.lower(), source="data")
+        prefix = pgi.sql_namespace
+        instance = cls(metadata.name.lower(), f"{prefix}_{metadata.name.lower()}", source="data")
         for variable_metadata in metadata.variables:
             instance.add_column(SqlColumnSchema.from_metadata(variable_metadata))
         return instance
 
     @classmethod
-    def from_join(cls, name: str) -> "SqlTableSchema":
+    def from_join(cls, name: str, pgi: "PostgresQLInterface") -> "SqlTableSchema":
         """Create a SqlTableSchema for a join operation."""
         hash = generate_hash(name.lower())
-        return cls(name.lower(), hash, source="derived")
+        prefix = pgi.sql_namespace
+        return cls(name.lower(), f"{prefix}_{hash}", source="derived")
 
     @classmethod
     def static(cls, name: str) -> "SqlTableSchema":

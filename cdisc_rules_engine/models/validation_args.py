@@ -23,6 +23,6 @@ Validation_args = namedtuple(
         "progress",
         "define_xml_path",
         "validate_xml",
-        "table_prefix",
+        "sql_namespace",
     ],
 )

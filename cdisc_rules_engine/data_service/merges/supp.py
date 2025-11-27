@@ -28,16 +28,16 @@ class SqlSuppMerge:
         SqlSuppMerge._validate_merge(original, supp, required_original_columns, required_supp_columns, new_columns)
 
         name = f"{original.name}_SUPP"
-        schema = SqlTableSchema.from_join(name)
+        schema = SqlTableSchema.from_join(name, pgi)
 
         # Check if the table already exists
         if pgi.schema.get_table(name) is not None:
             return pgi.schema.get_table(name)
 
         # Build the new schema
-        schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns)
+        schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns, pgi=pgi)
 
-        schema = pgi.create_table(schema)
+        pgi.create_table(schema)
 
         queries = []
 
@@ -74,10 +74,11 @@ class SqlSuppMerge:
         name: str,
         original: SqlTableSchema,
         new_columns: List[str],
+        pgi: PostgresQLInterface,
     ) -> SqlTableSchema:
         """Build the output schema."""
 
-        joined_schema = SqlTableSchema.from_join(name)
+        joined_schema = SqlTableSchema.from_join(name, pgi)
 
         # Add all of the original table's columns
         for name, column in original.get_columns():

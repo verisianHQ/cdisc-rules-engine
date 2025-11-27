@@ -37,7 +37,7 @@ def setup_sql_operations(
     Returns:
         PostgresQLOperators instance configured for testing
     """
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     standards_context_dict = {
         "default": DefaultStandardsContext(),
         "sdtm": SdtmStandardsContext(LibraryMetadataContainer),

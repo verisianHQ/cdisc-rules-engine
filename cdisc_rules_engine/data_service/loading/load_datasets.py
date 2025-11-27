@@ -34,11 +34,11 @@ class SqlDatasetLoader:
 
             logger.info(f"Loading dataset {file_path.name} into table {table_name}")
 
-            schema = SqlTableSchema.from_metadata(metadata)
+            schema = SqlTableSchema.from_metadata(metadata, pgi)
             source_row_column = SqlColumnSchema(name=SOURCE_ROW_NUMBER, hash=SOURCE_ROW_NUMBER, type="Num")
             schema.add_column(source_row_column)
 
-            prefixed_schema = pgi.create_table(schema)
+            pgi.create_table(schema)
             # TODO: INDEX
 
             row_number = 0
@@ -56,7 +56,7 @@ class SqlDatasetLoader:
                 for row in chunk_data:
                     row_number += 1
                     row[SOURCE_ROW_NUMBER] = row_number
-                pgi.insert_data(prefixed_schema.name, chunk_data)
+                pgi.insert_data(schema.name, chunk_data)
 
             logger.info(f"Successfully loaded {file_path.name}")
 

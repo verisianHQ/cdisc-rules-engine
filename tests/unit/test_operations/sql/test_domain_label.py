@@ -23,7 +23,7 @@ class DummyStandardsContext(DefaultStandardsContext):
 
 
 def test_domain_label():
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     params = SqlOperationParams(domain="AE", target=None, standards_context=DummyStandardsContext())
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
     result = operation.execute()
@@ -31,7 +31,7 @@ def test_domain_label():
 
 
 def test_domain_label_custom_domain():
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     params = SqlOperationParams(domain="AA", target=None, standards_context=DummyStandardsContext())
     operation = SqlOperationsFactory.get_service("domain_label", params, data_service)
     result = operation.execute()

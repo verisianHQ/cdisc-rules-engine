@@ -16,7 +16,7 @@ from .helpers import (
 
 
 def test_dataset_names():
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     t1 = PostgresQLDataService.add_test_dataset(
         data_service, "t1", {"key": [1, 2, 3], "name": ["A", "B", "C"]}, DefaultStandardsContext()
     )

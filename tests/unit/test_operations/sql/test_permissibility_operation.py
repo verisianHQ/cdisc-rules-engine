@@ -79,7 +79,7 @@ test_set1_variables = [
 )
 def test_permissibility_operation(mock_variables, op, expected):
     """Test permissibility operations with different filter criteria"""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure
@@ -117,7 +117,7 @@ def test_permissibility_operation(mock_variables, op, expected):
 )
 def test_permissibility_operation_exception_handling(op):
     """Test permissibility operations when metadata retrieval fails"""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     standards_context = DefaultStandardsContext()
 
     # Add test dataset matching original test structure

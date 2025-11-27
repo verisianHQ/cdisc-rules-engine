@@ -75,7 +75,7 @@ from .helpers import assert_operation_constant, assert_operation_parameterized_c
     ],
 )
 def test_sql_dy_calculation(current_data, dm_data, expected, sdtm_standards_context):
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(
         data_service, table_name="DM", column_data=dm_data, standards_context=sdtm_standards_context
@@ -108,7 +108,7 @@ def test_sql_dy_calculation(current_data, dm_data, expected, sdtm_standards_cont
     ],
 )
 def test_sql_dy_no_dm_domain(current_data, expected, sdtm_standards_context):
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(
         data_service, table_name="EX", column_data=current_data, standards_context=sdtm_standards_context
@@ -148,7 +148,7 @@ def test_sql_dy_no_dm_domain(current_data, expected, sdtm_standards_context):
     ],
 )
 def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_context):
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(
         data_service, table_name="DM", column_data=dm_data, standards_context=sdtm_standards_context
@@ -197,7 +197,7 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
 )
 def test_sql_dy_invalid_dates(current_data, dm_data, expected, sdtm_standards_context):
     """Test DY calculation with various invalid date formats."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(
         data_service, table_name="DM", column_data=dm_data, standards_context=sdtm_standards_context

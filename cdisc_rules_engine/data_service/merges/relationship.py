@@ -43,8 +43,10 @@ class SqlRelationshipMerge:
                     pgi, original, relationship_dataset, domain, match_keys
                 )
 
-            schema = SqlRelationshipMerge._build_merged_schema(original, relationship_dataset, domain, name, match_keys)
-            schema = pgi.create_table(schema)
+            schema = SqlRelationshipMerge._build_merged_schema(
+                original, relationship_dataset, domain, name, match_keys, pgi
+            )
+            pgi.create_table(schema)
 
             SqlRelationshipMerge._execute_relationship_merge(
                 pgi, schema, original, relationship_dataset, domain, column_with_names, column_with_values, match_keys
@@ -144,7 +146,7 @@ class SqlRelationshipMerge:
             return pgi.schema.get_table(name)
 
         schema = SqlRelationshipMerge._build_merged_schema(original, relationship_dataset, domain, name, match_keys)
-        schema = pgi.create_table(schema)
+        pgi.create_table(schema)
 
         left_cols = [col.hash for col_name, col in original.get_columns() if col_name != "id"]
         right_cols = []
@@ -201,9 +203,10 @@ class SqlRelationshipMerge:
         domain: str,
         name: str,
         match_keys: list,
+        pgi: PostgresQLInterface,
     ) -> SqlTableSchema:
         """Build merged schema with domain suffixes."""
-        schema = SqlTableSchema.from_join(name)
+        schema = SqlTableSchema.from_join(name, pgi)
 
         for col_name, column in original.get_columns():
             if col_name == "id":

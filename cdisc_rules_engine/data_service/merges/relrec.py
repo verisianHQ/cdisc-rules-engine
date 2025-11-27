@@ -41,7 +41,7 @@ class SqlRelrecMerge:
 
         # Build the merged schema with renamed columns
         schema = SqlRelrecMerge._build_merged_schema(pgi, name, original, relationships, wildcard)
-        schema = pgi.create_table(schema)
+        pgi.create_table(schema)
 
         # Process each relationship and union results
         SqlRelrecMerge._process_relationship_records(pgi, schema, original, relationships, wildcard)
@@ -151,7 +151,7 @@ class SqlRelrecMerge:
         """
         Build the output schema including original columns and renamed relationship columns.
         """
-        schema = SqlTableSchema.from_join(name)
+        schema = SqlTableSchema.from_join(name, pgi)
 
         # Add all original columns including id
         for _, column in original.get_columns():

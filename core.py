@@ -254,7 +254,6 @@ def validate(
     validate_xml: str,
     sql_engine: bool,
     sql_namespace: str,
-    table_prefix: str,
 ):
     """
     Validate data using CDISC Rules Engine
@@ -332,7 +331,7 @@ def validate(
         progress,
         define_xml_path,
         validate_xml_bool,
-        table_prefix,
+        sql_namespace,
     )
     if sql_engine:
         run_sql_validation(args)
@@ -669,7 +668,7 @@ def test_validate():
             validate_xml = False
             json_output = os.path.join(temp_dir, "json_validation_output")
             xpt_output = os.path.join(temp_dir, "xpt_validation_output")
-            table_prefix = "uid"
+            sql_namespace = None
 
             json_args = Validation_args(
                 cache_path,
@@ -692,7 +691,7 @@ def test_validate():
                 progress,
                 define_xml_path,
                 validate_xml,
-                table_prefix,
+                sql_namespace,
             )
 
             xpt_args = Validation_args(
@@ -716,7 +715,7 @@ def test_validate():
                 progress,
                 define_xml_path,
                 validate_xml,
-                table_prefix,
+                sql_namespace,
             )
 
             run_validation(json_args)

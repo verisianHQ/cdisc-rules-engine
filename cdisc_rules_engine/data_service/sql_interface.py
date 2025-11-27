@@ -19,13 +19,13 @@ from cdisc_rules_engine.services import logger
 class PostgresQLInterface:
     """Main interface for database operations"""
 
-    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, table_prefix: str = "uid"):
+    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, sql_namespace: str = "uid"):
         self.config = config or DatabaseConfigPostgres()
         self.db: Optional[DatabasePostgres] = None
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
-        self.table_prefix = f"{self._get_unique_prefix_uid()}_" if table_prefix == "uid" else table_prefix
+        self.sql_namespace = f"{self._get_unique_prefix_uid()}_" if sql_namespace == "uid" else sql_namespace
 
     def init_database(self):
         """Initialise the database connection"""
@@ -119,15 +119,11 @@ class PostgresQLInterface:
 
     def create_table(self, schema: SqlTableSchema) -> SqlTableSchema:
         """Adds a table to the db"""
-        original_name = schema.name
-        prefixed_schema = self._apply_prefix_to_schema(schema)
-
-        create_stmt = SQLSerialiser.create_table_query_from_schema(prefixed_schema)
+        create_stmt = SQLSerialiser.create_table_query_from_schema(schema)
         self.execute_sql(create_stmt)
 
-        self.schema.add_table(prefixed_schema, original_name=original_name)
-        logger.info(f"Table {prefixed_schema.name} created successfully")
-        return prefixed_schema
+        self.schema.add_table(schema)
+        logger.info(f"Table {schema.name} created successfully")
 
     def add_column(self, table: str, schema: SqlColumnSchema) -> None:
         """Adds a column to an existing table"""
@@ -225,23 +221,20 @@ class PostgresQLInterface:
             raise
 
     def _drop_prefixed_tables(self):
-        """Drop all tables that start with the configured table_prefix"""
+        """Drop all tables that start with the configured sql_namespace"""
         static_tables = [
             "codelists",
             "ig_datasets",
             "ig_variables",
             "standards",
-            "preprocessing_results",
-            "preprocessing_validation_errors",
-            "data_metadata",
         ]
         # TODO: these names probably need to go in their own constants file along
         # with the constants at the top of "data_service/startup/populate_standards.py"
 
         exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
 
-        if self.table_prefix:
-            prefix_condition = f"AND tablename LIKE '{self.table_prefix}%'"
+        if self.sql_namespace:
+            prefix_condition = f"AND tablename LIKE '{self.sql_namespace}%'"
         else:
             prefix_condition = ""
 
@@ -266,25 +259,10 @@ class PostgresQLInterface:
         # TODO: maybe we cycle through the schema too and drop all tables that are not in the static list
 
         logger.info(
-            f"Dropped all tables with prefix '{self.table_prefix}'"
-            if self.table_prefix
+            f"Dropped all tables with prefix '{self.sql_namespace}'"
+            if self.sql_namespace
             else "Dropped all non-static tables"
         )
-
-    def _apply_prefix_to_schema(self, schema: SqlTableSchema) -> SqlTableSchema:
-        """Apply the table prefix to a schema's name and hash"""
-        if schema.source == "static" or not self.table_prefix:
-            return schema
-
-        prefixed_name = f"{self.table_prefix}{schema.name}"
-        prefixed_hash = f"{self.table_prefix}{schema.hash}"
-
-        prefixed_schema = SqlTableSchema(name=prefixed_name, hash=prefixed_hash, source=schema.source)
-
-        for _, col_schema in schema.get_columns():
-            prefixed_schema.add_column(col_schema)
-
-        return prefixed_schema
 
     def close(self):
         """Close database connections"""

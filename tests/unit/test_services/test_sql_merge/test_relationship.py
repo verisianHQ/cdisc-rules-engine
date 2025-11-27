@@ -162,7 +162,7 @@ MIXED_RDOMAIN_DATA = {
 )
 def test_relationship_merge(data, expected, domain, sdtm_standards_context):
     """Test relationship merge functionality with expected data comparison."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", data["original"], sdtm_standards_context
     )
@@ -205,7 +205,7 @@ def test_relationship_merge(data, expected, domain, sdtm_standards_context):
 
 def test_merge_twice(sdtm_standards_context):
     """Test that running the same merge twice returns cached result."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"], sdtm_standards_context
     )
@@ -236,7 +236,7 @@ def test_merge_twice(sdtm_standards_context):
 
 def test_validation_missing_original_columns(sdtm_standards_context):
     """Test validation when required columns are missing in original dataset."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"], sdtm_standards_context
     )
@@ -261,7 +261,7 @@ def test_validation_missing_original_columns(sdtm_standards_context):
 
 def test_validation_missing_relationship_columns(sdtm_standards_context):
     """Test that missing relationship columns are handled gracefully with simple merge."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"], sdtm_standards_context
     )
@@ -286,7 +286,7 @@ def test_validation_missing_relationship_columns(sdtm_standards_context):
 
 def test_complex_multi_column_filtering(sdtm_standards_context):
     """Test filtering with multiple IDVAR columns."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", COMPLEX_RELATIONSHIP_DATA["original"], sdtm_standards_context
     )
@@ -326,7 +326,7 @@ def test_complex_multi_column_filtering(sdtm_standards_context):
 
 def test_validation_invalid_parameters(sdtm_standards_context):
     """Test validation with invalid parameters."""
-    data_service = PostgresQLDataService.instance(table_prefix="")
+    data_service = PostgresQLDataService.instance()
     original_schema = PostgresQLDataService.add_test_dataset(
         data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"], sdtm_standards_context
     )

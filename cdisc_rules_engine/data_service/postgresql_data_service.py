@@ -55,12 +55,12 @@ class PostgresQLDataService:
         self.datasets: List[BaseDatasetMetadata] = []
 
     @classmethod
-    def instance(cls, table_prefix: str = "uid") -> "PostgresQLDataService":
+    def instance(cls, sql_namespace: str = "uid") -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
         # PostgresDB setup
-        pgi = PostgresQLInterface(table_prefix=table_prefix)
+        pgi = PostgresQLInterface(sql_namespace=sql_namespace)
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)
@@ -78,7 +78,7 @@ class PostgresQLDataService:
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance(table_prefix="")
+        instance = cls.instance()
         instance.datasets += [
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
@@ -86,8 +86,10 @@ class PostgresQLDataService:
         return instance
 
     @classmethod
-    def from_dataset_paths(cls, dataset_paths, standards_context, table_prefix: str = "uid") -> "PostgresQLDataService":
-        instance = cls.instance(table_prefix=table_prefix)
+    def from_dataset_paths(
+        cls, dataset_paths, standards_context, sql_namespace: str = "uid"
+    ) -> "PostgresQLDataService":
+        instance = cls.instance(sql_namespace=sql_namespace)
 
         instance.datasets.extend(
             standards_context.transform_dataset_metadata(ds)
