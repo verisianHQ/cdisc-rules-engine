@@ -1,3 +1,5 @@
+import random
+import string
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -17,13 +19,13 @@ from cdisc_rules_engine.services import logger
 class PostgresQLInterface:
     """Main interface for database operations"""
 
-    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, table_prefix: str = "core_"):
+    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, table_prefix: str = "uid"):
         self.config = config or DatabaseConfigPostgres()
         self.db: Optional[DatabasePostgres] = None
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
-        self.table_prefix = table_prefix
+        self.table_prefix = self._get_unique_prefix_uid() if table_prefix == "uid" else table_prefix
 
     def init_database(self):
         """Initialise the database connection"""
@@ -285,3 +287,9 @@ class PostgresQLInterface:
         """Close database connections"""
         if self.db:
             self.db.close_pool()
+
+    @staticmethod
+    def _get_unique_prefix_uid() -> str:
+        len = 8
+        random_string = "".join(random.choices(string.ascii_letters + string.digits, k=len))
+        return random_string

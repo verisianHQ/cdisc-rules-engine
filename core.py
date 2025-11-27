@@ -218,8 +218,8 @@ def cli():
 @click.option(
     "-tp",
     "--table-prefix",
-    default="core_",
-    help="Prefix for all database tables. Used for isolation and cleanup. (default: 'core_')",
+    default="uid",
+    help="Prefix for all database tables. Used for isolation and cleanup. (default: unique 8 char uid)",
 )
 @click.pass_context
 def validate(
@@ -394,8 +394,8 @@ def validate(
 @click.option(
     "-tp",
     "--table-prefix",
-    default="core_",
-    help="Prefix for all database tables. Used for isolation and cleanup. (default: 'core_')",
+    default="uid",
+    help="Prefix for all database tables. Used for isolation and cleanup. (default: unique 8 char uid)",
 )
 @click.pass_context
 def update_cache(
@@ -669,7 +669,7 @@ def test_validate():
             validate_xml = False
             json_output = os.path.join(temp_dir, "json_validation_output")
             xpt_output = os.path.join(temp_dir, "xpt_validation_output")
-            table_prefix = "core_"
+            table_prefix = "uid"
 
             json_args = Validation_args(
                 cache_path,

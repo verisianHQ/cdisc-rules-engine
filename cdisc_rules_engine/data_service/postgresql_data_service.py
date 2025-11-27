@@ -55,7 +55,7 @@ class PostgresQLDataService:
         self.datasets: List[BaseDatasetMetadata] = []
 
     @classmethod
-    def instance(cls, table_prefix: str = "core_") -> "PostgresQLDataService":
+    def instance(cls, table_prefix: str = "uid") -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
@@ -86,9 +86,7 @@ class PostgresQLDataService:
         return instance
 
     @classmethod
-    def from_dataset_paths(
-        cls, dataset_paths, standards_context, table_prefix: str = "core_"
-    ) -> "PostgresQLDataService":
+    def from_dataset_paths(cls, dataset_paths, standards_context, table_prefix: str = "uid") -> "PostgresQLDataService":
         instance = cls.instance(table_prefix=table_prefix)
 
         instance.datasets.extend(
