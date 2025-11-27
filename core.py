@@ -212,14 +212,8 @@ def cli():
 @click.option(
     "-ns",
     "--sql-namespace",
-    default="",
-    help="A prefix for all tables in the database when using the SQL engine",
-)
-@click.option(
-    "-tp",
-    "--table-prefix",
     default="uid",
-    help="Prefix for all database tables. Used for isolation and cleanup. (default: unique 8 char uid)",
+    help="A prefix for all tables in the database when using the SQL engine",
 )
 @click.pass_context
 def validate(
