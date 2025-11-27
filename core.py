@@ -384,12 +384,6 @@ def validate(
     help=("removes a custom standard and version from the cache. "),
     multiple=True,
 )
-@click.option(
-    "-tp",
-    "--table-prefix",
-    default="uid",
-    help="Prefix for all database tables. Used for isolation and cleanup. (default: unique 8 char uid)",
-)
 @click.pass_context
 def update_cache(
     ctx: click.Context,
