@@ -43,14 +43,15 @@ class SqlTableSchema:
         return list(self._columns.items())
 
     @classmethod
-    def from_data(cls, table_name: str, data: dict[str, Any]) -> "SqlTableSchema":
+    def from_data(cls, table_name: str, data: dict[str, Any], pgi: "PostgresQLInterface") -> "SqlTableSchema":
         """Create a SqlTableSchema from a dictionary."""
         # Check for reserved column names in user data
         for column in data.keys():
             if column.lower() == "id":
                 raise ValueError("Column name 'id' is reserved for primary key in SQL tables.")
 
-        instance = cls(table_name.lower(), table_name.lower(), source="data")
+        prefix = pgi.sql_namespace
+        instance = cls(table_name.lower(), f"{prefix}_{table_name.lower()}", source="data")
         for column, value in data.items():
             instance.add_column(SqlColumnSchema.from_data(column, value))
         return instance
