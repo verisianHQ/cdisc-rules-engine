@@ -273,6 +273,9 @@ class PostgresQLInterface:
 
     def _apply_prefix_to_schema(self, schema: SqlTableSchema) -> SqlTableSchema:
         """Apply the table prefix to a schema's name and hash"""
+        if schema.source == "static" or not self.table_prefix:
+            return schema
+
         prefixed_name = f"{self.table_prefix}{schema.name}"
         prefixed_hash = f"{self.table_prefix}{schema.hash}"
 
@@ -291,5 +294,6 @@ class PostgresQLInterface:
     @staticmethod
     def _get_unique_prefix_uid() -> str:
         len = 8
-        random_string = "".join(random.choices(string.ascii_letters + string.digits, k=len))
-        return random_string
+        first_char = random.choice(string.ascii_letters)
+        rest = "".join(random.choices(string.ascii_letters + string.digits, k=len - 1))
+        return first_char + rest
