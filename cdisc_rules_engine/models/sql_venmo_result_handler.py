@@ -136,8 +136,7 @@ class SqlVenmoResultHandler(BaseActions):
         """
         Bundles the error rows into a ValidationErrorContainer.
         """
-        original_table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_metadata.name)
-        original_schema = self.data_service.pgi.schema.get_table(original_table_hash)
+        original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.name)
 
         return ValidationErrorContainer(
             domain=(self.dataset_metadata.domain),
