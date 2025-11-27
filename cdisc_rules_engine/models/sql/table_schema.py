@@ -51,7 +51,8 @@ class SqlTableSchema:
                 raise ValueError("Column name 'id' is reserved for primary key in SQL tables.")
 
         prefix = pgi.sql_namespace
-        instance = cls(table_name.lower(), f"{prefix}_{table_name.lower()}", source="data")
+        hash_name = f"{prefix}_{table_name.lower()}" if prefix else table_name.lower()
+        instance = cls(table_name.lower(), hash_name, source="data")
         for column, value in data.items():
             instance.add_column(SqlColumnSchema.from_data(column, value))
         return instance
@@ -65,7 +66,8 @@ class SqlTableSchema:
                 raise ValueError("Column name 'id' is reserved for primary key in SQL tables.")
 
         prefix = pgi.sql_namespace
-        instance = cls(metadata.name.lower(), f"{prefix}_{metadata.name.lower()}", source="data")
+        hash_name = f"{prefix}_{metadata.name.lower()}" if prefix else metadata.name.lower()
+        instance = cls(metadata.name.lower(), hash_name, source="data")
         for variable_metadata in metadata.variables:
             instance.add_column(SqlColumnSchema.from_metadata(variable_metadata))
         return instance
@@ -75,7 +77,8 @@ class SqlTableSchema:
         """Create a SqlTableSchema for a join operation."""
         hash = generate_hash(name.lower())
         prefix = pgi.sql_namespace
-        return cls(name.lower(), f"{prefix}_{hash}", source="derived")
+        hash_name = f"{prefix}_{hash}" if prefix else hash
+        return cls(name.lower(), hash_name, source="derived")
 
     @classmethod
     def static(cls, name: str) -> "SqlTableSchema":
