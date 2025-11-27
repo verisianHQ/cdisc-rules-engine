@@ -117,7 +117,7 @@ class PostgresQLInterface:
         self._last_results.clear()
         return results
 
-    def create_table(self, schema: SqlTableSchema) -> SqlTableSchema:
+    def create_table(self, schema: SqlTableSchema) -> None:
         """Adds a table to the db"""
         create_stmt = SQLSerialiser.create_table_query_from_schema(schema)
         self.execute_sql(create_stmt)

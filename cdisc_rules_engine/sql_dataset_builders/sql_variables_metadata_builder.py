@@ -36,7 +36,7 @@ class SqlVariablesMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("variable_data_type", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_format", "Char"))
 
-        schema = self.data_service.pgi.create_table(schema)
+        self.data_service.pgi.create_table(schema)
 
         rows = []
 

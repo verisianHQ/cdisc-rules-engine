@@ -45,7 +45,7 @@ class SqlDomainListDatasetBuilder(SqlBaseDatasetBuilder):
         else:
             schema.add_column(SqlColumnSchema.generated("_placeholder", "Num"))
 
-        schema = self.data_service.pgi.create_table(schema)
+        self.data_service.pgi.create_table(schema)
 
         if domain_dict:
             columns = [schema.get_column_hash(domain) for domain in domain_dict.keys()]

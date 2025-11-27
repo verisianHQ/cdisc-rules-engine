@@ -30,7 +30,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
         schema.add_column(SqlColumnSchema.generated("record_count", "Num"))
 
-        schema = self.data_service.pgi.create_table(schema)
+        self.data_service.pgi.create_table(schema)
 
         table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_metadata.name)
         count_query = f"SELECT COUNT(*) as count FROM {table_hash};"

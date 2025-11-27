@@ -37,7 +37,7 @@ class SqlVariablesMetadataWithLibraryBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("library_variable_core", "Char"))
         schema.add_column(SqlColumnSchema.generated("library_variable_order_number", "Num"))
 
-        schema = self.data_service.pgi.create_table(schema)
+        self.data_service.pgi.create_table(schema)
 
         rows = []
         library_vars_by_name = {var["name"]: var for var in library_metadata}
