@@ -1,6 +1,4 @@
-from collections import defaultdict
-import re
-from typing import Any, List, Tuple, Dict
+from typing import Any, List, Tuple
 
 from cdisc_rules_engine.constants.classes import (
     EVENTS,
@@ -8,8 +6,6 @@ from cdisc_rules_engine.constants.classes import (
     FINDINGS_ABOUT,
     INTERVENTIONS,
     RELATIONSHIP,
-    DETECTABLE_CLASSES,
-    GENERAL_OBSERVATIONS_CLASS,
 )
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
@@ -35,6 +31,7 @@ from cdisc_rules_engine.utilities.utils import (
     convert_library_class_name_to_ct_class,
     search_in_list_of_dicts,
 )
+from cdisc_rules_engine.utilities import sdtm_utilities
 
 
 class SdtmStandardsContext(BaseStandardsContext):
@@ -52,7 +49,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         return SdtmDatasetMetadata2(
             **source.__dict__,
             domain=domain,
-            is_supp=domain == "SUPPQUAL",
+            is_supp=(domain.startswith("SUPP") or domain.startswith("SQ")),
             is_split=self.derive_is_split(source.name, domain),
             rdomain=self.derive_rdomain(source.name),
             domain_code=self.derive_domain_code(domain),
@@ -61,8 +58,11 @@ class SdtmStandardsContext(BaseStandardsContext):
     def derive_domain(self, filename: str):
         filename = filename.lower()
 
-        if filename.startswith("supp") or filename.startswith("sq"):
-            return "SUPPQUAL"
+        # may need to consider FA and QS here?
+        if filename.startswith("supp"):
+            return filename[0:6].upper()
+        elif filename.startswith("sq"):
+            return filename[0:4].upper()
         elif filename.startswith("relrec"):
             return "RELREC"
         elif filename.startswith("relspec"):
@@ -82,7 +82,7 @@ class SdtmStandardsContext(BaseStandardsContext):
 
     def derive_domain_code(self, domain: str):
         """Derive the domain code for this domain"""
-        if domain == "SUPPQUAL":
+        if domain.startswith("SUPP") or domain.startswith("SQ"):
             return "Q"
         if domain in ["RELREC", "RELSPEC", "RELSUB"]:
             return ""
@@ -103,51 +103,33 @@ class SdtmStandardsContext(BaseStandardsContext):
             return variable.replace("--", dataset_metadata.domain_code)
         return variable
 
-    def get_domain_variables(self, domain: str) -> List[dict]:
-        standard_data = self.library_metadata.standard_metadata
-        model_data = self.library_metadata.model_metadata
-
-        variables_metadata, domain_class_name = self._get_standard_variables(standard_data, domain)
-
-        if domain_class_name and domain_class_name in DETECTABLE_CLASSES:
-            variables_metadata = self._merge_model_variables(model_data, variables_metadata)
-
-        if variables_metadata:
-            variables_metadata.sort(key=lambda item: int(item.get("ordinal", 0)))
-
-        return variables_metadata
-
-    def _get_standard_variables(self, standard_data: dict, domain: str) -> tuple:
-        """Get variables from standard metadata."""
+    def get_domain_metadata(self, domain: str) -> dict:
+        standard_data = self.get_standard_metadata()
         for c in standard_data.get("classes", []):
             domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
             if domain_details:
-                variables_metadata = [v.copy() for v in domain_details.get("datasetVariables", [])]
-                domain_class_name = convert_library_class_name_to_ct_class(c.get("name"))
-                return variables_metadata, domain_class_name
-        return [], None
+                return domain_details
+        # If not found, and domain is SUPP-- or SQ--, fall back to SUPPQUAL if it is present
+        # Could be more efficiently done in a single passthrough, but will leave the rewrite until fully confirmed
+        # wrt SUPP domain handling
+        if domain.startswith("SUPP") or domain.startswith("SQ"):
+            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == "SUPPQUAL")
+            if domain_details:
+                return domain_details
+        return {}
 
-    def _merge_model_variables(self, model_data: dict, variables_metadata: List[dict]) -> List[dict]:
-        """Merge model class variables into standard variables."""
-        for c in model_data.get("classes", []):
-            class_name = convert_library_class_name_to_ct_class(c.get("name"))
-            if class_name == GENERAL_OBSERVATIONS_CLASS:
-                model_class_variables = c.get("classVariables", [])
-                for model_var in model_class_variables:
-                    self._merge_single_variable(variables_metadata, model_var)
-                break
-        return variables_metadata
-
-    def _merge_single_variable(self, variables_metadata: List[dict], model_var: dict) -> None:
-        """Merge a single model variable into variables metadata."""
-        existing_var = next((v for v in variables_metadata if v.get("name") == model_var.get("name")), None)
-
-        if existing_var:
-            for key, value in model_var.items():
-                if key not in existing_var or not existing_var.get(key):
-                    existing_var[key] = value
-        else:
-            variables_metadata.append(model_var.copy())
+    def get_domain_variables(self, domain: str):
+        domain_details = self.get_domain_metadata(domain)
+        if domain_details:
+            variables_metadata = domain_details.get("datasetVariables", [])
+            if variables_metadata:
+                variables_metadata.sort(
+                    key=lambda item: (
+                        int(item.get("ordinal")) if item.get("ordinal") else int(item.get("order_number"))
+                    )
+                )
+                return variables_metadata
+        return []
 
     def get_model_metadata(self):
         model_metadata = self.library_metadata.model_metadata
@@ -158,24 +140,63 @@ class SdtmStandardsContext(BaseStandardsContext):
         return standard_metadata
 
     def get_domain_label(self, domain: str):
-        standard_data = self.library_metadata.standard_metadata
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
-            if domain_details:
-                return domain_details.get("label", "")
+        domain_details = self.get_domain_metadata(domain)
+        if domain_details:
+            return domain_details.get("label", "")
         return ""
 
     def get_ct_packages(self):
         ct_packages = self.library_metadata.published_ct_packages
         return ct_packages
 
-    def get_domain_metadata(self, domain: str):
-        standard_data = self.library_metadata.standard_metadata
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
-            if domain_details:
-                return domain_details
-        return {}
+    def get_model_variables(self, domain: str, class_nm: str = None):
+        # For SQL operations, use a simplified version that works with available metadata
+        model_details = self.get_model_metadata()
+
+        # Handle SUPP domain normalization like the original function
+        if domain and (domain.upper().startswith("SUPP") or domain.upper().startswith("SQ")) and len(domain) > 2:
+            domain = "SUPPQUAL"
+
+        domain_details = sdtm_utilities.get_model_domain_metadata(model_details, domain)
+        variables_metadata = []
+        class_name = None
+
+        if domain_details:
+            # Domain found in the model
+            class_name = convert_library_class_name_to_ct_class(domain_details["_links"]["parentClass"]["title"])
+            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
+            variables_metadata = domain_details.get("datasetVariables", [])
+            if variables_metadata:
+                variables_metadata.sort(key=lambda item: int(item["ordinal"]))
+        else:
+            # Domain not found in the model. Use the new get_dataset_class method
+            class_name = class_nm
+
+            if class_name is None:
+                # Fall back to General Observations class for unknown domains
+                from cdisc_rules_engine.constants.classes import GENERAL_OBSERVATIONS_CLASS
+
+                class_name = GENERAL_OBSERVATIONS_CLASS
+
+            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
+
+        # Apply class-specific logic for detectable classes
+        from cdisc_rules_engine.constants.classes import DETECTABLE_CLASSES
+
+        if class_name and class_name in DETECTABLE_CLASSES:
+            (
+                identifiers_metadata,
+                class_variables_metadata,
+                timing_metadata,
+            ) = sdtm_utilities.get_allowed_class_variables(model_details, class_details)
+            # Identifiers are added to the beginning and Timing to the end
+            variables_metadata = class_variables_metadata
+            if identifiers_metadata:
+                variables_metadata = identifiers_metadata + variables_metadata
+            if timing_metadata:
+                variables_metadata = variables_metadata + timing_metadata
+
+        return variables_metadata
 
     def get_library_variables_metadata(self, dataset_metadata: SdtmDatasetMetadata2) -> list:
         if not dataset_metadata.domain and dataset_metadata.is_supp and dataset_metadata.rdomain:
@@ -240,7 +261,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             # Gate: Only merge if domain_name matches current dataset
             domain_name = merge_spec.get("domain_name")
 
-            is_general_supp_merge = domain_name == "SUPP--" and dataset_metadata.is_supp
+            is_general_supp_merge = domain_name.startswith("SUPP") and dataset_metadata.is_supp
             domain_matches = domain_name.upper() == dataset_metadata.domain.upper()
 
             if is_general_supp_merge or domain_matches:
@@ -410,7 +431,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         #     or is_ap_domain(dataset_metadata.domain or dataset_metadata.rdomain or dataset_metadata.name)
         # )
         if "SUPP--" in domains_to_check or "SQ--" in domains_to_check:
-            if domain == "SUPPQUAL":
+            if domain[0:4] == "SUPP" or domain[0:2] == "SQ":
                 return True
         if "AP--" in domains_to_check or "APFA--" in domains_to_check:
             if domain == "AP":
@@ -662,53 +683,3 @@ class SdtmStandardsContext(BaseStandardsContext):
             merge_spec=merge_spec,
         )
         return result_schema.name
-
-    def detect_split_datasets(self, dataset_names: List[str]) -> Dict[str, List[str]]:
-        """
-        Detect split datasets by name.
-        """
-        split_groups = defaultdict(list)
-
-        datasets = [name.lower() for name in dataset_names]
-
-        for dataset in datasets:
-            unsplit_name = self._get_unsplit_name(dataset)
-
-            if unsplit_name != dataset:
-                split_groups[unsplit_name].append(dataset)
-
-        return {k: v for k, v in split_groups.items() if len(v) > 1}
-
-    def _get_unsplit_name(self, dataset_name: str) -> str:
-        """
-        Extract the unsplit (logical) name from a dataset name following
-        SDTMIG v3.4 naming conventions.
-        """
-        dataset = dataset_name.lower()
-
-        # supp + fa + parent domain (e.g. suppfacm, suppfaeg)
-        match = re.match(r"^suppfa([a-z]{2})$", dataset)
-        if match:
-            return "suppfa"
-
-        # supp + domain + numeric suffix (e.g. suppae1, suppae2)
-        match = re.match(r"^(supp[a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # fa + 2-char parent domain (e.g. facm, faeg)
-        match = re.match(r"^fa([a-z]{2})$", dataset)
-        if match:
-            return "fa"
-
-        # sq (supplemental qualifiers) + numeric suffix
-        match = re.match(r"^(sq[a-z]*)(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # domain + numeric suffix (e.g. ae1, ae2, dm1)
-        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        return dataset
