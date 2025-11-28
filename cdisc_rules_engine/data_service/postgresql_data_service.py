@@ -60,10 +60,7 @@ class PostgresQLDataService:
         Create a PostgresQLDataService instance with an initialized database.
         """
         # PostgresDB setup
-        if sql_namespace is not None:
-            pgi = PostgresQLInterface(sql_namespace=sql_namespace)
-        else:
-            pgi = PostgresQLInterface()
+        pgi = PostgresQLInterface(sql_namespace=sql_namespace)
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)

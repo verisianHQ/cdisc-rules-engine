@@ -19,13 +19,16 @@ from cdisc_rules_engine.services import logger
 class PostgresQLInterface:
     """Main interface for database operations"""
 
-    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, sql_namespace: str = "uid"):
+    def __init__(self, config: Optional[DatabaseConfigPostgres] = None, sql_namespace: Optional[str] = None):
         self.config = config or DatabaseConfigPostgres()
         self.db: Optional[DatabasePostgres] = None
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
-        self.sql_namespace = f"{self._get_unique_prefix_uid()}_" if sql_namespace == "uid" else sql_namespace
+        if sql_namespace is None or sql_namespace == "uid":
+            self.sql_namespace = f"{self._get_unique_prefix_uid()}_"
+        else:
+            self.sql_namespace = sql_namespace
 
     def init_database(self):
         """Initialise the database connection"""
