@@ -1,4 +1,6 @@
-from typing import Any, List, Tuple
+import re
+from typing import Any, List, Tuple, Dict
+from collections import defaultdict
 
 from cdisc_rules_engine.constants.classes import (
     EVENTS,
@@ -6,6 +8,7 @@ from cdisc_rules_engine.constants.classes import (
     FINDINGS_ABOUT,
     INTERVENTIONS,
     RELATIONSHIP,
+    GENERAL_OBSERVATIONS_CLASS,
 )
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
@@ -130,6 +133,38 @@ class SdtmStandardsContext(BaseStandardsContext):
                 )
                 return variables_metadata
         return []
+
+    def _get_standard_variables(self, standard_data: dict, domain: str) -> tuple:
+        """Get variables from standard metadata."""
+        for c in standard_data.get("classes", []):
+            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
+            if domain_details:
+                variables_metadata = [v.copy() for v in domain_details.get("datasetVariables", [])]
+                domain_class_name = convert_library_class_name_to_ct_class(c.get("name"))
+                return variables_metadata, domain_class_name
+        return [], None
+
+    def _merge_model_variables(self, model_data: dict, variables_metadata: List[dict]) -> List[dict]:
+        """Merge model class variables into standard variables."""
+        for c in model_data.get("classes", []):
+            class_name = convert_library_class_name_to_ct_class(c.get("name"))
+            if class_name == GENERAL_OBSERVATIONS_CLASS:
+                model_class_variables = c.get("classVariables", [])
+                for model_var in model_class_variables:
+                    self._merge_single_variable(variables_metadata, model_var)
+                break
+        return variables_metadata
+
+    def _merge_single_variable(self, variables_metadata: List[dict], model_var: dict) -> None:
+        """Merge a single model variable into variables metadata."""
+        existing_var = next((v for v in variables_metadata if v.get("name") == model_var.get("name")), None)
+
+        if existing_var:
+            for key, value in model_var.items():
+                if key not in existing_var or not existing_var.get(key):
+                    existing_var[key] = value
+        else:
+            variables_metadata.append(model_var.copy())
 
     def get_model_metadata(self):
         model_metadata = self.library_metadata.model_metadata
@@ -683,3 +718,54 @@ class SdtmStandardsContext(BaseStandardsContext):
             merge_spec=merge_spec,
         )
         return result_schema.name
+
+    def detect_split_datasets(self, dataset_names: List[str]) -> Dict[str, List[str]]:
+        """
+        Detect split datasets by name.
+        """
+        split_groups = defaultdict(list)
+
+        datasets = [name.lower() for name in dataset_names]
+
+        for dataset in datasets:
+            unsplit_name = self._get_unsplit_name(dataset)
+
+            if unsplit_name != dataset:
+                split_groups[unsplit_name].append(dataset)
+
+        return {k: v for k, v in split_groups.items() if len(v) > 1}
+
+    @staticmethod
+    def _get_unsplit_name(dataset_name: str) -> str:
+        """
+        Extract the unsplit (logical) name from a dataset name following
+        SDTMIG v3.4 naming conventions.
+        """
+        dataset = dataset_name.lower()
+
+        # supp + fa + parent domain (e.g. suppfacm, suppfaeg)
+        match = re.match(r"^suppfa([a-z]{2})$", dataset)
+        if match:
+            return "suppfa"
+
+        # supp + domain + numeric suffix (e.g. suppae1, suppae2)
+        match = re.match(r"^(supp[a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return match.group(1)
+
+        # fa + 2-char parent domain (e.g. facm, faeg)
+        match = re.match(r"^fa([a-z]{2})$", dataset)
+        if match:
+            return "fa"
+
+        # sq (supplemental qualifiers) + numeric suffix
+        match = re.match(r"^(sq[a-z]*)(\d+)$", dataset)
+        if match:
+            return match.group(1)
+
+        # domain + numeric suffix (e.g. ae1, ae2, dm1)
+        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
+        if match:
+            return match.group(1)
+
+        return dataset
