@@ -13,7 +13,7 @@ if TYPE_CHECKING:
         PostgresQLDataService,
     )
     from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
-
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER, SOURCE_DS
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2, VariableMetadata
 from cdisc_rules_engine.services import logger
@@ -33,6 +33,18 @@ class SqlDataPreprocessor:
         self._relrec_catalog: Optional[List[Dict]] = None
         self._co_catalog: Optional[List[Dict]] = None
         self._supp_catalog: Optional[List[Dict]] = None
+
+    def _get_table_hash(self, table_name: str) -> str:
+        table_hash = self.pgi.schema.get_table_hash(table_name)
+        if table_hash:
+            return table_hash
+        return table_name.lower()
+
+    def _get_column_hash(self, table_name: str, column_name: str) -> Optional[str]:
+        col_hash = self.pgi.schema.get_column_hash(table_name, column_name)
+        if col_hash:
+            return col_hash
+        return column_name.lower()
 
     def preprocess_all(self) -> Dict[str, Any]:
         """Execute all preprocessing stages in sequence and store results."""
@@ -216,27 +228,47 @@ class SqlDataPreprocessor:
 
         logger.info(f"Creating concatenated table: {unsplit_name}")
 
+        first_part_schema = self.pgi.schema.get_table(dataset_parts[0])
+        if not first_part_schema:
+            logger.error(f"Schema not found for first part: {dataset_parts[0]}")
+            return
+
+        source_ds_hash = first_part_schema.get_column_hash(SOURCE_DS) or SOURCE_DS
+        source_row_hash = first_part_schema.get_column_hash(SOURCE_ROW_NUMBER) or SOURCE_ROW_NUMBER
+
         union_parts = []
         for part in dataset_parts:
-            union_parts.append(f"SELECT * FROM public.{part}")
+            part_hash = self._get_table_hash(part)
+            union_parts.append(f"SELECT * FROM public.{part_hash}")
 
         union_query = " UNION ALL ".join(union_parts)
 
+        unsplit_schema = SqlTableSchema.from_join(unsplit_name, self.pgi)
+
+        for col_name, col_schema in first_part_schema.get_columns():
+            if col_name.lower() != "id":
+                unsplit_schema.add_column(col_schema)
+
+        self.pgi.schema.add_table(unsplit_schema)
+
+        unsplit_hash = unsplit_schema.hash
+
         create_query = f"""
-            CREATE TABLE IF NOT EXISTS public.{unsplit_name} AS
+            CREATE TABLE IF NOT EXISTS public.{unsplit_hash} AS
             WITH concatenated AS (
                 {union_query}
             )
             SELECT * FROM concatenated
-            ORDER BY {SOURCE_DS}, {SOURCE_ROW_NUMBER}
+            ORDER BY {source_ds_hash}, {source_row_hash}
         """
 
         self.pgi.execute_sql(create_query)
 
         index_queries = [
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_{SOURCE_DS} " f"ON public.{unsplit_name}({SOURCE_DS})",
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_{SOURCE_ROW_NUMBER} "
-            f"ON public.{unsplit_name}({SOURCE_ROW_NUMBER})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_ds_hash} "
+            f"ON public.{unsplit_hash}({source_ds_hash})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_row_hash} "
+            f"ON public.{unsplit_hash}({source_row_hash})",
         ]
 
         check_cols_query = """
@@ -246,13 +278,13 @@ class SqlDataPreprocessor:
             AND table_name = %s
             AND column_name IN ('studyid', 'usubjid')
         """
-        self.pgi.execute_sql(check_cols_query, (unsplit_name,))
+        self.pgi.execute_sql(check_cols_query, (unsplit_hash,))
         domain_cols = self.pgi.fetch_all()
 
         if len(domain_cols) == 2:
             index_queries.append(
-                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid "
-                f"ON public.{unsplit_name}(studyid, usubjid)"
+                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_studyid_usubjid "
+                f"ON public.{unsplit_hash}(studyid, usubjid)"
             )
 
         for idx_query in index_queries:
@@ -269,13 +301,15 @@ class SqlDataPreprocessor:
         """
         errors = []
 
+        table_hash = self._get_table_hash(table_name)
+
         # check if required columns exist
         structure_check = f"""
             SELECT
                 NOT EXISTS (
                     SELECT 1 FROM information_schema.columns
                     WHERE table_schema = 'public'
-                    AND table_name = '{table_name}'
+                    AND table_name = '{table_hash}'
                     AND column_name IN ('idvar', 'idvarval', '{rdomain_col}')
                 ) as missing_columns
         """
@@ -294,20 +328,26 @@ class SqlDataPreprocessor:
             )
             return errors
 
+        studyid_hash = self._get_column_hash(table_name, "studyid") or "studyid"
+        usubjid_hash = self._get_column_hash(table_name, "usubjid") or "usubjid"
+        rdomain_hash = self._get_column_hash(table_name, rdomain_col) or rdomain_col
+        idvar_hash = self._get_column_hash(table_name, "idvar") or "idvar"
+        idvarval_hash = self._get_column_hash(table_name, "idvarval") or "idvarval"
+
         # get records with row numbers
         query = f"""
             WITH numbered_records AS (
                 SELECT
-                    ROW_NUMBER() OVER (ORDER BY studyid, usubjid) - 1 as row_num,
-                    studyid,
-                    usubjid,
-                    {rdomain_col} as rdomain,
-                    idvar,
-                    idvarval
-                FROM public.{table_name}
-                WHERE idvar IS NOT NULL
-                AND idvarval IS NOT NULL
-                AND {rdomain_col} IS NOT NULL
+                    ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}) - 1 as row_num,
+                    {studyid_hash} as studyid,
+                    {usubjid_hash} as usubjid,
+                    {rdomain_hash} as rdomain,
+                    {idvar_hash} as idvar,
+                    {idvarval_hash} as idvarval
+                FROM public.{table_hash}
+                WHERE {idvar_hash} IS NOT NULL
+                AND {idvarval_hash} IS NOT NULL
+                AND {rdomain_hash} IS NOT NULL
             )
             SELECT * FROM numbered_records
         """
@@ -323,6 +363,8 @@ class SqlDataPreprocessor:
             by_domain[record["rdomain"].lower()].append(record)
 
         for domain, domain_records in by_domain.items():
+            domain_hash = self._get_table_hash(domain)
+
             table_exists_query = """
                 SELECT EXISTS (
                     SELECT 1
@@ -332,7 +374,7 @@ class SqlDataPreprocessor:
                 )
             """
 
-            self.pgi.execute_sql(table_exists_query, (domain,))
+            self.pgi.execute_sql(table_exists_query, (domain_hash,))
             result = self.pgi.fetch_one()
 
             if not result or not result["exists"]:
@@ -354,6 +396,7 @@ class SqlDataPreprocessor:
 
             for record in domain_records:
                 idvar = record["idvar"].lower()
+                idvar_col_hash = self._get_column_hash(domain, idvar) or idvar
 
                 col_exists_query = """
                     SELECT EXISTS (
@@ -365,7 +408,7 @@ class SqlDataPreprocessor:
                     )
                 """
 
-                self.pgi.execute_sql(col_exists_query, (domain, idvar))
+                self.pgi.execute_sql(col_exists_query, (domain_hash, idvar_col_hash))
                 result = self.pgi.fetch_one()
 
                 if not result or not dict(result)["exists"]:
@@ -384,12 +427,15 @@ class SqlDataPreprocessor:
                     )
                     continue
 
+                domain_studyid_hash = self._get_column_hash(domain, "studyid") or "studyid"
+                domain_usubjid_hash = self._get_column_hash(domain, "usubjid") or "usubjid"
+
                 value_check_query = f"""
                     SELECT COUNT(*) as count
-                    FROM public.{domain}
-                    WHERE studyid = %s
-                    AND usubjid = %s
-                    AND {idvar} = %s
+                    FROM public.{domain_hash}
+                    WHERE {domain_studyid_hash} = %s
+                    AND {domain_usubjid_hash} = %s
+                    AND {idvar_col_hash} = %s
                 """
 
                 self.pgi.execute_sql(value_check_query, (record["studyid"], record["usubjid"], record["idvarval"]))
@@ -431,6 +477,7 @@ class SqlDataPreprocessor:
             return {"catalog_created": False}
 
         relrec_table = result["dataset_id"]
+        relrec_hash = self._get_table_hash(relrec_table)
 
         validation_errors = self._validate_idvar_idvarval(relrec_table, "RELREC")
         self._validation_errors.extend(validation_errors)
@@ -441,19 +488,27 @@ class SqlDataPreprocessor:
                 if error.get("row_number", -1) >= 0:
                     logger.debug(f"Row {error['row_number']}: {error['error']}")
 
+        studyid_hash = self._get_column_hash(relrec_table, "studyid") or "studyid"
+        usubjid_hash = self._get_column_hash(relrec_table, "usubjid") or "usubjid"
+        relid_hash = self._get_column_hash(relrec_table, "relid") or "relid"
+        rdomain_hash = self._get_column_hash(relrec_table, "rdomain") or "rdomain"
+        idvar_hash = self._get_column_hash(relrec_table, "idvar") or "idvar"
+        idvarval_hash = self._get_column_hash(relrec_table, "idvarval") or "idvarval"
+        reltype_hash = self._get_column_hash(relrec_table, "reltype") or "reltype"
+
         catalog_query = f"""
             CREATE TABLE IF NOT EXISTS public.relrec_catalog AS
             SELECT
-                studyid,
-                usubjid,
-                relid,
-                rdomain,
-                idvar,
-                idvarval,
-                reltype,
-                ROW_NUMBER() OVER (ORDER BY studyid, usubjid, relid) - 1 as source_row,
-                ROW_NUMBER() OVER (ORDER BY studyid, usubjid, relid) as catalog_id
-            FROM public.{relrec_table}
+                {studyid_hash} as studyid,
+                {usubjid_hash} as usubjid,
+                {relid_hash} as relid,
+                {rdomain_hash} as rdomain,
+                {idvar_hash} as idvar,
+                {idvarval_hash} as idvarval,
+                {reltype_hash} as reltype,
+                ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}, {relid_hash}) - 1 as source_row,
+                ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}, {relid_hash}) as catalog_id
+            FROM public.{relrec_hash}
         """
 
         self.pgi.execute_sql(catalog_query)
@@ -514,6 +569,7 @@ class SqlDataPreprocessor:
         for dataset in co_datasets:
             co_table = dataset["dataset_id"]
             co_domain = dataset["dataset_domain"]
+            co_hash = self._get_table_hash(co_table)
 
             logger.info(f"Processing CO domain: {co_domain}")
 
@@ -535,22 +591,29 @@ class SqlDataPreprocessor:
                 LIMIT 1
             """
 
-            self.pgi.execute_sql(coval_check, (co_table,))
+            self.pgi.execute_sql(coval_check, (co_hash,))
             has_coval = self.pgi.fetch_one()
 
-            coval_col = "coval" if has_coval else "NULL as coval"
+            studyid_hash = self._get_column_hash(co_table, "studyid") or "studyid"
+            usubjid_hash = self._get_column_hash(co_table, "usubjid") or "usubjid"
+            rdomain_hash = self._get_column_hash(co_table, "rdomain") or "rdomain"
+            idvar_hash = self._get_column_hash(co_table, "idvar") or "idvar"
+            idvarval_hash = self._get_column_hash(co_table, "idvarval") or "idvarval"
+            coval_hash = self._get_column_hash(co_table, "coval") or "coval"
+
+            coval_col = f"{coval_hash} as coval" if has_coval else "NULL as coval"
 
             catalog_query = f"""
                 CREATE TABLE IF NOT EXISTS public.{catalog_name} AS
                 SELECT
-                    studyid,
-                    usubjid,
-                    rdomain,
-                    idvar,
-                    idvarval,
+                    {studyid_hash} as studyid,
+                    {usubjid_hash} as usubjid,
+                    {rdomain_hash} as rdomain,
+                    {idvar_hash} as idvar,
+                    {idvarval_hash} as idvarval,
                     {coval_col},
-                    ROW_NUMBER() OVER (ORDER BY studyid, usubjid) as catalog_id
-                FROM public.{co_table}
+                    ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}) as catalog_id
+                FROM public.{co_hash}
             """
 
             self.pgi.execute_sql(catalog_query)
@@ -605,6 +668,7 @@ class SqlDataPreprocessor:
         for dataset in supp_datasets:
             supp_table = dataset["dataset_id"]
             rdomain = dataset["dataset_rdomain"]
+            supp_hash = self._get_table_hash(supp_table)
 
             logger.info(f"Processing SUPP dataset: {supp_table}")
 
@@ -627,7 +691,7 @@ class SqlDataPreprocessor:
                 )
             """
 
-            self.pgi.execute_sql(rdomain_check, (supp_table,))
+            self.pgi.execute_sql(rdomain_check, (supp_hash,))
             result = self.pgi.fetch_one()
 
             has_rdomain_col = dict(result)["exists"]
@@ -640,39 +704,47 @@ class SqlDataPreprocessor:
                 AND column_name IN ('qnam', 'qval')
             """
 
-            self.pgi.execute_sql(qnam_qval_check, (supp_table,))
+            self.pgi.execute_sql(qnam_qval_check, (supp_hash,))
             qnam_qval_cols = [row["column_name"] for row in self.pgi.fetch_all()]
 
-            qnam_col = "qnam" if "qnam" in qnam_qval_cols else "NULL as qnam"
-            qval_col = "qval" if "qval" in qnam_qval_cols else "NULL as qval"
+            studyid_hash = self._get_column_hash(supp_table, "studyid") or "studyid"
+            usubjid_hash = self._get_column_hash(supp_table, "usubjid") or "usubjid"
+            rdomain_col_hash = self._get_column_hash(supp_table, "rdomain") or "rdomain"
+            idvar_hash = self._get_column_hash(supp_table, "idvar") or "idvar"
+            idvarval_hash = self._get_column_hash(supp_table, "idvarval") or "idvarval"
+            qnam_hash = self._get_column_hash(supp_table, "qnam") or "qnam"
+            qval_hash = self._get_column_hash(supp_table, "qval") or "qval"
+
+            qnam_col = f"{qnam_hash} as qnam" if "qnam" in qnam_qval_cols else "NULL as qnam"
+            qval_col = f"{qval_hash} as qval" if "qval" in qnam_qval_cols else "NULL as qval"
 
             if has_rdomain_col:
                 catalog_query = f"""
                     CREATE TABLE IF NOT EXISTS public.{catalog_name} AS
                     SELECT
-                        studyid,
-                        usubjid,
-                        rdomain,
-                        idvar,
-                        idvarval,
+                        {studyid_hash} as studyid,
+                        {usubjid_hash} as usubjid,
+                        {rdomain_col_hash} as rdomain,
+                        {idvar_hash} as idvar,
+                        {idvarval_hash} as idvarval,
                         {qnam_col},
                         {qval_col},
-                        ROW_NUMBER() OVER (ORDER BY studyid, usubjid) as catalog_id
-                    FROM public.{supp_table}
+                        ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}) as catalog_id
+                    FROM public.{supp_hash}
                 """
             else:
                 catalog_query = f"""
                     CREATE TABLE IF NOT EXISTS public.{catalog_name} AS
                     SELECT
-                        studyid,
-                        usubjid,
+                        {studyid_hash} as studyid,
+                        {usubjid_hash} as usubjid,
                         '{rdomain}' as rdomain,
-                        idvar,
-                        idvarval,
+                        {idvar_hash} as idvar,
+                        {idvarval_hash} as idvarval,
                         {qnam_col},
                         {qval_col},
-                        ROW_NUMBER() OVER (ORDER BY studyid, usubjid) as catalog_id
-                    FROM public.{supp_table}
+                        ROW_NUMBER() OVER (ORDER BY {studyid_hash}, {usubjid_hash}) as catalog_id
+                    FROM public.{supp_hash}
                 """
 
             self.pgi.execute_sql(catalog_query)
@@ -827,6 +899,8 @@ class SqlDataPreprocessor:
             logger.info(f"Using cached merge: {merge_id}")
             return merge_id
 
+        left_hash = self._get_table_hash(left_domain.lower())
+
         merge_query = f"""
             CREATE TABLE IF NOT EXISTS public.{merge_id} AS
             WITH relrec_pairs AS (
@@ -844,7 +918,7 @@ class SqlDataPreprocessor:
                     AND r1.rdomain != r2.rdomain
             ),
             left_data AS (
-                SELECT * FROM public.{left_domain.lower()}
+                SELECT * FROM public.{left_hash}
             ),
             merged_data AS (
                 SELECT
@@ -884,6 +958,7 @@ class SqlDataPreprocessor:
             return merge_id
 
         catalog_name = f"{co_domain.lower()}_catalog"
+        left_hash = self._get_table_hash(left_domain.lower())
 
         merge_query = f"""
             CREATE TABLE IF NOT EXISTS public.{merge_id} AS
@@ -893,7 +968,7 @@ class SqlDataPreprocessor:
                 WHERE rdomain = '{left_domain}'
             ),
             left_data AS (
-                SELECT * FROM public.{left_domain.lower()}
+                SELECT * FROM public.{left_hash}
             ),
             merged_data AS (
                 SELECT
@@ -940,27 +1015,37 @@ class SqlDataPreprocessor:
             return None
 
         supp_table = result["dataset_id"]
+        supp_hash = self._get_table_hash(supp_table)
         merge_id = f"supp_{left_domain.lower()}"
 
         if merge_id in self._merged_datasets_cache:
             logger.info(f"Using cached merge: {merge_id}")
             return merge_id
 
+        left_hash = self._get_table_hash(left_domain.lower())
+
+        studyid_hash = self._get_column_hash(supp_table, "studyid") or "studyid"
+        usubjid_hash = self._get_column_hash(supp_table, "usubjid") or "usubjid"
+        idvar_hash = self._get_column_hash(supp_table, "idvar") or "idvar"
+        idvarval_hash = self._get_column_hash(supp_table, "idvarval") or "idvarval"
+        qnam_hash = self._get_column_hash(supp_table, "qnam") or "qnam"
+        qval_hash = self._get_column_hash(supp_table, "qval") or "qval"
+
         merge_query = f"""
             CREATE TABLE IF NOT EXISTS public.{merge_id} AS
             WITH supp_pivot AS (
                 SELECT
-                    studyid,
-                    usubjid,
-                    idvar,
-                    idvarval,
-                    MAX(CASE WHEN qnam IS NOT NULL THEN qnam END) as qnam,
-                    MAX(CASE WHEN qval IS NOT NULL THEN qval END) as qval
-                FROM public.{supp_table}
-                GROUP BY studyid, usubjid, idvar, idvarval
+                    {studyid_hash} as studyid,
+                    {usubjid_hash} as usubjid,
+                    {idvar_hash} as idvar,
+                    {idvarval_hash} as idvarval,
+                    MAX(CASE WHEN {qnam_hash} IS NOT NULL THEN {qnam_hash} END) as qnam,
+                    MAX(CASE WHEN {qval_hash} IS NOT NULL THEN {qval_hash} END) as qval
+                FROM public.{supp_hash}
+                GROUP BY {studyid_hash}, {usubjid_hash}, {idvar_hash}, {idvarval_hash}
             ),
             left_data AS (
-                SELECT * FROM public.{left_domain.lower()}
+                SELECT * FROM public.{left_hash}
             ),
             merged_data AS (
                 SELECT

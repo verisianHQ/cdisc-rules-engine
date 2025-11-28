@@ -64,6 +64,12 @@ NON_SPLIT_DATA = {
     },
 }
 
+
+def _get_table_hash(data_service, table_name: str) -> str:
+    table_hash = data_service.pgi.schema.get_table_hash(table_name)
+    return table_hash if table_hash else table_name.lower()
+
+
 # ============================================================================
 # Concatenation Tests
 # ============================================================================
@@ -99,16 +105,18 @@ def test_concatenate_two_parts(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
 
-    check_query = """
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    check_query = f"""
         SELECT EXISTS (
             SELECT 1 FROM information_schema.tables
-            WHERE table_schema = 'public' AND table_name = 'ae'
+            WHERE table_schema = 'public' AND table_name = '{ae_hash}'
         )
     """
     data_service.pgi.execute_sql(check_query)
     assert data_service.pgi.fetch_one()["exists"] is True
 
-    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {ae_hash}")
     assert data_service.pgi.fetch_one()["count"] == 3
 
 
@@ -127,7 +135,9 @@ def test_concatenate_preserves_source_ds(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
 
-    query = "SELECT DISTINCT source_ds FROM ae ORDER BY source_ds"
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    query = f"SELECT DISTINCT source_ds FROM {ae_hash} ORDER BY source_ds"
     data_service.pgi.execute_sql(query)
     sources = {row["source_ds"] for row in data_service.pgi.fetch_all()}
 
@@ -149,7 +159,9 @@ def test_concatenate_maintains_source_row_order(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
 
-    query = "SELECT source_ds, source_row_number FROM ae ORDER BY source_ds, source_row_number"
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    query = f"SELECT source_ds, source_row_number FROM {ae_hash} ORDER BY source_ds, source_row_number"
     data_service.pgi.execute_sql(query)
     results = data_service.pgi.fetch_all()
 
@@ -170,12 +182,14 @@ def test_concatenate_empty_part(sdtm_standards_context):
         data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"]}, standards_context
     )
 
-    data_service.pgi.execute_sql("DELETE FROM ae2")
+    ae2_hash = _get_table_hash(data_service, "ae2")
+    data_service.pgi.execute_sql(f"DELETE FROM {ae2_hash}")
 
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._concatenate_split_parts("ae", ["ae1", "ae2"])
 
-    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    ae_hash = _get_table_hash(data_service, "ae")
+    data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {ae_hash}")
     assert data_service.pgi.fetch_one()["count"] == 1
 
 
@@ -194,17 +208,19 @@ def test_concatenate_creates_indexes(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._concatenate_split_parts("dm", ["dm1", "dm2"])
 
-    index_query = """
+    dm_hash = _get_table_hash(data_service, "dm")
+
+    index_query = f"""
         SELECT indexname FROM pg_indexes
-        WHERE tablename = 'dm'
+        WHERE tablename = '{dm_hash}'
         AND schemaname = 'public'
     """
     data_service.pgi.execute_sql(index_query)
     indexes = {row["indexname"] for row in data_service.pgi.fetch_all()}
 
-    assert "idx_dm_source_ds" in indexes
-    assert "idx_dm_source_row_number" in indexes
-    assert "idx_dm_studyid_usubjid" in indexes
+    assert f"idx_{dm_hash}_source_ds" in indexes
+    assert f"idx_{dm_hash}_source_row_number" in indexes
+    assert f"idx_{dm_hash}_studyid_usubjid" in indexes
 
 
 # ============================================================================
@@ -303,10 +319,12 @@ def test_process_split_datasets_end_to_end(sdtm_standards_context):
     assert results["groups_processed"] == 1
     assert results["total_parts_concatenated"] == 3
 
-    check_table_query = """
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    check_table_query = f"""
         SELECT EXISTS (
             SELECT 1 FROM information_schema.tables
-            WHERE table_schema = 'public' AND table_name = 'ae'
+            WHERE table_schema = 'public' AND table_name = '{ae_hash}'
         )
     """
     data_service.pgi.execute_sql(check_table_query)
@@ -314,7 +332,7 @@ def test_process_split_datasets_end_to_end(sdtm_standards_context):
 
     assert len(data_service.datasets) == initial_count
 
-    data_service.pgi.execute_sql("SELECT COUNT(*) as count FROM ae")
+    data_service.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {ae_hash}")
     assert data_service.pgi.fetch_one()["count"] == 5
 
 
@@ -334,10 +352,11 @@ def test_process_multiple_groups(sdtm_standards_context):
     assert results["groups_processed"] == 2
 
     for table in ["ae", "suppae"]:
+        table_hash = _get_table_hash(data_service, table)
         check_query = f"""
             SELECT EXISTS (
                 SELECT 1 FROM information_schema.tables
-                WHERE table_schema = 'public' AND table_name = '{table}'
+                WHERE table_schema = 'public' AND table_name = '{table_hash}'
             )
         """
         data_service.pgi.execute_sql(check_query)
@@ -408,9 +427,11 @@ def test_query_concatenated_dataset(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._process_split_datasets()
 
-    query = """
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    query = f"""
         SELECT usubjid, aeterm, source_ds
-        FROM ae
+        FROM {ae_hash}
         WHERE usubjid = '001'
     """
     data_service.pgi.execute_sql(query)
@@ -434,9 +455,11 @@ def test_filter_by_source_ds(sdtm_standards_context):
     preprocessor = SqlDataPreprocessor(data_service, standards_context)
     preprocessor._process_split_datasets()
 
-    query = """
+    ae_hash = _get_table_hash(data_service, "ae")
+
+    query = f"""
         SELECT COUNT(*) as count
-        FROM ae
+        FROM {ae_hash}
         WHERE source_ds = 'AE1'
     """
     data_service.pgi.execute_sql(query)
