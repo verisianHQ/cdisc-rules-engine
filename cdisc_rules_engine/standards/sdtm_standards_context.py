@@ -103,33 +103,19 @@ class SdtmStandardsContext(BaseStandardsContext):
             return variable.replace("--", dataset_metadata.domain_code)
         return variable
 
-    def get_domain_metadata(self, domain: str) -> dict:
-        standard_data = self.get_standard_metadata()
-        for c in standard_data.get("classes", []):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == domain)
-            if domain_details:
-                return domain_details
-        # If not found, and domain is SUPP-- or SQ--, fall back to SUPPQUAL if it is present
-        # Could be more efficiently done in a single passthrough, but will leave the rewrite until fully confirmed
-        # wrt SUPP domain handling
-        if domain.startswith("SUPP") or domain.startswith("SQ"):
-            domain_details = search_in_list_of_dicts(c.get("datasets", []), lambda item: item["name"] == "SUPPQUAL")
-            if domain_details:
-                return domain_details
-        return {}
+    def get_domain_variables(self, domain: str) -> List[dict]:
+        standard_data = self.library_metadata.standard_metadata
+        model_data = self.library_metadata.model_metadata
 
-    def get_domain_variables(self, domain: str):
-        domain_details = self.get_domain_metadata(domain)
-        if domain_details:
-            variables_metadata = domain_details.get("datasetVariables", [])
-            if variables_metadata:
-                variables_metadata.sort(
-                    key=lambda item: (
-                        int(item.get("ordinal")) if item.get("ordinal") else int(item.get("order_number"))
-                    )
-                )
-                return variables_metadata
-        return []
+        variables_metadata, domain_class_name = self._get_standard_variables(standard_data, domain)
+
+        if domain_class_name and domain_class_name in DETECTABLE_CLASSES:
+            variables_metadata = self._merge_model_variables(model_data, variables_metadata)
+
+        if variables_metadata:
+            variables_metadata.sort(key=lambda item: int(item.get("ordinal", 0)))
+
+        return variables_metadata
 
     def _get_standard_variables(self, standard_data: dict, domain: str) -> tuple:
         """Get variables from standard metadata."""
@@ -183,7 +169,6 @@ class SdtmStandardsContext(BaseStandardsContext):
         ct_packages = self.library_metadata.published_ct_packages
         return ct_packages
 
-<<<<<<< HEAD
     def get_domain_metadata(self, domain: str):
         standard_data = self.library_metadata.standard_metadata
         for c in standard_data.get("classes", []):
@@ -191,54 +176,6 @@ class SdtmStandardsContext(BaseStandardsContext):
             if domain_details:
                 return domain_details
         return {}
-=======
-    def get_model_variables(self, domain: str, class_nm: str = None):
-        # For SQL operations, use a simplified version that works with available metadata
-        model_details = self.get_model_metadata()
-
-        # Handle SUPP domain normalization like the original function
-        if domain and (domain.upper().startswith("SUPP") or domain.upper().startswith("SQ")) and len(domain) > 2:
-            domain = "SUPPQUAL"
-
-        domain_details = sdtm_utilities.get_model_domain_metadata(model_details, domain)
-        variables_metadata = []
-        class_name = None
-
-        if domain_details:
-            # Domain found in the model
-            class_name = convert_library_class_name_to_ct_class(domain_details["_links"]["parentClass"]["title"])
-            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
-            variables_metadata = domain_details.get("datasetVariables", [])
-            if variables_metadata:
-                variables_metadata.sort(key=lambda item: int(item["ordinal"]))
-        else:
-            # Domain not found in the model. Use the new get_dataset_class method
-            class_name = class_nm
-
-            if class_name is None:
-                # Fall back to General Observations class for unknown domains
-                from cdisc_rules_engine.constants.classes import GENERAL_OBSERVATIONS_CLASS
-
-                class_name = GENERAL_OBSERVATIONS_CLASS
-
-            class_details = sdtm_utilities.get_class_metadata(model_details, class_name)
-
-        # Apply class-specific logic for detectable classes
-        if class_name and class_name in DETECTABLE_CLASSES:
-            (
-                identifiers_metadata,
-                class_variables_metadata,
-                timing_metadata,
-            ) = sdtm_utilities.get_allowed_class_variables(model_details, class_details)
-            # Identifiers are added to the beginning and Timing to the end
-            variables_metadata = class_variables_metadata
-            if identifiers_metadata:
-                variables_metadata = identifiers_metadata + variables_metadata
-            if timing_metadata:
-                variables_metadata = variables_metadata + timing_metadata
-
-        return variables_metadata
->>>>>>> 8d2729f (using new domain variables method)
 
     def get_library_variables_metadata(self, dataset_metadata: SdtmDatasetMetadata2) -> list:
         if not dataset_metadata.domain and dataset_metadata.is_supp and dataset_metadata.rdomain:
