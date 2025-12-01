@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from typing import Any, Literal, Tuple, Union, TYPE_CHECKING
 
+from cdisc_rules_engine.data_service.util import generate_hash
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 
@@ -74,8 +75,9 @@ class SqlTableSchema:
     @classmethod
     def from_join(cls, name: str, pgi: "PostgresQLInterface") -> "SqlTableSchema":
         """Create a SqlTableSchema for a join operation."""
+        hash = generate_hash(name.lower())
         prefix = pgi.sql_namespace
-        hash_name = f"{prefix}_{name}" if prefix else name
+        hash_name = f"{prefix}_{hash}" if prefix else hash
         return cls(name.lower(), hash_name, source="derived")
 
     @classmethod
