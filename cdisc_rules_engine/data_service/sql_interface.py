@@ -26,7 +26,7 @@ class PostgresQLInterface:
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
         if sql_namespace is None or sql_namespace == "uid":
-            self.sql_namespace = f"{self._get_unique_prefix_uid()}_"
+            self.sql_namespace = self._get_unique_prefix_uid()
         else:
             self.sql_namespace = sql_namespace
 

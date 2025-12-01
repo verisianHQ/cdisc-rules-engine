@@ -13,9 +13,10 @@ if TYPE_CHECKING:
         PostgresQLDataService,
     )
     from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
-from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+
 from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER, SOURCE_DS
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2, VariableMetadata
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
 
 
@@ -249,20 +250,26 @@ class SqlDataPreprocessor:
             if col_name.lower() != "id":
                 unsplit_schema.add_column(col_schema)
 
-        self.pgi.schema.add_table(unsplit_schema)
+        self.pgi.create_table(unsplit_schema)
 
         unsplit_hash = unsplit_schema.hash
 
-        create_query = f"""
-            CREATE TABLE IF NOT EXISTS public.{unsplit_hash} AS
-            WITH concatenated AS (
+        columns = [
+            col_schema.hash
+            for col_name, col_schema in unsplit_schema.get_columns()
+            if col_name.lower() != "id" and not col_schema.alias
+        ]
+        columns_str = ", ".join(columns)
+
+        insert_query = f"""
+            INSERT INTO public.{unsplit_hash} ({columns_str})
+            SELECT {columns_str} FROM (
                 {union_query}
-            )
-            SELECT * FROM concatenated
+            ) AS concatenated
             ORDER BY {source_ds_hash}, {source_row_hash}
         """
 
-        self.pgi.execute_sql(create_query)
+        self.pgi.execute_sql(insert_query)
 
         index_queries = [
             f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_ds_hash} "
@@ -271,20 +278,13 @@ class SqlDataPreprocessor:
             f"ON public.{unsplit_hash}({source_row_hash})",
         ]
 
-        check_cols_query = """
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_schema = 'public'
-            AND table_name = %s
-            AND column_name IN ('studyid', 'usubjid')
-        """
-        self.pgi.execute_sql(check_cols_query, (unsplit_hash,))
-        domain_cols = self.pgi.fetch_all()
+        studyid_hash = unsplit_schema.get_column_hash("studyid")
+        usubjid_hash = unsplit_schema.get_column_hash("usubjid")
 
-        if len(domain_cols) == 2:
+        if studyid_hash and usubjid_hash:
             index_queries.append(
                 f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_studyid_usubjid "
-                f"ON public.{unsplit_hash}(studyid, usubjid)"
+                f"ON public.{unsplit_hash}({studyid_hash}, {usubjid_hash})"
             )
 
         for idx_query in index_queries:
