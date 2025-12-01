@@ -697,7 +697,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         for dataset in datasets:
             unsplit_name = self._get_unsplit_name(dataset)
 
-            if unsplit_name != dataset:
+            if unsplit_name != dataset and unsplit_name not in datasets:
                 split_groups[unsplit_name].append(dataset)
 
         return {k: v for k, v in split_groups.items() if len(v) > 1}
