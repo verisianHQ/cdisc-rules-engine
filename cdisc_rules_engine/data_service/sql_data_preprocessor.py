@@ -29,20 +29,19 @@ class SqlDataPreprocessor:
     def __init__(self, data_service: "PostgresQLDataService", standards_context: "BaseStandardsContext"):
         self.data_service = data_service
         self.standards_context = standards_context
-        self.pgi = data_service.pgi
         self._merged_datasets_cache: Set[str] = set()
         self._relrec_catalog: Optional[List[Dict]] = None
         self._co_catalog: Optional[List[Dict]] = None
         self._supp_catalog: Optional[List[Dict]] = None
 
     def _get_table_hash(self, table_name: str) -> str:
-        table_hash = self.pgi.schema.get_table_hash(table_name)
+        table_hash = self.data_service.pgi.schema.get_table_hash(table_name)
         if table_hash:
             return table_hash
         return table_name.lower()
 
     def _get_column_hash(self, table_name: str, column_name: str) -> Optional[str]:
-        col_hash = self.pgi.schema.get_column_hash(table_name, column_name)
+        col_hash = self.data_service.pgi.schema.get_column_hash(table_name, column_name)
         if col_hash:
             return col_hash
         return column_name.lower()
@@ -52,8 +51,8 @@ class SqlDataPreprocessor:
         logger.info("Starting data preprocessing pipeline")
 
         run_id_query = "SELECT gen_random_uuid() as run_id"
-        self.pgi.execute_sql(run_id_query)
-        run_id = self.pgi.fetch_one()["run_id"]
+        self.data_service.pgi.execute_sql(run_id_query)
+        run_id = self.data_service.pgi.fetch_one()["run_id"]
 
         timestamp = datetime.now().astimezone()
 
@@ -110,7 +109,7 @@ class SqlDataPreprocessor:
                 ON public.preprocessing_results(timestamp);
         """
 
-        self.pgi.execute_sql(create_table_query)
+        self.data_service.pgi.execute_sql(create_table_query)
 
         validation_errors_table = """
             CREATE TABLE IF NOT EXISTS public.preprocessing_validation_errors (
@@ -137,7 +136,7 @@ class SqlDataPreprocessor:
                 ON public.preprocessing_validation_errors(source_table);
         """
 
-        self.pgi.execute_sql(validation_errors_table)
+        self.data_service.pgi.execute_sql(validation_errors_table)
 
     def _process_split_datasets(self) -> Dict[str, Any]:
         """Concatenate split datasets into single logical datasets."""
@@ -229,7 +228,7 @@ class SqlDataPreprocessor:
 
         logger.info(f"Creating concatenated table: {unsplit_name}")
 
-        first_part_schema = self.pgi.schema.get_table(dataset_parts[0])
+        first_part_schema = self.data_service.pgi.schema.get_table(dataset_parts[0])
         if not first_part_schema:
             logger.error(f"Schema not found for first part: {dataset_parts[0]}")
             return
@@ -244,13 +243,13 @@ class SqlDataPreprocessor:
 
         union_query = " UNION ALL ".join(union_parts)
 
-        unsplit_schema = SqlTableSchema.from_join(unsplit_name, self.pgi)
+        unsplit_schema = SqlTableSchema.from_join(unsplit_name, self.data_service.pgi)
 
         for col_name, col_schema in first_part_schema.get_columns():
             if col_name.lower() != "id":
                 unsplit_schema.add_column(col_schema)
 
-        self.pgi.create_table(unsplit_schema)
+        self.data_service.pgi.create_table(unsplit_schema)
 
         unsplit_hash = unsplit_schema.hash
 
@@ -269,7 +268,7 @@ class SqlDataPreprocessor:
             ORDER BY {source_ds_hash}, {source_row_hash}
         """
 
-        self.pgi.execute_sql(insert_query)
+        self.data_service.pgi.execute_sql(insert_query)
 
         index_queries = [
             f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_ds_hash} "
@@ -288,7 +287,7 @@ class SqlDataPreprocessor:
             )
 
         for idx_query in index_queries:
-            self.pgi.execute_sql(idx_query)
+            self.data_service.pgi.execute_sql(idx_query)
 
         logger.info(f"Concatenated dataset: {unsplit_name}")
 
@@ -314,8 +313,8 @@ class SqlDataPreprocessor:
                 ) as missing_columns
         """
 
-        self.pgi.execute_sql(structure_check)
-        result = self.pgi.fetch_one()
+        self.data_service.pgi.execute_sql(structure_check)
+        result = self.data_service.pgi.fetch_one()
 
         if result and result["missing_columns"]:
             errors.append(
@@ -352,8 +351,8 @@ class SqlDataPreprocessor:
             SELECT * FROM numbered_records
         """
 
-        self.pgi.execute_sql(query)
-        records = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(query)
+        records = self.data_service.pgi.fetch_all()
 
         if not records:
             return errors
@@ -374,8 +373,8 @@ class SqlDataPreprocessor:
                 )
             """
 
-            self.pgi.execute_sql(table_exists_query, (domain_hash,))
-            result = self.pgi.fetch_one()
+            self.data_service.pgi.execute_sql(table_exists_query, (domain_hash,))
+            result = self.data_service.pgi.fetch_one()
 
             if not result or not result["exists"]:
                 for record in domain_records:
@@ -408,8 +407,8 @@ class SqlDataPreprocessor:
                     )
                 """
 
-                self.pgi.execute_sql(col_exists_query, (domain_hash, idvar_col_hash))
-                result = self.pgi.fetch_one()
+                self.data_service.pgi.execute_sql(col_exists_query, (domain_hash, idvar_col_hash))
+                result = self.data_service.pgi.fetch_one()
 
                 if not result or not dict(result)["exists"]:
                     errors.append(
@@ -438,8 +437,10 @@ class SqlDataPreprocessor:
                     AND {idvar_col_hash} = %s
                 """
 
-                self.pgi.execute_sql(value_check_query, (record["studyid"], record["usubjid"], record["idvarval"]))
-                result = self.pgi.fetch_one()
+                self.data_service.pgi.execute_sql(
+                    value_check_query, (record["studyid"], record["usubjid"], record["idvarval"])
+                )
+                result = self.data_service.pgi.fetch_one()
 
                 if not result or dict(result)["count"] == 0:
                     errors.append(
@@ -469,8 +470,8 @@ class SqlDataPreprocessor:
             LIMIT 1
         """
 
-        self.pgi.execute_sql(check_query)
-        result = self.pgi.fetch_one()
+        self.data_service.pgi.execute_sql(check_query)
+        result = self.data_service.pgi.fetch_one()
 
         if not result:
             logger.info("No RELREC dataset found, skipping catalog creation")
@@ -511,7 +512,7 @@ class SqlDataPreprocessor:
             FROM public.{relrec_hash}
         """
 
-        self.pgi.execute_sql(catalog_query)
+        self.data_service.pgi.execute_sql(catalog_query)
 
         index_queries = [
             "CREATE INDEX IF NOT EXISTS idx_relrec_catalog_rdomain ON public.relrec_catalog(rdomain)",
@@ -521,7 +522,7 @@ class SqlDataPreprocessor:
         ]
 
         for idx_query in index_queries:
-            self.pgi.execute_sql(idx_query)
+            self.data_service.pgi.execute_sql(idx_query)
 
         stats_query = """
             SELECT
@@ -531,8 +532,8 @@ class SqlDataPreprocessor:
             FROM public.relrec_catalog
         """
 
-        self.pgi.execute_sql(stats_query)
-        result = self.pgi.fetch_one()
+        self.data_service.pgi.execute_sql(stats_query)
+        result = self.data_service.pgi.fetch_one()
         stats = result if result else {"unique_relationships": 0, "unique_domains": 0, "total_records": 0}
 
         self._cache_available_relrec_merges()
@@ -556,8 +557,8 @@ class SqlDataPreprocessor:
             WHERE dataset_domain LIKE 'CO%'
         """
 
-        self.pgi.execute_sql(co_query)
-        co_datasets = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(co_query)
+        co_datasets = self.data_service.pgi.fetch_all()
 
         if not co_datasets:
             logger.info("No CO domains found")
@@ -591,8 +592,8 @@ class SqlDataPreprocessor:
                 LIMIT 1
             """
 
-            self.pgi.execute_sql(coval_check, (co_hash,))
-            has_coval = self.pgi.fetch_one()
+            self.data_service.pgi.execute_sql(coval_check, (co_hash,))
+            has_coval = self.data_service.pgi.fetch_one()
 
             studyid_hash = self._get_column_hash(co_table, "studyid") or "studyid"
             usubjid_hash = self._get_column_hash(co_table, "usubjid") or "usubjid"
@@ -616,7 +617,7 @@ class SqlDataPreprocessor:
                 FROM public.{co_hash}
             """
 
-            self.pgi.execute_sql(catalog_query)
+            self.data_service.pgi.execute_sql(catalog_query)
 
             index_queries = [
                 f"""
@@ -630,7 +631,7 @@ class SqlDataPreprocessor:
             ]
 
             for idx_query in index_queries:
-                self.pgi.execute_sql(idx_query)
+                self.data_service.pgi.execute_sql(idx_query)
 
             catalogs_created.append(catalog_name)
 
@@ -655,8 +656,8 @@ class SqlDataPreprocessor:
                 OR dataset_id LIKE 'sq%'
         """
 
-        self.pgi.execute_sql(supp_query)
-        supp_datasets = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(supp_query)
+        supp_datasets = self.data_service.pgi.fetch_all()
 
         if not supp_datasets:
             logger.info("No SUPP datasets found")
@@ -691,8 +692,8 @@ class SqlDataPreprocessor:
                 )
             """
 
-            self.pgi.execute_sql(rdomain_check, (supp_hash,))
-            result = self.pgi.fetch_one()
+            self.data_service.pgi.execute_sql(rdomain_check, (supp_hash,))
+            result = self.data_service.pgi.fetch_one()
 
             has_rdomain_col = dict(result)["exists"]
 
@@ -704,8 +705,8 @@ class SqlDataPreprocessor:
                 AND column_name IN ('qnam', 'qval')
             """
 
-            self.pgi.execute_sql(qnam_qval_check, (supp_hash,))
-            qnam_qval_cols = [row["column_name"] for row in self.pgi.fetch_all()]
+            self.data_service.pgi.execute_sql(qnam_qval_check, (supp_hash,))
+            qnam_qval_cols = [row["column_name"] for row in self.data_service.pgi.fetch_all()]
 
             studyid_hash = self._get_column_hash(supp_table, "studyid") or "studyid"
             usubjid_hash = self._get_column_hash(supp_table, "usubjid") or "usubjid"
@@ -747,7 +748,7 @@ class SqlDataPreprocessor:
                     FROM public.{supp_hash}
                 """
 
-            self.pgi.execute_sql(catalog_query)
+            self.data_service.pgi.execute_sql(catalog_query)
 
             index_queries = [
                 f"""
@@ -766,7 +767,7 @@ class SqlDataPreprocessor:
                 )
 
             for idx_query in index_queries:
-                self.pgi.execute_sql(idx_query)
+                self.data_service.pgi.execute_sql(idx_query)
 
             catalogs_created.append(catalog_name)
 
@@ -801,8 +802,8 @@ class SqlDataPreprocessor:
             GROUP BY left_domain
         """
 
-        self.pgi.execute_sql(query)
-        results = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(query)
+        results = self.data_service.pgi.fetch_all()
 
         if results:
             for result in results:
@@ -813,7 +814,7 @@ class SqlDataPreprocessor:
                         available_relrec_merges = %s
                     WHERE dataset_domain = %s
                 """
-                self.pgi.execute_sql(update_query, (result["available_merges"], result["left_domain"]))
+                self.data_service.pgi.execute_sql(update_query, (result["available_merges"], result["left_domain"]))
 
     def _cache_available_co_merges(self) -> None:
         """Cache available CO merges for domains."""
@@ -825,8 +826,8 @@ class SqlDataPreprocessor:
             AND table_name LIKE 'co%'
         """
 
-        self.pgi.execute_sql(co_catalogs_query)
-        co_catalogs = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(co_catalogs_query)
+        co_catalogs = self.data_service.pgi.fetch_all()
 
         for catalog in co_catalogs:
             catalog_name = catalog["table_name"]
@@ -837,8 +838,8 @@ class SqlDataPreprocessor:
                 WHERE rdomain IS NOT NULL
             """
 
-            self.pgi.execute_sql(domains_query)
-            domains = self.pgi.fetch_all()
+            self.data_service.pgi.execute_sql(domains_query)
+            domains = self.data_service.pgi.fetch_all()
 
             if domains:
                 for domain in domains:
@@ -847,7 +848,7 @@ class SqlDataPreprocessor:
                         SET contains_co_refs = true
                         WHERE dataset_domain = %s
                     """
-                    self.pgi.execute_sql(update_query, (domain["rdomain"],))
+                    self.data_service.pgi.execute_sql(update_query, (domain["rdomain"],))
 
     def _cache_available_supp_merges(self) -> None:
         """Cache available SUPP merges for domains."""
@@ -859,8 +860,8 @@ class SqlDataPreprocessor:
             AND (table_name LIKE 'supp%' OR table_name LIKE 'sq%')
         """
 
-        self.pgi.execute_sql(supp_catalogs_query)
-        supp_catalogs = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(supp_catalogs_query)
+        supp_catalogs = self.data_service.pgi.fetch_all()
 
         for catalog in supp_catalogs:
             catalog_name = catalog["table_name"]
@@ -872,8 +873,8 @@ class SqlDataPreprocessor:
                 LIMIT 1
             """
 
-            self.pgi.execute_sql(rdomain_query)
-            result = self.pgi.fetch_one()
+            self.data_service.pgi.execute_sql(rdomain_query)
+            result = self.data_service.pgi.fetch_one()
 
             if result:
                 rdomain = result["rdomain"]
@@ -882,7 +883,7 @@ class SqlDataPreprocessor:
                     SET contains_supp_refs = true
                     WHERE dataset_domain = %s
                 """
-                self.pgi.execute_sql(update_query, (rdomain,))
+                self.data_service.pgi.execute_sql(update_query, (rdomain,))
 
     def _perform_relrec_merge(self, dataset_spec: Dict, rule_spec: Dict) -> Optional[str]:
         """Perform a specific RELREC merge based on rule requirements."""
@@ -935,7 +936,7 @@ class SqlDataPreprocessor:
             SELECT * FROM merged_data
         """
 
-        self.pgi.execute_sql(merge_query)
+        self.data_service.pgi.execute_sql(merge_query)
         self._merged_datasets_cache.add(merge_id)
         self._add_merged_dataset_metadata(merge_id, left_domain, "relrec_merged")
 
@@ -984,7 +985,7 @@ class SqlDataPreprocessor:
             SELECT * FROM merged_data
         """
 
-        self.pgi.execute_sql(merge_query)
+        self.data_service.pgi.execute_sql(merge_query)
         self._merged_datasets_cache.add(merge_id)
         self._add_merged_dataset_metadata(merge_id, left_domain, "co_merged")
 
@@ -1007,8 +1008,8 @@ class SqlDataPreprocessor:
             LIMIT 1
         """
 
-        self.pgi.execute_sql(supp_query, (left_domain,))
-        result = self.pgi.fetch_one()
+        self.data_service.pgi.execute_sql(supp_query, (left_domain,))
+        result = self.data_service.pgi.fetch_one()
 
         if not result:
             logger.warning(f"No SUPP dataset found for domain {left_domain}")
@@ -1060,7 +1061,7 @@ class SqlDataPreprocessor:
             SELECT * FROM merged_data
         """
 
-        self.pgi.execute_sql(merge_query)
+        self.data_service.pgi.execute_sql(merge_query)
         self._merged_datasets_cache.add(merge_id)
         self._add_merged_dataset_metadata(merge_id, left_domain, "supp_merged")
 
@@ -1078,8 +1079,8 @@ class SqlDataPreprocessor:
             AND table_name = '{merge_id}'
         """
 
-        self.pgi.execute_sql(column_query)
-        columns = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(column_query)
+        columns = self.data_service.pgi.fetch_all()
 
         for column in columns:
             insert_query = """
@@ -1118,7 +1119,7 @@ class SqlDataPreprocessor:
                 merge_type,
             )
 
-            self.pgi.execute_sql(insert_query, values)
+            self.data_service.pgi.execute_sql(insert_query, values)
 
     def _update_metadata(self, timestamp: datetime) -> Dict[str, int]:
         """Update metadata for all preprocessed datasets."""
@@ -1133,7 +1134,7 @@ class SqlDataPreprocessor:
             WHERE dataset_is_split = true
         """
 
-        affected_split = self.pgi.execute_sql(split_update_query, (timestamp, timestamp))
+        affected_split = self.data_service.pgi.execute_sql(split_update_query, (timestamp, timestamp))
 
         relrec_update_query = """
             UPDATE public.data_metadata
@@ -1143,7 +1144,7 @@ class SqlDataPreprocessor:
             WHERE contains_relrec_refs = true
         """
 
-        affected_relrec = self.pgi.execute_sql(relrec_update_query, (timestamp,))
+        affected_relrec = self.data_service.pgi.execute_sql(relrec_update_query, (timestamp,))
 
         co_update_query = """
             UPDATE public.data_metadata
@@ -1153,7 +1154,7 @@ class SqlDataPreprocessor:
             WHERE contains_co_refs = true
         """
 
-        affected_co = self.pgi.execute_sql(co_update_query, (timestamp,))
+        affected_co = self.data_service.pgi.execute_sql(co_update_query, (timestamp,))
 
         supp_update_query = """
             UPDATE public.data_metadata
@@ -1163,7 +1164,7 @@ class SqlDataPreprocessor:
             WHERE contains_supp_refs = true
         """
 
-        affected_supp = self.pgi.execute_sql(supp_update_query, (timestamp,))
+        affected_supp = self.data_service.pgi.execute_sql(supp_update_query, (timestamp,))
 
         return {
             "split_datasets_updated": affected_split,
@@ -1212,7 +1213,7 @@ class SqlDataPreprocessor:
                 "ERROR",
             )
 
-            self.pgi.execute_sql(insert_query, values)
+            self.data_service.pgi.execute_sql(insert_query, values)
 
     def get_preprocessing_status(self) -> Dict[str, Any]:
         """Get current preprocessing status, statistics and run history."""
@@ -1225,8 +1226,8 @@ class SqlDataPreprocessor:
             GROUP BY preprocessing_stage
         """
 
-        self.pgi.execute_sql(status_query)
-        results = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(status_query)
+        results = self.data_service.pgi.fetch_all()
 
         status = {}
         if results:
@@ -1246,8 +1247,8 @@ class SqlDataPreprocessor:
             LIMIT 10
         """
 
-        self.pgi.execute_sql(history_query)
-        history = self.pgi.fetch_all()
+        self.data_service.pgi.execute_sql(history_query)
+        history = self.data_service.pgi.fetch_all()
 
         status["cached_merges"] = len(self._merged_datasets_cache)
         status["validation_errors"] = len(self._validation_errors)
@@ -1274,7 +1275,7 @@ class SqlDataPreprocessor:
             )
         """
 
-        self.pgi.execute_sql(
+        self.data_service.pgi.execute_sql(
             insert_query,
             (
                 run_id,
@@ -1289,7 +1290,9 @@ class SqlDataPreprocessor:
         stages = ["split_processing", "relrec_catalog", "co_catalog", "supp_catalog"]
         for stage in stages:
             if stage in results and results[stage]:
-                self.pgi.execute_sql(insert_query, (run_id, timestamp, stage, json.dumps(results[stage]), None, None))
+                self.data_service.pgi.execute_sql(
+                    insert_query, (run_id, timestamp, stage, json.dumps(results[stage]), None, None)
+                )
 
     @staticmethod
     def run(data_service: "PostgresQLDataService", standards_context: "BaseStandardsContext") -> None:
