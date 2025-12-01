@@ -218,9 +218,9 @@ def test_concatenate_creates_indexes(sdtm_standards_context):
     data_service.pgi.execute_sql(index_query)
     indexes = {row["indexname"] for row in data_service.pgi.fetch_all()}
 
-    assert f"idx_{dm_hash}_source_ds" in indexes
-    assert f"idx_{dm_hash}_source_row_number" in indexes
-    assert f"idx_{dm_hash}_studyid_usubjid" in indexes
+    assert "idx_dm_source_ds" in indexes
+    assert "idx_dm_source_row" in indexes
+    assert "idx_dm_studyid_usubjid" in indexes
 
 
 # ============================================================================

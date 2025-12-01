@@ -271,10 +271,8 @@ class SqlDataPreprocessor:
         self.data_service.pgi.execute_sql(insert_query)
 
         index_queries = [
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_ds_hash} "
-            f"ON public.{unsplit_hash}({source_ds_hash})",
-            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_{source_row_hash} "
-            f"ON public.{unsplit_hash}({source_row_hash})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_ds " f"ON public.{unsplit_hash}({source_ds_hash})",
+            f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_source_row " f"ON public.{unsplit_hash}({source_row_hash})",
         ]
 
         studyid_hash = unsplit_schema.get_column_hash("studyid")
@@ -282,7 +280,7 @@ class SqlDataPreprocessor:
 
         if studyid_hash and usubjid_hash:
             index_queries.append(
-                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_hash}_studyid_usubjid "
+                f"CREATE INDEX IF NOT EXISTS idx_{unsplit_name}_studyid_usubjid "
                 f"ON public.{unsplit_hash}({studyid_hash}, {usubjid_hash})"
             )
 
