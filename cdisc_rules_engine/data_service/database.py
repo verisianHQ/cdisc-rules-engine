@@ -9,13 +9,16 @@ import pgserver
 from tempfile import mkdtemp
 
 from cdisc_rules_engine.services import logger
+import logging
 
 load_dotenv()
 
 
 @dataclass
 class DatabaseConfigPostgres:
-    srv = pgserver.get_server(mkdtemp(), cleanup_mode="delete")
+    logging.getLogger("pgserver").setLevel(logging.WARNING)
+    temp_pg_data = mkdtemp()
+    srv = pgserver.get_server(temp_pg_data, cleanup_mode="delete")
     dburi = srv.get_uri()
 
     min_connections: int = 1
