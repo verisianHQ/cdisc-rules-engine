@@ -1,11 +1,11 @@
 from contextlib import contextmanager
 from dataclasses import dataclass
-from os import getenv
 from typing import Optional
 
 import psycopg2.pool
 from dotenv import load_dotenv
 from psycopg2.extras import RealDictCursor
+import pgserver
 
 from cdisc_rules_engine.services import logger
 
@@ -14,13 +14,9 @@ load_dotenv()
 
 @dataclass
 class DatabaseConfigPostgres:
-    host = getenv("DATABASE_HOST")
-    port = (
-        getenv("DATABASE_PORT") if not isinstance(getenv("DATABASE_PORT"), str) else int(getenv("DATABASE_PORT", 5432))
-    )
-    database = getenv("DATABASE_NAME")
-    user = getenv("DATABASE_USER")
-    password = getenv("DATABASE_PASSWORD")
+    srv = pgserver.get_server("POSTGRESQL")
+    dburi = srv.get_uri()
+
     min_connections: int = 1
     max_connections: int = 10
 
@@ -39,11 +35,7 @@ class DatabasePostgres:
             self._pool = psycopg2.pool.SimpleConnectionPool(
                 self.config.min_connections,
                 self.config.max_connections,
-                host=self.config.host,
-                port=self.config.port,
-                database=self.config.database,
-                user=self.config.user,
-                password=self.config.password,
+                self.config.dburi,
             )
             logger.info("Database connection pool initialised successfully")
         except Exception as e:
