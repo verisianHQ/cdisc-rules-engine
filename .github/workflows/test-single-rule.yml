@@ -1,0 +1,285 @@
+name: Test Single Rule
+
+on:
+  workflow_dispatch:
+    inputs:
+      rule_data:
+        description: "JSON containing rule YAML, test data, and define.xml"
+        required: true
+        type: string
+
+jobs:
+  test-rule:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: coredb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout cdisc-rules-engine
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Parse rule data
+        id: parse_rule
+        run: |
+          echo '${{ inputs.rule_data }}' > /tmp/rule_data.json
+
+          # Extract rule ID
+          RULE_ID=$(python3 -c "import json; data=json.load(open('/tmp/rule_data.json')); print(data['rule_id'])")
+          echo "rule_id=$RULE_ID" >> $GITHUB_OUTPUT
+          echo "Rule ID: $RULE_ID"
+
+      - name: Create test directories
+        run: |
+          mkdir -p /tmp/test_data/positive
+          mkdir -p /tmp/test_data/negative
+          mkdir -p /tmp/rules
+
+      - name: Extract and convert test data
+        run: |
+          python3 << 'EOF'
+          import json
+          import base64
+          from pathlib import Path
+          import openpyxl
+          import pandas as pd
+
+          # Load rule data
+          with open('/tmp/rule_data.json', 'r') as f:
+              rule_data = json.load(f)
+
+          rule_id = rule_data['rule_id']
+
+          # Save rule YAML
+          with open(f'/tmp/rules/{rule_id}.yaml', 'w') as f:
+              f.write(rule_data['rule_yaml'])
+
+          # Save define.xml if present
+          if rule_data.get('define_xml'):
+              with open('/tmp/test_data/define.xml', 'w') as f:
+                  f.write(rule_data['define_xml'])
+
+          # Process test cases
+          for test_type in ['positive', 'negative']:
+              test_cases = rule_data['test_data'].get(test_type, [])
+              
+              for test_case in test_cases:
+                  case_id = test_case['case_id']
+                  filename = test_case['filename']
+                  content = base64.b64decode(test_case['content'])
+                  
+                  # Create case directory
+                  case_dir = Path(f'/tmp/test_data/{test_type}/{case_id}')
+                  case_dir.mkdir(parents=True, exist_ok=True)
+                  
+                  # Save Excel file
+                  excel_path = case_dir / filename
+                  with open(excel_path, 'wb') as f:
+                      f.write(content)
+                  
+                  # Convert Excel to XPT (if needed by the engine)
+                  # This is a simplified example - you may need more sophisticated conversion
+                  try:
+                      # Read all sheets from Excel
+                      excel_file = pd.ExcelFile(excel_path)
+                      
+                      for sheet_name in excel_file.sheet_names:
+                          df = pd.read_excel(excel_path, sheet_name=sheet_name)
+                          
+                          # Save as XPT (SAS transport format)
+                          xpt_path = case_dir / f"{sheet_name.lower()}.xpt"
+                          
+                          # pyreadstat can write XPT files
+                          import pyreadstat
+                          pyreadstat.write_xport(df, str(xpt_path))
+                          
+                          print(f"Converted {filename}/{sheet_name} -> {xpt_path.name}")
+                  except Exception as e:
+                      print(f"Warning: Could not convert {filename}: {e}")
+
+          print(f"\n✅ Test data prepared for {rule_id}")
+          EOF
+
+      - name: Run validation for positive test cases
+        id: positive_tests
+        continue-on-error: true
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          DATABASE_NAME: coredb
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: postgres
+        run: |
+          RULE_ID="${{ steps.parse_rule.outputs.rule_id }}"
+
+          # Run validation on each positive test case
+          for case_dir in /tmp/test_data/positive/*; do
+            if [ -d "$case_dir" ]; then
+              case_id=$(basename "$case_dir")
+              echo "Running positive test case: $case_id"
+              
+              # Run the validation
+              python core.py validate \
+                -s sdtmig \
+                -v 3-4 \
+                -r "$RULE_ID" \
+                -d "$case_dir" \
+                -of json \
+                -o "/tmp/results/positive_${case_id}" \
+                --sql-engine \
+                || echo "Test case $case_id completed with errors"
+            fi
+          done
+
+      - name: Run validation for negative test cases
+        id: negative_tests
+        continue-on-error: true
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
+          DATABASE_NAME: coredb
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: postgres
+        run: |
+          RULE_ID="${{ steps.parse_rule.outputs.rule_id }}"
+
+          # Run validation on each negative test case
+          for case_dir in /tmp/test_data/negative/*; do
+            if [ -d "$case_dir" ]; then
+              case_id=$(basename "$case_dir")
+              echo "Running negative test case: $case_id"
+              
+              # Run the validation
+              python core.py validate \
+                -s sdtmig \
+                -v 3-4 \
+                -r "$RULE_ID" \
+                -d "$case_dir" \
+                -of json \
+                -o "/tmp/results/negative_${case_id}" \
+                --sql-engine \
+                || echo "Test case $case_id completed with errors"
+            fi
+          done
+
+      - name: Analyze results
+        run: |
+          python3 << 'EOF'
+          import json
+          from pathlib import Path
+
+          rule_id = "${{ steps.parse_rule.outputs.rule_id }}"
+          results_dir = Path('/tmp/results')
+
+          final_results = {
+              "rule_id": rule_id,
+              "status": "passed",
+              "positive_tests": [],
+              "negative_tests": []
+          }
+
+          # Analyze positive test results
+          for result_file in results_dir.glob('positive_*.json'):
+              case_id = result_file.stem.replace('positive_', '')
+              
+              with open(result_file, 'r') as f:
+                  validation_result = json.load(f)
+              
+              # For positive tests, we expect NO errors
+              errors = []
+              for dataset_result in validation_result.get('datasets', []):
+                  if dataset_result.get('errors'):
+                      errors.extend(dataset_result['errors'])
+              
+              passed = len(errors) == 0
+              
+              final_results['positive_tests'].append({
+                  "case_id": case_id,
+                  "passed": passed,
+                  "errors": [str(e) for e in errors[:10]]  # First 10 errors
+              })
+              
+              if not passed:
+                  final_results['status'] = 'failed'
+
+          # Analyze negative test results  
+          for result_file in results_dir.glob('negative_*.json'):
+              case_id = result_file.stem.replace('negative_', '')
+              
+              with open(result_file, 'r') as f:
+                  validation_result = json.load(f)
+              
+              # For negative tests, we EXPECT errors
+              errors = []
+              for dataset_result in validation_result.get('datasets', []):
+                  if dataset_result.get('errors'):
+                      errors.extend(dataset_result['errors'])
+              
+              passed = len(errors) > 0  # Should have errors
+              
+              final_results['negative_tests'].append({
+                  "case_id": case_id,
+                  "passed": passed,
+                  "errors": [str(e) for e in errors[:10]] if not passed else []
+              })
+              
+              if not passed:
+                  final_results['status'] = 'failed'
+
+          # Save final results
+          with open('/tmp/results.json', 'w') as f:
+              json.dump(final_results, f, indent=2)
+
+          print(f"Test Results for {rule_id}")
+          print(f"Status: {final_results['status']}")
+          print(f"Positive tests: {len(final_results['positive_tests'])} cases")
+          print(f"Negative tests: {len(final_results['negative_tests'])} cases")
+          EOF
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: /tmp/results.json
+          retention-days: 30
+
+      - name: Upload detailed validation results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: detailed-validation-results
+          path: /tmp/results/
+          retention-days: 30
+
+      - name: Check test status
+        run: |
+          STATUS=$(python3 -c "import json; print(json.load(open('/tmp/results.json'))['status'])")
+
+          if [ "$STATUS" = "failed" ]; then
+            echo "Tests failed"
+            exit 1
+          else
+            echo "All tests passed"
+          fi
