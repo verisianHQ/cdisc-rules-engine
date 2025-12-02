@@ -161,6 +161,3 @@ environment/local/db_data/
 
 # Dummy sharepoint
 tests/resources/unitTesting/
-
-# pgserver files
-POSTGRESQL/

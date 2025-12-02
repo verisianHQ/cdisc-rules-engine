@@ -6,6 +6,7 @@ import psycopg2.pool
 from dotenv import load_dotenv
 from psycopg2.extras import RealDictCursor
 import pgserver
+from tempfile import mkdtemp
 
 from cdisc_rules_engine.services import logger
 
@@ -14,7 +15,7 @@ load_dotenv()
 
 @dataclass
 class DatabaseConfigPostgres:
-    srv = pgserver.get_server("POSTGRESQL")
+    srv = pgserver.get_server(mkdtemp(), cleanup_mode="delete")
     dburi = srv.get_uri()
 
     min_connections: int = 1
