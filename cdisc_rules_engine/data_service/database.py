@@ -33,7 +33,7 @@ class DatabaseConfigPostgres:
 class DatabaseConfigPGServer:
     temp_pg_data = None
     min_connections: int = 1
-    max_connections: int = 1
+    max_connections: int = 10
 
 
 class DatabasePostgres:
