@@ -11,7 +11,7 @@ import logging
 from cdisc_rules_engine.services import logger
 
 import pgserver
-from tempfile import mkdtemp
+import tempfile
 
 load_dotenv()
 
@@ -31,12 +31,15 @@ class DatabaseConfigPostgres:
 
 @dataclass
 class DatabaseConfigPGServer:
-    logging.getLogger("pgserver").setLevel(logging.WARNING)
-    temp_pg_data = mkdtemp()
-    srv = pgserver.get_server(temp_pg_data, cleanup_mode="delete")
-    dburi = srv.get_uri()
-    min_connections: int = 1
-    max_connections: int = 10
+    def setup(self):
+        logging.getLogger("pgserver").setLevel(logging.WARNING)
+        temp_pg_data = tempfile.mkdtemp()
+        srv = pgserver.get_server(temp_pg_data, cleanup_mode="delete")
+        dburi = srv.get_uri()
+        min_connections: int = 1
+        max_connections: int = 10
+        yield dburi, min_connections, max_connections
+        srv.cleanup()
 
 
 class DatabasePostgres:
@@ -51,10 +54,11 @@ class DatabasePostgres:
         """Initialise connection pool"""
         try:
             if isinstance(self.config, DatabaseConfigPGServer):
+                dburi, min_connections, max_connections = DatabaseConfigPGServer().setup()
                 self._pool = psycopg2.pool.SimpleConnectionPool(
-                    self.config.min_connections,
-                    self.config.max_connections,
-                    self.config.dburi,
+                    min_connections,
+                    max_connections,
+                    dburi,
                 )
             elif isinstance(self.config, DatabaseConfigPostgres):
                 self._pool = psycopg2.pool.SimpleConnectionPool(
