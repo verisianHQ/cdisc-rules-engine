@@ -710,29 +710,28 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         dataset = dataset_name.lower()
 
-        # supp + fa + parent domain (e.g. suppfacm, suppfaeg)
-        match = re.match(r"^suppfa([a-z]{2})$", dataset)
-        if match:
+        # suppfa + parent domain (e.g., suppfacm -> suppfa)
+        if dataset.startswith("suppfa") and len(dataset) > 6:
             return "suppfa"
 
-        # supp + domain + numeric suffix (e.g. suppae1, suppae2)
-        match = re.match(r"^(supp[a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
-
-        # fa + 2-char parent domain (e.g. facm, faeg)
-        match = re.match(r"^fa([a-z]{2})$", dataset)
-        if match:
+        # fa + parent domain (e.g., facm, faeg -> fa)
+        if dataset.startswith("fa") and len(dataset) == 4:
             return "fa"
 
-        # sq (supplemental qualifiers) + numeric suffix
-        match = re.match(r"^(sq[a-z]*)(\d+)$", dataset)
-        if match:
-            return match.group(1)
+        # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
+        if dataset.startswith("supp") and len(dataset) > 4:
+            match = re.match(r"^(supp[a-z]{2})([a-z0-9]+)$", dataset)
+            if match:
+                return match.group(1)
 
-        # domain + numeric suffix (e.g. ae1, ae2, dm1)
-        match = re.match(r"^([a-z]{2,4})(\d+)$", dataset)
-        if match:
-            return match.group(1)
+        # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
+        if dataset.startswith("relrec") and len(dataset) > 6:
+            return "relrec"
+
+        # 2-char parent domain + alphanumeric suffix (e.g., ae1 -> ae)
+        if len(dataset) > 2:
+            match = re.match(r"^([a-z]{2})([a-z0-9]+)$", dataset)
+            if match:
+                return match.group(1)
 
         return dataset
