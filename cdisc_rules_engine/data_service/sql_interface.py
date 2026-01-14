@@ -264,7 +264,9 @@ class PostgresQLInterface:
         """
         self.execute_sql(drop_query)
 
-        # TODO: maybe we cycle through the schema too and drop all tables that are not in the static list
+        self.schema._tables = {
+            table: schema for table, schema in list(self.schema._tables.items()) if schema.source == "static"
+        }
 
         logger.info(
             f"Dropped all tables with prefix '{self.sql_namespace}'"
