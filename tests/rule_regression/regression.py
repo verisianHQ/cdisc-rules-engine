@@ -47,7 +47,11 @@ WHITELISTED_RULES = {
 
 
 def run_single_rule_regression(
-    row: pd.Series, get_core_rule, target_case: Optional[str] = None, use_pgserver: bool = False
+    row: pd.Series,
+    get_core_rule,
+    target_case: Optional[str] = None,
+    use_pgserver: bool = False,
+    data_service: Optional[PostgresQLDataService] = None,
 ) -> list:
     try:
         return run_single_rule_regression_impl(
@@ -55,6 +59,7 @@ def run_single_rule_regression(
             get_core_rule,
             target_case,
             use_pgserver=use_pgserver,
+            data_service=data_service,
         )
     except Exception as e:
         regression = initialize_regression_dict(row)
@@ -63,7 +68,11 @@ def run_single_rule_regression(
 
 
 def run_single_rule_regression_impl(
-    row: pd.Series, get_core_rule, target_case: Optional[str] = None, use_pgserver: bool = False
+    row: pd.Series,
+    get_core_rule,
+    target_case: Optional[str] = None,
+    use_pgserver: bool = False,
+    data_service: Optional[PostgresQLDataService] = None,
 ) -> list:
     ig_specs = {
         "standard": "sdtmig",
@@ -130,6 +139,7 @@ def run_single_rule_regression_impl(
                         is_nested_structure,
                         cur_core_id,
                         use_pgserver=use_pgserver,
+                        data_service=data_service,
                     )
         elif len(paths) < 1:
             rule_regression["rule_in_mltple_standards"] = []
@@ -165,6 +175,7 @@ def run_test_cases(
     is_nested_structure: bool = False,
     cur_core_id: str = None,
     use_pgserver: bool = False,
+    data_service: Optional[PostgresQLDataService] = None,
 ):
     two_digit_pattern = re.compile(r"^\d{2}$")
     path_depth = TYPE_DEPTH + 1 if is_nested_structure else TYPE_DEPTH
@@ -197,6 +208,7 @@ def run_test_cases(
                 rule,
                 cur_core_id,
                 use_pgserver=use_pgserver,
+                data_service=data_service,
             )
             test_case_regression.append(
                 {
@@ -227,6 +239,7 @@ def run_regression_on_test_case(
     rule,
     cur_core_id: Optional[str] = None,
     use_pgserver: bool = False,
+    data_service: Optional[PostgresQLDataService] = None,
 ):
     can_process_dataset = False
     data_test_datasets = None
@@ -276,6 +289,7 @@ def run_regression_on_test_case(
             test_case_folder_path,
             cur_core_id,
             use_pgserver=use_pgserver,
+            data_service=data_service,
         )
 
         # Uncomment to produce reports for CDISC to use
@@ -339,7 +353,7 @@ def _initialize_data_service(
     """Helper to handle persistent or new data service initialization."""
     if data_service:
         ds = data_service
-        ds.pgi._drop_prefixed_tables()
+        ds.pgi._drop_non_static_tables()
         ds.datasets = []
         for test_ds in data_test_datasets:
             ds_metadata = standards_context.transform_dataset_metadata(

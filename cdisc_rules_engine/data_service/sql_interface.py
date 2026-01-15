@@ -230,21 +230,42 @@ class PostgresQLInterface:
 
     def _drop_prefixed_tables(self):
         """Drop all tables that start with the configured sql_namespace"""
+        drop_query = f"""
+            DO $$
+            DECLARE
+                r RECORD;
+            BEGIN
+                FOR r IN
+                    SELECT tablename
+                    FROM pg_tables
+                    WHERE schemaname = 'public'
+                    AND tablename LIKE '{self.sql_namespace}%'
+                LOOP
+                    EXECUTE format('DROP TABLE IF EXISTS %I CASCADE;', r.tablename);
+                END LOOP;
+            END $$;
+        """
+        self.execute_sql(drop_query)
+
+        self.schema._tables = {
+            table: schema
+            for table, schema in list(self.schema._tables.items())
+            if not schema.hash.startswith(self.sql_namespace)
+        }
+
+        logger.info(f"Dropped all tables with prefix '{self.sql_namespace}'")
+
+    def _drop_non_static_tables(self):
+        """Drop all non-static tables"""
         static_tables = [
             "codelists",
             "ig_datasets",
             "ig_variables",
             "standards",
         ]
-        # TODO: these names probably need to go in their own constants file along
-        # with the constants at the top of "data_service/startup/populate_standards.py"
-
+        # TODO: will move this const to its own file in enums
+        # in the upcoming codelists implementation branch.
         exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
-
-        if self.sql_namespace:
-            prefix_condition = f"AND tablename LIKE '{self.sql_namespace}%'"
-        else:
-            prefix_condition = ""
 
         drop_query = f"""
             DO $$
@@ -255,7 +276,6 @@ class PostgresQLInterface:
                     SELECT tablename
                     FROM pg_tables
                     WHERE schemaname = 'public'
-                    {prefix_condition}
                     AND tablename NOT IN ({exclusion_list})
                 LOOP
                     EXECUTE format('DROP TABLE IF EXISTS %I CASCADE;', r.tablename);
@@ -265,14 +285,10 @@ class PostgresQLInterface:
         self.execute_sql(drop_query)
 
         self.schema._tables = {
-            table: schema for table, schema in list(self.schema._tables.items()) if schema.source == "static"
+            table: schema for table, schema in list(self.schema._tables.items()) if table in static_tables
         }
 
-        logger.info(
-            f"Dropped all tables with prefix '{self.sql_namespace}'"
-            if self.sql_namespace
-            else "Dropped all non-static tables"
-        )
+        logger.info("Dropped all non-static tables")
 
     def close(self):
         """Close database connections"""
