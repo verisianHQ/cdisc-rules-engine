@@ -291,6 +291,6 @@ class PostgresQLInterface:
     @staticmethod
     def _get_unique_prefix_uid() -> str:
         len = 8
-        first_char = random.choice(string.ascii_letters)
-        rest = "".join(random.choices(string.ascii_letters + string.digits, k=len - 1))
+        first_char = random.choice(string.ascii_lowercase)
+        rest = "".join(random.choices(string.ascii_lowercase + string.digits, k=len - 1))
         return first_char + rest

@@ -353,7 +353,7 @@ def _initialize_data_service(
     """Helper to handle persistent or new data service initialization."""
     if data_service:
         ds = data_service
-        ds.pgi._drop_non_static_tables()
+        ds.pgi._drop_prefixed_tables()
         ds.datasets = []
         for test_ds in data_test_datasets:
             ds_metadata = standards_context.transform_dataset_metadata(
