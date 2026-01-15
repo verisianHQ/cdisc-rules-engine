@@ -11,6 +11,7 @@ from cdisc_rules_engine.data_service.database import (
 )
 from cdisc_rules_engine.data_service.sql_compiler import SQLCompiler
 from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
+from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.db_schema import SqlDbSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -49,7 +50,7 @@ class PostgresQLInterface:
 
             # drop all previously generated analysis tables
             self.execute_sql_file(str(Path(__file__).parent / "schemas" / "drop_analysis_tables.sql"))
-            self._drop_prefixed_tables()
+            self._drop_non_static_tables()
 
         except Exception as e:
             logger.error(f"Failed to initialise database: {e}")
@@ -257,15 +258,7 @@ class PostgresQLInterface:
 
     def _drop_non_static_tables(self):
         """Drop all non-static tables"""
-        static_tables = [
-            "codelists",
-            "ig_datasets",
-            "ig_variables",
-            "standards",
-        ]
-        # TODO: will move this const to its own file in enums
-        # in the upcoming codelists implementation branch.
-        exclusion_list = ", ".join([f"'{table}'" for table in static_tables])
+        exclusion_list = ", ".join([f"'{table}'" for table in StaticTables.values()])
 
         drop_query = f"""
             DO $$
@@ -285,7 +278,7 @@ class PostgresQLInterface:
         self.execute_sql(drop_query)
 
         self.schema._tables = {
-            table: schema for table, schema in list(self.schema._tables.items()) if table in static_tables
+            table: schema for table, schema in list(self.schema._tables.items()) if table in StaticTables.values()
         }
 
         logger.info("Dropped all non-static tables")
