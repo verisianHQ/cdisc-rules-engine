@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -11,7 +12,7 @@ from cdisc_rules_engine.services import logger
 def _schema():
     table = SqlTableSchema.static(StaticTables.IG_CODELIST_TABLE_NAME.value)
     table.add_column(SqlColumnSchema(name="standard_type", hash="standard_type", type="Char"))
-    table.add_column(SqlColumnSchema(name="version_date", hash="version_date", type="Date"))
+    table.add_column(SqlColumnSchema(name="version_date", hash="version_date", type="Char"))
     table.add_column(SqlColumnSchema(name="item_code", hash="item_code", type="Char"))
     table.add_column(SqlColumnSchema(name="codelist_code", hash="codelist_code", type="Char"))
     table.add_column(SqlColumnSchema(name="extensible", hash="extensible", type="Char"))
@@ -26,20 +27,19 @@ def _schema():
 
 def populate_codelists(pgi: PostgresQLInterface, path: Path = None):
     """
-    Create tables to store CDISC codelists
+    Create tables to store CDISC codelists.
+    If path is not provided, defaults to the cache.
     """
     if not path:
-        logger.info("No codelists path provided, will use cached CDISC codelists")
-        # TODO: Use a default path or configuration for codelists
-        return
+        path = Path(__file__).parents[3] / Path(DefaultFilePaths.CACHE.value)
+        logger.info(f"No codelists path provided, defaulting to: {path}")
 
     if not path.exists():
-        logger.warning(f"Codelists path {path} does not exist")
+        logger.warning(f"Codelists path {path} does not exist. Skipping population.")
         return
 
     schema = _schema()
     pgi.create_table(schema)
-    # TODO: INDEX
 
     for file_path in path.iterdir():
         try:
@@ -51,5 +51,5 @@ def populate_codelists(pgi: PostgresQLInterface, path: Path = None):
                 logger.info(f"Loaded codelist from {file_path.name}")
 
         except Exception as e:
-            logger.error(f"Failed to load codelist {file_path.name}: {e}")
+            logger.debug(f"Skipping file {file_path.name}: {e}")
             continue
