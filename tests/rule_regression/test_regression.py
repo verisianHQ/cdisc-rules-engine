@@ -21,7 +21,7 @@ def test_regression_all_rules(pytestconfig, get_core_rules_df, get_core_rule):
     regression_json = []
     all_check_operators = set()
 
-    data_service = PostgresQLDataService.instance()
+    data_service = PostgresQLDataService.instance(full_import=True)
     try:
         for _, row in regression_df.iterrows():
             rule_reg = run_single_rule_regression(row, get_core_rule, data_service=data_service)
@@ -95,7 +95,7 @@ def test_regression_all_rules_pgserver(pytestconfig, get_core_rules_df, get_core
     regression_json = []
     all_check_operators = set()
 
-    data_service = PostgresQLDataService.instance(use_pgserver=True)
+    data_service = PostgresQLDataService.instance(use_pgserver=True, full_import=True)
     try:
         for _, row in regression_df.iterrows():
             rule_reg = run_single_rule_regression(row, get_core_rule, use_pgserver=True, data_service=data_service)

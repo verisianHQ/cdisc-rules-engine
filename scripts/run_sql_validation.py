@@ -92,6 +92,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         standards_context=standards_context,
         sql_namespace=args.sql_namespace,
         use_pgserver=in_memory_postgres,
+        full_import=True,
     )
 
     engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)

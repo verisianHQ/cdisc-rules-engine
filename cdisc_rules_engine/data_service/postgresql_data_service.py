@@ -52,7 +52,9 @@ class PostgresQLDataService:
         self.datasets: List[BaseDatasetMetadata] = []
 
     @classmethod
-    def instance(cls, sql_namespace: Optional[str] = None, use_pgserver=False) -> "PostgresQLDataService":
+    def instance(
+        cls, sql_namespace: Optional[str] = None, use_pgserver=False, full_import=False
+    ) -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
@@ -63,9 +65,10 @@ class PostgresQLDataService:
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)
-        populate_terminology(pgi)
-        populate_codelists(pgi)
-        populate_standards(pgi)
+        if full_import:
+            populate_terminology(pgi)
+            populate_codelists(pgi)
+            populate_standards(pgi)
         return instance
 
     @classmethod
@@ -85,9 +88,14 @@ class PostgresQLDataService:
 
     @classmethod
     def from_dataset_paths(
-        cls, dataset_paths, standards_context, sql_namespace: Optional[str] = None, use_pgserver=False
+        cls,
+        dataset_paths,
+        standards_context,
+        sql_namespace: Optional[str] = None,
+        use_pgserver=False,
+        full_import=False,
     ) -> "PostgresQLDataService":
-        instance = cls.instance(sql_namespace=sql_namespace, use_pgserver=use_pgserver)
+        instance = cls.instance(sql_namespace=sql_namespace, use_pgserver=use_pgserver, full_import=full_import)
 
         instance.datasets.extend(
             standards_context.transform_dataset_metadata(ds)
