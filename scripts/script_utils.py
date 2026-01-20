@@ -27,6 +27,7 @@ from cdisc_rules_engine.utilities.utils import (
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
+from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 
 
 def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
@@ -94,7 +95,10 @@ def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
 
     ct_package_data = {}
     cache_files = next(os.walk(args.cache), (None, None, []))[2]
-    ct_files = [file_name for file_name in cache_files if "ct-" in file_name]
+    ct_files = [
+        file_name for file_name in cache_files
+        if CodelistReader.FILENAME_PATTERN.match(file_name)
+    ]
     published_ct_packages = set()
     for file_name in ct_files:
         ct_version = file_name.split(".")[0]
@@ -103,9 +107,7 @@ def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
             args.controlled_terminology_package
             and ct_version in args.controlled_terminology_package
         ):
-            with open(os.path.join(args.cache, file_name), "rb") as f:
-                data = pickle.load(f)
-                ct_package_data[ct_version] = data
+            ct_package_data[ct_version] = os.path.join(args.cache, file_name)
     if args.define_xml_path and define_version.model_package == "define_2_1":
         (
             standards,
@@ -114,13 +116,11 @@ def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
             merged_flag,
         ) = define_xml_reader.get_ct_standards_metadata()
         for standard in standards:
-            pickle_filename = (
+            file_name = (
                 f"{standard.publishing_set.lower()}ct-{standard.version}.pkl"
             )
-            if pickle_filename in ct_files:
-                with open(os.path.join(args.cache, pickle_filename), "rb") as f:
-                    data = pickle.load(f)
-                    ct_package_data[pickle_filename.split(".")[0]] = data
+            if file_name in ct_files:
+                ct_package_data[file_name.split(".")[0]] = os.path.join(args.cache, file_name)
         if merged_flag:
             ct_package_data["define_XML_merged_CT"] = merged_CT_packages
             ct_package_data["extensible"] = extensible

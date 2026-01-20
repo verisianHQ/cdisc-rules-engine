@@ -2,9 +2,10 @@ import re
 import pickle
 from datetime import datetime
 from typing import List, Dict, Any
-from cdisc_rules_engine.readers.base_reader import BaseReader
 from dataclasses import dataclass
 import pandas as pd
+
+from cdisc_rules_engine.readers.base_reader import BaseReader
 
 
 @dataclass

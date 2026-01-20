@@ -23,7 +23,10 @@ from cdisc_rules_engine.models.dataset_metadata2 import (
 )
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
-from cdisc_rules_engine.data_service.database import DatabaseConfigPostgres, DatabaseConfigPGServer
+from cdisc_rules_engine.data_service.database import (
+    DatabaseConfigPostgres,
+    DatabaseConfigPGServer,
+)
 
 if TYPE_CHECKING:  # Only imports the below statements during type checking
     from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
@@ -53,33 +56,42 @@ class PostgresQLDataService:
 
     @classmethod
     def instance(
-        cls, sql_namespace: Optional[str] = None, use_pgserver=False, full_import=False
+        cls,
+        sql_namespace: Optional[str] = None,
+        use_pgserver: bool = False,
+        codelists: Optional[List[str]] = None,
+        cache_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
         """
         # PostgresDB setup
         pgi = PostgresQLInterface(
-            sql_namespace=sql_namespace, config=DatabaseConfigPGServer() if use_pgserver else DatabaseConfigPostgres()
+            sql_namespace=sql_namespace,
+            config=(DatabaseConfigPGServer() if use_pgserver else DatabaseConfigPostgres()),
         )
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)
-        if full_import:
-            populate_terminology(pgi)
-            populate_codelists(pgi)
-            populate_standards(pgi)
+        populate_terminology(pgi)
+        populate_codelists(pgi, cache_path, codelists)
+        populate_standards(pgi)
+
         return instance
 
     @classmethod
     def from_list_of_testdatasets(
-        cls, test_datasets: list[TestDataset], standards_context: BaseStandardsContext, use_pgserver=False
+        cls,
+        test_datasets: list[TestDataset],
+        standards_context: BaseStandardsContext,
+        use_pgserver: bool = False,
+        cache_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance(use_pgserver=use_pgserver)
+        instance = cls.instance(use_pgserver=use_pgserver, cache_path=cache_path)
         instance.datasets += [
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
@@ -91,11 +103,17 @@ class PostgresQLDataService:
         cls,
         dataset_paths,
         standards_context,
+        codelists: Optional[List[str]] = None,
+        cache_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
-        use_pgserver=False,
-        full_import=False,
+        use_pgserver: bool = False,
     ) -> "PostgresQLDataService":
-        instance = cls.instance(sql_namespace=sql_namespace, use_pgserver=use_pgserver, full_import=full_import)
+        instance = cls.instance(
+            sql_namespace=sql_namespace,
+            use_pgserver=use_pgserver,
+            codelists=codelists,
+            cache_path=cache_path,
+        )
 
         instance.datasets.extend(
             standards_context.transform_dataset_metadata(ds)

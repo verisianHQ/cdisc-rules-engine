@@ -90,9 +90,10 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     data_service = PostgresQLDataService.from_dataset_paths(
         args.dataset_paths,
         standards_context=standards_context,
+        codelists=library_metadata.get_all_ct_package_metadata(),
+        cache_path=args.cache,
         sql_namespace=args.sql_namespace,
         use_pgserver=in_memory_postgres,
-        full_import=True,
     )
 
     engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)
