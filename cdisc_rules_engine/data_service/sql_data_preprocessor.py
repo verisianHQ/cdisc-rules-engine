@@ -44,15 +44,6 @@ class SqlDataPreprocessor:
             return table_hash
         return table_name.lower()
 
-    def preprocess_all(self) -> None:
-        """Execute preprocessing stages."""
-        logger.info("Starting data preprocessing pipeline")
-
-        self._process_split_datasets()
-        self._update_metadata(datetime.now().astimezone())
-
-        logger.info("Data preprocessing pipeline completed")
-
     def _process_split_datasets(self) -> None:
         """Concatenate split datasets into single logical datasets."""
         logger.info("Processing split datasets")
@@ -116,7 +107,7 @@ class SqlDataPreprocessor:
 
     def _create_unsplit_table(self, unsplit_name: str, all_columns: Dict[str, Any]) -> SqlTableSchema:
         """Create the target table in the database."""
-        unsplit_schema = SqlTableSchema.from_join(unsplit_name, self.data_service.pgi)
+        unsplit_schema = SqlTableSchema.derived(unsplit_name, self.data_service.pgi)
         for col_schema in all_columns.values():
             unsplit_schema.add_column(col_schema)
         self.data_service.pgi.create_table(unsplit_schema)
@@ -258,4 +249,4 @@ class SqlDataPreprocessor:
         standards_context: "BaseStandardsContext",
     ) -> None:
         preprocessor = SqlDataPreprocessor(data_service, standards_context)
-        preprocessor.preprocess_all()
+        preprocessor._process_split_datasets()
