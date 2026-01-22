@@ -88,7 +88,7 @@ def populate_codelists(
 ):
     """Populate the codelists table in the database."""
     if codelists and "extensible" in list(codelists.keys()):
-        codelists.pop("extensible")  # don't handle define yet
+        codelists.pop("extensible")  # TODO: Handle define extensible records
 
     files_to_load = _determine_files_to_load(codelists, cache_path)
 
