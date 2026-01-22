@@ -64,9 +64,6 @@ class LibraryMetadataContainer:
     def get_all_ct_package_metadata(self):
         return list(self._ct_package_metadata.values())
 
-    def get_all_ct_package_metadata_dict(self):
-        return self._ct_package_metadata
-
     def set_ct_package_metadata(self, key, value):
         self._ct_package_metadata[key] = value
 

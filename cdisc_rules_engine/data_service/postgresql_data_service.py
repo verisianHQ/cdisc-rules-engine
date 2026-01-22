@@ -60,7 +60,7 @@ class PostgresQLDataService:
         cls,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,
-        codelists: Optional[Dict] = None,
+        codelists: Optional[List[Union[str, Dict]]] = None,
         cache_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
@@ -105,7 +105,7 @@ class PostgresQLDataService:
         cls,
         dataset_paths,
         standards_context,
-        codelists: Optional[Dict] = None,
+        codelists: Optional[List[Union[str, Dict]]] = None,
         cache_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,

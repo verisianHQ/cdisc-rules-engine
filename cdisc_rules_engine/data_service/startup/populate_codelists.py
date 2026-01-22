@@ -43,7 +43,7 @@ def _get_codelists_from_default_cache() -> List[Path]:
     return codelists
 
 
-def _validate_user_paths(codelists: List[str]) -> Tuple[List[Path], List[Path]]:
+def _validate_user_paths(codelists: Optional[List[str]]) -> Tuple[List[Path], List[Path]]:
     valid_user_paths = []
     invalid_user_paths = []
 
@@ -84,11 +84,12 @@ def _determine_files_to_load(codelists: Optional[List[str]], cache_path: str) ->
 def populate_codelists(
     pgi: PostgresQLInterface,
     cache_path: str,
-    codelists: Dict[str, Union[str, Dict]],
+    codelists: List[Union[str, Dict]],
 ):
     """Populate the codelists table in the database."""
-    if codelists and "extensible" in list(codelists.keys()):
-        codelists.pop("extensible")  # TODO: Handle define extensible records
+    if codelists:
+        # TODO: Handle define extensible dict records
+        codelists = [item for item in codelists if isinstance(item, str)]
 
     files_to_load = _determine_files_to_load(codelists, cache_path)
 
