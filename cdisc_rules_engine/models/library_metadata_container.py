@@ -64,6 +64,9 @@ class LibraryMetadataContainer:
     def get_all_ct_package_metadata(self):
         return list(self._ct_package_metadata.values())
 
+    def get_all_ct_package_metadata_dict(self):
+        return self._ct_package_metadata
+
     def set_ct_package_metadata(self, key, value):
         self._ct_package_metadata[key] = value
 
@@ -114,9 +117,7 @@ class LibraryMetadataContainer:
         for version in {*versions}:
             ct_package_data = self._load_ct_package_data(ct_package_type, version)
             for codelist_code, codelist in ct_package_data.items():
-                for term in (
-                    codelist.get("terms", []) if isinstance(codelist, dict) else []
-                ):
+                for term in codelist.get("terms", []) if isinstance(codelist, dict) else []:
                     ct_terms["ct_package_type"].append(ct_package_type)
                     ct_terms["version"].append(version)
                     ct_terms["codelist_code"].append(codelist_code)

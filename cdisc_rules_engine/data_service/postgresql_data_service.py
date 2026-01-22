@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from io import IOBase
-from typing import TYPE_CHECKING, List, Union, Optional
+from typing import TYPE_CHECKING, Dict, List, Union, Optional
 
 from cdisc_rules_engine.data_service.loading.load_datasets import SqlDatasetLoader
 from cdisc_rules_engine.data_service.loading.load_test_datasets import (
@@ -60,7 +60,7 @@ class PostgresQLDataService:
         cls,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,
-        codelists: Optional[List[str]] = None,
+        codelists: Optional[Dict] = None,
         cache_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
@@ -105,7 +105,7 @@ class PostgresQLDataService:
         cls,
         dataset_paths,
         standards_context,
-        codelists: Optional[List[str]] = None,
+        codelists: Optional[Dict] = None,
         cache_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,

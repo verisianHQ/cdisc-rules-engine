@@ -30,7 +30,7 @@ from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
 from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 
 
-def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
+def get_library_metadata_from_cache(args, sql=False) -> LibraryMetadataContainer:  # noqa
     if args.custom_standard:
         check = check_custom_standard(args)
         # custom standard not requiring library metadata
@@ -89,7 +89,13 @@ def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
         ct_version = file_name.split(".")[0]
         published_ct_packages.add(ct_version)
         if args.controlled_terminology_package and ct_version in args.controlled_terminology_package:
-            ct_package_data[ct_version] = os.path.join(args.cache, file_name)
+            ct_path = os.path.join(args.cache, file_name)
+            if sql:
+                ct_package_data[ct_version] = ct_path
+            else:
+                with open(ct_path, "rb") as f:
+                    data = pickle.load(f)
+                    ct_package_data[ct_version] = data
     if args.define_xml_path and define_version.model_package == "define_2_1":
         (
             standards,
@@ -100,7 +106,13 @@ def get_library_metadata_from_cache(args) -> LibraryMetadataContainer:  # noqa
         for standard in standards:
             file_name = f"{standard.publishing_set.lower()}ct-{standard.version}.pkl"
             if file_name in ct_files:
-                ct_package_data[file_name.split(".")[0]] = os.path.join(args.cache, file_name)
+                ct_path = os.path.join(args.cache, file_name)
+                if sql:
+                    ct_package_data[file_name.split(".")[0]] = ct_path
+                else:
+                    with open(ct_path, "rb") as f:
+                        data = pickle.load(f)
+                        ct_package_data[file_name.split(".")[0]] = data
         if merged_flag:
             ct_package_data["define_XML_merged_CT"] = merged_CT_packages
             ct_package_data["extensible"] = extensible

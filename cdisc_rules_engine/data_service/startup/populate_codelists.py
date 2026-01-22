@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -84,9 +84,12 @@ def _determine_files_to_load(codelists: Optional[List[str]], cache_path: str) ->
 def populate_codelists(
     pgi: PostgresQLInterface,
     cache_path: str,
-    codelists: List[str],
+    codelists: Dict[str, Union[str, Dict]],
 ):
     """Populate the codelists table in the database."""
+    if codelists and "extensible" in list(codelists.keys()):
+        codelists.pop("extensible")  # don't handle define yet
+
     files_to_load = _determine_files_to_load(codelists, cache_path)
 
     if not files_to_load:
