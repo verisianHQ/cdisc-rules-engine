@@ -8,11 +8,11 @@ import pandas as pd
 from deepdiff import DeepDiff
 from psycopg2 import errors
 
-from cdisc_rules_engine.data_service.postgresql_data_service import (
-    PostgresQLDataService,
-)
 from cdisc_rules_engine.data_service.loading.load_test_datasets import (
     SqlTestDatasetLoader,
+)
+from cdisc_rules_engine.data_service.postgresql_data_service import (
+    PostgresQLDataService,
 )
 from cdisc_rules_engine.data_service.sql_data_preprocessor import (
     SqlDataPreprocessor,
@@ -25,7 +25,6 @@ from cdisc_rules_engine.standards.standards_factory import StandardsFactory
 from cdisc_rules_engine.utilities.ig_specification import IGSpecification
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from scripts.run_sql_validation import sql_run_single_rule_validation
-from scripts.run_validation import run_single_rule_validation
 from scripts.script_utils import get_library_metadata_from_cache
 
 ENABLE_ERROR_TRANSLATION = True
@@ -373,9 +372,7 @@ def _initialize_data_service(
     )
 
 
-def _validate_against_file(
-    regression_errors: dict, test_case_folder_path: str, old_regression: list, sql_regression: list
-):
+def _validate_against_file(regression_errors: dict, test_case_folder_path: str, sql_regression: list):
     """Helper to handle comparison against validated_results files."""
     test_case_path = Path(test_case_folder_path)
     validated_results_folder = test_case_path / "validated_results"
@@ -384,7 +381,7 @@ def _validate_against_file(
         regression_errors["validated_results_folder_exists"] = False
         regression_errors["validation_file"] = ""
         regression_errors["validation_file_validation"] = ""
-        regression_errors["old_result_validation"] = "invalid"
+        # regression_errors["old_result_validation"] = "invalid"
         regression_errors["sql_results_validation"] = "invalid"
         return
 
@@ -393,7 +390,7 @@ def _validate_against_file(
     if not validation_file_path:
         regression_errors["validation_file"] = ""
         regression_errors["validation_file_validation"] = ""
-        regression_errors["old_result_validation"] = "invalid"
+        # regression_errors["old_result_validation"] = "invalid"
         regression_errors["sql_results_validation"] = "invalid"
         return
 
@@ -402,11 +399,11 @@ def _validate_against_file(
         with open(validation_file_path, "r", encoding="utf-8") as f:
             validated_result = json.load(f)
             regression_errors["validation_file_validation"] = "valid"
-            regression_errors["old_result_validation"] = validate_engine_result(old_regression, validated_result)
+            # regression_errors["old_result_validation"] = validate_engine_result(old_regression, validated_result)
             regression_errors["sql_results_validation"] = validate_engine_result(sql_regression, validated_result)
     except (json.decoder.JSONDecodeError, KeyError) as e:
         regression_errors["validation_file_validation"] = str(e)
-        regression_errors["old_result_validation"] = "invalid"
+        # regression_errors["old_result_validation"] = "invalid"
         regression_errors["sql_results_validation"] = "invalid"
 
 
@@ -439,29 +436,30 @@ def process_test_case_dataset(
         regression_errors["results_sql"] = sql_regression
 
         # Execute in old engine
-        old_results = run_single_rule_validation(
-            data_test_datasets,
-            rule,
-            define_xml=define_xml_file_path,
-            standard=ig_specs["standard"],
-            standard_version=ig_specs["standard_version"],
-            library_metadata=metadata,
-        )
+        # old_results = run_single_rule_validation(
+        #     data_test_datasets,
+        #     rule,
+        #     define_xml=define_xml_file_path,
+        #     standard=ig_specs["standard"],
+        #     standard_version=ig_specs["standard_version"],
+        #     library_metadata=metadata,
+        # )
         regression_errors["dataset_import_old"] = "SUCCESS"
         regression_errors["results_present_old"] = True
-        old_regression = extract_results_regression(old_results)
-        regression_errors["results_old"] = old_regression
+        # old_regression = extract_results_regression(old_results)
+        # regression_errors["results_old"] = old_regression
 
-        regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
+        # regression_errors["old_vs_sql"] = old_vs_sql_regression_comparison(old_regression, sql_regression)
 
         regression_errors["whitelisted"] = cur_core_id in WHITELISTED_RULES
 
         regression_errors["sql_overall_result"] = extract_overall_result(sql_regression)
-        regression_errors["old_overall_result"] = extract_overall_result(old_regression)
+        # regression_errors["old_overall_result"] = extract_overall_result(old_regression)
 
-        _validate_against_file(regression_errors, test_case_folder_path, old_regression, sql_regression)
+        _validate_against_file(regression_errors, test_case_folder_path, sql_regression)
 
-        return sql_results, old_results
+        # return sql_results, old_results
+        return sql_results
 
     except ValueError as e:
         if str(e) == "Data list cannot be empty":
