@@ -86,6 +86,7 @@ class SQLRulesEngine:
                     (metadata for metadata in self.data_service.datasets if metadata.name.lower() == pp_ds_id.lower()),
                     None,
                 ),
+                all_datasets=all_datasets,
             )
             if is_suitable:
                 # if dataset_metadata.unsplit_name in results and "domains" in rule:
