@@ -16,7 +16,9 @@ class ContainsAllOperator(BaseSqlOperator):
         comparator = other_value.get("comparator")
 
         if isinstance(comparator, list) and len(comparator) == 1:
-            comparator = comparator[0]
+            item = comparator[0]
+            if isinstance(item, str) and (item in self.operation_variables or self._exists(item)):
+                comparator = item
 
         if isinstance(comparator, list):
             return self._handle_list_comparator(target_column, comparator)
@@ -39,14 +41,8 @@ class ContainsAllOperator(BaseSqlOperator):
             cache_key = f"{target_column}_contains_all_list"
 
             def sql():
-                values_clause = []
-                for v in comparator:
-                    if v in self.operation_variables:
-                        values_clause.append(
-                            f"({self._handle_operation_variable_comparator(target_column, comparator)})"
-                        )
-                    else:
-                        values_clause.append(f"({self._sql(v)})")
+                values_clause = ", ".join(f"({self._sql(v)})" for v in comparator)
+
                 return f"""CASE WHEN (
                               SELECT COUNT(DISTINCT val)
                               FROM (VALUES {values_clause}) AS comparator_values(val)
@@ -83,20 +79,20 @@ class ContainsAllOperator(BaseSqlOperator):
 
         def sql():
             return f"""CASE WHEN (
-                          SELECT COUNT(DISTINCT value)
+                          SELECT COUNT(DISTINCT column1)
                           FROM {collection_sql} AS op_var
-                          WHERE value IS NOT NULL
-                          AND value != ''
-                          AND value IN (
+                          WHERE column1 IS NOT NULL
+                          AND column1 != ''
+                          AND column1 IN (
                               SELECT DISTINCT {self._column_sql(target_column, alias=False)}
                               FROM {self._table_sql()}
                               WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
                           )
                       ) = (
-                          SELECT COUNT(DISTINCT value)
+                          SELECT COUNT(DISTINCT column1)
                           FROM {collection_sql} AS op_var
-                          WHERE value IS NOT NULL
-                          AND value != ''
+                          WHERE column1 IS NOT NULL
+                          AND column1 != ''
                       )
                       THEN true
                       ELSE false

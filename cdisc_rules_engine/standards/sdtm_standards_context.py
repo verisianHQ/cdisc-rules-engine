@@ -1,5 +1,5 @@
 import re
-from typing import Any, List, Optional, Tuple, Dict
+from typing import Any, Dict, List, Tuple
 from collections import defaultdict
 
 from cdisc_rules_engine.constants.classes import (
@@ -227,9 +227,7 @@ class SdtmStandardsContext(BaseStandardsContext):
 
         return variables
 
-    def within_rule_scope(
-        self, rule: dict, metadata: DatasetMetadata2, all_datasets: Optional[List[DatasetMetadata2]] = None
-    ):
+    def within_rule_scope(self, rule: dict, metadata: DatasetMetadata2):
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
         dataset_name = metadata.name
