@@ -35,9 +35,7 @@ class InvalidMatchKeyError(EngineError):
 
 class VariableMetadataNotFoundError(EngineError):
     code = 400
-    description = (
-        "Variable metadata is not found in CDISC Library for the provided standard"
-    )
+    description = "Variable metadata is not found in CDISC Library for the provided standard"
 
 
 class DomainNotFoundError(EngineError):
@@ -62,9 +60,7 @@ class NumberOfAttemptsExceeded(EngineError):
 
 
 class InvalidDictionaryVariable(EngineError):
-    description = (
-        "Provided dictionary variable does not correspond to a dictionary term type"
-    )
+    description = "Provided dictionary variable does not correspond to a dictionary term type"
 
 
 class UnsupportedDictionaryType(EngineError):
@@ -73,3 +69,20 @@ class UnsupportedDictionaryType(EngineError):
 
 class FailedSchemaValidation(EngineError):
     description = "Error Occured in Schema Validation"
+
+
+class ColumnNotFoundError(EngineError):
+    def __init__(self, column_name: str, table_id: str = None):
+        self.column_name = column_name
+        self.table_id = table_id
+        if table_id:
+            self.message = f"Column '{column_name}' not found in table '{table_id}'"
+        else:
+            self.message = f"Column '{column_name}' not found in dataset"
+
+
+class SqlOperatorError(EngineError):
+    def __init__(self, original_exception, operator_name):
+        self.original_exception = original_exception
+        self.operator_name = operator_name
+        super().__init__(f"{operator_name}: {str(original_exception)}")

@@ -7,7 +7,6 @@ from business_rules import export_rule_data
 from business_rules.engine import run
 from psycopg2.errors import ProgrammingError
 
-from cdisc_rules_engine.check_operators.sql.base_sql_operator import SqlOperatorError
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -21,6 +20,8 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     FailedSchemaValidation,
     RuleFormatError,
     VariableMetadataNotFoundError,
+    ColumnNotFoundError,
+    SqlOperatorError,
 )
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
@@ -188,6 +189,8 @@ class SQLRulesEngine:
             dataset_metadata.variables,
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
+
+        self.verify_variable_existence(rule_copy, dataset_id, dataset_metadata)
 
         # Apply any operations
         operation_variables = SQLRuleProcessor.perform_rule_operations(
@@ -371,6 +374,20 @@ class SQLRulesEngine:
                         message=error_message,
                     )
                     message = "rule execution error"
+        elif isinstance(exception, ColumnNotFoundError):
+            error_obj = ValidationErrorContainer(
+                dataset=name,
+                message=str(exception),
+                status=ExecutionStatus.SKIPPED.value,
+            )
+            message = "rule evaluation skipped - column not found"
+            errors = [error_obj]
+            return ValidationErrorContainer(
+                dataset=name,
+                errors=errors,
+                message=message,
+                status=ExecutionStatus.SKIPPED.value,
+            )
         else:
             error_obj = FailedValidationEntity(
                 dataset=name,
@@ -385,3 +402,19 @@ class SQLRulesEngine:
             message=message,
             status=ExecutionStatus.EXECUTION_ERROR.value,
         )
+
+    def verify_variable_existence(self, rule: dict, dataset_id: str, dataset_metadata: BaseDatasetMetadata):
+        """Checks if the variables required by the rule exist."""
+        required_vars = SQLRuleProcessor.extract_variables_from_rule(rule)
+        table_schema = self.data_service.pgi.schema.get_table(dataset_id)
+
+        if not table_schema:
+            raise DatasetNotFoundError(f"Table {dataset_id} not found in schema")
+
+        for var in required_vars:
+            normalized_var = var.replace("--", dataset_metadata.domain or "").lower()
+
+            if table_schema.has_column(normalized_var):
+                continue
+
+            raise ColumnNotFoundError(normalized_var, dataset_id)
