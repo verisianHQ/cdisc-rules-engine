@@ -189,8 +189,6 @@ class SQLRulesEngine:
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
 
-        self.verify_variable_existence(rule_copy, dataset_id, dataset_metadata)
-
         # Apply any operations
         operation_variables = SQLRuleProcessor.perform_rule_operations(
             rule_copy, dataset_metadata, data_service=self.data_service, standards_context=self.standards_context
@@ -379,7 +377,7 @@ class SQLRulesEngine:
                 message=str(exception),
                 status=ExecutionStatus.SKIPPED.value,
             )
-            message = "rule evaluation skipped - column not found"
+            message = f"Rule skipped - Column {exception.column_name} not found in table {exception.table_id}"
             errors = [error_obj]
             return ValidationErrorContainer(
                 dataset=name,
@@ -401,19 +399,3 @@ class SQLRulesEngine:
             message=message,
             status=ExecutionStatus.EXECUTION_ERROR.value,
         )
-
-    def verify_variable_existence(self, rule: dict, dataset_id: str, dataset_metadata: BaseDatasetMetadata):
-        """Checks if the variables required by the rule exist."""
-        required_vars = SQLRuleProcessor.extract_variables_from_rule(rule)
-        table_schema = self.data_service.pgi.schema.get_table(dataset_id)
-
-        if not table_schema:
-            raise DatasetNotFoundError(f"Table {dataset_id} not found in schema")
-
-        for var in required_vars:
-            normalized_var = var.replace("--", dataset_metadata.domain or "").lower()
-
-            if table_schema.has_column(normalized_var):
-                continue
-
-            raise ColumnNotFoundError(normalized_var, dataset_id)

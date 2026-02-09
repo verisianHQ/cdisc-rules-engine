@@ -86,7 +86,11 @@ class BaseSqlOperator:
         """
         # TODO: Rename all check operators using _execute_operator_impl to execute_operator
         # AND remove the get_default_missing_column func too.
+        # try:
         return self._execute_operator_impl(other_value)
+        # except ColumnNotFoundError as e:
+        #     logger.warning(f"Column not found during operator execution: {str(e)}")
+        #     return self.get_result_for_missing_columns()
 
     @abstractmethod
     def _execute_operator_impl(self, other_value: Dict[str, Any]):

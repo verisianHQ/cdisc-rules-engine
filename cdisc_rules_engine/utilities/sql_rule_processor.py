@@ -1,4 +1,4 @@
-from typing import List, Set, Any
+from typing import Any, List
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
@@ -193,36 +193,34 @@ class SQLRuleProcessor:
 
     @staticmethod
     def extract_operators_from_conditions(conditions) -> List[str]:
+        """
+        Extracts all unique operators from rule conditions.
+        Handles nested conditions recursively.
+        """
         operators = set()
-        leaf_conditions = SQLRuleProcessor._get_all_leaf_conditions(conditions)
 
-        for condition in leaf_conditions:
-            operator = condition.get("operator")
-            if operator:
-                operators.add(operator)
+        if not conditions:
+            return []
+        for key, condition_list in conditions.items():
+            if isinstance(condition_list, list):
+                for condition in condition_list:
+                    if isinstance(condition, dict):
+                        operator = condition.get("operator")
+                        if operator:
+                            operators.add(operator)
+                        # Handle nested conditions
+                        for nested_key in ["all", "any", "not"]:
+                            if nested_key in condition:
+                                nested_operators = SQLRuleProcessor.extract_operators_from_conditions(
+                                    {nested_key: condition[nested_key]}
+                                )
+                                operators.update(nested_operators)
+                    elif hasattr(condition, "get_conditions"):
+                        # Recursive call for ConditionInterface objects
+                        nested_operators = SQLRuleProcessor.extract_operators_from_conditions(condition)
+                        operators.update(nested_operators)
 
         return sorted(list(operators))
-
-    @staticmethod
-    def extract_variables_from_rule(rule: dict) -> Set[str]:
-        variables = set()
-        conditions = rule.get("conditions")
-        if not conditions:
-            return variables
-
-        leaf_conditions = SQLRuleProcessor._get_all_leaf_conditions(conditions)
-
-        for cond in leaf_conditions:
-            if cond.get("operator") in ["exists", "not_exists"]:
-                continue
-
-            potential_vars = SQLRuleProcessor._get_potential_vars_from_condition(cond)
-
-            for var in potential_vars:
-                if SQLRuleProcessor._is_valid_variable(var):
-                    variables.add(var)
-
-        return variables
 
     @staticmethod
     def _get_all_leaf_conditions(conditions: Any) -> Any:
@@ -239,39 +237,3 @@ class SQLRuleProcessor:
             return conditions.to_dict()
 
         return []
-
-    @staticmethod
-    def _get_potential_vars_from_condition(condition: dict) -> List[str]:
-        potential_vars = []
-
-        if condition.get("name"):
-            potential_vars.append(condition["name"])
-
-        val = condition.get("value")
-        value_is_literal = condition.get("value_is_literal")
-
-        if isinstance(val, dict):
-            if val.get("target"):
-                potential_vars.append(val["target"])
-            if not val.get("value_is_literal") and val.get("comparator"):
-                potential_vars.append(val["comparator"])
-
-        elif isinstance(val, list) and not value_is_literal:
-            for item in val:
-                if isinstance(item, str):
-                    potential_vars.append(item)
-
-        elif isinstance(val, str) and not value_is_literal:
-            potential_vars.append(val)
-
-        return potential_vars
-
-    @staticmethod
-    def _is_valid_variable(var: str) -> bool:
-        if (
-            not isinstance(var, str)
-            or not all(c.isalpha() or c == "_" for c in var)
-            or any(keyword in var for keyword in ["get_dataset"])
-        ):
-            return False
-        return True
