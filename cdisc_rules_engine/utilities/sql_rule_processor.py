@@ -1,11 +1,9 @@
-from typing import Any, List
+from typing import List
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.interfaces import ConditionInterface
-from cdisc_rules_engine.models.rule_conditions.condition_composite import ConditionComposite
-from cdisc_rules_engine.models.rule_conditions.single_condition import SingleCondition
 from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
@@ -221,19 +219,3 @@ class SQLRuleProcessor:
                         operators.update(nested_operators)
 
         return sorted(list(operators))
-
-    @staticmethod
-    def _get_all_leaf_conditions(conditions: Any) -> Any:
-        leafs = []
-
-        if isinstance(conditions, ConditionComposite):
-            raw_structure = conditions.get_conditions()
-            for _, cond_list in raw_structure.items():
-                for sub_cond in cond_list:
-                    leafs.append(SQLRuleProcessor._get_all_leaf_conditions(sub_cond))
-            return leafs
-
-        if isinstance(conditions, SingleCondition):
-            return conditions.to_dict()
-
-        return []
