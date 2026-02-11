@@ -2,7 +2,7 @@ business_rules_enhanced==1.4.7
 ## Required for the business rules for Python 3.12.12+
 pytz==2025.2
 cdisc-library-client==0.1.6
-click==8.3.1
+click==8.1.7
 importlib-metadata==8.7.1
 jsonpath-ng==1.7.0
 jsonschema==4.26.0
