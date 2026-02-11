@@ -1,3 +1,5 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -34,9 +36,9 @@ class EqualToOperator(BaseSqlOperator):
 
         if value_is_reference:
             if not self._exists(target):
-                raise KeyError(f"Target column '{target}' not found in dataset")
+                raise ColumnNotFoundError(target, self.table_id)
             if not self._exists(comparator):
-                raise KeyError(f"Comparator column '{comparator}' not found in dataset")
+                raise ColumnNotFoundError(comparator, self.table_id)
 
             return self._check_equality_reference(
                 target,

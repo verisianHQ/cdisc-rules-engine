@@ -1,3 +1,5 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -20,6 +22,8 @@ class DateComparisonOperator(BaseSqlOperator):
 
         if isinstance(comparator, str) and not value_is_literal:
             comparator = self.replace_prefix(comparator).lower()
+            if not self._exists(comparator):
+                raise ColumnNotFoundError(comparator, self.table_id)
 
         target_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, target)
 

@@ -1,3 +1,5 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -7,10 +9,10 @@ class EmptyOperator(BaseSqlOperator):
     def _execute_operator_impl(self, other_value):
         column = self.replace_prefix(other_value.get("target"))
 
-        def sql():
-            if self.sql_data_service.pgi.schema.get_column(self.table_id, column) is None:
-                return "TRUE"
+        if not self._exists(column):
+            raise ColumnNotFoundError(column, self.table_id)
 
+        def sql():
             return self._is_empty_sql(column)
 
         return self._do_check_operator(f"{column}_empty", sql)

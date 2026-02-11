@@ -1,3 +1,5 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -6,6 +8,8 @@ class HasDifferentValuesOperator(BaseSqlOperator):
 
     def _execute_operator_impl(self, other_value):
         target_column = other_value.get("target").lower()
+        if not self._exists(target_column):
+            raise ColumnNotFoundError(target_column, self.table_id)
         operation_name = f"{target_column}_has_different_values"
 
         return self._do_check_operator(
