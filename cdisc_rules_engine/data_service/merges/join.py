@@ -104,7 +104,7 @@ class SqlJoinMerge:
 
         # Add all of the left table's columns (including source_row_number)
         for name, column in left.get_columns():
-            if name == "id":
+            if name == "id" or column.origin == "co" or name in pivot_left:
                 continue
             # Skip aliases to avoid duplicate column hashes in SELECT
             if not column.alias:
@@ -113,9 +113,7 @@ class SqlJoinMerge:
 
         # Add all of the non-pivot columns from the left table
         for name, column in right.get_columns():
-            if name == "id":
-                continue
-            if name in pivot_right:
+            if name == "id" or column.origin == "co" or name in pivot_right:
                 continue
 
             new_column_name = f"{right.name}.{name}"
