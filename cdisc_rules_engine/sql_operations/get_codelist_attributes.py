@@ -2,7 +2,7 @@ from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 
-_column_map = {
+_COLUMN_MAP = {
     "Term CCODE": "item_code",
     "Term Signification": "value",
     "Codelist Code": "codelist_code",
@@ -21,8 +21,10 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
         attribute = self.params.ct_attribute
         version = self.params.ct_version
+        if version is None:
+            raise ValueError("Version must be provided for codelist attribute retrieval.")
 
-        select_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, _column_map.get(attribute, "item_code"))
+        select_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
         version_date_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "version_date")
         std_type_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "standard_type")
 
