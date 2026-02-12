@@ -14,11 +14,6 @@ class SuffixMatchesRegexOperator(BaseSqlOperator):
         comparator = other_value.get("comparator")
         suffix = other_value.get("suffix")
 
-        if self.invert:
-            operator_name = f"{target_column}_not_suffix_matches_regex"
-        else:
-            operator_name = f"{target_column}_suffix_matches_regex"
-
         def sql():
             suffix_expr = f"RIGHT({target_column}::text, {suffix})"
 
@@ -35,4 +30,4 @@ class SuffixMatchesRegexOperator(BaseSqlOperator):
                         ELSE FALSE
                         END"""
 
-        return self._do_check_operator(operator_name, sql)
+        return self._do_check_operator(sql)
