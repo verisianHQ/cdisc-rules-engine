@@ -36,7 +36,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             SELECT DISTINCT {select_col_sql} AS value
             FROM {ct_table}
             WHERE {std_type_col_sql} IN ({types_list_sql})
-              AND {version_date_col_sql} = $1
+              AND {version_date_col_sql} = '{version.lower()}'
         """
 
-        return SqlOperationResult(query=query, type="collection", subtype="Char", params={"$1": version.lower()})
+        return SqlOperationResult(query=query, type="collection", subtype="Char")
