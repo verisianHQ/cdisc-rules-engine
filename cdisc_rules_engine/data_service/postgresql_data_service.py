@@ -167,3 +167,10 @@ class PostgresQLDataService:
 
     def read_data(self, file_path: str) -> IOBase:
         return open(file_path, "rb")
+
+    def get_define_xml_contents(self, dataset_name: str) -> bytes:
+        """
+        Reads local define xml file as bytes
+        """
+        with open(dataset_name, "rb") as f:
+            return f.read()

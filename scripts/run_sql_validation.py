@@ -96,7 +96,9 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         use_pgserver=in_memory_postgres,
     )
 
-    engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)
+    engine = SQLRulesEngine(
+        data_service=data_service, standards_context=standards_context, define_xml_path=args.define_xml_path
+    )
 
     engine_logger.info(f"Running {len(rules)} rules against {len(data_service.datasets)} datasets")
     start = time.time()
@@ -113,6 +115,9 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     #     progress_handler: Callable = get_progress_displayer(args)
     #     results = progress_handler(rules, validation_results, results)
     def run():
+        print(args.define_xml_path)
+        define_info = engine.get_define_xml_value_level_metadata(dataset_path=args.define_xml_path, domain_name="AE")
+        print(define_info)
         for rule in rules:
             rule_result = sql_validate_single_rule(engine, args, rule)
             yield rule_result

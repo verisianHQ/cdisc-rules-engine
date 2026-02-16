@@ -42,6 +42,9 @@ from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
 )
+from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
+    DefineXMLReaderFactory,
+)
 
 
 def clean_postgres_message(message: str) -> str:
@@ -60,9 +63,11 @@ class SQLRulesEngine:
         self,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
+        define_xml_path: str = None,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
+        self.define_xml_path: str = define_xml_path
 
     def get_schema(self):
         return export_rule_data(SqlVenmoObject, SqlVenmoResultHandler)
@@ -217,14 +222,14 @@ class SQLRulesEngine:
         )
         return results
 
-    # def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
-    #     """
-    #     Gets Define XML variable metadata and returns it as dataframe.
-    #     """
-    #     define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
-    #         dataset_path, self.define_xml_path, self.data_service, self.cache
-    #     )
-    #     return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
+    def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
+        """
+        Gets Define XML variable metadata and returns it as dataframe.
+        """
+        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            dataset_path, self.define_xml_path, self.data_service, None
+        )
+        return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
 
     def handle_validation_exceptions(self, exception, name) -> ValidationErrorContainer:  # noqa
         if isinstance(exception, DatasetNotFoundError):
