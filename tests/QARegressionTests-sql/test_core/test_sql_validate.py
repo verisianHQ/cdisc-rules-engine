@@ -3,7 +3,6 @@ import re
 import unittest
 
 import openpyxl
-
 from test_utils import run_command, tearDown
 
 
