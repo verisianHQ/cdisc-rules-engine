@@ -118,6 +118,24 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         print(args.define_xml_path)
         define_info = engine.get_define_xml_value_level_metadata(dataset_path=args.define_xml_path, domain_name="AE")
         print(define_info)
+
+        print("------****-------")
+        more_define_info = engine.get_define_xml_item_group_metadata_for_domain(
+            dataset_path=args.define_xml_path, domain="AE"
+        )
+        print(more_define_info)
+
+        for dataset in data_service.datasets:
+            print("------****-------")
+            try:
+                even_more_define_info = engine.get_define_xml_variables_metadata(
+                    dataset_path=args.define_xml_path, dataset_metadata=dataset
+                )
+                print(f"{dataset.name} variables metadata:")
+                print(even_more_define_info)
+            except Exception as e:
+                print(f"{dataset.name} not in define xml. Error: {e}")
+
         for rule in rules:
             rule_result = sql_validate_single_rule(engine, args, rule)
             yield rule_result

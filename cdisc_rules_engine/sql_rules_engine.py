@@ -45,6 +45,7 @@ from cdisc_rules_engine.utilities.utils import (
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
+from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
 
 
 def clean_postgres_message(message: str) -> str:
@@ -389,3 +390,54 @@ class SQLRulesEngine:
             message=message,
             status=ExecutionStatus.EXECUTION_ERROR.value,
         )
+
+    def get_define_xml_item_group_metadata_for_dataset(
+        self, dataset_path: str, dataset_metadata: SdtmDatasetMetadata2
+    ) -> List[dict]:
+        """
+        Gets Define XML item group metadata
+        returns a list of dictionaries containing the following keys:
+            "define_dataset_name"
+            "define_dataset_label"
+            "define_dataset_location"
+            "define_dataset_class"
+            "define_dataset_structure"
+            "define_dataset_is_non_standard"
+            "define_dataset_variables"
+            "define_dataset_key_sequence"
+        """
+
+        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            dataset_path, self.define_xml_path, self.data_service, None
+        )
+        return define_xml_reader.extract_dataset_metadata(dataset_metadata["dataset_name"])
+
+    def get_define_xml_item_group_metadata_for_domain(self, dataset_path: str, domain: str) -> List[dict]:
+        """
+        Gets Define XML item group metadata
+        returns a list of dictionaries containing the following keys:
+            "define_dataset_name"
+            "define_dataset_label"
+            "define_dataset_location"
+            "define_dataset_class"
+            "define_dataset_structure"
+            "define_dataset_is_non_standard"
+            "define_dataset_variables"
+            "define_dataset_key_sequence"
+        """
+
+        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            dataset_path, self.define_xml_path, self.data_service, None
+        )
+        return define_xml_reader.extract_domain_metadata(domain)
+
+    def get_define_xml_variables_metadata(
+        self, dataset_path: str, dataset_metadata: SdtmDatasetMetadata2
+    ) -> List[dict]:
+        """
+        Gets Define XML variables metadata.
+        """
+        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            dataset_path, self.define_xml_path, self.data_service, None
+        )
+        return define_xml_reader.extract_variables_metadata(domain_name=dataset_metadata.domain)
