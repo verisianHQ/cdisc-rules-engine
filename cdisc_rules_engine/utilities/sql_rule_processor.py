@@ -64,6 +64,7 @@ class SQLRuleProcessor:
                 ct_version=operation.get("version"),
                 ct_attribute=operation.get("ct_attribute"),
                 ct_conditions=operation.get("ct_conditions"),
+                define_variable_value=operation.get("define_variable_value"),
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
