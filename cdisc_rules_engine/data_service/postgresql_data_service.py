@@ -79,7 +79,7 @@ class PostgresQLDataService:
         populate_codelists(pgi, cache_path, codelists)
         populate_standards(pgi)
 
-        instance.define_xml_path = define_xml_path
+        instance._update_define_xml_path(define_xml_path)
 
         return instance
 
@@ -180,3 +180,6 @@ class PostgresQLDataService:
         """
         with open(dataset_name, "rb") as f:
             return f.read()
+
+    def _update_define_xml_path(self, define_xml_path: str):
+        self.define_xml_path = define_xml_path
