@@ -6,23 +6,28 @@ class SqlGetDefineVariablesMetadata(SqlBaseOperation):
 
     def _execute_operation(self):
 
-        domain_name = self.params.domain.lower()
+        domain_name = self.params.domain.upper()
         try:
             define_variables_metadata = self.params.standards_context.get_define_xml_variables_metadata(
                 self.data_service, domain_name
             )
         except Exception as e:
-            raise ValueError(f"Error: Domain {domain_name.upper()} is not found in Define XML", e)
+            raise ValueError(f"Error: Domain {domain_name} is not found in Define XML", e)
 
         value = next(
-            i.get(self.params.define_variable_value)
-            for i in define_variables_metadata
-            if i.get("define_variable_name") == self.params.target
+            (
+                i.get(self.params.define_variable_value)
+                for i in define_variables_metadata
+                if i.get("define_variable_name") == self.params.target
+            ),
+            "No Value Found",  # avoided None as that could be a valid value for the metadata and we want to be able to distinguish between not found and found with None value # noqa
         )
 
-        if not value:
+        if value == "No Value Found":
             raise Exception(f"Metadata extraction of {self.params.target} failed - metadata not found")
 
-        return SqlOperationResult(
-            query=f"SELECT '{value.replace('\'', '\'\'')}' AS value", type="constant", subtype="Char"
-        )
+        # handle different types
+        if isinstance(value, str):
+            value = value.replace("'", "''")
+
+        return SqlOperationResult(query=f"SELECT '{value}' AS value", type="constant", subtype="Char")
