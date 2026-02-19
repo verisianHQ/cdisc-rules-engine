@@ -16,7 +16,7 @@ class SqlGetDefineVariablesMetadata(SqlBaseOperation):
 
         value = next(
             (
-                i.get(self.params.define_variable_value)
+                i.get(self.params.attribute_name)
                 for i in define_variables_metadata
                 if i.get("define_variable_name") == self.params.target
             ),

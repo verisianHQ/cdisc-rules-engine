@@ -25,7 +25,7 @@ class SqlOperationParams:
     ct_version: str = None
     ct_attribute: str = None
     ct_conditions: dict = None
-    define_variable_value: str = None
+    attribute_name: str = None
 
     # standard_substandard: str = None
     # attribute_name: str = None

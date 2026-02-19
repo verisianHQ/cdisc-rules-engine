@@ -14,7 +14,7 @@ def test_get_define_variable_metadata_collected(sdtm_standards_context):
         domain="AE",
         target="AEENTPT",
         standards_context=sdtm_standards_context,
-        define_variable_value="define_variable_is_collected",
+        attribute_name="define_variable_is_collected",
     )
     operation = SqlGetDefineVariablesMetadata(params=params, data_service=data_service)
     result = operation.execute()
@@ -28,7 +28,7 @@ def test_get_define_variable_metadata_label(sdtm_standards_context):
         domain="AE",
         target="AEENTPT",
         standards_context=sdtm_standards_context,
-        define_variable_value="define_variable_label",
+        attribute_name="define_variable_label",
     )
     operation = SqlGetDefineVariablesMetadata(params=params, data_service=data_service)
     result = operation.execute()
