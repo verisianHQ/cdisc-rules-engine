@@ -18,6 +18,7 @@ from cdisc_rules_engine.sql_operations.numeric_operation import (
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
 from cdisc_rules_engine.sql_operations.get_model_filtered_variables import SqlGetModelFilteredVariables
+from cdisc_rules_engine.sql_operations.get_dataset_filtered_variables import SqlGetDatasetFilteredVariables
 from cdisc_rules_engine.sql_operations.variable_count import SqlVariableCountOperation
 from cdisc_rules_engine.sql_operations.permissibility_operation import SqlPermissibilityOperation
 from cdisc_rules_engine.constants.permissibility import (
@@ -84,7 +85,7 @@ class SqlOperationsFactory:
         "valid_external_dictionary_code": None,
         "valid_external_dictionary_code_term_pair": None,
         "valid_define_external_dictionary_version": None,
-        "get_dataset_filtered_variables": None,
+        "get_dataset_filtered_variables": SqlGetDatasetFilteredVariables,
     }
 
     @classmethod
