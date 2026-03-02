@@ -24,13 +24,10 @@ class SqlGetDatasetFilteredVariables(SqlBaseOperation):
         if not key or not val:
             return []
 
-        try:
-            model_variables: List[dict] = self._get_variables_metadata_from_standard_model(self.params.domain)
-            filtered_model = [var for var in model_variables if var.get(key) == val]
-            variable_names_list = self._replace_variable_wildcards(filtered_model, self.params.domain)
-            return variable_names_list
-        except Exception:
-            return []
+        model_variables: List[dict] = self._get_variables_metadata_from_standard_model(self.params.domain)
+        filtered_model = [var for var in model_variables if var.get(key) == val]
+        variable_names_list = self._replace_variable_wildcards(filtered_model, self.params.domain)
+        return variable_names_list
 
     def _get_dataset_variables(self):
         all_dataset_metadata = [
