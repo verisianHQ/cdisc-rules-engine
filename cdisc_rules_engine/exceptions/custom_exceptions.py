@@ -71,14 +71,14 @@ class FailedSchemaValidation(EngineError):
     description = "Error Occured in Schema Validation"
 
 
-class SqlOperatorError(EngineError):
+class SqlOperatorError(Exception):
     def __init__(self, original_exception, operator_name):
         self.original_exception = original_exception
         self.operator_name = operator_name
         super().__init__(f"{operator_name}: {str(original_exception)}")
 
 
-class ColumnNotFoundError(EngineError):
+class ColumnNotFoundError(Exception):
     def __init__(self, column_name: str, table_id: str = None, message: str = None):
         self.column_name = column_name
         self.table_id = table_id
