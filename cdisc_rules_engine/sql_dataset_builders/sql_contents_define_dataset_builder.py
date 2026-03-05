@@ -1,5 +1,5 @@
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder, DEFINE_DATASETS_TYPE
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
@@ -25,9 +25,12 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
         define_ds_metadata = define_reader.extract_dataset_metadata(self.dataset_metadata.domain)
+        for ds in define_ds_metadata:
+            for k, v in ds.items():
+                ds[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
 
-        for key in define_ds_metadata:
-            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(f"{key}", "Char"))
+        for col, type in DEFINE_DATASETS_TYPE.items():
+            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
 
         dataset_location = self.dataset_metadata.filename
         dataset_name = self.dataset_metadata.name
@@ -36,27 +39,16 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
 
         table_hash = self.data_service.pgi.schema.get_table_hash(table_id)
 
-        sets = {
+        row = {
             "dataset_location": dataset_location,
             "dataset_name": dataset_name,
             "dataset_label": dataset_label,
             "dataset_domain": dataset_domain,
-            "define_dataset_location": define_ds_metadata["define_dataset_location"],
-            "define_dataset_name": define_ds_metadata["define_dataset_name"],
-            "define_dataset_label": define_ds_metadata["define_dataset_label"],
-            "define_dataset_domain": define_ds_metadata["define_dataset_domain"],
-            "define_dataset_class": define_ds_metadata["define_dataset_class"],
-            "define_dataset_structure": define_ds_metadata["define_dataset_structure"],
-            "define_dataset_is_non_standard": define_ds_metadata["define_dataset_is_non_standard"],
-            "define_dataset_variables": ",".join(define_ds_metadata["define_dataset_variables"]),
-            "define_dataset_key_sequence": ",".join(define_ds_metadata["define_dataset_key_sequence"]),
         }
+        row.update(define_ds_metadata)
 
         set_query = ", ".join(
-            [
-                f"{self.data_service.pgi.schema.get_column_hash(table_id, col)} = '{value}'"
-                for col, value in sets.items()
-            ]
+            [f"{self.data_service.pgi.schema.get_column_hash(table_id, col)} = '{value}'" for col, value in row.items()]
         )
 
         update_query = f"""

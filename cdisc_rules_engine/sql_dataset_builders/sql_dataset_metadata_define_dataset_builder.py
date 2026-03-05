@@ -1,6 +1,7 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundInDefineXMLError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder, DEFINE_DATASETS_TYPE
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
@@ -20,39 +21,35 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
         all_ds_metadata = [
             self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
         ]
-        define_ds_metadata = {
-            ds_metadata.domain: define_reader.extract_dataset_metadata(ds_metadata.domain)
-            for ds_metadata in all_ds_metadata
-        }
-
-        rows = []
-        all_keys = set(
-            [
-                "dataset_name",
-                "dataset_location",
-                "dataset_label",
-                "dataset_domain",
-            ]
-        )
-        for domain in define_ds_metadata:
-            all_keys.update(list(define_ds_metadata[domain].keys()))
+        define_ds_metadata = {}
 
         for ds_metadata in all_ds_metadata:
-            define_metadata = define_ds_metadata.get(ds_metadata.domain, {})
-            row_data = {
+            try:
+                metadata = define_reader.extract_dataset_metadata(ds_metadata.domain)
+                define_ds_metadata[ds_metadata.domain] = metadata
+            except DomainNotFoundInDefineXMLError:
+                continue
+
+        rows = []
+
+        for ds_metadata in all_ds_metadata:
+            row = {
                 "dataset_name": ds_metadata.name,
                 "dataset_location": ds_metadata.filename,
                 "dataset_label": ds_metadata.label or "",
                 "dataset_domain": ds_metadata.domain,
             }
-            for key in define_metadata:
-                row_data[key] = define_metadata[key]
-            rows.append(row_data)
+            define_metadata = define_ds_metadata.get(ds_metadata.domain, {})
+            row.update(define_metadata)
+            rows.append(row)
 
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
-        for key in all_keys:
-            col_type = "Num" if any(keyword in key.lower() for keyword in ["number", "size"]) else "Char"
-            schema.add_column(SqlColumnSchema.generated(key, col_type))
+        schema.add_column(SqlColumnSchema.generated("dataset_name", "Char"))
+        schema.add_column(SqlColumnSchema.generated("dataset_location", "Char"))
+        schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
+        schema.add_column(SqlColumnSchema.generated("dataset_domain", "Char"))
+        for col, type in DEFINE_DATASETS_TYPE.items():
+            schema.add_column(SqlColumnSchema.generated(col, type))
 
         self.data_service.pgi.create_table(schema)
         if rows:

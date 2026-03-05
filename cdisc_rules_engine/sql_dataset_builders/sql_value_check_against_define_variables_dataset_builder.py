@@ -1,6 +1,9 @@
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
+    SqlBaseDatasetBuilder,
+    DEFINE_VARIABLES_TYPE,
+)
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
@@ -26,19 +29,18 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
         define_vars_metadata = define_reader.extract_variables_metadata(domain_name=self.dataset_metadata.domain)
+        for var in define_vars_metadata:
+            for k, v in var.items():
+                var[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
+
         define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars_metadata}
 
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
         schema.add_column(SqlColumnSchema.generated("row_number", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_name", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_value", "Char"))
-
-        define_keys = set()
-        for d in define_vars_metadata:
-            define_keys.update(d.keys())
-
-        for key in define_keys:
-            schema.add_column(SqlColumnSchema.generated(key, "Char"))
+        for col, type in DEFINE_VARIABLES_TYPE.items():
+            schema.add_column(SqlColumnSchema.generated(col, type))
 
         self.data_service.pgi.create_table(schema)
 
@@ -53,7 +55,7 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
         col_hash_map = {col_name: source_schema.get_column_hash(col_name) for col_name in column_names}
         new_col_hash_map = {
             col_name: schema.get_column_hash(col_name)
-            for col_name in ["row_number", "variable_name", "variable_value"] + list(define_keys)
+            for col_name in ["row_number", "variable_name", "variable_value"] + list(DEFINE_VARIABLES_TYPE.keys())
         }
         for col_name in column_names:
             col_hash = col_hash_map[col_name]
@@ -66,7 +68,7 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
                 f"CAST({col_hash} AS TEXT) as {new_col_hash_map['variable_value']}",
             ]
 
-            for key in define_keys:
+            for key in DEFINE_VARIABLES_TYPE.keys():
                 val = d_var.get(key, "")
                 if isinstance(val, list):
                     val = ",".join(str(i) for i in val)
@@ -79,7 +81,7 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
             new_col_hash_map["row_number"],
             new_col_hash_map["variable_name"],
             new_col_hash_map["variable_value"],
-        ] + [new_col_hash_map[key] for key in define_keys]
+        ] + [new_col_hash_map[key] for key in DEFINE_VARIABLES_TYPE.keys()]
 
         columns_clause = ", ".join(target_columns)
 

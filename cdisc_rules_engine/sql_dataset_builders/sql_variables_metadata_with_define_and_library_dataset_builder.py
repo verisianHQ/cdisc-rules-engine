@@ -1,6 +1,9 @@
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
+    SqlBaseDatasetBuilder,
+    DEFINE_VARIABLES_TYPE,
+)
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
@@ -19,6 +22,9 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
         define_vars = define_reader.extract_variables_metadata(domain_name=self.dataset_metadata.domain)
+        for var in define_vars:
+            for k, v in var.items():
+                var[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
         define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars}
 
         library_metadata = self.standards_context.get_library_variables_metadata(self.dataset_metadata)
@@ -46,9 +52,25 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
             )
             rows.append(row)
 
-        if rows:
-            schema = self._generate_schema(table_name, rows[0])
+            schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
+
+            schema.add_column(SqlColumnSchema.generated("variable_name", "Char"))
+            schema.add_column(SqlColumnSchema.generated("variable_order_number", "Num"))
+            schema.add_column(SqlColumnSchema.generated("variable_label", "Char"))
+            schema.add_column(SqlColumnSchema.generated("variable_size", "Num"))
+            schema.add_column(SqlColumnSchema.generated("variable_data_type", "Char"))
+            schema.add_column(SqlColumnSchema.generated("variable_has_empty_values", "Bool"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_name", "Char"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_label", "Char"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_data_type", "Char"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_role", "Char"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_core", "Char"))
+            schema.add_column(SqlColumnSchema.generated("library_variable_order_number", "Num"))
+            for col, type in DEFINE_VARIABLES_TYPE.items():
+                schema.add_column(SqlColumnSchema.generated(col, type))
+
             self.data_service.pgi.create_table(schema)
+        if rows:
             self.data_service.pgi.insert_data(table_name, rows)
 
         return table_name
@@ -78,39 +100,13 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
             "variable_label": var.label if var else "",
             "variable_size": var.length if var else 0,
             "variable_data_type": var.type if var else "",
+            "variable_has_empty_values": str(has_empty),
             "library_variable_name": l_var.get("name", ""),
             "library_variable_label": l_var.get("label", ""),
             "library_variable_data_type": l_var.get("data_type", ""),
             "library_variable_role": l_var.get("role", ""),
             "library_variable_core": l_var.get("core", ""),
             "library_variable_order_number": l_var.get("order_number", 0),
-            "variable_has_empty_values": str(has_empty),
         }
-
-        for k, v in d_var.items():
-            row[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
-
+        row.update(d_var)
         return row
-
-    def _generate_schema(self, table_name: str, sample_row: dict) -> SqlTableSchema:
-        schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
-
-        bool_columns = {
-            "variable_has_empty_values",
-            "define_variable_is_non_standard",
-            "define_variable_is_collected",
-            "define_variable_has_no_data",
-            "define_variable_has_codelist",
-        }
-        num_columns = {"variable_order_number", "variable_size", "library_variable_order_number"}
-
-        for key in sample_row:
-            if key in bool_columns:
-                col_type = "Bool"
-            elif key in num_columns:
-                col_type = "Num"
-            else:
-                col_type = "Char"
-            schema.add_column(SqlColumnSchema.generated(key, col_type))
-
-        return schema
