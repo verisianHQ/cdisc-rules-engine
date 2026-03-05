@@ -37,6 +37,25 @@ DEFINE_DATASETS_TYPE = {
     "define_dataset_variables": "Char",
     "define_dataset_key_sequence": "Char",
 }
+DEFINE_VLM_TYPE = {
+    "define_vlm_name": "Char",
+    "define_vlm_label": "Char",
+    "define_vlm_data_type": "Char",
+    "define_vlm_is_collected": "Bool",
+    "define_vlm_role": "Char",
+    "define_vlm_size": "Num",
+    "define_vlm_ccode": "Char",
+    "define_vlm_format": "Char",
+    "define_vlm_allowed_terms": "Char",
+    "define_vlm_origin_type": "Char",
+    "define_vlm_has_no_data": "Bool",
+    "define_vlm_order_number": "Num",
+    "define_vlm_length": "Num",
+    "define_vlm_has_codelist": "Bool",
+    "define_vlm_codelist_coded_values": "Char",
+    "define_vlm_mandatory": "Bool",
+    "define_vlm_has_comment": "Bool",
+}
 
 
 class SqlBaseDatasetBuilder(ABC):

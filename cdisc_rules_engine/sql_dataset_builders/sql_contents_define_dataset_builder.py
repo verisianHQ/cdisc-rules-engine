@@ -51,9 +51,7 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             [f"{self.data_service.pgi.schema.get_column_hash(table_id, col)} = '{value}'" for col, value in row.items()]
         )
 
-        update_query = f"""
-            UPDATE {table_hash} SET {set_query} WHERE id = 1;
-        """
+        update_query = f"UPDATE {table_hash} SET {set_query};"
         self.data_service.pgi.execute_sql(update_query)
 
         return table_id
