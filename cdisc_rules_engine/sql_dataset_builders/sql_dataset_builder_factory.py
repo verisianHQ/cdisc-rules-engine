@@ -15,6 +15,9 @@ from cdisc_rules_engine.sql_dataset_builders.sql_domain_list_builder import (
 from cdisc_rules_engine.sql_dataset_builders.sql_dataset_metadata_builder import (
     SqlDatasetMetadataBuilder,
 )
+from cdisc_rules_engine.sql_dataset_builders.sql_dataset_metadata_define_dataset_builder import (
+    SqlDatasetMetadataWithDefineDatasetBuilder,
+)
 from cdisc_rules_engine.sql_dataset_builders.sql_variables_metadata_with_library_builder import (
     SqlVariablesMetadataWithLibraryBuilder,
 )
@@ -27,8 +30,8 @@ from cdisc_rules_engine.sql_dataset_builders.sql_value_check_with_variable_metad
 from cdisc_rules_engine.sql_dataset_builders.sql_contents_define_dataset_builder import (
     SqlContentsDefineDatasetBuilder,
 )
-from cdisc_rules_engine.sql_dataset_builders.sql_contents_define_variables_dataset_builder import (
-    SqlContentsDefineVariablesDatasetBuilder,
+from cdisc_rules_engine.sql_dataset_builders.sql_value_check_against_define_variables_dataset_builder import (
+    SqlValueCheckAgainstDefineVariablesDatasetBuilder,
 )
 from cdisc_rules_engine.sql_dataset_builders.sql_variables_metadata_with_define_dataset_builder import (
     SqlVariablesMetadataWithDefineDatasetBuilder,
@@ -47,23 +50,22 @@ class SqlDatasetBuilderFactory:
     """
 
     _builders_map = {
-        RuleTypes.VARIABLE_METADATA_CHECK.value: SqlVariablesMetadataBuilder,
         RuleTypes.DOMAIN_PRESENCE_CHECK.value: SqlDomainListDatasetBuilder,
-        RuleTypes.DATASET_METADATA_CHECK.value: SqlDatasetMetadataBuilder,
-        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_LIBRARY.value: SqlVariablesMetadataWithLibraryBuilder,
-        RuleTypes.VALUE_CHECK_WITH_DATASET_METADATA.value: SqlValueCheckWithDatasetMetadataBuilder,
-        RuleTypes.VALUE_CHECK_WITH_VARIABLE_METADATA.value: SqlValueCheckWithVariableMetadataBuilder,
         RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE.value: SqlContentsDefineDatasetBuilder,
-        RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VARIABLE.value: SqlContentsDefineVariablesDatasetBuilder,
+        RuleTypes.DATASET_METADATA_CHECK.value: SqlDatasetMetadataBuilder,
+        RuleTypes.DATASET_METADATA_CHECK_AGAINST_DEFINE.value: SqlDatasetMetadataWithDefineDatasetBuilder,
+        RuleTypes.VARIABLE_METADATA_CHECK.value: SqlVariablesMetadataBuilder,
+        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_LIBRARY.value: SqlVariablesMetadataWithLibraryBuilder,
         RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value: SqlVariablesMetadataWithDefineDatasetBuilder,
         RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value: SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder,  # noqa: E501
+        RuleTypes.VALUE_CHECK_WITH_VARIABLE_METADATA.value: SqlValueCheckWithVariableMetadataBuilder,
+        RuleTypes.VALUE_CHECK_WITH_DATASET_METADATA.value: SqlValueCheckWithDatasetMetadataBuilder,
+        RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VARIABLE.value: SqlValueCheckAgainstDefineVariablesDatasetBuilder,
         RuleTypes.DEFINE_ITEM_GROUP_METADATA_CHECK.value: SqlDefineItemGroupDatasetBuilder,
     }
 
     _unimplemented_types = {
         # define-XML dependent types (not implemented yet)
-        RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value,
-        RuleTypes.DATASET_METADATA_CHECK_AGAINST_DEFINE.value,
         RuleTypes.DEFINE_ITEM_METADATA_CHECK.value,
         RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value,
         RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VLM.value,

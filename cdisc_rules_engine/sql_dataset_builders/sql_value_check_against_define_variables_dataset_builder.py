@@ -4,7 +4,7 @@ from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import Sql
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
-class SqlContentsDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
+class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
     """
     Returns a long dataset (unpivoted) where each value in each row of the original dataset
     is a row in the new dataset. The Define XML variable metadata corresponding to each row's
@@ -12,7 +12,7 @@ class SqlContentsDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        table_name = f"{self.dataset_metadata.name}_contents_define_variables"
+        table_name = f"{self.dataset_metadata.name}_value_check_define_variables"
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
 
