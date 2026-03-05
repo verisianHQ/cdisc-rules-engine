@@ -24,6 +24,21 @@ from cdisc_rules_engine.sql_dataset_builders.sql_value_check_with_dataset_metada
 from cdisc_rules_engine.sql_dataset_builders.sql_value_check_with_variable_metadata_builder import (
     SqlValueCheckWithVariableMetadataBuilder,
 )
+from cdisc_rules_engine.sql_dataset_builders.sql_contents_define_dataset_builder import (
+    SqlContentsDefineDatasetBuilder,
+)
+from cdisc_rules_engine.sql_dataset_builders.sql_contents_define_variables_dataset_builder import (
+    SqlContentsDefineVariablesDatasetBuilder,
+)
+from cdisc_rules_engine.sql_dataset_builders.sql_variables_metadata_with_define_dataset_builder import (
+    SqlVariablesMetadataWithDefineDatasetBuilder,
+)
+from cdisc_rules_engine.sql_dataset_builders.sql_variables_metadata_with_define_and_library_dataset_builder import (
+    SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder,
+)
+from cdisc_rules_engine.sql_dataset_builders.sql_define_item_group_dataset_builder import (
+    SqlDefineItemGroupDatasetBuilder,
+)
 
 
 class SqlDatasetBuilderFactory:
@@ -31,7 +46,6 @@ class SqlDatasetBuilderFactory:
     Factory to get the right SQL dataset builder based on rule type.
     """
 
-    # Mapping of rule types to their SQL builder implementations
     _builders_map = {
         RuleTypes.VARIABLE_METADATA_CHECK.value: SqlVariablesMetadataBuilder,
         RuleTypes.DOMAIN_PRESENCE_CHECK.value: SqlDomainListDatasetBuilder,
@@ -39,20 +53,19 @@ class SqlDatasetBuilderFactory:
         RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_LIBRARY.value: SqlVariablesMetadataWithLibraryBuilder,
         RuleTypes.VALUE_CHECK_WITH_DATASET_METADATA.value: SqlValueCheckWithDatasetMetadataBuilder,
         RuleTypes.VALUE_CHECK_WITH_VARIABLE_METADATA.value: SqlValueCheckWithVariableMetadataBuilder,
+        RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE.value: SqlContentsDefineDatasetBuilder,
+        RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VARIABLE.value: SqlContentsDefineVariablesDatasetBuilder,
+        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value: SqlVariablesMetadataWithDefineDatasetBuilder,
+        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value: SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder,  # noqa: E501
+        RuleTypes.DEFINE_ITEM_GROUP_METADATA_CHECK.value: SqlDefineItemGroupDatasetBuilder,
     }
 
-    # List of rule types that are not yet implemented
     _unimplemented_types = {
         # define-XML dependent types (not implemented yet)
         RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE_AND_LIBRARY.value,
-        RuleTypes.DATASET_CONTENTS_CHECK_AGAINST_DEFINE.value,
         RuleTypes.DATASET_METADATA_CHECK_AGAINST_DEFINE.value,
-        RuleTypes.DEFINE_ITEM_GROUP_METADATA_CHECK.value,
         RuleTypes.DEFINE_ITEM_METADATA_CHECK.value,
         RuleTypes.VALUE_LEVEL_METADATA_CHECK_AGAINST_DEFINE.value,
-        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value,
-        RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE_XML_AND_LIBRARY.value,
-        RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VARIABLE.value,
         RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VLM.value,
         RuleTypes.DEFINE_ITEM_METADATA_CHECK_AGAINST_LIBRARY.value,
     }
