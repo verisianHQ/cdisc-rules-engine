@@ -127,6 +127,10 @@ class SqlBaseDatasetBuilder(ABC):
         try:
             metadata = define_reader.extract_dataset_metadata()
             metadata = self._format_metadata_dict(metadata)
+            metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
+                reader=define_reader,
+                domain=self.dataset_metadata.domain,
+            )
         except DomainNotFoundInDefineXMLError:
             metadata = {}
         return metadata
@@ -144,6 +148,10 @@ class SqlBaseDatasetBuilder(ABC):
             try:
                 metadata = define_reader.extract_dataset_metadata(ds_metadata.domain)
                 metadata = self._format_metadata_dict(metadata)
+                metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
+                    reader=define_reader,
+                    domain=ds_metadata.domain,
+                )
                 define_ds_metadata[ds_metadata.domain] = metadata
             except DomainNotFoundInDefineXMLError:
                 continue
@@ -165,6 +173,12 @@ class SqlBaseDatasetBuilder(ABC):
             library_metadata[i] = self._filter_library_vars_dict(var)
             library_metadata[i] = self._format_metadata_dict(library_metadata[i])
         return library_metadata
+
+    def _get_define_dataset_variable_order(self, reader, domain: str) -> str:
+        metadata = reader.extract_variables_metadata(domain)
+        vars_order = {var["define_variable_name"]: var["define_variable_order_number"] for var in metadata}
+        sorted_vars = sorted(vars_order.items(), key=lambda item: item[1])
+        return ",".join([var[0].upper() for var in sorted_vars])
 
     @staticmethod
     def _filter_library_vars_dict(library_var: dict) -> dict:
