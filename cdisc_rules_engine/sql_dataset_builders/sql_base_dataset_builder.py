@@ -127,10 +127,11 @@ class SqlBaseDatasetBuilder(ABC):
         try:
             metadata = define_reader.extract_dataset_metadata()
             metadata = self._format_metadata_dict(metadata)
-            metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
-                reader=define_reader,
-                domain=self.dataset_metadata.domain,
-            )
+            if "define_dataset_variable_order" not in metadata.keys():
+                metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
+                    reader=define_reader,
+                    domain=self.dataset_metadata.domain,
+                )
         except DomainNotFoundInDefineXMLError:
             metadata = {}
         return metadata
@@ -148,10 +149,11 @@ class SqlBaseDatasetBuilder(ABC):
             try:
                 metadata = define_reader.extract_dataset_metadata(ds_metadata.domain)
                 metadata = self._format_metadata_dict(metadata)
-                metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
-                    reader=define_reader,
-                    domain=ds_metadata.domain,
-                )
+                if "define_dataset_variable_order" not in metadata.keys():
+                    metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
+                        reader=define_reader,
+                        domain=ds_metadata.domain,
+                    )
                 define_ds_metadata[ds_metadata.domain] = metadata
             except DomainNotFoundInDefineXMLError:
                 continue
