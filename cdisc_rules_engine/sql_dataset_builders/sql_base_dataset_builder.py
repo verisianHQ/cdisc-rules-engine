@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Dict, List
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     BaseDatasetMetadata,
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundInDefineXMLError
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 
@@ -114,28 +115,69 @@ class SqlBaseDatasetBuilder(ABC):
         )
         domain = self.dataset_metadata.domain or self.dataset_metadata.name
         metadata = define_reader.extract_variables_metadata(domain)
-        self.flatten_lists_in_dict(metadata)
+        for i, var in enumerate(metadata):
+            metadata[i] = self._format_metadata_dict(var)
         return metadata
 
-    def get_define_datasets(self) -> List[dict]:
+    def get_define_dataset(self) -> dict:
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
-        metadata = define_reader.extract_dataset_metadata()
-        self.flatten_lists_in_dict(metadata)
+        try:
+            metadata = define_reader.extract_dataset_metadata()
+            metadata = self._format_metadata_dict(metadata)
+        except DomainNotFoundInDefineXMLError:
+            metadata = {}
         return metadata
+
+    def get_define_all_datasets(self) -> Dict[str, dict]:
+        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
+        )
+        all_ds_metadata = [
+            self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
+        ]
+        define_ds_metadata = {}
+
+        for ds_metadata in all_ds_metadata:
+            try:
+                metadata = define_reader.extract_dataset_metadata(ds_metadata.domain)
+                metadata = self._format_metadata_dict(metadata)
+                define_ds_metadata[ds_metadata.domain] = metadata
+            except DomainNotFoundInDefineXMLError:
+                continue
+
+        return define_ds_metadata
 
     def get_define_vlms(self) -> List[dict]:
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
         metadata = define_reader.extract_value_level_metadata()
-        self.flatten_lists_in_dict(metadata)
+        for i, var in enumerate(metadata):
+            metadata[i] = self._format_metadata_dict(var)
         return metadata
 
+    def get_library_vars(self) -> List[dict]:
+        library_metadata = self.standards_context.get_library_variables_metadata(self.dataset_metadata)
+        for i, var in enumerate(library_metadata):
+            library_metadata[i] = self._filter_library_vars_dict(var)
+            library_metadata[i] = self._format_metadata_dict(library_metadata[i])
+        return library_metadata
+
     @staticmethod
-    def flatten_lists_in_dict(metadata_list):
-        for var in metadata_list:
-            for k, v in var.items():
-                if isinstance(v, list):
-                    var[k] = ",".join(map(str, v))
+    def _filter_library_vars_dict(library_var: dict) -> dict:
+        new_var_dict = {}
+        for key in library_var.keys():
+            if f"library_variable_{key}" in LIBRARY_VARIABLES_TYPE.keys():
+                new_var_dict[f"library_variable_{key}"] = library_var[key]
+        return new_var_dict
+
+    @staticmethod
+    def _format_metadata_dict(metadata: dict) -> dict:
+        for k, v in metadata.items():
+            if v == "":
+                metadata[k] = None
+            elif isinstance(v, list):
+                metadata[k] = ",".join(map(str, v))
+        return metadata

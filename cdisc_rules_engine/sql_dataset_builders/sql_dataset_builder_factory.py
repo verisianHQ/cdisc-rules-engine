@@ -76,8 +76,6 @@ class SqlDatasetBuilderFactory:
         RuleTypes.DEFINE_ITEM_METADATA_CHECK_AGAINST_LIBRARY.value: SqlDefineItemMetadataCheckAgainstLibraryDatasetBuilder,  # noqa: E501
     }
 
-    _unimplemented_types = {}
-
     @classmethod
     def register_service(cls, name: str, builder: Type[SqlBaseDatasetBuilder]) -> None:
         """

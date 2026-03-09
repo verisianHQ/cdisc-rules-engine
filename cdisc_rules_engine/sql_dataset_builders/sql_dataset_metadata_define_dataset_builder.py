@@ -1,8 +1,6 @@
-from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundInDefineXMLError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder, DEFINE_DATASETS_TYPE
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
 class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
@@ -15,20 +13,10 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
 
-        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
-            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
-        )
         all_ds_metadata = [
             self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
         ]
-        define_ds_metadata = {}
-
-        for ds_metadata in all_ds_metadata:
-            try:
-                metadata = define_reader.extract_dataset_metadata(ds_metadata.domain)
-                define_ds_metadata[ds_metadata.domain] = metadata
-            except DomainNotFoundInDefineXMLError:
-                continue
+        define_ds_metadata = self.get_define_all_datasets()
 
         rows = []
 

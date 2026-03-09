@@ -3,9 +3,6 @@ from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     SqlBaseDatasetBuilder,
     DEFINE_DATASETS_TYPE,
 )
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
-    DefineXMLReaderFactory,
-)
 
 
 class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
@@ -24,13 +21,7 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
             self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
 
-        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
-            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
-        )
-        define_ds_metadata = define_reader.extract_dataset_metadata(self.dataset_metadata.domain)
-        for k, v in define_ds_metadata.items():
-            define_ds_metadata[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
-
+        define_ds_metadata = self.get_define_dataset()
         for col, type in DEFINE_DATASETS_TYPE.items():
             self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
 
@@ -52,13 +43,12 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         set_values = []
         for col, value in row.items():
             col_hash = self.data_service.pgi.schema.get_column_hash(table_id, col)
-            if self.data_service.pgi.schema.get_column(table_id, col).type == "Bool":
-                set_values.append(f"{col_hash} = {'TRUE' if value in ['T', 'TRUE', 'True', 'true', True] else 'FALSE'}")
-            elif isinstance(value, (str)):
+            if value is None:
+                set_values.append(f"{col_hash} = NULL")
+            elif isinstance(value, str):
                 set_values.append(f"{col_hash} = '{value}'")
             else:
                 set_values.append(f"{col_hash} = {value}")
-
         set_query = ", ".join(set_values)
 
         update_query = f"UPDATE {table_hash} SET {set_query};"

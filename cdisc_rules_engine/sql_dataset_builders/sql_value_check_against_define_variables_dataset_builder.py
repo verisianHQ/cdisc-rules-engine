@@ -4,7 +4,6 @@ from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     SqlBaseDatasetBuilder,
     DEFINE_VARIABLES_TYPE,
 )
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 
 
 class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
@@ -25,15 +24,8 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
         source_schema = self.data_service.pgi.schema.get_table(source_table_id)
         source_table_hash = self.data_service.pgi.schema.get_table_hash(source_table_id)
 
-        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
-            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
-        )
-        define_vars_metadata = define_reader.extract_variables_metadata(domain_name=self.dataset_metadata.domain)
-        for var in define_vars_metadata:
-            for k, v in var.items():
-                var[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
-
-        define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars_metadata}
+        define_vars = self.get_define_vars()
+        define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars}
 
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
         schema.add_column(SqlColumnSchema.generated("row_number", "Char"))
@@ -69,11 +61,8 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
             ]
 
             for key in DEFINE_VARIABLES_TYPE.keys():
-                val = d_var.get(key, "")
-                if isinstance(val, list):
-                    val = ",".join(str(i) for i in val)
-                val_escaped = str(val).replace("'", "''")
-                select_parts.append(f"CAST('{val_escaped}' AS TEXT) as {new_col_hash_map[key]}")
+                val = str(d_var.get(key, ""))
+                select_parts.append(f"CAST('{val}' AS TEXT) as {new_col_hash_map[key]}")
 
             select_statements.append(f"SELECT {', '.join(select_parts)} FROM {source_table_hash}")
 

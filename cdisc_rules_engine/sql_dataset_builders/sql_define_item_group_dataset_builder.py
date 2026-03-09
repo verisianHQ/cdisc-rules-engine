@@ -1,7 +1,9 @@
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
+    SqlBaseDatasetBuilder,
+    DEFINE_DATASETS_TYPE,
+)
 
 
 class SqlDefineItemGroupDatasetBuilder(SqlBaseDatasetBuilder):
@@ -15,31 +17,23 @@ class SqlDefineItemGroupDatasetBuilder(SqlBaseDatasetBuilder):
         if self.data_service.pgi.schema.get_table(table_name) is not None:
             return table_name
 
-        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
-            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
-        )
+        define_ds_metadata = self.get_define_all_datasets()
 
-        domain = self.dataset_metadata.domain or self.dataset_metadata.name
-        item_groups = define_reader.extract_domain_metadata(domain)
-
-        if not item_groups:
-            item_groups = [{}]
-
-        for ig in item_groups:
-            for k, v in ig.items():
-                if isinstance(v, list):
-                    ig[k] = ",".join(v)
+        rows = []
+        for domain, metadata in define_ds_metadata.items():
+            row = {
+                "dataset_domain": domain,
+            }
+            for key, val in metadata.items():
+                row[key] = None if val == "" else val
+            rows.append(row)
 
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
-        if item_groups and item_groups[0]:
-            for key in item_groups[0].keys():
-                schema.add_column(SqlColumnSchema.generated(key, "Char"))
-        else:
-            schema.add_column(SqlColumnSchema.generated("define_dataset_name", "Char"))
-
+        for col, type in DEFINE_DATASETS_TYPE.items():
+            schema.add_column(SqlColumnSchema.generated(col, type))
         self.data_service.pgi.create_table(schema)
 
-        if item_groups and item_groups[0]:
-            self.data_service.pgi.insert_data(table_name, item_groups)
+        if rows:
+            self.data_service.pgi.insert_data(table_name, rows)
 
         return table_name
