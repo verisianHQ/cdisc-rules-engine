@@ -1,5 +1,8 @@
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
-from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder, DEFINE_DATASETS_TYPE
+from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
+    SqlBaseDatasetBuilder,
+    DEFINE_DATASETS_TYPE,
+)
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
@@ -25,9 +28,8 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
         define_ds_metadata = define_reader.extract_dataset_metadata(self.dataset_metadata.domain)
-        for ds in define_ds_metadata:
-            for k, v in ds.items():
-                ds[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
+        for k, v in define_ds_metadata.items():
+            define_ds_metadata[k] = ",".join(str(i) for i in v) if isinstance(v, list) else v
 
         for col, type in DEFINE_DATASETS_TYPE.items():
             self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
@@ -47,11 +49,37 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         }
         row.update(define_ds_metadata)
 
-        set_query = ", ".join(
-            [f"{self.data_service.pgi.schema.get_column_hash(table_id, col)} = '{value}'" for col, value in row.items()]
-        )
+        set_values = []
+        for col, value in row.items():
+            col_hash = self.data_service.pgi.schema.get_column_hash(table_id, col)
+            if self.data_service.pgi.schema.get_column(table_id, col).type == "Bool":
+                set_values.append(f"{col_hash} = {'TRUE' if value in ['T', 'TRUE', 'True', 'true', True] else 'FALSE'}")
+            elif isinstance(value, (str)):
+                set_values.append(f"{col_hash} = '{value}'")
+            else:
+                set_values.append(f"{col_hash} = {value}")
+
+        set_query = ", ".join(set_values)
 
         update_query = f"UPDATE {table_hash} SET {set_query};"
         self.data_service.pgi.execute_sql(update_query)
+
+        self.data_service.pgi.add_column(table_id, SqlColumnSchema.define("define_key_sequence_is_unique", "Bool"))
+
+        unique_col_hash = self.data_service.pgi.schema.get_column_hash(table_id, "define_key_sequence_is_unique")
+        uniqueness_query = f"""
+            UPDATE {table_hash} t
+            SET {unique_col_hash} = sub.unique_status
+            FROM (
+                SELECT id,
+                CASE
+                    WHEN COUNT(*) OVER (PARTITION BY {define_ds_metadata['define_dataset_key_sequence']}) = 1 THEN TRUE
+                    ELSE FALSE
+                END as unique_status
+                FROM {table_hash}
+            ) sub
+            WHERE t.id = sub.id;
+        """
+        self.data_service.pgi.execute_sql(uniqueness_query)
 
         return table_id
