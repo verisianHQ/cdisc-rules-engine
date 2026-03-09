@@ -5,7 +5,17 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     BaseDatasetMetadata,
     PostgresQLDataService,
 )
+from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+
+LIBRARY_VARIABLES_TYPE = {
+    "library_variable_name": "Char",
+    "library_variable_label": "Char",
+    "library_variable_data_type": "Char",
+    "library_variable_role": "Char",
+    "library_variable_core": "Char",
+    "library_variable_order_number": "Num",
+}
 
 DEFINE_VARIABLES_TYPE = {
     "define_variable_name": "Char",
@@ -33,7 +43,7 @@ DEFINE_DATASETS_TYPE = {
     "define_dataset_domain": "Char",
     "define_dataset_class": "Char",
     "define_dataset_structure": "Char",
-    "define_dataset_is_non_standard": "Bool",
+    "define_dataset_is_non_standard": "Char",
     "define_dataset_variables": "Char",
     "define_dataset_key_sequence": "Char",
 }
@@ -97,3 +107,35 @@ class SqlBaseDatasetBuilder(ABC):
         Returns the table/view name to validate against.
         """
         return self.build()
+
+    def get_define_vars(self) -> List[dict]:
+        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
+        )
+        domain = self.dataset_metadata.domain or self.dataset_metadata.name
+        metadata = define_reader.extract_variables_metadata(domain)
+        self.flatten_lists_in_dict(metadata)
+        return metadata
+
+    def get_define_datasets(self) -> List[dict]:
+        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
+        )
+        metadata = define_reader.extract_dataset_metadata()
+        self.flatten_lists_in_dict(metadata)
+        return metadata
+
+    def get_define_vlms(self) -> List[dict]:
+        define_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
+        )
+        metadata = define_reader.extract_value_level_metadata()
+        self.flatten_lists_in_dict(metadata)
+        return metadata
+
+    @staticmethod
+    def flatten_lists_in_dict(metadata_list):
+        for var in metadata_list:
+            for k, v in var.items():
+                if isinstance(v, list):
+                    var[k] = ",".join(map(str, v))

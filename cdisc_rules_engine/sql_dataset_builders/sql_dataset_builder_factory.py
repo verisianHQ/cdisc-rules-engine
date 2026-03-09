@@ -48,6 +48,9 @@ from cdisc_rules_engine.sql_dataset_builders.sql_define_variables_dataset_builde
 from cdisc_rules_engine.sql_dataset_builders.sql_define_item_group_dataset_builder import (
     SqlDefineItemGroupDatasetBuilder,
 )
+from cdisc_rules_engine.sql_dataset_builders.sql_define_item_metadata_check_against_library_dataset_builder import (
+    SqlDefineItemMetadataCheckAgainstLibraryDatasetBuilder,
+)
 
 
 class SqlDatasetBuilderFactory:
@@ -70,12 +73,10 @@ class SqlDatasetBuilderFactory:
         RuleTypes.VALUE_CHECK_AGAINST_DEFINE_XML_VLM.value: SqlValueCheckAgainstDefineVLMDatasetBuilder,
         RuleTypes.DEFINE_ITEM_METADATA_CHECK.value: SqlDefineVariablesDatasetBuilder,
         RuleTypes.DEFINE_ITEM_GROUP_METADATA_CHECK.value: SqlDefineItemGroupDatasetBuilder,
+        RuleTypes.DEFINE_ITEM_METADATA_CHECK_AGAINST_LIBRARY.value: SqlDefineItemMetadataCheckAgainstLibraryDatasetBuilder,  # noqa: E501
     }
 
-    _unimplemented_types = {
-        # define-XML dependent types (not implemented yet)
-        RuleTypes.DEFINE_ITEM_METADATA_CHECK_AGAINST_LIBRARY.value,
-    }
+    _unimplemented_types = {}
 
     @classmethod
     def register_service(cls, name: str, builder: Type[SqlBaseDatasetBuilder]) -> None:
