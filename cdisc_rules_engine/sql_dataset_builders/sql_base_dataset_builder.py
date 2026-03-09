@@ -47,6 +47,7 @@ DEFINE_DATASETS_TYPE = {
     "define_dataset_is_non_standard": "Char",
     "define_dataset_variables": "Char",
     "define_dataset_key_sequence": "Char",
+    "define_dataset_variable_order": "Char",
 }
 DEFINE_VLM_TYPE = {
     "define_vlm_name": "Char",
