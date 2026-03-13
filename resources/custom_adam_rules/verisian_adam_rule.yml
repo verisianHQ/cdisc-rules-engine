@@ -35,18 +35,18 @@ Executability: Fully Executable
 Match Datasets:
   - Keys:
       - USUBJID
-    Name: ADTTE
+    Name: ADSL
 Outcome:
   Message: CNSR is not 1 when DTHFL is Y
   Output Variables:
-    - DTHFL
-    - ADTTE.CNSR
+    - ADSL.DTHFL
+    - CNSR
 Rule Type: Record Data
 Scope:
   Classes:
     Include:
-      - ADSL
+      - ADTTE
   Domains:
     Include:
-      - ADSL
+      - ADTTE
 Sensitivity: Record

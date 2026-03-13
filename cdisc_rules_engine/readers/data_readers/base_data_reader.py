@@ -69,7 +69,7 @@ class BaseDataReader(ABC):
         for column in metadata.variables:
             if column.type == "Num":
                 df[column.name] = df[column.name].apply(
-                    lambda x: 0.0 if isinstance(x, (int, float)) and x < 1e-20 else x
+                    lambda x: 0.0 if isinstance(x, (int, float)) and abs(x) < 1e-20 else x
                 )
         return df
 

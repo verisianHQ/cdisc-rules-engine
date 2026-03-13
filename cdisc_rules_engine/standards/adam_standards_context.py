@@ -3,13 +3,12 @@ from typing import List
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.models.library_metadata_container import LibraryMetadataContainer
-from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.standards.adam_dataset_metadata import AdamDatasetMetadata2
 from cdisc_rules_engine.standards.default_standards_context import DefaultStandardsContext
 
 
-class AdamStandardsContext(DefaultStandardsContext, BaseStandardsContext):
+class AdamStandardsContext(DefaultStandardsContext):
     def __init__(self, library_metadata: LibraryMetadataContainer):
         super().__init__()
         self.library_metadata = library_metadata
