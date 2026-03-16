@@ -22,11 +22,12 @@ class SqlExternalDictionariesContainer:
 
     def get_all_implemented_reader_classes(self) -> dict:
         valid_reader_classes = {}
-        for dictionary_type in self.dictionary_path_mapping:
-            if self.is_valid_external_dictionary(dictionary_type) and self.is_implemented_external_dictionary(
-                dictionary_type
-            ):
-                valid_reader_classes[dictionary_type] = IMPLEMENTED_DICTIONARY_VALIDATORS[dictionary_type]
+        for dictionary_type, path in self.dictionary_path_mapping.items():
+            if path:
+                if self.is_valid_external_dictionary(dictionary_type) and self.is_implemented_external_dictionary(
+                    dictionary_type
+                ):
+                    valid_reader_classes[dictionary_type] = IMPLEMENTED_DICTIONARY_VALIDATORS[dictionary_type]
         return valid_reader_classes
 
     def get_dictionary_path(self, dictionary_type: str) -> str:
