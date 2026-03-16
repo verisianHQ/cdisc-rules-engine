@@ -18,6 +18,7 @@ def _whodrug_schema(format: str) -> SqlTableSchema:
         table.add_column(SqlColumnSchema(name="med_prod_id", hash="med_prod_id", type="Num"))
     elif format == WhoDrugFormats.B3.value:
         table.add_column(SqlColumnSchema(name="drug_rec_num", hash="drug_rec_num", type="Num"))
+    table.add_column(SqlColumnSchema(name="drug_name", hash="drug_name", type="Char"))
     return table
 
 

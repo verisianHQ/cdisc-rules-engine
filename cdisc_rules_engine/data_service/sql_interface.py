@@ -51,6 +51,7 @@ class PostgresQLInterface:
             # drop all previously generated analysis tables
             self.execute_sql_file(str(Path(__file__).parent / "schemas" / "drop_analysis_tables.sql"))
             self._drop_non_static_tables()
+            self._drop_external_dictionary_tables()
 
         except Exception as e:
             logger.error(f"Failed to initialise database: {e}")
