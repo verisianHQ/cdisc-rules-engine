@@ -35,6 +35,7 @@ from cdisc_rules_engine.sql_operations.get_codelist_attributes import SqlGetCode
 from cdisc_rules_engine.sql_operations.get_define_variables_metadata import (
     SqlGetDefineVariablesMetadata,
 )
+from cdisc_rules_engine.sql_operations.valid_whodrug_references import SqlValidWhodrugReferencesOperation
 
 
 class SqlOperationsFactory:
@@ -60,7 +61,7 @@ class SqlOperationsFactory:
         "min_date": lambda params, ds: SqlDateOperation(params, ds, "MIN"),
         "record_count": lambda params, ds: SqlNumericOperation(params, ds, "COUNT"),
         "valid_meddra_code_references": None,
-        "valid_whodrug_references": None,
+        "valid_whodrug_references": SqlValidWhodrugReferencesOperation,
         "whodrug_code_hierarchy": None,
         "valid_meddra_term_references": None,
         "valid_meddra_code_term_pairs": None,
