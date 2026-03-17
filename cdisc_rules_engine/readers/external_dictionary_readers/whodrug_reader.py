@@ -81,6 +81,10 @@ class WhoDrugReader:
         return final_df
 
     def process_data(self, metadata: WhoDrugVersionMetadata) -> pd.DataFrame:
+        final_df = self._process_atc_data(metadata)
+        return final_df
+
+    def _process_atc_data(self, metadata: WhoDrugVersionMetadata) -> pd.DataFrame:
         """
         Reads the active ingredient data for C3 and B3 formats.
         Processes the ATC hierarchy levels into flattened level 4 codes.
