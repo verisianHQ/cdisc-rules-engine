@@ -8,14 +8,11 @@ class IsValidWhodrugReferenceOperator(BaseSqlOperator):
     def execute_operator(self, other_value):
         target_column = other_value.get("target").lower()
         query = f"""
-            SELECT
-                id,
-                CASE
-                    WHEN {self._column_sql(target_column, alias=False)} IN (
-                        SELECT atc_code FROM {self._table_sql(StaticTables.WHODRUG_TABLE_NAME.value)}
-                    ) THEN TRUE
-                    ELSE FALSE
-                END AS is_valid_whodrug_reference
-            FROM {self._table_sql()}
+            CASE
+                WHEN {self._column_sql(target_column, alias=False)} IN (
+                    SELECT atc_code FROM {StaticTables.WHODRUG_TABLE_NAME.value}
+                ) THEN TRUE
+                ELSE FALSE
+            END
         """
         return self._do_check_operator(lambda: query)
