@@ -15,37 +15,35 @@ class SqlWhodrugHierarchyOperation(SqlBaseOperation):
             raise Exception(f"One or more required columns are missing: {decod_col}, {clas_col}, {clascd_col}")
 
         query = f"""
-            WITH drugcounts AS (
+            SELECT
+                CASE
+                    WHEN {clas_col} = 'MULTIPLE' OR {clascd_col} = 'MULTIPLE' THEN
+                        CASE
+                            WHEN dc.instance_count > 1 THEN TRUE
+                            ELSE FALSE
+                        END
+                    ELSE
+                        CASE
+                            WHEN em.drug_name IS NOT NULL THEN TRUE
+                            ELSE FALSE
+                        END
+                END AS value
+            FROM {dataset_id}
+            LEFT JOIN (
                 SELECT
                     drug_name,
                     COUNT(*) AS instance_count
                 FROM {StaticTables.WHODRUG_TABLE_NAME.value}
                 GROUP BY drug_name
-            ),
-            exactmatches AS (
+            ) dc
+                ON {decod_col} = dc.drug_name
+            LEFT JOIN (
                 SELECT DISTINCT
                     drug_name,
                     level_4,
                     atc_code
                 FROM {StaticTables.WHODRUG_TABLE_NAME.value}
-            )
-            SELECT
-                CASE
-                    WHEN {clas_col} = 'MULTIPLE' OR {clascd_col} = 'MULTIPLE' THEN
-                        CASE
-                            WHEN dc.instance_count > 1 THEN 'True'
-                            ELSE 'False'
-                        END
-                    ELSE
-                        CASE
-                            WHEN em.drug_name IS NOT NULL THEN 'True'
-                            ELSE 'False'
-                        END
-                END AS value
-            FROM {dataset_id}
-            LEFT JOIN drugcounts dc
-                ON {decod_col} = dc.drug_name
-            LEFT JOIN exactmatches em
+            ) em
                 ON {decod_col} = em.drug_name
                 AND {clas_col} = em.level_4
                 AND {clascd_col} = em.atc_code
