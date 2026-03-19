@@ -35,6 +35,7 @@ from cdisc_rules_engine.sql_operations.get_codelist_attributes import SqlGetCode
 from cdisc_rules_engine.sql_operations.get_define_variables_metadata import (
     SqlGetDefineVariablesMetadata,
 )
+from cdisc_rules_engine.sql_operations.whodrug_code_hierarchy import SqlWhodrugHierarchyOperation
 
 
 class SqlOperationsFactory:
