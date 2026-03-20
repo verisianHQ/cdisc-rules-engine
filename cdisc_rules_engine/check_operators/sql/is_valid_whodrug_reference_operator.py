@@ -6,12 +6,13 @@ class IsValidWhodrugReferenceOperator(BaseSqlOperator):
     """Checks if a value in a target column is a valid WHODrug reference."""
 
     def execute_operator(self, other_value):
-        target_column = other_value.get("target").lower()
+        target_column = self.replace_prefix(other_value.get("target")).lower()
         query = f"""
             CASE
                 WHEN {self._column_sql(target_column, alias=False)} IN (
                     SELECT atc_code FROM {StaticTables.WHODRUG_TABLE_NAME.value}
                 ) THEN TRUE
+                WHEN {self._column_sql(target_column, alias=False)} = 'MULTIPLE' THEN TRUE
                 ELSE FALSE
             END
         """
