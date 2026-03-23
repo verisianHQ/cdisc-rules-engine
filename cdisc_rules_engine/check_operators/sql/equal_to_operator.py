@@ -68,7 +68,11 @@ class EqualToOperator(BaseSqlOperator):
         Beware of empty values.
         See truth table above for details.
         """
-        target = self._sql(original_target, lowercase=case_insensitive)
+        if not self._exists(original_target):
+            original_target = "NULL"
+            target = "NULL"
+        else:
+            target = self._sql(original_target, lowercase=case_insensitive)
         comparator = self._sql(original_comparator, lowercase=case_insensitive, value_is_literal=value_is_literal)
 
         if type_insensitive:
