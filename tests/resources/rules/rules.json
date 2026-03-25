@@ -120609,8 +120609,8 @@
                                 "number_errors": 1,
                                 "errors": [
                                     {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
+                                        "error": "Column not found in data",
+                                        "message": "IDVAR"
                                     }
                                 ]
                             },
@@ -120696,15 +120696,10 @@
                             {
                                 "dataset": "supplb.xpt",
                                 "domain": "SUPPLB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=SUPPLB",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -120725,15 +120720,10 @@
                             {
                                 "dataset": "suppdm.xpt",
                                 "domain": "SUPPDM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=SUPPDM",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -120767,16 +120757,11 @@
                             },
                             {
                                 "dataset": "supplb.xpt",
-                                "domain": "LB",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
+                                "domain": "",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000712, dataset=SUPPLB",
+                                "number_errors": 0,
+                                "errors": []
                             },
                             {
                                 "dataset": "lb.xpt",
@@ -120793,19 +120778,6 @@
                                 "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000712, dataset=DM",
                                 "number_errors": 0,
                                 "errors": []
-                            },
-                            {
-                                "dataset": "suppdm.xpt",
-                                "domain": "DM",
-                                "execution_status": "execution_error",
-                                "execution_message": "rule execution error",
-                                "number_errors": 1,
-                                "errors": [
-                                    {
-                                        "error": "Rule format error",
-                                        "message": "Rule contains invalid operator"
-                                    }
-                                ]
                             }
                         ],
                         "old_vs_sql": {
@@ -122428,6 +122400,22 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000723, dataset=CM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=MH",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -122495,6 +122483,22 @@
                                         }
                                     }
                                 ]
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=CM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=MH",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "old_vs_sql": {
@@ -122530,6 +122534,22 @@
                                 "execution_message": null,
                                 "number_errors": 0,
                                 "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to class for rule id=CORE-000723, dataset=CM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=MH",
+                                "number_errors": 0,
+                                "errors": []
                             }
                         ],
                         "dataset_import_old": "SUCCESS",
@@ -122540,6 +122560,22 @@
                                 "domain": "AE",
                                 "execution_status": "success",
                                 "execution_message": null,
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "cm.xpt",
+                                "domain": "CM",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=CM",
+                                "number_errors": 0,
+                                "errors": []
+                            },
+                            {
+                                "dataset": "mh.xpt",
+                                "domain": "MH",
+                                "execution_status": "skipped",
+                                "execution_message": "Rule skipped - doesn't apply to domain for rule id=CORE-000723, dataset=MH",
                                 "number_errors": 0,
                                 "errors": []
                             }
