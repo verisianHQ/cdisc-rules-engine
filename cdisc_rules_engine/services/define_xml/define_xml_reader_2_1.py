@@ -21,10 +21,14 @@ class DefineXMLReader21(BaseDefineXMLReader):
         return MetadataSchema
 
     def _get_origin_type(self, itemdef):
-        return itemdef.Origin[0].Type if itemdef.Origin else None
+        if itemdef.Origin and len(itemdef.Origin) > 0 and hasattr(itemdef.Origin[0], "Type"):
+            return itemdef.Origin[0].Type
+        return None
 
     def _get_source_type(self, itemdef):
-        return itemdef.Origin[0].Source if itemdef.Origin else None
+        if itemdef.Origin and len(itemdef.Origin) > 0 and hasattr(itemdef.Origin[0], "Source"):
+            return itemdef.Origin[0].Source
+        return None
 
     def _get_variable_is_collected(self, itemdef):
         return self._get_origin_type(itemdef) == "Collected" if itemdef.Origin else None
