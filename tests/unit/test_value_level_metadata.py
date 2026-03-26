@@ -111,3 +111,71 @@ def test_is_not_in(data, check_values, expected_result):
     ]
     partial_function = vlm.is_not_in()
     assert partial_function(df.iloc[0]) == expected_result
+
+
+@pytest.mark.parametrize(
+    "data, check_value, expected_result",
+    [
+        ({"TEST": [5]}, "3", True),
+        ({"TEST": [3]}, "3", False),
+        ({"TEST": [1]}, "3", False),
+    ],
+)
+def test_greater_than(data, check_value, expected_result):
+    df = pandas.DataFrame.from_dict(data)
+    vlm = ValueLevelMetadata()
+    vlm.item = Mock(Name="TEST")
+    vlm.check_values = [CheckValue(_content=check_value)]
+    partial_function = vlm.greater_than()
+    assert partial_function(df.iloc[0]) == expected_result
+
+
+@pytest.mark.parametrize(
+    "data, check_value, expected_result",
+    [
+        ({"TEST": [5]}, "3", False),
+        ({"TEST": [3]}, "3", False),
+        ({"TEST": [1]}, "3", True),
+    ],
+)
+def test_less_than(data, check_value, expected_result):
+    df = pandas.DataFrame.from_dict(data)
+    vlm = ValueLevelMetadata()
+    vlm.item = Mock(Name="TEST")
+    vlm.check_values = [CheckValue(_content=check_value)]
+    partial_function = vlm.less_than()
+    assert partial_function(df.iloc[0]) == expected_result
+
+
+@pytest.mark.parametrize(
+    "data, check_value, expected_result",
+    [
+        ({"TEST": [5]}, "3", True),
+        ({"TEST": [3]}, "3", True),
+        ({"TEST": [1]}, "3", False),
+    ],
+)
+def test_greater_than_or_equal_to(data, check_value, expected_result):
+    df = pandas.DataFrame.from_dict(data)
+    vlm = ValueLevelMetadata()
+    vlm.item = Mock(Name="TEST")
+    vlm.check_values = [CheckValue(_content=check_value)]
+    partial_function = vlm.greater_than_or_equal_to()
+    assert partial_function(df.iloc[0]) == expected_result
+
+
+@pytest.mark.parametrize(
+    "data, check_value, expected_result",
+    [
+        ({"TEST": [5]}, "3", False),
+        ({"TEST": [3]}, "3", True),
+        ({"TEST": [1]}, "3", True),
+    ],
+)
+def test_less_than_or_equal_to(data, check_value, expected_result):
+    df = pandas.DataFrame.from_dict(data)
+    vlm = ValueLevelMetadata()
+    vlm.item = Mock(Name="TEST")
+    vlm.check_values = [CheckValue(_content=check_value)]
+    partial_function = vlm.less_than_or_equal_to()
+    assert partial_function(df.iloc[0]) == expected_result
