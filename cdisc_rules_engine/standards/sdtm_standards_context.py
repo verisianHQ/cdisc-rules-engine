@@ -813,6 +813,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             return ig_domain_details
 
         for i, e in enumerate(ig_domain_details.get("datasetVariables", {})):
+            # TODO get exhausive list of keys to rename and standardise this process with a mapping dict / constants
             e = {"ordinal" if k == "order_number" else k: v for k, v in e.items()}
             e = {"ordinal" if k == "library_variable_order_number" else k: v for k, v in e.items()}
             e = {"name" if k == "library_variable_name" else k: v for k, v in e.items()}
