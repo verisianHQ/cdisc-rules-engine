@@ -29,5 +29,5 @@ class SqlMinusOperation(SqlBaseOperation):
         if self._column_exists_in_domain(domain, param_val):
             col_hash = self.data_service.pgi.schema.get_column_hash(domain, param_val)
             return f"SELECT {col_hash} AS value FROM {dataset_id} WHERE {col_hash} IS NOT NULL"
-        elif param_val in self.params.previous_operations:
-            return self.params.previous_operations[param_val].query
+        elif self._get_previous_operation(param_val):
+            return self._get_previous_operation(param_val).query
