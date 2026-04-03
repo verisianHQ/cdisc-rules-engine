@@ -17,7 +17,7 @@ class MeddraReader:
 
     def _extract_version_metadata(self) -> MeddraVersionMetadata:
         """Extract metadata from the MedDRA release file."""
-        file_path = f"{self.dictionary_path}/MedAscii/meddra_release.asc"
+        file_path = f"{self.dictionary_path}/meddra_release.asc"
         with open(file_path, mode="r", encoding="utf-8") as f:
             content = f.read().strip().split("$")
             return MeddraVersionMetadata(version=content[0], language=content[1])
@@ -31,7 +31,7 @@ class MeddraReader:
 
         dfs = []
         for term_type, file_name in term_files.items():
-            path = f"{self.dictionary_path}/MedAscii/{file_name}"
+            path = f"{self.dictionary_path}/{file_name}"
             if os.path.exists(path):
                 df = pd.read_csv(path, sep="$", header=None, usecols=[0, 1], dtype=str, encoding="utf-8")
                 df.columns = ["term_code", "term_name"]
