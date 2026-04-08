@@ -1,15 +1,6 @@
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
 
-from cdisc_rules_engine.check_operators.sql.is_valid_meddra_code_reference_operator import (
-    ValidMeddraCodeReferenceOperator,
-)
-from cdisc_rules_engine.check_operators.sql.is_valid_meddra_code_term_pair_operator import (
-    ValidMeddraCodeTermPairsOperator,
-)
-from cdisc_rules_engine.check_operators.sql.is_valid_meddra_term_reference_operator import (
-    ValidMeddraTermReferenceOperator,
-)
 from cdisc_rules_engine.check_operators.sql.not_operator import NotOperator
 
 from .base_sql_operator import log_operator_execution
@@ -39,6 +30,15 @@ from .is_ordered_by_operator import IsOrderedByOperator
 from .is_ordered_set_operator import IsOrderedSetOperator
 from .is_ordered_subset_of_operator import IsOrderedSubsetOfOperator
 from .is_unique_set_operator import IsUniqueSetOperator
+from .is_valid_unii_term_reference_operator import ValidUniiTermReferenceOperator
+from .is_valid_unii_code_reference_operator import ValidUniiCodeReferenceOperator
+from .is_valid_unii_code_term_pair_operator import ValidUniiCodeTermPairsOperator
+from .is_valid_meddra_term_reference_operator import ValidMeddraTermReferenceOperator
+from .is_valid_meddra_code_reference_operator import ValidMeddraCodeReferenceOperator
+from .is_valid_meddra_code_term_pair_operator import ValidMeddraCodeTermPairsOperator
+from .is_valid_medrt_term_reference_operator import ValidMedRTTermReferenceOperator
+from .is_valid_medrt_code_reference_operator import ValidMedRTCodeReferenceOperator
+from .is_valid_medrt_code_term_pair_operator import ValidMedRTCodeTermPairsOperator
 from .matches_regex_operator import MatchesRegexOperator
 from .numeric_comparison_operator import NumericComparisonOperator
 from .prefix_matches_regex_operator import PrefixMatchesRegexOperator
@@ -174,6 +174,18 @@ class PostgresQLOperators(BaseType):
         "is_not_valid_meddra_term_reference": lambda data: NotOperator(data, ValidMeddraTermReferenceOperator),
         "is_valid_meddra_code_term_pair": lambda data: ValidMeddraCodeTermPairsOperator(data),
         "is_not_valid_meddra_code_term_pair": lambda data: NotOperator(data, ValidMeddraCodeTermPairsOperator),
+        "is_valid_medrt_term_reference": lambda data: ValidMedRTTermReferenceOperator(data),
+        "is_not_valid_medrt_term_reference": lambda data: NotOperator(data, ValidMedRTTermReferenceOperator),
+        "is_valid_medrt_code_reference": lambda data: ValidMedRTCodeReferenceOperator(data),
+        "is_not_valid_medrt_code_reference": lambda data: NotOperator(data, ValidMedRTCodeReferenceOperator),
+        "is_valid_medrt_code_term_pair": lambda data: ValidMedRTCodeTermPairsOperator(data),
+        "is_not_valid_medrt_code_term_pair": lambda data: NotOperator(data, ValidMedRTCodeTermPairsOperator),
+        "is_valid_unii_term_reference": lambda data: ValidUniiTermReferenceOperator(data),
+        "is_not_valid_unii_term_reference": lambda data: NotOperator(data, ValidUniiTermReferenceOperator),
+        "is_valid_unii_code_reference": lambda data: ValidUniiCodeReferenceOperator(data),
+        "is_not_valid_unii_code_reference": lambda data: NotOperator(data, ValidUniiCodeReferenceOperator),
+        "is_valid_unii_code_term_pair": lambda data: ValidUniiCodeTermPairsOperator(data),
+        "is_not_valid_unii_code_term_pair": lambda data: NotOperator(data, ValidUniiCodeTermPairsOperator),
     }
 
     def __init__(self, data):
