@@ -8,13 +8,11 @@ from cdisc_rules_engine.models.sql_external_dictionaries_container import SqlExt
 
 
 def _add_char_columns(table: SqlTableSchema, *column_names: str):
-    """Helper to quickly add standard character columns where name and hash match."""
     for col in column_names:
         table.add_column(SqlColumnSchema(name=col, hash=col, type="Char"))
 
 
 def _create_standard_term_schema(table_name: str) -> SqlTableSchema:
-    """Creates a base schema with the universally shared term_code and term_name columns."""
     table = SqlTableSchema.static(table_name)
     _add_char_columns(table, "term_code", "term_name")
     return table
