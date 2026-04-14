@@ -3,6 +3,7 @@ from cdisc_rules_engine.services.define_xml.base_define_xml_reader import (
     BaseDefineXMLReader,
     DefineXMLVersion,
 )
+from typing import Optional
 
 
 class DefineXMLReader20(BaseDefineXMLReader):
@@ -34,7 +35,7 @@ class DefineXMLReader20(BaseDefineXMLReader):
         """
         Returns metadata as dictionary.
         """
-        has_no_data: str | None = getattr(metadata, "HasNoData", "")
+        has_no_data: Optional[str] = getattr(metadata, "HasNoData", "")
         has_no_data = has_no_data or ""
         return {
             "define_dataset_name": metadata.Name,

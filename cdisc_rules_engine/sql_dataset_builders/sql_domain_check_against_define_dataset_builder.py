@@ -19,9 +19,10 @@ class SqlDomainCheckAgainstDefineDatasetBuilder(SqlBaseDatasetBuilder):
         rows = []
 
         for define_metadata in define_ds_metadata:
+            define_dataset_name = define_metadata.get("define_dataset_name")
             row = {
-                "domain": define_metadata["define_dataset_name"],
-                "filename": domain_files.get(define_metadata["define_dataset_name"], None),
+                "domain": define_dataset_name,
+                "filename": domain_files.get(define_dataset_name, None),
             }
             define_metadata_dict = {k: define_metadata.get(k) for k in DEFINE_DATASETS_TYPE.keys()}
             row.update(define_metadata_dict)
