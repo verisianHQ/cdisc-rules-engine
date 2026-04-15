@@ -16,13 +16,8 @@ class ValidExDictCodeReferenceOperator(BaseSqlOperator):
         filter_value = other_value.get("filter_value")
 
         if filter_attribute and filter_value:
-            schema_col_names = [
-                col for col, _ in self.sql_data_service.pgi.schema.get_table(self.table_name).get_columns()
-            ]
-            if filter_attribute not in schema_col_names:
-                raise ValueError(
-                    f"Filter attribute column '{filter_attribute}' does not exist in table '{self.table_name}'."
-                )
+            if not self._exists(filter_attribute):
+                raise ValueError(f"Filter attribute '{filter_attribute}' is not a column in {self.table_name}.")
 
             if filter_value in self.operation_variables:
                 attribute_op_result = self.operation_variables[filter_value]
