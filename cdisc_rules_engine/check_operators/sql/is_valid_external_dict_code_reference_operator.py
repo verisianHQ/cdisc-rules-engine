@@ -16,7 +16,7 @@ class ValidExDictCodeReferenceOperator(BaseSqlOperator):
         filter_value = other_value.get("filter_value")
 
         if filter_attribute and filter_value:
-            if not self._exists(filter_attribute):
+            if not self.sql_data_service.pgi.schema.column_exists(self.table_name, filter_attribute):
                 raise ValueError(f"Filter attribute '{filter_attribute}' is not a column in {self.table_name}.")
 
             if filter_value in self.operation_variables:
