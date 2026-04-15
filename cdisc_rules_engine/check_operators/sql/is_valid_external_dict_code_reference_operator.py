@@ -29,6 +29,8 @@ class ValidExDictCodeReferenceOperator(BaseSqlOperator):
                 self.sql_data_service.pgi.execute_sql(attribute_op_result.query)
                 filter_value = self.sql_data_service.pgi.fetch_one()["value"]
 
+            filter_value = filter_value.replace("'", "").replace('"', "").strip()
+
         filter_conditions = []
         whodrug_condition = ""
 
