@@ -21,17 +21,7 @@ class ValidExDictCodeTermPairsOperator(BaseSqlOperator):
             code_column = target_column
             term_column = comparator_column
 
-        filter_attribute = other_value.get("filter_attribute")
-        filter_value = other_value.get("filter_value")
-
-        if filter_value in self.operation_variables:
-            attribute_op_result = self.operation_variables[filter_value]
-            if attribute_op_result.type != "constant":
-                raise ValueError(
-                    f"Filter value operation '{filter_value}' must be a constant result to be used as a filter value."
-                )
-            self.sql_data_service.pgi.execute_sql(attribute_op_result.query)
-            filter_value = self.sql_data_service.pgi.fetch_one()["value"]
+        filter_attribute, filter_value = self._filter_params(other_value, self.table_name)
 
         filter_conditions = []
         whodrug_condition = ""
