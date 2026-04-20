@@ -37,7 +37,6 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
 
         # adjust to define first check (ie vars in define but NOT in dataset will get included - note that therefore vars in dataset but not in define WILL NOT be included) # noqa
         for define_var, _ in define_vars_by_name.items():
-            print(1)
             define_var_name = define_var.upper() if define_var else ""
             var = next((v for v in self.dataset_metadata.variables if v.name.upper() == define_var_name), None)
             has_empty = self._has_empty_values(source_table_id, source_table_hash, var, table_is_empty)
