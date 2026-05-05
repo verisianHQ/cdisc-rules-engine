@@ -24,7 +24,7 @@ class SqlLabelReferencedVariableMetadata(SqlBaseOperation):
             return SqlOperationResult(query="SELECT NULL", type="constant", subtype="Char")
 
         values_clause = ", ".join(mapping)
-        query = f"SELECT val FROM (VALUES {values_clause}) AS t(lbl, val) " f"WHERE t.lbl = %target%"
+        query = f"SELECT val FROM (VALUES {values_clause}) AS t(lbl, val) WHERE t.lbl = %target%"
 
         return SqlOperationResult(
             query=query,

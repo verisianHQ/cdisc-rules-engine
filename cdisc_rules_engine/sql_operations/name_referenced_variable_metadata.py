@@ -24,7 +24,7 @@ class SqlNameReferencedVariableMetadata(SqlBaseOperation):
             return SqlOperationResult(query="SELECT NULL", type="constant", subtype="Char")
 
         values_clause = ", ".join(mapping)
-        query = f"SELECT val FROM (VALUES {values_clause}) AS t(name, val) " f"WHERE t.name = %target%"
+        query = f"SELECT val FROM (VALUES {values_clause}) AS t(name, val) WHERE t.name = %target%"
 
         return SqlOperationResult(
             query=query,
