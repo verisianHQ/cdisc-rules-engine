@@ -1,4 +1,4 @@
-from engine.cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 
 from .base_sql_operator import BaseSqlOperator
 
