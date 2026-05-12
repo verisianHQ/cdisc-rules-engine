@@ -30,6 +30,7 @@ from .is_complete_date_operator import IsCompleteDateOperator
 from .is_contained_by_operator import IsContainedByOperator
 from .is_inconsistent_across_dataset_operator import IsInconsistentAcrossDatasetOperator
 from .is_not_unique_relationship_operator import IsNotUniqueRelationshipOperator
+from .is_null_operator import IsNullOperator
 from .is_ordered_by_operator import IsOrderedByOperator
 from .is_ordered_set_operator import IsOrderedSetOperator
 from .is_ordered_subset_of_operator import IsOrderedSubsetOfOperator
@@ -96,6 +97,8 @@ class PostgresQLOperators(BaseType):
         "not_equal_to": lambda data: EqualToOperator(data, invert=True),
         "equal_to_case_insensitive": lambda data: EqualToOperator(data, case_insensitive=True),
         "not_equal_to_case_insensitive": lambda data: EqualToOperator(data, case_insensitive=True, invert=True),
+        "is_null": lambda data: IsNullOperator(data),
+        "is_not_null": lambda data: NotOperator(data, IsNullOperator),
         "empty": lambda data: EmptyOperator(data),
         "non_empty": lambda data: NotOperator(data, EmptyOperator),
         "less_than": lambda data: NumericComparisonOperator(data, operator="<"),
