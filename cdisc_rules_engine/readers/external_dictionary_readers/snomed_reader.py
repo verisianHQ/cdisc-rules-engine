@@ -52,12 +52,10 @@ class SnomedReader:
         if not metadata:
             metadata = self._extract_version_metadata()
 
-        base_pattern = (
-            f"sct{metadata.edition}_(Description|TextDefinition)_"
-            f"Full-{metadata.language}_{metadata.package}_{metadata.version}.txt"
-        )
+        def base_pattern(x: str) -> str:
+            return f"sct{metadata.edition}_{x}_" f"Full-{metadata.language}_{metadata.package}_{metadata.version}.txt"
 
-        desc_df = self._load_snomed_file(base_pattern.format("Description"), "Description")
-        text_df = self._load_snomed_file(base_pattern.format("TextDefinition"), "TextDefinition")
+        desc_df = self._load_snomed_file(base_pattern("Description"), "Description")
+        text_df = self._load_snomed_file(base_pattern("TextDefinition"), "TextDefinition")
 
         return pd.concat([desc_df, text_df], ignore_index=True)
