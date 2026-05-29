@@ -32,7 +32,7 @@ def _whodrug_schema(metadata=None) -> SqlTableSchema:
 
 def _meddra_schema(metadata=None) -> SqlTableSchema:
     table = _create_standard_term_schema(StaticTables.MEDDRA_TABLE_NAME.value)
-    _add_char_columns(table, "term_type")
+    _add_char_columns(table, "term_type", "version", "language", "date")
     return table
 
 
