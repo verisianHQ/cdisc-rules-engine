@@ -3,8 +3,12 @@ on: pull_request
 jobs:
   lint_format:
     uses: ./.github/workflows/lint_format.yml
-  test_unit:
-    uses: ./.github/workflows/test_unit.yml
+  test_unit_base:
+    uses: ./.github/workflows/test_unit_base.yml
+  test_unit_sql:
+    uses: ./.github/workflows/test_unit_sql.yml
+  test_unit_cdisc:
+    uses: ./.github/workflows/test_unit_cdisc.yml
   test_suite:
     if: false
     uses: ./.github/workflows/test_suite.yml
