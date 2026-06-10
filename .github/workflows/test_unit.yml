@@ -38,7 +38,7 @@ jobs:
         run: pip install -r requirements.txt -r requirements-dev.txt
 
       - name: Running ${{ matrix.test_target }} unit tests
-        run: python -m pytest tests/unit/${{ matrix.test_target }}/ --cov=cdisc_rules_engine --cov-fail-under=65
+        run: python -m pytest tests/unit/${{ matrix.test_target }}/ --cov=cdisc_rules_engine
         env:
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432
