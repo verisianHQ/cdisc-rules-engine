@@ -16,5 +16,6 @@ class OptionalConditionParameters(BaseEnum):
     CASE_INSENSITIVE = "case_insensitive"
     FILTER_ATTRIBUTE = "filter_attribute"
     FILTER_VALUE = "filter_value"
+    STRICT_INCREMENTAL_ORDERING = "strict_incremental_ordering"
     EXTERNAL_DICTIONARY_TYPE = "external_dictionary_type"
     VERSION = "version"
