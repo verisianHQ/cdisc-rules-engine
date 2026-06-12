@@ -190,7 +190,6 @@ class SqlVenmoResultHandler(BaseActions):
         Falls back to record-level errors if no grouping_variables are defined on the rule.
         """
         grouping_variables: List[str] = self.rule.get("grouping_variables") or []
-        print(grouping_variables)
         if not grouping_variables:
             return self._build_record_error_items(data, target_columns, schema)
 
@@ -201,7 +200,6 @@ class SqlVenmoResultHandler(BaseActions):
             if group_key not in seen_groups:
                 seen_groups.add(group_key)
                 result.append(self._create_error_for_row(row, schema, target_columns))
-        print(result)
         return result
 
     """def _generate_errors_by_target_presence(
