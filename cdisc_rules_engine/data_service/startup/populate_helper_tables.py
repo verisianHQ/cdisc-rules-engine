@@ -41,8 +41,10 @@ def populate_helper_tables(pgi: PostgresQLInterface):
             with open(HELPER_DATA_PATH / file_path, "r") as f:
                 data = json.load(f)
 
-            if data:
-                pgi.insert_data(schema.hash, data)
+            normalised_data = _normalise_helper_table_data(data)
+
+            if normalised_data:
+                pgi.insert_data(schema.hash, normalised_data)
                 logger.info(f"Loaded helper table from {file_path}")
             else:
                 logger.warning(f"No data found in helper table file: {file_path.name}")
@@ -50,3 +52,11 @@ def populate_helper_tables(pgi: PostgresQLInterface):
         except Exception as e:
             logger.error(f"Failed to load helper table {file_path.name}: {e}")
             continue
+
+
+def _normalise_helper_table_data(data):
+    if isinstance(data, dict) and data and all(isinstance(values, list) for values in data.values()):
+        lengths = {len(values) for values in data.values()}
+        if len(lengths) == 1:
+            return [dict(zip(data.keys(), row_values)) for row_values in zip(*data.values())]
+    return data
