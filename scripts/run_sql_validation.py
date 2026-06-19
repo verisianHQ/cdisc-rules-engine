@@ -126,7 +126,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     iterable = run()
     progress_handler(rules, iterable, results)
 
-    data_service.pgi.wipe()
+    # data_service.pgi.wipe()
 
     # build all desired reports
     end = time.time()
