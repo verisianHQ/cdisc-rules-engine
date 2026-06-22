@@ -21,34 +21,31 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
         attribute = self.params.ct_attribute
 
-        raw_versions = self.data_service.provided_codelists or self.params.ct_version
-        if not raw_versions:
-            raise ValueError("Version must be provided for codelist attribute retrieval.")
-
-        ct_list = raw_versions if isinstance(raw_versions, list) else [raw_versions]
-        provided_cts = self._parse_versions(ct_list)
-
         select_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
         version_date_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "version_date")
         std_type_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "standard_type")
 
-        where_clause = self._build_clauses(provided_cts, std_type_col_sql, version_date_col_sql)
+        where_clauses = []
 
-        query = f"""
-            SELECT DISTINCT {select_col_sql} AS value
-            FROM {ct_table}
-            WHERE {where_clause}
-        """
+        raw_versions = self.data_service.provided_codelists or self.params.ct_version
+        if raw_versions:
+            ct_list = raw_versions if isinstance(raw_versions, list) else [raw_versions]
+            provided_cts = self._parse_versions(ct_list)
+            where_clause = self._build_clauses(provided_cts, std_type_col_sql, version_date_col_sql)
+            where_clauses.append(where_clause)
 
-        condition_sql = ""
         conditions = self.params.ct_conditions
         if conditions:
             for condition in conditions:
                 for k, v in condition.items():
-                    condition_sql += f""" AND {_COLUMN_MAP.get(k)} = '{v}'"""
+                    where_clauses.append(f"{_COLUMN_MAP.get(k)} = '{v}'")
 
-        if condition_sql:
-            query += condition_sql
+        base_query = f"SELECT DISTINCT {select_col_sql} AS value FROM {ct_table}"
+
+        if where_clauses:
+            query = f"{base_query} WHERE {' AND '.join(where_clauses)}"
+        else:
+            query = base_query
 
         return SqlOperationResult(query=query, type="collection", subtype="Char")
 
