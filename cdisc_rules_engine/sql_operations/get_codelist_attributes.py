@@ -8,8 +8,9 @@ _COLUMN_MAP = {
     "Codelist Code": "codelist_code",
     "Codelist Name": "name",
     "Term": "term",
-    "Synonym": "synonym",
+    "Synonyms": "synonym",
     "Definition": "definition",
+    "Extensible": "extensible",
 }
 
 
