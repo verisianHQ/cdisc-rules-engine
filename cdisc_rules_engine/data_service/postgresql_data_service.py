@@ -71,6 +71,7 @@ class PostgresQLDataService:
         external_dictionaries: Optional[SqlExternalDictionariesContainer] = None,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
+        stf_file_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
@@ -89,6 +90,7 @@ class PostgresQLDataService:
         populate_helper_tables(pgi)
 
         instance._update_define_xml_path(define_xml_path)
+        instance._update_stf_file_path(stf_file_path)
         instance._update_provided_codelists(provided_codelists)
         instance._add_extensible_ct_terms(extensible_terms)
 
@@ -102,12 +104,18 @@ class PostgresQLDataService:
         use_pgserver: bool = False,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
+        stf_file_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance(use_pgserver=use_pgserver, cache_path=cache_path, define_xml_path=define_xml_path)
+        instance = cls.instance(
+            use_pgserver=use_pgserver,
+            cache_path=cache_path,
+            define_xml_path=define_xml_path,
+            stf_file_path=stf_file_path,
+        )
         instance.datasets += [
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
@@ -126,6 +134,7 @@ class PostgresQLDataService:
         external_dictionaries: Optional[SqlExternalDictionariesContainer] = None,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
+        stf_file_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,
     ) -> "PostgresQLDataService":
@@ -138,6 +147,7 @@ class PostgresQLDataService:
             cache_path=cache_path,
             external_dictionaries=external_dictionaries,
             define_xml_path=define_xml_path,
+            stf_file_path=stf_file_path,
         )
 
         instance.datasets.extend(
@@ -200,6 +210,9 @@ class PostgresQLDataService:
 
     def _update_define_xml_path(self, define_xml_path: str):
         self.define_xml_path = define_xml_path
+
+    def _update_stf_file_path(self, stf_file_path: str):
+        self.stf_file_path = stf_file_path
 
     def _update_provided_codelists(self, provided_codelists: Optional[List | str] = None):
         self.provided_codelists = provided_codelists
