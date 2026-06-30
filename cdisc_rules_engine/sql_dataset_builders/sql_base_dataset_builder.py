@@ -25,7 +25,7 @@ DEFINE_VARIABLES_TYPE = {
     "define_variable_data_type": "Char",
     "define_variable_is_collected": "Bool",
     "define_variable_role": "Char",
-    "define_variable_size": "Num",
+    "define_variable_length": "Num",
     "define_variable_ccode": "Char",
     "define_variable_format": "Char",
     "define_variable_allowed_terms": "Char",
@@ -117,8 +117,13 @@ class SqlBaseDatasetBuilder(ABC):
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
-        domain = self.dataset_metadata.domain or self.dataset_metadata.name
-        metadata = define_reader.extract_variables_metadata(domain)
+        domain = self.dataset_metadata.domain
+        rdomain = self.dataset_metadata.rdomain
+        name = self.dataset_metadata.name
+        if rdomain:
+            metadata = define_reader.extract_variables_metadata(domain_name=rdomain, name=domain)
+        else:
+            metadata = define_reader.extract_variables_metadata(domain_name=domain, name=name)
         for i, var in enumerate(metadata):
             metadata[i] = self._format_metadata_dict(var)
         return metadata

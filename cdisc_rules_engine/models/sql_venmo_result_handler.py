@@ -150,10 +150,12 @@ class SqlVenmoResultHandler(BaseActions):
         self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
     ) -> List[ValidationErrorEntity]:
         match self.rule.get("sensitivity"):
-            case Sensitivity.DATASET.value:
+            case Sensitivity.DATASET.value | Sensitivity.STUDY.value:
                 return [self._build_dataset_error(data, target_columns, schema)]
             case Sensitivity.RECORD.value | None:
                 return self._build_record_error_items(data, target_columns, schema)
+            case Sensitivity.GROUP.value:
+                return self._build_group_error_items(data, target_columns, schema)
             case _:
                 raise ValueError(f"Invalid sensitivity value: {self.rule.get('sensitivity')}")
 
@@ -178,6 +180,27 @@ class SqlVenmoResultHandler(BaseActions):
         Build a list of ValidationErrorEntity objects for each error row in the data.
         """
         return [self._create_error_for_row(row, schema, target_columns) for row in data]
+
+    def _build_group_error_items(
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
+    ) -> List[ValidationErrorEntity]:
+        """
+        Group error rows by the rule's grouping_variables and return one error per group.
+        The first row encountered for each unique combination of grouping variable values is returned.
+        Falls back to record-level errors if no grouping_variables are defined on the rule.
+        """
+        grouping_variables: List[str] = self.rule.get("grouping_variables") or []
+        if not grouping_variables:
+            return self._build_record_error_items(data, target_columns, schema)
+
+        seen_groups: set = set()
+        result: List[ValidationErrorEntity] = []
+        for row in data:
+            group_key = tuple(row.get(schema.get_column_hash(key)) for key in grouping_variables)
+            if group_key not in seen_groups:
+                seen_groups.add(group_key)
+                result.append(self._create_error_for_row(row, schema, target_columns))
+        return result
 
     """def _generate_errors_by_target_presence(
         self,
@@ -347,7 +370,7 @@ class SqlVenmoResultHandler(BaseActions):
             self.data_service.pgi.execute_sql(query)
             result_rows = self.data_service.pgi.fetch_all()
             if result_rows and len(result_rows) > 0:
-                return result_rows[0].get("value")
+                return [row.get("value") for row in result_rows if row.get("value") is not None]
             return None
         except Exception as e:
             return f"Query error: {str(e)}"

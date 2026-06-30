@@ -25,6 +25,7 @@ class SQLRuleProcessor:
     @staticmethod
     def perform_rule_operations(
         rule: dict,
+        dataset_id: str,
         dataset_metadata: BaseDatasetMetadata,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
@@ -69,6 +70,7 @@ class SQLRuleProcessor:
                 attribute_name=operation.get("attribute_name"),
                 subtract=operation.get("subtract"),
                 external_dictionary_type=operation.get("external_dictionary_type"),
+                codelist=operation.get("codelist"),
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
