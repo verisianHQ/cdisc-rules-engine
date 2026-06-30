@@ -11,12 +11,19 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         Returns True for rows where the target column has multiple distinct values within the same group,
         False for rows where all values in the group are consistent.
         """
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target_column = self.replace_prefix(other_value.get("target"))
+        if not target_column:
+            return self._do_check_operator(lambda: "FALSE")
+        target_column = target_column.lower()
+        if not self._exists(target_column):
+            return self._do_check_operator(lambda: "FALSE")
         comparator = other_value.get("comparator")
 
         if isinstance(comparator, str):
             return self._handle_single_comparator(target_column, comparator)
         elif isinstance(comparator, list):
+            if not comparator:
+                return self._do_check_operator(lambda: "FALSE")
             return self._handle_multiple_comparators(target_column, comparator)
         else:
             raise ValueError(
@@ -29,7 +36,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         comparator_column = self.replace_prefix(comparator).lower()
 
         if not self._exists(comparator_column):
-            raise ValueError(f"Comparator column '{comparator}' does not exist in the dataset.")
+            return self._do_check_operator(lambda: "FALSE")
 
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
 
@@ -71,7 +78,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         for comp in comparators:
             comp_col = self.replace_prefix(comp).lower()
             if not self._exists(comp_col):
-                raise ValueError(f"Comparator column '{comp}' does not exist in the dataset.")
+                return self._do_check_operator(lambda: "FALSE")
             comparator_columns.append(comp_col)
 
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
