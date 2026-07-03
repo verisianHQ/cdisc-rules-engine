@@ -71,6 +71,8 @@ class SQLRuleProcessor:
                 subtract=operation.get("subtract"),
                 external_dictionary_type=operation.get("external_dictionary_type"),
                 codelist=operation.get("codelist"),
+                domain_class=operation.get("domain_class"),
+                case_sensitive=operation.get("case_sensitive", True),
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
