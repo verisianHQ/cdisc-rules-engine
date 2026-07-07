@@ -16,10 +16,12 @@ class IsContainedByOperator(BaseSqlOperator):
         Returns True if target value exists in the comparator collection/column and is not null/empty.
         Returns False if target value is null, empty, or not found in comparator.
 
-        Handles three types of comparators:
+        Handles these types of comparators:
         1. List of literal values - check if target is in the list
-        2. Column name (when value_is_literal=False) - checks if target value exists anywhere in the comparator column
-        3. Single literal value - checks direct equality with the target
+        2. Operation variable (collection) - check if target is in the operation result set
+        3. Operation variable (constant) - checks direct equality with the target
+        4. Column name (when value_is_literal=False) - checks if target value exists anywhere in the comparator column
+        5. Single literal value - checks direct equality with the target
         """
         target = other_value.get("target")
         value_is_literal = other_value.get("value_is_literal", False)
@@ -40,12 +42,15 @@ class IsContainedByOperator(BaseSqlOperator):
         target_column = self.replace_prefix(target)
         column = self._column_sql(target_column, lowercase=self.case_insensitive, prefix=prefix, suffix=suffix)
 
-        if isinstance(comparator, list) or (isinstance(comparator, str) and comparator in self.operation_variables):
+        if isinstance(comparator, list):
             comparator_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
 
             def sql():
                 return f"""NOT ({self._is_empty_sql(target_column)})
                           AND {column} IN {comparator_sql}"""
+
+        elif isinstance(comparator, str) and comparator in self.operation_variables:
+            return self._handle_operation_variable_comparator(target_column, column, comparator)
 
         elif isinstance(comparator, str) and not value_is_literal and self._exists(comparator):
             comparator_sql = self._column_sql(comparator, lowercase=self.case_insensitive, alias=False)
@@ -66,6 +71,40 @@ class IsContainedByOperator(BaseSqlOperator):
                     "value_is_literal": True,
                 }
             )
+
+        return self._do_check_operator(sql)
+
+    def _handle_operation_variable_comparator(self, target_column, column, comparator):
+        """Handle when comparator is an operation variable."""
+        variable = self.operation_variables[comparator]
+
+        if variable.type == "constant":
+            return self._handle_constant_variable_comparator(target_column, column, comparator)
+        elif variable.type == "collection":
+            return self._handle_collection_variable_comparator(target_column, column, comparator)
+        else:
+            raise ValueError(
+                f"Unsupported operation variable type: {variable.type} "
+                f"for variable {comparator}. Expected 'collection' or 'constant'."
+            )
+
+    def _handle_collection_variable_comparator(self, target_column, column, comparator):
+        """Handle collection type operation variable comparator."""
+
+        def sql():
+            comparator_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND {column} IN {comparator_sql}"""
+
+        return self._do_check_operator(sql)
+
+    def _handle_constant_variable_comparator(self, target_column, column, comparator):
+        """Handle constant type operation variable comparator."""
+
+        def sql():
+            comparator_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
+            return f"""NOT ({self._is_empty_sql(target_column)})
+                      AND {column} = {comparator_sql}"""
 
         return self._do_check_operator(sql)
 
