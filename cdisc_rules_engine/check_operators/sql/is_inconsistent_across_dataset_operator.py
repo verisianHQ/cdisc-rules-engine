@@ -11,33 +11,84 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         Returns True for rows where the target column has multiple distinct values within the same group,
         False for rows where all values in the group are consistent.
         """
-        target_column = self.replace_prefix(other_value.get("target"))
-        if not target_column:
-            return self._do_check_operator(lambda: "FALSE")
-        target_column = target_column.lower()
-        if not self._exists(target_column):
-            return self._do_check_operator(lambda: "FALSE")
+        target = other_value.get("target")
         comparator = other_value.get("comparator")
 
-        if isinstance(comparator, str):
-            return self._handle_single_comparator(target_column, comparator)
-        elif isinstance(comparator, list):
-            if not comparator:
-                return self._do_check_operator(lambda: "FALSE")
-            return self._handle_multiple_comparators(target_column, comparator)
-        else:
-            raise ValueError(
-                f"Invalid comparator type for is_inconsistent_across_dataset operation on column '{target_column}'. "
-                "Expected string or list of column names."
-            )
-
-    def _handle_single_comparator(self, target_column, comparator):
-        """Handle when comparator is a single column name."""
-        comparator_column = self.replace_prefix(comparator).lower()
-
-        if not self._exists(comparator_column):
+        target_column = self._get_valid_target(target)
+        if not target_column:
             return self._do_check_operator(lambda: "FALSE")
 
+        if not isinstance(comparator, (str, list)):
+            raise ValueError(
+                f"Invalid comparator type for is_inconsistent_across_dataset operation on column '{target_column}'. "
+                f"Expected string or list of column names, got: {type(comparator).__name__}"
+            )
+
+        valid_comparators = self._get_valid_comparators(comparator)
+
+        if not valid_comparators:
+            return self._handle_constant_grouping(target_column)
+        elif len(valid_comparators) == 1:
+            return self._handle_single_comparator(target_column, valid_comparators[0])
+        else:
+            return self._handle_multiple_comparators(target_column, valid_comparators)
+
+    def _get_valid_target(self, target) -> str | None:
+        if isinstance(target, list) or (isinstance(target, str) and target in self.operation_variables):
+            return None
+
+        target_column = self.replace_prefix(target)
+        if not target_column or not self._exists(target_column.lower()):
+            return None
+
+        return target_column.lower()
+
+    def _get_valid_comparators(self, comparator) -> list:
+        if isinstance(comparator, str):
+            if comparator in self.operation_variables:
+                return []
+            comp_column = self.replace_prefix(comparator).lower()
+            if not self._exists(comp_column):
+                return []
+            return [comp_column]
+
+        valid_comp_columns = []
+        for comp in comparator:
+            if isinstance(comp, str) and comp not in self.operation_variables:
+                comp_col = self.replace_prefix(comp).lower()
+                if self._exists(comp_col):
+                    valid_comp_columns.append(comp_col)
+
+        return valid_comp_columns
+
+    def _handle_constant_grouping(self, target_column):
+        cache_key = f"{target_column}_inconsistent_across_global"
+
+        def generate_update_query(db_table: str, db_column: str) -> str:
+            return f"""
+                UPDATE {db_table} AS t
+                SET {db_column} = sub.is_inconsistent
+                FROM (
+                    SELECT
+                        id,
+                        (
+                            SELECT COUNT(DISTINCT
+                                CASE
+                                    WHEN {self._column_sql(target_column, alias=False)} IS NULL THEN 'NULL_VALUE'
+                                    ELSE CAST({self._column_sql(target_column, alias=False)} AS TEXT)
+                                END
+                            )
+                            FROM {db_table}
+                        ) > 1 AS is_inconsistent
+                    FROM {db_table}
+                    ORDER BY id
+                ) AS sub
+                WHERE t.id = sub.id;
+            """
+
+        return self._do_complex_check_operator(cache_key, generate_update_query)
+
+    def _handle_single_comparator(self, target_column, comparator_column):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
@@ -72,15 +123,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         return self._do_complex_check_operator(cache_key, generate_update_query)
 
-    def _handle_multiple_comparators(self, target_column, comparators):
-        """Handle when comparator is a list of column names."""
-        comparator_columns = []
-        for comp in comparators:
-            comp_col = self.replace_prefix(comp).lower()
-            if not self._exists(comp_col):
-                return self._do_check_operator(lambda: "FALSE")
-            comparator_columns.append(comp_col)
-
+    def _handle_multiple_comparators(self, target_column, comparator_columns):
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
