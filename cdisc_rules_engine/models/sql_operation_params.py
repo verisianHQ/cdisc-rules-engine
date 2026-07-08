@@ -34,6 +34,8 @@ class SqlOperationParams:
     codelist: str = None
     domain_class: str = None
     case_sensitive: bool = True
+    table: str = None
+    use_rule_type_table: str = None
 
     # standard_substandard: str = None
     # attribute_name: str = None
