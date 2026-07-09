@@ -21,6 +21,7 @@ from cdisc_rules_engine.models.dataset_metadata2 import (
 )
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
 from cdisc_rules_engine.services import logger
 
 
@@ -134,7 +135,9 @@ class SqlDataPreprocessor:
                 if part_col:
                     select_items.append(f"{part_col.hash} AS {target_col.hash}")
                 else:
-                    select_items.append(f"NULL AS {target_col.hash}")
+                    select_items.append(
+                        f"CAST(NULL AS {SQLSerialiser.column_type_to_sql_type(target_col.type)}) AS {target_col.hash}"
+                    )
 
             union_parts.append(f"SELECT {', '.join(select_items)} FROM public.{part_hash}")
         return union_parts

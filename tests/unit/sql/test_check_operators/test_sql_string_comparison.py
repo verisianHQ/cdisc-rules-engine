@@ -22,6 +22,7 @@ def test_empty(data, expected_result):
     [
         ({"target": ["Att", "", None]}, [True, False, False]),
         ({"target": [1, 2, None]}, [True, True, False]),
+        ({"other": [1, 2, None]}, [False, False, False]),
     ],
 )
 def test_non_empty(data, expected_result):
