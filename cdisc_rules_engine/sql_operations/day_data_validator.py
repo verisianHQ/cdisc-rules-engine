@@ -44,6 +44,7 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         rfstdtc_date_col = self.data_service.pgi.generate_date_column(joined_table.name, "RFSTDTC")
 
         id_col = self.data_service.pgi.schema.get_column_hash(joined_table.name, "id")
+        usubjid_col = self.data_service.pgi.schema.get_column_hash(joined_table.name, "USUBJID")
 
         query = f"""
         SELECT
@@ -55,7 +56,9 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
                     DATE({target_date_col.hash}) - DATE({rfstdtc_date_col.hash})
             END AS value
         FROM {joined_table.hash}
-        WHERE {id_col} = $id
+        WHERE {usubjid_col} = $usubjid AND {id_col} = $id
         """
 
-        return SqlOperationResult(query=query, type="constant", subtype="Num", params={"$id": "id"})
+        return SqlOperationResult(
+            query=query, type="constant", subtype="Num", params={"$usubjid": "USUBJID", "$id": "id"}
+        )
