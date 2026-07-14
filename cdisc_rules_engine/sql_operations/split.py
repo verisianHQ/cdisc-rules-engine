@@ -34,14 +34,18 @@ class SqlSplitOperation(SqlBaseOperation):
             column_id = self.data_service.pgi.schema.get_column_hash(self.params.domain, target)
 
             where_clause = self.construct_where_clause()
+            not_null_condition = f"{column_id} IS NOT NULL AND {column_id}::text != ''"
+
+            if where_clause:
+                where_clause += f" AND {not_null_condition}"
+            else:
+                where_clause = f"WHERE {not_null_condition}"
 
             query = f"""
                 SELECT DISTINCT TRIM(UNNEST(STRING_TO_ARRAY({column_id}::text, '{delimiter}'))) AS value
                 FROM {dataset_id}
                 {where_clause}
-                WHERE {column_id} IS NOT NULL AND {column_id}::text != ''
             """
-
         else:
             raise ValueError(f"Target '{target}' is not a valid operation variable or dataset column.")
 
