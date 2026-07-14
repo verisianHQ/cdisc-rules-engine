@@ -55,58 +55,39 @@ class SqlValueCheckWithVariableMetadataBuilder(SqlBaseDatasetBuilder):
 
         self.data_service.pgi.create_table(schema)
 
-        # build UNPIVOT SQL query with variable metadata (postgresql doesn't have UNPIVOT so we use UNION ALL)
         columns_list = source_schema.get_columns()
         column_names = [
             name
-            for name, schema in columns_list
-            if name.lower() not in ["id", "source_ds", "source_row_number"] and schema.origin == "data"
+            for name, sc in columns_list
+            if name.lower() not in ["id", "source_ds", "source_row_number"] and sc.origin == "data"
         ]
         source_table_hash = self.data_service.pgi.schema.get_table_hash(source_table_id)
 
         if column_names:
-            select_statements = []
+            json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
+
+            var_values = []
             for col_name in column_names:
-                col_hash = source_schema.get_column_hash(col_name)
                 col_upper = col_name.upper()
-                metadata = var_metadata.get(col_upper, {})
+                meta = var_metadata.get(col_upper, {})
+                var_label = meta.get("label", "").replace("'", "''")
+                var_data_type = meta.get("data_type", "").replace("'", "''")
+                var_size = meta.get("size", 0)
+                var_order = meta.get("order", 0)
+                var_format = meta.get("format", "").replace("'", "''")
 
-                var_label = metadata.get("label", "")
-                var_data_type = metadata.get("data_type", "")
-                var_size = metadata.get("size", 0)
-                var_order = metadata.get("order", 0)
-                var_format = metadata.get("format", "")
-
-                # calculate variable_value_length
-                if var_data_type == "integer":
-                    # length of the value without leading zeros
-                    length_expr = f"LENGTH(LTRIM(CAST({col_hash} AS TEXT), '0'))"
-                elif var_data_type == "float":
-                    # length without leading zeros and decimal point
-                    length_expr = f"LENGTH(REPLACE(LTRIM(CAST({col_hash} AS TEXT), '0'), '.', ''))"
-                else:  # text or default
-                    # just the length of the string
-                    length_expr = f"LENGTH(CAST({col_hash} AS TEXT))"
-
-                select_statements.append(
-                    f"""
-                    SELECT
-                        ROW_NUMBER() OVER () as row_number,
-                        '{col_name.upper()}' as variable_name,
-                        CAST({col_hash} AS TEXT) as variable_value,
-                        '{var_label}' as variable_label,
-                        '{var_data_type}' as variable_data_type,
-                        {var_size} as variable_length,
-                        {var_order} as variable_order_number,
-                        '{var_format}' as variable_format,
-                        {length_expr} as variable_value_length
-                    FROM {source_table_hash}
-                """
+                var_values.append(
+                    f"('{col_upper}', '{var_label}', '{var_data_type}', {var_size}, {var_order}, '{var_format}')"
                 )
 
-            unpivot_query = " UNION ALL ".join(select_statements)
+            values_sql = ",\n".join(var_values)
 
             insert_query = f"""
+                WITH var_meta AS (
+                    SELECT * FROM (VALUES
+                        {values_sql}
+                    ) AS m(var_name, var_label, var_data_type, var_size, var_order, var_format)
+                )
                 INSERT INTO {schema.hash}
                 ({schema.get_column_hash("row_number")},
                  {schema.get_column_hash("variable_name")},
@@ -117,7 +98,23 @@ class SqlValueCheckWithVariableMetadataBuilder(SqlBaseDatasetBuilder):
                  {schema.get_column_hash("variable_order_number")},
                  {schema.get_column_hash("variable_format")},
                  {schema.get_column_hash("variable_value_length")})
-                {unpivot_query};
+                SELECT
+                    ROW_NUMBER() OVER () as row_number,
+                    j.key as variable_name,
+                    j.value as variable_value,
+                    m.var_label as variable_label,
+                    m.var_data_type as variable_data_type,
+                    m.var_size as variable_length,
+                    m.var_order as variable_order_number,
+                    m.var_format as variable_format,
+                    CASE
+                        WHEN m.var_data_type = 'integer' THEN LENGTH(LTRIM(j.value, '0'))
+                        WHEN m.var_data_type = 'float' THEN LENGTH(REPLACE(LTRIM(j.value, '0'), '.', ''))
+                        ELSE LENGTH(j.value)
+                    END as variable_value_length
+                FROM {source_table_hash} t,
+                LATERAL jsonb_each_text({json_build_str}) AS j(key, value)
+                LEFT JOIN var_meta m ON j.key = m.var_name;
             """
 
             self.data_service.pgi.execute_sql(insert_query)
