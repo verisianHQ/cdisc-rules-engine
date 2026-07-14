@@ -43,42 +43,47 @@ class SqlValueCheckAgainstDefineVLMDatasetBuilder(SqlBaseDatasetBuilder):
             if name.lower() not in ["id", "source_ds", "source_row_number"] and sc.origin == "data"
         ]
 
-        select_statements = []
-        col_hash_map = {col_name: source_schema.get_column_hash(col_name) for col_name in column_names}
-        new_col_hash_map = {
-            col_name: schema.get_column_hash(col_name)
-            for col_name in ["row_number", "variable_name", "variable_value", "define_variable_name"]
-            + list(DEFINE_VLM_TYPE.keys())
-        }
-        for col_name in column_names:
-            col_hash = col_hash_map[col_name]
-            col_upper = col_name.upper()
-            d_var = define_vlm_by_var.get(col_upper, {})
+        if column_names:
+            json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
 
-            select_parts = [
-                f"CAST(ROW_NUMBER() OVER (ORDER BY id) AS TEXT) as {new_col_hash_map['row_number']}",
-                f"CAST('{col_upper}' AS TEXT) as {new_col_hash_map['variable_name']}",
-                f"CAST({col_hash} AS TEXT) as {new_col_hash_map['variable_value']}",
-            ]
+            val_rows = []
+            for col_name in column_names:
+                col_upper = col_name.upper()
+                d_var = define_vlm_by_var.get(col_upper, {})
 
-            for key in DEFINE_VLM_TYPE.keys():
-                val = str(d_var.get(key, ""))
-                select_parts.append(f"CAST('{val}' AS TEXT) as {new_col_hash_map[key]}")
+                row_parts = [f"'{col_upper}'"]
+                for key in DEFINE_VLM_TYPE.keys():
+                    val = str(d_var.get(key, "")).replace("'", "''").strip()
+                    row_parts.append("NULL" if val.lower() in ["", "none", "null"] else f"'{val}'")
 
-            select_statements.append(f"SELECT {', '.join(select_parts)} FROM {source_table_hash}")
+                val_rows.append(f"({', '.join(row_parts)})")
 
-        target_columns = [
-            new_col_hash_map["row_number"],
-            new_col_hash_map["variable_name"],
-            new_col_hash_map["variable_value"],
-            new_col_hash_map["define_variable_name"],
-        ] + [new_col_hash_map[key] for key in DEFINE_VLM_TYPE.keys()]
+            values_sql = ",\n".join(val_rows)
 
-        columns_clause = ", ".join(target_columns)
+            target_columns = ["row_number", "variable_name", "variable_value", "define_variable_name"] + list(
+                DEFINE_VLM_TYPE.keys()
+            )
+            columns_clause = ", ".join([schema.get_column_hash(col) for col in target_columns])
+            select_cols = ", ".join([f"CAST(m.{col} AS TEXT)" for col in DEFINE_VLM_TYPE.keys()])
 
-        unpivot_query = " UNION ALL ".join(select_statements)
-        insert_query = f"INSERT INTO {schema.hash} ({columns_clause}) {unpivot_query};"
+            insert_query = f"""
+                WITH vlm_meta AS (
+                    SELECT * FROM (VALUES
+                        {values_sql}
+                    ) AS m(var_name, {", ".join(DEFINE_VLM_TYPE.keys())})
+                )
+                INSERT INTO {schema.hash} ({columns_clause})
+                SELECT
+                    CAST(ROW_NUMBER() OVER () AS TEXT) as row_number,
+                    j.key as variable_name,
+                    j.value as variable_value,
+                    m.var_name as define_variable_name,
+                    {select_cols}
+                FROM {source_table_hash} t,
+                LATERAL jsonb_each_text({json_build_str}) AS j(key, value)
+                LEFT JOIN vlm_meta m ON j.key = m.var_name;
+            """
 
-        self.data_service.pgi.execute_sql(insert_query)
+            self.data_service.pgi.execute_sql(insert_query)
 
         return table_name

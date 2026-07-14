@@ -98,6 +98,8 @@ class SqlVenmoResultHandler(BaseActions):
         validation_schema = self.data_service.pgi.schema.get_table(self.dataset_id)
         target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
 
+        self._evaluate_operations_in_bulk(rows_with_error, validation_schema, target_columns)
+
         errors_list = self._generate_errors_list(rows_with_error, target_columns, validation_schema)
         error_object = self._bundle_error_object(
             message=message,
@@ -132,10 +134,129 @@ class SqlVenmoResultHandler(BaseActions):
         results = self.data_service.pgi.fetch_all()
         return list(results)
 
+    def _evaluate_operations_in_bulk(self, rows: List[dict], schema: SqlTableSchema, target_columns: dict):  # noqa
+        """
+        Constructs a single VALUES CTE containing all parameters for the failing rows.
+        Binds the CTE to the operation query.
+        """
+        op_vars = [col for col, present in target_columns.items() if present and col.startswith("$")]
+        if not op_vars or not rows:
+            return
+
+        for var_name in op_vars:
+            if var_name not in self.operation_variables:
+                for row in rows:
+                    row[var_name] = "Operation variable not found"
+                continue
+
+            op_result = self.operation_variables[var_name]
+
+            if not op_result.params:
+                if op_result.type == "constant":
+                    val = self._execute_query_for_single_value(op_result.query)
+                elif op_result.type == "collection":
+                    val = self._execute_query_for_collection_values(op_result.query)
+                else:
+                    val = "Unsupported operation type"
+
+                for row in rows:
+                    row[var_name] = val
+                continue
+
+            param_placeholders = sorted(list(op_result.params.keys()), key=len, reverse=True)
+            param_columns = [op_result.params[p] for p in param_placeholders]
+
+            chunk_size = 5000
+            for i in range(0, len(rows), chunk_size):
+                chunk = rows[i : i + chunk_size]
+                values_list = []
+
+                for j, row in enumerate(chunk):
+                    row_id = row.get("id")
+
+                    row_vals = [f"CAST('{row_id}' AS INTEGER)" if j == 0 else f"'{row_id}'"]
+
+                    for col in param_columns:
+                        if col == "id":
+                            col_type = "INTEGER"
+                            val = row.get("id")
+                        else:
+                            col_schema = schema.get_column(col)
+                            col_type = "NUMERIC" if col_schema and col_schema.type == "Num" else "TEXT"
+                            val = row.get(schema.get_column_hash(col))
+
+                        if val is None:
+                            row_vals.append(f"CAST(NULL AS {col_type})" if j == 0 else "NULL")
+                        elif col_type == "TEXT":
+                            clean_val = str(val).replace("'", "''")
+                            row_vals.append(f"CAST('{clean_val}' AS TEXT)" if j == 0 else f"'{clean_val}'")
+                        else:
+                            row_vals.append(f"CAST({val} AS {col_type})" if j == 0 else str(val))
+
+                    values_list.append(f"({', '.join(row_vals)})")
+
+                v_cols = ["v_id"] + [f"v_p{k}" for k in range(len(param_placeholders))]
+                values_sql = ",\n".join(values_list)
+
+                bulk_query_inner = op_result.query
+                for k, placeholder in enumerate(param_placeholders):
+                    bulk_query_inner = bulk_query_inner.replace(placeholder, f"v.v_p{k}")
+
+                if op_result.type == "constant":
+                    bulk_query = f"""
+                        SELECT v.v_id, ({bulk_query_inner}) as op_value
+                        FROM (VALUES {values_sql}) AS v({', '.join(v_cols)})
+                    """
+                elif op_result.type == "collection":
+                    bulk_query = f"""
+                        SELECT v.v_id, ARRAY({bulk_query_inner}) as op_value
+                        FROM (VALUES {values_sql}) AS v({', '.join(v_cols)})
+                    """
+                else:
+                    for row in chunk:
+                        row[var_name] = "Unsupported operation variable type"
+                    continue
+
+                try:
+                    self.data_service.pgi.execute_sql(bulk_query)
+                    results = self.data_service.pgi.fetch_all()
+
+                    if op_result.type == "collection":
+                        val_map = {
+                            str(r["v_id"]): list(r["op_value"]) if r["op_value"] is not None else [] for r in results
+                        }
+                    else:
+                        val_map = {str(r["v_id"]): r["op_value"] for r in results}
+
+                    for row in chunk:
+                        row[var_name] = val_map.get(str(row.get("id")))
+                except Exception as e:
+                    for row in chunk:
+                        row[var_name] = f"Query error: {str(e)}"
+
+    def _execute_query_for_single_value(self, query: str):
+        try:
+            self.data_service.pgi.execute_sql(query)
+            result_rows = self.data_service.pgi.fetch_all()
+            if result_rows:
+                result_keys = list(result_rows[0].keys())
+                if result_keys:
+                    return result_rows[0][result_keys[0]]
+            return None
+        except Exception as e:
+            return f"Query error: {str(e)}"
+
+    def _execute_query_for_collection_values(self, query: str):
+        try:
+            self.data_service.pgi.execute_sql(query)
+            result_rows = self.data_service.pgi.fetch_all()
+            if result_rows:
+                return [row.get("value") for row in result_rows if row.get("value") is not None]
+            return []
+        except Exception as e:
+            return f"Query error: {str(e)}"
+
     def _bundle_error_object(self, message: str, error_rows: List[ValidationErrorEntity]) -> ValidationErrorContainer:
-        """
-        Bundles the error rows into a ValidationErrorContainer.
-        """
         original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.name)
 
         return ValidationErrorContainer(
@@ -181,11 +302,6 @@ class SqlVenmoResultHandler(BaseActions):
         """
         return [self._create_error_for_row(row, schema, target_columns) for row in data]
 
-    def _resolve_grouping_variable(self, var: str) -> str:
-        """Resolve the -- prefix in a grouping variable to the current dataset's domain prefix."""
-        domain = self.dataset_metadata.domain or ""
-        return var.replace("--", domain)
-
     def _build_group_error_items(
         self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
     ) -> List[ValidationErrorEntity]:
@@ -198,10 +314,6 @@ class SqlVenmoResultHandler(BaseActions):
         if not grouping_variables:
             return self._build_record_error_items(data, target_columns, schema)
 
-        resolved_grouping_variables = [
-            self._resolve_grouping_variable(var) for var in grouping_variables if var not in ["filter_by_dataset"]
-        ]
-
         seen_groups: set = set()
         result: List[ValidationErrorEntity] = []
         for row in data:
@@ -209,60 +321,13 @@ class SqlVenmoResultHandler(BaseActions):
                 dataset_name = row.get(schema.get_column_hash("dataset_name"))
                 if dataset_name != self.dataset_metadata.name:
                     continue
-            group_key = tuple(row.get(schema.get_column_hash(key)) for key in resolved_grouping_variables)
+            group_key = tuple(
+                row.get(schema.get_column_hash(key)) for key in grouping_variables if key not in ["filter_by_dataset"]
+            )
             if group_key not in seen_groups:
                 seen_groups.add(group_key)
                 result.append(self._create_error_for_row(row, schema, target_columns))
         return result
-
-    """def _generate_errors_by_target_presence(
-        self,
-        data: pd.DataFrame,
-        targets_not_in_dataset: Set[str],
-        all_targets_missing: bool,
-        errors_df: pd.DataFrame,
-    ) -> List[ValidationErrorEntity]:"""
-    """
-    Generate error list based on presence of target variables in the dataset.
-    Handles two cases: (1) when all targets are missing, or (2) when some targets are present.
-
-    Args:
-        data: The original dataframe
-        targets_not_in_dataset: Set of target variables not found in the dataset
-        all_targets_missing: Boolean indicating if all targets are missing
-        errors_df: DataFrame subset with only the target variables (if any exist)
-
-    Returns:
-        List of ValidationErrorEntity objects
-    """
-    """missing_vars = {target: "Not in dataset" for target in targets_not_in_dataset}
-
-    if all_targets_missing:
-        errors_list = []
-        # for idx, row in data.iterrows():
-        #     error = ValidationErrorEntity(
-        #         value={target: "Not in dataset" for target in targets_not_in_dataset},
-        #         dataset=self._get_dataset_name(pd.DataFrame([row])),
-        #         row=int(row.get(SOURCE_ROW_NUMBER, idx + 1)),
-        #         usubjid=(str(row.get("USUBJID")) if "USUBJID" in row and not pd.isna(row["USUBJID"]) else None),
-        #         sequence=(
-        #             int(row.get(f"{self.dataset_metadata.domain or ''}SEQ"))
-        #             if f"{self.dataset_metadata.domain or ''}SEQ" in row
-        #             and self._sequence_exists(
-        #                 pd.Series({idx: row.get(f"{self.dataset_metadata.domain or ''}SEQ")}),
-        #                 idx,
-        #             )
-        #             else None
-        #         ),
-        #     )
-        #     errors_list.append(error)
-    else:
-        errors_series: pd.Series = errors_df.apply(lambda df_row: self._create_error_object(df_row, data), axis=1)
-        errors_list: List[ValidationErrorEntity] = errors_series.tolist()
-        if missing_vars:
-            for error in errors_list:
-                error.value = {**error.value, **missing_vars}
-    return errors_list"""
 
     def _create_error_for_row(
         self, row: dict, schema: SqlTableSchema, target_columns: dict[str, bool]
@@ -299,7 +364,7 @@ class SqlVenmoResultHandler(BaseActions):
                 continue
 
             if column.startswith("$"):
-                value = self._evaluate_operation_variable(column, row, schema)
+                value = row.get(column)
             else:
                 value = row.get(schema.get_column_hash(column))
 
@@ -315,91 +380,6 @@ class SqlVenmoResultHandler(BaseActions):
             sequence=sequence,
             value=values,
         )
-
-    def _evaluate_operation_variable(self, variable_name: str, row: dict, schema: SqlTableSchema):
-        """
-        Evaluate an operation variable for a specific row.
-        """
-        if variable_name not in self.operation_variables:
-            return "Operation variable not found"
-
-        operation_result = self.operation_variables[variable_name]
-
-        if operation_result.type == "constant":
-            return self._evaluate_constant_variable(operation_result, row, schema)
-        elif operation_result.type == "collection" and operation_result.params:
-            return self._evaluate_parameterized_collection(operation_result, row, schema)
-        elif operation_result.type == "collection":
-            return self._execute_query_for_collection_values(operation_result)
-        else:
-            return "Unsupported operation variable type"
-
-    def _evaluate_constant_variable(self, operation_result, row: dict, schema: SqlTableSchema):
-        """Evaluate a constant operation variable."""
-        query = operation_result.query
-        if operation_result.params:
-            query = self._substitute_parameters(query, operation_result.params, row, schema)
-        return self._execute_query_for_single_value(query)
-
-    def _evaluate_parameterized_collection(self, operation_result, row: dict, schema: SqlTableSchema):
-        """Evaluate a parameterized collection operation variable."""
-        query = self._substitute_parameters(operation_result.query, operation_result.params, row, schema)
-        return self._execute_query_for_collection_value(query)
-
-    def _substitute_parameters(self, query: str, params: dict, row: dict, schema: SqlTableSchema) -> str:
-        """Substitute parameters in query with row values."""
-        for param_placeholder, column_name in params.items():
-            if column_name == "id":
-                param_value = row.get("id")
-            else:
-                param_value = row.get(schema.get_column_hash(column_name))
-
-            if param_value is None:
-                query = query.replace(param_placeholder, "NULL")
-            # Wrap string values in single quotes to ensure they are treated
-            # as string literals in SQL rather than column names.
-            elif isinstance(param_value, str):
-                query = query.replace(param_placeholder, f"'{param_value}'")
-            else:
-                query = query.replace(param_placeholder, str(param_value))
-        return query
-
-    def _execute_query_for_single_value(self, query: str):
-        """Execute query and return single value."""
-        try:
-            self.data_service.pgi.execute_sql(query)
-            result_rows = self.data_service.pgi.fetch_all()
-            if result_rows:
-                result_keys = list(result_rows[0].keys())
-                if result_keys:
-                    return result_rows[0][result_keys[0]]
-            return None
-        except Exception as e:
-            return f"Query error: {str(e)}"
-
-    def _execute_query_for_collection_value(self, query: str):
-        """Execute query and return collection value."""
-        try:
-            self.data_service.pgi.execute_sql(query)
-            result_rows = self.data_service.pgi.fetch_all()
-            if result_rows and len(result_rows) > 0:
-                return [row.get("value") for row in result_rows if row.get("value") is not None]
-            return None
-        except Exception as e:
-            return f"Query error: {str(e)}"
-
-    def _execute_query_for_collection_values(self, operation_result):
-        """Execute query and return all collection values as a list."""
-
-        query = operation_result.query
-        try:
-            self.data_service.pgi.execute_sql(query)
-            result_rows = self.data_service.pgi.fetch_all()
-            if result_rows:
-                return [row.get("value") for row in result_rows if row.get("value") is not None]
-            return []
-        except Exception as e:
-            return f"Query error: {str(e)}"
 
     @staticmethod
     def _get_target_columns(rule: dict, metadata: BaseDatasetMetadata, schema: SqlTableSchema) -> dict[str, bool]:

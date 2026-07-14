@@ -44,47 +44,52 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
             if name.lower() not in ["id", "source_ds", "source_row_number"] and sc.origin == "data"
         ]
 
-        select_statements = []
-        col_hash_map = {col_name: source_schema.get_column_hash(col_name) for col_name in column_names}
-        new_col_hash_map = {
-            col_name: schema.get_column_hash(col_name)
-            for col_name in ["row_number", "variable_name", "variable_value"] + list(LIBRARY_VARIABLES_TYPE.keys())
-        }
-        for col_name in column_names:
-            col_hash = col_hash_map[col_name]
-            col_upper = col_name.upper()
-            l_var = library_vars_by_name.get(col_upper, {})
+        if column_names:
+            json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
 
-            select_parts = [
-                f"CAST(ROW_NUMBER() OVER (ORDER BY id) AS TEXT) as {new_col_hash_map['row_number']}",
-                f"'{col_upper}' as {new_col_hash_map['variable_name']}",
-                f"CAST({col_hash} AS TEXT) as {new_col_hash_map['variable_value']}",
-            ]
+            val_rows = []
+            for col_name in column_names:
+                col_upper = col_name.upper()
+                l_var = library_vars_by_name.get(col_upper, {})
 
-            for key in LIBRARY_VARIABLES_TYPE.keys():
-                type = self.data_service.pgi.schema.get_column(table_name, key).type
-                val = str(l_var.get(key, ""))
-                query_val = f"'{val}'" if type == "Char" else val
-                query_val = query_val if query_val else "NULL"
-                select_parts.append(f"{query_val} as {new_col_hash_map[key]}")
+                row_parts = [f"'{col_upper}'"]
+                for key in LIBRARY_VARIABLES_TYPE.keys():
+                    type = self.data_service.pgi.schema.get_column(table_name, key).type
+                    val = str(l_var.get(key, "")).replace("'", "''").strip()
+                    if val.lower() in ["", "none", "null"]:
+                        row_parts.append("NULL")
+                    else:
+                        row_parts.append(f"'{val}'" if type == "Char" else val)
 
-            select_statements.append(f"SELECT {', '.join(select_parts)} FROM {source_table_hash}")
+                val_rows.append(f"({', '.join(row_parts)})")
 
-        target_columns = [
-            new_col_hash_map["row_number"],
-            new_col_hash_map["variable_name"],
-            new_col_hash_map["variable_value"],
-        ] + [new_col_hash_map[key] for key in LIBRARY_VARIABLES_TYPE.keys()]
+            values_sql = ",\n".join(val_rows)
+            target_columns = ["row_number", "variable_name", "variable_value"] + list(LIBRARY_VARIABLES_TYPE.keys())
+            columns_clause = ", ".join([schema.get_column_hash(col) for col in target_columns])
+            select_cols = ", ".join([f"m.{col}" for col in LIBRARY_VARIABLES_TYPE.keys()])
 
-        columns_clause = ", ".join(target_columns)
-
-        unpivot_query = " UNION ALL ".join(select_statements)
-        insert_query = f"INSERT INTO {schema.hash} ({columns_clause}) {unpivot_query};"
-
-        self.data_service.pgi.execute_sql(insert_query)
+            insert_query = f"""
+                WITH lib_meta AS (
+                    SELECT * FROM (VALUES
+                        {values_sql}
+                    ) AS m(var_name, {", ".join(LIBRARY_VARIABLES_TYPE.keys())})
+                )
+                INSERT INTO {schema.hash} ({columns_clause})
+                SELECT
+                    CAST(ROW_NUMBER() OVER () AS TEXT) as row_number,
+                    j.key as variable_name,
+                    j.value as variable_value,
+                    {select_cols}
+                FROM {source_table_hash} t,
+                LATERAL jsonb_each_text({json_build_str}) AS j(key, value)
+                LEFT JOIN lib_meta m ON j.key = m.var_name;
+            """
+            self.data_service.pgi.execute_sql(insert_query)
 
         self.data_service.pgi.add_column(table_name, SqlColumnSchema.define("library_variable_ccode_values", "Char"))
         ccode_vals_col_hash = self.data_service.pgi.schema.get_column_hash(table_name, "library_variable_ccode_values")
+        ccode_col_hash = schema.get_column_hash("library_variable_ccode")
+
         codelist_query = f"""
             UPDATE {schema.hash} t
             SET {ccode_vals_col_hash} = sub.library_variable_ccode_values
@@ -95,8 +100,7 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
                 GROUP BY codelist_code)
                 SELECT a.*, b.library_variable_ccode_values
                 FROM {schema.hash} a
-                JOIN t1 b
-                ON a.{new_col_hash_map['library_variable_ccode']} = b.codelist_code
+                JOIN t1 b ON a.{ccode_col_hash} = b.codelist_code
             ) sub
             WHERE t.id = sub.id;
         """

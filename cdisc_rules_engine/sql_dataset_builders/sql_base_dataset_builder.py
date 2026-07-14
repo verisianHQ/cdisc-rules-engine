@@ -258,3 +258,14 @@ class SqlBaseDatasetBuilder(ABC):
         val_res = self.data_service.pgi.fetch_one()
 
         return val_res["cnt"] if val_res and "cnt" in val_res else 0
+
+    def generate_unpivot_jsonb_string(self, source_schema, column_names) -> str:
+        """
+        Generates a jsonb string for unpivoting datasets.
+        Maps uppercase actual column names to their hashed underlying values.
+        """
+        json_pairs = []
+        for col_name in column_names:
+            col_hash = source_schema.get_column_hash(col_name)
+            json_pairs.append(f"'{col_name.upper()}', CAST(t.{col_hash} AS TEXT)")
+        return f"jsonb_build_object({', '.join(json_pairs)})"

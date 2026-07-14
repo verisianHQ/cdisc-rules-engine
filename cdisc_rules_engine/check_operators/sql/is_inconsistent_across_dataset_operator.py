@@ -34,31 +34,19 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
+            target = self._column_sql(target_column, alias=False)
+            comp = self._column_sql(comparator_column, alias=False)
+
             return f"""
                 UPDATE {db_table} AS t
                 SET {db_column} = sub.is_inconsistent
                 FROM (
                     SELECT
                         id,
-                        (
-                            SELECT COUNT(DISTINCT
-                                CASE
-                                    WHEN t2.{self._column_sql(target_column, alias=False)} IS NULL THEN 'NULL_VALUE'
-                                    ELSE CAST(t2.{self._column_sql(target_column, alias=False)} AS TEXT)
-                                END
-                            )
-                            FROM {db_table} AS t2
-                            WHERE (
-                                (t2.{self._column_sql(comparator_column, alias=False)}
-                                    = t1.{self._column_sql(comparator_column, alias=False)})
-                                OR
-                                (t2.{self._column_sql(comparator_column, alias=False)} IS NULL
-                                AND
-                                t1.{self._column_sql(comparator_column, alias=False)} IS NULL)
-                            )
-                        ) > 1 AS is_inconsistent
-                    FROM {db_table} AS t1
-                    ORDER BY id
+                        (MIN({target}) OVER (PARTITION BY {comp})
+                         IS DISTINCT FROM
+                         MAX({target}) OVER (PARTITION BY {comp})) AS is_inconsistent
+                    FROM {db_table}
                 ) AS sub
                 WHERE t.id = sub.id;
             """
