@@ -8,7 +8,7 @@ from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
 )
 
-from .helpers import assert_operation_constant, assert_operation_parameterized_constant
+from .helpers import assert_operation_constant
 
 
 @pytest.mark.parametrize(
@@ -39,15 +39,7 @@ from .helpers import assert_operation_constant, assert_operation_parameterized_c
                     "2022-05-20T13:44",
                 ],
             },
-            [
-                {"params": {"$id": 1}, "value": [4]},
-                {"params": {"$id": 2}, "value": [32]},
-                {"params": {"$id": 3}, "value": [1]},
-                {"params": {"$id": 4}, "value": [13]},
-                {"params": {"$id": 5}, "value": [None]},
-                {"params": {"$id": 6}, "value": [None]},
-                {"params": {"$id": 7}, "value": [-1]},
-            ],
+            [4, 32, 1, 13, None, None, -1],
         ),
         (
             {
@@ -66,11 +58,7 @@ from .helpers import assert_operation_constant, assert_operation_parameterized_c
                     "2023-01-01T00:00:00",
                 ],
             },
-            [
-                {"params": {"$id": 1}, "value": [1]},
-                {"params": {"$id": 2}, "value": [2]},
-                {"params": {"$id": 3}, "value": [-1]},
-            ],
+            [1, 2, -1],
         ),
     ],
 )
@@ -88,7 +76,12 @@ def test_sql_dy_calculation(current_data, dm_data, expected, sdtm_standards_cont
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
 
-    assert_operation_parameterized_constant(operation, result, expected)
+    assert result.type == "window"
+    data_service.pgi.execute_sql(result.query)
+    query_results = data_service.pgi.fetch_all()
+    query_results.sort(key=lambda x: x["id"])
+    actual_values = [row["value"] for row in query_results]
+    assert actual_values == expected
 
 
 @pytest.mark.parametrize(
@@ -139,11 +132,7 @@ def test_sql_dy_no_dm_domain(current_data, expected, sdtm_standards_context):
                     "1997-07-16T19:20:30",
                 ],
             },
-            [
-                {"params": {"$id": 1}, "value": [4]},
-                {"params": {"$id": 2}, "value": [32]},
-                {"params": {"$id": 3}, "value": [None]},
-            ],
+            [4, 32, None],
         ),
     ],
 )
@@ -161,7 +150,12 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
 
-    assert_operation_parameterized_constant(operation, result, expected)
+    assert result.type == "column"
+    data_service.pgi.execute_sql(result.query)
+    query_results = data_service.pgi.fetch_all()
+    query_results.sort(key=lambda x: x["id"])
+    actual_values = [row["value"] for row in query_results]
+    assert actual_values == expected
 
 
 @pytest.mark.parametrize(
@@ -186,17 +180,11 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
                     "2023-01-01T00:00:00",
                 ],
             },
-            [
-                {"params": {"$id": 1}, "value": [None]},
-                {"params": {"$id": 2}, "value": [None]},
-                {"params": {"$id": 3}, "value": [None]},
-                {"params": {"$id": 4}, "value": [1]},
-            ],
+            [None, None, None, 1],
         ),
     ],
 )
 def test_sql_dy_invalid_dates(current_data, dm_data, expected, sdtm_standards_context):
-    """Test DY calculation with various invalid date formats."""
     data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(
@@ -210,4 +198,9 @@ def test_sql_dy_invalid_dates(current_data, dm_data, expected, sdtm_standards_co
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
 
-    assert_operation_parameterized_constant(operation, result, expected)
+    assert result.type == "column"
+    data_service.pgi.execute_sql(result.query)
+    query_results = data_service.pgi.fetch_all()
+    query_results.sort(key=lambda x: x["id"])
+    actual_values = [row["value"] for row in query_results]
+    assert actual_values == expected

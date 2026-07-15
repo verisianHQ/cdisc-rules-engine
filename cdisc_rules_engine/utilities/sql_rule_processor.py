@@ -1,7 +1,4 @@
-import re
-from copy import deepcopy
-from itertools import product
-from typing import List
+from typing import List, Tuple
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
@@ -10,6 +7,8 @@ from cdisc_rules_engine.interfaces import ConditionInterface
 from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
@@ -19,8 +18,6 @@ from cdisc_rules_engine.standards.base_standards_context import BaseStandardsCon
 
 
 class SQLRuleProcessor:
-    REGEX_CAPTURE_REFERENCE = re.compile(r"\{\{(?P<name>[A-Za-z_]\w*)\}\}")
-
     # @staticmethod
     # def _ct_package_type_api_name(ct_package_type: str | None) -> str:
     #     if ct_package_type is None:
@@ -34,12 +31,13 @@ class SQLRuleProcessor:
         dataset_metadata: BaseDatasetMetadata,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
-    ) -> dict[str, SqlOperationResult]:
+    ) -> Tuple[dict[str, SqlOperationResult], str]:
         """
         Each operation creates an output variable
         """
         operations: List[dict] = rule.get("operations") or []
         output_variables: dict[str, SqlOperationResult] = {}
+        window_ops = {}
 
         for operation in operations:
             rule_name = operation.get("operator", "")
@@ -54,7 +52,6 @@ class SQLRuleProcessor:
             # change -- pattern to domain name
             target_variable: str = operation.get("name", None)
             operation_domain: str = operation.get("domain", dataset_metadata.domain)
-            operation_table = dataset_id
             if target_variable:
                 target_variable = standards_context.replace_domain_code(dataset_metadata, target_variable)
 
@@ -79,16 +76,58 @@ class SQLRuleProcessor:
                 codelist=operation.get("codelist"),
                 domain_class=operation.get("domain_class"),
                 case_sensitive=operation.get("case_sensitive", True),
-                table=operation_table,
+                table=dataset_id,
                 use_rule_type_table=operation.get("use_rule_type_table", False),
             )
 
-            operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
-            query = operation.execute()
-            output_variables[output_variable] = query
+            operation_obj = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
+            op_result = operation_obj.execute()
+            output_variables[output_variable] = op_result
 
-            logger.info(f"Processed rule operation. " f"operation={rule_name}, rule={rule}")
-        return output_variables
+            if op_result.type == "window":
+                window_ops[output_variable] = op_result
+
+            logger.info(f"Processed rule operation. operation={rule_name}, rule={rule}")
+
+        if window_ops:
+            new_dataset_id = f"{dataset_id}_{rule.get('core_id', 'op')}_ops"
+            original_schema = data_service.pgi.schema.get_table(dataset_id)
+            if not original_schema:
+                raise ValueError(f"Table {dataset_id} not found")
+
+            new_schema = SqlTableSchema.derived(new_dataset_id, data_service.pgi)
+            for _, col in original_schema.get_columns():
+                new_schema.add_column(col)
+
+            joins = []
+            select_cols = [f"t.{col.hash} AS {col.hash}" for _, col in original_schema.get_columns()]
+
+            for i, (var_name, op_result) in enumerate(window_ops.items()):
+                clean_name = var_name.replace("$", "op_")
+                new_schema.add_column(SqlColumnSchema.generated(clean_name, op_result.subtype))
+                col_hash = new_schema.get_column_hash(clean_name)
+
+                alias = f"op_{i}"
+                joins.append(f"LEFT JOIN ({op_result.query}) {alias} ON t.id = {alias}.id")
+                select_cols.append(f"{alias}.value AS {col_hash}")
+
+                op_result.params = op_result.params or {}
+                op_result.params["column_name"] = clean_name
+
+            original_hash = original_schema.hash
+            query = f"""
+                CREATE UNLOGGED TABLE {new_schema.hash} AS SELECT {', '.join(select_cols)}
+                 FROM {original_hash} t {' '.join(joins)}
+            """
+
+            if data_service.pgi.schema.get_table(new_dataset_id):
+                data_service.pgi.execute_sql(f"DROP TABLE IF EXISTS {new_schema.hash}")
+
+            data_service.pgi.execute_sql(query)
+            data_service.pgi.schema.add_table(new_schema)
+            dataset_id = new_dataset_id
+
+        return output_variables, dataset_id
 
     # def is_relationship_dataset(self, dataset_name: str) -> bool:
     #     # TODO: this should come from the library and from the dataset metadata
@@ -176,94 +215,6 @@ class SQLRuleProcessor:
                     new_conditions_list.append(condition)
             new_conditions_dict[key] = new_conditions_list
         return new_conditions_dict
-
-    @classmethod
-    def _replace_regex_capture_references(cls, value, captures: dict[str, str]):
-        if isinstance(value, str):
-
-            def replace_capture(match):
-                capture_name = match.group("name")
-                capture_value = captures.get(capture_name)
-                if capture_value is None:
-                    raise ValueError(f"Unresolved regex capture '{capture_name}'")
-                return capture_value
-
-            return cls.REGEX_CAPTURE_REFERENCE.sub(replace_capture, value)
-        if isinstance(value, dict):
-            return {key: cls._replace_regex_capture_references(item, captures) for key, item in value.items()}
-        if isinstance(value, list):
-            return [cls._replace_regex_capture_references(item, captures) for item in value]
-        if isinstance(value, tuple):
-            return tuple(cls._replace_regex_capture_references(item, captures) for item in value)
-        return value
-
-    @staticmethod
-    def _compile_variable_regex_patterns(patterns: List[str]) -> dict[str, re.Pattern]:
-        compiled_patterns = {pattern: re.compile(pattern) for pattern in patterns}
-        capture_patterns = {}
-        for pattern, compiled_pattern in compiled_patterns.items():
-            for capture_name in compiled_pattern.groupindex:
-                if capture_name in capture_patterns:
-                    raise ValueError(f"Regex capture name '{capture_name}' is defined by multiple patterns")
-                capture_patterns[capture_name] = pattern
-        return compiled_patterns
-
-    @staticmethod
-    def _find_variable_regex_matches(compiled_patterns, targets: List[VariableMetadata]):
-        return [
-            [(target.name, match) for target in targets if (match := pattern.fullmatch(target.name))]
-            for pattern in compiled_patterns.values()
-        ]
-
-    @classmethod
-    def expand_rule_for_variable_regex(cls, rule: dict, targets: List[VariableMetadata]) -> List[dict]:
-        conditions: ConditionInterface = rule["conditions"]
-        patterns = list(
-            dict.fromkeys(
-                condition["value"].get("target")
-                for condition in conditions.values()
-                if condition.get("value", {}).get("variable_regex_pattern", False)
-            )
-        )
-        if not patterns:
-            return [rule]
-
-        compiled_patterns = cls._compile_variable_regex_patterns(patterns)
-        matches_by_pattern = cls._find_variable_regex_matches(compiled_patterns, targets)
-        if any(not matches for matches in matches_by_pattern):
-            return [rule]
-
-        expanded_rules = []
-        for matched_values in product(*matches_by_pattern):
-            bindings = dict(zip(patterns, (target_name for target_name, _ in matched_values)))
-            captures = {
-                capture_name: capture_value
-                for _, match in matched_values
-                for capture_name, capture_value in match.groupdict().items()
-            }
-            expanded_rule = deepcopy(rule)
-            for condition in expanded_rule["conditions"].values():
-                value = condition.get("value", {})
-                if value.get("variable_regex_pattern", False):
-                    value["target"] = bindings[value["target"]]
-                    value.pop("variable_regex_pattern")
-                condition.update(cls._replace_regex_capture_references(condition, captures))
-
-            for key, value in expanded_rule.items():
-                if key != "conditions":
-                    expanded_rule[key] = cls._replace_regex_capture_references(value, captures)
-
-            output_variables = []
-            for output_variable in expanded_rule.get("output_variables") or []:
-                matched_output_variables = [
-                    target_name for target_name, _ in matched_values if re.fullmatch(output_variable, target_name)
-                ]
-                output_variables.extend(matched_output_variables or [output_variable])
-            if output_variables:
-                expanded_rule["output_variables"] = list(dict.fromkeys(output_variables))
-            expanded_rules.append(expanded_rule)
-
-        return expanded_rules
 
     # @staticmethod
     # def extract_referenced_variables_from_rule(rule: dict):
