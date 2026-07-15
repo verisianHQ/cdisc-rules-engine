@@ -134,6 +134,11 @@ class BaseSqlOperator:
         raise NotImplementedError("is_column_of_iterables check_operator not implemented")
 
     def _exists(self, column: str) -> bool:
+        if isinstance(column, str) and column in self.operation_variables:
+            var = self.operation_variables[column]
+            if var.type == "window":
+                return self.sql_data_service.pgi.schema.column_exists(self.table_id, var.params.get("column_name"))
+            return True
         return self.sql_data_service.pgi.schema.column_exists(self.table_id, column)
 
     def _fetch_for_venmo(self, column: str):
@@ -190,6 +195,8 @@ class BaseSqlOperator:
         if isinstance(value, str) and value in self.operation_variables:
             # Get the resolved query from the operation variable
             op_var = self.operation_variables[value]
+            if op_var.type == "window":
+                return op_var.params.get("column_name", value)
             resolved_query = op_var.query
 
             # Hash the query to create a unique, fixed-length identifier
@@ -212,6 +219,23 @@ class BaseSqlOperator:
     def _table_sql(self):
         return self.sql_data_service.pgi.schema.get_table_hash(self.table_id)
 
+    def _get_dataset_name_sql(self, lowercase: bool, prefix: Optional[int], suffix: Optional[int]) -> str:
+        dataset_name = self.dataset_metadata.name
+        if prefix is not None:
+            dataset_name = dataset_name[: int(prefix)]
+        elif suffix is not None:
+            dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
+        return self._constant_sql(dataset_name, lowercase=lowercase)
+
+    def _apply_sql_modifiers(self, query: str, lowercase: bool, prefix: Optional[int], suffix: Optional[int]) -> str:
+        if lowercase:
+            query = f"LOWER({query})"
+        if prefix is not None:
+            query = f"LEFT({query}, {prefix})"
+        if suffix is not None:
+            query = f"RIGHT({query}, {suffix})"
+        return query
+
     def _column_sql(
         self,
         column: str,
@@ -221,13 +245,14 @@ class BaseSqlOperator:
         alias: bool = True,
         null_return: bool = False,
     ) -> str:
+
+        if column in self.operation_variables:
+            variable = self.operation_variables[column]
+            if variable.type == "window":
+                column = variable.params.get("column_name")
+
         if column == DATASET_NAME:
-            dataset_name = self.dataset_metadata.name
-            if prefix is not None:
-                dataset_name = dataset_name[: int(prefix)]
-            elif suffix is not None:
-                dataset_name = dataset_name[-int(suffix) :] if int(suffix) > 0 else ""
-            return self._constant_sql(dataset_name, lowercase=lowercase)
+            return self._get_dataset_name_sql(lowercase, prefix, suffix)
 
         if not self._exists(column):
             if null_return:
@@ -252,13 +277,7 @@ class BaseSqlOperator:
         if query is None:
             raise KeyError(column)
 
-        if lowercase:
-            query = f"LOWER({query})"
-        if prefix is not None:
-            query = f"LEFT({query}, {prefix})"
-        if suffix is not None:
-            query = f"RIGHT({query}, {suffix})"
-        return query
+        return self._apply_sql_modifiers(query, lowercase, prefix, suffix)
 
     def _constant_sql(self, value: Any, lowercase: bool = False) -> str:
         """
@@ -280,6 +299,9 @@ class BaseSqlOperator:
     def _handle_string_constant(self, value: str, lowercase: bool) -> str:
         """Handle string constants, including operation variables."""
         if value in self.operation_variables:
+            variable = self.operation_variables[value]
+            if variable.type == "window":
+                return self._column_sql(variable.params.get("column_name"), lowercase=lowercase)
             query = self._process_constant_operation_variable(value)
         else:
             query = f"'{value.replace("'", "''")}'"
@@ -355,7 +377,9 @@ class BaseSqlOperator:
         if isinstance(value, str) and not value_is_literal:
             if value in self.operation_variables:
                 variable = self.operation_variables[value]
-                if variable.type == "constant":
+                if variable.type == "window":
+                    return self._column_sql(variable.params.get("column_name"), lowercase=lowercase)
+                elif variable.type == "constant":
                     return self._constant_sql(value, lowercase=lowercase)
                 elif variable.type == "collection":
                     return self._collection_sql(value, lowercase=lowercase)
@@ -382,6 +406,8 @@ class BaseSqlOperator:
             # Check operation variables
             if value in self.operation_variables:
                 variable = self.operation_variables[value]
+                if variable.type == "window":
+                    return variable.subtype == "Num"
                 return variable.type == "constant" and variable.subtype == "Num"
 
             # Check column types
@@ -444,10 +470,13 @@ class BaseSqlOperator:
         operation variable or column, otherwise assumes it's a constant.
         """
         if isinstance(target, str):
-            if self.sql_data_service.pgi.schema.get_column(self.table_id, target) is not None:
-                return self._is_empty_sql_column(target, alias)
-            elif target in self.operation_variables:
+            if target in self.operation_variables:
+                var = self.operation_variables[target]
+                if var.type == "window":
+                    return self._is_empty_sql_column(var.params.get("column_name"), alias)
                 return self._is_empty_sql_operation_variable(target)
+            elif self.sql_data_service.pgi.schema.get_column(self.table_id, target) is not None:
+                return self._is_empty_sql_column(target, alias)
             else:
                 return "FALSE"
 

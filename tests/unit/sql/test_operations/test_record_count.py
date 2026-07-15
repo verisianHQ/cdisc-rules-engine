@@ -2,7 +2,6 @@ import pytest
 
 from .helpers import (
     assert_operation_constant,
-    assert_operation_parameterized_constant,
     setup_sql_operations,
 )
 
@@ -101,10 +100,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {},
             ["STUDYID"],
-            [
-                {"params": {"$1": "CDISC01"}, "value": [2]},
-                {"params": {"$1": "CDISC02"}, "value": [1]},
-            ],
+            [2, 2, 1],  # Row 1=2, Row 2=2, Row 3=1
         ),
         (
             {
@@ -115,10 +111,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {"EQ": 1},
             ["STUDYID"],
-            [
-                {"params": {"$1": "CDISC01"}, "value": [1]},
-                {"params": {"$1": "CDISC02"}, "value": [0]},
-            ],
+            [1, 1, 0],  # Row 1&2 (CDISC01) has 1 match. Row 3 (CDISC02) has 0 matches.
         ),
         (
             {
@@ -129,10 +122,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {"EQ": 2},
             ["DOMAIN", "STUDYID"],
-            [
-                {"params": {"$1": "AE", "$2": "CDISC01"}, "value": [2]},
-                {"params": {"$1": "AE", "$2": "CDISC02"}, "value": [1]},
-            ],
+            [2, 2, 1],  # Row 1&2=2, Row 3=1
         ),
         (
             {
@@ -143,11 +133,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {},
             ["STUDYID", "DOMAIN"],
-            [
-                {"params": {"$1": "CDISC01", "$2": "AE"}, "value": [1]},
-                {"params": {"$1": "CDISC01", "$2": None}, "value": [2]},
-                {"params": {"$1": "CDISC02", "$2": None}, "value": [2]},
-            ],
+            [1, 2, 2, 2, 2],  # Row 1=(CDISC01, AE)->1. Row 2,3=(CDISC01, NULL)->2. Row 4,5=(CDISC02, NULL)->2
         ),
     ],
 )
@@ -156,7 +142,15 @@ def test_filtered_grouped_record_count(data, filter, grouping, expected):
         "record_count", "values", data, extra_config={"filter": filter, "grouping": grouping}
     )
     result = operation.execute()
-    assert_operation_parameterized_constant(operation, result, expected)
+
+    # Execute the bulk query
+    assert result.type == "window"
+    operation.data_service.pgi.execute_sql(result.query)
+    query_results = operation.data_service.pgi.fetch_all()
+    query_results.sort(key=lambda x: x["id"])
+    actual_values = [row["value"] for row in query_results]
+
+    assert actual_values == expected
 
 
 # TODO: Handle operation variables in other operations

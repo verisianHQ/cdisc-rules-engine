@@ -19,8 +19,10 @@ class SqlNumericOperation(SqlBaseOperation):
         # Special case for counting size of whole dataset
         if self.params.target is None:
             column_id = "*"
+            case_column_id = "1"
         else:
             column_id = self.data_service.pgi.schema.get_column_hash(table, self.params.target)
+            case_column_id = column_id
 
         where_clause = self.construct_where_clause()
 
@@ -30,21 +32,18 @@ class SqlNumericOperation(SqlBaseOperation):
         else:
             grouping_columns = [self.data_service.pgi.schema.get_column(table, group) for group in self.params.grouping]
 
-            where_conditions = []
-            params = {}
-            for i, col in enumerate(grouping_columns):
-                param_name = f"${i + 1}"
-                where_conditions.append(f"({col.hash} = {param_name} OR ({col.hash} IS NULL AND {param_name} IS NULL))")
-                params[param_name] = col.name
-
-            where_clause_parts = []
+            partition_by = ", ".join([col.hash for col in grouping_columns])
+            id_col = self.data_service.pgi.schema.get_column_hash(table, "id")
             if where_clause.strip():
-                where_clause_parts.append(where_clause.replace("WHERE", "").strip())
-            where_clause_parts.extend(where_conditions)
+                filter_condition = where_clause.replace("WHERE", "").strip()
+                case_expr = f"CASE WHEN {filter_condition} THEN {case_column_id} ELSE NULL END"
+            else:
+                case_expr = column_id
 
-            combined_where = "WHERE " + " AND ".join(where_clause_parts)
-
-            query = f"""SELECT {self.function}({column_id}) AS value
-                        FROM {dataset_id}
-                        {combined_where}"""
-            return SqlOperationResult(query=query, type="constant", subtype="Num", params=params)
+            query = f"""
+                SELECT
+                    {id_col} as id,
+                    {self.function}({case_expr}) OVER (PARTITION BY {partition_by}) AS value
+                FROM {dataset_id}
+            """
+            return SqlOperationResult(query=query, type="window", subtype="Num")

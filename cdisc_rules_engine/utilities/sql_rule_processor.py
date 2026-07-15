@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
@@ -7,6 +7,8 @@ from cdisc_rules_engine.interfaces import ConditionInterface
 from cdisc_rules_engine.models.dataset_metadata2 import VariableMetadata
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
@@ -29,12 +31,13 @@ class SQLRuleProcessor:
         dataset_metadata: BaseDatasetMetadata,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
-    ) -> dict[str, SqlOperationResult]:
+    ) -> Tuple[dict[str, SqlOperationResult], str]:
         """
         Each operation creates an output variable
         """
         operations: List[dict] = rule.get("operations") or []
         output_variables: dict[str, SqlOperationResult] = {}
+        window_ops = {}
 
         for operation in operations:
             rule_name = operation.get("operator", "")
@@ -49,7 +52,6 @@ class SQLRuleProcessor:
             # change -- pattern to domain name
             target_variable: str = operation.get("name", None)
             operation_domain: str = operation.get("domain", dataset_metadata.domain)
-            operation_table = dataset_id
             if target_variable:
                 target_variable = standards_context.replace_domain_code(dataset_metadata, target_variable)
 
@@ -74,16 +76,58 @@ class SQLRuleProcessor:
                 codelist=operation.get("codelist"),
                 domain_class=operation.get("domain_class"),
                 case_sensitive=operation.get("case_sensitive", True),
-                table=operation_table,
+                table=dataset_id,
                 use_rule_type_table=operation.get("use_rule_type_table", False),
             )
 
-            operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
-            query = operation.execute()
-            output_variables[output_variable] = query
+            operation_obj = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
+            op_result = operation_obj.execute()
+            output_variables[output_variable] = op_result
 
-            logger.info(f"Processed rule operation. " f"operation={rule_name}, rule={rule}")
-        return output_variables
+            if op_result.type == "window":
+                window_ops[output_variable] = op_result
+
+            logger.info(f"Processed rule operation. operation={rule_name}, rule={rule}")
+
+        if window_ops:
+            new_dataset_id = f"{dataset_id}_{rule.get('core_id', 'op')}_ops"
+            original_schema = data_service.pgi.schema.get_table(dataset_id)
+            if not original_schema:
+                raise ValueError(f"Table {dataset_id} not found")
+
+            new_schema = SqlTableSchema.derived(new_dataset_id, data_service.pgi)
+            for _, col in original_schema.get_columns():
+                new_schema.add_column(col)
+
+            joins = []
+            select_cols = [f"t.{col.hash} AS {col.hash}" for _, col in original_schema.get_columns()]
+
+            for i, (var_name, op_result) in enumerate(window_ops.items()):
+                clean_name = var_name.replace("$", "op_")
+                new_schema.add_column(SqlColumnSchema.generated(clean_name, op_result.subtype))
+                col_hash = new_schema.get_column_hash(clean_name)
+
+                alias = f"op_{i}"
+                joins.append(f"LEFT JOIN ({op_result.query}) {alias} ON t.id = {alias}.id")
+                select_cols.append(f"{alias}.value AS {col_hash}")
+
+                op_result.params = op_result.params or {}
+                op_result.params["column_name"] = clean_name
+
+            original_hash = original_schema.hash
+            query = f"""
+                CREATE UNLOGGED TABLE {new_schema.hash} AS SELECT {', '.join(select_cols)}
+                 FROM {original_hash} t {' '.join(joins)}
+            """
+
+            if data_service.pgi.schema.get_table(new_dataset_id):
+                data_service.pgi.execute_sql(f"DROP TABLE IF EXISTS {new_schema.hash}")
+
+            data_service.pgi.execute_sql(query)
+            data_service.pgi.schema.add_table(new_schema)
+            dataset_id = new_dataset_id
+
+        return output_variables, dataset_id
 
     # def is_relationship_dataset(self, dataset_name: str) -> bool:
     #     # TODO: this should come from the library and from the dataset metadata

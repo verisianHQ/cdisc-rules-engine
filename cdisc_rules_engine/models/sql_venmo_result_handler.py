@@ -151,6 +151,13 @@ class SqlVenmoResultHandler(BaseActions):
 
             op_result = self.operation_variables[var_name]
 
+            if op_result.type == "window":
+                col_name = op_result.params.get("column_name")
+                col_hash = schema.get_column_hash(col_name)
+                for row in rows:
+                    row[var_name] = row.get(col_hash)
+                continue
+
             if not op_result.params:
                 if op_result.type == "constant":
                     val = self._execute_query_for_single_value(op_result.query)
