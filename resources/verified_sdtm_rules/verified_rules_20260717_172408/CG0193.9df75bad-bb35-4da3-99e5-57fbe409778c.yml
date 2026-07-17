@@ -1,0 +1,69 @@
+# Variable: MBRESCAT
+# Condition: MBTESTCD = 'ORGANISM' and MBSTRESC ^= 'NO GROWTH' and MBMETHOD ^= 'GRAM STAIN'
+# Rule: MBRESCAT ^= null
+# verified
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited Guidance:
+                  MBRESCAT is expected in all records where a microorganism has
+                  been identified to differentiate between colonizing organisms
+                  and the one(s) that are causing the infection. It is not
+                  expected when there is 'No growth' or when the results are
+                  from a gram stain.
+                Document: IG v3.2
+                Item: Assumption 6
+                Section: "6.3"
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0193
+              Version: "2"
+            Version: "2.0"
+        Version: "3.2"
+Check:
+  all:
+    - name: MBTESTCD
+      operator: equal_to
+      value: "ORGANISM"
+      value_is_literal: true
+    - name: MBSTRESC
+      operator: not_equal_to_case_insensitive
+      value: "NO GROWTH"
+      value_is_literal: true
+    - name: MBMETHOD
+      operator: not_equal_to_case_insensitive
+      value: "GRAM STAIN"
+      value_is_literal: true
+    - any:
+        - name: MBRESCAT
+          operator: empty
+        - name: MBRESCAT
+          operator: not_exists
+
+Core:
+  Id: CORE-000332
+  Status: Published
+  Version: "1"
+Description:
+  Raise an error when MBTESTCD is equal to 'ORGANISM', MBSTRESC not equal to 'NO GROWTH',
+  MBMETHOD not equal to'GRAM STAIN' but MBRESCAT is not present or not populated.
+Executability: Fully Executable
+Outcome:
+  Message: For records with MBTESTCD = 'ORGANISM', MBRESCAT must be populated when MBSTRESC is not equal to 'NO GROWTH' and MBMETHOD is not equal to 'GRAM STAIN'.
+  Output Variables:
+    - MBTESTCD
+    - MBSTRESC
+    - MBMETHOD
+    - MBRESCAT
+Rule Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - FINDINGS
+  Domains:
+    Include:
+      - MB
+Sensitivity: Record
