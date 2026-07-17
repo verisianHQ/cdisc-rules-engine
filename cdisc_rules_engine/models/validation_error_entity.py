@@ -32,7 +32,7 @@ class ValidationErrorEntity(BaseValidationEntity):
         data = {}
         for key, val in self.value.items():
             if isinstance(val, set):
-                data[key] = list(val)
+                data[key] = sorted(list(val))
             elif isinstance(val, BaseEnum):
                 data[key] = val.value
             else:

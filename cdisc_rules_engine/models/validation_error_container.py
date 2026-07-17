@@ -22,7 +22,7 @@ class ValidationErrorContainer(BaseValidationEntity):
             "executionStatus": self.status,
             "dataset": self.dataset,
             "domain": self.domain,
-            "variables": self.targets,
+            "variables": sorted(self.targets),
             "message": self.message,
             "errors": [error.to_representation() for error in self.errors],
         }
