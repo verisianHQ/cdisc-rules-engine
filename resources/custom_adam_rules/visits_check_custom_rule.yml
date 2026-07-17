@@ -47,16 +47,18 @@ Operations:
 Outcome:
   Message: Subject does not have all visit entries
   Output Variables:
-    - $missing_visits
     - PARAM
+    - $missing_visits
 Rule Type: Record Data
 Scope:
   Classes:
     Include:
       - ADEG
+      - ADVS
   Domains:
     Include:
       - ADEG
+      - ADVS
 Sensitivity: Group
 Grouping_Variables:
   - USUBJID

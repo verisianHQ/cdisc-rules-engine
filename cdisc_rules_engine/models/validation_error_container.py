@@ -13,20 +13,16 @@ class ValidationErrorContainer(BaseValidationEntity):
         self.dataset: str = params.get("dataset")
         self.domain: str = params.get("domain")
         self.targets: List[str] = params.get("targets", [])
-        self.errors: List[Union[ValidationErrorEntity, FailedValidationEntity]] = (
-            params.get("errors", [])
-        )
+        self.errors: List[Union[ValidationErrorEntity, FailedValidationEntity]] = params.get("errors", [])
         self.message: str = params.get("message")
-        self.status: ExecutionStatus = params.get("status") or get_execution_status(
-            self.errors
-        )
+        self.status: ExecutionStatus = params.get("status") or get_execution_status(self.errors)
 
     def to_representation(self) -> dict:
         return {
             "executionStatus": self.status,
             "dataset": self.dataset,
             "domain": self.domain,
-            "variables": sorted(self.targets),
+            "variables": self.targets,
             "message": self.message,
             "errors": [error.to_representation() for error in self.errors],
         }

@@ -37,8 +37,6 @@ class SqlMinusOperation(SqlBaseOperation):
 
         case_value = "UPPER(value)" if not case_sensitive else "value"
 
-        case_value = "UPPER(value)" if not case_sensitive else "value"
-
         query = f"""
             SELECT {case_value} AS value FROM ({name_query}) AS name_q
             EXCEPT
@@ -64,6 +62,11 @@ class SqlMinusOperation(SqlBaseOperation):
             "subtract",
         )
 
+        if not isinstance(name_params, dict):
+            name_params = {}
+        if not isinstance(subtract_params, dict):
+            subtract_params = {}
+
         params = {**name_params, **subtract_params}
 
         return SqlOperationResult(query=query, type="collection", subtype="Char", params=params or None)
@@ -80,8 +83,8 @@ class SqlMinusOperation(SqlBaseOperation):
                 if q_or_p == "query"
                 else self._get_previous_operation(param_val).params
             )
-
-        return {} if q_or_p == "param" else self._format_variable_list_to_query(vars=[], unique=True)
+        else:
+            return {}
 
     def _remap_params(self, element: str | dict, param_name: str) -> str:
         if not element:
