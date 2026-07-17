@@ -23,7 +23,7 @@ Check:
       operator: not_contains_all
       value: $all_visits
 Core:
-  Id: Medtronic Custom Rule | Visit Completeness
+  Id: Visits Check Custom Rule | Visit Completeness
   Status: Draft
   Version: "1"
 Description: Raise error when subject does not have all visit entries
@@ -40,11 +40,14 @@ Operations:
     group:
       - USUBJID
       - PARAM
+  - operator: minus
+    id: $missing_visits
+    name: $all_visits
+    subtract: $visits_per_subject
 Outcome:
   Message: Subject does not have all visit entries
   Output Variables:
-    # - $all_visits
-    # - $visits_per_subject
+    - $missing_visits
     - PARAM
 Rule Type: Record Data
 Scope:
