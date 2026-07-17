@@ -1,0 +1,43 @@
+# Variable: EXMETHOD
+# Condition:
+# Rule: EXMETHOD not present in dataset
+# verified
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited Guidance:
+                  Method of administration of the treatment. Not to be used with
+                  human clinical trials.
+                Document: Model v1.7
+                Item: EXMETHOD
+                Section: Table 2.2.12.1
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0568
+              Version: "1"
+            Version: "2.0"
+        Version: "3.3"
+Check:
+  all:
+    - name: EXMETHOD
+      operator: exists
+Core:
+  Id: CORE-000326
+  Status: Published
+  Version: "1"
+Description: Raise an error when EXMETHOD is present.
+Executability: Fully Executable
+Outcome:
+  Message: EXMETHOD must not be present.
+Rule Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - INTERVENTIONS
+  Domains:
+    Include:
+      - EX
+Sensitivity: Dataset
