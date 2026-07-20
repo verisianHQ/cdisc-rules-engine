@@ -4,7 +4,6 @@ from copy import deepcopy
 from typing import List, Union
 
 from business_rules import export_rule_data
-from business_rules.engine import run
 from psycopg2.errors import ProgrammingError
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
@@ -12,8 +11,6 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 )
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
-
-# from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.exceptions.custom_exceptions import (
     DatasetNotFoundError,
     DomainNotFoundError,
@@ -40,10 +37,8 @@ from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.utilities.sql_rule_compiler import SqlRuleCompiler
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
-from cdisc_rules_engine.utilities.utils import (
-    serialize_rule,
-)
 
 
 def clean_postgres_message(message: str) -> str:
@@ -75,12 +70,10 @@ class SQLRulesEngine:
         is_study_sensitivity = rule.get("sensitivity") == Sensitivity.STUDY.value
         study_error_already_reported = False
 
-        # Collect all dataset metadata for builders that need it (e.g., DomainListDatasetBuilder)
         all_datasets = [
             self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
         ]
 
-        # iterate through all pre-processed user datasets
         for pp_ds_id in self.data_service.get_uploaded_dataset_ids():
             dataset_metadata = self.data_service.get_dataset_metadata(pp_ds_id)
 
@@ -121,9 +114,6 @@ class SQLRulesEngine:
 
     @staticmethod
     def _contains_error_entries(result_entries: List[Union[dict, str]]) -> bool:
-        """
-        Returns True when a dataset result includes at least one reported validation error.
-        """
         for entry in result_entries:
             if isinstance(entry, dict) and entry.get("errors"):
                 return True
@@ -135,10 +125,6 @@ class SQLRulesEngine:
         dataset_metadata: BaseDatasetMetadata,
         datasets: List[BaseDatasetMetadata],
     ) -> List[Union[dict, str]]:
-        """
-        This function is an entrypoint to validation process.
-        It validates a given rule against datasets.
-        """
         logger.info(f"Validating {dataset_metadata.name}. rule={rule}.")
         try:
             result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata, datasets)
@@ -146,7 +132,6 @@ class SQLRulesEngine:
             if result:
                 return result
             else:
-                # No errors were generated, create success error container
                 return [
                     ValidationErrorContainer(
                         **{
@@ -169,7 +154,6 @@ class SQLRulesEngine:
             )
             error_obj: ValidationErrorContainer = self.handle_validation_exceptions(e, dataset_metadata.filename)
             error_obj.domain = dataset_metadata.domain
-            # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
 
     def validate_rule(
@@ -178,11 +162,6 @@ class SQLRulesEngine:
         dataset_metadata: BaseDatasetMetadata,
         datasets: List[BaseDatasetMetadata],
     ) -> List[Union[dict, str]]:
-        """
-        This function is an entrypoint for rule validation.
-        It uses the sql_builder_factory to get the correct data source
-        and then executes the rule against it.
-        """
         builder = sql_builder_factory.get_service(
             rule_type=rule.get("rule_type"),
             rule=rule,
@@ -192,20 +171,16 @@ class SQLRulesEngine:
             standards_context=self.standards_context,
         )
 
-        dataset_id = builder.get_dataset_id()
-
-        return self.execute_rule(rule, dataset_metadata, dataset_id)
+        dataset_id, base_query = builder.get_dataset_query()
+        return self.execute_rule(rule, dataset_metadata, dataset_id, base_query)
 
     def execute_rule(
         self,
         rule: dict,
         dataset_metadata: BaseDatasetMetadata,
         dataset_id: str,
+        base_query: str,
     ) -> List[str]:
-        """
-        Executes the given rule on a given dataset (or a view of it).
-        """
-        # Add conditions to rule for all variables if variables: all appears in condition
         rule_copy = deepcopy(rule)
         updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
             rule["conditions"],
@@ -213,8 +188,7 @@ class SQLRulesEngine:
         )
         rule_copy["conditions"].set_conditions(updated_conditions)
 
-        # Apply any operations
-        operation_variables, dataset_id = SQLRuleProcessor.perform_rule_operations(
+        operation_variables, current_dataset_id, operations_query = SQLRuleProcessor.perform_rule_operations(
             rule_copy,
             dataset_id,
             dataset_metadata,
@@ -222,38 +196,22 @@ class SQLRulesEngine:
             standards_context=self.standards_context,
         )
 
-        # Translator between venmo and the check operators
-        venmo_object = SqlVenmoObject(
-            dataset_id=dataset_id,
-            data_service=self.data_service,
-            column_prefix_map={"--": dataset_metadata.domain},
-            operation_variables=operation_variables,
-            dataset_metadata=dataset_metadata,
-        )
+        compiler = SqlRuleCompiler(self.data_service, current_dataset_id, dataset_metadata, operation_variables)
+        where_clause = compiler.compile(rule_copy["conditions"].to_dict())
 
         results = []
-        run(
-            serialize_rule(rule_copy),
-            defined_variables=venmo_object,
-            defined_actions=SqlVenmoResultHandler(
-                results,
-                dataset_metadata=dataset_metadata,
-                rule=rule,
-                data_service=self.data_service,
-                dataset_id=dataset_id,
-                operation_variables=operation_variables,
-            ),
+        handler = SqlVenmoResultHandler(
+            results,
+            dataset_metadata=dataset_metadata,
+            rule=rule,
+            data_service=self.data_service,
+            dataset_id=current_dataset_id,
+            operation_variables=operation_variables,
         )
-        return results
 
-    # def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
-    #     """
-    #     Gets Define XML variable metadata and returns it as dataframe.
-    #     """
-    #     define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
-    #         dataset_path, self.define_xml_path, self.data_service, self.cache
-    #     )
-    #     return define_xml_reader.extract_value_level_metadata(domain_name=domain_name)
+        handler.evaluate_sql(where_clause, operations_query)
+
+        return results
 
     def handle_validation_exceptions(self, exception, name) -> ValidationErrorContainer:  # noqa
         if isinstance(exception, DatasetNotFoundError):
@@ -380,7 +338,6 @@ class SQLRulesEngine:
             message = "SQL execution error"
         elif isinstance(exception, ValueError):
             error_message = str(exception)
-
             schema_pattern = r"Column\s+(\w+)\s+or\s+(\w+)\s+not found in the respective schemas"
             match = re.search(schema_pattern, error_message, re.IGNORECASE)
 

@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     SqlBaseDatasetBuilder,
@@ -6,17 +8,14 @@ from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
 
 
 class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
-    """
-    Builder for Dataset Contents Check against Define XML rules.
-    Adds dataset metadata from Define XML to the dataset for use in rules.
-    """
-
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_id = self.data_service.get_dataset_for_rule(self.dataset_metadata, self.rule, self.standards_context)
-
         schema = self.data_service.pgi.schema.get_table(table_id)
         if not schema:
             raise ValueError(f"Table {table_id} not found")
+
+        if schema.has_column("dataset_location"):
+            return table_id, None
 
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
             self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
@@ -110,4 +109,4 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         """
         self.data_service.pgi.execute_sql(uniqueness_query)
 
-        return table_id
+        return table_id, None
