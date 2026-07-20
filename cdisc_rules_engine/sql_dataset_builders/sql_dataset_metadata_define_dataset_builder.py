@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder, DEFINE_DATASETS_TYPE
@@ -8,10 +10,12 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
     Creates a table merging the physical dataset metadata with Define-XML dataset metadata.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_ds_metadata_with_define"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         all_ds_metadata = [
             self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
@@ -43,4 +47,4 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
         if rows:
             self.data_service.pgi.insert_data(table_name, rows)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -13,10 +15,11 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
     Define-XML metadata, and Library metadata.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_var_meta_define_library"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         define_vars = self.get_define_vars()
         define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars}
@@ -77,4 +80,4 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
         if rows:
             self.data_service.pgi.insert_data(table_name, rows)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

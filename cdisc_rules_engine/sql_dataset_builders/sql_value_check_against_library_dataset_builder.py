@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -14,10 +16,11 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
     variable is attached.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_value_check_library_variables"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         source_table_id = self.data_service.get_dataset_for_rule(
             self.dataset_metadata, self.rule, self.standards_context
@@ -107,20 +110,4 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
 
         self.data_service.pgi.execute_sql(codelist_query)
 
-        self.data_service.pgi.add_column(table_name, SqlColumnSchema.define("library_variable_codelist_name", "Char"))
-        codelist_name_col_hash = self.data_service.pgi.schema.get_column_hash(
-            table_name, "library_variable_codelist_name"
-        )
-        codelist_name_query = f"""
-            UPDATE {schema.hash} t
-            SET {codelist_name_col_hash} = sub.library_variable_codelist_name
-            FROM (
-                SELECT item_code, name as library_variable_codelist_name
-                FROM {StaticTables.IG_CODELIST_TABLE_NAME.value}
-            ) sub
-            WHERE t.{new_col_hash_map['library_variable_ccode']} = sub.item_code;
-        """
-
-        self.data_service.pgi.execute_sql(codelist_name_query)
-
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

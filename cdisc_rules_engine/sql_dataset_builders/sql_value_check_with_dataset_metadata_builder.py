@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -18,10 +20,11 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
        2          | STUDYID       | ABC123         | dm.xpt           | DM           | Demographics
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_values_with_dataset_metadata"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         source_table_id = self.data_service.get_dataset_for_rule(
             self.dataset_metadata, self.rule, self.standards_context
@@ -87,4 +90,4 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
 
             self.data_service.pgi.execute_sql(insert_query)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

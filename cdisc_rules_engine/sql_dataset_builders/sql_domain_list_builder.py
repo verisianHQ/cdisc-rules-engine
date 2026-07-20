@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional, Tuple
 
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -18,15 +18,16 @@ class SqlDomainListDatasetBuilder(SqlBaseDatasetBuilder):
     ae.xpt | ec.xpt | dm1.xpt,dm2.xpt
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         """
         Create (or replace) a domains catalog table and return the table name.
         The table has one row with each domain as a column containing its filename.
         """
         table_name = "domains_catalog_table"
 
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         domain_dict: dict[str, List[str]] = {}
         for ds in self.datasets:
@@ -57,4 +58,4 @@ class SqlDomainListDatasetBuilder(SqlBaseDatasetBuilder):
             """
             self.data_service.pgi.execute_sql(insert_sql)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

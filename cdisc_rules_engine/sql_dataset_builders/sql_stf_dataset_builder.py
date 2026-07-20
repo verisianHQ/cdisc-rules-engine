@@ -1,6 +1,7 @@
 import os
 import json
 from xml.etree import ElementTree
+from typing import Tuple, Optional
 
 from cdisc_rules_engine.enums.dataformat_types import DataFormatTypes
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -33,10 +34,11 @@ class SqlSTFDatasetBuilder(SqlBaseDatasetBuilder):
     Creates one row per STF document/file-tag so file tags and operations are easy to query.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_stf_metadata"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         stf_file_path = self._resolve_stf_file_path()
         stf_contents = self.data_service.get_define_xml_contents(dataset_name=stf_file_path)
@@ -53,7 +55,7 @@ class SqlSTFDatasetBuilder(SqlBaseDatasetBuilder):
         if rows:
             self.data_service.pgi.insert_data(table_name, rows)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"
 
     def _resolve_stf_file_path(self) -> str:
         stf_file_path = getattr(self, "stf_file_path", None)

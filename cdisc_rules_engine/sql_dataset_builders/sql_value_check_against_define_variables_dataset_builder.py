@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -13,10 +15,11 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
     variable is attached.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_value_check_define_variables"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         source_table_id = self.data_service.get_dataset_for_rule(
             self.dataset_metadata, self.rule, self.standards_context
@@ -90,4 +93,4 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
 
             self.data_service.pgi.execute_sql(insert_query)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"
