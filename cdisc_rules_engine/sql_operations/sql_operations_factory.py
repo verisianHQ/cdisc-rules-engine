@@ -44,6 +44,7 @@ from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomain
 from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import SqlLabelReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.name_referenced_variable_metadata import SqlNameReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.get_countries import SqlGetCountriesOperation
+from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
 
 
 class SqlOperationsFactory:
@@ -94,6 +95,7 @@ class SqlOperationsFactory:
         "get_define_external_dictionary_version": SqlDefineExternalDictionaryVersionOperation,
         "get_dataset_filtered_variables": None,
         "get_countries": SqlGetCountriesOperation,
+        "split": SqlSplitOperation,
     }
 
     @classmethod
