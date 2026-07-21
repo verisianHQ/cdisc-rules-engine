@@ -233,7 +233,7 @@ class SQLRulesEngine:
         rule_copy["conditions"].set_conditions(updated_conditions)
 
         # Apply any operations
-        operation_variables, dataset_id = SQLRuleProcessor.perform_rule_operations(
+        operation_variables = SQLRuleProcessor.perform_rule_operations(
             rule_copy,
             dataset_id,
             dataset_metadata,
