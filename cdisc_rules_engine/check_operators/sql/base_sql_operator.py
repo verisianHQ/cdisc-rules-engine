@@ -448,8 +448,6 @@ class BaseSqlOperator:
                 return self._is_empty_sql_column(target, alias)
             elif target in self.operation_variables:
                 return self._is_empty_sql_operation_variable(target)
-            else:
-                return "FALSE"
 
         if isinstance(target, str) and target == "":
             return "TRUE"
@@ -535,3 +533,15 @@ class BaseSqlOperator:
             filter_value = filter_value.replace("'", "").replace('"', "").strip()
 
         return filter_attribute, filter_value
+
+    @staticmethod
+    def _safe_numeric_cast_sql(value_sql: str) -> str:
+        """
+        Safely cast a SQL expression to NUMERIC.
+        Non-numeric values return NULL instead of raising a Postgres cast error.
+        """
+        return f"""CASE
+                WHEN TRIM(CAST({value_sql} AS TEXT)) ~ '^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+                    THEN CAST(TRIM(CAST({value_sql} AS TEXT)) AS NUMERIC)
+                ELSE NULL
+            END"""
