@@ -98,12 +98,49 @@ class SqlVenmoResultHandler(BaseActions):
         validation_schema = self.data_service.pgi.schema.get_table(self.dataset_id)
         target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
 
+        message = self._interpolate_message(message)
+
         errors_list = self._generate_errors_list(rows_with_error, target_columns, validation_schema)
         error_object = self._bundle_error_object(
             message=message,
             error_rows=errors_list,
         )
         self.output_container.append(error_object.to_representation())
+
+    def _interpolate_message(self, message: str) -> str:
+        """
+        Replace {$variable_name} placeholders in a message template with the
+        actual values resolved from operation variables.
+
+        For collection variables the values are formatted as a human-readable
+        English list: "A, B and C". For scalar variables the value is
+        inserted as-is. Unknown placeholders are left unchanged.
+        """
+        _PLACEHOLDER = re.compile(r"\{\$([^}]+)\}")
+
+        def resolve(match: re.Match) -> str:
+            var_name = f"${match.group(1)}"
+            if var_name not in self.operation_variables:
+                return match.group(0)
+            op_result = self.operation_variables[var_name]
+            if op_result.type == "collection":
+                values = self._execute_query_for_collection_values(op_result.query)
+                return self._format_list(values) if isinstance(values, list) else str(values)
+            else:
+                val = self._execute_query_for_single_value(op_result.query)
+                return str(val) if val is not None else ""
+
+        return _PLACEHOLDER.sub(resolve, message)
+
+    @staticmethod
+    def _format_list(items: list) -> str:
+        """Format a list as a readable English enumeration: 'A, B and C'."""
+        if not items:
+            return "(none)"
+        str_items = [str(i) for i in items]
+        if len(str_items) == 1:
+            return str_items[0]
+        return ", ".join(str_items[:-1]) + f" and {str_items[-1]}"
 
     def _get_error_rows(self, truth_series) -> List[dict]:
         """
