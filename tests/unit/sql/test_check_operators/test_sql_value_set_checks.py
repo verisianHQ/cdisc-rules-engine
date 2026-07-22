@@ -11,7 +11,7 @@ from .helpers import create_sql_operators, assert_series_equals
         ("STRESU", ["TESTCD", "METHOD"], [False, False, False, False]),
         ("MISSING", "USUBJID", [False, False, False, False]),
         ("BGSTRESU", "MISSING", [False, False, False, False]),
-        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, False, False]),
+        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, True, True]),
     ],
 )
 def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result):
