@@ -1,0 +1,75 @@
+# Variable: --BDSYCD
+# Condition: Primary SOC used for analysis
+# Rule: --SOCCD = --BDSYCD
+# verified
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        Version: "3.4"
+        References:
+          - Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0037
+              Version: "1"
+            Version: "2.0"
+            Citations:
+              - Cited Guidance: "IG v3.4[6.2.1][Specification][Dictionary derived. Code for the body system or organ class used by the sponsor. When using a multi-axial dictionary such as MedDRA, this should contain the SOC used for the sponsor`s analyses and summary tables, which may not necessarily be the primary SOC.]|Model v2.0[Events][--BDSYCD][MedDRA System Organ Class code corresponding to --BODSYS assigned for analysis.]"
+                Document: IG v3.4|Model v2.0
+                Item: Specification|--BDSYCD
+                Section: Events
+      - Name: SDTMIG
+        Version: "3.3"
+        References:
+          - Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0037
+              Version: "1"
+            Version: "2.0"
+            Citations:
+              - Cited Guidance: "IG v3.3[6.2.1][Specification][Dictionary derived. Code for body system or organ class used by the sponsor from the coding dictionary (e.g., MedDRA). When using a multi-axial dictionary such as MedDRA, this should contain the SOC used for the sponsor`s analyses and summary tables which may not necessarily be the primary SOC.]|Model v1.7[2.2.2][Table 2.2.2.1: -BDSYCD][Model:MedDRA System Organ Class code corresponding to --BODSYS assigned for analysis.]"
+                Document: IG v3.3|Model v1.7
+                Item: "IG v3.3[6.2.1][Specification]|Model v1.7[2.2.2][Table 2.2.2.1: -BDSYCD]"
+                Section: IG v3.3[6.2.1]|Model v1.7[2.2.2]
+      - Name: SDTMIG
+        Version: "3.2"
+        References:
+          - Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0037
+              Version: "1"
+            Version: "2.0"
+            Citations:
+              - Cited Guidance: "IG v3.2[6.2 AE][Specification][IG: Dictionary derived. Code for body system or organ class used by the sponsor from the coding dictionary (e.g., MedDRA). When using a multi-axial dictionary such as MedDRA, this should contain the SOC used for the sponsor`s analyses and summary tables which may not necessarily be the primary SOC.]|Model v1.4[2.2.2][Table 2.2.2: --BDSYCD][Model:MedDRA System Organ Class code corresponding to --BODSYS assigned for analysis.]"
+                Document: IG v3.2|Model v1.4
+                Item: "IG v3.2[6.2 AE][Specification]|Model v1.4[2.2.2][Table 2.2.2: --BDSYCD]"
+                Section: IG v3.2[6.2 AE]|Model v1.4[2.2.2]
+Check:
+  all:
+    - name: --SOCCD
+      operator: not_equal_to
+      value: --BDSYCD
+Core:
+  Id: CORE-000362
+  Status: Published
+  Version: "1"
+Description: Raise an error when primary SOC is used for analysis but --SOCCD is not equal to --BDSYCD.
+Executability: Partially Executable - Possible Overreporting
+Outcome:
+  Message: --SOCCD must be equal to --BDSYCD when primary SOC is used for analysis.
+  Output Variables:
+    - --TERM
+    - --DECOD
+    - --BDSYCD
+    - --SOCCD
+Rule Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - EVENTS
+  Domains:
+    Exclude:
+      - DS
+      - DV
+      - HO
+Sensitivity: Record

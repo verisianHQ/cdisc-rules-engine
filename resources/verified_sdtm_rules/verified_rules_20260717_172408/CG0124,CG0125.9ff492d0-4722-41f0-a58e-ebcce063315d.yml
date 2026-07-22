@@ -1,0 +1,83 @@
+# Variable: ACTARMCD
+# Condition: ACTARMCD not in TA.ARMCD
+# Rule: ACTARMCD in ('SCRNFAIL', 'NOTASSGN', 'NOTTRT', 'UNPLAN')
+# verified
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        References:
+          - Citations:
+              - Cited Guidance:
+                  Code of actual Arm. When an Arm is not planned (not in Trial
+                  Arms), ACTARMCD will be UNPLAN. Randomized subjects who were
+                  not treated will be given a value of NOTTRT. Values should be
+                  "SCRNFAIL" for screen failures and "NOTASSGN" for subjects not
+                  assigned to treatment. Restricted to values in Trial Arms in
+                  all other cases
+                Document: IG v3.2
+                Item: Specification
+                Section: "5"
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0124
+              Version: "1"
+            Version: "2.0"
+          - Citations:
+              - Cited Guidance:
+                  Code of actual Arm. When an Arm is not planned (not in Trial
+                  Arms), ACTARMCD will be UNPLAN. Randomized subjects who were
+                  not treated will be given a value of NOTTRT. Values should be
+                  "SCRNFAIL" for screen failures and "NOTASSGN" for subjects not
+                  assigned to treatment. Restricted to values in Trial Arms in
+                  all other cases
+                Document: IG v3.2
+                Item: Specification
+                Section: "5"
+            Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0125
+              Version: "1"
+            Version: "2.0"
+        Version: "3.2"
+Check:
+  all:
+    - name: ACTARMCD
+      operator: is_not_contained_by
+      value:
+        - SCRNFAIL
+        - NOTASSGN
+        - NOTTRT
+        - UNPLAN
+    - name: ACTARMCD
+      operator: is_not_contained_by
+      value: $armcd_list
+Core:
+  Id: CORE-000331
+  Status: Published
+  Version: "1"
+Description: Raise an error when ACTARMCD value in the DM dataset, except
+  'SCRNFAIL', 'NOTASSGN', 'NOTTRT', or 'UNPLAN', does not match any of the
+  ARMCD values in the TA dataset.
+Executability: Fully Executable
+Operations:
+  - domain: TA
+    id: $armcd_list
+    name: ARMCD
+    operator: distinct
+Outcome:
+  Message: ACTARMCD value in the DM dataset must equal 'SCRNFAIL',
+    'NOTASSGN', 'NOTTRT', or 'UNPLAN' if the value does not match
+    an ARMCD value in the TA dataset.
+  Output Variables:
+    - ACTARMCD
+    - ACTARM
+Rule Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - SPECIAL PURPOSE
+  Domains:
+    Include:
+      - DM
+Sensitivity: Record

@@ -489,7 +489,7 @@ class BaseSqlOperator:
             raise ValueError(f"Variable {target} does not exist.")
 
         if variable.type != "constant":
-            raise ValueError(f"Variable {target} is not a constant.")
+            return f"(NOT EXISTS (SELECT 1 FROM ({variable.query}) AS op))"
 
         # Handle parameterized constants
         query = variable.query
@@ -533,3 +533,15 @@ class BaseSqlOperator:
             filter_value = filter_value.replace("'", "").replace('"', "").strip()
 
         return filter_attribute, filter_value
+
+    @staticmethod
+    def _safe_numeric_cast_sql(value_sql: str) -> str:
+        """
+        Safely cast a SQL expression to NUMERIC.
+        Non-numeric values return NULL instead of raising a Postgres cast error.
+        """
+        return f"""CASE
+                WHEN TRIM(CAST({value_sql} AS TEXT)) ~ '^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+                    THEN CAST(TRIM(CAST({value_sql} AS TEXT)) AS NUMERIC)
+                ELSE NULL
+            END"""

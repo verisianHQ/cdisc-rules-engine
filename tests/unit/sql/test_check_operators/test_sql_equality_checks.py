@@ -170,6 +170,29 @@ def test_equality_operators_type_insensitive(data, comparator, operator, expecte
     "data,comparator,expected_result",
     [
         (
+            {"target": ["12", "abc", "1.5"], "VAR2": [12, 12, 1.5]},
+            "VAR2",
+            [True, False, True],
+        ),
+    ],
+)
+def test_equal_to_type_insensitive_numeric_safe_cast(data, comparator, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.equal_to(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": False,
+            "type_insensitive": "numeric",
+        }
+    )
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,expected_result",
+    [
+        (
             {"target": ["A", "B", "", "", None], "VAR2": ["A", "B", "C", None, None]},
             "VAR2",
             [False, False, True, False, False],

@@ -55,6 +55,7 @@ from .value_has_multiple_references_operator import ValueHasMultipleReferencesOp
 from .variable_metadata_equal_to_operator import VariableMetadataEqualToOperator
 from .is_latest_available_exdict_version import IsLatestAvailableExDictVersionOperator
 from .in_enumerated_columns_operator import InEnumeratedColumnsOperator
+from .is_extensible_codelist_code_operator import IsExtensibleCodelistCodeOperator
 
 MEDDRA_CODE_SUFFIX_MAP = {
     "BDSYCD": "SOC",
@@ -177,6 +178,8 @@ class PostgresQLOperators(BaseType):
         "not_in_enumerated_columns": lambda data: NotOperator(data, InEnumeratedColumnsOperator),
         "references_correct_codelist": lambda data: ReferencesCorrectCodelistOperator(data),
         "does_not_reference_correct_codelist": lambda data: NotOperator(data, ReferencesCorrectCodelistOperator),
+        "is_extensible_codelist_code": lambda data: IsExtensibleCodelistCodeOperator(data),
+        "is_not_extensible_codelist_code": lambda data: NotOperator(data, IsExtensibleCodelistCodeOperator),
         "is_ordered_by": lambda data: IsOrderedByOperator(data),
         "is_not_ordered_by": lambda data: NotOperator(data, IsOrderedByOperator),
         "value_has_multiple_references": lambda data: ValueHasMultipleReferencesOperator(data),

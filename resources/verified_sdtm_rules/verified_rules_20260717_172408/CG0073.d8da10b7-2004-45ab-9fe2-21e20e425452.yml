@@ -1,0 +1,55 @@
+# Variable: EPOCH
+# Condition: DSCAT = 'PROTOCOL MILESTONE'
+# Rule: EPOCH = null
+# verified
+Authorities:
+  - Organization: CDISC
+    Standards:
+      - Name: SDTMIG
+        Version: "3.2"
+        References:
+          - Origin: SDTM and SDTMIG Conformance Rules
+            Rule Identifier:
+              Id: CG0073
+              Version: "2"
+            Version: "2.0"
+            Citations:
+              - Cited Guidance:
+                  When DSCAT='PROTOCOL MILESTONE', DSTERM and DSDECOD will contain
+                  the same value drawn from the sponsor's controlled
+                  terminology. Examples of controlled terms include 'INFORMED
+                  CONSENT OBTAINED' and 'RANDOMIZED.' EPOCH should not be
+                  populated when DSCAT = "PROTOCOL MILESTONE".
+                Document: IG v3.2
+                Item: Assumption 3d
+                Section: "6.2"
+Check:
+  all:
+    - name: DSCAT
+      operator: equal_to
+      value: PROTOCOL MILESTONE
+      value_is_literal: true
+    - name: EPOCH
+      operator: non_empty
+Core:
+  Id: CORE-000364
+  Status: Published
+  Version: "1"
+Description: Raise an error when DSCAT is equal to 'PROTOCOL MILESTONE'
+  and EPOCH is populated.
+Executability: Fully Executable
+Outcome:
+  Message: DSCAT is equal to 'PROTOCOL MILESTONE' but EPOCH is populated.
+  Output Variables:
+    - DSDECOD
+    - DSCAT
+    - EPOCH
+Rule Type: Record Data
+Scope:
+  Classes:
+    Include:
+      - EVENTS
+  Domains:
+    Include:
+      - DS
+Sensitivity: Record
