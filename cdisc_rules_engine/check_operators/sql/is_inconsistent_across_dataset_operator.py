@@ -11,26 +11,40 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         Returns True for rows where the target column has multiple distinct values within the same group,
         False for rows where all values in the group are consistent.
         """
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target = other_value.get("target")
         comparator = other_value.get("comparator")
 
+        if not target or not isinstance(target, str) or target in self.operation_variables:
+            raise ValueError("Target is required and must be a valid column name.")
+
+        target_column = self.replace_prefix(target).lower()
+        if not self._exists(target_column):
+            return self._do_check_operator(lambda: "FALSE")
+
         if isinstance(comparator, str):
-            return self._handle_single_comparator(target_column, comparator)
+            comparator_list = [comparator]
         elif isinstance(comparator, list):
-            return self._handle_multiple_comparators(target_column, comparator)
+            comparator_list = comparator
         else:
             raise ValueError(
                 f"Invalid comparator type for is_inconsistent_across_dataset operation on column '{target_column}'. "
-                "Expected string or list of column names."
+                f"Expected string or list of column names, got: {type(comparator).__name__}"
             )
 
-    def _handle_single_comparator(self, target_column, comparator):
-        """Handle when comparator is a single column name."""
-        comparator_column = self.replace_prefix(comparator).lower()
+        valid_comparators = []
+        for comp in comparator_list:
+            comp_col = self.replace_prefix(comp).lower()
+            if self._exists(comp_col):
+                valid_comparators.append(comp_col)
 
-        if not self._exists(comparator_column):
-            raise ValueError(f"Comparator column '{comparator}' does not exist in the dataset.")
+        if len(valid_comparators) == 0:
+            return self._do_check_operator(lambda: "FALSE")
+        elif len(valid_comparators) == 1:
+            return self._handle_single_comparator(target_column, valid_comparators[0])
+        else:
+            return self._handle_multiple_comparators(target_column, valid_comparators)
 
+    def _handle_single_comparator(self, target_column, comparator_column):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
@@ -65,19 +79,10 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         return self._do_complex_check_operator(cache_key, generate_update_query)
 
-    def _handle_multiple_comparators(self, target_column, comparators):
-        """Handle when comparator is a list of column names."""
-        comparator_columns = []
-        for comp in comparators:
-            comp_col = self.replace_prefix(comp).lower()
-            if not self._exists(comp_col):
-                raise ValueError(f"Comparator column '{comp}' does not exist in the dataset.")
-            comparator_columns.append(comp_col)
-
+    def _handle_multiple_comparators(self, target_column, comparator_columns):
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
-            # Build the WHERE clause for matching groups, handling NULLs properly
             where_conditions = []
             for comp_col in comparator_columns:
                 condition = (
