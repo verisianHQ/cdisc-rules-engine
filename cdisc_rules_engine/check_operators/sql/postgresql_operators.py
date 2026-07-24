@@ -395,7 +395,7 @@ class PostgresQLOperators(BaseType):
             def operator_method(self, other_value):
                 missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
                 if missing_columns:
-                    logger.warning(
+                    logger.info(
                         f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
                     )
                     return self._false_result(operator_instance)
