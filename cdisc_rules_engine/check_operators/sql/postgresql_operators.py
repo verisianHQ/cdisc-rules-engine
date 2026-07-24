@@ -1,6 +1,7 @@
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
 from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.services import logger
 
 from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_operator import (
     ValidWHODrugLevelReferenceOperator,
@@ -394,6 +395,9 @@ class PostgresQLOperators(BaseType):
             def operator_method(self, other_value):
                 missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
                 if missing_columns:
+                    logger.warning(
+                        f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
+                    )
                     return self._false_result(operator_instance)
                 return operator_instance.execute_operator(other_value)
 
