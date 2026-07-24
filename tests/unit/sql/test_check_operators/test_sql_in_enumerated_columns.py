@@ -30,7 +30,7 @@ from .helpers import assert_series_equals, create_sql_operators
                 "TSVAL1": ["X", "Y", "Z"],
                 "TSVALX": ["A", "A", "A"],
             },
-            {"target": "NOT_USED", "comparator": "A", "regex": r"^TSVAL\d*$"},
+            {"target": "TSVAL", "comparator": "A", "regex": r"^TSVAL\d*$"},
             [True, False, False],
         ),
         (

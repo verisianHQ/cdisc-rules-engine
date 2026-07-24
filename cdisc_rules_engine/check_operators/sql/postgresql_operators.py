@@ -1,5 +1,7 @@
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.services import logger
 
 from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_operator import (
     ValidWHODrugLevelReferenceOperator,
@@ -318,6 +320,66 @@ class PostgresQLOperators(BaseType):
     def __init__(self, data):
         self.data = data
 
+    @staticmethod
+    def _is_missing_column_reference(operator_instance, value):
+        if not isinstance(value, str) or value == "":
+            return False
+
+        if value == DATASET_NAME or value == "define.xml":
+            return False
+
+        if value in operator_instance.operation_variables:
+            return False
+
+        resolved_value = operator_instance.replace_prefix(value)
+        if not isinstance(resolved_value, str) or resolved_value == "":
+            return False
+
+        return not operator_instance._exists(resolved_value)
+
+    @classmethod
+    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):
+        if operator_name in {"exists", "not_exists", "is_unique_set", "is_not_unique_set"}:
+            return []
+
+        if not isinstance(other_value, dict):
+            return []
+
+        missing_columns = []
+
+        always_column_keys = ["target"]
+        for key in always_column_keys:
+            if cls._is_missing_column_reference(operator_instance, other_value.get(key)):
+                missing_columns.append(other_value.get(key))
+
+        comparator = other_value.get("comparator")
+        comparator_is_column = other_value.get("value_is_reference", False) or operator_name in {
+            "is_not_unique_relationship",
+            "is_unique_relationship",
+            "has_next_corresponding_record",
+            "does_not_have_next_corresponding_record",
+            "present_on_multiple_rows_within",
+            "not_present_on_multiple_rows_within",
+            "value_has_multiple_references",
+            "value_does_not_have_multiple_references",
+            "target_is_sorted_by",
+            "target_is_not_sorted_by",
+        }
+
+        if comparator_is_column:
+            if isinstance(comparator, list):
+                for comp in comparator:
+                    if cls._is_missing_column_reference(operator_instance, comp):
+                        missing_columns.append(comp)
+            elif cls._is_missing_column_reference(operator_instance, comparator):
+                missing_columns.append(comparator)
+
+        return missing_columns
+
+    @staticmethod
+    def _false_result(operator_instance):
+        return operator_instance._do_check_operator(lambda: "FALSE")
+
     def __getattr__(self, name):
         """
         Dynamically create and cache an operator method on its first access.
@@ -331,6 +393,12 @@ class PostgresQLOperators(BaseType):
             @log_operator_execution(name)
             @type_operator(FIELD_DATAFRAME)
             def operator_method(self, other_value):
+                missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
+                if missing_columns:
+                    logger.info(
+                        f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
+                    )
+                    return self._false_result(operator_instance)
                 return operator_instance.execute_operator(other_value)
 
             # Cache the new method on the instance
