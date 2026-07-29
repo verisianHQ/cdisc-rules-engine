@@ -1,6 +1,7 @@
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.standards.default_standards_context import (
     DefaultStandardsContext,
 )
@@ -30,3 +31,19 @@ def test_get_uploaded_dataset_ids(get_sample_lb_dataset, get_sample_supp_dataset
         [get_sample_lb_dataset, get_sample_supp_dataset], DefaultStandardsContext()
     )
     assert 2 == len(sql_data_service.get_uploaded_dataset_ids())
+
+
+def test_insert_empty_data_creates_no_rows_and_does_not_raise():
+    data_service = PostgresQLDataService.instance()
+    table_name = "empty_table"
+    schema = SqlTableSchema.from_data(table_name, {"col1": "sample"}, data_service.pgi)
+    data_service.pgi.create_table(schema)
+
+    inserted_rows = data_service.pgi.insert_data(table_name, [])
+
+    assert inserted_rows == 0
+
+    table_hash = data_service.pgi.schema.get_table_hash(table_name)
+    data_service.pgi.execute_sql(f"SELECT COUNT(*) AS cnt FROM {table_hash}")
+    result = data_service.pgi.fetch_one()
+    assert result["cnt"] == 0
