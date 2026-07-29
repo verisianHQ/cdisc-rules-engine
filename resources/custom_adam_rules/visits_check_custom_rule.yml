@@ -51,14 +51,14 @@ Outcome:
     - $missing_visits
 Rule Type: Record Data
 Scope:
-  Classes:
+  Data Structures:
     Include:
-      - ADEG
-      - ADVS
+      - BDS
   Domains:
     Include:
       - ADEG
       - ADVS
+      - ADEF
 Sensitivity: Group
 Grouping_Variables:
   - USUBJID
