@@ -137,7 +137,11 @@ class AdamStandardsContext(DefaultStandardsContext):
 
         included_domains = [domain.lower() for domain in included_domains]
 
-        if domain in included_domains or dataset_metadata.name in included_domains or ALL_KEYWORD in included_domains:
+        if (
+            domain in included_domains
+            or dataset_metadata.name in included_domains
+            or ALL_KEYWORD.lower() in included_domains
+        ):
             return True
         return False
 
