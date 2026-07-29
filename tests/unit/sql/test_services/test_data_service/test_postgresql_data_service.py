@@ -52,7 +52,8 @@ def test_adam_dataset_class_assigned_during_sql_load():
     sql_data_service = PostgresQLDataService.from_list_of_testdatasets([dataset], context)
 
     assert sql_data_service.get_dataset_metadata("ADVS").dataset_class == BDS
-    
+
+
 def test_insert_empty_data_creates_no_rows_and_does_not_raise():
     data_service = PostgresQLDataService.instance()
     table_name = "empty_table"
