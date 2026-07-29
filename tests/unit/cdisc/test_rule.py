@@ -219,3 +219,18 @@ def test_from_cdisc_rule_preserves_grouping_variables():
     rule = Rule.from_cdisc_metadata(rule_dict)
 
     assert rule.get("grouping_variables") == ["USUBJID", "VISIT"]
+
+
+def test_from_cdisc_rule_preserves_data_structures_scope():
+    rule_dict = {
+        "Core": {"Id": "CORE-TEST"},
+        "Executability": "Fully Executable",
+        "Authorities": [],
+        "Scope": {"Data Structures": {"Include": ["BASIC DATA STRUCTURE"]}},
+        "Check": {"all": []},
+        "Outcome": {"Message": "test"},
+    }
+
+    rule = Rule.from_cdisc_metadata(rule_dict)
+
+    assert rule["data_structures"] == {"Include": ["BASIC DATA STRUCTURE"]}

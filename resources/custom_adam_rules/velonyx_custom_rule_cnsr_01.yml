@@ -44,9 +44,9 @@ Outcome:
     - CNSR
 Rule Type: Record Data
 Scope:
-  Classes:
+  Data Structures:
     Include:
-      - ADTTE
+      - BDS
   Domains:
     Include:
       - ADTTE

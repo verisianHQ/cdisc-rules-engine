@@ -1,5 +1,14 @@
 from typing import List
 
+from cdisc_rules_engine.constants.data_structures import (
+    ADSL,
+    ADAM_DATA_STRUCTURE_ALIASES,
+    BDS,
+    BDS_INDICATORS,
+    OCCDS,
+    OCCDS_SUFFIXES,
+    OTHER,
+)
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.models.library_metadata_container import LibraryMetadataContainer
@@ -15,7 +24,20 @@ class AdamStandardsContext(DefaultStandardsContext):
 
     def transform_dataset_metadata(self, source: DatasetMetadata2) -> AdamDatasetMetadata2:
         domain = self.derive_domain(source.name)
-        return AdamDatasetMetadata2(**source.__dict__, domain=domain)
+        dataset_class = self.derive_class(source)
+        return AdamDatasetMetadata2(**source.__dict__, domain=domain, dataset_class=dataset_class)
+
+    @staticmethod
+    def derive_class(dataset_metadata: DatasetMetadata2) -> str:
+        if dataset_metadata.name.upper() == "ADSL":
+            return ADSL
+
+        columns = {variable.name.upper() for variable in dataset_metadata.variables}
+        if columns.intersection(BDS_INDICATORS):
+            return BDS
+        if any(column.endswith(tuple(OCCDS_SUFFIXES)) for column in columns):
+            return OCCDS
+        return OTHER
 
     def derive_domain(self, filename: str):
         filename = filename.lower()
@@ -27,11 +49,10 @@ class AdamStandardsContext(DefaultStandardsContext):
         dataset_name = metadata.name
         domain = self.derive_domain(metadata.name)
 
-        # TODO: ADaM classes
-        # if not self.rule_applies_to_class(metadata, rule, domain):
-        #     reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
-        #     logger.info(f"is_suitable_for_validation. {reason}, result=False")
-        #     return False, reason
+        if not self.rule_applies_to_class(metadata, rule):
+            reason = f"Rule skipped - doesn't apply to data structure for rule id={rule_id}, dataset={dataset_name}"
+            logger.info(f"is_suitable_for_validation. {reason}, result=False")
+            return False, reason
         if not self.rule_applies_to_domain(metadata, rule, domain, is_split=False):
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
@@ -39,6 +60,28 @@ class AdamStandardsContext(DefaultStandardsContext):
 
         logger.info(f"is_suitable_for_validation. rule id={rule_id}, dataset={dataset_name}, result=True")
         return True, ""
+
+    @staticmethod
+    def rule_applies_to_class(dataset_metadata: AdamDatasetMetadata2, rule: dict) -> bool:
+        data_structures = rule.get("data_structures") or rule.get("classes") or {}
+        included_structures = {
+            AdamStandardsContext._normalize_data_structure(value) for value in data_structures.get("Include", [])
+        }
+        excluded_structures = {
+            AdamStandardsContext._normalize_data_structure(value) for value in data_structures.get("Exclude", [])
+        }
+        dataset_class = dataset_metadata.dataset_class.upper()
+
+        is_included = (
+            not included_structures or ALL_KEYWORD in included_structures or dataset_class in included_structures
+        )
+        is_excluded = ALL_KEYWORD in excluded_structures or dataset_class in excluded_structures
+        return is_included and not is_excluded
+
+    @staticmethod
+    def _normalize_data_structure(value: str) -> str:
+        normalized_value = value.strip().upper()
+        return ADAM_DATA_STRUCTURE_ALIASES.get(normalized_value, normalized_value)
 
     @classmethod
     def rule_applies_to_domain(
