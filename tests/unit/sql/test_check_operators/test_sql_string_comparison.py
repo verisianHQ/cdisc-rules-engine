@@ -62,6 +62,35 @@ def test_starts_with(data, comparator, value_is_literal, expected_result):
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
     [
+        ({"target": ["ABC", "A", ""], "VAR2": ["A", "B", "D"]}, "VAR2", False, [False, True, True]),
+        ({"target": ["ABC", "A", ""]}, "A", True, [False, False, True]),
+        ({"target": ["ABC", "A", ""]}, "B", True, [True, True, True]),
+        ({"target": ["ABC", "A", ""]}, "$constant", False, [False, False, True]),
+        ({"target": ["ABC", "A", ""]}, "$list", False, [False, False, True]),
+        ({"target": ["", None, "ABC"]}, "A", True, [True, True, False]),
+        ({"target": ["ABC", "A", ""]}, "", True, [True, True, True]),
+        ({"target": ["ABC", "A", ""]}, ("A", "B"), True, [False, False, True]),
+        ({"target": ["ABC", "A", ""]}, ("A",), True, [False, False, True]),
+        ({"target": ["ABC", "", "A"]}, ("", "A"), True, [False, True, False]),
+        ({"target": ["ABC", "A", ""]}, ["A", "B"], True, [False, False, True]),
+        ({"target": ["ABC", "", "A"]}, ["A"], True, [False, True, False]),
+    ],
+)
+def test_not_starts_with(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.not_starts_with(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    [
         ({"target": ["ABC", "A", ""], "VAR2": ["C", "A", "D"]}, "VAR2", False, [True, True, False]),
         ({"target": ["ABC", "A", ""]}, "C", True, [True, False, False]),
         ({"target": ["ABC", "A", ""]}, "A", True, [False, True, False]),
@@ -78,6 +107,34 @@ def test_starts_with(data, comparator, value_is_literal, expected_result):
 def test_ends_with(data, comparator, value_is_literal, expected_result):
     sql_ops = create_sql_operators(data)
     result = sql_ops.ends_with(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "value_is_literal": value_is_literal,
+        }
+    )
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,value_is_literal,expected_result",
+    [
+        ({"target": ["ABC", "A", ""], "VAR2": ["C", "A", "D"]}, "VAR2", False, [False, False, True]),
+        ({"target": ["ABC", "A", ""]}, "C", True, [False, True, True]),
+        ({"target": ["ABC", "A", ""]}, "A", True, [True, False, True]),
+        ({"target": ["ABC", "A", ""]}, "$constant", False, [True, False, True]),
+        ({"target": ["ABC", "A", ""]}, "$list", False, [True, False, True]),
+        ({"target": ["", None, "ABC"]}, "C", True, [True, True, False]),
+        ({"target": ["ABC", "A", ""]}, "", True, [True, True, True]),
+        ({"target": ["ABC", "A", ""]}, ("C", "A"), True, [False, False, True]),
+        ({"target": ["ABC", "", "A"]}, ("", "A"), True, [True, True, False]),
+        ({"target": ["ABC", "A", ""]}, ["C", "A"], True, [False, False, True]),
+        ({"target": ["ABC", "A", ""]}, ["C"], True, [False, True, True]),
+    ],
+)
+def test_not_ends_with(data, comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.not_ends_with(
         {
             "target": "target",
             "comparator": comparator,
