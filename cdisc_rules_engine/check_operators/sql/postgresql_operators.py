@@ -1,3 +1,5 @@
+import re
+
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
 from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
@@ -321,7 +323,7 @@ class PostgresQLOperators(BaseType):
         self.data = data
 
     @staticmethod
-    def _is_missing_column_reference(operator_instance, value):
+    def _is_missing_column_reference(operator_instance, value, variable_regex_pattern=False):
         if not isinstance(value, str) or value == "":
             return False
 
@@ -335,6 +337,10 @@ class PostgresQLOperators(BaseType):
         if not isinstance(resolved_value, str) or resolved_value == "":
             return False
 
+        if variable_regex_pattern:
+            variables = getattr(operator_instance.dataset_metadata, "variables", [])
+            return not any(re.fullmatch(resolved_value, variable.name) for variable in variables)
+
         return not operator_instance._exists(resolved_value)
 
     @classmethod
@@ -346,10 +352,15 @@ class PostgresQLOperators(BaseType):
             return []
 
         missing_columns = []
+        variable_regex_pattern = other_value.get("variable_regex_pattern", False)
 
         always_column_keys = ["target"]
         for key in always_column_keys:
-            if cls._is_missing_column_reference(operator_instance, other_value.get(key)):
+            if cls._is_missing_column_reference(
+                operator_instance,
+                other_value.get(key),
+                variable_regex_pattern=variable_regex_pattern,
+            ):
                 missing_columns.append(other_value.get(key))
 
         comparator = other_value.get("comparator")

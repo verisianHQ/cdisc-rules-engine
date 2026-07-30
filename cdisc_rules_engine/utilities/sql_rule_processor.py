@@ -1,3 +1,6 @@
+import re
+from copy import deepcopy
+from itertools import product
 from typing import List
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
@@ -171,6 +174,47 @@ class SQLRuleProcessor:
                     new_conditions_list.append(condition)
             new_conditions_dict[key] = new_conditions_list
         return new_conditions_dict
+
+    @staticmethod
+    def expand_rule_for_variable_regex(rule: dict, targets: List[VariableMetadata]) -> List[dict]:
+        conditions: ConditionInterface = rule["conditions"]
+        patterns = list(
+            dict.fromkeys(
+                condition["value"].get("target")
+                for condition in conditions.values()
+                if condition.get("value", {}).get("variable_regex_pattern", False)
+            )
+        )
+        if not patterns:
+            return [rule]
+
+        matches_by_pattern = [
+            [target.name for target in targets if re.fullmatch(pattern, target.name)] for pattern in patterns
+        ]
+        if any(not matches for matches in matches_by_pattern):
+            return [rule]
+
+        expanded_rules = []
+        for matched_targets in product(*matches_by_pattern):
+            bindings = dict(zip(patterns, matched_targets))
+            expanded_rule = deepcopy(rule)
+            for condition in expanded_rule["conditions"].values():
+                value = condition.get("value", {})
+                if value.get("variable_regex_pattern", False):
+                    value["target"] = bindings[value["target"]]
+                    value.pop("variable_regex_pattern")
+
+            output_variables = []
+            for output_variable in expanded_rule.get("output_variables") or []:
+                matched_output_variables = [
+                    target for target in matched_targets if re.fullmatch(output_variable, target)
+                ]
+                output_variables.extend(matched_output_variables or [output_variable])
+            if output_variables:
+                expanded_rule["output_variables"] = list(dict.fromkeys(output_variables))
+            expanded_rules.append(expanded_rule)
+
+        return expanded_rules
 
     # @staticmethod
     # def extract_referenced_variables_from_rule(rule: dict):
