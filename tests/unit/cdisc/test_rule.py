@@ -21,6 +21,10 @@ from cdisc_rules_engine.models.rule import Rule
             ["metadata"],
         ),
         (
+            {"operator": "test", "name": "^ID.*", "variable_regex_pattern": True},
+            ["variable_regex_pattern"],
+        ),
+        (
             {
                 "operator": "test",
                 "name": "IDVAR",

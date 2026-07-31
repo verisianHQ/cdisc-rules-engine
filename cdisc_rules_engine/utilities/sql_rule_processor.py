@@ -1,3 +1,6 @@
+import re
+from copy import deepcopy
+from itertools import product
 from typing import List
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
@@ -16,6 +19,8 @@ from cdisc_rules_engine.standards.base_standards_context import BaseStandardsCon
 
 
 class SQLRuleProcessor:
+    REGEX_CAPTURE_REFERENCE = re.compile(r"\{\{(?P<name>[A-Za-z_]\w*)\}\}")
+
     # @staticmethod
     # def _ct_package_type_api_name(ct_package_type: str | None) -> str:
     #     if ct_package_type is None:
@@ -171,6 +176,94 @@ class SQLRuleProcessor:
                     new_conditions_list.append(condition)
             new_conditions_dict[key] = new_conditions_list
         return new_conditions_dict
+
+    @classmethod
+    def _replace_regex_capture_references(cls, value, captures: dict[str, str]):
+        if isinstance(value, str):
+
+            def replace_capture(match):
+                capture_name = match.group("name")
+                capture_value = captures.get(capture_name)
+                if capture_value is None:
+                    raise ValueError(f"Unresolved regex capture '{capture_name}'")
+                return capture_value
+
+            return cls.REGEX_CAPTURE_REFERENCE.sub(replace_capture, value)
+        if isinstance(value, dict):
+            return {key: cls._replace_regex_capture_references(item, captures) for key, item in value.items()}
+        if isinstance(value, list):
+            return [cls._replace_regex_capture_references(item, captures) for item in value]
+        if isinstance(value, tuple):
+            return tuple(cls._replace_regex_capture_references(item, captures) for item in value)
+        return value
+
+    @staticmethod
+    def _compile_variable_regex_patterns(patterns: List[str]) -> dict[str, re.Pattern]:
+        compiled_patterns = {pattern: re.compile(pattern) for pattern in patterns}
+        capture_patterns = {}
+        for pattern, compiled_pattern in compiled_patterns.items():
+            for capture_name in compiled_pattern.groupindex:
+                if capture_name in capture_patterns:
+                    raise ValueError(f"Regex capture name '{capture_name}' is defined by multiple patterns")
+                capture_patterns[capture_name] = pattern
+        return compiled_patterns
+
+    @staticmethod
+    def _find_variable_regex_matches(compiled_patterns, targets: List[VariableMetadata]):
+        return [
+            [(target.name, match) for target in targets if (match := pattern.fullmatch(target.name))]
+            for pattern in compiled_patterns.values()
+        ]
+
+    @classmethod
+    def expand_rule_for_variable_regex(cls, rule: dict, targets: List[VariableMetadata]) -> List[dict]:
+        conditions: ConditionInterface = rule["conditions"]
+        patterns = list(
+            dict.fromkeys(
+                condition["value"].get("target")
+                for condition in conditions.values()
+                if condition.get("value", {}).get("variable_regex_pattern", False)
+            )
+        )
+        if not patterns:
+            return [rule]
+
+        compiled_patterns = cls._compile_variable_regex_patterns(patterns)
+        matches_by_pattern = cls._find_variable_regex_matches(compiled_patterns, targets)
+        if any(not matches for matches in matches_by_pattern):
+            return [rule]
+
+        expanded_rules = []
+        for matched_values in product(*matches_by_pattern):
+            bindings = dict(zip(patterns, (target_name for target_name, _ in matched_values)))
+            captures = {
+                capture_name: capture_value
+                for _, match in matched_values
+                for capture_name, capture_value in match.groupdict().items()
+            }
+            expanded_rule = deepcopy(rule)
+            for condition in expanded_rule["conditions"].values():
+                value = condition.get("value", {})
+                if value.get("variable_regex_pattern", False):
+                    value["target"] = bindings[value["target"]]
+                    value.pop("variable_regex_pattern")
+                condition.update(cls._replace_regex_capture_references(condition, captures))
+
+            for key, value in expanded_rule.items():
+                if key != "conditions":
+                    expanded_rule[key] = cls._replace_regex_capture_references(value, captures)
+
+            output_variables = []
+            for output_variable in expanded_rule.get("output_variables") or []:
+                matched_output_variables = [
+                    target_name for target_name, _ in matched_values if re.fullmatch(output_variable, target_name)
+                ]
+                output_variables.extend(matched_output_variables or [output_variable])
+            if output_variables:
+                expanded_rule["output_variables"] = list(dict.fromkeys(output_variables))
+            expanded_rules.append(expanded_rule)
+
+        return expanded_rules
 
     # @staticmethod
     # def extract_referenced_variables_from_rule(rule: dict):

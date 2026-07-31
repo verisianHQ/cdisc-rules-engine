@@ -19,3 +19,4 @@ class OptionalConditionParameters(BaseEnum):
     STRICT_INCREMENTAL_ORDERING = "strict_incremental_ordering"
     EXTERNAL_DICTIONARY_TYPE = "external_dictionary_type"
     VERSION = "version"
+    VARIABLE_REGEX_PATTERN = "variable_regex_pattern"
