@@ -47,18 +47,20 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
     def _handle_single_comparator(self, target_column, comparator_column, where_populated=False):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
+        if where_populated:
+            cache_key += "_where_populated"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
             populated_filter = ""
             current_row_filter = ""
             if where_populated:
                 populated_filter = (
-                    f" AND t2.{self._column_sql(target_column, alias=False)} IS NOT NULL"
-                    f" AND t2.{self._column_sql(comparator_column, alias=False)} IS NOT NULL"
+                    f" AND NULLIF(CAST(t2.{self._column_sql(target_column, alias=False)} AS TEXT), '') IS NOT NULL"
+                    f" AND NULLIF(CAST(t2.{self._column_sql(comparator_column, alias=False)} AS TEXT), '') IS NOT NULL"
                 )
                 current_row_filter = (
-                    f" AND t1.{self._column_sql(target_column, alias=False)} IS NOT NULL"
-                    f" AND t1.{self._column_sql(comparator_column, alias=False)} IS NOT NULL"
+                    f" AND NULLIF(CAST(t1.{self._column_sql(target_column, alias=False)} AS TEXT), '') IS NOT NULL"
+                    f" AND NULLIF(CAST(t1.{self._column_sql(comparator_column, alias=False)} AS TEXT), '') IS NOT NULL"
                 )
             return f"""
                 UPDATE {db_table} AS t
@@ -93,6 +95,8 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
     def _handle_multiple_comparators(self, target_column, comparator_columns, where_populated=False):
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
+        if where_populated:
+            cache_key += "_where_populated"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
             where_conditions = []
@@ -108,10 +112,12 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
             if where_populated:
                 populated_columns = [target_column, *comparator_columns]
                 where_clause += " AND " + " AND ".join(
-                    f"t2.{self._column_sql(column, alias=False)} IS NOT NULL" for column in populated_columns
+                    f"NULLIF(CAST(t2.{self._column_sql(column, alias=False)} AS TEXT), '') IS NOT NULL"
+                    for column in populated_columns
                 )
                 current_row_filter = " AND " + " AND ".join(
-                    f"t1.{self._column_sql(column, alias=False)} IS NOT NULL" for column in populated_columns
+                    f"NULLIF(CAST(t1.{self._column_sql(column, alias=False)} AS TEXT), '') IS NOT NULL"
+                    for column in populated_columns
                 )
 
             return f"""
