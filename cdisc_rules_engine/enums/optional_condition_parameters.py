@@ -20,3 +20,4 @@ class OptionalConditionParameters(BaseEnum):
     EXTERNAL_DICTIONARY_TYPE = "external_dictionary_type"
     VERSION = "version"
     VARIABLE_REGEX_PATTERN = "variable_regex_pattern"
+    WHERE_POPULATED = "where_populated"
