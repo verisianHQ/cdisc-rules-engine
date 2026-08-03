@@ -52,9 +52,9 @@ def test_sql_is_inconsistent_across_dataset_with_nulls(target, comparator, expec
 
 def test_sql_is_inconsistent_across_dataset_where_populated():
     data = {
-        "KEY": ["A", "A", "A", "B", "B"],
-        "VALUE": ["X", "Y", None, "Z", None],
+        "KEY": ["A", "A", "A", "B", "B", "B", ""],
+        "VALUE": ["X", "Y", None, "Z", None, "", "Q"],
     }
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": True})
-    assert_series_equals(result, [True, True, False, False, False])
+    assert_series_equals(result, [True, True, False, False, False, False, False])
