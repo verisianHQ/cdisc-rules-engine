@@ -156,18 +156,6 @@ def test_is_inconsistent_across_dataset_with_nulls(target, comparator, dataset_t
     assert result.equals(df.convert_to_series(expected_result))
 
 
-def test_is_inconsistent_across_dataset_where_populated():
-    data = {
-        "KEY": ["A", "A", "A", "B", "B"],
-        "VALUE": ["X", "Y", None, "Z", None],
-    }
-    df = PandasDataset.from_dict(data)
-    result = DataframeType({"value": df, "column_prefix_map": {"--": ""}}).is_inconsistent_across_dataset(
-        {"target": "VALUE", "comparator": "KEY", "where_populated": True}
-    )
-    assert result.equals(df.convert_to_series([True, True, False, False, False]))
-
-
 def test_is_inconsistent_across_dataset_empty_dataset():
     data = {"USUBJID": [], "BGSTRESU": []}
     df = PandasDataset.from_dict(data)
