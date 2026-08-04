@@ -623,7 +623,13 @@ def extract_results_regression(results):
     res_regression = []
 
     if isinstance(results, dict):
-        result_list = [res[0] for res in results.values()]
+        result_list = []
+        for dataset_results in results.values():
+            if not dataset_results:
+                continue
+            merged_result = dataset_results[0].copy()
+            merged_result["errors"] = [error for result in dataset_results for error in result.get("errors", [])]
+            result_list.append(merged_result)
     elif isinstance(results, list):
         result_list = results
     else:
