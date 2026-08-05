@@ -14,7 +14,8 @@ python-dotenv==1.2.2
 pyyaml==6.0.2
 redis==4.5.4
 requests~=2.32.3
-setuptools~=75.6.0
+setuptools~=78.1.1
+wheel~=0.46.2
 cachetools==5.5.0
 Pympler==1.1
 psutil==6.1.1
