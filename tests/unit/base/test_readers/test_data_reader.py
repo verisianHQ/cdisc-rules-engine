@@ -1,7 +1,21 @@
 import pytest
 
+from cdisc_rules_engine.readers.data_readers.base_data_reader import BaseDataReader
+
 ADAM_DOMAINS = ["ADAE", "ADEF", "ADSL", "ADTTE"]
 SDTM_DOMAINS = ["AE", "DM", "EX", "LB", "SUPPDM", "TA", "TD", "TE", "TI", "TS", "TV", "XP"]
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        (b"caf\xc3\xa9", "café"),
+        (b"non\xa0breaking", "non\u00a0breaking"),
+        (b"invalid\x81byte", "invalid\ufffdbyte"),
+    ],
+)
+def test_decode_character_bytes_with_fallback(value, expected):
+    assert BaseDataReader._decode(value) == expected
 
 
 @pytest.fixture
