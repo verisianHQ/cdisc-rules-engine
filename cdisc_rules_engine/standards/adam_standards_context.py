@@ -1,10 +1,14 @@
 from typing import List
 
 from cdisc_rules_engine.constants.data_structures import (
+    ADDL,
     ADSL,
     ADAM_DATA_STRUCTURE_ALIASES,
     BDS,
     BDS_INDICATORS,
+    MD_INDICATORS,
+    MDBDS,
+    MDOCCDS,
     OCCDS,
     OCCDS_SUFFIXES,
     OTHER,
@@ -31,12 +35,20 @@ class AdamStandardsContext(DefaultStandardsContext):
     def derive_class(dataset_metadata: DatasetMetadata2) -> str:
         if dataset_metadata.name.upper() == "ADSL":
             return ADSL
+        if dataset_metadata.name.upper() == "ADDL":
+            return ADDL
 
         columns = {variable.name.upper() for variable in dataset_metadata.variables}
         if columns.intersection(BDS_INDICATORS):
-            return BDS
+            if columns.intersection(MD_INDICATORS):
+                return MDBDS
+            else:
+                return BDS
         if any(column.endswith(tuple(OCCDS_SUFFIXES)) for column in columns):
-            return OCCDS
+            if columns.intersection(MD_INDICATORS):
+                return MDOCCDS
+            else:
+                return OCCDS
         return OTHER
 
     def derive_domain(self, filename: str):
