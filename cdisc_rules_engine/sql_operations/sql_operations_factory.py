@@ -2,6 +2,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+from cdisc_rules_engine.sql_operations.calc import SqlCalcOperation
 from cdisc_rules_engine.sql_operations.dataset_column_order import (
     SqlDatasetColumnOrderOperation,
 )
@@ -51,6 +52,7 @@ class SqlOperationsFactory:
     _operations_map = {
         "codelist_extensible": None,
         "codelist_terms": None,
+        "calc": SqlCalcOperation,
         "dataset_names": SqlDatasetNamesOperation,
         "define_extensible_codelists": None,
         "distinct": SqlDistinctOperation,
