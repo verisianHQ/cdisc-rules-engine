@@ -42,9 +42,6 @@ class SqlDatasetLoader:
             schema.add_column(source_ds_column)
 
             pgi.create_table(schema)
-            # TODO: INDEX
-
-            row_number = 0
 
             for chunk_data in chunk_stream:
                 # force lowercase on columns
@@ -62,11 +59,9 @@ class SqlDatasetLoader:
                         "This column is automatically generated and should not be in source data."
                     )
 
-                for row in chunk_data:
-                    row_number += 1
-                    row[SOURCE_ROW_NUMBER] = row_number
-                    row[SOURCE_DS] = table_name.upper()
                 pgi.insert_data(table_name, chunk_data)
+
+            SqlDatasetLoader._finalise_loaded_table(pgi, schema, table_name)
 
             logger.info(f"Successfully loaded {file_path.name}")
 
@@ -74,3 +69,57 @@ class SqlDatasetLoader:
         except Exception as e:
             logger.error(f"Failed to load {file_path.name}: {e}")
             raise
+
+    @staticmethod
+    def _finalise_loaded_table(pgi: PostgresQLInterface, schema: SqlTableSchema, table_name: str) -> None:
+        """
+        Populate generated metadata columns and create indexes after bulk loading.
+
+        source_row_number and source_ds are populated in a single UPDATE rather than
+        row-by-row in Python. Indexes are then created on the columns most commonly
+        used in joins and filters.
+        """
+        table_hash = schema.hash
+        source_ds_upper = table_name.upper()
+
+        update_query = f"""
+            UPDATE {table_hash} AS t
+            SET
+                {SOURCE_ROW_NUMBER} = sub.rn,
+                {SOURCE_DS} = %s
+            FROM (
+                SELECT id, row_number() OVER (ORDER BY id) AS rn
+                FROM {table_hash}
+            ) AS sub
+            WHERE t.id = sub.id
+        """
+        pgi.execute_sql(update_query, (source_ds_upper,))
+
+        index_queries = [
+            f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_row ON {table_hash}({SOURCE_ROW_NUMBER})",
+            f"CREATE INDEX IF NOT EXISTS idx_{table_name}_source_ds ON {table_hash}({SOURCE_DS})",
+        ]
+
+        studyid_hash = schema.get_column_hash("studyid")
+        usubjid_hash = schema.get_column_hash("usubjid")
+        domain_hash = schema.get_column_hash("domain")
+        seq_col = f"{table_name}seq"
+        seq_hash = schema.get_column_hash(seq_col)
+
+        if studyid_hash:
+            index_queries.append(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_studyid ON {table_hash}({studyid_hash})")
+        if usubjid_hash:
+            index_queries.append(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_usubjid ON {table_hash}({usubjid_hash})")
+        if studyid_hash and usubjid_hash:
+            index_queries.append(
+                f"CREATE INDEX IF NOT EXISTS idx_{table_name}_studyid_usubjid ON {table_hash}({studyid_hash}, {usubjid_hash})"  # noqa
+            )
+        if domain_hash:
+            index_queries.append(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_domain ON {table_hash}({domain_hash})")
+        if seq_hash:
+            index_queries.append(f"CREATE INDEX IF NOT EXISTS idx_{table_name}_seq ON {table_hash}({seq_hash})")
+
+        for idx_query in index_queries:
+            pgi.execute_sql(idx_query)
+
+        pgi.execute_sql(f"ANALYZE {table_hash}")
