@@ -1,7 +1,11 @@
+import csv
+import io
 import random
 import string
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
+
+import pandas as pd
 
 from cdisc_rules_engine.constants.rule_constants import COMPLETE_DATE_REGEX, YEAR_MONTH_REGEX, YEAR_REGEX
 from cdisc_rules_engine.data_service.database import (
@@ -180,7 +184,7 @@ class PostgresQLInterface:
     def insert_data(
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
     ) -> Optional[int]:
-        """Insert Python data into a table"""
+        """Insert Python data into a table using COPY FROM STDIN for bulk efficiency."""
         if not self.db:
             raise RuntimeError("Database not initialised. Call init_database() first.")
 
@@ -189,18 +193,66 @@ class PostgresQLInterface:
             raise ValueError(f"Table {table_name} does not exist in the schema")
 
         if isinstance(data, dict):
-            query = SQLSerialiser.insert_dict(schema, data)
-            self.execute_sql(query)
-            logger.info(f"Inserted 1 row into {table_name}")
-            return 1
-        else:
-            if not data:
-                logger.info(f"No rows to insert into {table_name}; leaving table empty")
-                return 0
-            query = SQLSerialiser.insert_many_dicts(schema, data)
-            rows = self.execute_sql(query)
-            logger.info(f"Inserted {rows} rows into {table_name}")
-            return rows
+            data = [data]
+
+        if not data:
+            logger.info(f"No rows to insert into {table_name}; leaving table empty")
+            return 0
+
+        rows_inserted = self._insert_data_copy(schema, data)
+        logger.info(f"Inserted {rows_inserted} rows into {table_name}")
+        return rows_inserted
+
+    def _insert_data_copy(self, schema: SqlTableSchema, data: List[Dict[str, Any]]) -> int:
+        """
+        Bulk insert rows using PostgreSQL COPY FROM STDIN (CSV).
+
+        This avoids building and parsing large INSERT ... VALUES statements,
+        and is typically 10-50x faster for bulk loads.
+        """
+        # Determine insertable columns from schema (skip generated id)
+        columns_to_insert = [
+            (col_name, col_schema.hash)
+            for col_name, col_schema in schema.get_columns()
+            if col_name.lower() != "id" and not col_schema.alias
+        ]
+
+        if not columns_to_insert:
+            return 0
+
+        col_hashes = [col_hash for _, col_hash in columns_to_insert]
+        col_names = [col_name for col_name, _ in columns_to_insert]
+
+        buffer = io.StringIO()
+        writer = csv.writer(buffer, lineterminator="\n")
+        NULL_MARKER = "\\N"
+
+        for row in data:
+            row_lower = {k.lower(): v for k, v in row.items()}
+            csv_row = []
+            for col_name in col_names:
+                value = row_lower.get(col_name.lower())
+                if value is None or (isinstance(value, float) and pd.isna(value)):
+                    csv_row.append(NULL_MARKER)
+                elif isinstance(value, bool):
+                    csv_row.append("t" if value else "f")
+                else:
+                    csv_row.append(str(value))
+            writer.writerow(csv_row)
+
+        buffer.seek(0)
+        copy_sql = f"COPY {schema.hash} ({', '.join(col_hashes)}) FROM STDIN WITH (FORMAT csv, NULL '\\N')"
+
+        with self.db.get_connection_and_cursor(dict_cursor=False) as (conn, cursor):
+            try:
+                cursor.copy_expert(copy_sql, buffer)
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                logger.error(f"COPY insert failed for {schema.name}: {e}")
+                raise
+
+        return len(data)
 
     def compile_and_execute(self, statements: List[str], commit: bool = True) -> None:
         """Compile multiple statements and execute as a single query"""
