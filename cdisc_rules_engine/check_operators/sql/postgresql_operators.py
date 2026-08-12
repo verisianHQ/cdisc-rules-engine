@@ -25,6 +25,7 @@ from .equals_string_part_operator import EqualsStringPartOperator
 from .exists_operator import ExistsOperator
 from .has_different_values_operator import HasDifferentValuesOperator
 from .has_next_corresponding_record_operator import HasNextCorrespondingRecordOperator
+from .has_previous_enumerated_column_operator import HasPreviousEnumeratedColumnOperator
 from .inconsistent_enumerated_columns_operator import (
     InconsistentEnumeratedColumnsOperator,
 )
@@ -319,6 +320,8 @@ class PostgresQLOperators(BaseType):
         ),
         "is_substring_of": lambda data: IsSubstringOfOperator(data),
         "is_not_substring_of": lambda data: NotOperator(data, IsSubstringOfOperator),
+        "has_previous_enumerated_column": lambda data: HasPreviousEnumeratedColumnOperator(data),
+        "does_not_have_previous_enumerated_column": lambda data: NotOperator(data, HasPreviousEnumeratedColumnOperator),
     }
 
     def __init__(self, data):
