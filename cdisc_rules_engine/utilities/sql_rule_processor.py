@@ -56,6 +56,45 @@ class SQLRuleProcessor:
             if op_result.type == "window":
                 window_ops[output_variable] = op_result
 
+            if not output_variable.startswith("$"):
+                raise ValueError(
+                    f"Output variable must start with '$', "
+                    f"but got '{output_variable}' in rule {rule.get('core_id', 'unknown')}"
+                )
+
+            # change -- pattern to domain name
+            target_variable: str = operation.get("name", None)
+            operation_domain: str = operation.get("domain", dataset_metadata.domain)
+            operation_table = dataset_id
+            if target_variable:
+                target_variable = standards_context.replace_domain_code(dataset_metadata, target_variable)
+
+            # build parameters for the operation
+            params = SqlOperationParams(
+                domain=operation_domain,
+                target=target_variable,
+                standards_context=standards_context,
+                name=operation.get("name"),
+                previous_operations=output_variables,
+                grouping=operation.get("group"),
+                filter=operation.get("filter"),
+                key_name=operation.get("key_name"),
+                key_value=operation.get("key_value"),
+                ct_package_types=operation.get("ct_package_types"),
+                ct_version=operation.get("version"),
+                ct_attribute=operation.get("ct_attribute"),
+                ct_conditions=operation.get("ct_conditions"),
+                attribute_name=operation.get("attribute_name"),
+                subtract=operation.get("subtract"),
+                external_dictionary_type=operation.get("external_dictionary_type"),
+                codelist=operation.get("codelist"),
+                domain_class=operation.get("domain_class"),
+                case_sensitive=operation.get("case_sensitive", True),
+                table=operation_table,
+                use_rule_type_table=operation.get("use_rule_type_table", False),
+                value=operation.get("value"),
+            )
+
         if window_ops:
             return cls._materialise_window_operations(
                 window_ops,
@@ -64,7 +103,7 @@ class SQLRuleProcessor:
                 output_variables,
                 data_service,
             )
-
+        
         original_table_hash = data_service.pgi.schema.get_table_hash(dataset_id)
         operations_query = f"SELECT * FROM {original_table_hash} t"
         return output_variables, dataset_id, operations_query
