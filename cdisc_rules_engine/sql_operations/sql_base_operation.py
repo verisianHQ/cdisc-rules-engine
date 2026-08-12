@@ -4,6 +4,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.exceptions.custom_exceptions import (
+    ColumnNotFoundError,
     DatasetNotFoundError,
     DomainNotFoundInDefineXMLError,
     EngineError,
@@ -77,6 +78,7 @@ class SqlBaseOperation:
             InvalidDictionaryVariable,
             UnsupportedDictionaryType,
             FailedSchemaValidation,
+            ColumnNotFoundError,
         ) as e:
             logger.debug(f"error in operation {self.__class__.__name__}: {str(e)}")
             raise

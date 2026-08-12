@@ -4,7 +4,10 @@ from cdisc_rules_engine.check_operators.sql import PostgresQLOperators
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
-from cdisc_rules_engine.exceptions.custom_exceptions import RuleExecutionError
+from cdisc_rules_engine.exceptions.custom_exceptions import (
+    ColumnNotFoundError,
+    RuleExecutionError,
+)
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.calc import SqlCalcOperation
@@ -174,7 +177,7 @@ def test_calc_empty_formula_raises():
 
 
 def test_calc_unknown_column_raises():
-    with pytest.raises(RuleExecutionError, match="not found in domain"):
+    with pytest.raises(ColumnNotFoundError, match="not found in table"):
         _build_calc({"AVAL": [1.0]}, "AVAL + NOTACOLUMN")
 
 
