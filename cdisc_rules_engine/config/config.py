@@ -45,7 +45,7 @@ class ConfigService(ConfigInterface):
         except Exception:
             return self._default_dataset_size_threshold
 
-    def get_rule_max_execution_time_seconds(self, default: float = 60.0) -> float:
+    def get_rule_max_execution_time_seconds(self, default: float = 300.0) -> float:
         try:
             value = self.getValue("RULE_MAX_EXECUTION_TIME_SECONDS")
             if value is None or value == "":
@@ -54,7 +54,7 @@ class ConfigService(ConfigInterface):
         except Exception:
             return default
 
-    def get_rule_max_memory_mb(self, default: float = 20000.0) -> float:
+    def get_rule_max_memory_mb(self, default: float = 16000.0) -> float:
         try:
             value = self.getValue("RULE_MAX_MEMORY_MB")
             if value is None or value == "":
