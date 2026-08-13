@@ -1,5 +1,6 @@
+import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER, SOURCE_DS
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -9,25 +10,52 @@ from cdisc_rules_engine.readers.data_readers.data_reader_factory import (
     DataReaderFactory,
 )
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.utilities.ingestion_progress import (
+    DisabledIngestionProgressReporter,
+    IngestionProgressReporter,
+)
 
 
 class SqlDatasetLoader:
 
     @staticmethod
-    def load_datasets(pgi: PostgresQLInterface, dataset_paths: List[str]) -> List[DatasetMetadata2]:
+    def load_datasets(
+        pgi: PostgresQLInterface,
+        dataset_paths: List[str],
+        progress_reporter: Optional[IngestionProgressReporter] = None,
+    ) -> List[DatasetMetadata2]:
         """
-        Iterate through dataset files in `self.dataset_paths`
+        Iterate through dataset files in `dataset_paths`
         and create corresponding SQL tables.
         """
-        return [SqlDatasetLoader._load_dataset_file(pgi, file_path) for file_path in dataset_paths]
+        reporter = progress_reporter or DisabledIngestionProgressReporter()
+        total_bytes = sum(os.path.getsize(path) for path in dataset_paths if os.path.exists(path))
+        reporter.start(total_files=len(dataset_paths), total_bytes=total_bytes)
+
+        try:
+            results = []
+            for file_index, file_path in enumerate(dataset_paths):
+                results.append(
+                    SqlDatasetLoader._load_dataset_file(pgi, file_index, len(dataset_paths), file_path, reporter)
+                )
+            return results
+        finally:
+            reporter.finish()
 
     @staticmethod
-    def _load_dataset_file(pgi: PostgresQLInterface, file_path_str: str) -> DatasetMetadata2:
+    def _load_dataset_file(
+        pgi: PostgresQLInterface,
+        file_index: int,
+        total_files: int,
+        file_path_str: str,
+        reporter: IngestionProgressReporter,
+    ) -> DatasetMetadata2:
         """Load a single dataset file."""
         file_path = Path(file_path_str)
         try:
-            reader = DataReaderFactory.get_data_reader(file_path_str)
-            metadata, chunk_stream = reader.read()
+            reader_factory = DataReaderFactory.get_data_reader(file_path_str)
+            metadata, chunk_stream = reader_factory.read()
+            total_rows = reader_factory._get_total_rows()
 
             # force table_name to be lowercase
             table_name = file_path.stem.lower()
@@ -43,6 +71,15 @@ class SqlDatasetLoader:
 
             pgi.create_table(schema)
 
+            reporter.start_file(
+                file_index=file_index,
+                total_files=total_files,
+                file_name=file_path.name,
+                file_bytes=os.path.getsize(file_path_str) if os.path.exists(file_path_str) else 0,
+                total_rows=total_rows,
+            )
+
+            rows_loaded = 0
             for chunk_data in chunk_stream:
                 # force lowercase on columns
                 chunk_data = [{k.lower(): v for k, v in row.items()} for row in chunk_data]
@@ -60,8 +97,12 @@ class SqlDatasetLoader:
                     )
 
                 pgi.insert_data(table_name, chunk_data)
+                chunk_rows = len(chunk_data)
+                rows_loaded += chunk_rows
+                reporter.report_chunk(chunk_rows)
 
             SqlDatasetLoader._finalise_loaded_table(pgi, schema, table_name)
+            reporter.end_file(rows_loaded)
 
             logger.info(f"Successfully loaded {file_path.name}")
 

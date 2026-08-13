@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
+import psycopg2
 
 from cdisc_rules_engine.constants.rule_constants import COMPLETE_DATE_REGEX, YEAR_MONTH_REGEX, YEAR_REGEX
 from cdisc_rules_engine.data_service.database import (
@@ -16,7 +17,7 @@ from cdisc_rules_engine.data_service.database import (
 from cdisc_rules_engine.data_service.sql_compiler import SQLCompiler
 from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
 from cdisc_rules_engine.enums.static_tables import StaticTables
-from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleResourceExceededError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.db_schema import SqlDbSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -36,6 +37,7 @@ class PostgresQLInterface:
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
+        self.active_budget: Optional[Any] = None
         if sql_namespace is None or sql_namespace == "uid":
             self.sql_namespace = self._get_unique_prefix_uid()
         else:
@@ -70,6 +72,11 @@ class PostgresQLInterface:
         affected_rows = 0
 
         with self.db.get_connection_and_cursor() as (conn, cursor):
+            budget = self.active_budget
+            if budget is not None:
+                budget.register_connection(conn)
+                self._apply_statement_timeout(cursor, budget.max_time_seconds)
+
             try:
                 cursor.execute(query, params)
                 affected_rows = cursor.rowcount
@@ -82,12 +89,48 @@ class PostgresQLInterface:
 
                 logger.debug(f"Executed query successfully. Affected rows: {affected_rows}")
 
+            except psycopg2.errors.QueryCanceled as e:
+                conn.rollback()
+                if budget is not None:
+                    raise RuleResourceExceededError(
+                        reason=(
+                            budget.reason or f"Rule query exceeded maximum execution time of {budget.max_time_seconds}s"
+                        ),
+                        resource_type=budget.resource_type or "time",
+                    ) from e
+                logger.error(f"Query execution failed: {e}")
+                raise
             except Exception as e:
                 conn.rollback()
                 logger.error(f"Query execution failed: {e}")
                 raise
+            finally:
+                if budget is not None:
+                    budget.unregister_connection()
+                    if budget.exceeded:
+                        raise RuleResourceExceededError(
+                            reason=budget.reason or "Rule exceeded execution budget",
+                            resource_type=budget.resource_type or "unknown",
+                        )
 
         return affected_rows
+
+    @staticmethod
+    def _apply_statement_timeout(cursor, max_time_seconds: Optional[float]):
+        """
+        Set a per-transaction statement timeout so a single runaway query
+        cannot exceed the rule's total time budget.
+        """
+        if max_time_seconds is None or max_time_seconds <= 0:
+            return
+        # Use milliseconds to avoid floating-point seconds in Postgres.
+        timeout_ms = int(max_time_seconds * 1000)
+        try:
+            cursor.execute(f"SET LOCAL statement_timeout = {timeout_ms}")
+        except Exception:
+            # statement_timeout may not be available on some servers; the
+            # background monitor will still cancel the connection.
+            pass
 
     def execute_many(
         self, queries: List[str], params_list: Optional[List[Union[List, Tuple]]] = None, commit: bool = True

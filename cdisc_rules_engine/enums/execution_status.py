@@ -5,3 +5,5 @@ class ExecutionStatus(BaseEnum):
     SUCCESS = "success"
     SKIPPED = "skipped"
     EXECUTION_ERROR = "execution_error"
+    RESOURCE_LIMIT = "resource_limit"
+    PARTIAL_SUCCESS = "partial_success"

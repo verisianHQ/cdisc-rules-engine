@@ -93,3 +93,12 @@ class ColumnNotFoundError(Exception):
             exception_message = f"Column '{column_name}' not found in dataset"
 
         super().__init__(exception_message)
+
+
+class RuleResourceExceededError(Exception):
+    """Raised when a rule exceeds its execution time or memory budget."""
+
+    def __init__(self, reason: str, resource_type: str = "unknown"):
+        self.reason = reason
+        self.resource_type = resource_type
+        super().__init__(reason)

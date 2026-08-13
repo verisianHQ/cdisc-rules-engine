@@ -46,21 +46,36 @@ def convert_file_size(size_in_bytes: int, desired_unit: str) -> float:
 
 def get_execution_status(results):
     """
-    If all results have skipped status, return skipped.
-    Else return success
+    Determine the overall execution status for a rule across its dataset results.
+
+    - If any dataset succeeded and another hit a resource limit, return partial_success.
+    - If any dataset succeeded (and no resource limits), the rule is considered a success.
+    - If all datasets hit a resource limit, return resource_limit.
+    - Otherwise (all skipped or errored), return skipped.
     """
     if len(results) == 0:
         return ExecutionStatus.SUCCESS.value
-    if isinstance(results[0], BaseValidationEntity):
-        successful_results = [entity for entity in results if entity.status == ExecutionStatus.SUCCESS]
-    else:
-        successful_results = [
-            result for result in results if result.get("executionStatus") == ExecutionStatus.SUCCESS.value
-        ]
-    if successful_results:
+
+    def _is_success(result):
+        if isinstance(result, BaseValidationEntity):
+            return result.status == ExecutionStatus.SUCCESS
+        return result.get("executionStatus") == ExecutionStatus.SUCCESS.value
+
+    def _is_resource_limit(result):
+        if isinstance(result, BaseValidationEntity):
+            return result.status == ExecutionStatus.RESOURCE_LIMIT
+        return result.get("executionStatus") == ExecutionStatus.RESOURCE_LIMIT.value
+
+    has_success = any(_is_success(result) for result in results)
+    has_resource_limit = any(_is_resource_limit(result) for result in results)
+
+    if has_success and has_resource_limit:
+        return ExecutionStatus.PARTIAL_SUCCESS.value
+    if has_success:
         return ExecutionStatus.SUCCESS.value
-    else:
-        return ExecutionStatus.SKIPPED.value
+    if has_resource_limit:
+        return ExecutionStatus.RESOURCE_LIMIT.value
+    return ExecutionStatus.SKIPPED.value
 
 
 def get_standard_codelist_cache_key(standard: str, version: str) -> str:

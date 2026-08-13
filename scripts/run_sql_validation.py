@@ -26,6 +26,7 @@ from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
 # )
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.standards.standards_factory import StandardsFactory
+from cdisc_rules_engine.utilities.ingestion_progress import get_ingestion_progress_reporter
 from cdisc_rules_engine.utilities.progress_displayers import get_progress_displayer
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from scripts.script_utils import (
@@ -87,6 +88,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         standard, standard_version, standard_substandard, library_metadata
     )
 
+    ingestion_reporter = get_ingestion_progress_reporter(args.progress)
     data_service = PostgresQLDataService.from_dataset_paths(
         args.dataset_paths,
         standards_context=standards_context,
@@ -99,6 +101,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         stf_file_path=args.stf_file_path,
         sql_namespace=args.sql_namespace,
         use_pgserver=in_memory_postgres,
+        progress_reporter=ingestion_reporter,
     )
 
     engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)

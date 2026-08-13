@@ -27,6 +27,8 @@ class ConfigService(ConfigInterface):
                 "CDISC_LIBRARY_API_KEY",
                 "DATA_SERVICE_TYPE",
                 "DATASET_SIZE_THRESHOLD",
+                "RULE_MAX_EXECUTION_TIME_SECONDS",
+                "RULE_MAX_MEMORY_MB",
             ]
 
         return cls._instance
@@ -39,9 +41,24 @@ class ConfigService(ConfigInterface):
 
     def get_dataset_size_threshold(self):
         try:
-            return float(
-                self.getValue("DATASET_SIZE_THRESHOLD")
-                or self._default_dataset_size_threshold
-            )
+            return float(self.getValue("DATASET_SIZE_THRESHOLD") or self._default_dataset_size_threshold)
         except Exception:
             return self._default_dataset_size_threshold
+
+    def get_rule_max_execution_time_seconds(self, default: float = 60.0) -> float:
+        try:
+            value = self.getValue("RULE_MAX_EXECUTION_TIME_SECONDS")
+            if value is None or value == "":
+                return default
+            return float(value)
+        except Exception:
+            return default
+
+    def get_rule_max_memory_mb(self, default: float = 20000.0) -> float:
+        try:
+            value = self.getValue("RULE_MAX_MEMORY_MB")
+            if value is None or value == "":
+                return default
+            return float(value)
+        except Exception:
+            return default

@@ -1,7 +1,9 @@
 import pytest
 from unittest.mock import patch
+from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.utilities.utils import (
     get_corresponding_datasets,
+    get_execution_status,
 )
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 
@@ -89,3 +91,39 @@ def test_get_corresponding_datasets(domain, expected_datasets):
     assert result_datasets == [
         SDTMDatasetMetadata(**dataset) for dataset in expected_datasets
     ], f"The function should return only datasets matching the '{domain}' domain"
+
+
+def test_get_execution_status_empty_results():
+    assert get_execution_status([]) == ExecutionStatus.SUCCESS.value
+
+
+def test_get_execution_status_all_success():
+    results = [
+        {"executionStatus": ExecutionStatus.SUCCESS.value},
+        {"executionStatus": ExecutionStatus.SUCCESS.value},
+    ]
+    assert get_execution_status(results) == ExecutionStatus.SUCCESS.value
+
+
+def test_get_execution_status_all_skipped():
+    results = [
+        {"executionStatus": ExecutionStatus.SKIPPED.value},
+        {"executionStatus": ExecutionStatus.SKIPPED.value},
+    ]
+    assert get_execution_status(results) == ExecutionStatus.SKIPPED.value
+
+
+def test_get_execution_status_all_resource_limit():
+    results = [
+        {"executionStatus": ExecutionStatus.RESOURCE_LIMIT.value},
+        {"executionStatus": ExecutionStatus.RESOURCE_LIMIT.value},
+    ]
+    assert get_execution_status(results) == ExecutionStatus.RESOURCE_LIMIT.value
+
+
+def test_get_execution_status_partial_success():
+    results = [
+        {"executionStatus": ExecutionStatus.SUCCESS.value},
+        {"executionStatus": ExecutionStatus.RESOURCE_LIMIT.value},
+    ]
+    assert get_execution_status(results) == ExecutionStatus.PARTIAL_SUCCESS.value

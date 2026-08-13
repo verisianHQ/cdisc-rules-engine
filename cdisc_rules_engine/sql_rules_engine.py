@@ -7,6 +7,7 @@ from business_rules import export_rule_data
 from business_rules.engine import run
 from psycopg2.errors import ProgrammingError
 
+from cdisc_rules_engine.config.config import ConfigService
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -23,6 +24,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     VariableMetadataNotFoundError,
     ColumnNotFoundError,
     SqlOperatorError,
+    RuleResourceExceededError,
 )
 from cdisc_rules_engine.models.failed_validation_entity import FailedValidationEntity
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
@@ -40,6 +42,7 @@ from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.utilities.rule_execution_budget import RuleExecutionBudget
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -62,9 +65,11 @@ class SQLRulesEngine:
         self,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
+        config_service: ConfigService = None,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
+        self.config_service = config_service or ConfigService()
 
     def get_schema(self):
         return export_rule_data(SqlVenmoObject, SqlVenmoResultHandler)
@@ -141,7 +146,7 @@ class SQLRulesEngine:
         """
         logger.info(f"Validating {dataset_metadata.name}. rule={rule}.")
         try:
-            result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata, datasets)
+            result: List[Union[dict, str]] = self._validate_rule_with_budget(rule, dataset_metadata, datasets)
             logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
             if result:
                 return result
@@ -171,6 +176,49 @@ class SQLRulesEngine:
             error_obj.domain = dataset_metadata.domain
             # this wrapping into a list is necessary to keep return type consistent
             return [error_obj.to_representation()]
+
+    def _validate_rule_with_budget(
+        self,
+        rule: dict,
+        dataset_metadata: BaseDatasetMetadata,
+        datasets: List[BaseDatasetMetadata],
+    ) -> List[Union[dict, str]]:
+        """
+        Run validate_rule under a per-rule time/memory budget.
+        """
+        max_time_seconds, max_memory_mb = self._get_rule_budget(rule)
+        if max_time_seconds is None and max_memory_mb is None:
+            return self.validate_rule(rule, dataset_metadata, datasets)
+
+        pgi = self.data_service.pgi
+        previous_budget = pgi.active_budget
+        budget = RuleExecutionBudget(
+            max_time_seconds=max_time_seconds,
+            max_memory_mb=max_memory_mb,
+        )
+        try:
+            pgi.active_budget = budget
+            with budget:
+                return self.validate_rule(rule, dataset_metadata, datasets)
+        finally:
+            pgi.active_budget = previous_budget
+
+    def _get_rule_budget(self, rule: dict):
+        """
+        Return (max_time_seconds, max_memory_mb) for a rule.
+        Rule-level limits override global config.
+        """
+        global_time = self.config_service.get_rule_max_execution_time_seconds()
+        global_memory = self.config_service.get_rule_max_memory_mb()
+
+        limits = rule.get("execution_limits") or {}
+        rule_time = limits.get("max_execution_time_seconds")
+        rule_memory = limits.get("max_memory_mb")
+
+        max_time_seconds = rule_time if rule_time is not None else global_time
+        max_memory_mb = rule_memory if rule_memory is not None else global_memory
+
+        return max_time_seconds, max_memory_mb
 
     def validate_rule(
         self,
@@ -368,6 +416,19 @@ class SQLRulesEngine:
                 errors=errors,
                 message=message,
                 status=ExecutionStatus.SKIPPED.value,
+            )
+        elif isinstance(exception, RuleResourceExceededError):
+            error_obj: ValidationErrorContainer = ValidationErrorContainer(
+                status=ExecutionStatus.RESOURCE_LIMIT.value,
+                dataset=name,
+                message=exception.reason,
+            )
+            errors = [error_obj]
+            return ValidationErrorContainer(
+                dataset=name,
+                errors=errors,
+                message=exception.reason,
+                status=ExecutionStatus.RESOURCE_LIMIT.value,
             )
         elif isinstance(exception, SqlOperatorError):
             error_obj = FailedValidationEntity(

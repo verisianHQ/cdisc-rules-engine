@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import pandas as pd
 
@@ -34,6 +34,11 @@ class BaseDataReader(ABC):
 
     @abstractmethod
     def _extract_variable_metadata(self, reader) -> List[VariableMetadata]:
+        pass
+
+    @abstractmethod
+    def _get_total_rows(self, reader=None) -> Optional[int]:
+        """Return the total number of rows in the file, if known."""
         pass
 
     def _extract_metadata(self, reader) -> Dict[str, Any]:

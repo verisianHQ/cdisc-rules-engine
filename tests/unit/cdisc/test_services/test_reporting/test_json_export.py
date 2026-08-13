@@ -239,3 +239,76 @@ def test_get_export():
     assert len(export["Issue_Summary"]) > 0
     assert len(export["Issue_Details"]) > 0
     assert len(export["Rules_Report"]) > 0
+
+
+def test_resource_limit_appears_in_summary_and_details():
+    resource_limit_result = RuleValidationResult(
+        rule={
+            "core_id": "CORE3",
+            "executability": "Fully Executable",
+            "actions": [{"params": {"message": "Slow rule"}}],
+            "authorities": [],
+        },
+        results=[
+            {
+                "domain": "AE",
+                "variables": ["AESTDY"],
+                "executionStatus": ExecutionStatus.RESOURCE_LIMIT.value,
+                "errors": [],
+                "message": "Rule exceeded maximum execution time of 300s",
+                "dataset": "ae.xpt",
+            }
+        ],
+    )
+
+    report: JsonReport = JsonReport([], "test", [resource_limit_result], 10.1, MagicMock())
+    summary = report.get_summary_data()
+    details = report.get_detailed_data()
+    rules_report = report.get_rules_report_data()
+
+    assert len(summary) == 1
+    assert summary[0]["core_id"] == "CORE3"
+    assert summary[0]["issues"] == 1
+    assert "exceeded" in summary[0]["message"]
+
+    assert len(details) == 1
+    assert details[0]["core_id"] == "CORE3"
+    assert "exceeded" in details[0]["message"]
+
+    assert len(rules_report) == 1
+    assert rules_report[0]["status"] == ExecutionStatus.RESOURCE_LIMIT.value.upper()
+
+
+def test_partial_success_status_for_mixed_results():
+    mixed_result = RuleValidationResult(
+        rule={
+            "core_id": "CORE4",
+            "executability": "Fully Executable",
+            "actions": [{"params": {"message": "Mixed rule"}}],
+            "authorities": [],
+        },
+        results=[
+            {
+                "domain": "AE",
+                "variables": ["AESTDY"],
+                "executionStatus": ExecutionStatus.SUCCESS.value,
+                "errors": [{"row": 1, "value": {"AESTDY": "x"}, "dataset": "ae.xpt"}],
+                "message": "Error found",
+                "dataset": "ae.xpt",
+            },
+            {
+                "domain": "LB",
+                "variables": ["LBDY"],
+                "executionStatus": ExecutionStatus.RESOURCE_LIMIT.value,
+                "errors": [],
+                "message": "Rule exceeded maximum execution time of 300s",
+                "dataset": "lb.xpt",
+            },
+        ],
+    )
+
+    report: JsonReport = JsonReport([], "test", [mixed_result], 10.1, MagicMock())
+    rules_report = report.get_rules_report_data()
+
+    assert len(rules_report) == 1
+    assert rules_report[0]["status"] == ExecutionStatus.PARTIAL_SUCCESS.value.upper()

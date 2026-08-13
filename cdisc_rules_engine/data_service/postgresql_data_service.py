@@ -137,6 +137,7 @@ class PostgresQLDataService:
         stf_file_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,
+        progress_reporter=None,
     ) -> "PostgresQLDataService":
         instance = cls.instance(
             sql_namespace=sql_namespace,
@@ -152,7 +153,7 @@ class PostgresQLDataService:
 
         instance.datasets.extend(
             standards_context.transform_dataset_metadata(ds)
-            for ds in SqlDatasetLoader.load_datasets(instance.pgi, dataset_paths)
+            for ds in SqlDatasetLoader.load_datasets(instance.pgi, dataset_paths, progress_reporter=progress_reporter)
         )
         SqlDataPreprocessor.run(instance, standards_context)
         return instance

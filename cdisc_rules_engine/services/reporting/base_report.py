@@ -48,52 +48,48 @@ class BaseReport(ABC):
         """
         summary_data = []
         for validation_result in self._results:
-            if validation_result.execution_status == "success":
-                for result in validation_result.results or []:
-                    dataset = result.get("dataset")
-                    if (
-                        result.get("errors")
-                        and result.get("executionStatus") == "success"
-                    ):
-                        summary_item = {
-                            "dataset": dataset,
-                            "core_id": validation_result.id,
-                            "message": result.get("message"),
-                            "issues": len(result.get("errors")),
-                        }
+            for result in validation_result.results or []:
+                dataset = result.get("dataset")
+                status = result.get("executionStatus")
+                errors = result.get("errors") or []
 
-                        if self._item_type == "list":
-                            summary_data.extend([[*summary_item.values()]])
-                        elif self._item_type == "dict":
-                            summary_data.extend([summary_item])
+                if status == ExecutionStatus.SUCCESS.value and errors:
+                    summary_item = {
+                        "dataset": dataset,
+                        "core_id": validation_result.id,
+                        "message": result.get("message"),
+                        "issues": len(errors),
+                    }
+                elif status == ExecutionStatus.RESOURCE_LIMIT.value:
+                    summary_item = {
+                        "dataset": dataset,
+                        "core_id": validation_result.id,
+                        "message": result.get("message"),
+                        "issues": 1,
+                    }
+                else:
+                    continue
+
+                if self._item_type == "list":
+                    summary_data.extend([[*summary_item.values()]])
+                elif self._item_type == "dict":
+                    summary_data.extend([summary_item])
 
         return sorted(
             summary_data,
-            key=lambda x: (
-                (x[0], x[1])
-                if (self._item_type == "list")
-                else (x["dataset"], x["core_id"])
-            ),
+            key=lambda x: ((x[0], x[1]) if (self._item_type == "list") else (x["dataset"], x["core_id"])),
         )
 
     def get_detailed_data(self, excel=False) -> List[List]:
         detailed_data = []
         for validation_result in self._results:
-            detailed_data = detailed_data + self._generate_error_details(
-                validation_result, excel
-            )
+            detailed_data = detailed_data + self._generate_error_details(validation_result, excel)
         return sorted(
             detailed_data,
-            key=lambda x: (
-                (x[0], x[3])
-                if (self._item_type == "list")
-                else (x["core_id"], x["dataset"])
-            ),
+            key=lambda x: ((x[0], x[3]) if (self._item_type == "list") else (x["core_id"], x["dataset"])),
         )
 
-    def _generate_error_details(
-        self, validation_result: RuleValidationResult, excel
-    ) -> List[List]:
+    def _generate_error_details(self, validation_result: RuleValidationResult, excel) -> List[List]:
         """
         Generates the Issue details data that goes into the excel export.
         Each row is represented by a list or a dict containing the following
@@ -112,7 +108,8 @@ class BaseReport(ABC):
         """
         errors = []
         for result in validation_result.results or []:
-            if result.get("errors", []) and result.get("executionStatus") == "success":
+            status = result.get("executionStatus")
+            if status == "success" and result.get("errors", []):
                 variables = result.get("variables", [])
                 for error in result.get("errors"):
                     error_item = {
@@ -124,10 +121,7 @@ class BaseReport(ABC):
                         "row": error.get("row", ""),
                         "SEQ": error.get("SEQ", ""),
                     }
-                    values = [
-                        str(error.get("value", {}).get(variable))
-                        for variable in variables
-                    ]
+                    values = [str(error.get("value", {}).get(variable)) for variable in variables]
                     processed_values = self.process_values(values, excel)
                     if self._item_type == "list":
                         error_item["variables"] = ", ".join(variables)
@@ -137,6 +131,25 @@ class BaseReport(ABC):
                         error_item["variables"] = variables
                         error_item["values"] = processed_values
                         errors.append(error_item)
+            elif status == ExecutionStatus.RESOURCE_LIMIT.value:
+                error_item = {
+                    "core_id": validation_result.id,
+                    "message": result.get("message"),
+                    "executability": validation_result.executability,
+                    "dataset": result.get("dataset"),
+                    "USUBJID": "",
+                    "row": "",
+                    "SEQ": "",
+                }
+                processed_values = self.process_values([], excel)
+                if self._item_type == "list":
+                    error_item["variables"] = ""
+                    error_item["values"] = processed_values
+                    errors.append(list(error_item.values()))
+                elif self._item_type == "dict":
+                    error_item["variables"] = []
+                    error_item["values"] = processed_values
+                    errors.append(error_item)
         return errors
 
     def process_values(self, values: List[str], excel: bool) -> Union[str, List[str]]:
@@ -174,9 +187,14 @@ class BaseReport(ABC):
                 "fda_rule_id": validation_result.fda_rule_id,
                 "message": validation_result.message,
                 "status": (
-                    ExecutionStatus.SUCCESS.value.upper()
+                    validation_result.execution_status.upper()
                     if validation_result.execution_status
-                    == ExecutionStatus.SUCCESS.value
+                    in {
+                        ExecutionStatus.SUCCESS.value,
+                        ExecutionStatus.SKIPPED.value,
+                        ExecutionStatus.RESOURCE_LIMIT.value,
+                        ExecutionStatus.PARTIAL_SUCCESS.value,
+                    }
                     else ExecutionStatus.SKIPPED.value.upper()
                 ),
             }
