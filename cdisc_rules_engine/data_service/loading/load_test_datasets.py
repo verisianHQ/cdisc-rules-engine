@@ -1,7 +1,6 @@
 from typing import List
 
 from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER, SOURCE_DS
-from cdisc_rules_engine.data_service.loading.load_datasets import SqlDatasetLoader
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.models.sql.table_schema import SqlColumnSchema, SqlTableSchema
@@ -34,6 +33,10 @@ class SqlTestDatasetLoader:
                 "This column is automatically generated and should not be in test data."
             )
 
+        for idx, row in enumerate(row_dicts, start=1):
+            row[SOURCE_ROW_NUMBER] = idx
+            row[SOURCE_DS] = table_name.upper()
+
         schema = SqlTableSchema.from_metadata(test_dataset, pgi)
         source_row_column = SqlColumnSchema(name=SOURCE_ROW_NUMBER, hash=SOURCE_ROW_NUMBER, type="Num")
         schema.add_column(source_row_column)
@@ -44,6 +47,6 @@ class SqlTestDatasetLoader:
         pgi.create_table(schema)
         pgi.insert_data(table_name=table_name, data=row_dicts)
 
-        SqlDatasetLoader._finalise_loaded_table(pgi, schema, table_name)
+        # TODO INDEX
 
         return DatasetMetadata2(**{k: v for k, v in test_dataset.__dict__.items() if k != "records"})

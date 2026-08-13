@@ -1,12 +1,7 @@
-import csv
-import io
 import random
 import string
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
-
-import pandas as pd
-import psycopg2
 
 from cdisc_rules_engine.constants.rule_constants import COMPLETE_DATE_REGEX, YEAR_MONTH_REGEX, YEAR_REGEX
 from cdisc_rules_engine.data_service.database import (
@@ -17,7 +12,7 @@ from cdisc_rules_engine.data_service.database import (
 from cdisc_rules_engine.data_service.sql_compiler import SQLCompiler
 from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
 from cdisc_rules_engine.enums.static_tables import StaticTables
-from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleResourceExceededError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.db_schema import SqlDbSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -37,7 +32,6 @@ class PostgresQLInterface:
         self.compiler = SQLCompiler()
         self._last_results: List[Any] = []
         self.schema = SqlDbSchema()
-        self.active_budget: Optional[Any] = None
         if sql_namespace is None or sql_namespace == "uid":
             self.sql_namespace = self._get_unique_prefix_uid()
         else:
@@ -72,11 +66,6 @@ class PostgresQLInterface:
         affected_rows = 0
 
         with self.db.get_connection_and_cursor() as (conn, cursor):
-            budget = self.active_budget
-            if budget is not None:
-                budget.register_connection(conn)
-                self._apply_statement_timeout(cursor, budget.max_time_seconds)
-
             try:
                 cursor.execute(query, params)
                 affected_rows = cursor.rowcount
@@ -89,48 +78,12 @@ class PostgresQLInterface:
 
                 logger.debug(f"Executed query successfully. Affected rows: {affected_rows}")
 
-            except psycopg2.errors.QueryCanceled as e:
-                conn.rollback()
-                if budget is not None:
-                    raise RuleResourceExceededError(
-                        reason=(
-                            budget.reason or f"Rule query exceeded maximum execution time of {budget.max_time_seconds}s"
-                        ),
-                        resource_type=budget.resource_type or "time",
-                    ) from e
-                logger.error(f"Query execution failed: {e}")
-                raise
             except Exception as e:
                 conn.rollback()
                 logger.error(f"Query execution failed: {e}")
                 raise
-            finally:
-                if budget is not None:
-                    budget.unregister_connection()
-                    if budget.exceeded:
-                        raise RuleResourceExceededError(
-                            reason=budget.reason or "Rule exceeded execution budget",
-                            resource_type=budget.resource_type or "unknown",
-                        )
 
         return affected_rows
-
-    @staticmethod
-    def _apply_statement_timeout(cursor, max_time_seconds: Optional[float]):
-        """
-        Set a per-transaction statement timeout so a single runaway query
-        cannot exceed the rule's total time budget.
-        """
-        if max_time_seconds is None or max_time_seconds <= 0:
-            return
-        # Use milliseconds to avoid floating-point seconds in Postgres.
-        timeout_ms = int(max_time_seconds * 1000)
-        try:
-            cursor.execute(f"SET LOCAL statement_timeout = {timeout_ms}")
-        except Exception:
-            # statement_timeout may not be available on some servers; the
-            # background monitor will still cancel the connection.
-            pass
 
     def execute_many(
         self, queries: List[str], params_list: Optional[List[Union[List, Tuple]]] = None, commit: bool = True
@@ -227,7 +180,7 @@ class PostgresQLInterface:
     def insert_data(
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
     ) -> Optional[int]:
-        """Insert Python data into a table using COPY FROM STDIN for bulk efficiency."""
+        """Insert Python data into a table"""
         if not self.db:
             raise RuntimeError("Database not initialised. Call init_database() first.")
 
@@ -236,66 +189,18 @@ class PostgresQLInterface:
             raise ValueError(f"Table {table_name} does not exist in the schema")
 
         if isinstance(data, dict):
-            data = [data]
-
-        if not data:
-            logger.info(f"No rows to insert into {table_name}; leaving table empty")
-            return 0
-
-        rows_inserted = self._insert_data_copy(schema, data)
-        logger.info(f"Inserted {rows_inserted} rows into {table_name}")
-        return rows_inserted
-
-    def _insert_data_copy(self, schema: SqlTableSchema, data: List[Dict[str, Any]]) -> int:
-        """
-        Bulk insert rows using PostgreSQL COPY FROM STDIN (CSV).
-
-        This avoids building and parsing large INSERT ... VALUES statements,
-        and is typically 10-50x faster for bulk loads.
-        """
-        # Determine insertable columns from schema (skip generated id)
-        columns_to_insert = [
-            (col_name, col_schema.hash)
-            for col_name, col_schema in schema.get_columns()
-            if col_name.lower() != "id" and not col_schema.alias
-        ]
-
-        if not columns_to_insert:
-            return 0
-
-        col_hashes = [col_hash for _, col_hash in columns_to_insert]
-        col_names = [col_name for col_name, _ in columns_to_insert]
-
-        buffer = io.StringIO()
-        writer = csv.writer(buffer, lineterminator="\n")
-        NULL_MARKER = "\\N"
-
-        for row in data:
-            row_lower = {k.lower(): v for k, v in row.items()}
-            csv_row = []
-            for col_name in col_names:
-                value = row_lower.get(col_name.lower())
-                if value is None or (isinstance(value, float) and pd.isna(value)):
-                    csv_row.append(NULL_MARKER)
-                elif isinstance(value, bool):
-                    csv_row.append("t" if value else "f")
-                else:
-                    csv_row.append(str(value))
-            writer.writerow(csv_row)
-
-        buffer.seek(0)
-        copy_sql = f"COPY {schema.hash} ({', '.join(col_hashes)}) FROM STDIN WITH (FORMAT csv, NULL '\\N')"
-
-        with self.db.get_connection_and_cursor(dict_cursor=False) as (conn, cursor):
-            try:
-                cursor.copy_expert(copy_sql, buffer)
-                conn.commit()
-            except Exception as e:
-                conn.rollback()
-                logger.error(f"COPY insert failed for {schema.name}: {e}")
-                raise
-
-        return len(data)
+            query = SQLSerialiser.insert_dict(schema, data)
+            self.execute_sql(query)
+            logger.info(f"Inserted 1 row into {table_name}")
+            return 1
+        else:
+            if not data:
+                logger.info(f"No rows to insert into {table_name}; leaving table empty")
+                return 0
+            query = SQLSerialiser.insert_many_dicts(schema, data)
+            rows = self.execute_sql(query)
+            logger.info(f"Inserted {rows} rows into {table_name}")
+            return rows
 
     def compile_and_execute(self, statements: List[str], commit: bool = True) -> None:
         """Compile multiple statements and execute as a single query"""

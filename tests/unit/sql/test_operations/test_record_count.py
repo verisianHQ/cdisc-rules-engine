@@ -100,7 +100,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {},
             ["STUDYID"],
-            [2, 2, 1],
+            [2, 2, 1],  # Row 1=2, Row 2=2, Row 3=1
         ),
         (
             {
@@ -111,7 +111,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {"EQ": 1},
             ["STUDYID"],
-            [1, 1, 0],
+            [1, 1, 0],  # Row 1&2 (CDISC01) has 1 match. Row 3 (CDISC02) has 0 matches.
         ),
         (
             {
@@ -122,7 +122,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {"EQ": 2},
             ["DOMAIN", "STUDYID"],
-            [2, 2, 1],
+            [2, 2, 1],  # Row 1&2=2, Row 3=1
         ),
         (
             {
@@ -133,7 +133,7 @@ def test_filtered_record_count(data, filter, expected):
             },
             {},
             ["STUDYID", "DOMAIN"],
-            [1, 2, 2, 2, 2],
+            [1, 2, 2, 2, 2],  # Row 1=(CDISC01, AE)->1. Row 2,3=(CDISC01, NULL)->2. Row 4,5=(CDISC02, NULL)->2
         ),
     ],
 )
@@ -143,6 +143,7 @@ def test_filtered_grouped_record_count(data, filter, grouping, expected):
     )
     result = operation.execute()
 
+    # Execute the bulk query
     assert result.type == "window"
     operation.data_service.pgi.execute_sql(result.query)
     query_results = operation.data_service.pgi.fetch_all()
