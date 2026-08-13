@@ -150,7 +150,7 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
 
-    assert result.type == "column"
+    assert result.type == "window"
     data_service.pgi.execute_sql(result.query)
     query_results = data_service.pgi.fetch_all()
     query_results.sort(key=lambda x: x["id"])
@@ -198,7 +198,7 @@ def test_sql_dy_invalid_dates(current_data, dm_data, expected, sdtm_standards_co
     operation = SqlOperationsFactory.get_service("dy", params, data_service)
     result = operation.execute()
 
-    assert result.type == "column"
+    assert result.type == "window"
     data_service.pgi.execute_sql(result.query)
     query_results = data_service.pgi.fetch_all()
     query_results.sort(key=lambda x: x["id"])
