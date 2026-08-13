@@ -117,9 +117,23 @@ class SQLRuleProcessor:
     ) -> SqlOperationParams:
         target_variable: str = operation.get("name", None)
         operation_domain: str = operation.get("domain", dataset_metadata.domain)
+        grouping = operation.get("group")
+        filter_map = operation.get("filter")
+        key_name = operation.get("key_name")
 
         if target_variable:
             target_variable = standards_context.replace_domain_code(dataset_metadata, target_variable)
+        if operation_domain:
+            operation_domain = standards_context.replace_domain_code(dataset_metadata, operation_domain)
+        if grouping:
+            grouping = [standards_context.replace_domain_code(dataset_metadata, group) for group in grouping]
+        if filter_map:
+            filter_map = {
+                standards_context.replace_domain_code(dataset_metadata, column): value
+                for column, value in filter_map.items()
+            }
+        if key_name:
+            key_name = standards_context.replace_domain_code(dataset_metadata, key_name)
 
         return SqlOperationParams(
             domain=operation_domain,
@@ -127,9 +141,9 @@ class SQLRuleProcessor:
             standards_context=standards_context,
             name=operation.get("name"),
             previous_operations=output_variables,
-            grouping=operation.get("group"),
-            filter=operation.get("filter"),
-            key_name=operation.get("key_name"),
+            grouping=grouping,
+            filter=filter_map,
+            key_name=key_name,
             key_value=operation.get("key_value"),
             ct_package_types=operation.get("ct_package_types"),
             ct_version=operation.get("version"),
