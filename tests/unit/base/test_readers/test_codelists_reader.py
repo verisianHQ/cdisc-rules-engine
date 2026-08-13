@@ -18,12 +18,33 @@ CODELIST_KEYS = [
 ]
 
 EXPECTED_ROW_COUNTS = {
+    "adamct-2014-09-26.pkl": 37,
+    "adamct-2015-12-18.pkl": 40,
+    "adamct-2016-03-25.pkl": 42,
+    "adamct-2016-09-30.pkl": 42,
+    "adamct-2016-12-16.pkl": 41,
+    "adamct-2017-03-31.pkl": 45,
+    "adamct-2017-09-29.pkl": 46,
+    "adamct-2018-12-21.pkl": 46,
+    "adamct-2019-03-29.pkl": 50,
+    "adamct-2019-12-20.pkl": 43,
+    "adamct-2020-03-27.pkl": 46,
+    "adamct-2020-06-26.pkl": 50,
+    "adamct-2020-11-06.pkl": 52,
+    "adamct-2021-12-17.pkl": 53,
+    "adamct-2022-06-24.pkl": 115,
+    "adamct-2023-03-31.pkl": 121,
+    "adamct-2023-06-30.pkl": 121,
+    "adamct-2024-03-29.pkl": 122,
+    "adamct-2024-09-27.pkl": 158,
+    "adamct-2025-03-28.pkl": 163,
     "sdtmct-2014-09-26.pkl": 8994,
     "sdtmct-2014-12-19.pkl": 9524,
     "sdtmct-2015-03-27.pkl": 10131,
     "sdtmct-2015-06-26.pkl": 10544,
     "sdtmct-2015-09-25.pkl": 10731,
     "sdtmct-2015-12-18.pkl": 17356,
+    "sdtmct-2016-03-25.pkl": 17794,
     "sdtmct-2016-06-24.pkl": 18575,
     "sdtmct-2016-09-30.pkl": 18546,
     "sdtmct-2016-12-16.pkl": 20131,
@@ -42,6 +63,7 @@ EXPECTED_ROW_COUNTS = {
     "sdtmct-2020-03-27.pkl": 30600,
     "sdtmct-2020-06-26.pkl": 30995,
     "sdtmct-2020-11-06.pkl": 31198,
+    "sdtmct-2020-12-18.pkl": 31931,
     "sdtmct-2021-03-26.pkl": 32354,
     "sdtmct-2021-06-25.pkl": 33462,
     "sdtmct-2021-09-24.pkl": 34014,
@@ -83,7 +105,7 @@ def test_metadata_extraction(test_files):
         reader = CodelistReader(file_path)
         metadata = reader.metadata
 
-        assert metadata.standard_type.lower() == "sdtm"
+        assert metadata.standard_type.lower() in ["sdtm", "adam"]
         assert metadata.version_date is not None
         assert metadata.extension in ["csv", "xlsx", "xls", "pkl"]
 

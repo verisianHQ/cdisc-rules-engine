@@ -90,8 +90,13 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
             self.data_service.pgi.execute_sql(insert_query)
 
         self.data_service.pgi.add_column(table_name, SqlColumnSchema.define("library_variable_ccode_values", "Char"))
+        self.data_service.pgi.add_column(table_name, SqlColumnSchema.define("library_variable_codelist_name", "Char"))
         ccode_vals_col_hash = self.data_service.pgi.schema.get_column_hash(table_name, "library_variable_ccode_values")
+        codelist_name_col_hash = self.data_service.pgi.schema.get_column_hash(
+            table_name, "library_variable_codelist_name"
+        )
         ccode_col_hash = schema.get_column_hash("library_variable_ccode")
+        codelist_name_col_hash = schema.get_column_hash("library_variable_codelist_name")
 
         codelist_query = f"""
             UPDATE {schema.hash} t
@@ -109,5 +114,17 @@ class SqlValueCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuilder):
         """
 
         self.data_service.pgi.execute_sql(codelist_query)
+
+        codelist_name_query = f"""
+            UPDATE {schema.hash} t
+            SET {codelist_name_col_hash} = sub.library_variable_codelist_name
+            FROM (
+                SELECT item_code, name as library_variable_codelist_name
+                FROM {StaticTables.IG_CODELIST_TABLE_NAME.value}
+            ) sub
+            WHERE t.{ccode_col_hash} = sub.item_code;
+        """
+
+        self.data_service.pgi.execute_sql(codelist_name_query)
 
         return table_name, f"SELECT * FROM {table_name}"

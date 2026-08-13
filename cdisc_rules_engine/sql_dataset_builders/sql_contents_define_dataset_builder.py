@@ -65,7 +65,9 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             idvar_cols = all_cols["idvars"].split(", ")
             qnam_cols = all_cols["qnams"].split(", ")
             non_supp_key_cols = [
-                col for col in define_ds_metadata["define_dataset_key_sequence"].split(",") if col not in qnam_cols
+                col
+                for col in define_ds_metadata.get("define_dataset_key_sequence", "").split(",")
+                if col not in qnam_cols
             ]
             key_vars = ", ".join([col for col in non_supp_key_cols + ["final_supp"]])
 
@@ -91,18 +93,19 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             AND a.{col}::text = ps_{col}.IDVARVAL::text""" for col in idvar_cols])}
                 ) sub_inner"""
         else:
-            key_vars = define_ds_metadata["define_dataset_key_sequence"]
+            key_vars = define_ds_metadata.get("define_dataset_key_sequence", "")
             from_query = table_hash
             pivoted_supp_query = ""
 
         unique_col_hash = self.data_service.pgi.schema.get_column_hash(table_id, "define_key_sequence_is_unique")
+        uniqueness_check = f"(COUNT(*) OVER (PARTITION BY {key_vars}) = 1)" if key_vars else "true"
         uniqueness_query = f"""
             {pivoted_supp_query}
             UPDATE {table_hash} t
             SET {unique_col_hash} = sub.unique_status
             FROM (
                 SELECT id,
-                (COUNT(*) OVER (PARTITION BY {key_vars}) = 1) as unique_status
+                {uniqueness_check} as unique_status
                 FROM {from_query}
             ) sub
             WHERE t.id = sub.id;

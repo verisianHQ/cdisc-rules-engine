@@ -36,6 +36,8 @@ class SqlOperationParams:
     case_sensitive: bool = True
     table: str = None
     use_rule_type_table: str = None
+    delimiter: str = None
+    value: str = None
 
     # standard_substandard: str = None
     # attribute_name: str = None

@@ -31,6 +31,8 @@ class RuleSerializer(BaseSerializer):
 
         if self.__rule.classes:
             data["classes"] = self.__rule.classes
+        if self.__rule.data_structures:
+            data["data_structures"] = self.__rule.data_structures
         if self.__rule.domains:
             data["domains"] = self.__rule.domains
         if self.__rule.datasets:
@@ -53,5 +55,5 @@ class RuleSerializer(BaseSerializer):
             and isinstance(self.__rule.description, str)
             and isinstance(self.__rule.rule_type, str)
             and RuleTypes.contains(self.__rule.rule_type)
-            and (self.__rule.classes or self.__rule.domains)
+            and (self.__rule.classes or self.__rule.data_structures or self.__rule.domains)
         )

@@ -21,6 +21,10 @@ from cdisc_rules_engine.models.rule import Rule
             ["metadata"],
         ),
         (
+            {"operator": "test", "name": "^ID.*", "variable_regex_pattern": True},
+            ["variable_regex_pattern"],
+        ),
+        (
             {
                 "operator": "test",
                 "name": "IDVAR",
@@ -200,3 +204,37 @@ def test_from_cdisc_rule_null_executability():
     }
     rule = Rule.from_cdisc_metadata(rule_dict)
     assert rule.get("executability") == ""
+
+
+def test_from_cdisc_rule_preserves_grouping_variables():
+    rule_dict = {
+        "Core": {"Id": "CORE-TEST"},
+        "Sensitivity": "Group",
+        "Executability": "Fully Executable",
+        "Description": "grouped rule",
+        "Authorities": [],
+        "Scope": {},
+        "Rule_Type": "Dataset",
+        "Check": {"all": [{"operator": "equal_to", "name": "A", "value": "B"}]},
+        "Outcome": {"Message": "test"},
+        "Grouping_Variables": ["USUBJID", "VISIT"],
+    }
+
+    rule = Rule.from_cdisc_metadata(rule_dict)
+
+    assert rule.get("grouping_variables") == ["USUBJID", "VISIT"]
+
+
+def test_from_cdisc_rule_preserves_data_structures_scope():
+    rule_dict = {
+        "Core": {"Id": "CORE-TEST"},
+        "Executability": "Fully Executable",
+        "Authorities": [],
+        "Scope": {"Data Structures": {"Include": ["BASIC DATA STRUCTURE"]}},
+        "Check": {"all": []},
+        "Outcome": {"Message": "test"},
+    }
+
+    rule = Rule.from_cdisc_metadata(rule_dict)
+
+    assert rule["data_structures"] == {"Include": ["BASIC DATA STRUCTURE"]}

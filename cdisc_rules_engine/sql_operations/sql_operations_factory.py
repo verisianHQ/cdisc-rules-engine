@@ -2,6 +2,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+from cdisc_rules_engine.sql_operations.calc import SqlCalcOperation
 from cdisc_rules_engine.sql_operations.dataset_column_order import (
     SqlDatasetColumnOrderOperation,
 )
@@ -44,12 +45,14 @@ from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomain
 from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import SqlLabelReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.name_referenced_variable_metadata import SqlNameReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.get_countries import SqlGetCountriesOperation
+from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
 
 
 class SqlOperationsFactory:
     _operations_map = {
         "codelist_extensible": None,
         "codelist_terms": None,
+        "calc": SqlCalcOperation,
         "dataset_names": SqlDatasetNamesOperation,
         "define_extensible_codelists": None,
         "distinct": SqlDistinctOperation,
@@ -94,6 +97,7 @@ class SqlOperationsFactory:
         "get_define_external_dictionary_version": SqlDefineExternalDictionaryVersionOperation,
         "get_dataset_filtered_variables": None,
         "get_countries": SqlGetCountriesOperation,
+        "split": SqlSplitOperation,
     }
 
     @classmethod

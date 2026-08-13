@@ -194,6 +194,9 @@ class PostgresQLInterface:
             logger.info(f"Inserted 1 row into {table_name}")
             return 1
         else:
+            if not data:
+                logger.info(f"No rows to insert into {table_name}; leaving table empty")
+                return 0
             query = SQLSerialiser.insert_many_dicts(schema, data)
             rows = self.execute_sql(query)
             logger.info(f"Inserted {rows} rows into {table_name}")

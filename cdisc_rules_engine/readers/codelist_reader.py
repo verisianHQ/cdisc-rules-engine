@@ -24,11 +24,10 @@ class CodelistReader(BaseReader):
     """
 
     FILENAME_PATTERN = re.compile(
-        r"^(?P<standard_type>sdtm|SDTM)(_CT_|ct-)"
+        r"^(?P<standard_type>sdtm|SDTM|adam|ADaM)(_CT_|ct-)"
         r"(?P<version_date>\d{8}|\d{4}-\d{2}-\d{2})"
         r"\.(?P<extension>csv|tsv|xlsx|xls|pkl)$"
     )
-    # Removed ADAM for run-time as we don't have ADAM implemented yet.
 
     EXCEL_COLUMN_MAPPING = {
         "Code": "item_code",

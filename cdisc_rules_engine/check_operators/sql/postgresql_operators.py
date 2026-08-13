@@ -1,5 +1,9 @@
+import re
+
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.services import logger
 
 from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_operator import (
     ValidWHODrugLevelReferenceOperator,
@@ -54,6 +58,8 @@ from .target_is_sorted_by_operator import TargetIsSortedByOperator
 from .value_has_multiple_references_operator import ValueHasMultipleReferencesOperator
 from .variable_metadata_equal_to_operator import VariableMetadataEqualToOperator
 from .is_latest_available_exdict_version import IsLatestAvailableExDictVersionOperator
+from .in_enumerated_columns_operator import InEnumeratedColumnsOperator
+from .is_extensible_codelist_code_operator import IsExtensibleCodelistCodeOperator
 
 MEDDRA_CODE_SUFFIX_MAP = {
     "BDSYCD": "SOC",
@@ -139,7 +145,9 @@ class PostgresQLOperators(BaseType):
         "suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data),
         "not_suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data, invert=True),
         "starts_with": lambda data: StartsWithOperator(data),
+        "not_starts_with": lambda data: NotOperator(data, StartsWithOperator),
         "ends_with": lambda data: EndsWithOperator(data),
+        "not_ends_with": lambda data: NotOperator(data, EndsWithOperator),
         "equals_string_part": lambda data: EqualsStringPartOperator(data),
         "does_not_equal_string_part": lambda data: EqualsStringPartOperator(data, invert=True),
         "invalid_date": lambda data: InvalidDateOperator(data),
@@ -172,8 +180,12 @@ class PostgresQLOperators(BaseType):
         "has_next_corresponding_record": lambda data: HasNextCorrespondingRecordOperator(data),
         "does_not_have_next_corresponding_record": lambda data: NotOperator(data, HasNextCorrespondingRecordOperator),
         "inconsistent_enumerated_columns": lambda data: InconsistentEnumeratedColumnsOperator(data),
+        "in_enumerated_columns": lambda data: InEnumeratedColumnsOperator(data),
+        "not_in_enumerated_columns": lambda data: NotOperator(data, InEnumeratedColumnsOperator),
         "references_correct_codelist": lambda data: ReferencesCorrectCodelistOperator(data),
         "does_not_reference_correct_codelist": lambda data: NotOperator(data, ReferencesCorrectCodelistOperator),
+        "is_extensible_codelist_code": lambda data: IsExtensibleCodelistCodeOperator(data),
+        "is_not_extensible_codelist_code": lambda data: NotOperator(data, IsExtensibleCodelistCodeOperator),
         "is_ordered_by": lambda data: IsOrderedByOperator(data),
         "is_not_ordered_by": lambda data: NotOperator(data, IsOrderedByOperator),
         "value_has_multiple_references": lambda data: ValueHasMultipleReferencesOperator(data),
@@ -312,6 +324,75 @@ class PostgresQLOperators(BaseType):
     def __init__(self, data):
         self.data = data
 
+    @staticmethod
+    def _is_missing_column_reference(operator_instance, value, variable_regex_pattern=False):
+        if not isinstance(value, str) or value == "":
+            return False
+
+        if value == DATASET_NAME or value == "define.xml":
+            return False
+
+        if value in operator_instance.operation_variables:
+            return False
+
+        resolved_value = operator_instance.replace_prefix(value)
+        if not isinstance(resolved_value, str) or resolved_value == "":
+            return False
+
+        if variable_regex_pattern:
+            variables = getattr(operator_instance.dataset_metadata, "variables", [])
+            return not any(re.fullmatch(resolved_value, variable.name) for variable in variables)
+
+        return not operator_instance._exists(resolved_value)
+
+    @classmethod
+    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):
+        if operator_name in {"exists", "not_exists", "is_unique_set", "is_not_unique_set"}:
+            return []
+
+        if not isinstance(other_value, dict):
+            return []
+
+        missing_columns = []
+        variable_regex_pattern = other_value.get("variable_regex_pattern", False)
+
+        always_column_keys = ["target"]
+        for key in always_column_keys:
+            if cls._is_missing_column_reference(
+                operator_instance,
+                other_value.get(key),
+                variable_regex_pattern=variable_regex_pattern,
+            ):
+                missing_columns.append(other_value.get(key))
+
+        comparator = other_value.get("comparator")
+        comparator_is_column = other_value.get("value_is_reference", False) or operator_name in {
+            "is_not_unique_relationship",
+            "is_unique_relationship",
+            "has_next_corresponding_record",
+            "does_not_have_next_corresponding_record",
+            "present_on_multiple_rows_within",
+            "not_present_on_multiple_rows_within",
+            "value_has_multiple_references",
+            "value_does_not_have_multiple_references",
+            "target_is_sorted_by",
+            "target_is_not_sorted_by",
+        }
+
+        if comparator_is_column:
+            if isinstance(comparator, list):
+                for comp in comparator:
+                    if cls._is_missing_column_reference(operator_instance, comp):
+                        missing_columns.append(comp)
+            elif cls._is_missing_column_reference(operator_instance, comparator):
+                missing_columns.append(comparator)
+
+        return missing_columns
+
+    @staticmethod
+    def _false_result(operator_instance):
+        return operator_instance._do_check_operator(lambda: "FALSE")
+
     def __getattr__(self, name):
         """
         Dynamically create and cache an operator method on its first access.
@@ -325,6 +406,12 @@ class PostgresQLOperators(BaseType):
             @log_operator_execution(name)
             @type_operator(FIELD_DATAFRAME)
             def operator_method(self, other_value):
+                missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
+                if missing_columns:
+                    logger.info(
+                        f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
+                    )
+                    return self._false_result(operator_instance)
                 return operator_instance.execute_operator(other_value)
 
             # Cache the new method on the instance

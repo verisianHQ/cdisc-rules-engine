@@ -58,7 +58,7 @@ SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
     (
         {"dummy": ["value"]},
         {"target": "A", "comparator": "A"},
-        [True],
+        [False],  # False due to the missing column guard in postgresql_operators.py
     ),
     (
         {"dummy": ["value"]},
@@ -107,7 +107,7 @@ SHARES_EXACTLY_ONE_ELEMENT_TEST_DATA = [
     (
         {"dummy": ["value"]},
         {"target": "A", "comparator": "A"},
-        [True],
+        [False],  # False due to the missing column guard in postgresql_operators.py
     ),
 ]
 
@@ -141,12 +141,12 @@ SHARES_NO_ELEMENTS_TEST_DATA = [
     (
         {"dummy": ["value"]},
         {"target": "A", "comparator": "B"},
-        [True],
+        [False],  # False due to the missing column guard in postgresql_operators.py
     ),
     (
         {"dummy": ["value"]},
         {"target": "X", "comparator": "Y"},
-        [True],
+        [False],  # False due to the missing column guard in postgresql_operators.py
     ),
     (
         {"dummy": ["value"]},

@@ -29,6 +29,7 @@ class EqualToOperator(BaseSqlOperator):
         value_is_reference = other_value.get("value_is_reference", False)
         type_insensitive = other_value.get("type_insensitive", False)
         comparator = other_value.get("comparator")
+
         if not value_is_literal:
             comparator = self.replace_prefix(comparator)
 
@@ -62,7 +63,7 @@ class EqualToOperator(BaseSqlOperator):
         invert: bool = False,
         value_is_literal: bool = False,
         case_insensitive: bool = False,
-        type_insensitive: bool = False,
+        type_insensitive=False,
     ):
         """
         Beware of empty values.
@@ -72,8 +73,14 @@ class EqualToOperator(BaseSqlOperator):
         comparator = self._sql(original_comparator, lowercase=case_insensitive, value_is_literal=value_is_literal)
 
         if type_insensitive:
-            target = f"""CAST({target} AS TEXT)"""
-            comparator = f"""CAST({comparator} AS TEXT)"""
+            target = (
+                self._safe_numeric_cast_sql(target) if type_insensitive == "numeric" else f"""CAST({target} AS TEXT)"""
+            )
+            comparator = (
+                self._safe_numeric_cast_sql(comparator)
+                if type_insensitive == "numeric"
+                else f"""CAST({comparator} AS TEXT)"""
+            )
 
         if original_target not in self.operation_variables and not self._exists(original_target):
             target = "NULL"
@@ -104,7 +111,7 @@ class EqualToOperator(BaseSqlOperator):
         pivot_column,
         invert: bool = False,
         case_insensitive: bool = False,
-        type_insensitive: bool = False,
+        type_insensitive=False,
     ):
         """
         Beware of empty values.
@@ -120,7 +127,11 @@ class EqualToOperator(BaseSqlOperator):
         pivot_col = self._column_sql(pivot_column, alias=False)
 
         if type_insensitive:
-            target_col = f"""CAST({target_col} AS TEXT)"""
+            target_col = (
+                self._safe_numeric_cast_sql(target_col)
+                if type_insensitive == "numeric"
+                else f"""CAST({target_col} AS TEXT)"""
+            )
 
         # Find all of the values of the pivot column -> all columns to compare against
         self.sql_data_service.pgi.execute_sql(f"SELECT DISTINCT {pivot_col} col FROM {self._table_sql()};")
@@ -133,7 +144,7 @@ class EqualToOperator(BaseSqlOperator):
             c = self._column_sql(original_c, lowercase=case_insensitive, alias=True)
 
             if type_insensitive:
-                c = f"""CAST({c} AS TEXT)"""
+                c = self._safe_numeric_cast_sql(c) if type_insensitive == "numeric" else f"""CAST({c} AS TEXT)"""
 
             if invert:
                 return f"""CASE

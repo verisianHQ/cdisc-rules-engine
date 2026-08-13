@@ -181,6 +181,22 @@ class SQLRulesEngine:
         dataset_id: str,
         base_query: str,
     ) -> List[str]:
+        """
+        Executes the given rule on a given dataset (or a view of it).
+        """
+        expanded_rules = SQLRuleProcessor.expand_rule_for_variable_regex(rule, dataset_metadata.variables)
+        results = []
+        for expanded_rule in expanded_rules:
+            results.extend(self._execute_expanded_rule(expanded_rule, dataset_metadata, dataset_id))
+        return results
+
+    def _execute_expanded_rule(
+        self,
+        rule: dict,
+        dataset_metadata: BaseDatasetMetadata,
+        dataset_id: str,
+    ) -> List[str]:
+        # Add conditions to rule for all variables if variables: all appears in condition
         rule_copy = deepcopy(rule)
         updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
             rule["conditions"],

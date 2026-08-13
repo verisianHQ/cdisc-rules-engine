@@ -9,6 +9,9 @@ from .helpers import create_sql_operators, assert_series_equals
         ("BGSTRESU", "USUBJID", [False, False, True, True]),
         ("STRESU", "TESTCD", [True, True, True, False]),
         ("STRESU", ["TESTCD", "METHOD"], [False, False, False, False]),
+        ("MISSING", "USUBJID", [False, False, False, False]),
+        ("BGSTRESU", "MISSING", [False, False, False, False]),
+        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, True, True]),
     ],
 )
 def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result):
@@ -45,3 +48,13 @@ def test_sql_is_inconsistent_across_dataset_with_nulls(target, comparator, expec
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset({"target": target, "comparator": comparator})
     assert_series_equals(result, expected_result)
+
+
+def test_sql_is_inconsistent_across_dataset_where_populated():
+    data = {
+        "KEY": ["A", "A", "A", "B", "B", "B", ""],
+        "VALUE": ["X", "Y", None, "Z", None, "", "Q"],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": True})
+    assert_series_equals(result, [True, True, False, False, False, False, False])
