@@ -334,3 +334,25 @@ class BaseSqlOperator:
                     THEN CAST(TRIM(CAST({value_sql} AS TEXT)) AS NUMERIC)
                 ELSE NULL
             END"""
+
+    def _is_numeric_value(self, value: Any, value_is_literal: bool = False) -> bool:
+        """
+        Check if a value represents a numeric type that can be used directly in numeric comparisons.
+        """
+        if isinstance(value, (int, float)):
+            return True
+
+        if value_is_literal and isinstance(value, str) and value.isdigit():
+            return True
+
+        if not value_is_literal and isinstance(value, str):
+            if value in self.operation_variables:
+                variable = self.operation_variables[value]
+                return variable.type == "constant" and variable.subtype == "Num"
+
+            if self.sql_data_service.pgi.schema.column_exists(self.table_id, value):
+                value_column = self.replace_prefix(value).lower()
+                col_schema = self.sql_data_service.pgi.schema.get_column(self.table_id, value_column)
+                return col_schema and col_schema.type == "Num"
+
+        return False

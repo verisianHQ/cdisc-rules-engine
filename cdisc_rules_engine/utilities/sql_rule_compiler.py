@@ -44,6 +44,7 @@ class SqlRuleCompiler:
             "data_service": self.data_service,
             "dataset_metadata": self.dataset_metadata,
             "operation_variables": self.operation_variables,
+            "column_prefix_map": {"--": self.dataset_metadata.domain if self.dataset_metadata else None},
         }
         postgres_operators = PostgresQLOperators(operator_data)
 
