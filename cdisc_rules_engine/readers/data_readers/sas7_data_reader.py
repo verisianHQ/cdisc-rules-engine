@@ -15,7 +15,7 @@ class Sas7DataReader(BaseDataReader):
     """
 
     FILE_EXTENSION = ".sas7bdat"
-    CHUNKSIZE = 10000
+    CHUNKSIZE = 200000
 
     def __init__(self, file_path: str):
         super().__init__(file_path)

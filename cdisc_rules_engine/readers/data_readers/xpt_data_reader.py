@@ -15,7 +15,7 @@ class XptDataReader(BaseDataReader):
     """
 
     FILE_EXTENSION = ".xpt"
-    CHUNKSIZE = 10000
+    CHUNKSIZE = 200000
 
     def __init__(self, file_path: str):
         super().__init__(file_path)
