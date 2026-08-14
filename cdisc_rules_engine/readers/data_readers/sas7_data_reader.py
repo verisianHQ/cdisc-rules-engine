@@ -1,4 +1,4 @@
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from pandas.io.sas.sas7bdat import SAS7BDATReader
 
@@ -19,11 +19,12 @@ class Sas7DataReader(BaseDataReader):
 
     def __init__(self, file_path: str):
         super().__init__(file_path)
+        self._reader = None
 
     def read(self) -> Tuple[DatasetMetadata2, Iterable[List[Dict[str, Any]]]]:
-        reader = SAS7BDATReader(self.file_path, encoding=None, chunksize=self.CHUNKSIZE, convert_dates=False)
-        metadata = self._extract_metadata(reader)
-        chunk_stream = self._read_chunks(reader, metadata)
+        self._reader = SAS7BDATReader(self.file_path, encoding=None, chunksize=self.CHUNKSIZE, convert_dates=False)
+        metadata = self._extract_metadata(self._reader)
+        chunk_stream = self._read_chunks(self._reader, metadata)
         return metadata, chunk_stream
 
     def _get_extension(self):
@@ -46,3 +47,19 @@ class Sas7DataReader(BaseDataReader):
             )
             variables.append(var_info)
         return variables
+
+    def _get_total_rows(self, reader: SAS7BDATReader = None) -> Optional[int]:
+        """
+        SAS7BDATReader does not consistently expose a public row count.
+        Return None so ingestion falls back to byte-based progress estimates.
+        """
+        reader = reader or self._reader
+        if reader is None:
+            return None
+        try:
+            row_count = getattr(reader, "row_count", None) or getattr(reader, "_row_count", None)
+            if row_count is not None:
+                return int(row_count)
+        except Exception:
+            pass
+        return None
