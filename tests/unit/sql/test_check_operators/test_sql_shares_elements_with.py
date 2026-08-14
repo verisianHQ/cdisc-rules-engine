@@ -1,7 +1,6 @@
 import pytest
-import pandas as pd
 
-from .helpers import create_sql_operators
+from .helpers import assert_series_equals, create_sql_operators
 
 SHARES_AT_LEAST_ONE_ELEMENT_TEST_DATA = [
     (
@@ -163,8 +162,7 @@ SHARES_NO_ELEMENTS_TEST_DATA = [
 def test_sql_shares_at_least_one_element_with(data, params, expected_result):
     sql_ops = create_sql_operators(data)
     result = sql_ops.shares_at_least_one_element_with(params)
-    expected_series = pd.Series(expected_result, dtype=bool)
-    pd.testing.assert_series_equal(result, expected_series)
+    assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -174,8 +172,7 @@ def test_sql_shares_at_least_one_element_with(data, params, expected_result):
 def test_sql_shares_exactly_one_element_with(data, params, expected_result):
     sql_ops = create_sql_operators(data)
     result = sql_ops.shares_exactly_one_element_with(params)
-    expected_series = pd.Series(expected_result, dtype=bool)
-    pd.testing.assert_series_equal(result, expected_series)
+    assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
@@ -185,8 +182,7 @@ def test_sql_shares_exactly_one_element_with(data, params, expected_result):
 def test_sql_shares_no_elements_with(data, params, expected_result):
     sql_ops = create_sql_operators(data)
     result = sql_ops.shares_no_elements_with(params)
-    expected_series = pd.Series(expected_result, dtype=bool)
-    pd.testing.assert_series_equal(result, expected_series)
+    assert_series_equals(result, expected_result)
 
 
 SHARES_EDGE_CASES = [
@@ -234,11 +230,6 @@ def test_sql_shares_elements_edge_cases(
     result_exactly_one = sql_ops.shares_exactly_one_element_with(params)
     result_no_elements = sql_ops.shares_no_elements_with(params)
 
-    # Convert expected lists to Series for proper comparison
-    expected_at_least_one_series = pd.Series(expected_at_least_one, dtype=bool)
-    expected_exactly_one_series = pd.Series(expected_exactly_one, dtype=bool)
-    expected_no_elements_series = pd.Series(expected_no_elements, dtype=bool)
-
-    pd.testing.assert_series_equal(result_at_least_one, expected_at_least_one_series)
-    pd.testing.assert_series_equal(result_exactly_one, expected_exactly_one_series)
-    pd.testing.assert_series_equal(result_no_elements, expected_no_elements_series)
+    assert_series_equals(result_at_least_one, expected_at_least_one)
+    assert_series_equals(result_exactly_one, expected_exactly_one)
+    assert_series_equals(result_no_elements, expected_no_elements)

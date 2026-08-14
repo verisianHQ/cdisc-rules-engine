@@ -58,3 +58,30 @@ def test_sql_is_inconsistent_across_dataset_where_populated():
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": True})
     assert_series_equals(result, [True, True, False, False, False, False, False])
+
+
+@pytest.mark.parametrize(
+    "target, comparator, expected_result",
+    [
+        ("BGSTRESU", "MISSING", [False, False, False, False]),
+        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, True, True]),
+    ],
+)
+def test_sql_is_inconsistent_across_dataset_missing_columns_return_false_series(target, comparator, expected_result):
+    data = {
+        "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
+        "BGSTRESU": ["kg", "kg", "g", "mg"],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset({"target": target, "comparator": comparator})
+    assert_series_equals(result, expected_result)
+
+
+def test_sql_is_inconsistent_across_dataset_missing_target_returns_false_series():
+    data = {
+        "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
+        "BGSTRESU": ["kg", "kg", "g", "mg"],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset({"target": "MISSING", "comparator": "USUBJID"})
+    assert_series_equals(result, [False, False, False, False])

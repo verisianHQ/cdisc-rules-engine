@@ -60,6 +60,18 @@ def _make_operators(data_service, calc_result):
     return PostgresQLOperators(config)
 
 
+def _eval_condition(data_service, condition_sql):
+    table_hash = data_service.pgi.schema.get_table_hash(TEST_TABLE_NAME)
+    query = f"""
+        SELECT COALESCE(({condition_sql}), FALSE) AS value
+        FROM {table_hash} AS co
+        ORDER BY co.id ASC
+    """
+    data_service.pgi.execute_sql(query)
+    rows = data_service.pgi.fetch_all()
+    return [bool(row["value"]) for row in rows]
+
+
 def _approx(values):
     return [pytest.approx(v) if v is not None else None for v in values]
 
@@ -136,7 +148,7 @@ def test_calc_used_in_equal_to():
     operators = _make_operators(data_service, result)
 
     equal = operators.equal_to({"target": "$calc", "comparator": "PCHG"})
-    assert list(equal) == [True, True, False]
+    assert _eval_condition(data_service, equal) == [True, True, False]
 
 
 def test_calc_used_in_not_equal_to():
@@ -149,7 +161,7 @@ def test_calc_used_in_not_equal_to():
     operators = _make_operators(data_service, result)
 
     not_equal = operators.not_equal_to({"target": "$calc", "comparator": "PCHG"})
-    assert list(not_equal) == [False, False, True]
+    assert _eval_condition(data_service, not_equal) == [False, False, True]
 
 
 def test_calc_with_previous_constant_operation_reference():

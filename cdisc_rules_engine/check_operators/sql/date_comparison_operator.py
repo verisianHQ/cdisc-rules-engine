@@ -18,7 +18,7 @@ class DateComparisonOperator(BaseSqlOperator):
         value_is_literal = other_value.get("value_is_literal", False)
         date_component = other_value.get("date_component")
 
-        if isinstance(target, str) and self._exists(target.lower()):
+        if isinstance(target, str) and target not in self.operation_variables and self._exists(target.lower()):
             target = target.lower()
             target_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, target)
             wrapped_target = target_date_column.hash
@@ -28,7 +28,12 @@ class DateComparisonOperator(BaseSqlOperator):
         if isinstance(comparator, str) and not value_is_literal:
             comparator = self.replace_prefix(comparator)
 
-        if isinstance(comparator, str) and not value_is_literal and self._exists(comparator.lower()):
+        if (
+            isinstance(comparator, str)
+            and not value_is_literal
+            and comparator not in self.operation_variables
+            and self._exists(comparator.lower())
+        ):
             comparator = comparator.lower()
             comparator_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, comparator)
             wrapped_comparator = comparator_date_column.hash

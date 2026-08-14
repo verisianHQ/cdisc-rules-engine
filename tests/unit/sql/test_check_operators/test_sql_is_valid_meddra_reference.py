@@ -1,5 +1,5 @@
 import pytest
-from .helpers import assert_series_equals
+from .helpers import assert_series_equals, set_sql_test_context
 from cdisc_rules_engine.check_operators.sql import PostgresQLOperators
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTypes
@@ -57,6 +57,7 @@ def test_valid_meddra_code_references(
         column_data=data,
         standards_context=sdtm_standards_context,
     )
+    set_sql_test_context(data_service, domain)
 
     config = {"dataset_id": domain, "data_service": data_service}
     op_result = PostgresQLOperators(config).is_valid_meddra_code_reference(
@@ -114,6 +115,7 @@ def test_valid_meddra_term_references(
         column_data=data,
         standards_context=sdtm_standards_context,
     )
+    set_sql_test_context(data_service, domain)
 
     config = {"dataset_id": domain, "data_service": data_service}
     op_result = PostgresQLOperators(config).is_valid_meddra_term_reference(
@@ -177,6 +179,7 @@ def test_valid_meddra_code_term_pairs(
         column_data=data,
         standards_context=sdtm_standards_context,
     )
+    set_sql_test_context(data_service, domain)
 
     config = {"dataset_id": domain, "data_service": data_service}
     op_result = PostgresQLOperators(config).is_valid_meddra_code_term_pair(
