@@ -54,7 +54,7 @@ class ConfigService(ConfigInterface):
         except Exception:
             return default
 
-    def get_rule_max_memory_mb(self, default: float = 12000.0) -> float:
+    def get_rule_max_memory_mb(self, default: float = 4096.0) -> float:
         try:
             value = self.getValue("RULE_MAX_MEMORY_MB")
             if value is None or value == "":
