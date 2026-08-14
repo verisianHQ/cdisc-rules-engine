@@ -1,3 +1,4 @@
+from typing import Tuple
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import SqlBaseDatasetBuilder
@@ -9,14 +10,11 @@ class SqlGlobalValueCheckwithVariableMetadataDatasetBuilder(SqlBaseDatasetBuilde
     Converts all datasets from wide to long format (unpivots) and attaches variable metadata.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, str]:
         table_name = "global_value_check"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
-
-        all_ds_metadata = [
-            self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
-        ]
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
         schema.add_column(SqlColumnSchema.generated("row_number", "Num"))
@@ -30,16 +28,20 @@ class SqlGlobalValueCheckwithVariableMetadataDatasetBuilder(SqlBaseDatasetBuilde
         schema.add_column(SqlColumnSchema.generated("variable_format", "Char"))
         schema.add_column(SqlColumnSchema.generated("variable_value_length", "Num"))
 
-        self.data_service.pgi.create_table(schema)
+        self.data_service.pgi.schema.add_table(schema)
+
+        all_ds_metadata = [
+            self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
+        ]
+
+        dataset_queries = []
 
         for ds_metadata in all_ds_metadata:
             ds_table_hash = self.data_service.pgi.schema.get_table_hash(ds_metadata.name)
             if not ds_table_hash:
-                raise ValueError(f"Table {ds_metadata.name} not found when building global value check dataset.")
+                continue
 
             ds_schema = self.data_service.pgi.schema.get_table(ds_metadata.name)
-            if not ds_schema:
-                raise ValueError(f"Table {ds_metadata.name} not found when building global value check dataset.")
 
             var_metadata = {
                 var.name.upper(): {
@@ -55,68 +57,85 @@ class SqlGlobalValueCheckwithVariableMetadataDatasetBuilder(SqlBaseDatasetBuilde
             columns_list = ds_schema.get_columns()
             column_names = [
                 name
-                for name, schema in columns_list
-                if name.lower() not in ["id", "source_ds", "source_row_number"] and schema.origin == "data"
+                for name, col_schema in columns_list
+                if name.lower() not in ["id", "source_ds", "source_row_number"] and col_schema.origin == "data"
             ]
 
             if column_names:
-                select_statements = []
+                json_build_str = self.generate_unpivot_jsonb_string(ds_schema, column_names)
+
+                var_values = []
                 for col_name in column_names:
-                    col_hash = ds_schema.get_column_hash(col_name)
                     col_upper = col_name.upper()
-                    metadata = var_metadata.get(col_upper, {})
+                    meta = var_metadata.get(col_upper, {})
+                    var_label = meta.get("label", "").replace("'", "''")
+                    var_data_type = meta.get("data_type", "").replace("'", "''")
+                    var_length = meta.get("length", 0)
+                    var_order = meta.get("order", 0)
+                    var_format = meta.get("format", "").replace("'", "''")
 
-                    var_label = metadata.get("label", "")
-                    var_data_type = metadata.get("data_type", "")
-                    var_length = metadata.get("length", 0)
-                    var_order = metadata.get("order", 0)
-                    var_format = metadata.get("format", "")
-
-                    # calculate variable_value_length
-                    if var_data_type == "integer":
-                        # length of the value without leading zeros
-                        length_expr = f"LENGTH(LTRIM(CAST({col_hash} AS TEXT), '0'))"
-                    elif var_data_type == "float":
-                        # length without leading zeros and decimal point
-                        length_expr = f"LENGTH(REPLACE(LTRIM(CAST({col_hash} AS TEXT), '0'), '.', ''))"
-                    else:  # text or default
-                        # just the length of the string
-                        length_expr = f"LENGTH(CAST({col_hash} AS TEXT))"
-
-                    select_statements.append(
-                        f"""
-                        SELECT
-                            ROW_NUMBER() OVER () as row_number,
-                            '{ds_metadata.name}' as dataset_name,
-                            '{col_name.upper()}' as variable_name,
-                            CAST({col_hash} AS TEXT) as variable_value,
-                            '{var_label}' as variable_label,
-                            '{var_data_type}' as variable_data_type,
-                            {var_length} as variable_length,
-                            {var_order} as variable_order_number,
-                            '{var_format}' as variable_format,
-                            {length_expr} as variable_value_length
-                        FROM {ds_table_hash}
-                    """
+                    var_values.append(
+                        f"('{col_upper}', '{var_label}', '{var_data_type}', {var_length}, {var_order}, '{var_format}')"
                     )
 
-                unpivot_query = " UNION ALL ".join(select_statements)
+                values_sql = ",\n".join(var_values)
 
-                insert_query = f"""
-                    INSERT INTO {schema.hash}
-                    ({schema.get_column_hash("row_number")},
-                    {schema.get_column_hash("dataset_name")},
-                    {schema.get_column_hash("variable_name")},
-                    {schema.get_column_hash("variable_value")},
-                    {schema.get_column_hash("variable_label")},
-                    {schema.get_column_hash("variable_data_type")},
-                    {schema.get_column_hash("variable_length")},
-                    {schema.get_column_hash("variable_order_number")},
-                    {schema.get_column_hash("variable_format")},
-                    {schema.get_column_hash("variable_value_length")})
-                    {unpivot_query};
+                select_query = f"""
+                    SELECT
+                        ROW_NUMBER() OVER () as {schema.get_column_hash("row_number")},
+                        '{ds_metadata.name}' as {schema.get_column_hash("dataset_name")},
+                        j.key as {schema.get_column_hash("variable_name")},
+                        j.value as {schema.get_column_hash("variable_value")},
+                        m.var_label as {schema.get_column_hash("variable_label")},
+                        m.var_data_type as {schema.get_column_hash("variable_data_type")},
+                        m.var_length as {schema.get_column_hash("variable_length")},
+                        m.var_order as {schema.get_column_hash("variable_order_number")},
+                        m.var_format as {schema.get_column_hash("variable_format")},
+                        CASE
+                            WHEN m.var_data_type = 'integer' THEN LENGTH(LTRIM(j.value, '0'))
+                            WHEN m.var_data_type = 'float' THEN LENGTH(REPLACE(LTRIM(j.value, '0'), '.', ''))
+                            ELSE LENGTH(j.value)
+                        END as {schema.get_column_hash("variable_value_length")}
+                    FROM {ds_table_hash} t,
+                    LATERAL jsonb_each_text({json_build_str}) AS j(key, value)
+                    LEFT JOIN (VALUES
+                        {values_sql}
+                    ) AS m(var_name, var_label, var_data_type, var_length, var_order, var_format)
+                        ON j.key = m.var_name
                 """
 
-                self.data_service.pgi.execute_sql(insert_query)
+                dataset_queries.append(select_query)
 
-        return table_name
+        if dataset_queries:
+            unioned_query = " \nUNION ALL\n ".join(dataset_queries)
+            view_select = f"""
+                SELECT
+                    ROW_NUMBER() OVER () as id,
+                    u.*
+                FROM (
+                    {unioned_query}
+                ) u
+            """
+        else:
+            view_select = f"""
+                SELECT
+                    1::bigint as id,
+                    1::numeric as {schema.get_column_hash("row_number")},
+                    ''::text as {schema.get_column_hash("dataset_name")},
+                    ''::text as {schema.get_column_hash("variable_name")},
+                    ''::text as {schema.get_column_hash("variable_value")},
+                    ''::text as {schema.get_column_hash("variable_label")},
+                    ''::text as {schema.get_column_hash("variable_data_type")},
+                    1::numeric as {schema.get_column_hash("variable_length")},
+                    1::numeric as {schema.get_column_hash("variable_order_number")},
+                    ''::text as {schema.get_column_hash("variable_format")},
+                    1::numeric as {schema.get_column_hash("variable_value_length")}
+                WHERE FALSE
+            """
+            pass
+
+        create_query = f"CREATE UNLOGGED TABLE {schema.hash} AS {view_select}"
+        self.data_service.pgi.execute_sql(create_query)
+        self.data_service.pgi.schema.add_table(schema)
+
+        return table_name, f"SELECT * FROM {schema.hash}"

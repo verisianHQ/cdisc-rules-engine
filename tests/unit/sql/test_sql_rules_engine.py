@@ -23,7 +23,7 @@ def test_execute_rule_runs_once_per_regex_variable():
     engine = SQLRulesEngine.__new__(SQLRulesEngine)
 
     with patch.object(engine, "_execute_expanded_rule", return_value=[]) as execute:
-        engine.execute_rule(rule, metadata, "ae")
+        engine.execute_rule(rule, metadata, "ae", None)
 
     expanded_rules = [call.args[0] for call in execute.call_args_list]
     assert [expanded_rule["output_variables"] for expanded_rule in expanded_rules] == [

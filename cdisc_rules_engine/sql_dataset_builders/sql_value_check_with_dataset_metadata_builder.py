@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -18,10 +20,11 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
        2          | STUDYID       | ABC123         | dm.xpt           | DM           | Demographics
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_values_with_dataset_metadata"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         source_table_id = self.data_service.get_dataset_for_rule(
             self.dataset_metadata, self.rule, self.standards_context
@@ -34,8 +37,8 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         columns_list = source_schema.get_columns()
         column_names = [
             name
-            for name, schema in columns_list
-            if name.lower() not in ["id", "source_ds", "source_row_number"] and schema.origin == "data"
+            for name, col_schema in columns_list
+            if name.lower() not in ["id", "source_ds", "source_row_number"] and col_schema.origin == "data"
         ]
 
         source_table_hash = self.data_service.pgi.schema.get_table_hash(source_table_id)
@@ -59,26 +62,10 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
 
         self.data_service.pgi.create_table(schema)
 
-        # build UNPIVOT SQL query (postgresql doesn't have UNPIVOT so we use UNION ALL)
+        # build UNPIVOT SQL query using native PostgreSQL JSONB lateral joins
         if column_names:
-            select_statements = []
-            for col_name in column_names:
-                col_hash = source_schema.get_column_hash(col_name)
-                select_statements.append(
-                    f"""
-                    SELECT
-                        ROW_NUMBER() OVER () as row_number,
-                        '{col_name.upper()}' as variable_name,
-                        CAST({col_hash} AS TEXT) as variable_value,
-                        '{dataset_location}' as dataset_location,
-                        '{dataset_name}' as dataset_name,
-                        '{dataset_label}' as dataset_label,
-                        {record_count} as record_count
-                    FROM {source_table_hash}
-                """
-                )
-
-            unpivot_query = " UNION ALL ".join(select_statements)
+            # Use the shared helper method from SqlBaseDatasetBuilder
+            json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
 
             insert_query = f"""
                 INSERT INTO {schema.hash}
@@ -89,9 +76,18 @@ class SqlValueCheckWithDatasetMetadataBuilder(SqlBaseDatasetBuilder):
                  {schema.get_column_hash("dataset_name")},
                  {schema.get_column_hash("dataset_label")},
                  {schema.get_column_hash("record_count")})
-                {unpivot_query};
+                SELECT
+                    ROW_NUMBER() OVER () as row_number,
+                    j.key as variable_name,
+                    j.value as variable_value,
+                    '{dataset_location}' as dataset_location,
+                    '{dataset_name}' as dataset_name,
+                    '{dataset_label}' as dataset_label,
+                    {record_count} as record_count
+                FROM {source_table_hash} t,
+                LATERAL jsonb_each_text({json_build_str}) AS j(key, value);
             """
 
             self.data_service.pgi.execute_sql(insert_query)
 
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     BaseDatasetMetadata,
@@ -97,19 +97,16 @@ class SqlBaseDatasetBuilder(ABC):
             setattr(self, key, value)
 
     @abstractmethod
-    def build(self) -> str:
+    def build(self) -> Tuple[str, str]:
         """
         Build and return the table/view name for this rule type.
-
-        For mini tables: just return the pre-existing table name.
-        Regular builders return DatasetInterface, we return table name string.
         """
         pass
 
-    def get_dataset_id(self) -> str:
+    def get_dataset_query(self) -> Tuple[str, str]:
         """
         Main entrypoint - equivalent to get_dataset() in regular builders.
-        Returns the table/view name to validate against.
+        Returns the table/view name and query to validate against.
         """
         return self.build()
 
@@ -258,3 +255,19 @@ class SqlBaseDatasetBuilder(ABC):
         val_res = self.data_service.pgi.fetch_one()
 
         return val_res["cnt"] if val_res and "cnt" in val_res else 0
+
+    def generate_unpivot_jsonb_string(self, source_schema, column_names) -> str:
+        """
+        Generates a jsonb string for unpivoting datasets using jsonb_object.
+        """
+        keys = []
+        values = []
+        for col_name in column_names:
+            col_hash = source_schema.get_column_hash(col_name)
+            keys.append(f"'{col_name.upper()}'")
+            values.append(f"CAST(t.{col_hash} AS TEXT)")
+
+        keys_array = f"ARRAY[{', '.join(keys)}]"
+        values_array = f"ARRAY[{', '.join(values)}]"
+
+        return f"jsonb_object({keys_array}, {values_array})"

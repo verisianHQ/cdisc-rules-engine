@@ -14,7 +14,7 @@ class NotOperator(BaseSqlOperator):
         if wrapped_result is not None:
             if self._should_skip_negation(other_value):
                 return wrapped_result
-            return ~wrapped_result
+            return f"NOT {wrapped_result}"
         return None
 
     def _should_skip_negation(self, other_value) -> bool:

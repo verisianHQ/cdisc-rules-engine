@@ -1,3 +1,5 @@
+from typing import Tuple, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -13,10 +15,11 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
     variable is attached.
     """
 
-    def build(self) -> str:
+    def build(self) -> Tuple[str, Optional[str]]:
         table_name = f"{self.dataset_metadata.name}_value_check_define_variables"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
+        existing_schema = self.data_service.pgi.schema.get_table(table_name)
+        if existing_schema is not None:
+            return table_name, f"SELECT * FROM {existing_schema.hash}"
 
         source_table_id = self.data_service.get_dataset_for_rule(
             self.dataset_metadata, self.rule, self.standards_context
@@ -43,52 +46,51 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
             if name.lower() not in ["id", "source_ds", "source_row_number"] and sc.origin == "data"
         ]
 
-        select_statements = []
-        col_hash_map = {col_name: source_schema.get_column_hash(col_name) for col_name in column_names}
-        new_col_hash_map = {
-            col_name: schema.get_column_hash(col_name)
-            for col_name in ["row_number", "variable_name", "variable_value"] + list(DEFINE_VARIABLES_TYPE.keys())
-        }
-        for col_name in column_names:
-            col_hash = col_hash_map[col_name]
-            col_upper = col_name.upper()
-            d_var = define_vars_by_name.get(col_upper, {})
+        if column_names:
+            json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
 
-            select_parts = [
-                f"CAST(ROW_NUMBER() OVER (ORDER BY id) AS TEXT) as {new_col_hash_map['row_number']}",
-                f"CAST('{col_upper}' AS TEXT) as {new_col_hash_map['variable_name']}",
-                f"CAST({col_hash} AS TEXT) as {new_col_hash_map['variable_value']}",
-            ]
+            val_rows = []
+            for col_name in column_names:
+                col_upper = col_name.upper()
+                d_var = define_vars_by_name.get(col_upper, {})
 
-            for key in DEFINE_VARIABLES_TYPE.keys():
-                val = str(d_var.get(key, "")).replace("'", "''").strip()
-                column_type = DEFINE_VARIABLES_TYPE[key]
+                row_parts = [f"'{col_upper}'"]
+                for key in DEFINE_VARIABLES_TYPE.keys():
+                    val = str(d_var.get(key, "")).replace("'", "''").strip()
+                    column_type = DEFINE_VARIABLES_TYPE[key]
 
-                if column_type == "Bool":
-                    sql_type = "BOOLEAN"
-                elif column_type == "Num":
-                    sql_type = "NUMERIC"
-                else:
-                    sql_type = "TEXT"
+                    if column_type == "Bool":
+                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"CAST({val} AS BOOLEAN)"
+                    elif column_type == "Num":
+                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"CAST({val} AS NUMERIC)"
+                    else:
+                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"'{val}'"
+                    row_parts.append(sql_val)
 
-                if val.lower() in ["", "none", "null", "''", '""']:
-                    select_parts.append(f"CAST(NULL AS {sql_type}) as {new_col_hash_map[key]}")
-                else:
-                    select_parts.append(f"CAST('{val}' AS {sql_type}) as {new_col_hash_map[key]}")
+                val_rows.append(f"({', '.join(row_parts)})")
 
-            select_statements.append(f"SELECT {', '.join(select_parts)} FROM {source_table_hash}")
+            values_sql = ",\n".join(val_rows)
+            target_columns = ["row_number", "variable_name", "variable_value"] + list(DEFINE_VARIABLES_TYPE.keys())
+            columns_clause = ", ".join([schema.get_column_hash(col) for col in target_columns])
+            select_cols = ", ".join([f"m.{col}" for col in DEFINE_VARIABLES_TYPE.keys()])
 
-        target_columns = [
-            new_col_hash_map["row_number"],
-            new_col_hash_map["variable_name"],
-            new_col_hash_map["variable_value"],
-        ] + [new_col_hash_map[key] for key in DEFINE_VARIABLES_TYPE.keys()]
+            insert_query = f"""
+                WITH def_meta AS (
+                    SELECT * FROM (VALUES
+                        {values_sql}
+                    ) AS m(var_name, {", ".join(DEFINE_VARIABLES_TYPE.keys())})
+                )
+                INSERT INTO {schema.hash} ({columns_clause})
+                SELECT
+                    CAST(ROW_NUMBER() OVER () AS TEXT) as row_number,
+                    j.key as variable_name,
+                    j.value as variable_value,
+                    {select_cols}
+                FROM {source_table_hash} t,
+                LATERAL jsonb_each_text({json_build_str}) AS j(key, value)
+                LEFT JOIN def_meta m ON j.key = m.var_name;
+            """
 
-        columns_clause = ", ".join(target_columns)
+            self.data_service.pgi.execute_sql(insert_query)
 
-        unpivot_query = " UNION ALL ".join(select_statements)
-        insert_query = f"INSERT INTO {schema.hash} ({columns_clause}) {unpivot_query};"
-
-        self.data_service.pgi.execute_sql(insert_query)
-
-        return table_name
+        return table_name, f"SELECT * FROM {table_name}"

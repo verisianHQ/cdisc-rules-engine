@@ -14,9 +14,13 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         - If --DTC < RFSTDTC: --DY = (--DTC date) - (RFSTDTC date)
         - No Study Day 0 exists (goes from -1 to +1)
         """
-        current_table = self.data_service.pgi.schema.get_table(self.params.domain)
+        table_name = self.params.table if self.params.table else self.params.domain
+        current_table = self.data_service.pgi.schema.get_table(table_name)
+
         if not current_table:
-            raise ValueError(f"Table for domain {self.params.domain} not found")
+            current_table = self.data_service.pgi.schema.get_table(self.params.domain)
+            if not current_table:
+                raise ValueError(f"Table for domain {self.params.domain} not found")
 
         if current_table.has_column("RFSTDTC"):
             joined_table = current_table
@@ -47,6 +51,7 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
 
         query = f"""
         SELECT
+            {id_col} AS id,
             CASE
                 WHEN {target_date_col.hash} IS NULL OR {rfstdtc_date_col.hash} IS NULL THEN NULL
                 WHEN DATE({target_date_col.hash}) >= DATE({rfstdtc_date_col.hash}) THEN
@@ -55,7 +60,6 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
                     DATE({target_date_col.hash}) - DATE({rfstdtc_date_col.hash})
             END AS value
         FROM {joined_table.hash}
-        WHERE {id_col} = $id
         """
 
-        return SqlOperationResult(query=query, type="constant", subtype="Num", params={"$id": "id"})
+        return SqlOperationResult(query=query, type="window", subtype="Num")
