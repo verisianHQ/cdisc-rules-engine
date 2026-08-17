@@ -102,7 +102,11 @@ class SqlVenmoResultHandler:
     def _build_clauses(self, schema: SqlTableSchema) -> tuple[str, str]:
         sensitivity = str(self.rule.get("sensitivity", "")).lower().strip()
         grouping_vars = self.rule.get("grouping_variables", self.rule.get("Grouping_Variables", []))
-        actual_grouping_vars = [v.lower() for v in grouping_vars if v.lower() != "filter_by_dataset"]
+        actual_grouping_vars = []
+        for value in grouping_vars:
+            if value.lower() == "filter_by_dataset":
+                continue
+            actual_grouping_vars.append(value.replace("--", self.dataset_metadata.domain or "", 1).lower())
 
         if sensitivity == "group" or actual_grouping_vars:
             distinct_cols = []

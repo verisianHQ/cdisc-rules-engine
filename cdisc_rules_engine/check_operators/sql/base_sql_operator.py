@@ -217,7 +217,13 @@ class BaseSqlOperator:
             raise ValueError(f"Unsupported collection type: {type(value)}")
 
     def _handle_string_collection(self, value: str, lowercase: bool) -> str:
+        if value not in self.operation_variables:
+            raise ValueError(f"Expected a collection operation variable, got string: {value}")
+
         variable = self.operation_variables[value]
+        if variable.type != "collection":
+            raise ValueError(f"Variable {value} is not a collection.")
+
         query = variable.query
         if variable.params:
             query = self._substitute_operation_parameters(query, variable.params)

@@ -157,6 +157,7 @@ class SQLRuleProcessor:
             case_sensitive=operation.get("case_sensitive", True),
             table=dataset_id,
             use_rule_type_table=operation.get("use_rule_type_table", False),
+            value=operation.get("value"),
         )
 
     @staticmethod
@@ -171,8 +172,7 @@ class SQLRuleProcessor:
 
         existing_schema = data_service.pgi.schema.get_table(new_dataset_id)
         if existing_schema is not None:
-            operations_query = f"SELECT * FROM {existing_schema.hash} t"
-            return output_variables, new_dataset_id, operations_query
+            data_service.pgi.execute_sql(f"DROP TABLE IF EXISTS {existing_schema.hash} CASCADE")
 
         original_schema = data_service.pgi.schema.get_table(dataset_id)
         original_table_hash = original_schema.hash
