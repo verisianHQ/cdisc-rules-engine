@@ -9,6 +9,7 @@ from cdisc_rules_engine.readers.data_readers.data_reader_factory import (
     DataReaderFactory,
 )
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.utilities.memory_tracker import track_memory_function
 
 
 class SqlDatasetLoader:
@@ -22,6 +23,7 @@ class SqlDatasetLoader:
         return [SqlDatasetLoader._load_dataset_file(pgi, file_path) for file_path in dataset_paths]
 
     @staticmethod
+    @track_memory_function()
     def _load_dataset_file(pgi: PostgresQLInterface, file_path_str: str) -> DatasetMetadata2:
         """Load a single dataset file."""
         file_path = Path(file_path_str)

@@ -21,6 +21,7 @@ from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
+from cdisc_rules_engine.utilities.memory_tracker import track_memory_function
 
 CHECK_OPERATOR_TABLE_ALIAS = "co"
 
@@ -136,6 +137,7 @@ class BaseSqlOperator:
     def _exists(self, column: str) -> bool:
         return self.sql_data_service.pgi.schema.column_exists(self.table_id, column)
 
+    @track_memory_function()
     def _fetch_for_venmo(self, column: str):
         """
         Fetches data from a SQL table and returns it as a pandas Series,
@@ -153,6 +155,7 @@ class BaseSqlOperator:
 
         return return_series
 
+    @track_memory_function()
     def _do_check_operator(self, sql_subquery_fn):
         subquery = sql_subquery_fn()
         full_query = (

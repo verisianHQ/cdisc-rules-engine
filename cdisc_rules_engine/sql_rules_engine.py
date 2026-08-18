@@ -40,6 +40,7 @@ from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.utilities.memory_tracker import track_memory_function
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -196,6 +197,7 @@ class SQLRulesEngine:
 
         return self.execute_rule(rule, dataset_metadata, dataset_id)
 
+    @track_memory_function()
     def execute_rule(
         self,
         rule: dict,
@@ -211,6 +213,7 @@ class SQLRulesEngine:
             results.extend(self._execute_expanded_rule(expanded_rule, dataset_metadata, dataset_id))
         return results
 
+    @track_memory_function()
     def _execute_expanded_rule(
         self,
         rule: dict,

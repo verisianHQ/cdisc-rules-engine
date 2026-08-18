@@ -19,6 +19,7 @@ from cdisc_rules_engine.models.validation_error_container import (
 )
 from cdisc_rules_engine.models.validation_error_entity import ValidationErrorEntity
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
+from cdisc_rules_engine.utilities.memory_tracker import track_memory, track_memory_function
 
 
 class SqlVenmoResultHandler(BaseActions):
@@ -75,6 +76,7 @@ class SqlVenmoResultHandler(BaseActions):
         self.data_service = data_service
         self.operation_variables = operation_variables or {}
 
+    @track_memory_function()
     @rule_action(params={"message": FIELD_TEXT})
     def generate_dataset_error_objects(self, message: str, results: pd.Series):
         """
@@ -133,32 +135,34 @@ class SqlVenmoResultHandler(BaseActions):
 
                 has_errors = False
                 chunk = []
-                for i, x in enumerate(truth_series):
-                    if not x:
-                        continue
-                    has_errors = True
-                    chunk.append(i + 1)
-                    if len(chunk) >= chunk_size:
+                with track_memory("_get_error_rows.collect_true_ids"):
+                    for i, x in enumerate(truth_series):
+                        if not x:
+                            continue
+                        has_errors = True
+                        chunk.append(i + 1)
+                        if len(chunk) >= chunk_size:
+                            values = ", ".join(f"({idx})" for idx in chunk)
+                            cursor.execute(f"INSERT INTO {temp_table} (id) VALUES {values};")
+                            chunk = []
+                    if chunk:
                         values = ", ".join(f"({idx})" for idx in chunk)
                         cursor.execute(f"INSERT INTO {temp_table} (id) VALUES {values};")
-                        chunk = []
-                if chunk:
-                    values = ", ".join(f"({idx})" for idx in chunk)
-                    cursor.execute(f"INSERT INTO {temp_table} (id) VALUES {values};")
 
                 if not has_errors:
                     cursor.execute(f"DROP TABLE IF EXISTS {temp_table};")
                     conn.commit()
                     return []
 
-                query = (
-                    f"SELECT {select_clause} FROM {table_hash} t "
-                    f"JOIN {temp_table} tt ON t.id = tt.id "
-                    f"ORDER BY t.id ASC"
-                )
-                cursor.execute(query)
-                results = cursor.fetchall()
-                conn.commit()
+                with track_memory("_get_error_rows.join_and_fetch"):
+                    query = (
+                        f"SELECT {select_clause} FROM {table_hash} t "
+                        f"JOIN {temp_table} tt ON t.id = tt.id "
+                        f"ORDER BY t.id ASC"
+                    )
+                    cursor.execute(query)
+                    results = cursor.fetchall()
+                    conn.commit()
 
                 cursor.execute(f"DROP TABLE IF EXISTS {temp_table};")
                 conn.commit()

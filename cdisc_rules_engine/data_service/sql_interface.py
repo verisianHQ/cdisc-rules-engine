@@ -17,6 +17,7 @@ from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.db_schema import SqlDbSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
+from cdisc_rules_engine.utilities.memory_tracker import track_memory_function
 
 
 class PostgresQLInterface:
@@ -58,6 +59,7 @@ class PostgresQLInterface:
             logger.error(f"Failed to initialise database: {e}")
             raise
 
+    @track_memory_function()
     def execute_sql(self, query: str, params: Optional[Union[List, Tuple]] = None, commit: bool = True) -> int:
         """Execute a single SQL query"""
         if not self.db:
@@ -122,6 +124,7 @@ class PostgresQLInterface:
             return self._last_results.pop(0)
         return None
 
+    @track_memory_function()
     def fetch_all(self) -> List[Optional[Any]]:
         """Fetch all results from the last query"""
         results = self._last_results.copy()
@@ -177,6 +180,7 @@ class PostgresQLInterface:
         self.execute_sql(query)
         return date_column_schema
 
+    @track_memory_function()
     def insert_data(
         self, table_name: str, data: Union[Dict[str, list[str, int, float]], List[Dict[str, Any]]]
     ) -> Optional[int]:
