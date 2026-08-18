@@ -1,4 +1,5 @@
 import re
+import uuid
 from typing import List, Optional
 
 import pandas as pd
@@ -113,24 +114,113 @@ class SqlVenmoResultHandler(BaseActions):
         - For normal rules: same as original dataset
         - For cross-dataset rules: joined table with columns from multiple datasets
         - For metadata rules: metadata table
+
+        To avoid building a giant ``id IN (...)`` query and loading every column,
+        the truth series is written to a temporary table and joined in SQL. Only
+        the columns actually needed for error reporting are selected.
         """
-        # Query from the validation table which has all the columns we need
         table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_id)
+        validation_schema = self.data_service.pgi.schema.get_table(self.dataset_id)
+        column_hashes = self._get_required_column_hashes(validation_schema)
+        select_clause = ", ".join(f"t.{column_hash}" for column_hash in column_hashes)
 
-        # Get indices of TRUE values
-        true_indicies = [str(i + 1) for i, x in enumerate(truth_series) if x]
+        temp_table = f"{self.data_service.pgi.sql_namespace}_true_ids_{uuid.uuid4().hex[:8]}"
+        chunk_size = 10000
 
-        if not true_indicies:
-            return []
+        with self.data_service.pgi.db.get_connection_and_cursor(dict_cursor=True) as (conn, cursor):
+            try:
+                cursor.execute(f"CREATE TEMP TABLE {temp_table} (id bigint PRIMARY KEY);")
 
-        # Query the validation table
-        self.data_service.pgi.execute_sql(
-            f"""SELECT * FROM {table_hash}
-                WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
-        )
+                has_errors = False
+                chunk = []
+                for i, x in enumerate(truth_series):
+                    if not x:
+                        continue
+                    has_errors = True
+                    chunk.append(i + 1)
+                    if len(chunk) >= chunk_size:
+                        values = ", ".join(f"({idx})" for idx in chunk)
+                        cursor.execute(f"INSERT INTO {temp_table} (id) VALUES {values};")
+                        chunk = []
+                if chunk:
+                    values = ", ".join(f"({idx})" for idx in chunk)
+                    cursor.execute(f"INSERT INTO {temp_table} (id) VALUES {values};")
 
-        results = self.data_service.pgi.fetch_all()
-        return list(results)
+                if not has_errors:
+                    cursor.execute(f"DROP TABLE IF EXISTS {temp_table};")
+                    conn.commit()
+                    return []
+
+                query = (
+                    f"SELECT {select_clause} FROM {table_hash} t "
+                    f"JOIN {temp_table} tt ON t.id = tt.id "
+                    f"ORDER BY t.id ASC"
+                )
+                cursor.execute(query)
+                results = cursor.fetchall()
+                conn.commit()
+
+                cursor.execute(f"DROP TABLE IF EXISTS {temp_table};")
+                conn.commit()
+
+                return list(results)
+            except Exception:
+                conn.rollback()
+                try:
+                    cursor.execute(f"DROP TABLE IF EXISTS {temp_table};")
+                    conn.commit()
+                except Exception:
+                    pass
+                raise
+
+    def _get_required_column_hashes(self, validation_schema: SqlTableSchema) -> List[str]:  # noqa
+        """
+        Return the minimal set of column hashes needed from the validation table
+        to build error objects for the current rule.
+        """
+        required_columns = {"id"}
+
+        if validation_schema.has_column("usubjid"):
+            required_columns.add("usubjid")
+
+        if validation_schema.has_column(SOURCE_ROW_NUMBER):
+            required_columns.add(SOURCE_ROW_NUMBER)
+
+        sequence_column = f"{self.dataset_metadata.domain or ''}SEQ"
+        if validation_schema.has_column(sequence_column):
+            required_columns.add(sequence_column)
+
+        grouping_variables = self.rule.get("grouping_variables") or []
+        if "filter_by_dataset" in grouping_variables and validation_schema.has_column("dataset_name"):
+            required_columns.add("dataset_name")
+
+        target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
+        for column, present in target_columns.items():
+            if present and not column.startswith("$"):
+                required_columns.add(column.lower())
+            elif column.startswith("$"):
+                operation_result = self.operation_variables.get(column)
+                if operation_result and operation_result.params:
+                    for param_column in operation_result.params.values():
+                        if param_column == "id":
+                            required_columns.add("id")
+                        else:
+                            required_columns.add(param_column.lower())
+
+        for var in grouping_variables:
+            if var == "filter_by_dataset":
+                continue
+            resolved = self._resolve_grouping_variable(var)
+            if validation_schema.has_column(resolved):
+                required_columns.add(resolved.lower())
+
+        column_hashes = []
+        for col in required_columns:
+            col_hash = validation_schema.get_column_hash(col)
+            if col_hash:
+                column_hashes.append(col_hash)
+
+        return column_hashes
 
     def _bundle_error_object(self, message: str, error_rows: List[ValidationErrorEntity]) -> ValidationErrorContainer:
         """
