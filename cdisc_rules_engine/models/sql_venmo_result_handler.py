@@ -79,9 +79,11 @@ class SqlVenmoResultHandler:
                     col_hash = schema.get_column_hash(col_name) or col_name
                     select_cols.append(f'co.{col_hash} AS "{col}"')
                 elif op and op.type == "constant":
-                    select_cols.append(f'({op.query}) AS "{col}"')
+                    select_cols.append(f'({self._resolve_operation_params(op.query, op.params, schema)}) AS "{col}"')
                 elif op and op.type == "collection":
-                    select_cols.append(f'ARRAY({op.query}) AS "{col}"')
+                    select_cols.append(
+                        f'ARRAY({self._resolve_operation_params(op.query, op.params, schema)}) AS "{col}"'
+                    )
                 else:
                     select_cols.append(f'NULL AS "{col}"')
             else:
@@ -91,6 +93,19 @@ class SqlVenmoResultHandler:
                     select_cols.append(f'NULL AS "{col}"')
 
         return select_cols
+
+    @staticmethod
+    def _resolve_operation_params(query: str, params: Optional[dict[str, str]], schema: SqlTableSchema) -> str:
+        if not params:
+            return query
+
+        for placeholder, column_name in params.items():
+            column_hash = schema.get_column_hash(column_name)
+            if column_hash is None:
+                raise ValueError(f"Operation parameter column '{column_name}' is not available in '{schema.name}'.")
+            query = query.replace(placeholder, f"co.{column_hash}")
+
+        return query
 
     def _build_meta_cols(self, schema: SqlTableSchema) -> list[str]:
         meta_cols = ["co.id AS __id"]
@@ -142,16 +157,23 @@ class SqlVenmoResultHandler:
                     val = row.get(col)
                     values[col] = None if val in NULL_FLAVORS else val
 
+            if str(self.rule.get("sensitivity", "")).lower() in {"dataset", "study"}:
+                return [ValidationErrorEntity(dataset=self.dataset_metadata.filename, value=values)]
+
             entities.append(
                 ValidationErrorEntity(
                     dataset=self.dataset_metadata.filename,
-                    row=row.get(f"__{SOURCE_ROW_NUMBER.lower()}") or row.get("__id"),
-                    usubjid=row.get("__usubjid"),
-                    sequence=row.get(f"__{self.dataset_metadata.domain or ''}seq".lower()),
+                    row=int(row.get(f"__{SOURCE_ROW_NUMBER.lower()}") or row.get("__id")),
+                    usubjid=str(row.get("__usubjid")),
+                    sequence=self._as_integer(row.get(f"__{self.dataset_metadata.domain or ''}seq".lower())),
                     value=values,
                 )
             )
         return entities
+
+    @staticmethod
+    def _as_integer(value):
+        return int(value) if value is not None and value != "" else None
 
     def _bundle_error_object(self, message: str, error_rows: List[ValidationErrorEntity]) -> ValidationErrorContainer:
         original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.name)

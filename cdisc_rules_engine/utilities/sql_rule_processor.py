@@ -103,6 +103,8 @@ class SQLRuleProcessor:
         if op_result.type == "window":
             op_result.params = op_result.params or {}
             op_result.params["column_name"] = output_variable.replace("$", "op_").replace("-", "_")
+            op_result.params["grouping"] = params.grouping or []
+            op_result.params["source_table"] = params.table if params.use_rule_type_table else params.domain
 
         logger.info(f"Processed rule operation. operation={rule_name}, rule={rule}")
         return output_variable, op_result
@@ -194,7 +196,20 @@ class SQLRuleProcessor:
             col_hash = new_schema.get_column_hash(clean_name)
 
             alias = f"op_{i}"
-            joins.append(f"LEFT JOIN ({op_result.query}) {alias} ON t.id = {alias}.id")
+            grouping = op_result.params.get("grouping", [])
+            source_table = op_result.params.get("source_table")
+            if grouping and source_table != dataset_id:
+                join_conditions = []
+                for index, group in enumerate(grouping):
+                    group_hash = original_schema.get_column_hash(group)
+                    if group_hash is None:
+                        raise ValueError(f"Grouping column '{group}' is not available in '{dataset_id}'.")
+                    join_conditions.append(f"t.{group_hash} = {alias}.group_{index}")
+                join_clause = " AND ".join(join_conditions)
+            else:
+                join_clause = f"t.id = {alias}.id"
+
+            joins.append(f"LEFT JOIN ({op_result.query}) {alias} ON {join_clause}")
             select_cols.append(f"{alias}.value AS {col_hash}")
 
         nested_query = f"""

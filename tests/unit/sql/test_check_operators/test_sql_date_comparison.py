@@ -89,6 +89,14 @@ def test_sql_date_less_than(data, comparator, value_is_literal, expected_result)
     assert_series_equals(result, expected_result)
 
 
+def test_sql_date_less_than_missing_comparator_column_returns_false():
+    sql_ops = create_sql_operators({"target": ["2023-01-15", "2023-02-20"]})
+
+    result = sql_ops.date_less_than({"target": "target", "comparator": "MISSING", "value_is_literal": False})
+
+    assert_series_equals(result, [False, False])
+
+
 @pytest.mark.parametrize(
     "data,comparator,value_is_literal,expected_result",
     [

@@ -33,6 +33,9 @@ class SqlNumericOperation(SqlBaseOperation):
             grouping_columns = [self.data_service.pgi.schema.get_column(table, group) for group in self.params.grouping]
 
             partition_by = ", ".join([col.hash for col in grouping_columns])
+            grouping_selects = ", ".join(
+                f"{column.hash} AS group_{index}" for index, column in enumerate(grouping_columns)
+            )
             id_col = self.data_service.pgi.schema.get_column_hash(table, "id")
             if where_clause.strip():
                 filter_condition = where_clause.replace("WHERE", "").strip()
@@ -40,9 +43,13 @@ class SqlNumericOperation(SqlBaseOperation):
             else:
                 case_expr = column_id
 
+            is_cross_table_operation = table != self.params.table
+            select_modifier = "DISTINCT" if is_cross_table_operation else ""
+            id_select = "" if is_cross_table_operation else f"{id_col} as id,"
             query = f"""
-                SELECT
-                    {id_col} as id,
+                SELECT {select_modifier}
+                    {id_select}
+                    {grouping_selects},
                     {self.function}({case_expr}) OVER (PARTITION BY {partition_by}) AS value
                 FROM {dataset_id}
             """

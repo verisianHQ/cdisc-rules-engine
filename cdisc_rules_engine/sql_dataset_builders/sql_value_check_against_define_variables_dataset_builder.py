@@ -49,27 +49,7 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
         if column_names:
             json_build_str = self.generate_unpivot_jsonb_string(source_schema, column_names)
 
-            val_rows = []
-            for col_name in column_names:
-                col_upper = col_name.upper()
-                d_var = define_vars_by_name.get(col_upper, {})
-
-                row_parts = [f"'{col_upper}'"]
-                for key in DEFINE_VARIABLES_TYPE.keys():
-                    val = str(d_var.get(key, "")).replace("'", "''").strip()
-                    column_type = DEFINE_VARIABLES_TYPE[key]
-
-                    if column_type == "Bool":
-                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"CAST({val} AS BOOLEAN)"
-                    elif column_type == "Num":
-                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"CAST({val} AS NUMERIC)"
-                    else:
-                        sql_val = "NULL" if val.lower() in ["", "none", "null"] else f"'{val}'"
-                    row_parts.append(sql_val)
-
-                val_rows.append(f"({', '.join(row_parts)})")
-
-            values_sql = ",\n".join(val_rows)
+            values_sql = self._build_define_metadata_values_sql(column_names, define_vars_by_name)
             target_columns = ["row_number", "variable_name", "variable_value"] + list(DEFINE_VARIABLES_TYPE.keys())
             columns_clause = ", ".join([schema.get_column_hash(col) for col in target_columns])
             select_cols = ", ".join([f"m.{col}" for col in DEFINE_VARIABLES_TYPE.keys()])
@@ -94,3 +74,34 @@ class SqlValueCheckAgainstDefineVariablesDatasetBuilder(SqlBaseDatasetBuilder):
             self.data_service.pgi.execute_sql(insert_query)
 
         return table_name, f"SELECT * FROM {table_name}"
+
+    def _build_define_metadata_values_sql(self, column_names, define_vars_by_name) -> str:
+        value_rows = []
+        for column_name in column_names:
+            column_name_upper = column_name.upper()
+            define_variable = define_vars_by_name.get(column_name_upper, {})
+            row_parts = [f"'{column_name_upper}'"]
+            row_parts.extend(
+                self._define_metadata_value_sql(define_variable.get(key, ""), column_type, key)
+                for key, column_type in DEFINE_VARIABLES_TYPE.items()
+            )
+            value_rows.append(f"({', '.join(row_parts)})")
+        return ",\n".join(value_rows)
+
+    @staticmethod
+    def _define_metadata_value_sql(value, column_type, key) -> str:
+        value = str(value).replace("'", "''").strip()
+        normalized_value = value.lower()
+        if column_type == "Bool":
+            if normalized_value in {"", "none", "null"}:
+                return "CAST(NULL AS BOOLEAN)"
+            if normalized_value in {"true", "yes", "1"}:
+                return "TRUE"
+            if normalized_value in {"false", "no", "0"}:
+                return "FALSE"
+            raise ValueError(f"Unsupported Define XML boolean value '{value}' for '{key}'.")
+        if normalized_value in {"", "none", "null"}:
+            return "NULL"
+        if column_type == "Num":
+            return f"CAST({value} AS NUMERIC)"
+        return f"'{value}'"

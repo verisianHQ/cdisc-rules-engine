@@ -37,6 +37,8 @@ class DateComparisonOperator(BaseSqlOperator):
             comparator = comparator.lower()
             comparator_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, comparator)
             wrapped_comparator = comparator_date_column.hash
+        elif isinstance(comparator, str) and not value_is_literal and comparator not in self.operation_variables:
+            wrapped_comparator = "NULL"
         else:
             wrapped_comparator = f"CAST ({self._sql(comparator, value_is_literal=value_is_literal)} AS TIMESTAMP)"
 
