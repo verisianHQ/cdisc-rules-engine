@@ -7,7 +7,6 @@ from business_rules import export_rule_data
 from business_rules.engine import run
 from psycopg2.errors import ProgrammingError
 
-from cdisc_rules_engine.config.config import ConfigService
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -65,11 +64,11 @@ class SQLRulesEngine:
         self,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
-        config_service: ConfigService = None,
+        args: dict = None,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
-        self.config_service = config_service or ConfigService()
+        self.args = args or {}
 
     def get_schema(self):
         return export_rule_data(SqlVenmoObject, SqlVenmoResultHandler)
@@ -208,8 +207,8 @@ class SQLRulesEngine:
         Return (max_time_seconds, max_memory_mb) for a rule.
         Rule-level limits override global config.
         """
-        global_time = self.config_service.get_rule_max_execution_time_seconds()
-        global_memory = self.config_service.get_rule_max_memory_mb()
+        global_time = self.args.max_runtime_seconds or None
+        global_memory = self.args.max_memory_mb or None
 
         limits = rule.get("execution_limits") or {}
         rule_time = limits.get("max_execution_time_seconds")

@@ -104,7 +104,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
         progress_reporter=ingestion_reporter,
     )
 
-    engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context)
+    engine = SQLRulesEngine(data_service=data_service, standards_context=standards_context, args=args)
 
     engine_logger.info(f"Running {len(rules)} rules against {len(data_service.datasets)} datasets")
     start = time.time()
@@ -147,8 +147,8 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
 # TODO: fix this one first
 # this is the tests entrypoint, CLI enters above where only the args are passed in
 def sql_run_single_rule_validation(
-    data_service: PostgresQLDataService, rule: dict, standards_context: BaseStandardsContext
+    data_service: PostgresQLDataService, rule: dict, standards_context: BaseStandardsContext, args: Validation_args
 ) -> dict:
-    return SQLRulesEngine(data_service=data_service, standards_context=standards_context).sql_validate_single_rule(
-        SQLRule.from_cdisc_metadata(rule)
-    )
+    return SQLRulesEngine(
+        data_service=data_service, standards_context=standards_context, args=args
+    ).sql_validate_single_rule(SQLRule.from_cdisc_metadata(rule))

@@ -230,6 +230,20 @@ def cli():
     default=False,
     help="Run validation using an in-memory Postgres instance",
 )
+@click.option(
+    "-mxt",
+    "--max-runtime-seconds",
+    default=None,
+    type=float,
+    help="Maximum runtime in seconds for a rule.",
+)
+@click.option(
+    "-mxm",
+    "--max-memory-mb",
+    default=None,
+    type=float,
+    help="Maximum memory in MB for a rule.",
+)
 @click.pass_context
 def validate(  # noqa: C901
     ctx,
@@ -266,6 +280,8 @@ def validate(  # noqa: C901
     sql_engine: bool,
     sql_namespace: str,
     in_memory_postgres: bool,
+    max_runtime_seconds: float,
+    max_memory_mb: float,
 ):
     """
     Validate data using CDISC Rules Engine
@@ -360,6 +376,8 @@ def validate(  # noqa: C901
         stf_file_path,
         validate_xml_bool,
         sql_namespace,
+        max_runtime_seconds,
+        max_memory_mb,
     )
     if sql_engine:
         run_sql_validation(args, in_memory_postgres=in_memory_postgres)
@@ -692,6 +710,8 @@ def test_validate():
             json_output = os.path.join(temp_dir, "json_validation_output")
             xpt_output = os.path.join(temp_dir, "xpt_validation_output")
             sql_namespace = None
+            max_runtime_seconds = None
+            max_memory_mb = None
 
             json_args = Validation_args(
                 cache_path,
@@ -716,6 +736,8 @@ def test_validate():
                 stf_file_path,
                 validate_xml,
                 sql_namespace,
+                max_runtime_seconds,
+                max_memory_mb,
             )
 
             xpt_args = Validation_args(
@@ -741,6 +763,8 @@ def test_validate():
                 stf_file_path,
                 validate_xml,
                 sql_namespace,
+                max_runtime_seconds,
+                max_memory_mb,
             )
 
             run_validation(json_args)

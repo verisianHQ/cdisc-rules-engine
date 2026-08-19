@@ -44,21 +44,3 @@ class ConfigService(ConfigInterface):
             return float(self.getValue("DATASET_SIZE_THRESHOLD") or self._default_dataset_size_threshold)
         except Exception:
             return self._default_dataset_size_threshold
-
-    def get_rule_max_execution_time_seconds(self, default: float = 300.0) -> float:
-        try:
-            value = self.getValue("RULE_MAX_EXECUTION_TIME_SECONDS")
-            if value is None or value == "":
-                return default
-            return float(value)
-        except Exception:
-            return default
-
-    def get_rule_max_memory_mb(self, default: float = 4096.0) -> float:
-        try:
-            value = self.getValue("RULE_MAX_MEMORY_MB")
-            if value is None or value == "":
-                return default
-            return float(value)
-        except Exception:
-            return default
