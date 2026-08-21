@@ -18,11 +18,13 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
             return table_id, None
 
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
-            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
+            if not self.data_service.pgi.schema.get_column(table_id, col):
+                self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
 
         define_ds_metadata = self.get_define_dataset()
         for col, type in DEFINE_DATASETS_TYPE.items():
-            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
+            if not self.data_service.pgi.schema.get_column(table_id, col):
+                self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
 
         dataset_location = self.dataset_metadata.filename
         dataset_name = self.dataset_metadata.name
