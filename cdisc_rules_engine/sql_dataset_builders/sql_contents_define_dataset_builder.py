@@ -16,9 +16,13 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         if self.data_service.pgi.schema.get_table(table_id) is not None:
             return table_id
 
-        schema = self.data_service.pgi.schema.get_table(table_id)
+        source_table_id = self.data_service.get_dataset_for_rule(
+            self.dataset_metadata, self.rule, self.standards_context
+        )
+
+        schema = self.data_service.pgi.schema.get_table(source_table_id)
         if not schema:
-            raise ValueError(f"Table {table_id} not found")
+            raise ValueError(f"Table {source_table_id} not found")
 
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
             self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
