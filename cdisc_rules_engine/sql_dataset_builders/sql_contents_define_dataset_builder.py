@@ -12,24 +12,20 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        table_id = f"{self.dataset_metadata.name}_contents_define_ds"
-        if self.data_service.pgi.schema.get_table(table_id) is not None:
-            return table_id
+        table_id = self.data_service.get_dataset_for_rule(self.dataset_metadata, self.rule, self.standards_context)
 
-        source_table_id = self.data_service.get_dataset_for_rule(
-            self.dataset_metadata, self.rule, self.standards_context
-        )
-
-        schema = self.data_service.pgi.schema.get_table(source_table_id)
+        schema = self.data_service.pgi.schema.get_table(table_id)
         if not schema:
-            raise ValueError(f"Table {source_table_id} not found")
+            raise ValueError(f"Table {table_id} not found")
 
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
-            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
+            if not self.data_service.pgi.schema.get_column(table_id, col):
+                self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
 
         define_ds_metadata = self.get_define_dataset()
         for col, type in DEFINE_DATASETS_TYPE.items():
-            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
+            if not self.data_service.pgi.schema.get_column(table_id, col):
+                self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, type))
 
         dataset_location = self.dataset_metadata.filename
         dataset_name = self.dataset_metadata.name
