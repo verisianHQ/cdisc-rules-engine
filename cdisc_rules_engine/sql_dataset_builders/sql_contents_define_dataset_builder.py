@@ -12,18 +12,16 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
     """
 
     def build(self) -> str:
-        table_name = f"{self.dataset_metadata.name}_contents_define_ds"
-        if self.data_service.pgi.schema.get_table(table_name) is not None:
-            return table_name
-
-        table_id = self.data_service.get_dataset_for_rule(self.dataset_metadata, self.rule, self.standards_context)
+        table_id = f"{self.dataset_metadata.name}_contents_define_ds"
+        if self.data_service.pgi.schema.get_table(table_id) is not None:
+            return table_id
 
         schema = self.data_service.pgi.schema.get_table(table_id)
         if not schema:
             raise ValueError(f"Table {table_id} not found")
 
         for col in ["dataset_location", "dataset_name", "dataset_label", "dataset_domain"]:
-            self.data_service.pgi.add_column(table_name, SqlColumnSchema.define(col, "Char"))
+            self.data_service.pgi.add_column(table_id, SqlColumnSchema.define(col, "Char"))
 
         define_ds_metadata = self.get_define_dataset()
         for col, type in DEFINE_DATASETS_TYPE.items():
@@ -117,4 +115,4 @@ class SqlContentsDefineDatasetBuilder(SqlBaseDatasetBuilder):
         """
         self.data_service.pgi.execute_sql(uniqueness_query)
 
-        return table_name
+        return table_id
