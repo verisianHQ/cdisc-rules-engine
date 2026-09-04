@@ -41,6 +41,7 @@ from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationErr
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
+from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
 )
@@ -74,6 +75,7 @@ class SQLRulesEngine:
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         is_study_sensitivity = rule.get("sensitivity") == Sensitivity.STUDY.value
         study_error_already_reported = False
+        any_suitable_found = False
 
         # Collect all dataset metadata for builders that need it (e.g., DomainListDatasetBuilder)
         all_datasets = [
@@ -92,6 +94,7 @@ class SQLRulesEngine:
                 ),
             )
             if is_suitable:
+                any_suitable_found = True
                 if is_study_sensitivity and study_error_already_reported:
                     results[dataset_metadata.name] = [
                         ValidationErrorContainer(
@@ -117,6 +120,22 @@ class SQLRulesEngine:
                     domain=dataset_metadata.domain,
                 )
                 results[pp_ds_id] = [error_obj.to_representation()]
+
+        # for a study-level rule that check for the presence of an entire class of datasets, 
+        # when none of the required datasets exist, the rule still needs to execute
+        if not any_suitable_found and all_datasets:
+            included_classes = (rule.get("classes") or {}).get("Include", [])
+            if included_classes and ALL_KEYWORD not in included_classes:
+                first_ds_id = self.data_service.get_uploaded_dataset_ids()[0]
+                first_metadata = self.data_service.get_dataset_metadata(first_ds_id)
+                logger.info(
+                    f"Rule {rule.get('core_id', 'unknown')} has class scope {included_classes}, "
+                    f"but no matching datasets were found in the submission. Running once on '{first_metadata.name}' "
+                    f"so the rule can report the missing class."
+                )
+                dataset_results = self.validate_single_dataset(rule, first_metadata, all_datasets)
+                results[first_metadata.name] = dataset_results
+
         return results
 
     @staticmethod
