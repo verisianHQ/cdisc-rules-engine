@@ -130,8 +130,16 @@ class PostgresQLOperators(BaseType):
         "not_present_on_multiple_rows_within": lambda data: NotOperator(data, PresentOnMultipleRowsWithinOperator),
         "prefix_is_contained_by": lambda data: IsContainedByOperator(data),
         "prefix_is_not_contained_by": lambda data: NotOperator(data, IsContainedByOperator),
+        "prefix_is_contained_by_case_insensitive": lambda data: IsContainedByOperator(data, case_insensitive=True),
+        "prefix_is_not_contained_by_case_insensitive": lambda data: NotOperator(
+            data, lambda d: IsContainedByOperator(d, case_insensitive=True)
+        ),
         "suffix_is_contained_by": lambda data: IsContainedByOperator(data),
         "suffix_is_not_contained_by": lambda data: NotOperator(data, IsContainedByOperator),
+        "suffix_is_contained_by_case_insensitive": lambda data: IsContainedByOperator(data, case_insensitive=True),
+        "suffix_is_not_contained_by_case_insensitive": lambda data: NotOperator(
+            data, lambda d: IsContainedByOperator(d, case_insensitive=True)
+        ),
         "contains": lambda data: ContainsOperator(data),
         "does_not_contain": lambda data: NotOperator(data, ContainsOperator),
         "contains_case_insensitive": lambda data: ContainsOperator(data, case_insensitive=True),
