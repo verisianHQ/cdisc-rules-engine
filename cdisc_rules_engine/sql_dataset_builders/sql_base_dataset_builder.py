@@ -36,6 +36,7 @@ DEFINE_VARIABLES_TYPE = {
     "define_variable_length": "Num",
     "define_variable_has_codelist": "Bool",
     "define_variable_codelist_coded_values": "Char",
+    "define_variable_codelist_coded_codes": "Char",
     "define_variable_mandatory": "Bool",
     "define_variable_has_comment": "Bool",
 }

@@ -297,6 +297,7 @@ class BaseDefineXMLReader(ABC):
             "define_variable_order_number": None,
             "define_variable_has_codelist": False,
             "define_variable_codelist_coded_values": [],
+            "define_variable_codelist_coded_codes": [],
             "define_variable_mandatory": None,
             "define_variable_has_comment": False,
         }
@@ -316,6 +317,7 @@ class BaseDefineXMLReader(ABC):
                 data["define_variable_ccode"] = self._get_codelist_ccode(codelist)
                 data["define_variable_allowed_terms"].extend(self._get_codelist_allowed_terms(codelist))
                 data["define_variable_codelist_coded_values"].extend(self._get_codelist_coded_values(codelist))
+                data["define_variable_codelist_coded_codes"].extend(self._get_codelist_coded_codes(codelist))
             if itemdef.Origin:
                 data["define_variable_origin_type"] = self._get_origin_type(itemdef)
                 data["define_variable_source_type"] = self._get_source_type(itemdef)
@@ -340,6 +342,13 @@ class BaseDefineXMLReader(ABC):
         if codelist:
             for codelist_item in codelist.CodeListItem + codelist.EnumeratedItem:
                 yield codelist_item.CodedValue
+
+    def _get_codelist_coded_codes(self, codelist):
+        if codelist:
+            for codelist_item in codelist.CodeListItem + codelist.EnumeratedItem:
+                ccode_ref = [alias for alias in codelist_item.Alias if alias.Context == "nci:ExtCodeID"]
+                if ccode_ref:
+                    yield ccode_ref[0].Name
 
     @abstractmethod
     def _get_origin_type(self, itemdef):
