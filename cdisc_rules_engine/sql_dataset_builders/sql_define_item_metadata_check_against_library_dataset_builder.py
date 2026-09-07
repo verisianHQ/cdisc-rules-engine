@@ -27,7 +27,7 @@ class SqlDefineItemMetadataCheckAgainstLibraryDatasetBuilder(SqlBaseDatasetBuild
         all_var_names = set(define_vars_by_name.keys()) | set(library_vars_by_name.keys())
 
         rows = []
-        for var_name in all_var_names:
+        for var_name in sorted(list(all_var_names)):
             row = {}
             row.update(define_vars_by_name.get(var_name, {k: None for k in DEFINE_VARIABLES_TYPE}))
             row.update(library_vars_by_name.get(var_name, {k: None for k in LIBRARY_VARIABLES_TYPE}))
