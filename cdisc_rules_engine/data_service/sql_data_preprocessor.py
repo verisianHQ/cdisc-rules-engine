@@ -60,6 +60,18 @@ class SqlDataPreprocessor:
         for unsplit_name, dataset_parts in split_groups.items():
             logger.info(f"Concatenating {len(dataset_parts)} parts for {unsplit_name}: " f"{', '.join(dataset_parts)}")
             self._concatenate_split_parts(unsplit_name, dataset_parts)
+            self._register_unsplit_dataset(unsplit_name, dataset_parts)
+
+    def _register_unsplit_dataset(self, unsplit_name: str, dataset_parts: List[str]) -> None:
+        """Replace the individual split parts with the concatenated dataset in the list of datasets."""
+        metadata = self._create_metadata_from_split_parts(unsplit_name, dataset_parts)
+        if metadata is None:
+            logger.error(f"Could not build metadata for concatenated dataset {unsplit_name}, keeping split parts")
+            return
+
+        part_names = {part.lower() for part in dataset_parts}
+        self.data_service.datasets = [ds for ds in self.data_service.datasets if ds.name.lower() not in part_names]
+        self.data_service.datasets.append(metadata)
 
     def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
         """Concatenate multiple dataset parts into a single table."""
@@ -232,6 +244,7 @@ class SqlDataPreprocessor:
         metadata.filename = f"{unsplit_name}.{file_type}"
         metadata.name = unsplit_name.upper()
         metadata.variables = merged_variables
+        metadata.split_part_filenames = [part.filename for part in part_metadata]
 
         return metadata
 

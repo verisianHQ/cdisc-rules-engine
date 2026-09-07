@@ -147,14 +147,16 @@ class SQLRulesEngine:
                 return result
             else:
                 # No errors were generated, create success error container
+                filenames = getattr(dataset_metadata, "split_part_filenames", None) or [dataset_metadata.filename]
                 return [
                     ValidationErrorContainer(
                         **{
-                            "dataset": dataset_metadata.filename,
+                            "dataset": filename,
                             "domain": dataset_metadata.domain,
                             "errors": [],
                         }
                     ).to_representation()
+                    for filename in filenames
                 ]
         except Exception as e:
             logger.trace(e)

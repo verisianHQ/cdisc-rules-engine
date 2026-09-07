@@ -28,3 +28,29 @@ def test_extract_results_regression_merges_regex_expansions_for_dataset():
         {"row": 1, "SEQ": None, "USUBJID": None, "value": {"TRT01AN": 1, "TRT01A": "X"}},
         {"row": 1, "SEQ": None, "USUBJID": None, "value": {"TRT02AN": 1, "TRT02A": "X"}},
     ]
+
+
+def test_extract_results_regression_keeps_split_source_datasets_separate():
+    results = {
+        "ae": [
+            {
+                "dataset": "ae1.xpt",
+                "domain": "AE",
+                "executionStatus": "success",
+                "message": "Missing AETERM",
+                "errors": [{"row": 1, "value": {"AETERM": None}}],
+            },
+            {
+                "dataset": "ae2.xpt",
+                "domain": "AE",
+                "executionStatus": "success",
+                "message": "Missing AETERM",
+                "errors": [{"row": 2, "value": {"AETERM": None}}],
+            },
+        ]
+    }
+
+    regression = extract_results_regression(results)
+
+    assert [entry["dataset"] for entry in regression] == ["ae1.xpt", "ae2.xpt"]
+    assert [entry["number_errors"] for entry in regression] == [1, 1]

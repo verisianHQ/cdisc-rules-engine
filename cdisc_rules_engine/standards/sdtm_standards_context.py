@@ -782,32 +782,30 @@ class SdtmStandardsContext(BaseStandardsContext):
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
         """
+        _SPLIT_RULES = (
+            ("suppfa", 6, False),  # suppfa + parent domain (e.g., suppfacm -> suppfa)
+            ("supp", 6, True),  # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
+            ("sqap", 6, False),  # sq + parent domain optionally with a split suffix.
+            ("sq", 4, False),  # sq + parent domain
+            ("relrec", 6, False),  # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
+            ("ap", 4, False),  # ap + 2-char domain + alphanumeric suffix (e.g. apqsx -> apqs)
+        )
         dataset = dataset_name.lower()
 
-        # suppfa + parent domain (e.g., suppfacm -> suppfa)
-        if dataset.startswith("suppfa") and len(dataset) > 6:
-            return "suppfa"
+        for prefix, unsplit_length, domain_must_be_alpha in _SPLIT_RULES:
+            if not dataset.startswith(prefix):
+                continue
+            if len(dataset) <= unsplit_length:
+                return dataset
+            if domain_must_be_alpha and not dataset[len(prefix) : unsplit_length].isalpha():
+                return dataset
+            return dataset[:unsplit_length]
 
-        # fa + parent domain (e.g., facm, faeg -> fa)
-        if dataset.startswith("fa") and len(dataset) == 4:
-            return "fa"
-
-        # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
-        if dataset.startswith("supp") and len(dataset) > 4:
-            match = re.match(r"^(supp[a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
-
-        # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
-        if dataset.startswith("relrec") and len(dataset) > 6:
-            return "relrec"
-
-        # 2-char parent domain + alphanumeric suffix (e.g., ae1 -> ae)
-        if len(dataset) > 2:
-            match = re.match(r"^([a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
-
+        # fa + parent domain (facm, faeg -> fa), else the general rule of a
+        # 2-char parent domain plus an alphanumeric split suffix (ae1 -> ae).
+        match = re.match(r"^(fa)[a-z]{2}$|^([a-z]{2})[a-z0-9]+$", dataset)
+        if match:
+            return match.group(1) or match.group(2)
         return dataset
 
     @staticmethod

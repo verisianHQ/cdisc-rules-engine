@@ -6,7 +6,7 @@ from business_rules.actions import BaseActions, rule_action
 from business_rules.fields import FIELD_TEXT
 
 from cdisc_rules_engine.constants import NULL_FLAVORS
-from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_DS, SOURCE_ROW_NUMBER
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -99,11 +99,24 @@ class SqlVenmoResultHandler(BaseActions):
         target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
 
         errors_list = self._generate_errors_list(rows_with_error, target_columns, validation_schema)
-        error_object = self._bundle_error_object(
-            message=message,
-            error_rows=errors_list,
-        )
-        self.output_container.append(error_object.to_representation())
+        for error_object in self._bundle_error_objects_per_source(message, errors_list):
+            self.output_container.append(error_object.to_representation())
+
+    def _bundle_error_objects_per_source(
+        self, message: str, errors_list: List[ValidationErrorEntity]
+    ) -> List[ValidationErrorContainer]:
+        """Bundle errors into one container per source file."""
+        source_datasets = {error._dataset for error in errors_list if error._dataset}
+        if len(source_datasets) < 2:
+            return [self._bundle_error_object(message=message, error_rows=errors_list)]
+
+        return [
+            self._bundle_error_object(
+                message=message,
+                error_rows=[error for error in errors_list if error._dataset == source_dataset],
+            )
+            for source_dataset in sorted(source_datasets)
+        ]
 
     def _get_error_rows(self, truth_series) -> List[dict]:
         """
@@ -309,12 +322,24 @@ class SqlVenmoResultHandler(BaseActions):
                 values[column] = value
 
         return ValidationErrorEntity(
-            dataset=self.dataset_metadata.filename,
+            dataset=self._source_dataset_filename(row, schema),
             row=int(row_id),
             usubjid=usubjid,
             sequence=sequence,
             value=values,
         )
+
+    def _source_dataset_filename(self, row: dict, schema: SqlTableSchema) -> str:
+        """The file a row came from."""
+        source_ds_hash = schema.get_column_hash(SOURCE_DS)
+        source_ds = row.get(source_ds_hash) if source_ds_hash else None
+        if not source_ds:
+            return self.dataset_metadata.filename
+
+        extension = self.dataset_metadata.filename.rsplit(".", 1)
+        if len(extension) == 2:
+            return f"{str(source_ds).lower()}.{extension[1]}"
+        return str(source_ds).lower()
 
     def _evaluate_operation_variable(self, variable_name: str, row: dict, schema: SqlTableSchema):
         """
