@@ -36,6 +36,9 @@
       "const": "define_variable_ccode"
     },
     {
+      "const": "define_variable_codelist_coded_codes"
+    },
+    {
       "const": "define_variable_codelist_coded_values"
     },
     {

@@ -119,6 +119,7 @@ any:
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
+- `define_variable_codelist_coded_codes`
 - `define_variable_has_comment`
 
 #### Rule Macro
@@ -143,6 +144,7 @@ Attach variable codelist and codelist terms
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
+- `define_variable_codelist_coded_codes`
 - `define_variable_has_comment`
 - `library_variable_name`
 - `library_variable_order_number`
@@ -418,6 +420,7 @@ Attach define xml metadata at variable level
 - `define_variable_length`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
+- `define_variable_codelist_coded_codes`
 - `define_variable_mandatory`
 - `define_variable_has_comment`
 - `library_variable_name`
