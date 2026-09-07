@@ -30,4 +30,4 @@ def test_dataset_names():
     params = SqlOperationParams(domain="t1", target=None, standards_context=None)
     operation = SqlOperationsFactory.get_service("dataset_names", params, data_service)
     result = operation.execute()
-    assert_operation_collection(operation, result, ["t1", "t2"], unsorted=True)
+    assert_operation_collection(operation, result, ["T1", "T2"], unsorted=True)
