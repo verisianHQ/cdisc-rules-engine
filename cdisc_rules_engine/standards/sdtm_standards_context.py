@@ -1,4 +1,3 @@
-import re
 from typing import Any, List, Tuple, Dict
 from collections import defaultdict
 
@@ -781,32 +780,57 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
+
+        A dataset name is a domain, optionally wrapped in prefixes such as
+        SUPP/SQ/AP, and anything after that is a split suffix. So suppae1 ->
+        suppae and ae1 -> ae, while a name that is only a wrapper plus a domain
+        (ae, apfamh) is already unsplit and returned unchanged.
         """
-        _SPLIT_RULES = (
-            ("suppfa", 6, False),  # suppfa + parent domain (e.g., suppfacm -> suppfa)
-            ("supp", 6, True),  # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
-            ("sqap", 6, False),  # sq + parent domain optionally with a split suffix.
-            ("sq", 4, False),  # sq + parent domain
-            ("relrec", 6, False),  # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
-            ("ap", 4, False),  # ap + 2-char domain + alphanumeric suffix (e.g. apqsx -> apqs)
-        )
+        # Ordered so a more specific prefix wins over the one it extends
+        # (sqap before sq, and both before ap).
+        _DOMAIN_WRAPPER_PREFIXES = ("supp", "sqap", "sq", "ap")
+
+        # Domains whose own name is longer than the usual two characters: the
+        # findings-about domains are FA + the parent domain they describe, so
+        # APFAMH is a six-character name rather than a split part of APFA.
+        _LONG_DOMAINS = ("facm", "faeg", "famh")
+
         dataset = dataset_name.lower()
 
-        for prefix, unsplit_length, domain_must_be_alpha in _SPLIT_RULES:
-            if not dataset.startswith(prefix):
-                continue
-            if len(dataset) <= unsplit_length:
-                return dataset
-            if domain_must_be_alpha and not dataset[len(prefix) : unsplit_length].isalpha():
-                return dataset
-            return dataset[:unsplit_length]
+        # relrec wraps no domain and takes a bare split suffix (relreca -> relrec).
+        if dataset.startswith("relrec"):
+            return "relrec"
 
-        # fa + parent domain (facm, faeg -> fa), else the general rule of a
-        # 2-char parent domain plus an alphanumeric split suffix (ae1 -> ae).
-        match = re.match(r"^(fa)[a-z]{2}$|^([a-z]{2})[a-z0-9]+$", dataset)
-        if match:
-            return match.group(1) or match.group(2)
-        return dataset
+        # Wrappers can nest (SUPP around AP, as in suppapqs), so consume each
+        # prefix in turn before measuring the domain that is left over.
+        prefix_length = 0
+        while True:
+            remainder = dataset[prefix_length:]
+            prefix = next(
+                (p for p in _DOMAIN_WRAPPER_PREFIXES if remainder.startswith(p)),
+                "",
+            )
+            if not prefix:
+                break
+            prefix_length += len(prefix)
+
+        # A name made only of wrapper prefixes carries no domain, so there is
+        # nothing to split off (supp, sqap).
+        if prefix_length == len(dataset):
+            return dataset
+
+        unsplit_length = prefix_length + (4 if dataset[prefix_length:].startswith(_LONG_DOMAINS) else 2)
+
+        # No room for a split suffix, so the name is already unsplit.
+        if len(dataset) <= unsplit_length:
+            return dataset
+        # The domain must be alphabetic and the split suffix alphanumeric;
+        # anything else is not a name this convention describes.
+        if not dataset[prefix_length:unsplit_length].isalpha():
+            return dataset
+        if not dataset[unsplit_length:].isalnum():
+            return dataset
+        return dataset[:unsplit_length]
 
     @staticmethod
     def _ig_domain_details_standardisation(

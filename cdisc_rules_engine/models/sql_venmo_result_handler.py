@@ -106,16 +106,17 @@ class SqlVenmoResultHandler(BaseActions):
         self, message: str, errors_list: List[ValidationErrorEntity]
     ) -> List[ValidationErrorContainer]:
         """Bundle errors into one container per source file."""
-        source_datasets = {error._dataset for error in errors_list if error._dataset}
-        if len(source_datasets) < 2:
+        split_parts = getattr(self.dataset_metadata, "split_part_filenames", None)
+        if not split_parts:
             return [self._bundle_error_object(message=message, error_rows=errors_list)]
 
         return [
             self._bundle_error_object(
                 message=message,
                 error_rows=[error for error in errors_list if error._dataset == source_dataset],
+                dataset=source_dataset,
             )
-            for source_dataset in sorted(source_datasets)
+            for source_dataset in sorted(split_parts)
         ]
 
     def _get_error_rows(self, truth_series) -> List[dict]:
@@ -145,15 +146,18 @@ class SqlVenmoResultHandler(BaseActions):
         results = self.data_service.pgi.fetch_all()
         return list(results)
 
-    def _bundle_error_object(self, message: str, error_rows: List[ValidationErrorEntity]) -> ValidationErrorContainer:
-        """
-        Bundles the error rows into a ValidationErrorContainer.
-        """
+    def _bundle_error_object(
+        self,
+        message: str,
+        error_rows: List[ValidationErrorEntity],
+        dataset: Optional[str] = None,
+    ) -> ValidationErrorContainer:
+        """Bundles the error rows into a ValidationErrorContainer."""
         original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.name)
 
         return ValidationErrorContainer(
             domain=(self.dataset_metadata.domain),
-            dataset=", ".join(sorted(set(error._dataset or "" for error in error_rows))),
+            dataset=dataset or ", ".join(sorted(set(error._dataset or "" for error in error_rows))),
             targets=SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, original_schema),
             errors=error_rows,
             message=message.replace("--", self.dataset_metadata.domain or ""),

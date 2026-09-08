@@ -1,7 +1,7 @@
 import re
 import traceback
 from copy import deepcopy
-from typing import List, Union
+from typing import Callable, List, Union
 
 from business_rules import export_rule_data
 from business_rules.engine import run
@@ -93,15 +93,16 @@ class SQLRulesEngine:
             )
             if is_suitable:
                 if is_study_sensitivity and study_error_already_reported:
-                    results[dataset_metadata.name] = [
-                        ValidationErrorContainer(
+                    results[dataset_metadata.name] = self._containers_per_reported_file(
+                        dataset_metadata,
+                        lambda filename: ValidationErrorContainer(
                             **{
-                                "dataset": dataset_metadata.filename,
+                                "dataset": filename,
                                 "domain": dataset_metadata.domain,
                                 "errors": [],
                             }
-                        ).to_representation()
-                    ]
+                        ),
+                    )
                     continue
 
                 dataset_results = self.validate_single_dataset(rule, dataset_metadata, all_datasets)
@@ -110,14 +111,25 @@ class SQLRulesEngine:
                     study_error_already_reported = True
             else:
                 logger.info(f"Skipped dataset {dataset_metadata.name}. Reason: {reason}")
-                error_obj: ValidationErrorContainer = ValidationErrorContainer(
-                    status=ExecutionStatus.SKIPPED.value,
-                    message=reason,
-                    dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain,
+                results[pp_ds_id] = self._containers_per_reported_file(
+                    dataset_metadata,
+                    lambda filename: ValidationErrorContainer(
+                        status=ExecutionStatus.SKIPPED.value,
+                        message=reason,
+                        dataset=filename,
+                        domain=dataset_metadata.domain,
+                    ),
                 )
-                results[pp_ds_id] = [error_obj.to_representation()]
         return results
+
+    @staticmethod
+    def _containers_per_reported_file(
+        dataset_metadata: BaseDatasetMetadata,
+        build_container: Callable[[str], ValidationErrorContainer],
+    ) -> List[dict]:
+        """Build one result container per file the dataset is reported under."""
+        filenames = getattr(dataset_metadata, "split_part_filenames", None) or [dataset_metadata.filename]
+        return [build_container(filename).to_representation() for filename in sorted(filenames)]
 
     @staticmethod
     def _contains_error_entries(result_entries: List[Union[dict, str]]) -> bool:
@@ -147,17 +159,16 @@ class SQLRulesEngine:
                 return result
             else:
                 # No errors were generated, create success error container
-                filenames = getattr(dataset_metadata, "split_part_filenames", None) or [dataset_metadata.filename]
-                return [
-                    ValidationErrorContainer(
+                return self._containers_per_reported_file(
+                    dataset_metadata,
+                    lambda filename: ValidationErrorContainer(
                         **{
                             "dataset": filename,
                             "domain": dataset_metadata.domain,
                             "errors": [],
                         }
-                    ).to_representation()
-                    for filename in filenames
-                ]
+                    ),
+                )
         except Exception as e:
             logger.trace(e)
             logger.error(

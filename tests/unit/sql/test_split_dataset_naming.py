@@ -1,0 +1,74 @@
+import pytest
+
+from cdisc_rules_engine.standards.sdtm_standards_context import SdtmStandardsContext
+
+
+@pytest.mark.parametrize(
+    "dataset_name, expected",
+    [
+        ("ae1", "ae"),
+        ("aex", "ae"),
+        ("qs1", "qs"),
+        ("ae", "ae"),
+        ("dm", "dm"),
+        ("fa", "fa"),
+        ("supp", "supp"),
+        ("sq", "sq"),
+        ("ap", "ap"),
+        ("sqap", "sqap"),
+        ("suppap", "suppap"),
+        ("facm", "facm"),
+        ("faeg", "faeg"),
+        ("famh", "famh"),
+        ("famh1", "famh"),
+        ("apfamh", "apfamh"),
+        ("apfamh1", "apfamh"),
+        ("sqapfamh", "sqapfamh"),
+        ("sqapfamh2", "sqapfamh"),
+        ("suppfacm", "suppfacm"),
+        ("suppapqs", "suppapqs"),
+        ("suppapqs1", "suppapqs"),
+        ("suppapfamh", "suppapfamh"),
+        ("suppfa", "suppfa"),
+        ("suppae", "suppae"),
+        ("suppae1", "suppae"),
+        ("suppae12", "suppae"),
+        ("supp9a9", "supp9a9"),
+        ("sqapqs", "sqapqs"),
+        ("sqapqsx", "sqapqs"),
+        ("sqdm", "sqdm"),
+        ("sqdmx", "sqdm"),
+        ("apqs", "apqs"),
+        ("apqsx", "apqs"),
+        ("relrec", "relrec"),
+        ("relreca", "relrec"),
+        ("relrecb", "relrec"),
+        ("ae_1", "ae_1"),
+        ("a", "a"),
+        ("", ""),
+        ("AE1", "ae"),
+        ("SUPPAE1", "suppae"),
+        ("APFAMH1", "apfamh"),
+    ],
+)
+def test_get_unsplit_name(dataset_name, expected):
+    assert SdtmStandardsContext._get_unsplit_name(dataset_name) == expected
+
+
+@pytest.mark.parametrize(
+    "dataset_names, expected",
+    [
+        (["ae1", "ae2"], {"ae": ["ae1", "ae2"]}),
+        (["relreca", "relrecb"], {"relrec": ["relreca", "relrecb"]}),
+        (["suppae1", "suppae2"], {"suppae": ["suppae1", "suppae2"]}),
+        (["apfamh1", "apfamh2"], {"apfamh": ["apfamh1", "apfamh2"]}),
+        (["ae1"], {}),
+        (["ae", "ae1", "ae2"], {}),
+        (["dm", "ae"], {}),
+        (["facm", "faeg", "famh"], {}),
+        (["apfacm", "apfaeg"], {}),
+    ],
+)
+def test_detect_split_datasets(dataset_names, expected):
+    context = SdtmStandardsContext.__new__(SdtmStandardsContext)
+    assert context.detect_split_datasets(dataset_names) == expected
