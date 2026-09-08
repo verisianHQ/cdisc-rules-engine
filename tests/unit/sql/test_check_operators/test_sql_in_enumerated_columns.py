@@ -13,7 +13,7 @@ from .helpers import assert_series_equals, create_sql_operators
                 "TSVAL1": ["X", "A", "Y", "Z"],
                 "TSVAL2": ["M", "N", "A", None],
             },
-            {"target": "TSVAL", "comparator": "A"},
+            {"target": "TSVAL", "comparator": "A", "value_is_literal": True},
             [True, True, True, False],
         ),
         (
@@ -21,7 +21,7 @@ from .helpers import assert_series_equals, create_sql_operators
                 "tsval": ["a", "b", "c"],
                 "TSVAL1": ["x", "A", "z"],
             },
-            {"target": "TSVAL", "comparator": "A", "case_insensitive": True},
+            {"target": "TSVAL", "comparator": "A", "case_insensitive": True, "value_is_literal": True},
             [True, True, False],
         ),
         (
@@ -30,14 +30,14 @@ from .helpers import assert_series_equals, create_sql_operators
                 "TSVAL1": ["X", "Y", "Z"],
                 "TSVALX": ["A", "A", "A"],
             },
-            {"target": "TSVAL", "comparator": "A", "regex": r"^TSVAL\d*$"},
+            {"target": "TSVAL", "comparator": "A", "regex": r"^TSVAL\d*$", "value_is_literal": True},
             [True, False, False],
         ),
         (
             {
                 "OTHERVAR": ["A", "B", "C"],
             },
-            {"target": "TSVAL", "comparator": "A"},
+            {"target": "TSVAL", "comparator": "A", "value_is_literal": True},
             [False, False, False],
         ),
     ],
@@ -57,7 +57,7 @@ def test_sql_in_enumerated_columns(data, operator_input, expected_result):
                 "TSVAL1": ["X", "A", "Y"],
                 "TSVAL2": ["M", "N", "A"],
             },
-            {"target": "TSVAL", "comparator": "A"},
+            {"target": "TSVAL", "comparator": "A", "value_is_literal": True},
             [False, False, False],
         ),
         (
@@ -65,7 +65,7 @@ def test_sql_in_enumerated_columns(data, operator_input, expected_result):
                 "TSVAL": ["a", "b", "c"],
                 "TSVAL1": ["x", "y", "z"],
             },
-            {"target": "TSVAL", "comparator": "A", "case_insensitive": True},
+            {"target": "TSVAL", "comparator": "A", "case_insensitive": True, "value_is_literal": True},
             [False, True, True],
         ),
     ],
