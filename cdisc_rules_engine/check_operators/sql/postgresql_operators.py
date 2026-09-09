@@ -354,7 +354,7 @@ class PostgresQLOperators(BaseType):
         return not operator_instance._exists(resolved_value)
 
     @classmethod
-    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):
+    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):  # noqa: C901
         """
         Determines which columns referenced by a condition are missing from the
         dataset, so the operator can be skipped instead of producing a
