@@ -64,12 +64,14 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         if not where_populated:
             return []
 
-        populated_columns = [target_column, *comparator_columns]
-        if isinstance(where_populated, list):
-            for column in where_populated:
-                extra_column = self.replace_prefix(column).lower()
-                if extra_column not in populated_columns and self._exists(extra_column):
-                    populated_columns.append(extra_column)
+        if not isinstance(where_populated, list):
+            return [target_column, *comparator_columns]
+
+        populated_columns = []
+        for column in where_populated:
+            resolved_column = self.replace_prefix(column).lower()
+            if resolved_column not in populated_columns and self._exists(resolved_column):
+                populated_columns.append(resolved_column)
         return populated_columns
 
     def _handle_single_comparator(self, target_column, comparator_column, populated_columns=()):
