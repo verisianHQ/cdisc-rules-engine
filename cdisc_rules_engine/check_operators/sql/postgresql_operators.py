@@ -354,7 +354,25 @@ class PostgresQLOperators(BaseType):
         return not operator_instance._exists(resolved_value)
 
     @classmethod
-    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):
+    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):  # noqa: C901
+        """
+        Determines which columns referenced by a condition are missing from the
+        dataset, so the operator can be skipped instead of producing a
+        misleading result.
+
+        `target` (and the structural grouping/ordering keys `within` and
+        `ordering`) are always assumed to be column references.
+
+        `comparator` (and `version`, used by the external-dictionary-version
+        operators) is assumed to be a column reference by default,
+        unless the condition sets `value_is_literal: true`,
+        in which case it's treated as a literal value/collection
+        and never checked for existence.
+
+        The regex operators are excluded from the comparator check outright
+        rather than requiring `value_is_literal: true` on every regex rule,
+        as their `comparator` is always a raw regex pattern
+        """
         if operator_name in {"exists", "not_exists", "is_unique_set", "is_not_unique_set"}:
             return []
 
@@ -364,36 +382,43 @@ class PostgresQLOperators(BaseType):
         missing_columns = []
         variable_regex_pattern = other_value.get("variable_regex_pattern", False)
 
-        always_column_keys = ["target"]
-        for key in always_column_keys:
-            if cls._is_missing_column_reference(
-                operator_instance,
-                other_value.get(key),
-                variable_regex_pattern=variable_regex_pattern,
-            ):
-                missing_columns.append(other_value.get(key))
+        def _check(value, regex=False):
+            if isinstance(value, list):
+                for item in value:
+                    _check(item)
+                return
+            if cls._is_missing_column_reference(operator_instance, value, variable_regex_pattern=regex):
+                missing_columns.append(value)
 
-        comparator = other_value.get("comparator")
-        comparator_is_column = other_value.get("value_is_reference", False) or operator_name in {
-            "is_not_unique_relationship",
-            "is_unique_relationship",
-            "has_next_corresponding_record",
-            "does_not_have_next_corresponding_record",
-            "present_on_multiple_rows_within",
-            "not_present_on_multiple_rows_within",
-            "value_has_multiple_references",
-            "value_does_not_have_multiple_references",
-            "target_is_sorted_by",
-            "target_is_not_sorted_by",
+        _check(other_value.get("target"), regex=variable_regex_pattern)
+        _check(other_value.get("within"))
+        _check(other_value.get("ordering"))
+
+        if operator_name in {"target_is_sorted_by", "target_is_not_sorted_by"}:
+            # comparator is a list of {"name": ..., "sort_order": ..., "null_position": ...}
+            comparator = other_value.get("comparator")
+            if isinstance(comparator, list):
+                for item in comparator:
+                    _check(item.get("name") if isinstance(item, dict) else item)
+            return missing_columns
+
+        regex_pattern_operators = {
+            "matches_regex",
+            "not_matches_regex",
+            "prefix_matches_regex",
+            "not_prefix_matches_regex",
+            "suffix_matches_regex",
+            "not_suffix_matches_regex",
         }
+        if operator_name in regex_pattern_operators:
+            return missing_columns
+
+        value_is_literal = other_value.get("value_is_literal", False)
+        comparator_is_column = other_value.get("value_is_reference", False) or not value_is_literal
 
         if comparator_is_column:
-            if isinstance(comparator, list):
-                for comp in comparator:
-                    if cls._is_missing_column_reference(operator_instance, comp):
-                        missing_columns.append(comp)
-            elif cls._is_missing_column_reference(operator_instance, comparator):
-                missing_columns.append(comparator)
+            _check(other_value.get("comparator"))
+            _check(other_value.get("version"))
 
         return missing_columns
 
