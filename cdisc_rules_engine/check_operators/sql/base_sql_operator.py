@@ -489,15 +489,16 @@ class BaseSqlOperator:
             raise ValueError(f"Variable {target} does not exist.")
 
         if variable.type != "constant":
-            return f"(NOT EXISTS (SELECT 1 FROM ({variable.query}) AS op))"
+            query = variable.query
+            if variable.params:
+                query = self._substitute_operation_parameters(query, variable.params)
+            return f"(NOT EXISTS (SELECT 1 FROM ({query}) AS op))"
 
         # Handle parameterized constants
         query = variable.query
         if variable.params:
             # Substitute parameters with actual column values from current row context
-            for param_placeholder, column_name in variable.params.items():
-                column_sql = self._column_sql(column_name)
-                query = query.replace(param_placeholder, column_sql)
+            query = self._substitute_operation_parameters(query, variable.params)
 
         # Check if the resolved query result is empty based on variable subtype
         match variable.subtype:
