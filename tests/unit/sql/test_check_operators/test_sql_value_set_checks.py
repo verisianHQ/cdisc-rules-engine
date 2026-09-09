@@ -1,5 +1,7 @@
 import pytest
 
+from cdisc_rules_engine.exceptions.custom_exceptions import SqlOperatorError
+
 from .helpers import create_sql_operators, assert_series_equals
 
 
@@ -11,7 +13,7 @@ from .helpers import create_sql_operators, assert_series_equals
         ("STRESU", ["TESTCD", "METHOD"], [False, False, False, False]),
         ("MISSING", "USUBJID", [False, False, False, False]),
         ("BGSTRESU", "MISSING", [False, False, False, False]),
-        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, False, False]),
+        ("BGSTRESU", ["USUBJID", "MISSING"], [False, False, True, True]),
     ],
 )
 def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result):
@@ -58,3 +60,52 @@ def test_sql_is_inconsistent_across_dataset_where_populated():
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": True})
     assert_series_equals(result, [True, True, False, False, False, False, False])
+
+
+def test_sql_is_inconsistent_across_dataset_where_populated_columns():
+    data = {
+        "KEY": ["A", "A", "A", "A", "B", "B"],
+        "VALUE": ["X", "X", "Y", "X", "Z", "W"],
+        "OTHER": ["p", "p", None, "p", "p", "p"],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset(
+        {"target": "VALUE", "comparator": "KEY", "where_populated": ["OTHER"]}
+    )
+    assert_series_equals(result, [False, False, False, False, True, True])
+
+
+def test_sql_is_inconsistent_across_dataset_where_populated_columns_multiple_comparators():
+    data = {
+        "DOMAIN": ["FT", "FT", "FT", "FT"],
+        "VISITNUM": [201, 201, 201, 201],
+        "ELTM": ["PT1H", "PT1H", "PT2H", "PT1H"],
+        "TPT": ["90 MIN POST", "90 MIN POST", None, None],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset(
+        {"target": "ELTM", "comparator": ["DOMAIN", "VISITNUM"], "where_populated": ["TPT"]}
+    )
+    assert_series_equals(result, [False, False, False, False])
+
+
+def test_sql_is_inconsistent_across_dataset_where_populated_columns_missing_column():
+    data = {
+        "KEY": ["A", "A"],
+        "VALUE": ["X", "Y"],
+    }
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_inconsistent_across_dataset(
+        {"target": "VALUE", "comparator": "KEY", "where_populated": ["MISSING"]}
+    )
+    assert_series_equals(result, [True, True])
+
+
+def test_sql_is_inconsistent_across_dataset_where_populated_invalid_type():
+    data = {
+        "KEY": ["A", "A"],
+        "VALUE": ["X", "Y"],
+    }
+    sql_ops = create_sql_operators(data)
+    with pytest.raises(SqlOperatorError, match="Invalid where_populated type"):
+        sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": "OTHER"})
