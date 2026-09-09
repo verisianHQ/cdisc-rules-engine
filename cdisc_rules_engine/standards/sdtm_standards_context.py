@@ -781,22 +781,45 @@ class SdtmStandardsContext(BaseStandardsContext):
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
         """
+        _CATEGORISED_DOMAINS = ("qs", "mh", "lb", "fa")
+        _WHOLE_DATASET_NAMES = frozenset({"relsub", "pooldef", "aprelsub"})
+
         dataset = dataset_name.lower()
 
         if dataset.startswith("relrec"):
             return "relrec"
 
-        stem_length = len(dataset)
-        while stem_length > 0 and dataset[stem_length - 1].isdigit():
-            stem_length -= 1
+        numeric_stem_length = len(dataset)
+        while numeric_stem_length > 0 and dataset[numeric_stem_length - 1].isdigit():
+            numeric_stem_length -= 1
 
-        if stem_length in (0, len(dataset)):
+        if 0 < numeric_stem_length < len(dataset) and dataset[:numeric_stem_length].isalpha():
+            return dataset[:numeric_stem_length]
+
+        if numeric_stem_length == 0:
             return dataset
 
-        if not dataset[:stem_length].isalpha():
+        if dataset in _WHOLE_DATASET_NAMES:
             return dataset
 
-        return dataset[:stem_length]
+        prefix_length = 0
+        while True:
+            prefix = next(
+                (p for p in ("supp", "sqap", "sq", "ap") if dataset[prefix_length:].startswith(p)),
+                "",
+            )
+            if not prefix:
+                break
+            prefix_length += len(prefix)
+
+        domain = dataset[prefix_length:]
+        if len(domain) <= 2 or not domain.isalpha():
+            return dataset
+
+        if domain.startswith(_CATEGORISED_DOMAINS):
+            return dataset
+
+        return dataset[: prefix_length + 2]
 
     @staticmethod
     def _ig_domain_details_standardisation(
