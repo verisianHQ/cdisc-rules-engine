@@ -15,6 +15,12 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         comparator = other_value.get("comparator")
         where_populated = other_value.get("where_populated", False)
 
+        if not isinstance(where_populated, (bool, list)):
+            raise ValueError(
+                f"Invalid where_populated type for is_inconsistent_across_dataset operation. "
+                f"Expected boolean or list of column names, got: {type(where_populated).__name__}"
+            )
+
         if not target or not isinstance(target, str) or target in self.operation_variables:
             raise ValueError("Target is required and must be a valid column name.")
 
@@ -40,28 +46,40 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         if len(valid_comparators) == 0:
             return self._do_check_operator(lambda: "FALSE")
-        elif len(valid_comparators) == 1:
-            return self._handle_single_comparator(target_column, valid_comparators[0], where_populated)
-        else:
-            return self._handle_multiple_comparators(target_column, valid_comparators, where_populated)
 
-    def _handle_single_comparator(self, target_column, comparator_column, where_populated=False):
+        populated_columns = self._where_populated_columns(where_populated, target_column, valid_comparators)
+
+        if len(valid_comparators) == 1:
+            return self._handle_single_comparator(target_column, valid_comparators[0], populated_columns)
+        else:
+            return self._handle_multiple_comparators(target_column, valid_comparators, populated_columns)
+
+    def _where_populated_columns(self, where_populated, target_column, comparator_columns):
+        """
+        where_populated param can be either a boolean or a list of column names.
+        If True, requires the target and comparator columns to be populated.
+        If a list, requires the named columns to be populated.
+        Columns that do not exist in the dataset are ignored.
+        """
+        if not where_populated:
+            return []
+
+        populated_columns = [target_column, *comparator_columns]
+        if isinstance(where_populated, list):
+            for column in where_populated:
+                extra_column = self.replace_prefix(column).lower()
+                if extra_column not in populated_columns and self._exists(extra_column):
+                    populated_columns.append(extra_column)
+        return populated_columns
+
+    def _handle_single_comparator(self, target_column, comparator_column, populated_columns=()):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
-        if where_populated:
-            cache_key += "_where_populated"
+        if populated_columns:
+            cache_key += f"_where_populated_{'_'.join(populated_columns)}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
-            populated_filter = ""
-            current_row_filter = ""
-            if where_populated:
-                populated_filter = (
-                    f" AND NULLIF(CAST(t2.{self._column_sql(target_column, alias=False)} AS TEXT), '') IS NOT NULL"
-                    f" AND NULLIF(CAST(t2.{self._column_sql(comparator_column, alias=False)} AS TEXT), '') IS NOT NULL"
-                )
-                current_row_filter = (
-                    f" AND NULLIF(CAST(t1.{self._column_sql(target_column, alias=False)} AS TEXT), '') IS NOT NULL"
-                    f" AND NULLIF(CAST(t1.{self._column_sql(comparator_column, alias=False)} AS TEXT), '') IS NOT NULL"
-                )
+            populated_filter = self._populated_filter_sql("t2", populated_columns)
+            current_row_filter = self._populated_filter_sql("t1", populated_columns)
             return f"""
                 UPDATE {db_table} AS t
                 SET {db_column} = sub.is_inconsistent
@@ -93,10 +111,10 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         return self._do_complex_check_operator(cache_key, generate_update_query)
 
-    def _handle_multiple_comparators(self, target_column, comparator_columns, where_populated=False):
+    def _handle_multiple_comparators(self, target_column, comparator_columns, populated_columns=()):
         cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
-        if where_populated:
-            cache_key += "_where_populated"
+        if populated_columns:
+            cache_key += f"_where_populated_{'_'.join(populated_columns)}"
 
         def generate_update_query(db_table: str, db_column: str) -> str:
             where_conditions = []
@@ -108,17 +126,8 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
                 )
                 where_conditions.append(f"({condition})")
             where_clause = " AND ".join(where_conditions)
-            current_row_filter = ""
-            if where_populated:
-                populated_columns = [target_column, *comparator_columns]
-                where_clause += " AND " + " AND ".join(
-                    f"NULLIF(CAST(t2.{self._column_sql(column, alias=False)} AS TEXT), '') IS NOT NULL"
-                    for column in populated_columns
-                )
-                current_row_filter = " AND " + " AND ".join(
-                    f"NULLIF(CAST(t1.{self._column_sql(column, alias=False)} AS TEXT), '') IS NOT NULL"
-                    for column in populated_columns
-                )
+            where_clause += self._populated_filter_sql("t2", populated_columns)
+            current_row_filter = self._populated_filter_sql("t1", populated_columns)
 
             return f"""
                 UPDATE {db_table} AS t
@@ -143,3 +152,11 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
             """
 
         return self._do_complex_check_operator(cache_key, generate_update_query)
+
+    def _populated_filter_sql(self, table_alias, populated_columns):
+        if not populated_columns:
+            return ""
+        return "".join(
+            f" AND NULLIF(CAST({table_alias}.{self._column_sql(column, alias=False)} AS TEXT), '') IS NOT NULL"
+            for column in populated_columns
+        )
