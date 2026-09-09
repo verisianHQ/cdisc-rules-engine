@@ -113,7 +113,7 @@ class SqlVenmoResultHandler(BaseActions):
         return [
             self._bundle_error_object(
                 message=message,
-                error_rows=[error for error in errors_list if error._dataset == source_dataset],
+                error_rows=[error for error in errors_list if (error._dataset or "").lower() == source_dataset.lower()],
                 dataset=source_dataset,
             )
             for source_dataset in sorted(split_parts)
