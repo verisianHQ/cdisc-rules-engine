@@ -402,6 +402,9 @@ class PostgresQLOperators(BaseType):
                     _check(item.get("name") if isinstance(item, dict) else item)
             return missing_columns
 
+        if operator_name == "is_inconsistent_across_dataset":
+            return missing_columns
+
         regex_pattern_operators = {
             "matches_regex",
             "not_matches_regex",
