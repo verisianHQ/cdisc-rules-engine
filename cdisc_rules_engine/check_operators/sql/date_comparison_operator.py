@@ -45,38 +45,27 @@ class DateComparisonOperator(BaseSqlOperator):
 
         if date_component:
             component_map = {
-                "year": "YEAR",
-                "month": "MONTH",
-                "day": "DAY",
-                "hour": "HOUR",
-                "minute": "MINUTE",
-                "second": "SECOND",
-                "microsecond": "MICROSECONDS",
+                "year": ("YEAR", 4, 0),
+                "month": ("MONTH", 7, 5),
+                "day": ("DAY", 10, 8),
+                "hour": ("HOUR", 13, 11),
+                "minute": ("MINUTE", 16, 14),
+                "second": ("SECOND", 19, 17),
+                "microsecond": ("MICROSECONDS", 26, 20),
             }
-            pg_component = component_map.get(date_component, "EPOCH")
+            pg_component, trunc_length, start_pos = component_map.get(date_component, ("EPOCH", 0, 0))
 
-            if isinstance(target, str) and self._exists(target.lower()):
-                target = target.lower()
-                target_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, target)
-                wrapped_target = target_date_column.hash
-            else:
-                wrapped_target = f"CAST ({self._sql(target)} AS TIMESTAMP)"
-
-            if isinstance(comparator, str) and not value_is_literal and self._exists(comparator.lower()):
-                comparator = comparator.lower()
-                comparator_date_column = self.sql_data_service.pgi.generate_date_column(self.table_id, comparator)
-                wrapped_comparator = comparator_date_column.hash
-            else:
-                wrapped_comparator = f"CAST ({self._sql(comparator, value_is_literal=value_is_literal)} AS TIMESTAMP)"
-
-            wrapped_target = f"EXTRACT({pg_component} FROM {wrapped_target})"
-            wrapped_comparator = f"EXTRACT({pg_component} FROM {wrapped_comparator})"
+            wrapped_target = f"CASE WHEN LENGTH({wrapped_target}) >= {trunc_length} THEN SUBSTRING({wrapped_target}, {start_pos}, 1+{trunc_length}-{start_pos}) ELSE NULL END"  # noqa
+            wrapped_comparator = f"CASE WHEN LENGTH({wrapped_comparator}) >= {trunc_length} THEN SUBSTRING({wrapped_comparator}, {start_pos}, 1+{trunc_length}-{start_pos}) ELSE NULL END"  # noqa
 
         def sql():
-            trunc_target, trunc_comparator = self._build_truncated_comparison_elements(
-                wrapped_target, wrapped_comparator
-            )
-            comparison_sql = f"{trunc_target} {self.operator} {trunc_comparator}"
+            if not date_component:
+                trunc_target, trunc_comparator = self._build_truncated_comparison_elements(
+                    wrapped_target, wrapped_comparator
+                )
+                comparison_sql = f"{trunc_target} {self.operator} {trunc_comparator}"
+            else:
+                comparison_sql = f"{wrapped_target} {self.operator} {wrapped_comparator}"
 
             sql = f"""CASE WHEN
                 NOT ({self._is_empty_sql(target)})
@@ -85,6 +74,8 @@ class DateComparisonOperator(BaseSqlOperator):
                 THEN true
                 ELSE false
                 END"""
+
+            print(sql)
 
             return sql
 

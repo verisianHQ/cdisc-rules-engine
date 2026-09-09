@@ -149,6 +149,15 @@ def test_sql_date_greater_than(data, comparator, value_is_literal, expected_resu
             [True, True, True],
         ),
         (
+            {
+                "target": ["2023-01", "2023-02-20", "2023-03-10"],
+                "VAR2": ["2023-01-15", "2023-02-20", "2023-03-10T10:00:00"],
+            },
+            "VAR2",
+            False,
+            [True, True, True],
+        ),
+        (
             {"target": ["2023-01-15", "2023-02-20", "2023-03-10"], "VAR2": ["2023-01-20", "2023-02-15", "2023-03-15"]},
             "2023-02-20",
             True,
@@ -268,6 +277,13 @@ def test_sql_date_greater_than_equality_boundary(data, comparator, value_is_lite
             False,
             "day",
             [True, True, True],
+        ),
+        (
+            {"target": ["2023-01-15", "2024-06", "2023"], "VAR2": ["2022-12", "2025-03", "2024-07-20"]},
+            "VAR2",
+            False,
+            "day",
+            [False, False, False],
         ),
     ],
 )
