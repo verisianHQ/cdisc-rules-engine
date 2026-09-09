@@ -75,8 +75,6 @@ class DateComparisonOperator(BaseSqlOperator):
                 ELSE false
                 END"""
 
-            print(sql)
-
             return sql
 
         return self._do_check_operator(sql)

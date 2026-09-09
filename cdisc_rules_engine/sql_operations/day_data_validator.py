@@ -69,13 +69,11 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         if not joined_table.has_column(self.params.target):
             return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
 
-        # target_date_col = self.data_service.pgi.generate_date_column(joined_table.name, self.params.target)
         target_date_col = self.data_service.pgi.schema.get_column(joined_table.name, self.params.target)
 
         if not joined_table.has_column("RFSTDTC"):
             raise ValueError("RFSTDTC column not found in joined table")
 
-        # rfstdtc_date_col = self.data_service.pgi.generate_date_column(joined_table.name, "RFSTDTC")
         rfstdtc_date_col = self.data_service.pgi.schema.get_column(joined_table.name, "RFSTDTC")
 
         target_date_col, rfstdtc_date_col = self._build_to_date_comparison_sql(
