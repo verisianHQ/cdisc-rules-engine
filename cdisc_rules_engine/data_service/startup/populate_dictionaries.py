@@ -73,6 +73,8 @@ def populate_dictionaries(pgi: PostgresQLInterface, external_dictionaries: SqlEx
     if not external_dictionaries:
         return
 
+    dictionary_metadata = {}
+
     for dictionary_type, reader in external_dictionaries.get_all_implemented_reader_classes().items():
         path = external_dictionaries.get_dictionary_path(dictionary_type)
         reader_instance = reader(pgi, path)
@@ -86,3 +88,6 @@ def populate_dictionaries(pgi: PostgresQLInterface, external_dictionaries: SqlEx
         records = df[columns_to_insert].to_dict(orient="records")
 
         pgi.insert_data(schema.name, records)
+        dictionary_metadata[dictionary_type] = metadata
+
+    return dictionary_metadata

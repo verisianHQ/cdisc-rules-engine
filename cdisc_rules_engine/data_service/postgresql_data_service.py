@@ -13,16 +13,12 @@ from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.startup.populate_codelists import (
     populate_codelists,
-    add_extensible_terms,
 )
 from cdisc_rules_engine.data_service.startup.populate_standards import (
     populate_standards,
 )
 from cdisc_rules_engine.data_service.startup.populate_dictionaries import (
     populate_dictionaries,
-)
-from cdisc_rules_engine.data_service.startup.populate_helper_tables import (
-    populate_helper_tables,
 )
 from cdisc_rules_engine.models.dataset_metadata2 import (
     VariableMetadata,
@@ -59,6 +55,7 @@ class PostgresQLDataService:
     def __init__(self, postgres_interface: PostgresQLInterface):
         self.pgi = postgres_interface
         self.datasets: List[BaseDatasetMetadata] = []
+        self.dictionary_metadata: Dict[str, Any] = {}
 
     @classmethod
     def instance(
@@ -67,11 +64,9 @@ class PostgresQLDataService:
         use_pgserver: bool = False,
         codelists: Optional[List[Union[str, Dict]]] = None,
         provided_codelists: Optional[List | str] = None,
-        extensible_terms: Optional[Dict[str, Dict[str, Any]]] = None,
         external_dictionaries: Optional[SqlExternalDictionariesContainer] = None,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
-        stf_file_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Create a PostgresQLDataService instance with an initialized database.
@@ -84,15 +79,12 @@ class PostgresQLDataService:
         pgi.init_database()
 
         instance = cls(postgres_interface=pgi)
-        populate_dictionaries(pgi, external_dictionaries)
+        instance.dictionary_metadata = populate_dictionaries(pgi, external_dictionaries)
         populate_codelists(pgi, cache_path, codelists)
         populate_standards(pgi)
-        populate_helper_tables(pgi)
 
         instance._update_define_xml_path(define_xml_path)
-        instance._update_stf_file_path(stf_file_path)
         instance._update_provided_codelists(provided_codelists)
-        instance._add_extensible_ct_terms(extensible_terms)
 
         return instance
 
@@ -104,18 +96,12 @@ class PostgresQLDataService:
         use_pgserver: bool = False,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
-        stf_file_path: Optional[str] = None,
     ) -> "PostgresQLDataService":
         """
         Constructor for tests, passing in TestDataset
         and create corresponding SQL tables
         """
-        instance = cls.instance(
-            use_pgserver=use_pgserver,
-            cache_path=cache_path,
-            define_xml_path=define_xml_path,
-            stf_file_path=stf_file_path,
-        )
+        instance = cls.instance(use_pgserver=use_pgserver, cache_path=cache_path, define_xml_path=define_xml_path)
         instance.datasets += [
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
@@ -130,11 +116,9 @@ class PostgresQLDataService:
         standards_context,
         codelists: Optional[List[Union[str, Dict]]] = None,
         provided_codelists: Optional[List | str] = None,
-        extensible_terms: Optional[Dict[str, Dict[str, Any]]] = None,
         external_dictionaries: Optional[SqlExternalDictionariesContainer] = None,
         cache_path: Optional[str] = None,
         define_xml_path: Optional[str] = None,
-        stf_file_path: Optional[str] = None,
         sql_namespace: Optional[str] = None,
         use_pgserver: bool = False,
     ) -> "PostgresQLDataService":
@@ -143,11 +127,9 @@ class PostgresQLDataService:
             use_pgserver=use_pgserver,
             codelists=codelists,
             provided_codelists=provided_codelists,
-            extensible_terms=extensible_terms,
             cache_path=cache_path,
             external_dictionaries=external_dictionaries,
             define_xml_path=define_xml_path,
-            stf_file_path=stf_file_path,
         )
 
         instance.datasets.extend(
@@ -211,11 +193,5 @@ class PostgresQLDataService:
     def _update_define_xml_path(self, define_xml_path: str):
         self.define_xml_path = define_xml_path
 
-    def _update_stf_file_path(self, stf_file_path: str):
-        self.stf_file_path = stf_file_path
-
     def _update_provided_codelists(self, provided_codelists: Optional[List | str] = None):
         self.provided_codelists = provided_codelists
-
-    def _add_extensible_ct_terms(self, extensible_terms: Dict[str, dict]):
-        add_extensible_terms(self.pgi, extensible_terms)
