@@ -148,10 +148,26 @@ class PostgresQLOperators(BaseType):
         ),
         "matches_regex": lambda data: MatchesRegexOperator(data),
         "not_matches_regex": lambda data: MatchesRegexOperator(data, invert=True),
+        "matches_regex_case_insensitive": lambda data: MatchesRegexOperator(data, case_insensitive=True),
+        "not_matches_regex_case_insensitive": lambda data: MatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data),
         "not_prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data, invert=True),
+        "prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(
+            data, case_insensitive=True
+        ),
+        "not_prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data),
         "not_suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data, invert=True),
+        "suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(
+            data, case_insensitive=True
+        ),
+        "not_suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "starts_with": lambda data: StartsWithOperator(data),
         "not_starts_with": lambda data: NotOperator(data, StartsWithOperator),
         "ends_with": lambda data: EndsWithOperator(data),
@@ -405,10 +421,16 @@ class PostgresQLOperators(BaseType):
         regex_pattern_operators = {
             "matches_regex",
             "not_matches_regex",
+            "matches_regex_case_insensitive",
+            "not_matches_regex_case_insensitive",
             "prefix_matches_regex",
             "not_prefix_matches_regex",
+            "prefix_matches_regex_case_insensitive",
+            "not_prefix_matches_regex_case_insensitive",
             "suffix_matches_regex",
             "not_suffix_matches_regex",
+            "suffix_matches_regex_case_insensitive",
+            "not_suffix_matches_regex_case_insensitive",
         }
         if operator_name in regex_pattern_operators:
             return missing_columns

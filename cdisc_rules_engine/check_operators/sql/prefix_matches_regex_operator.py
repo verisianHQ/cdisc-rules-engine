@@ -4,15 +4,17 @@ from .base_sql_operator import BaseSqlOperator
 class PrefixMatchesRegexOperator(BaseSqlOperator):
     """Operator for prefix regex pattern matching."""
 
-    def __init__(self, data, invert=False):
+    def __init__(self, data, invert=False, case_insensitive=False):
         super().__init__(data)
         self.invert = invert
+        self.case_insensitive = case_insensitive
 
     def execute_operator(self, other_value):
         target = self.replace_prefix(other_value.get("target")).lower()
         target_column = self._column_sql(target)
         comparator = other_value.get("comparator")
         prefix = other_value.get("prefix")
+        regex_op = "~*" if self.case_insensitive else "~"
 
         def sql():
             prefix_expr = f"LEFT({target_column}::text, {prefix})"
@@ -20,13 +22,13 @@ class PrefixMatchesRegexOperator(BaseSqlOperator):
             if self.invert:
                 return f"""CASE
                         WHEN {self._is_empty_sql(target)} THEN FALSE
-                        WHEN {prefix_expr} ~ '{comparator}' THEN FALSE
+                        WHEN {prefix_expr} {regex_op} '{comparator}' THEN FALSE
                         ELSE TRUE
                         END"""
             else:
                 return f"""CASE
                         WHEN {self._is_empty_sql(target)} THEN FALSE
-                        WHEN {prefix_expr} ~ '{comparator}' THEN TRUE
+                        WHEN {prefix_expr} {regex_op} '{comparator}' THEN TRUE
                         ELSE FALSE
                         END"""
 

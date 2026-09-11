@@ -121,3 +121,55 @@ def test_regex_operators(data, comparator, operator, expected_result):
     else:
         result = sql_ops.not_matches_regex({"target": "target", "comparator": comparator})
     assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,expected_result",
+    [
+        (
+            {"target": ["qsae", "QSAE", "mhlb"]},
+            "^(ap|fa).*",
+            [False, False, False],
+        ),
+        (
+            {"target": ["facm", "FACM", "mhlb"]},
+            "^(ap|fa).*",
+            [True, True, False],
+        ),
+        (
+            {"target": ["word", None, "TEST"]},
+            "^test$",
+            [False, False, True],
+        ),
+    ],
+)
+def test_sql_matches_regex_case_insensitive(data, comparator, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.matches_regex_case_insensitive({"target": "target", "comparator": comparator})
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,expected_result",
+    [
+        (
+            {"target": ["qsae", "QSAE", "mhlb"]},
+            "^(ap|fa).*",
+            [True, True, True],
+        ),
+        (
+            {"target": ["facm", "FACM", "mhlb"]},
+            "^(ap|fa).*",
+            [False, False, True],
+        ),
+        (
+            {"target": ["word", None, "TEST"]},
+            "^test$",
+            [True, False, False],
+        ),
+    ],
+)
+def test_sql_not_matches_regex_case_insensitive(data, comparator, expected_result):
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.not_matches_regex_case_insensitive({"target": "target", "comparator": comparator})
+    assert_series_equals(result, expected_result)
