@@ -26,9 +26,7 @@ def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result)
         "STRESU": ["mg", "mg", "g", "kg"],
     }
     sql_ops = create_sql_operators(data)
-    result = sql_ops.is_inconsistent_across_dataset(
-        {"target": target, "comparator": comparator}
-    )
+    result = sql_ops.is_inconsistent_across_dataset({"target": target, "comparator": comparator})
     assert_series_equals(result, expected_result)
 
 
@@ -40,9 +38,7 @@ def test_sql_is_inconsistent_across_dataset(target, comparator, expected_result)
         ("VSELTM", ["VISITNUM", "VSTPTNUM"], [True, True, True, True]),
     ],
 )
-def test_sql_is_inconsistent_across_dataset_with_nulls(
-    target, comparator, expected_result
-):
+def test_sql_is_inconsistent_across_dataset_with_nulls(target, comparator, expected_result):
     """Test case covering both NULL target values and NULL comparator values"""
     data = {
         "USUBJID": ["SUBJ1", "SUBJ1", "CDISC001", "CDISC001"],
@@ -52,9 +48,7 @@ def test_sql_is_inconsistent_across_dataset_with_nulls(
         "VSTPTNUM": [14, 14, 14, 14],
     }
     sql_ops = create_sql_operators(data)
-    result = sql_ops.is_inconsistent_across_dataset(
-        {"target": target, "comparator": comparator}
-    )
+    result = sql_ops.is_inconsistent_across_dataset({"target": target, "comparator": comparator})
     assert_series_equals(result, expected_result)
 
 
@@ -64,9 +58,7 @@ def test_sql_is_inconsistent_across_dataset_where_populated():
         "VALUE": ["X", "Y", None, "Z", None, "", "Q"],
     }
     sql_ops = create_sql_operators(data)
-    result = sql_ops.is_inconsistent_across_dataset(
-        {"target": "VALUE", "comparator": "KEY", "where_populated": True}
-    )
+    result = sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": True})
     assert_series_equals(result, [True, True, False, False, False, False, False])
 
 
@@ -107,9 +99,7 @@ def test_sql_is_inconsistent_across_dataset_where_populated_columns_missing_colu
         "VALUE": ["X", "Y"],
     }
     sql_ops = create_sql_operators(data)
-    with pytest.raises(
-        SqlOperatorError, match="None of the where_populated_columns exist"
-    ):
+    with pytest.raises(SqlOperatorError, match="None of the where_populated_columns exist"):
         sql_ops.is_inconsistent_across_dataset(
             {
                 "target": "VALUE",
@@ -161,9 +151,7 @@ def test_sql_is_inconsistent_across_dataset_where_populated_invalid_type():
     }
     sql_ops = create_sql_operators(data)
     with pytest.raises(SqlOperatorError, match="Invalid where_populated type"):
-        sql_ops.is_inconsistent_across_dataset(
-            {"target": "VALUE", "comparator": "KEY", "where_populated": "OTHER"}
-        )
+        sql_ops.is_inconsistent_across_dataset({"target": "VALUE", "comparator": "KEY", "where_populated": "OTHER"})
 
 
 def test_sql_is_inconsistent_across_dataset_where_populated_columns_invalid_type():

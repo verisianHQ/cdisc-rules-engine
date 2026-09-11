@@ -119,9 +119,7 @@ def test_regex_operators(data, comparator, operator, expected_result):
     if operator == "matches_regex":
         result = sql_ops.matches_regex({"target": "target", "comparator": comparator})
     else:
-        result = sql_ops.not_matches_regex(
-            {"target": "target", "comparator": comparator}
-        )
+        result = sql_ops.not_matches_regex({"target": "target", "comparator": comparator})
     assert_series_equals(result, expected_result)
 
 
@@ -147,9 +145,7 @@ def test_regex_operators(data, comparator, operator, expected_result):
 )
 def test_sql_matches_regex_case_insensitive(data, comparator, expected_result):
     sql_ops = create_sql_operators(data)
-    result = sql_ops.matches_regex_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = sql_ops.matches_regex_case_insensitive({"target": "target", "comparator": comparator})
     assert_series_equals(result, expected_result)
 
 
@@ -175,7 +171,5 @@ def test_sql_matches_regex_case_insensitive(data, comparator, expected_result):
 )
 def test_sql_not_matches_regex_case_insensitive(data, comparator, expected_result):
     sql_ops = create_sql_operators(data)
-    result = sql_ops.not_matches_regex_case_insensitive(
-        {"target": "target", "comparator": comparator}
-    )
+    result = sql_ops.not_matches_regex_case_insensitive({"target": "target", "comparator": comparator})
     assert_series_equals(result, expected_result)

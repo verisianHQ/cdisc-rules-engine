@@ -17,11 +17,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         where_populated_columns = other_value.get("where_populated_columns")
         self._validate_where_populated_args(where_populated, where_populated_columns)
 
-        if (
-            not target
-            or not isinstance(target, str)
-            or target in self.operation_variables
-        ):
+        if not target or not isinstance(target, str) or target in self.operation_variables:
             raise ValueError("Target is required and must be a valid column name.")
 
         target_column = self.replace_prefix(target).lower()
@@ -37,13 +33,9 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         )
 
         if len(valid_comparators) == 1:
-            return self._handle_single_comparator(
-                target_column, valid_comparators[0], populated_columns
-            )
+            return self._handle_single_comparator(target_column, valid_comparators[0], populated_columns)
         else:
-            return self._handle_multiple_comparators(
-                target_column, valid_comparators, populated_columns
-            )
+            return self._handle_multiple_comparators(target_column, valid_comparators, populated_columns)
 
     def _validate_where_populated_args(self, where_populated, where_populated_columns):
         if not isinstance(where_populated, bool):
@@ -52,9 +44,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
                 f"Expected boolean, got: {type(where_populated).__name__}"
             )
 
-        if where_populated_columns is not None and not isinstance(
-            where_populated_columns, list
-        ):
+        if where_populated_columns is not None and not isinstance(where_populated_columns, list):
             raise ValueError(
                 f"Invalid where_populated_columns type for is_inconsistent_across_dataset operation. "
                 f"Expected list of column names, got: {type(where_populated_columns).__name__}"
@@ -117,9 +107,7 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         return populated_columns
 
-    def _handle_single_comparator(
-        self, target_column, comparator_column, populated_columns=()
-    ):
+    def _handle_single_comparator(self, target_column, comparator_column, populated_columns=()):
         cache_key = f"{target_column}_inconsistent_across_{comparator_column}"
         if populated_columns:
             cache_key += f"_where_populated_{'_'.join(populated_columns)}"
@@ -158,12 +146,8 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
 
         return self._do_complex_check_operator(cache_key, generate_update_query)
 
-    def _handle_multiple_comparators(
-        self, target_column, comparator_columns, populated_columns=()
-    ):
-        cache_key = (
-            f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
-        )
+    def _handle_multiple_comparators(self, target_column, comparator_columns, populated_columns=()):
+        cache_key = f"{target_column}_inconsistent_across_{'_'.join(comparator_columns)}"
         if populated_columns:
             cache_key += f"_where_populated_{'_'.join(populated_columns)}"
 
