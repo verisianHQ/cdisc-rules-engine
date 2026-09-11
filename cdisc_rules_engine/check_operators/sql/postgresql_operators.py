@@ -39,9 +39,15 @@ from .is_ordered_set_operator import IsOrderedSetOperator
 from .is_ordered_subset_of_operator import IsOrderedSubsetOfOperator
 from .is_substring_of_operator import IsSubstringOfOperator
 from .is_unique_set_operator import IsUniqueSetOperator
-from .is_valid_external_dict_term_reference_operator import ValidExDictTermReferenceOperator
-from .is_valid_external_dict_code_reference_operator import ValidExDictCodeReferenceOperator
-from .is_valid_external_dict_code_term_pair_operator import ValidExDictCodeTermPairsOperator
+from .is_valid_external_dict_term_reference_operator import (
+    ValidExDictTermReferenceOperator,
+)
+from .is_valid_external_dict_code_reference_operator import (
+    ValidExDictCodeReferenceOperator,
+)
+from .is_valid_external_dict_code_term_pair_operator import (
+    ValidExDictCodeTermPairsOperator,
+)
 from .matches_regex_operator import MatchesRegexOperator
 from .numeric_comparison_operator import NumericComparisonOperator
 from .prefix_matches_regex_operator import PrefixMatchesRegexOperator
@@ -69,7 +75,14 @@ MEDDRA_CODE_SUFFIX_MAP = {
     "PTCD": "PT",
     "LLTCD": "LLT",
 }
-MEDDRA_TERM_SUFFIX_MAP = {"BODSYS": "SOC", "SOC": "SOC", "HLGT": "HLGT", "HLT": "HLT", "DECOD": "PT", "LLT": "LLT"}
+MEDDRA_TERM_SUFFIX_MAP = {
+    "BODSYS": "SOC",
+    "SOC": "SOC",
+    "HLGT": "HLGT",
+    "HLT": "HLT",
+    "DECOD": "PT",
+    "LLT": "LLT",
+}
 MEDDRA_PAIR_MAP = {
     "BODSYS": ("SOC", "SOCCD"),
     "BDSYCD": ("SOC", "SOC"),
@@ -148,10 +161,22 @@ class PostgresQLOperators(BaseType):
         ),
         "matches_regex": lambda data: MatchesRegexOperator(data),
         "not_matches_regex": lambda data: MatchesRegexOperator(data, invert=True),
+        "matches_regex_case_insensitive": lambda data: MatchesRegexOperator(data, case_insensitive=True),
+        "not_matches_regex_case_insensitive": lambda data: MatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data),
         "not_prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data, invert=True),
+        "prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(data, case_insensitive=True),
+        "not_prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data),
         "not_suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data, invert=True),
+        "suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(data, case_insensitive=True),
+        "not_suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "starts_with": lambda data: StartsWithOperator(data),
         "not_starts_with": lambda data: NotOperator(data, StartsWithOperator),
         "ends_with": lambda data: EndsWithOperator(data),
@@ -213,13 +238,15 @@ class PostgresQLOperators(BaseType):
             data, StaticTables.WHODRUG_TABLE_NAME.value
         ),
         "is_not_valid_whodrug_term_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictTermReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
         ),
         "is_valid_whodrug_code_reference": lambda data: ValidExDictCodeReferenceOperator(
             data, StaticTables.WHODRUG_TABLE_NAME.value
         ),
         "is_not_valid_whodrug_code_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
         ),
         "is_valid_whodrug_level_reference": lambda data: ValidWHODrugLevelReferenceOperator(data),
         "is_not_valid_whodrug_level_reference": lambda data: NotOperator(data, ValidWHODrugLevelReferenceOperator),
@@ -227,7 +254,8 @@ class PostgresQLOperators(BaseType):
             data, StaticTables.WHODRUG_TABLE_NAME.value
         ),
         "is_not_valid_whodrug_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.WHODRUG_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
         ),
         "is_valid_meddra_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.MEDDRA_TABLE_NAME.value
@@ -247,79 +275,92 @@ class PostgresQLOperators(BaseType):
             data, StaticTables.MEDDRA_TABLE_NAME.value
         ),
         "is_not_valid_meddra_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDDRA_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDDRA_TABLE_NAME.value),
         ),
         "is_valid_medrt_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.MEDRT_TABLE_NAME.value
         ),
         "is_not_valid_medrt_term_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictTermReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
         ),
         "is_valid_medrt_code_reference": lambda data: ValidExDictCodeReferenceOperator(
             data, StaticTables.MEDRT_TABLE_NAME.value
         ),
         "is_not_valid_medrt_code_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
         ),
         "is_valid_medrt_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
             data, StaticTables.MEDRT_TABLE_NAME.value
         ),
         "is_not_valid_medrt_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDRT_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
         ),
         "is_valid_unii_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.UNII_TABLE_NAME.value
         ),
         "is_not_valid_unii_term_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictTermReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value),
         ),
         "is_valid_unii_code_reference": lambda data: ValidExDictCodeReferenceOperator(
             data, StaticTables.UNII_TABLE_NAME.value
         ),
         "is_not_valid_unii_code_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value),
         ),
         "is_valid_unii_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
             data, StaticTables.UNII_TABLE_NAME.value
         ),
         "is_not_valid_unii_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.UNII_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.UNII_TABLE_NAME.value),
         ),
         "is_valid_loinc_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.LOINC_TABLE_NAME.value
         ),
         "is_not_valid_loinc_term_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictTermReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value),
         ),
         "is_valid_loinc_code_reference": lambda data: ValidExDictCodeReferenceOperator(
             data, StaticTables.LOINC_TABLE_NAME.value
         ),
         "is_not_valid_loinc_code_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value),
         ),
         "is_valid_loinc_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
             data, StaticTables.LOINC_TABLE_NAME.value
         ),
         "is_not_valid_loinc_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.LOINC_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.LOINC_TABLE_NAME.value),
         ),
         "is_valid_snomed_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.SNOMED_TABLE_NAME.value
         ),
         "is_not_valid_snomed_term_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictTermReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
         ),
         "is_valid_snomed_code_reference": lambda data: ValidExDictCodeReferenceOperator(
             data, StaticTables.SNOMED_TABLE_NAME.value
         ),
         "is_not_valid_snomed_code_reference": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
         ),
         "is_valid_snomed_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
             data, StaticTables.SNOMED_TABLE_NAME.value
         ),
         "is_not_valid_snomed_code_term_pair": lambda data: NotOperator(
-            data, lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.SNOMED_TABLE_NAME.value)
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
         ),
         "is_latest_available_external_dictionary_version": lambda data: IsLatestAvailableExDictVersionOperator(data),
         "is_not_latest_available_external_dictionary_version": lambda data: NotOperator(
@@ -373,7 +414,12 @@ class PostgresQLOperators(BaseType):
         rather than requiring `value_is_literal: true` on every regex rule,
         as their `comparator` is always a raw regex pattern
         """
-        if operator_name in {"exists", "not_exists", "is_unique_set", "is_not_unique_set"}:
+        if operator_name in {
+            "exists",
+            "not_exists",
+            "is_unique_set",
+            "is_not_unique_set",
+        }:
             return []
 
         if not isinstance(other_value, dict):
@@ -408,10 +454,16 @@ class PostgresQLOperators(BaseType):
         regex_pattern_operators = {
             "matches_regex",
             "not_matches_regex",
+            "matches_regex_case_insensitive",
+            "not_matches_regex_case_insensitive",
             "prefix_matches_regex",
             "not_prefix_matches_regex",
+            "prefix_matches_regex_case_insensitive",
+            "not_prefix_matches_regex_case_insensitive",
             "suffix_matches_regex",
             "not_suffix_matches_regex",
+            "suffix_matches_regex_case_insensitive",
+            "not_suffix_matches_regex_case_insensitive",
         }
         if operator_name in regex_pattern_operators:
             return missing_columns

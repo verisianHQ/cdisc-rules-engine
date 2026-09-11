@@ -68,7 +68,13 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
                 valid_comparators.append(comp_col)
         return valid_comparators
 
-    def _where_populated_columns(self, where_populated, where_populated_columns, target_column, comparator_columns):
+    def _where_populated_columns(
+        self,
+        where_populated,
+        where_populated_columns,
+        target_column,
+        comparator_columns,
+    ):
         """
         where_populated (bool): if True, requires the target and comparator columns to be populated.
         where_populated_columns (list of column names, optional): requires the named columns to be

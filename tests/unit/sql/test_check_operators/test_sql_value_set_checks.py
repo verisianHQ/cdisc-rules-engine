@@ -84,7 +84,11 @@ def test_sql_is_inconsistent_across_dataset_where_populated_columns_multiple_com
     }
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_inconsistent_across_dataset(
-        {"target": "ELTM", "comparator": ["DOMAIN", "VISITNUM"], "where_populated_columns": ["TPT"]}
+        {
+            "target": "ELTM",
+            "comparator": ["DOMAIN", "VISITNUM"],
+            "where_populated_columns": ["TPT"],
+        }
     )
     assert_series_equals(result, [False, False, False, False])
 
@@ -97,7 +101,11 @@ def test_sql_is_inconsistent_across_dataset_where_populated_columns_missing_colu
     sql_ops = create_sql_operators(data)
     with pytest.raises(SqlOperatorError, match="None of the where_populated_columns exist"):
         sql_ops.is_inconsistent_across_dataset(
-            {"target": "VALUE", "comparator": "KEY", "where_populated_columns": ["MISSING"]}
+            {
+                "target": "VALUE",
+                "comparator": "KEY",
+                "where_populated_columns": ["MISSING"],
+            }
         )
 
 

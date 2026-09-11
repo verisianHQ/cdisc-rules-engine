@@ -68,7 +68,8 @@ def _find_operator_condition_keys() -> set:
     keys = set()
     condition_key_pattern = re.compile(r'other_value(?:\.get\(|\[)"([a-zA-Z_]+)"')
     sql_operator_files = glob.glob(
-        os.path.join("cdisc_rules_engine", "check_operators", "sql", "**", "*.py"), recursive=True
+        os.path.join("cdisc_rules_engine", "check_operators", "sql", "**", "*.py"),
+        recursive=True,
     )
     for path in sql_operator_files:
         with open(path, "r") as f:
