@@ -14,12 +14,8 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         target = other_value.get("target")
         comparator = other_value.get("comparator")
         where_populated = other_value.get("where_populated", False)
-
-        if not isinstance(where_populated, (bool, list)):
-            raise ValueError(
-                f"Invalid where_populated type for is_inconsistent_across_dataset operation. "
-                f"Expected boolean or list of column names, got: {type(where_populated).__name__}"
-            )
+        where_populated_columns = other_value.get("where_populated_columns")
+        self._validate_where_populated_args(where_populated, where_populated_columns)
 
         if not target or not isinstance(target, str) or target in self.operation_variables:
             raise ValueError("Target is required and must be a valid column name.")
@@ -28,6 +24,33 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
         if not self._exists(target_column):
             return self._do_check_operator(lambda: "FALSE")
 
+        valid_comparators = self._resolve_valid_comparators(comparator, target_column)
+        if len(valid_comparators) == 0:
+            return self._do_check_operator(lambda: "FALSE")
+
+        populated_columns = self._where_populated_columns(
+            where_populated, where_populated_columns, target_column, valid_comparators
+        )
+
+        if len(valid_comparators) == 1:
+            return self._handle_single_comparator(target_column, valid_comparators[0], populated_columns)
+        else:
+            return self._handle_multiple_comparators(target_column, valid_comparators, populated_columns)
+
+    def _validate_where_populated_args(self, where_populated, where_populated_columns):
+        if not isinstance(where_populated, bool):
+            raise ValueError(
+                f"Invalid where_populated type for is_inconsistent_across_dataset operation. "
+                f"Expected boolean, got: {type(where_populated).__name__}"
+            )
+
+        if where_populated_columns is not None and not isinstance(where_populated_columns, list):
+            raise ValueError(
+                f"Invalid where_populated_columns type for is_inconsistent_across_dataset operation. "
+                f"Expected list of column names, got: {type(where_populated_columns).__name__}"
+            )
+
+    def _resolve_valid_comparators(self, comparator, target_column):
         if isinstance(comparator, str):
             comparator_list = [comparator]
         elif isinstance(comparator, list):
@@ -43,35 +66,39 @@ class IsInconsistentAcrossDatasetOperator(BaseSqlOperator):
             comp_col = self.replace_prefix(comp).lower()
             if self._exists(comp_col):
                 valid_comparators.append(comp_col)
+        return valid_comparators
 
-        if len(valid_comparators) == 0:
-            return self._do_check_operator(lambda: "FALSE")
-
-        populated_columns = self._where_populated_columns(where_populated, target_column, valid_comparators)
-
-        if len(valid_comparators) == 1:
-            return self._handle_single_comparator(target_column, valid_comparators[0], populated_columns)
-        else:
-            return self._handle_multiple_comparators(target_column, valid_comparators, populated_columns)
-
-    def _where_populated_columns(self, where_populated, target_column, comparator_columns):
+    def _where_populated_columns(self, where_populated, where_populated_columns, target_column, comparator_columns):
         """
-        where_populated param can be either a boolean or a list of column names.
-        If True, requires the target and comparator columns to be populated.
-        If a list, requires the named columns to be populated.
-        Columns that do not exist in the dataset are ignored.
+        where_populated (bool): if True, requires the target and comparator columns to be populated.
+        where_populated_columns (list of column names, optional): requires the named columns to be
+            populated, in addition to target/comparator if where_populated is also True.
+        Named columns that do not exist in the dataset are ignored. If none of them exist:
+        - and where_populated is True, still filter on target/comparator.
+        - otherwise, there would be nothing left to filter on, so we raise rather than
+          silently falling back to an unfiltered check.
         """
-        if not where_populated:
-            return []
-
-        if not isinstance(where_populated, list):
-            return [target_column, *comparator_columns]
-
         populated_columns = []
-        for column in where_populated:
-            resolved_column = self.replace_prefix(column).lower()
-            if resolved_column not in populated_columns and self._exists(resolved_column):
-                populated_columns.append(resolved_column)
+        if where_populated:
+            populated_columns.extend([target_column, *comparator_columns])
+
+        if where_populated_columns:
+            resolved_columns = []
+            for column in where_populated_columns:
+                resolved_column = self.replace_prefix(column).lower()
+                if self._exists(resolved_column):
+                    resolved_columns.append(resolved_column)
+
+            if not resolved_columns and not where_populated:
+                raise ValueError(
+                    "None of the where_populated_columns exist in the dataset for "
+                    f"is_inconsistent_across_dataset operation: {where_populated_columns}"
+                )
+
+            for resolved_column in resolved_columns:
+                if resolved_column not in populated_columns:
+                    populated_columns.append(resolved_column)
+
         return populated_columns
 
     def _handle_single_comparator(self, target_column, comparator_column, populated_columns=()):
