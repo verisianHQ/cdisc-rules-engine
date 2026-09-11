@@ -236,7 +236,9 @@ SUFFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA = [
     "data,comparator,length,expected_result",
     PREFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
 )
-def test_prefix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+def test_prefix_matches_regex_case_insensitive(
+    data, comparator, length, expected_result
+):
     sql_ops = create_sql_operators(data)
 
     result = sql_ops.prefix_matches_regex_case_insensitive(
@@ -254,7 +256,9 @@ def test_prefix_matches_regex_case_insensitive(data, comparator, length, expecte
     "data,comparator,length,expected_result",
     PREFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
 )
-def test_not_prefix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+def test_not_prefix_matches_regex_case_insensitive(
+    data, comparator, length, expected_result
+):
     sql_ops = create_sql_operators(data)
 
     result = sql_ops.not_prefix_matches_regex_case_insensitive(
@@ -272,7 +276,9 @@ def test_not_prefix_matches_regex_case_insensitive(data, comparator, length, exp
     "data,comparator,length,expected_result",
     SUFFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
 )
-def test_suffix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+def test_suffix_matches_regex_case_insensitive(
+    data, comparator, length, expected_result
+):
     sql_ops = create_sql_operators(data)
 
     result = sql_ops.suffix_matches_regex_case_insensitive(
@@ -290,7 +296,9 @@ def test_suffix_matches_regex_case_insensitive(data, comparator, length, expecte
     "data,comparator,length,expected_result",
     SUFFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
 )
-def test_not_suffix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+def test_not_suffix_matches_regex_case_insensitive(
+    data, comparator, length, expected_result
+):
     sql_ops = create_sql_operators(data)
 
     result = sql_ops.not_suffix_matches_regex_case_insensitive(
