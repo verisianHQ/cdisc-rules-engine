@@ -71,7 +71,7 @@ _SCHEMA_MAP = {
 def populate_dictionaries(pgi: PostgresQLInterface, external_dictionaries: SqlExternalDictionariesContainer):
     """Populates the dictionary tables with the provided external dictionaries."""
     if not external_dictionaries:
-        return
+        return {}
 
     dictionary_metadata = {}
 
