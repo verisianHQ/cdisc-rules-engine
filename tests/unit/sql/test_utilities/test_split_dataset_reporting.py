@@ -131,3 +131,39 @@ def test_skipped_split_dataset_is_reported_per_part():
     assert [rep["dataset"] for rep in representations] == ["mh1.xpt", "mh2.xpt"]
     assert all(rep["executionStatus"] == ExecutionStatus.SKIPPED.value for rep in representations)
     assert all(rep["message"] == "Not in scope" for rep in representations)
+
+
+def test_clean_part_carries_no_message():
+    """A part with no errors of its own passed, so it carries no error message."""
+    handler = make_handler(["mh1.xpt", "mh2.xpt"])
+
+    containers = handler._bundle_error_objects_per_source(
+        "Duplicate MHSEQ",
+        [error_in("mh1.xpt", 1)],
+    )
+
+    by_dataset = {container.dataset: container for container in containers}
+    assert by_dataset["mh1.xpt"].message == "Duplicate MHSEQ"
+    assert by_dataset["mh2.xpt"].message is None
+
+
+def test_no_part_carries_a_message_when_none_have_errors():
+    handler = make_handler(["mh1.xpt", "mh2.xpt"])
+
+    containers = handler._bundle_error_objects_per_source("Duplicate MHSEQ", [])
+
+    assert all(container.message is None for container in containers)
+
+
+def test_domain_substitution_still_applies_to_parts_with_errors():
+    """The "--" placeholder is still replaced with the domain where a message is set."""
+    handler = make_handler(["mh1.xpt", "mh2.xpt"])
+
+    containers = handler._bundle_error_objects_per_source(
+        "-- has a duplicate sequence",
+        [error_in("mh1.xpt", 1)],
+    )
+
+    by_dataset = {container.dataset: container for container in containers}
+    assert by_dataset["mh1.xpt"].message == "MH has a duplicate sequence"
+    assert by_dataset["mh2.xpt"].message is None

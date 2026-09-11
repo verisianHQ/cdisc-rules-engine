@@ -110,37 +110,28 @@ class SqlVenmoResultHandler(BaseActions):
         if not split_parts:
             return [self._bundle_error_object(message=message, error_rows=errors_list)]
 
-        return [
-            self._bundle_error_object(
-                message=message,
-                error_rows=[error for error in errors_list if (error._dataset or "").lower() == source_dataset.lower()],
-                dataset=source_dataset,
+        containers = []
+        for source_dataset in sorted(split_parts):
+            error_rows = [error for error in errors_list if (error._dataset or "").lower() == source_dataset.lower()]
+            containers.append(
+                self._bundle_error_object(
+                    message=message if error_rows else None,
+                    error_rows=error_rows,
+                    dataset=source_dataset,
+                )
             )
-            for source_dataset in sorted(split_parts)
-        ]
+        return containers
 
     def _get_error_rows(self, truth_series) -> List[dict]:
-        """
-        Fetch the rows which returned TRUE.
-
-        Query from the validation table (self.dataset_id) which contains all necessary columns:
-        - For normal rules: same as original dataset
-        - For cross-dataset rules: joined table with columns from multiple datasets
-        - For metadata rules: metadata table
-        """
-        # Query from the validation table which has all the columns we need
+        """Fetch the rows which returned TRUE."""
         table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_id)
-
-        # Get indices of TRUE values
         true_indicies = [str(i + 1) for i, x in enumerate(truth_series) if x]
 
         if not true_indicies:
             return []
 
-        # Query the validation table
         self.data_service.pgi.execute_sql(
-            f"""SELECT * FROM {table_hash}
-                WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
+            f"SELECT * FROM {table_hash} WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"
         )
 
         results = self.data_service.pgi.fetch_all()
@@ -148,7 +139,7 @@ class SqlVenmoResultHandler(BaseActions):
 
     def _bundle_error_object(
         self,
-        message: str,
+        message: Optional[str],
         error_rows: List[ValidationErrorEntity],
         dataset: Optional[str] = None,
     ) -> ValidationErrorContainer:
@@ -160,7 +151,7 @@ class SqlVenmoResultHandler(BaseActions):
             dataset=dataset or ", ".join(sorted(set(error._dataset or "" for error in error_rows))),
             targets=SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, original_schema),
             errors=error_rows,
-            message=message.replace("--", self.dataset_metadata.domain or ""),
+            message=(message.replace("--", self.dataset_metadata.domain or "") if message is not None else None),
         )
 
     def _generate_errors_list(
