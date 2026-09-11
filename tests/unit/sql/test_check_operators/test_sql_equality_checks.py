@@ -15,7 +15,7 @@ from .helpers import assert_series_equals, create_sql_operators
         (
             {"target": ["A", "B", "C"], "VAR2": ["A", "B", "C"]},
             "B",
-            False,
+            True,
             [False, True, False],
         ),
         (
@@ -190,85 +190,99 @@ def test_equal_to_type_insensitive_numeric_safe_cast(data, comparator, expected_
 
 
 @pytest.mark.parametrize(
-    "data,comparator,expected_result",
+    "data,comparator,is_literal,expected_result",
     [
         (
             {"target": ["A", "B", "", "", None], "VAR2": ["A", "B", "C", None, None]},
             "VAR2",
+            False,
             [False, False, True, False, False],
         ),
         (
             {"target": ["A", "B", "C"], "VAR2": ["A", "B", "C"]},
             "B",
+            True,
             [True, False, True],
         ),
         (
             {"target": ["A", "", None]},
             None,
+            False,
             [True, False, False],
         ),
         (
             {"target": ["A", "a", "b"]},
             "$constant",
+            False,
             [False, True, True],
         ),
     ],
 )
-def test_not_equal_to(data, comparator, expected_result):
+def test_not_equal_to(data, comparator, is_literal, expected_result):
     sql_ops = create_sql_operators(data)
-    result = sql_ops.not_equal_to({"target": "target", "comparator": comparator})
+    result = sql_ops.not_equal_to({"target": "target", "comparator": comparator, "value_is_literal": is_literal})
     assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
-    "data,comparator,expected_result",
+    "data,comparator,is_literal,expected_result",
     [
         (
             {"target": ["A", "B", "C"], "VAR2": ["a", "b", "c"]},
             "VAR2",
+            False,
             [True, True, True],
         ),
         (
             {"target": ["A", "b", "B"], "VAR2": ["A", "B", "C"]},
             "B",
+            True,
             [False, True, True],
         ),
         (
             {"target": ["A", "a", "b"]},
             "$constant",
+            False,
             [True, True, False],
         ),
     ],
 )
-def test_equal_to_case_insensitive(data, comparator, expected_result):
+def test_equal_to_case_insensitive(data, comparator, is_literal, expected_result):
     sql_ops = create_sql_operators(data)
-    result = sql_ops.equal_to_case_insensitive({"target": "target", "comparator": comparator})
+    result = sql_ops.equal_to_case_insensitive(
+        {"target": "target", "comparator": comparator, "value_is_literal": is_literal}
+    )
     assert_series_equals(result, expected_result)
 
 
 @pytest.mark.parametrize(
-    "data,comparator,expected_result",
+    "data,comparator,is_literal,expected_result",
     [
         (
             {"target": ["A", "B", "C"], "VAR2": ["a", "b", "c"]},
             "VAR2",
+            False,
             [False, False, False],
         ),
         (
             {"target": ["A", "B", "C"], "VAR2": ["A", "B", "C"]},
             "b",
+            True,
             [True, False, True],
         ),
         (
             {"target": ["A", "a", "b"]},
             "$constant",
+            False,
             [False, False, True],
         ),
     ],
 )
-def test_not_equal_to_case_insensitive(data, comparator, expected_result):
+def test_not_equal_to_case_insensitive(data, comparator, is_literal, expected_result):
     sql_ops = create_sql_operators(data)
-    result = sql_ops.not_equal_to_case_insensitive({"target": "target", "comparator": comparator})
+    result = sql_ops.not_equal_to_case_insensitive(
+        {"target": "target", "comparator": comparator, "value_is_literal": is_literal}
+    )
     assert_series_equals(result, expected_result)
 
 
@@ -304,5 +318,5 @@ def test_not_equal_to_case_insensitive(data, comparator, expected_result):
 def test_operation_variable_as_target(data, target, comparator, expected_result):
     # Data is irrelevant here, just determines number of output rows
     sql_ops = create_sql_operators(data)
-    result = sql_ops.equal_to({"target": target, "comparator": comparator})
+    result = sql_ops.equal_to({"target": target, "comparator": comparator, "value_is_literal": True})
     assert_series_equals(result, expected_result)
