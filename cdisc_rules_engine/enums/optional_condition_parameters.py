@@ -21,3 +21,4 @@ class OptionalConditionParameters(BaseEnum):
     VERSION = "version"
     VARIABLE_REGEX_PATTERN = "variable_regex_pattern"
     WHERE_POPULATED = "where_populated"
+    WHERE_POPULATED_COLUMNS = "where_populated_columns"
