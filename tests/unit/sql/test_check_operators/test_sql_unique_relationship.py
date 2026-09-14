@@ -124,3 +124,34 @@ def test_sql_is_not_unique_relationship_multiple_comparators(data, target, compa
     sql_ops = create_sql_operators(data)
     result = sql_ops.is_not_unique_relationship({"target": target, "comparator": comparator})
     assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "target,comparator",
+    [
+        ("MISSING", "STUDYDESC"),
+        ("STUDYID", "MISSING"),
+        ("STUDYID", ["MISSING1", "MISSING2"]),
+    ],
+)
+def test_sql_is_not_unique_relationship_missing_columns_returns_false(target, comparator):
+    """A missing target/comparator column can't be checked, so the operator falls back to FALSE."""
+    data = {"STUDYID": [1, 1, 2, 3], "STUDYDESC": ["A", "B", "B", "C"]}
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_not_unique_relationship({"target": target, "comparator": comparator})
+    assert_series_equals(result, [False, False, False, False])
+
+
+@pytest.mark.parametrize(
+    "target,comparator",
+    [
+        ("MISSING", "STUDYDESC"),
+        ("STUDYID", "MISSING"),
+        ("STUDYID", ["MISSING1", "MISSING2"]),
+    ],
+)
+def test_sql_is_unique_relationship_missing_columns_not_negated_to_true(target, comparator):
+    data = {"STUDYID": [1, 1, 2, 3], "STUDYDESC": ["A", "B", "B", "C"]}
+    sql_ops = create_sql_operators(data)
+    result = sql_ops.is_unique_relationship({"target": target, "comparator": comparator})
+    assert_series_equals(result, [False, False, False, False])

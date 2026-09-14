@@ -46,6 +46,8 @@ class IsNotUniqueRelationshipOperator(BaseSqlOperator):
             op_name = f"{target}_{'_'.join(comparator_columns)}_not_unique_relationship"
         else:
             comparator_column = self.replace_prefix(comparator)
+            if not self._exists(comparator_column):
+                return self._do_check_operator(lambda: "FALSE")
             comparator_sql = self._column_sql(comparator_column, alias=False)
             comparator_list = f"COALESCE({comparator_sql}::text, '') AS {comparator_sql}"
             concat_expr = f"COALESCE({comparator_sql}::text, '')"
@@ -87,3 +89,17 @@ class IsNotUniqueRelationshipOperator(BaseSqlOperator):
             """
 
         return self._do_complex_check_operator(op_name, generate_update_query)
+
+    def has_missing_required_columns(self, other_value) -> bool:
+        """Whether execute_operator would fall back to its default FALSE result."""
+        target_column = self.replace_prefix(other_value.get("target"))
+        if not self._exists(target_column):
+            return True
+
+        comparator = other_value.get("comparator")
+        if isinstance(comparator, list):
+            comparator_columns = [self.replace_prefix(col) for col in comparator]
+            return not any(self._exists(col) for col in comparator_columns)
+        else:
+            comparator_column = self.replace_prefix(comparator)
+            return not self._exists(comparator_column)
