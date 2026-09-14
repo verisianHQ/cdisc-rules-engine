@@ -42,7 +42,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         where_clauses = []
         params = {}
 
-        ct_version_column = self._ct_version_column()
+        ct_version_column = None if self.data_service.provided_codelists else self._ct_version_column()
         if ct_version_column:
             where_clauses.append(f"{version_date_col_sql} = $ct_version")
             params["$ct_version"] = ct_version_column
@@ -76,9 +76,9 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
 
     def _ct_version_column(self) -> Optional[str]:
         ct_version = self.params.ct_version
-        if not ct_version or not isinstance(ct_version, str):
+        if not ct_version or not isinstance(ct_version, str) or not self.params.table:
             return None
-        if not self.data_service.pgi.schema.column_exists(self.params.domain, ct_version):
+        if not self.data_service.pgi.schema.column_exists(self.params.table, ct_version):
             return None
         return ct_version
 

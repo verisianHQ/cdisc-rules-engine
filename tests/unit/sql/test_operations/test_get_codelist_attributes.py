@@ -6,7 +6,7 @@ from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.get_codelist_attributes import (
     SqlGetCodelistAttributesOperation,
 )
-from .helpers import assert_operation_collection
+from .helpers import assert_operation_collection, assert_operation_parameterized_collection
 
 
 def setup_codelist_table(data_service: PostgresQLDataService):
@@ -95,3 +95,59 @@ def test_get_codelist_attributes_term_signification(sdtm_standards_context):
     result = operation.execute()
 
     assert_operation_collection(operation, result, ["Signification C", "Signification D"], unsorted=True)
+
+
+def setup_data_table_with_version_column(data_service: PostgresQLDataService, table_name: str):
+    schema = SqlTableSchema.static(table_name)
+    schema.add_column(SqlColumnSchema("studydate", "studydate", "Char"))
+    data_service.pgi.create_table(schema)
+    data_service.pgi.insert_data(table_name, [{"studydate": "2021-12-17"}])
+
+
+def test_get_codelist_attributes_column_referenced_version_uses_table_not_domain(sdtm_standards_context):
+    data_service = PostgresQLDataService.instance()
+    setup_codelist_table(data_service)
+    setup_data_table_with_version_column(data_service, "ae1")
+
+    params = SqlOperationParams(
+        domain="ae",
+        table="ae1",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="studydate",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert result.params == {"$ct_version": "studydate"}
+    assert_operation_parameterized_collection(
+        operation,
+        result,
+        [{"params": {"$ct_version": "2021-12-17"}, "value": ["C999"]}],
+        unsorted=True,
+    )
+
+
+def test_get_codelist_attributes_provided_codelists_takes_precedence_over_column_reference(
+    sdtm_standards_context,
+):
+    data_service = PostgresQLDataService.instance(provided_codelists="sdtmct-2020-03-27")
+    setup_codelist_table(data_service)
+    setup_data_table_with_version_column(data_service, "ae1")
+
+    params = SqlOperationParams(
+        domain="ae",
+        table="ae1",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="studydate",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert result.params is None
+    assert_operation_collection(operation, result, ["C1234", "C5678"], unsorted=True)
