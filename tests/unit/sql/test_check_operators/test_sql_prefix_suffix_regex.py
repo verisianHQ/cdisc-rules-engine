@@ -181,3 +181,124 @@ def test_not_suffix_matches_regex(data, comparator, length, expected_result):
     )
 
     assert_series_equals(result, expected_result)
+
+
+PREFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["facm", "FACM", "mhlb"]},
+        "(AP|FA)",
+        2,
+        [True, True, False],
+    ),
+    (
+        {"target": ["apmh", "APMH", "mhlb"]},
+        "(AP|FA)",
+        2,
+        [True, True, False],
+    ),
+]
+
+PREFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["facm", "FACM", "mhlb"]},
+        "(AP|FA)",
+        2,
+        [False, False, True],
+    ),
+    (
+        {"target": ["apmh", "APMH", "mhlb"]},
+        "(AP|FA)",
+        2,
+        [False, False, True],
+    ),
+]
+
+SUFFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["facm", "FACM", "mhlb"]},
+        "CM",
+        2,
+        [True, True, False],
+    ),
+]
+
+SUFFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA = [
+    (
+        {"target": ["facm", "FACM", "mhlb"]},
+        "CM",
+        2,
+        [False, False, True],
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    "data,comparator,length,expected_result",
+    PREFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_prefix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+    sql_ops = create_sql_operators(data)
+
+    result = sql_ops.prefix_matches_regex_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "prefix": length,
+        }
+    )
+
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,length,expected_result",
+    PREFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_not_prefix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+    sql_ops = create_sql_operators(data)
+
+    result = sql_ops.not_prefix_matches_regex_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "prefix": length,
+        }
+    )
+
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,length,expected_result",
+    SUFFIX_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_suffix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+    sql_ops = create_sql_operators(data)
+
+    result = sql_ops.suffix_matches_regex_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "suffix": length,
+        }
+    )
+
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "data,comparator,length,expected_result",
+    SUFFIX_NOT_MATCHES_REGEX_CASE_INSENSITIVE_TEST_DATA,
+)
+def test_not_suffix_matches_regex_case_insensitive(data, comparator, length, expected_result):
+    sql_ops = create_sql_operators(data)
+
+    result = sql_ops.not_suffix_matches_regex_case_insensitive(
+        {
+            "target": "target",
+            "comparator": comparator,
+            "suffix": length,
+        }
+    )
+
+    assert_series_equals(result, expected_result)
