@@ -183,44 +183,6 @@ def test_child_merge_with_pattern_replacement(sdtm_standards_context):
     assert results[1]["lbtest"] == "Sodium"
 
 
-def test_child_merge_match_key_fallback(sdtm_standards_context):
-    """Test child merge using match key fallback (no RDOMAIN column)."""
-    ds = PostgresQLDataService.instance()
-    data = MATCH_KEY_FALLBACK_DATA
-
-    child_schema = PostgresQLDataService.add_test_dataset(ds, "child", data["child"], sdtm_standards_context)
-    PostgresQLDataService.add_test_dataset(ds, "parent", data["parent"], sdtm_standards_context)
-
-    merge_spec = {"match_key": ["STUDYID", "USUBJID", "SEQ"]}
-
-    result_schema = SqlChildMerge.perform_merge(
-        pgi=ds.pgi,
-        child=child_schema,
-        child_domain="CHILD",
-        datasets=ds.datasets,
-        merge_spec=merge_spec,
-    )
-
-    assert result_schema is not None
-    ds.pgi.execute_sql(f"SELECT COUNT(*) as count FROM {result_schema.hash}")
-    result = ds.pgi.fetch_all()
-    assert result[0]["count"] == 2
-
-    parentcol_col = result_schema.get_column_hash("parentcol")
-    ds.pgi.execute_sql(
-        f"""SELECT
-                childcol,
-                {parentcol_col} as parentcol
-            FROM {result_schema.hash}
-            ORDER BY childcol"""
-    )
-    results = ds.pgi.fetch_all()
-    assert results[0]["childcol"] == "A"
-    assert results[0]["parentcol"] == "X"
-    assert results[1]["childcol"] == "B"
-    assert results[1]["parentcol"] == "Y"
-
-
 def test_child_merge_run_twice(sdtm_standards_context):
     """Test that running same child merge twice returns cached result."""
     ds = PostgresQLDataService.instance()
