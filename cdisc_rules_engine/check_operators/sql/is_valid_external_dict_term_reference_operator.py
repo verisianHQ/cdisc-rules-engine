@@ -21,7 +21,7 @@ class ValidExDictTermReferenceOperator(BaseSqlOperator):
 
         if filter_attribute and filter_value:
             if filter_attribute == "version":
-                filter_conditions.append(f"{filter_attribute} <= '{filter_value}'")
+                filter_conditions.append(self._version_le_condition_sql(filter_attribute, filter_value))
             else:
                 filter_conditions.append(f"{filter_attribute} = '{filter_value}'")
 
