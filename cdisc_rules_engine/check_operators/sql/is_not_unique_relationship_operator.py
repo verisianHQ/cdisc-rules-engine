@@ -29,12 +29,16 @@ class IsNotUniqueRelationshipOperator(BaseSqlOperator):
         3        C
         """
         target_column = self.replace_prefix(other_value.get("target"))
+        if not self._exists(target_column):
+            return self._do_check_operator(lambda: "FALSE")
         target = self._column_sql(target_column, alias=False)
         comparator = other_value.get("comparator")
 
         if isinstance(comparator, list):
             comparator_columns = [self.replace_prefix(col) for col in comparator]
-            comparator_sql = [self._column_sql(col, alias=False) for col in comparator_columns]
+            comparator_sql = [self._column_sql(col, alias=False) for col in comparator_columns if self._exists(col)]
+            if not comparator_sql:
+                return self._do_check_operator(lambda: "FALSE")
             comparator_list = ", ".join([f"COALESCE({c}::text, '') AS {c}" for c in comparator_sql])
             concat_expr = " || '|' || ".join(
                 f"COALESCE({comparator_columns}::text, '')" for comparator_columns in comparator_sql
