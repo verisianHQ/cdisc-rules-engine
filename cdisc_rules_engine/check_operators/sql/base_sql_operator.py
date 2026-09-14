@@ -300,9 +300,11 @@ class BaseSqlOperator:
         return f"({query})"
 
     def _substitute_operation_parameters(self, query: str, params: dict) -> str:
-        """Substitute operation parameters in query."""
+        """
+        Substitute operation parameters in query.
+        """
         for param_placeholder, column_name in params.items():
-            column_sql = self._column_sql(column_name)
+            column_sql = self._column_sql(column_name, null_return=True)
             query = query.replace(param_placeholder, column_sql)
         return query
 
