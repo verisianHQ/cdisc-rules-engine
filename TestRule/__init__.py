@@ -56,10 +56,6 @@ def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:  # 
         standard = standards_data.get("product")
         standard_version = standards_data.get("version")
         standard_substandard = standards_data.get("substandard")
-        if standard:
-            standard = standard.lower()
-        if standard_substandard:
-            standard_substandard = standard_substandard.lower()
         codelists = json_data.get("codelists", [])
         cache = InMemoryCacheService()
         library_service = CDISCLibraryService(api_key, cache)

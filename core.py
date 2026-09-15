@@ -55,12 +55,6 @@ def valid_data_file(data_path: list, allow_sql_mixed_formats: bool = False) -> T
     return [], set()
 
 
-def normalize_standard(ctx, param, value):
-    if value is None:
-        return value
-    return value.lower()
-
-
 @click.group()
 def cli():
     pass
@@ -111,7 +105,6 @@ def cli():
     "--standard",
     required=True,
     default=None,
-    callback=normalize_standard,
     help="CDISC standard to validate against",
 )
 @click.option(
@@ -125,7 +118,6 @@ def cli():
     "-ss",
     "--substandard",
     default=None,
-    callback=normalize_standard,
     help="CDISC Substandard to validate against",
 )
 @click.option(
@@ -474,20 +466,13 @@ def update_cache(
     default=DefaultFilePaths.CACHE.value,
     help="Relative path to cache files containing pre loaded metadata and rules",
 )
-@click.option(
-    "-s",
-    "--standard",
-    required=False,
-    callback=normalize_standard,
-    help="CDISC standard to get rules for",
-)
+@click.option("-s", "--standard", required=False, help="CDISC standard to get rules for")
 @click.option("-v", "--version", required=False, help="Standard version to get rules for")
 @click.option(
     "-ss",
     "--substandard",
     required=False,
     default=None,
-    callback=normalize_standard,
     help="CDISC substandard to get rules for. Any of SDTM, SEND, ADaM, CDASH",
 )
 @click.option(
