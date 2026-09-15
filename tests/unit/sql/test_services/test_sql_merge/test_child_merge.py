@@ -286,3 +286,44 @@ def test_child_merge_unmatched_child_rows(sdtm_standards_context):
     assert len(unmatched) == 2
     assert unmatched[0]["aeterm"] is None
     assert unmatched[1]["aeterm"] is None
+
+
+def test_child_merge_idvar_numeric_parent_with_scientific_notation(sdtm_standards_context):
+    """Test that child merge correctly handles scientific notation"""
+    ds = PostgresQLDataService.instance()
+
+    child_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "RDOMAIN": ["AE", "AE", "AE"],
+        "USUBJID": ["U1", "U2", "U3"],
+        "IDVAR": ["AESEQ", "AESEQ", "AESEQ"],
+        "IDVARVAL": ["1000000000000000", "1E5", "999"],
+        "QNAM": ["SEV", "SEV", "SEV"],
+        "QVAL": ["MILD", "MODERATE", "SEVERE"],
+    }
+    parent_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "USUBJID": ["U1", "U2", "U3"],
+        "AESEQ": [1000000000000000, 100000, 1],
+        "AETERM": ["Big", "Sci", "NoMatch"],
+    }
+
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "suppae", child_data, sdtm_standards_context)
+    parent_schema = PostgresQLDataService.add_test_dataset(ds, "ae", parent_data, sdtm_standards_context)
+    assert parent_schema.get_column("aeseq").type == "Num"
+
+    result_schema = SqlChildMerge.perform_merge(
+        pgi=ds.pgi,
+        child=child_schema,
+        child_domain="SUPPAE",
+        datasets=ds.datasets,
+        merge_spec={},
+    )
+
+    aeterm_col = result_schema.get_column_hash("aeterm")
+    ds.pgi.execute_sql(f"SELECT usubjid, {aeterm_col} as aeterm FROM {result_schema.hash} ORDER BY usubjid")
+    results = {r["usubjid"]: r["aeterm"] for r in ds.pgi.fetch_all()}
+
+    assert results["U1"] == "Big"
+    assert results["U2"] == "Sci"
+    assert results["U3"] is None

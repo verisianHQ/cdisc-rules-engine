@@ -1,6 +1,7 @@
 from typing import List, Literal, Optional, Tuple
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -46,11 +47,12 @@ class SqlJoinMerge:
             right_column = right.get_column(r_var)
             if left_column is None or right_column is None:
                 raise ValueError(f"Column {l_var} or {r_var} not found in the respective schemas.")
-            # compare as text if types differ
+            # compare numerically when possible (avoiding scientific-notation mismatches)
+            # and fall back to text otherwise.
             if left_column.type == right_column.type:
                 join_conditions.append(f"l.{left_column.hash} = r.{right_column.hash}")
             else:
-                join_conditions.append(f"l.{left_column.hash}::text = r.{right_column.hash}::text")
+                join_conditions.append(numeric_aware_equals_sql(f"l.{left_column.hash}", f"r.{right_column.hash}"))
 
         if extra_conditions:
             join_conditions.extend(extra_conditions)

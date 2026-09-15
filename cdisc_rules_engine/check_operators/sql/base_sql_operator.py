@@ -11,6 +11,7 @@ from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.data_service.util import safe_numeric_cast_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import (
     ColumnNotFoundError,
     SqlOperatorError,
@@ -542,8 +543,4 @@ class BaseSqlOperator:
         Safely cast a SQL expression to NUMERIC.
         Non-numeric values return NULL instead of raising a Postgres cast error.
         """
-        return f"""CASE
-                WHEN TRIM(CAST({value_sql} AS TEXT)) ~ '^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
-                    THEN CAST(TRIM(CAST({value_sql} AS TEXT)) AS NUMERIC)
-                ELSE NULL
-            END"""
+        return safe_numeric_cast_sql(value_sql)

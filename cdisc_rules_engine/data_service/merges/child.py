@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
@@ -188,7 +189,7 @@ class SqlChildMerge:
             return None
 
         case_expression = f"CASE l.{idvar_hash} {' '.join(cases)} END"
-        return f"{case_expression} = l.{idvarval_hash}::text"
+        return numeric_aware_equals_sql(case_expression, f"l.{idvarval_hash}")
 
     @staticmethod
     def _get_ordered_rdomain_values(pgi: PostgresQLInterface, child: SqlTableSchema) -> List[str]:
