@@ -544,3 +544,19 @@ class BaseSqlOperator:
         Non-numeric values return NULL instead of raising a Postgres cast error.
         """
         return safe_numeric_cast_sql(value_sql)
+
+    @staticmethod
+    def _version_le_condition_sql(column: str, filter_value: str) -> str:
+        """
+        SQL condition equivalent to "{column} <= '{filter_value}'" that compares
+        dotted numeric versions.
+        Falls back to string comparison if either are not dotted numeric versions.
+        """
+        dotted_numeric_pattern = r"^\d+(\.\d+)*$"
+        return f"""(
+            CASE
+                WHEN {column} ~ '{dotted_numeric_pattern}' AND '{filter_value}' ~ '{dotted_numeric_pattern}'
+                    THEN string_to_array({column}, '.')::int[] <= string_to_array('{filter_value}', '.')::int[]
+                ELSE {column} <= '{filter_value}'
+            END
+        )"""
