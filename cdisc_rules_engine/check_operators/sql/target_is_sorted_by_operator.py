@@ -40,13 +40,20 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                     - name: Column name to sort by
                     - sort_order: "ASC" or "DESC"
                     - null_position: "first" or "last"
+                - strict_incremental_ordering: (optional, default False) If True,
+                    checks that target values equal their 1-based row position within
+                    each group when ordered by comparator (e.g. 1 2 3 or 01 02 03).
 
         Returns:
             Boolean series indicating if each record meets the sorting condition
         """
+        regex_sort = other_value.get("regex", None)
         target = self.replace_prefix(other_value.get("target"))
-        within = self.replace_prefix(other_value.get("within"))
+        val = other_value.get("within")
+        within = val if isinstance(val, list) else [val]
+        within = [self.replace_prefix(val) for val in within]
         comparators = other_value["comparator"]
+        strict_incremental = other_value.get("strict_incremental_ordering", False)
 
         if not all([target, within, comparators]):
             raise ValueError("Missing required parameters: target, within, or comparator")
@@ -58,9 +65,50 @@ class TargetIsSortedByOperator(BaseSqlOperator):
             null_pos = comp["null_position"]
             comparator_parts.append(f"{name}_{order}_{null_pos}")
 
-        cache_key = f"{target}_is_sorted_by_{'_'.join(comparator_parts)}_within_{within}"
+        strict_suffix = "_strict_incremental" if strict_incremental else ""
+        within_key = "_".join(val for val in within)
+        cache_key = f"{target}_is_sorted_by_{'_'.join(comparator_parts)}_within_{within_key}{strict_suffix}"
 
         def sql(table_name, column_name):
+
+            target_sql = self._column_sql(target, alias=False)
+            target_sql = (
+                target_sql if not regex_sort else f"CAST((regexp_match({target_sql}, '{regex_sort}'))[1] AS INTEGER)"
+            )
+
+            if strict_incremental:
+                strict_order_parts = []
+                for comp in comparators:
+                    comp_name = self.replace_prefix(comp["name"])
+                    comp_sql = self._column_sql(comp_name, alias=False)
+                    sort_order = comp["sort_order"].upper()
+                    null_pos = comp["null_position"].upper()
+                    order_part = f"{comp_sql} {sort_order}"
+                    order_part += " NULLS FIRST" if null_pos == "FIRST" else " NULLS LAST"
+                    strict_order_parts.append(order_part)
+
+                order_by_clause = ", ".join(strict_order_parts)
+                partition_by_clause = ", ".join(f"{self._column_sql(val, alias=False)}" for val in within)
+
+                return f"""
+            WITH strict_check AS (
+                SELECT
+                    id,
+                    CASE WHEN {target_sql} IS NULL THEN 0 ELSE CAST({target_sql} AS INTEGER) END AS target_int,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY {partition_by_clause}
+                        ORDER BY {order_by_clause}
+                    ) AS expected_val
+                FROM {table_name}
+            )
+            UPDATE {table_name} t
+            SET {column_name} = (
+                SELECT
+                CASE WHEN {target_sql} IS NULL THEN true ELSE target_int = expected_val END
+                FROM strict_check
+                WHERE id = t.id
+            )
+            """
 
             # Build CTEs for each individual comparator check
             comparator_ctes = []
@@ -74,10 +122,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
 
                 # Build ORDER BY for this specific comparator
                 order_part = f"{comp_sql} {sort_order}"
-                if null_pos == "FIRST":
-                    order_part += " NULLS FIRST"
-                else:
-                    order_part += " NULLS LAST"
+                order_part += " NULLS FIRST" if null_pos == "FIRST" else " NULLS LAST"
 
                 comparator_columns.append(f"{comp_sql} AS comp_{i}_val")
 
@@ -87,11 +132,11 @@ class TargetIsSortedByOperator(BaseSqlOperator):
             comp_{i}_presorted AS (
                 SELECT
                     id,
-                    {self._column_sql(target, alias=False)} AS target_val,
-                    {self._column_sql(within, alias=False)} AS within_val,
+                    {target_sql} AS target_val,
+                    {' '.join(f'{self._column_sql(val, alias=False)} AS within_val{n},' for n, val in enumerate(within, start=1))}
                     {comp_sql} AS comp_val,
                     ROW_NUMBER() OVER (
-                        PARTITION BY {self._column_sql(within, alias=False)}
+                        PARTITION BY {', '.join(f'{self._column_sql(val, alias=False)}' for val in within)}
                         ORDER BY {order_part}
                     ) - 1 AS position_in_comp_order
                 FROM {table_name}
@@ -100,7 +145,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                 SELECT
                     *,
                     ROW_NUMBER() OVER (
-                        PARTITION BY within_val
+                        PARTITION BY {', '.join(f'within_val{n}' for n in range(1, len(within) + 1))}
                         ORDER BY
                             CASE WHEN target_val IS NULL THEN 1 ELSE 0 END,
                             target_val ASC
@@ -119,7 +164,6 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                 FROM comp_{i}_sorted
             )"""
                 )
-
             all_ctes = ",".join(comparator_ctes)
 
             # Build the join to combine all comparator checks
@@ -150,6 +194,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
 
             order_by_clause = ", ".join(order_by_parts)
             comparator_columns_sql = ", ".join(comparator_columns)
+            final_join = " AND ".join(f"s1.within_val{n} = s2.within_val{n}" for n in range(1, len(within) + 1))
 
             return f"""
             -- Check if target is sorted correctly by each comparator independently (matches old engine)
@@ -163,10 +208,11 @@ class TargetIsSortedByOperator(BaseSqlOperator):
             sorted_for_overlap AS (
                 SELECT
                     id,
-                    {self._column_sql(within, alias=False)} AS within_val,
+                    {self._column_sql(target, alias=False)} AS target_val,
+                    {' '.join(f'{self._column_sql(val, alias=False)} AS within_val{n},' for n, val in enumerate(within, start=1))}
                     {comparator_columns_sql},
                     ROW_NUMBER() OVER (
-                        PARTITION BY {self._column_sql(within, alias=False)}
+                        PARTITION BY {', '.join(f'{self._column_sql(val, alias=False)}' for val in within)}
                         ORDER BY {order_by_clause}
                     ) AS row_position
                 FROM {table_name}
@@ -191,7 +237,7 @@ class TargetIsSortedByOperator(BaseSqlOperator):
                         ELSE true
                     END AS date_overlap_ok
                 FROM sorted_for_overlap s1
-                LEFT JOIN sorted_for_overlap s2 ON s1.within_val = s2.within_val
+                LEFT JOIN sorted_for_overlap s2 ON {final_join}
                     AND s2.row_position = s1.row_position + 1
             )
             UPDATE {table_name} t

@@ -25,6 +25,7 @@ class Rule:
         self.authority: dict = record_params["authority"]
         self.standards: dict = record_params["standards"]
         self.classes: dict = record_params.get("classes")
+        self.data_structures: dict = record_params.get("data_structures")
         self.domains: dict = record_params.get("domains")
         self.datasets: dict = record_params.get("datasets")
         self.rule_type: RuleTypes = record_params["rule_type"]
@@ -32,6 +33,7 @@ class Rule:
         self.conditions: dict = record_params["conditions"]
         self.actions: dict = record_params["actions"]
         self.output_variables: dict = record_params.get("output_variables")
+        self.grouping_variables: List[str] = record_params.get("grouping_variables")
 
     @classmethod
     def from_cdisc_metadata(cls, rule_metadata: dict) -> dict:
@@ -47,6 +49,7 @@ class Rule:
                 "authorities": authorities,
                 "standards": cls.parse_standards(authorities),
                 "classes": rule_metadata.get("Scope", {}).get("Classes"),
+                "data_structures": rule_metadata.get("Scope", {}).get("Data Structures"),
                 "domains": rule_metadata.get("Scope", {}).get("Domains"),
                 "rule_type": rule_metadata.get("Rule_Type"),
                 "conditions": cls.parse_conditions(rule_metadata.get("Check")),
@@ -58,13 +61,13 @@ class Rule:
                 executable_rule["operations"] = rule_metadata.get("Operations")
 
             if "Match_Datasets" in rule_metadata:
-                executable_rule["datasets"] = cls.parse_datasets(
-                    rule_metadata.get("Match_Datasets")
-                )
+                executable_rule["datasets"] = cls.parse_datasets(rule_metadata.get("Match_Datasets"))
+            if "Grouping_Variables" in rule_metadata:
+                executable_rule["grouping_variables"] = rule_metadata.get("Grouping_Variables")
+            elif "Grouping Variables" in rule_metadata:
+                executable_rule["grouping_variables"] = rule_metadata.get("Grouping Variables")
             if "Output_Variables" in rule_metadata.get("Outcome", {}):
-                executable_rule["output_variables"] = rule_metadata.get("Outcome", {})[
-                    "Output_Variables"
-                ]
+                executable_rule["output_variables"] = rule_metadata.get("Outcome", {})["Output_Variables"]
             return executable_rule
         else:
             return rule_metadata
@@ -172,11 +175,7 @@ class Rule:
             join_data = {
                 "domain_name": data.get("Name"),
                 "match_key": [
-                    (
-                        key
-                        if isinstance(key, str)
-                        else {k.lower(): v for k, v in key.items()}
-                    )
+                    (key if isinstance(key, str) else {k.lower(): v for k, v in key.items()})
                     for key in data.get("Keys", [])
                 ],
                 "wildcard": data.get("Wildcard", "**"),

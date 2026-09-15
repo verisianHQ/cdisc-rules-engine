@@ -1,7 +1,15 @@
+import re
+
 from business_rules.fields import FIELD_DATAFRAME
 from business_rules.operators import BaseType, type_operator
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.services import logger
 
+from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_operator import (
+    ValidWHODrugLevelReferenceOperator,
+)
 from cdisc_rules_engine.check_operators.sql.not_operator import NotOperator
+from cdisc_rules_engine.enums.static_tables import StaticTables
 
 from .base_sql_operator import log_operator_execution
 from .conformant_value_data_type_operator import ConformantValueDataTypeOperator
@@ -29,7 +37,17 @@ from .is_not_unique_relationship_operator import IsNotUniqueRelationshipOperator
 from .is_ordered_by_operator import IsOrderedByOperator
 from .is_ordered_set_operator import IsOrderedSetOperator
 from .is_ordered_subset_of_operator import IsOrderedSubsetOfOperator
+from .is_substring_of_operator import IsSubstringOfOperator
 from .is_unique_set_operator import IsUniqueSetOperator
+from .is_valid_external_dict_term_reference_operator import (
+    ValidExDictTermReferenceOperator,
+)
+from .is_valid_external_dict_code_reference_operator import (
+    ValidExDictCodeReferenceOperator,
+)
+from .is_valid_external_dict_code_term_pair_operator import (
+    ValidExDictCodeTermPairsOperator,
+)
 from .matches_regex_operator import MatchesRegexOperator
 from .numeric_comparison_operator import NumericComparisonOperator
 from .prefix_matches_regex_operator import PrefixMatchesRegexOperator
@@ -45,6 +63,40 @@ from .suffix_matches_regex_operator import SuffixMatchesRegexOperator
 from .target_is_sorted_by_operator import TargetIsSortedByOperator
 from .value_has_multiple_references_operator import ValueHasMultipleReferencesOperator
 from .variable_metadata_equal_to_operator import VariableMetadataEqualToOperator
+from .is_latest_available_exdict_version import IsLatestAvailableExDictVersionOperator
+from .in_enumerated_columns_operator import InEnumeratedColumnsOperator
+from .is_extensible_codelist_code_operator import IsExtensibleCodelistCodeOperator
+
+MEDDRA_CODE_SUFFIX_MAP = {
+    "BDSYCD": "SOC",
+    "SOCCD": "SOC",
+    "HLGTCD": "HLGT",
+    "HLTCD": "HLT",
+    "PTCD": "PT",
+    "LLTCD": "LLT",
+}
+MEDDRA_TERM_SUFFIX_MAP = {
+    "BODSYS": "SOC",
+    "SOC": "SOC",
+    "HLGT": "HLGT",
+    "HLT": "HLT",
+    "DECOD": "PT",
+    "LLT": "LLT",
+}
+MEDDRA_PAIR_MAP = {
+    "BODSYS": ("SOC", "SOCCD"),
+    "BDSYCD": ("SOC", "SOC"),
+    "SOC": ("SOC", "SOCCD"),
+    "SOCCD": ("SOC", "SOC"),
+    "LLT": ("LLT", "LLTCD"),
+    "LLTCD": ("LLT", "LLT"),
+    "HLGT": ("HLGT", "HLGTCD"),
+    "HLGTCD": ("HLGT", "HLGT"),
+    "HLT": ("HLT", "HLTCD"),
+    "HLTCD": ("HLT", "HLT"),
+    "PTCD": ("PT", "DECOD"),
+    "DECOD": ("PT", "PTCD"),
+}
 
 
 class PostgresQLOperators(BaseType):
@@ -91,8 +143,16 @@ class PostgresQLOperators(BaseType):
         "not_present_on_multiple_rows_within": lambda data: NotOperator(data, PresentOnMultipleRowsWithinOperator),
         "prefix_is_contained_by": lambda data: IsContainedByOperator(data),
         "prefix_is_not_contained_by": lambda data: NotOperator(data, IsContainedByOperator),
+        "prefix_is_contained_by_case_insensitive": lambda data: IsContainedByOperator(data, case_insensitive=True),
+        "prefix_is_not_contained_by_case_insensitive": lambda data: NotOperator(
+            data, lambda d: IsContainedByOperator(d, case_insensitive=True)
+        ),
         "suffix_is_contained_by": lambda data: IsContainedByOperator(data),
         "suffix_is_not_contained_by": lambda data: NotOperator(data, IsContainedByOperator),
+        "suffix_is_contained_by_case_insensitive": lambda data: IsContainedByOperator(data, case_insensitive=True),
+        "suffix_is_not_contained_by_case_insensitive": lambda data: NotOperator(
+            data, lambda d: IsContainedByOperator(d, case_insensitive=True)
+        ),
         "contains": lambda data: ContainsOperator(data),
         "does_not_contain": lambda data: NotOperator(data, ContainsOperator),
         "contains_case_insensitive": lambda data: ContainsOperator(data, case_insensitive=True),
@@ -101,12 +161,26 @@ class PostgresQLOperators(BaseType):
         ),
         "matches_regex": lambda data: MatchesRegexOperator(data),
         "not_matches_regex": lambda data: MatchesRegexOperator(data, invert=True),
+        "matches_regex_case_insensitive": lambda data: MatchesRegexOperator(data, case_insensitive=True),
+        "not_matches_regex_case_insensitive": lambda data: MatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data),
         "not_prefix_matches_regex": lambda data: PrefixMatchesRegexOperator(data, invert=True),
+        "prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(data, case_insensitive=True),
+        "not_prefix_matches_regex_case_insensitive": lambda data: PrefixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data),
         "not_suffix_matches_regex": lambda data: SuffixMatchesRegexOperator(data, invert=True),
+        "suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(data, case_insensitive=True),
+        "not_suffix_matches_regex_case_insensitive": lambda data: SuffixMatchesRegexOperator(
+            data, invert=True, case_insensitive=True
+        ),
         "starts_with": lambda data: StartsWithOperator(data),
+        "not_starts_with": lambda data: NotOperator(data, StartsWithOperator),
         "ends_with": lambda data: EndsWithOperator(data),
+        "not_ends_with": lambda data: NotOperator(data, EndsWithOperator),
         "equals_string_part": lambda data: EqualsStringPartOperator(data),
         "does_not_equal_string_part": lambda data: EqualsStringPartOperator(data, invert=True),
         "invalid_date": lambda data: InvalidDateOperator(data),
@@ -139,8 +213,12 @@ class PostgresQLOperators(BaseType):
         "has_next_corresponding_record": lambda data: HasNextCorrespondingRecordOperator(data),
         "does_not_have_next_corresponding_record": lambda data: NotOperator(data, HasNextCorrespondingRecordOperator),
         "inconsistent_enumerated_columns": lambda data: InconsistentEnumeratedColumnsOperator(data),
+        "in_enumerated_columns": lambda data: InEnumeratedColumnsOperator(data),
+        "not_in_enumerated_columns": lambda data: NotOperator(data, InEnumeratedColumnsOperator),
         "references_correct_codelist": lambda data: ReferencesCorrectCodelistOperator(data),
         "does_not_reference_correct_codelist": lambda data: NotOperator(data, ReferencesCorrectCodelistOperator),
+        "is_extensible_codelist_code": lambda data: IsExtensibleCodelistCodeOperator(data),
+        "is_not_extensible_codelist_code": lambda data: NotOperator(data, IsExtensibleCodelistCodeOperator),
         "is_ordered_by": lambda data: IsOrderedByOperator(data),
         "is_not_ordered_by": lambda data: NotOperator(data, IsOrderedByOperator),
         "value_has_multiple_references": lambda data: ValueHasMultipleReferencesOperator(data),
@@ -156,10 +234,252 @@ class PostgresQLOperators(BaseType):
         "shares_no_elements_with": lambda data: SharesElementsWithOperator(data, operation_type="no_elements"),
         "is_ordered_subset_of": lambda data: IsOrderedSubsetOfOperator(data),
         "is_not_ordered_subset_of": lambda data: NotOperator(data, IsOrderedSubsetOfOperator),
+        "is_valid_whodrug_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.WHODRUG_TABLE_NAME.value
+        ),
+        "is_not_valid_whodrug_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
+        ),
+        "is_valid_whodrug_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.WHODRUG_TABLE_NAME.value
+        ),
+        "is_not_valid_whodrug_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
+        ),
+        "is_valid_whodrug_level_reference": lambda data: ValidWHODrugLevelReferenceOperator(data),
+        "is_not_valid_whodrug_level_reference": lambda data: NotOperator(data, ValidWHODrugLevelReferenceOperator),
+        "is_valid_whodrug_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.WHODRUG_TABLE_NAME.value
+        ),
+        "is_not_valid_whodrug_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.WHODRUG_TABLE_NAME.value),
+        ),
+        "is_valid_meddra_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.MEDDRA_TABLE_NAME.value
+        ),
+        "is_not_valid_meddra_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.MEDDRA_TABLE_NAME.value),
+        ),
+        "is_valid_meddra_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.MEDDRA_TABLE_NAME.value
+        ),
+        "is_not_valid_meddra_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.MEDDRA_TABLE_NAME.value),
+        ),
+        "is_valid_meddra_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.MEDDRA_TABLE_NAME.value
+        ),
+        "is_not_valid_meddra_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDDRA_TABLE_NAME.value),
+        ),
+        "is_valid_medrt_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.MEDRT_TABLE_NAME.value
+        ),
+        "is_not_valid_medrt_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
+        ),
+        "is_valid_medrt_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.MEDRT_TABLE_NAME.value
+        ),
+        "is_not_valid_medrt_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
+        ),
+        "is_valid_medrt_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.MEDRT_TABLE_NAME.value
+        ),
+        "is_not_valid_medrt_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.MEDRT_TABLE_NAME.value),
+        ),
+        "is_valid_unii_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.UNII_TABLE_NAME.value
+        ),
+        "is_not_valid_unii_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value),
+        ),
+        "is_valid_unii_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.UNII_TABLE_NAME.value
+        ),
+        "is_not_valid_unii_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.UNII_TABLE_NAME.value),
+        ),
+        "is_valid_unii_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.UNII_TABLE_NAME.value
+        ),
+        "is_not_valid_unii_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.UNII_TABLE_NAME.value),
+        ),
+        "is_valid_loinc_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.LOINC_TABLE_NAME.value
+        ),
+        "is_not_valid_loinc_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value),
+        ),
+        "is_valid_loinc_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.LOINC_TABLE_NAME.value
+        ),
+        "is_not_valid_loinc_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.LOINC_TABLE_NAME.value),
+        ),
+        "is_valid_loinc_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.LOINC_TABLE_NAME.value
+        ),
+        "is_not_valid_loinc_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.LOINC_TABLE_NAME.value),
+        ),
+        "is_valid_snomed_term_reference": lambda data: ValidExDictTermReferenceOperator(
+            data, StaticTables.SNOMED_TABLE_NAME.value
+        ),
+        "is_not_valid_snomed_term_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictTermReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
+        ),
+        "is_valid_snomed_code_reference": lambda data: ValidExDictCodeReferenceOperator(
+            data, StaticTables.SNOMED_TABLE_NAME.value
+        ),
+        "is_not_valid_snomed_code_reference": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeReferenceOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
+        ),
+        "is_valid_snomed_code_term_pair": lambda data: ValidExDictCodeTermPairsOperator(
+            data, StaticTables.SNOMED_TABLE_NAME.value
+        ),
+        "is_not_valid_snomed_code_term_pair": lambda data: NotOperator(
+            data,
+            lambda d: ValidExDictCodeTermPairsOperator(d, StaticTables.SNOMED_TABLE_NAME.value),
+        ),
+        "is_latest_available_external_dictionary_version": lambda data: IsLatestAvailableExDictVersionOperator(data),
+        "is_not_latest_available_external_dictionary_version": lambda data: NotOperator(
+            data, lambda d: IsLatestAvailableExDictVersionOperator(d)
+        ),
+        "is_substring_of": lambda data: IsSubstringOfOperator(data),
+        "is_not_substring_of": lambda data: NotOperator(data, IsSubstringOfOperator),
     }
 
     def __init__(self, data):
         self.data = data
+
+    @staticmethod
+    def _is_missing_column_reference(operator_instance, value, variable_regex_pattern=False):
+        if not isinstance(value, str) or value == "":
+            return False
+
+        if value == DATASET_NAME or value == "define.xml":
+            return False
+
+        if value in operator_instance.operation_variables:
+            return False
+
+        resolved_value = operator_instance.replace_prefix(value)
+        if not isinstance(resolved_value, str) or resolved_value == "":
+            return False
+
+        if variable_regex_pattern:
+            variables = getattr(operator_instance.dataset_metadata, "variables", [])
+            return not any(re.fullmatch(resolved_value, variable.name) for variable in variables)
+
+        return not operator_instance._exists(resolved_value)
+
+    @classmethod
+    def _missing_columns_for_operator(cls, operator_name, operator_instance, other_value):  # noqa: C901
+        """
+        Determines which columns referenced by a condition are missing from the
+        dataset, so the operator can be skipped instead of producing a
+        misleading result.
+
+        `target` (and the structural grouping/ordering keys `within` and
+        `ordering`) are always assumed to be column references.
+
+        `comparator` (and `version`, used by the external-dictionary-version
+        operators) is assumed to be a column reference by default,
+        unless the condition sets `value_is_literal: true`,
+        in which case it's treated as a literal value/collection
+        and never checked for existence.
+
+        The regex operators are excluded from the comparator check outright
+        rather than requiring `value_is_literal: true` on every regex rule,
+        as their `comparator` is always a raw regex pattern
+        """
+        if operator_name in {
+            "exists",
+            "not_exists",
+            "is_unique_set",
+            "is_not_unique_set",
+        }:
+            return []
+
+        if not isinstance(other_value, dict):
+            return []
+
+        missing_columns = []
+        variable_regex_pattern = other_value.get("variable_regex_pattern", False)
+
+        def _check(value, regex=False):
+            if isinstance(value, list):
+                for item in value:
+                    _check(item)
+                return
+            if cls._is_missing_column_reference(operator_instance, value, variable_regex_pattern=regex):
+                missing_columns.append(value)
+
+        _check(other_value.get("target"), regex=variable_regex_pattern)
+        _check(other_value.get("within"))
+        _check(other_value.get("ordering"))
+
+        if operator_name in {"target_is_sorted_by", "target_is_not_sorted_by"}:
+            # comparator is a list of {"name": ..., "sort_order": ..., "null_position": ...}
+            comparator = other_value.get("comparator")
+            if isinstance(comparator, list):
+                for item in comparator:
+                    _check(item.get("name") if isinstance(item, dict) else item)
+            return missing_columns
+
+        if operator_name == "is_inconsistent_across_dataset":
+            return missing_columns
+
+        regex_pattern_operators = {
+            "matches_regex",
+            "not_matches_regex",
+            "matches_regex_case_insensitive",
+            "not_matches_regex_case_insensitive",
+            "prefix_matches_regex",
+            "not_prefix_matches_regex",
+            "prefix_matches_regex_case_insensitive",
+            "not_prefix_matches_regex_case_insensitive",
+            "suffix_matches_regex",
+            "not_suffix_matches_regex",
+            "suffix_matches_regex_case_insensitive",
+            "not_suffix_matches_regex_case_insensitive",
+        }
+        if operator_name in regex_pattern_operators:
+            return missing_columns
+
+        value_is_literal = other_value.get("value_is_literal", False)
+        comparator_is_column = other_value.get("value_is_reference", False) or not value_is_literal
+
+        if comparator_is_column:
+            _check(other_value.get("comparator"))
+            _check(other_value.get("version"))
+
+        return missing_columns
+
+    @staticmethod
+    def _false_result(operator_instance):
+        return operator_instance._do_check_operator(lambda: "FALSE")
 
     def __getattr__(self, name):
         """
@@ -174,6 +494,12 @@ class PostgresQLOperators(BaseType):
             @log_operator_execution(name)
             @type_operator(FIELD_DATAFRAME)
             def operator_method(self, other_value):
+                missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
+                if missing_columns:
+                    logger.info(
+                        f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
+                    )
+                    return self._false_result(operator_instance)
                 return operator_instance.execute_operator(other_value)
 
             # Cache the new method on the instance

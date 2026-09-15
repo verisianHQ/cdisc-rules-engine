@@ -21,6 +21,11 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
         define_vars = self.get_define_vars()
         define_vars_by_name = {v.get("define_variable_name", "").upper(): v for v in define_vars}
 
+        dataset_var_names = [var.name.upper() for var in self.dataset_metadata.variables]
+        define_and_dataset_vars = list(define_vars_by_name.keys()) + [
+            v for v in dataset_var_names if v not in define_vars_by_name
+        ]
+
         library_vars = self.get_library_vars()
         library_vars_by_name = {var["library_variable_name"].upper(): var for var in library_vars}
 
@@ -34,20 +39,24 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
         table_is_empty = len(empty_check_data) == 0
 
         rows = []
-        for var in self.dataset_metadata.variables:
-            var_name = var.name.upper() if var else ""
-            has_empty = self._has_empty_values(source_table_id, source_table_hash, var, table_is_empty)
 
+        for variable in define_and_dataset_vars:
+            var_name = variable.upper() if variable else ""
+            var = next((v for v in self.dataset_metadata.variables if v.name.upper() == var_name), None)
+            has_empty = self._has_empty_values(source_table_id, source_table_hash, var, table_is_empty)
+            var_count = self._value_count(source_table_id, source_table_hash, var) if var else 0
             row = {
                 "variable_name": var.name.upper() if var else "",
                 "variable_order_number": var.order if var else 0,
                 "variable_label": var.label if var else "",
-                "variable_size": var.length if var else 0,
+                "variable_length": var.length if var else 0,
                 "variable_data_type": var.type if var else "",
                 "variable_has_empty_values": str(has_empty),
+                "variable_count": var_count,
+                "variable_is_empty": True if var_count == 0 else False,
             }
-            row.update(library_vars_by_name.get(var_name, {}))
-            row.update(define_vars_by_name.get(var_name, {}))
+            row.update(define_vars_by_name.get(var_name, {k: None for k in DEFINE_VARIABLES_TYPE}))
+            row.update(library_vars_by_name.get(var_name, {k: None for k in LIBRARY_VARIABLES_TYPE}))
 
             rows.append(row)
 
@@ -56,9 +65,11 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
             schema.add_column(SqlColumnSchema.generated("variable_name", "Char"))
             schema.add_column(SqlColumnSchema.generated("variable_order_number", "Num"))
             schema.add_column(SqlColumnSchema.generated("variable_label", "Char"))
-            schema.add_column(SqlColumnSchema.generated("variable_size", "Num"))
+            schema.add_column(SqlColumnSchema.generated("variable_length", "Num"))
             schema.add_column(SqlColumnSchema.generated("variable_data_type", "Char"))
             schema.add_column(SqlColumnSchema.generated("variable_has_empty_values", "Bool"))
+            schema.add_column(SqlColumnSchema.generated("variable_count", "Num"))
+            schema.add_column(SqlColumnSchema.generated("variable_is_empty", "Bool"))
             for col, type in list(DEFINE_VARIABLES_TYPE.items()) + list(LIBRARY_VARIABLES_TYPE.items()):
                 schema.add_column(SqlColumnSchema.generated(col, type))
 
@@ -67,21 +78,3 @@ class SqlVariablesMetadataWithDefineAndLibraryDatasetBuilder(SqlBaseDatasetBuild
             self.data_service.pgi.insert_data(table_name, rows)
 
         return table_name
-
-    def _has_empty_values(self, source_table_id: str, source_table_hash: str, var, table_is_empty: bool) -> bool:
-        if table_is_empty or not var:
-            return True
-
-        var_name = var.name.upper()
-        col_hash = self.data_service.pgi.schema.get_column_hash(source_table_id, var_name)
-        if not col_hash:
-            return True
-
-        val_query = (
-            f"SELECT COUNT(*) as cnt FROM {source_table_hash} "
-            f"WHERE TRIM(COALESCE(CAST({col_hash} AS TEXT), '')) != ''"
-        )
-        self.data_service.pgi.execute_sql(val_query)
-        val_res = self.data_service.pgi.fetch_one()
-
-        return not (val_res and val_res["cnt"] > 0)

@@ -219,6 +219,7 @@ class BaseSqlOperator:
         prefix: Optional[int] = None,
         suffix: Optional[int] = None,
         alias: bool = True,
+        null_return: bool = False,
     ) -> str:
         if column == DATASET_NAME:
             dataset_name = self.dataset_metadata.name
@@ -229,6 +230,8 @@ class BaseSqlOperator:
             return self._constant_sql(dataset_name, lowercase=lowercase)
 
         if not self._exists(column):
+            if null_return:
+                return "NULL"
             raise ColumnNotFoundError(
                 column_name=column,
                 table_id=self.table_id,
@@ -236,10 +239,8 @@ class BaseSqlOperator:
             )
 
         query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
-
         # Prepend the table alias
-        if alias:
-            query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}"
+        query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}" if alias else query
 
         # TODO: Throwing this temporarily, so we can determine which errors
         # are actually postgres errors and which are just rules which run on
@@ -339,16 +340,12 @@ class BaseSqlOperator:
 
         query = f"({query})"
         if lowercase:
-            query = self._apply_lowercase_to_collection(query, variable.params)
+            query = self._apply_lowercase_to_collection(query)
         return query
 
-    def _apply_lowercase_to_collection(self, query: str, params: dict) -> str:
+    def _apply_lowercase_to_collection(self, query: str) -> str:
         """Apply lowercase to collection query results."""
-        if params:
-            return f"(SELECT LOWER(value) FROM {query})"
-        else:
-            # column1 is the default column name for non-parameterized collections
-            return f"(SELECT LOWER(column1) FROM {query})"
+        return f"(SELECT LOWER(value) FROM {query})"
 
     def _sql(self, value: Any, lowercase: bool = False, value_is_literal: bool = False) -> str:
         """
@@ -492,7 +489,7 @@ class BaseSqlOperator:
             raise ValueError(f"Variable {target} does not exist.")
 
         if variable.type != "constant":
-            raise ValueError(f"Variable {target} is not a constant.")
+            return f"(NOT EXISTS (SELECT 1 FROM ({variable.query}) AS op))"
 
         # Handle parameterized constants
         query = variable.query
@@ -514,3 +511,53 @@ class BaseSqlOperator:
                 return f"(({query}) IS NULL)"
             case _:
                 raise ValueError(f"Unsupported variable type: {variable.subtype} for variable {target}.")
+
+    def _filter_params(self, other_value, ex_dict_table_name):
+        filter_attribute = other_value.get("filter_attribute")
+        filter_value = other_value.get("filter_value")
+
+        if filter_attribute and filter_value:
+            if not self.sql_data_service.pgi.schema.column_exists(ex_dict_table_name, filter_attribute):
+                raise ValueError(f"Filter attribute '{filter_attribute}' is not a column in {ex_dict_table_name}.")
+
+            if filter_value in self.operation_variables:
+                attribute_op_result = self.operation_variables[filter_value]
+                if attribute_op_result.type != "constant":
+                    raise ValueError(
+                        f"Filter value operation '{filter_value}' must be a constant result "
+                        f"to be used as a filter value."
+                    )
+                self.sql_data_service.pgi.execute_sql(attribute_op_result.query)
+                filter_value = self.sql_data_service.pgi.fetch_one()["value"]
+
+            filter_value = filter_value.replace("'", "").replace('"', "").strip()
+
+        return filter_attribute, filter_value
+
+    @staticmethod
+    def _safe_numeric_cast_sql(value_sql: str) -> str:
+        """
+        Safely cast a SQL expression to NUMERIC.
+        Non-numeric values return NULL instead of raising a Postgres cast error.
+        """
+        return f"""CASE
+                WHEN TRIM(CAST({value_sql} AS TEXT)) ~ '^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?$'
+                    THEN CAST(TRIM(CAST({value_sql} AS TEXT)) AS NUMERIC)
+                ELSE NULL
+            END"""
+
+    @staticmethod
+    def _version_le_condition_sql(column: str, filter_value: str) -> str:
+        """
+        SQL condition equivalent to "{column} <= '{filter_value}'" that compares
+        dotted numeric versions.
+        Falls back to string comparison if either are not dotted numeric versions.
+        """
+        dotted_numeric_pattern = r"^\d+(\.\d+)*$"
+        return f"""(
+            CASE
+                WHEN {column} ~ '{dotted_numeric_pattern}' AND '{filter_value}' ~ '{dotted_numeric_pattern}'
+                    THEN string_to_array({column}, '.')::int[] <= string_to_array('{filter_value}', '.')::int[]
+                ELSE {column} <= '{filter_value}'
+            END
+        )"""

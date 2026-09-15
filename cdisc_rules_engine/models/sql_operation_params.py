@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
 
 @dataclass
@@ -17,6 +18,8 @@ class SqlOperationParams:
     standards_context: BaseStandardsContext
 
     # Optional parameters with defaults
+    name: str = None
+    previous_operations: dict[str, SqlOperationResult] = None
     grouping: List[str] = None
     filter: dict = None
     key_name: str = None
@@ -26,11 +29,19 @@ class SqlOperationParams:
     ct_attribute: str = None
     ct_conditions: dict = None
     attribute_name: str = None
+    subtract: str = None
+    external_dictionary_type: str = None
+    codelist: str = None
+    domain_class: str = None
+    case_sensitive: bool = True
+    table: str = None
+    use_rule_type_table: str = None
+    delimiter: str = None
+    value: str = None
 
     # standard_substandard: str = None
     # attribute_name: str = None
     # case_sensitive: bool = True
-    # codelist: str = None
     # codelist_code: str = None
     # codelists: list = None
     # ct_package: list = None
@@ -41,7 +52,6 @@ class SqlOperationParams:
     # dictionary_term_type: str = None
     # external_dictionaries: ExternalDictionariesContainer = None
     # external_dictionary_term_variable: str = None
-    # external_dictionary_type: str = None
     # filter: dict = None
     # grouping: List[str] = None
     # grouping_aliases: List[str] = None

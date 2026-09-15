@@ -6,7 +6,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundInDefineXMLError
-from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory
+from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import DefineXMLReaderFactory, BaseDefineXMLReader
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 
 LIBRARY_VARIABLES_TYPE = {
@@ -25,16 +25,18 @@ DEFINE_VARIABLES_TYPE = {
     "define_variable_data_type": "Char",
     "define_variable_is_collected": "Bool",
     "define_variable_role": "Char",
-    "define_variable_size": "Num",
+    "define_variable_length": "Num",
     "define_variable_ccode": "Char",
     "define_variable_format": "Char",
     "define_variable_allowed_terms": "Char",
     "define_variable_origin_type": "Char",
+    "define_variable_source_type": "Char",
     "define_variable_has_no_data": "Bool",
     "define_variable_order_number": "Num",
     "define_variable_length": "Num",
     "define_variable_has_codelist": "Bool",
     "define_variable_codelist_coded_values": "Char",
+    "define_variable_codelist_coded_codes": "Char",
     "define_variable_mandatory": "Bool",
     "define_variable_has_comment": "Bool",
 }
@@ -46,6 +48,7 @@ DEFINE_DATASETS_TYPE = {
     "define_dataset_class": "Char",
     "define_dataset_structure": "Char",
     "define_dataset_is_non_standard": "Char",
+    "define_dataset_has_no_data": "Bool",
     "define_dataset_variables": "Char",
     "define_dataset_key_sequence": "Char",
     "define_dataset_variable_order": "Char",
@@ -115,8 +118,13 @@ class SqlBaseDatasetBuilder(ABC):
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
-        domain = self.dataset_metadata.domain or self.dataset_metadata.name
-        metadata = define_reader.extract_variables_metadata(domain)
+        domain = self.dataset_metadata.domain
+        rdomain = self.dataset_metadata.rdomain
+        name = self.dataset_metadata.name
+        if rdomain:
+            metadata = define_reader.extract_variables_metadata(domain_name=rdomain, name=domain)
+        else:
+            metadata = define_reader.extract_variables_metadata(domain_name=domain, name=name)
         for i, var in enumerate(metadata):
             metadata[i] = self._format_metadata_dict(var)
         return metadata
@@ -128,10 +136,12 @@ class SqlBaseDatasetBuilder(ABC):
         try:
             metadata = define_reader.extract_dataset_metadata(self.dataset_metadata.domain)
             metadata = self._format_metadata_dict(metadata)
+            domain = self.standards_context.derive_rdomain(self.dataset_metadata.name)
             if "define_dataset_variable_order" not in metadata.keys():
                 metadata["define_dataset_variable_order"] = self._get_define_dataset_variable_order(
                     reader=define_reader,
-                    domain=self.dataset_metadata.domain,
+                    domain=domain,
+                    name=self.dataset_metadata.name,
                 )
         except DomainNotFoundInDefineXMLError:
             metadata = {}
@@ -161,6 +171,12 @@ class SqlBaseDatasetBuilder(ABC):
 
         return define_ds_metadata
 
+    def get_define_metadata(self):
+        define_xml_reader = DefineXMLReaderFactory.get_define_xml_reader(
+            self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
+        )
+        return define_xml_reader.read()
+
     def get_define_vlms(self) -> List[dict]:
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
@@ -177,8 +193,8 @@ class SqlBaseDatasetBuilder(ABC):
             library_metadata[i] = self._format_metadata_dict(library_metadata[i])
         return library_metadata
 
-    def _get_define_dataset_variable_order(self, reader, domain: str) -> str:
-        metadata = reader.extract_variables_metadata(domain)
+    def _get_define_dataset_variable_order(self, reader: BaseDefineXMLReader, domain: str, name: str = None) -> str:
+        metadata = reader.extract_variables_metadata(domain, name)
         vars_order = {var["define_variable_name"]: var["define_variable_order_number"] for var in metadata}
         sorted_vars = sorted(vars_order.items(), key=lambda item: item[1])
         return ",".join([var[0].upper() for var in sorted_vars])
@@ -190,6 +206,8 @@ class SqlBaseDatasetBuilder(ABC):
         for key in library_var.keys():
             if f"library_variable_{key}" in LIBRARY_VARIABLES_TYPE.keys():
                 new_var_dict[f"library_variable_{key}"] = library_var[key]
+            elif key in LIBRARY_VARIABLES_TYPE.keys():
+                new_var_dict[key] = library_var[key]
 
         codelist = library_var.get("_links", {}).get("codelist")
         if codelist:
@@ -208,3 +226,36 @@ class SqlBaseDatasetBuilder(ABC):
             elif isinstance(v, list):
                 metadata[k] = ",".join(map(str, v))
         return metadata
+
+    def _has_empty_values(self, source_table_id: str, source_table_hash: str, var, table_is_empty: bool) -> bool:
+        if table_is_empty or not var:
+            return True
+
+        var_name = var.name.upper()
+        col_hash = self.data_service.pgi.schema.get_column_hash(source_table_id, var_name)
+        if not col_hash:
+            return True
+
+        val_query = (
+            f"SELECT COUNT(*) as cnt FROM {source_table_hash} "
+            f"WHERE TRIM(COALESCE(CAST({col_hash} AS TEXT), '')) != ''"
+        )
+        self.data_service.pgi.execute_sql(val_query)
+        val_res = self.data_service.pgi.fetch_one()
+
+        return not (val_res and val_res["cnt"] > 0)
+
+    def _value_count(self, source_table_id: str, source_table_hash: str, var) -> int:
+        var_name = var.name.upper()
+        col_hash = self.data_service.pgi.schema.get_column_hash(source_table_id, var_name)
+        if not col_hash:
+            return 0
+
+        val_query = (
+            f"SELECT COUNT(*) as cnt FROM {source_table_hash} "
+            f"WHERE TRIM(COALESCE(CAST({col_hash} AS TEXT), '')) != ''"
+        )
+        self.data_service.pgi.execute_sql(val_query)
+        val_res = self.data_service.pgi.fetch_one()
+
+        return val_res["cnt"] if val_res and "cnt" in val_res else 0

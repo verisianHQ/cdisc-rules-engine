@@ -25,6 +25,7 @@ class SQLRule:
         self.authority: dict = record_params["authority"]
         self.standards: dict = record_params["standards"]
         self.classes: dict = record_params.get("classes")
+        self.data_structures: dict = record_params.get("data_structures")
         self.domains: dict = record_params.get("domains")
         self.datasets: dict = record_params.get("datasets")
         self.rule_type: RuleTypes = record_params["rule_type"]
@@ -48,6 +49,7 @@ class SQLRule:
                 "authorities": authorities,
                 "standards": cls.parse_standards(authorities),
                 "classes": rule_metadata.get("Scope", {}).get("Classes"),
+                "data_structures": rule_metadata.get("Scope", {}).get("Data Structures"),
                 "domains": rule_metadata.get("Scope", {}).get("Domains"),
                 "rule_type": rule_metadata.get("Rule Type"),
                 "conditions": cls.parse_conditions(rule_metadata.get("Check")),
@@ -60,6 +62,8 @@ class SQLRule:
 
             if "Match Datasets" in rule_metadata:
                 executable_rule["datasets"] = cls.parse_datasets(rule_metadata.get("Match Datasets"))
+            if "Grouping_Variables" in rule_metadata:
+                executable_rule["grouping_variables"] = rule_metadata.get("Grouping_Variables")
             if "Output Variables" in rule_metadata.get("Outcome", {}):
                 executable_rule["output_variables"] = rule_metadata.get("Outcome", {})["Output Variables"]
             return executable_rule

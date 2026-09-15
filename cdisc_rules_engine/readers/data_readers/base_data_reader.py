@@ -60,9 +60,24 @@ class BaseDataReader(ABC):
         for column in metadata.variables:
             df[column.name] = df[column.name].where(df[column.name].notna(), None)
             if column.type == "Char":
-                df[column.name] = df[column.name].apply(lambda x: "" if pd.isna(x) or x is None else x)
+                df[column.name] = df[column.name].apply(
+                    lambda value: "" if pd.isna(value) or value is None else self._decode(value)
+                )
 
         return df
+
+    @staticmethod
+    def _decode(value: Any) -> str:
+        if not isinstance(value, bytes):
+            return value
+
+        for encoding in ("utf-8", "windows-1252"):
+            try:
+                return value.decode(encoding)
+            except UnicodeDecodeError:
+                continue
+
+        return value.decode("utf-8", errors="replace")
 
     def _cleanup_zero_floating_point_values(self, df: pd.DataFrame, metadata: DatasetMetadata2) -> pd.DataFrame:
         """Clean up zero floating point values by replacing them with 0.0, modifies the input dataframe."""

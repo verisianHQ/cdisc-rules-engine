@@ -1,4 +1,3 @@
-import re
 from typing import Any, List, Tuple, Dict
 from collections import defaultdict
 
@@ -8,6 +7,7 @@ from cdisc_rules_engine.constants.classes import (
     FINDINGS_ABOUT,
     INTERVENTIONS,
     RELATIONSHIP,
+    DETECTABLE_CLASSES,
 )
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
@@ -27,7 +27,9 @@ from cdisc_rules_engine.standards.base_standards_context import BaseStandardsCon
 from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
 from cdisc_rules_engine.utilities.sdtm_utilities import (
     get_class_and_domain_metadata,
-    get_variables_metadata_from_standard,
+    get_class_metadata,
+    get_allowed_class_variables,
+    replace_variable_wildcards,
 )
 from cdisc_rules_engine.utilities.utils import (
     convert_library_class_name_to_ct_class,
@@ -133,6 +135,14 @@ class SdtmStandardsContext(BaseStandardsContext):
                 return variables_metadata
         return []
 
+    def get_domain_class(self, domain: str):
+        domain_details = self.get_domain_metadata(domain)
+        if domain_details:
+            parent_class = domain_details.get("_links", {}).get("parentClass", {})
+            if parent_class:
+                return convert_library_class_name_to_ct_class(parent_class.get("title"))
+        return None
+
     def get_model_metadata(self):
         model_metadata = self.library_metadata.model_metadata
         return model_metadata
@@ -211,7 +221,11 @@ class SdtmStandardsContext(BaseStandardsContext):
         else:
             domain = dataset_metadata.domain
 
-        variables = get_variables_metadata_from_standard(domain=domain, library_metadata=self.library_metadata)
+        derived_class = self.derive_class(dataset_metadata, domain)
+
+        variables = self.get_variables_metadata_from_standard(
+            domain=domain, library_metadata=self.library_metadata, derived_class=derived_class
+        )
 
         column_name_mapping = {
             "ordinal": "order_number",
@@ -227,18 +241,76 @@ class SdtmStandardsContext(BaseStandardsContext):
 
         return variables
 
+    def get_variables_metadata_from_standard(self, domain, library_metadata, derived_class=None):  # noqa
+        standard_details = library_metadata.standard_metadata
+        model_details = library_metadata.model_metadata
+        is_custom = domain not in standard_details.get("domains", {})
+        variables_metadata = []
+        IG_class_details, IG_domain_details = get_class_and_domain_metadata(standard_details, domain)
+        if IG_class_details:
+            class_name = convert_library_class_name_to_ct_class(IG_class_details.get("name"))
+        else:
+            class_name = derived_class
+        IG_domain_details = self._ig_domain_details_standardisation(IG_domain_details)
+        model_class_details = get_class_metadata(model_details, class_name)
+        # Both custom and standard General Observations pull from model
+        if is_custom or class_name in DETECTABLE_CLASSES:
+            (
+                identifiers_metadata,
+                class_variables_metadata,
+                timing_metadata,
+            ) = get_allowed_class_variables(model_details, model_class_details)
+            model_variables = []
+            for var_list in [
+                identifiers_metadata,
+                class_variables_metadata,
+                timing_metadata,
+            ]:
+                replace_variable_wildcards(var_list, domain, model_variables)
+        # Custom domains only pull from model hierarchy
+        if is_custom:
+            variables_metadata = model_variables
+        # All non-custom domains pull from IG and overwrite the model variables
+        else:
+            ig_variables = IG_domain_details.get("datasetVariables", [])
+            ig_variables.sort(key=lambda item: int(item["ordinal"]))
+            if class_name in DETECTABLE_CLASSES:
+                variables_metadata = model_variables.copy()
+                model_vars_by_name = {var["name"]: i for i, var in enumerate(variables_metadata)}
+                for ig_var in ig_variables:
+                    ig_var_name = ig_var["name"]
+                    if ig_var_name in model_vars_by_name:
+                        variables_metadata[model_vars_by_name[ig_var_name]] = ig_var
+                    else:
+                        # if a variable exists in the IG but not in the model,
+                        # insert it at the end of the its section
+                        ig_var_role = ig_var.get("role")
+                        if ig_var_role == "Identifier":
+                            identifiers_length = len(identifiers_metadata)
+                            insertion_point = identifiers_length
+                        elif ig_var_role == "Timing":
+                            insertion_point = len(variables_metadata)
+                        else:
+                            timing_metadata_length = len(timing_metadata)
+                            insertion_point = len(variables_metadata) - timing_metadata_length
+                        variables_metadata.insert(insertion_point, ig_var)
+                        model_vars_by_name = {var["name"]: i for i, var in enumerate(variables_metadata)}
+            else:
+                variables_metadata = ig_variables
+        return variables_metadata
+
     def within_rule_scope(self, rule: dict, metadata: DatasetMetadata2):
         """Check if rule is suitable and return reason if not"""
         rule_id = rule.get("core_id", "unknown")
         dataset_name = metadata.name
         domain = self.derive_domain(metadata.name)
+        is_split = self.derive_is_split(metadata.name, domain)
 
         if not self.rule_applies_to_class(metadata, rule, domain):
             reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
-        # TODO: Need to fix is_split
-        if not self.rule_applies_to_domain(metadata, rule, domain, is_split=False):
+        if not self.rule_applies_to_domain(metadata, rule, domain, is_split=is_split):
             reason = f"Rule skipped - doesn't apply to domain for rule id={rule_id}, dataset={dataset_name}"
             logger.info(f"is_suitable_for_validation. {reason}, result=False")
             return False, reason
@@ -287,7 +359,7 @@ class SdtmStandardsContext(BaseStandardsContext):
                 merge_spec=merge_spec,
                 rule=rule,
             )
-        elif right == "supp--":
+        elif right.startswith("supp"):
             return self._do_supp_merge(
                 data_service,
                 original=original,
@@ -576,16 +648,17 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         Find the corresponding SUPP datasets, then perform a SUPP merge operation on the datasets.
         """
-        rdomain = dataset_metadata.rdomain
-        if target != "supp--" and rdomain not in target:
+        rdomain = dataset_metadata.rdomain if dataset_metadata.rdomain else dataset_metadata.domain
+
+        if not target.startswith("supp") and rdomain not in target:
             raise ValueError(f"Tried to SUPP merge {rdomain}, but the target domain {target} does not match.")
 
         supp_dataset = next(
-            (dataset for dataset in data_service.datasets if dataset.name.lower() == f"supp--{rdomain}"),
+            (dataset for dataset in data_service.datasets if dataset.name.lower() == f"supp{rdomain.lower()}"),
             None,
         )
         if not supp_dataset:
-            raise ValueError(f"Tried to SUPP merge {rdomain}, but could not find corresponding SUPP dataset.")
+            return original
 
         return SqlSuppMerge.perform_join(
             pgi=data_service.pgi,
@@ -708,30 +781,62 @@ class SdtmStandardsContext(BaseStandardsContext):
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
         """
+        _CATEGORISED_DOMAINS = ("qs", "mh", "lb", "fa")
+        _WHOLE_DATASET_NAMES = frozenset({"relsub", "pooldef", "aprelsub"})
+
         dataset = dataset_name.lower()
 
-        # suppfa + parent domain (e.g., suppfacm -> suppfa)
-        if dataset.startswith("suppfa") and len(dataset) > 6:
-            return "suppfa"
-
-        # fa + parent domain (e.g., facm, faeg -> fa)
-        if dataset.startswith("fa") and len(dataset) == 4:
-            return "fa"
-
-        # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
-        if dataset.startswith("supp") and len(dataset) > 4:
-            match = re.match(r"^(supp[a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
-
-        # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
-        if dataset.startswith("relrec") and len(dataset) > 6:
+        if dataset.startswith("relrec"):
             return "relrec"
 
-        # 2-char parent domain + alphanumeric suffix (e.g., ae1 -> ae)
-        if len(dataset) > 2:
-            match = re.match(r"^([a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
+        numeric_stem_length = len(dataset)
+        while numeric_stem_length > 0 and dataset[numeric_stem_length - 1].isdigit():
+            numeric_stem_length -= 1
 
-        return dataset
+        if 0 < numeric_stem_length < len(dataset) and dataset[:numeric_stem_length].isalpha():
+            return dataset[:numeric_stem_length]
+
+        if numeric_stem_length == 0:
+            return dataset
+
+        if dataset in _WHOLE_DATASET_NAMES:
+            return dataset
+
+        prefix_length = 0
+        while True:
+            prefix = next(
+                (p for p in ("supp", "sqap", "sq", "ap") if dataset[prefix_length:].startswith(p)),
+                "",
+            )
+            if not prefix:
+                break
+            prefix_length += len(prefix)
+
+        domain = dataset[prefix_length:]
+        if len(domain) <= 2 or not domain.isalpha():
+            return dataset
+
+        if domain.startswith(_CATEGORISED_DOMAINS):
+            return dataset
+
+        return dataset[: prefix_length + 2]
+
+    @staticmethod
+    def _ig_domain_details_standardisation(
+        ig_domain_details: LibraryMetadataContainer,
+    ) -> LibraryMetadataContainer:
+        """
+        rename keys in ig_domain_details to avoid key reference issues
+        """
+
+        if not ig_domain_details:
+            return ig_domain_details
+
+        for i, e in enumerate(ig_domain_details.get("datasetVariables", {})):
+            # TODO get exhausive list of keys to rename and standardise this process with a mapping dict / constants
+            e = {"ordinal" if k == "order_number" else k: v for k, v in e.items()}
+            e = {"ordinal" if k == "library_variable_order_number" else k: v for k, v in e.items()}
+            e = {"name" if k == "library_variable_name" else k: v for k, v in e.items()}
+            ig_domain_details["datasetVariables"][i] = e
+
+        return ig_domain_details

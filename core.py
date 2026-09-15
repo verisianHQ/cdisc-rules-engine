@@ -20,6 +20,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
     DictionaryTypes,
     ExternalDictionariesContainer,
 )
+from cdisc_rules_engine.models.sql_external_dictionaries_container import SqlExternalDictionariesContainer
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
@@ -34,7 +35,7 @@ from scripts.run_validation import run_validation
 from version import __version__
 
 
-def valid_data_file(data_path: list) -> Tuple[list, set]:
+def valid_data_file(data_path: list, allow_sql_mixed_formats: bool = False) -> Tuple[list, set]:
     allowed_formats = [format.value for format in DataFormatTypes]
     found_formats = set()
     file_list = []
@@ -44,9 +45,14 @@ def valid_data_file(data_path: list) -> Tuple[list, set]:
             found_formats.add(file_extension)
             file_list.append(file)
     if len(found_formats) > 1:
+        allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
+        if allow_sql_mixed_formats and found_formats.issubset(allowed_sql_mix):
+            return file_list, found_formats
         return [], found_formats
-    elif len(found_formats) == 1:
+    if len(found_formats) == 1:
         return file_list, found_formats
+
+    return [], set()
 
 
 @click.group()
@@ -163,6 +169,7 @@ def cli():
     default="https://snowstorm.snomedtools.org/snowstorm/snomed-ct/",
 )
 @click.option("--snomed-edition", help="Edition of snomed to use.")
+@click.option("--snomed", help="Path to directory with SNOMED dictionary files")
 @click.option(
     "--rules",
     "-r",
@@ -196,6 +203,7 @@ def cli():
     ),
 )
 @click.option("-dxp", "--define-xml-path", required=False, help="Path to Define-XML")
+@click.option("-stf", "--stf-file-path", required=False, help="Path to STF file")
 @click.option(
     "-vx",
     "--validate-xml",
@@ -223,7 +231,7 @@ def cli():
     help="Run validation using an in-memory Postgres instance",
 )
 @click.pass_context
-def validate(
+def validate(  # noqa: C901
     ctx,
     cache: str,
     pool_size: int,
@@ -247,11 +255,13 @@ def validate(
     snomed_version: str,
     snomed_edition: str,
     snomed_url: str,
+    snomed: str,
     rules: Tuple[str],
     local_rules: str,
     custom_standard: bool,
     progress: str,
     define_xml_path: str,
+    stf_file_path: str,
     validate_xml: str,
     sql_engine: bool,
     sql_namespace: str,
@@ -274,39 +284,54 @@ def validate(
             ctx.exit()
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
+    allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
-    # Construct ExternalDictionariesContainer:
-    external_dictionaries = ExternalDictionariesContainer(
+    dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer
+    external_dictionaries = dict_container(
         {
             DictionaryTypes.UNII.value: unii,
             DictionaryTypes.MEDRT.value: medrt,
             DictionaryTypes.MEDDRA.value: meddra,
             DictionaryTypes.WHODRUG.value: whodrug,
             DictionaryTypes.LOINC.value: loinc,
-            DictionaryTypes.SNOMED.value: {
-                "edition": snomed_edition,
-                "version": snomed_version,
-                "base_url": snomed_url,
-            },
+            DictionaryTypes.SNOMED.value: (
+                snomed
+                if sql_engine
+                else {
+                    "edition": snomed_edition,
+                    "version": snomed_version,
+                    "base_url": snomed_url,
+                }
+            ),
         }
     )
     if data:
         if dataset_path:
             logger.error("Argument --dataset-path cannot be used together with argument --data")
             ctx.exit()
-        dataset_paths, found_formats = valid_data_file([str(Path(data).joinpath(fn)) for fn in os.listdir(data)])
+        dataset_paths, found_formats = valid_data_file(
+            [str(Path(data).joinpath(fn)) for fn in os.listdir(data)],
+            allow_sql_mixed_formats=sql_engine,
+        )
         if len(found_formats) > 1:
-            logger.error(
-                f"Argument --data contains more than one allowed file format ({', '.join(found_formats)})."  # noqa: E501
-            )
-            ctx.exit()
+            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
+                logger.error(
+                    f"Argument --data contains more than one allowed file format ({', '.join(found_formats)}). "
+                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
+                )
+                ctx.exit()
     elif dataset_path:
-        dataset_paths, found_formats = valid_data_file([dp for dp in dataset_path])
+        dataset_paths, found_formats = valid_data_file(
+            [dp for dp in dataset_path],
+            allow_sql_mixed_formats=sql_engine,
+        )
         if len(found_formats) > 1:
-            logger.error(
-                f"Argument --dataset_path contains more than one allowed file format ({', '.join(found_formats)})."  # noqa: E501
-            )
-            ctx.exit()
+            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
+                logger.error(
+                    f"Argument --dataset_path contains more than one allowed file format ({', '.join(found_formats)}). "
+                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
+                )
+                ctx.exit()
     else:
         logger.error("You must pass one of the following arguments: --dataset-path, --data")
         # no need to define dataset_paths here, the program execution will stop
@@ -332,6 +357,7 @@ def validate(
         custom_standard,
         progress,
         define_xml_path,
+        stf_file_path,
         validate_xml_bool,
         sql_namespace,
     )
@@ -661,6 +687,7 @@ def test_validate():
             custom_standard = False
             progress = ProgressParameterOptions.BAR.value
             define_xml_path = None
+            stf_file_path = None
             validate_xml = False
             json_output = os.path.join(temp_dir, "json_validation_output")
             xpt_output = os.path.join(temp_dir, "xpt_validation_output")
@@ -686,6 +713,7 @@ def test_validate():
                 custom_standard,
                 progress,
                 define_xml_path,
+                stf_file_path,
                 validate_xml,
                 sql_namespace,
             )
@@ -710,6 +738,7 @@ def test_validate():
                 custom_standard,
                 progress,
                 define_xml_path,
+                stf_file_path,
                 validate_xml,
                 sql_namespace,
             )

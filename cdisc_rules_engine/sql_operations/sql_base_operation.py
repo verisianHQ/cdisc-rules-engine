@@ -4,6 +4,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.exceptions.custom_exceptions import (
+    ColumnNotFoundError,
     DatasetNotFoundError,
     DomainNotFoundInDefineXMLError,
     EngineError,
@@ -77,6 +78,7 @@ class SqlBaseOperation:
             InvalidDictionaryVariable,
             UnsupportedDictionaryType,
             FailedSchemaValidation,
+            ColumnNotFoundError,
         ) as e:
             logger.debug(f"error in operation {self.__class__.__name__}: {str(e)}")
             raise
@@ -231,15 +233,25 @@ class SqlBaseOperation:
             # Format variable names for SQL VALUES clause, escaping single quotes
             formatted_vars = [f"('{var.replace(chr(39), chr(39) + chr(39))}')" for var in vars]
             values_clause = ", ".join(formatted_vars)
-            query = f"SELECT column1 AS value FROM (VALUES {values_clause}) AS t(column1)"
+            query = f"SELECT value FROM (VALUES {values_clause}) AS t(value)"
             if ordered:
-                query += " ORDER BY column1"
+                query += " ORDER BY value"
         else:
             # Return empty result set using VALUES with no rows - this is a valid empty table
-            query = "SELECT column1 AS value FROM (VALUES (NULL)) AS t(column1) WHERE FALSE"
+            query = "SELECT value FROM (VALUES (NULL)) AS t(value) WHERE FALSE"
 
         return query
+
+    def _get_previous_operation(self, operation_name: str) -> Optional[SqlOperationResult]:
+        return self.params.previous_operations.get(operation_name)
 
     @staticmethod
     def _replace_variable_wildcards(variables_metadata, domain):
         return [var["name"].replace("--", domain) for var in variables_metadata]
+
+    @staticmethod
+    def _empty_result_set_query() -> str:
+        """
+        Returns a SQL query that produces an empty result set with a single column named 'value'.
+        """
+        return "SELECT value FROM (VALUES (NULL)) AS t(value) WHERE FALSE"

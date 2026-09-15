@@ -2,6 +2,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+from cdisc_rules_engine.sql_operations.calc import SqlCalcOperation
 from cdisc_rules_engine.sql_operations.dataset_column_order import (
     SqlDatasetColumnOrderOperation,
 )
@@ -12,6 +13,7 @@ from cdisc_rules_engine.sql_operations.day_data_validator import (
 )
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinctOperation
 from cdisc_rules_engine.sql_operations.domain_label import SqlDomainLabelOperation
+from cdisc_rules_engine.sql_operations.minus import SqlMinusOperation
 from cdisc_rules_engine.sql_operations.numeric_operation import (
     SqlNumericOperation,
 )
@@ -35,12 +37,22 @@ from cdisc_rules_engine.sql_operations.get_codelist_attributes import SqlGetCode
 from cdisc_rules_engine.sql_operations.get_define_variables_metadata import (
     SqlGetDefineVariablesMetadata,
 )
+from cdisc_rules_engine.sql_operations.define_exdict_version_operation import (
+    SqlDefineExternalDictionaryVersionOperation,
+)
+from cdisc_rules_engine.sql_operations.whodrug_code_hierarchy import SqlWhodrugHierarchyOperation
+from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomainsOperation
+from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import SqlLabelReferencedVariableMetadata
+from cdisc_rules_engine.sql_operations.name_referenced_variable_metadata import SqlNameReferencedVariableMetadata
+from cdisc_rules_engine.sql_operations.get_countries import SqlGetCountriesOperation
+from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
 
 
 class SqlOperationsFactory:
     _operations_map = {
         "codelist_extensible": None,
         "codelist_terms": None,
+        "calc": SqlCalcOperation,
         "dataset_names": SqlDatasetNamesOperation,
         "define_extensible_codelists": None,
         "distinct": SqlDistinctOperation,
@@ -58,12 +70,9 @@ class SqlOperationsFactory:
         "mean": lambda params, ds: SqlNumericOperation(params, ds, "AVG"),
         "min": lambda params, ds: SqlNumericOperation(params, ds, "MIN"),
         "min_date": lambda params, ds: SqlDateOperation(params, ds, "MIN"),
+        "minus": SqlMinusOperation,
         "record_count": lambda params, ds: SqlNumericOperation(params, ds, "COUNT"),
-        "valid_meddra_code_references": None,
-        "valid_whodrug_references": None,
-        "whodrug_code_hierarchy": None,
-        "valid_meddra_term_references": None,
-        "valid_meddra_code_term_pairs": None,
+        "whodrug_code_hierarchy": SqlWhodrugHierarchyOperation,
         "variable_exists": SqlVariableExistsOperation,
         "variable_names": None,
         "variable_library_metadata": None,
@@ -75,16 +84,20 @@ class SqlOperationsFactory:
         "required_variables": lambda params, ds: SqlPermissibilityOperation(params, ds, REQUIRED),
         "expected_variables": lambda params, ds: SqlPermissibilityOperation(params, ds, EXPECTED),
         "permissible_variables": lambda params, ds: SqlPermissibilityOperation(params, ds, PERMISSIBLE),
+        "standard_domains": SqlStandardDomainsOperation,
         "study_domains": SqlStudyDomainsOperation,
         "valid_codelist_dates": SqlValidCodelistDates,
-        "label_referenced_variable_metadata": None,
-        "name_referenced_variable_metadata": None,
+        "label_referenced_variable_metadata": SqlLabelReferencedVariableMetadata,
+        "name_referenced_variable_metadata": SqlNameReferencedVariableMetadata,
         "define_variable_metadata": SqlGetDefineVariablesMetadata,
         "valid_external_dictionary_value": None,
         "valid_external_dictionary_code": None,
         "valid_external_dictionary_code_term_pair": None,
         "valid_define_external_dictionary_version": None,
+        "get_define_external_dictionary_version": SqlDefineExternalDictionaryVersionOperation,
         "get_dataset_filtered_variables": None,
+        "get_countries": SqlGetCountriesOperation,
+        "split": SqlSplitOperation,
     }
 
     @classmethod

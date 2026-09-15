@@ -1,7 +1,7 @@
 import re
 import traceback
 from copy import deepcopy
-from typing import List, Union
+from typing import Callable, List, Union
 
 from business_rules import export_rule_data
 from business_rules.engine import run
@@ -11,6 +11,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
+from cdisc_rules_engine.enums.sensitivity import Sensitivity
 
 # from cdisc_rules_engine.enums.rule_types import RuleTypes
 from cdisc_rules_engine.exceptions.custom_exceptions import (
@@ -71,6 +72,8 @@ class SQLRulesEngine:
     def sql_validate_single_rule(self, rule: dict):
         results = {}
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
+        is_study_sensitivity = rule.get("sensitivity") == Sensitivity.STUDY.value
+        study_error_already_reported = False
 
         # Collect all dataset metadata for builders that need it (e.g., DomainListDatasetBuilder)
         all_datasets = [
@@ -89,21 +92,54 @@ class SQLRulesEngine:
                 ),
             )
             if is_suitable:
-                # if dataset_metadata.unsplit_name in results and "domains" in rule:
-                #     include_split = rule["domains"].get("include_split_datasets", False)
-                #     if not include_split:
-                #         continue  # handling split datasets
-                results[dataset_metadata.name] = self.validate_single_dataset(rule, dataset_metadata, all_datasets)
+                if is_study_sensitivity and study_error_already_reported:
+                    results[dataset_metadata.name] = self._containers_per_reported_file(
+                        dataset_metadata,
+                        lambda filename: ValidationErrorContainer(
+                            **{
+                                "dataset": filename,
+                                "domain": dataset_metadata.domain,
+                                "errors": [],
+                            }
+                        ),
+                    )
+                    continue
+
+                dataset_results = self.validate_single_dataset(rule, dataset_metadata, all_datasets)
+                results[dataset_metadata.name] = dataset_results
+                if is_study_sensitivity and self._contains_error_entries(dataset_results):
+                    study_error_already_reported = True
             else:
                 logger.info(f"Skipped dataset {dataset_metadata.name}. Reason: {reason}")
-                error_obj: ValidationErrorContainer = ValidationErrorContainer(
-                    status=ExecutionStatus.SKIPPED.value,
-                    message=reason,
-                    dataset=dataset_metadata.filename,
-                    domain=dataset_metadata.domain,
+                results[pp_ds_id] = self._containers_per_reported_file(
+                    dataset_metadata,
+                    lambda filename: ValidationErrorContainer(
+                        status=ExecutionStatus.SKIPPED.value,
+                        message=reason,
+                        dataset=filename,
+                        domain=dataset_metadata.domain,
+                    ),
                 )
-                results[pp_ds_id] = [error_obj.to_representation()]
         return results
+
+    @staticmethod
+    def _containers_per_reported_file(
+        dataset_metadata: BaseDatasetMetadata,
+        build_container: Callable[[str], ValidationErrorContainer],
+    ) -> List[dict]:
+        """Build one result container per file the dataset is reported under."""
+        filenames = getattr(dataset_metadata, "split_part_filenames", None) or [dataset_metadata.filename]
+        return [build_container(filename).to_representation() for filename in sorted(filenames)]
+
+    @staticmethod
+    def _contains_error_entries(result_entries: List[Union[dict, str]]) -> bool:
+        """
+        Returns True when a dataset result includes at least one reported validation error.
+        """
+        for entry in result_entries:
+            if isinstance(entry, dict) and entry.get("errors"):
+                return True
+        return False
 
     def validate_single_dataset(
         self,
@@ -123,15 +159,16 @@ class SQLRulesEngine:
                 return result
             else:
                 # No errors were generated, create success error container
-                return [
-                    ValidationErrorContainer(
+                return self._containers_per_reported_file(
+                    dataset_metadata,
+                    lambda filename: ValidationErrorContainer(
                         **{
-                            "dataset": dataset_metadata.filename,
+                            "dataset": filename,
                             "domain": dataset_metadata.domain,
                             "errors": [],
                         }
-                    ).to_representation()
-                ]
+                    ),
+                )
         except Exception as e:
             logger.trace(e)
             logger.error(
@@ -181,6 +218,18 @@ class SQLRulesEngine:
         """
         Executes the given rule on a given dataset (or a view of it).
         """
+        expanded_rules = SQLRuleProcessor.expand_rule_for_variable_regex(rule, dataset_metadata.variables)
+        results = []
+        for expanded_rule in expanded_rules:
+            results.extend(self._execute_expanded_rule(expanded_rule, dataset_metadata, dataset_id))
+        return results
+
+    def _execute_expanded_rule(
+        self,
+        rule: dict,
+        dataset_metadata: BaseDatasetMetadata,
+        dataset_id: str,
+    ) -> List[str]:
         # Add conditions to rule for all variables if variables: all appears in condition
         rule_copy = deepcopy(rule)
         updated_conditions = SQLRuleProcessor.duplicate_conditions_for_all_targets(
@@ -191,7 +240,11 @@ class SQLRulesEngine:
 
         # Apply any operations
         operation_variables = SQLRuleProcessor.perform_rule_operations(
-            rule_copy, dataset_metadata, data_service=self.data_service, standards_context=self.standards_context
+            rule_copy,
+            dataset_id,
+            dataset_metadata,
+            data_service=self.data_service,
+            standards_context=self.standards_context,
         )
 
         # Translator between venmo and the check operators

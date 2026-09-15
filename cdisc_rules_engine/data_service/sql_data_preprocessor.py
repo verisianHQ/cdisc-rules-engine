@@ -6,6 +6,8 @@ from copy import deepcopy
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
+from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
+
 if TYPE_CHECKING:
     from cdisc_rules_engine.data_service.postgresql_data_service import (
         PostgresQLDataService,
@@ -58,6 +60,18 @@ class SqlDataPreprocessor:
         for unsplit_name, dataset_parts in split_groups.items():
             logger.info(f"Concatenating {len(dataset_parts)} parts for {unsplit_name}: " f"{', '.join(dataset_parts)}")
             self._concatenate_split_parts(unsplit_name, dataset_parts)
+            self._register_unsplit_dataset(unsplit_name, dataset_parts)
+
+    def _register_unsplit_dataset(self, unsplit_name: str, dataset_parts: List[str]) -> None:
+        """Replace the individual split parts with the concatenated dataset in the list of datasets."""
+        metadata = self._create_metadata_from_split_parts(unsplit_name, dataset_parts)
+        if metadata is None:
+            logger.error(f"Could not build metadata for concatenated dataset {unsplit_name}, keeping split parts")
+            return
+
+        part_names = {part.lower() for part in dataset_parts}
+        self.data_service.datasets = [ds for ds in self.data_service.datasets if ds.name.lower() not in part_names]
+        self.data_service.datasets.append(metadata)
 
     def _concatenate_split_parts(self, unsplit_name: str, dataset_parts: List[str]) -> None:
         """Concatenate multiple dataset parts into a single table."""
@@ -134,7 +148,9 @@ class SqlDataPreprocessor:
                 if part_col:
                     select_items.append(f"{part_col.hash} AS {target_col.hash}")
                 else:
-                    select_items.append(f"NULL AS {target_col.hash}")
+                    select_items.append(
+                        f"CAST(NULL AS {SQLSerialiser.column_type_to_sql_type(target_col.type)}) AS {target_col.hash}"
+                    )
 
             union_parts.append(f"SELECT {', '.join(select_items)} FROM public.{part_hash}")
         return union_parts
@@ -228,6 +244,7 @@ class SqlDataPreprocessor:
         metadata.filename = f"{unsplit_name}.{file_type}"
         metadata.name = unsplit_name.upper()
         metadata.variables = merged_variables
+        metadata.split_part_filenames = [part.filename.lower() for part in part_metadata]
 
         return metadata
 

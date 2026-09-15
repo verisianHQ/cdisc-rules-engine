@@ -54,6 +54,10 @@ ItemGroupDef.ItemDef.CodeList.Alias.Name
 
 ItemGroupDef.ItemDef.CodeList.[CodeListItem/EnumeratedItem].CodedValue
 
+## define_variable_codelist_coded_codes
+
+ItemGroupDef.ItemDef.CodeList.[CodeListItem/EnumeratedItem].Alias.Name
+
 ## define_variable_data_type
 
 ItemGroupDef.ItemDef.DataType
@@ -106,7 +110,7 @@ ItemGroupDef.ItemDef.Origin.Type
 
 ItemGroupDef.ItemRef.Role
 
-## define_variable_size
+## define_variable_length
 
 ItemGroupDef.ItemDef.Size
 
@@ -234,7 +238,7 @@ Variable short name
 
 Order of variable within dataset
 
-## variable_size
+## variable_length
 
 Variable size
 

@@ -12,8 +12,15 @@ class ContainsAllOperator(BaseSqlOperator):
         not per-row results like other operators.
 
         """
-        target_column = self.replace_prefix(other_value.get("target")).lower()
+        target = other_value.get("target")
         comparator = other_value.get("comparator")
+
+        if target in self.operation_variables:
+            target_var = self.operation_variables[target]
+            if target_var.type == "collection":
+                return self._handle_target_is_collection(target, comparator)
+
+        target_column = self.replace_prefix(target).lower()
 
         if isinstance(comparator, list):
             return self._handle_list_comparator(target_column, comparator)
@@ -70,20 +77,20 @@ class ContainsAllOperator(BaseSqlOperator):
 
         def sql():
             return f"""CASE WHEN (
-                          SELECT COUNT(DISTINCT column1)
+                          SELECT COUNT(DISTINCT value)
                           FROM {collection_sql} AS op_var
-                          WHERE column1 IS NOT NULL
-                          AND column1 != ''
-                          AND column1 IN (
+                          WHERE value IS NOT NULL
+                          AND value != ''
+                          AND value IN (
                               SELECT DISTINCT {self._column_sql(target_column, alias=False)}
                               FROM {self._table_sql()}
                               WHERE NOT ({self._is_empty_sql(target_column, alias=False)})
                           )
                       ) = (
-                          SELECT COUNT(DISTINCT column1)
+                          SELECT COUNT(DISTINCT value)
                           FROM {collection_sql} AS op_var
-                          WHERE column1 IS NOT NULL
-                          AND column1 != ''
+                          WHERE value IS NOT NULL
+                          AND value != ''
                       )
                       THEN true
                       ELSE false
@@ -130,6 +137,75 @@ class ContainsAllOperator(BaseSqlOperator):
                       THEN true
                       ELSE false
                       END"""
+
+        return self._do_check_operator(sql)
+
+    def _handle_target_is_collection(self, target_variable, comparator):
+        """Handle when the target is a collection operation variable."""
+
+        def sql():
+            collection_sql = self._collection_sql(target_variable)
+
+            comparator_is_collection_variable = (
+                isinstance(comparator, str)
+                and comparator in self.operation_variables
+                and self.operation_variables[comparator].type == "collection"
+            )
+
+            if comparator_is_collection_variable:
+                comparator_collection_sql = self._collection_sql(comparator)
+                return f"""CASE
+                            WHEN NOT EXISTS (SELECT 1 FROM {collection_sql} AS tv(value)
+                                             WHERE tv.value IS NOT NULL AND tv.value != '') THEN false
+                            WHEN (
+                                SELECT COUNT(DISTINCT cv.value)
+                                FROM {comparator_collection_sql} AS cv(value)
+                                WHERE cv.value IS NOT NULL AND cv.value != ''
+                                AND cv.value IN (
+                                    SELECT DISTINCT tv.value
+                                    FROM {collection_sql} AS tv(value)
+                                    WHERE tv.value IS NOT NULL AND tv.value != ''
+                                )
+                            ) = (
+                                SELECT COUNT(DISTINCT cv.value)
+                                FROM {comparator_collection_sql} AS cv(value)
+                                WHERE cv.value IS NOT NULL AND cv.value != ''
+                            )
+                            THEN true
+                            ELSE false
+                           END"""
+            elif isinstance(comparator, list):
+                if len(comparator) == 0:
+                    return "true"
+                values_clause = ", ".join(f"({self._constant_sql(v)})" for v in comparator)
+                return f"""CASE
+                            WHEN NOT EXISTS (SELECT 1 FROM {collection_sql} AS tv(value)
+                                             WHERE tv.value IS NOT NULL AND tv.value != '') THEN false
+                            WHEN (
+                                SELECT COUNT(DISTINCT cv.value)
+                                FROM (VALUES {values_clause}) AS cv(value)
+                                WHERE cv.value IS NOT NULL AND cv.value != ''
+                                AND cv.value IN (
+                                    SELECT DISTINCT tv.value
+                                    FROM {collection_sql} AS tv(value)
+                                    WHERE tv.value IS NOT NULL AND tv.value != ''
+                                )
+                            ) = {len(comparator)}
+                            THEN true
+                            ELSE false
+                           END"""
+            else:
+                comparator_sql = self._constant_sql(comparator)
+                return f"""CASE
+                            WHEN NOT EXISTS (SELECT 1 FROM {collection_sql}) THEN false
+                            WHEN EXISTS (
+                                SELECT 1 FROM {collection_sql} AS collection_values(value)
+                                WHERE collection_values.value IS NULL
+                                   OR collection_values.value = ''
+                                   OR collection_values.value NOT LIKE '%' || {comparator_sql} || '%'
+                            ) THEN false
+                            ELSE true
+                           END"""
 
         return self._do_check_operator(sql)
 

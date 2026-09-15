@@ -5,4 +5,4 @@ from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadat
 
 @dataclass
 class AdamDatasetMetadata2(BaseDatasetMetadata):
-    pass
+    dataset_class: str

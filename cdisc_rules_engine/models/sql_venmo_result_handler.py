@@ -6,7 +6,7 @@ from business_rules.actions import BaseActions, rule_action
 from business_rules.fields import FIELD_TEXT
 
 from cdisc_rules_engine.constants import NULL_FLAVORS
-from cdisc_rules_engine.constants.metadata_columns import SOURCE_ROW_NUMBER
+from cdisc_rules_engine.constants.metadata_columns import SOURCE_DS, SOURCE_ROW_NUMBER
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -99,61 +99,71 @@ class SqlVenmoResultHandler(BaseActions):
         target_columns = SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, validation_schema)
 
         errors_list = self._generate_errors_list(rows_with_error, target_columns, validation_schema)
-        error_object = self._bundle_error_object(
-            message=message,
-            error_rows=errors_list,
-        )
-        self.output_container.append(error_object.to_representation())
+        for error_object in self._bundle_error_objects_per_source(message, errors_list):
+            self.output_container.append(error_object.to_representation())
+
+    def _bundle_error_objects_per_source(
+        self, message: str, errors_list: List[ValidationErrorEntity]
+    ) -> List[ValidationErrorContainer]:
+        """Bundle errors into one container per source file."""
+        split_parts = getattr(self.dataset_metadata, "split_part_filenames", None)
+        if not split_parts:
+            return [self._bundle_error_object(message=message, error_rows=errors_list)]
+
+        containers = []
+        for source_dataset in sorted(split_parts):
+            error_rows = [error for error in errors_list if (error._dataset or "").lower() == source_dataset.lower()]
+            containers.append(
+                self._bundle_error_object(
+                    message=message if error_rows else None,
+                    error_rows=error_rows,
+                    dataset=source_dataset,
+                )
+            )
+        return containers
 
     def _get_error_rows(self, truth_series) -> List[dict]:
-        """
-        Fetch the rows which returned TRUE.
-
-        Query from the validation table (self.dataset_id) which contains all necessary columns:
-        - For normal rules: same as original dataset
-        - For cross-dataset rules: joined table with columns from multiple datasets
-        - For metadata rules: metadata table
-        """
-        # Query from the validation table which has all the columns we need
+        """Fetch the rows which returned TRUE."""
         table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_id)
-
-        # Get indices of TRUE values
         true_indicies = [str(i + 1) for i, x in enumerate(truth_series) if x]
 
         if not true_indicies:
             return []
 
-        # Query the validation table
         self.data_service.pgi.execute_sql(
-            f"""SELECT * FROM {table_hash}
-                WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"""
+            f"SELECT * FROM {table_hash} WHERE id IN ({', '.join(true_indicies)}) ORDER BY id ASC"
         )
 
         results = self.data_service.pgi.fetch_all()
         return list(results)
 
-    def _bundle_error_object(self, message: str, error_rows: List[ValidationErrorEntity]) -> ValidationErrorContainer:
-        """
-        Bundles the error rows into a ValidationErrorContainer.
-        """
+    def _bundle_error_object(
+        self,
+        message: Optional[str],
+        error_rows: List[ValidationErrorEntity],
+        dataset: Optional[str] = None,
+    ) -> ValidationErrorContainer:
+        """Bundles the error rows into a ValidationErrorContainer."""
         original_schema = self.data_service.pgi.schema.get_table(self.dataset_metadata.name)
 
         return ValidationErrorContainer(
             domain=(self.dataset_metadata.domain),
-            dataset=", ".join(sorted(set(error._dataset or "" for error in error_rows))),
+            dataset=dataset or ", ".join(sorted(set(error._dataset or "" for error in error_rows))),
             targets=SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, original_schema),
             errors=error_rows,
-            message=message.replace("--", self.dataset_metadata.domain or ""),
+            message=(message.replace("--", self.dataset_metadata.domain or "") if message is not None else None),
         )
 
     def _generate_errors_list(
         self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
     ) -> List[ValidationErrorEntity]:
         match self.rule.get("sensitivity"):
-            case Sensitivity.DATASET.value:
+            case Sensitivity.DATASET.value | Sensitivity.STUDY.value:
                 return [self._build_dataset_error(data, target_columns, schema)]
             case Sensitivity.RECORD.value | None:
                 return self._build_record_error_items(data, target_columns, schema)
+            case Sensitivity.GROUP.value:
+                return self._build_group_error_items(data, target_columns, schema)
             case _:
                 raise ValueError(f"Invalid sensitivity value: {self.rule.get('sensitivity')}")
 
@@ -178,6 +188,40 @@ class SqlVenmoResultHandler(BaseActions):
         Build a list of ValidationErrorEntity objects for each error row in the data.
         """
         return [self._create_error_for_row(row, schema, target_columns) for row in data]
+
+    def _resolve_grouping_variable(self, var: str) -> str:
+        """Resolve the -- prefix in a grouping variable to the current dataset's domain prefix."""
+        domain = self.dataset_metadata.domain or ""
+        return var.replace("--", domain)
+
+    def _build_group_error_items(
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
+    ) -> List[ValidationErrorEntity]:
+        """
+        Group error rows by the rule's grouping_variables and return one error per group.
+        The first row encountered for each unique combination of grouping variable values is returned.
+        Falls back to record-level errors if no grouping_variables are defined on the rule.
+        """
+        grouping_variables: List[str] = self.rule.get("grouping_variables") or []
+        if not grouping_variables:
+            return self._build_record_error_items(data, target_columns, schema)
+
+        resolved_grouping_variables = [
+            self._resolve_grouping_variable(var) for var in grouping_variables if var not in ["filter_by_dataset"]
+        ]
+
+        seen_groups: set = set()
+        result: List[ValidationErrorEntity] = []
+        for row in data:
+            if "filter_by_dataset" in grouping_variables:
+                dataset_name = row.get(schema.get_column_hash("dataset_name"))
+                if dataset_name != self.dataset_metadata.name:
+                    continue
+            group_key = tuple(row.get(schema.get_column_hash(key)) for key in resolved_grouping_variables)
+            if group_key not in seen_groups:
+                seen_groups.add(group_key)
+                result.append(self._create_error_for_row(row, schema, target_columns))
+        return result
 
     """def _generate_errors_by_target_presence(
         self,
@@ -257,7 +301,7 @@ class SqlVenmoResultHandler(BaseActions):
             row_id = row.get("id")
 
         values = {}
-        for column in sorted(target_columns.keys()):
+        for column in target_columns.keys():
             if not target_columns[column]:
                 values[column] = "Not in dataset"
                 continue
@@ -273,12 +317,24 @@ class SqlVenmoResultHandler(BaseActions):
                 values[column] = value
 
         return ValidationErrorEntity(
-            dataset=self.dataset_metadata.filename,
+            dataset=self._source_dataset_filename(row, schema),
             row=int(row_id),
             usubjid=usubjid,
             sequence=sequence,
             value=values,
         )
+
+    def _source_dataset_filename(self, row: dict, schema: SqlTableSchema) -> str:
+        """The file a row came from."""
+        source_ds_hash = schema.get_column_hash(SOURCE_DS)
+        source_ds = row.get(source_ds_hash) if source_ds_hash else None
+        if not source_ds:
+            return self.dataset_metadata.filename
+
+        extension = self.dataset_metadata.filename.rsplit(".", 1)
+        if len(extension) == 2:
+            return f"{str(source_ds).lower()}.{extension[1]}"
+        return str(source_ds).lower()
 
     def _evaluate_operation_variable(self, variable_name: str, row: dict, schema: SqlTableSchema):
         """
@@ -347,7 +403,7 @@ class SqlVenmoResultHandler(BaseActions):
             self.data_service.pgi.execute_sql(query)
             result_rows = self.data_service.pgi.fetch_all()
             if result_rows and len(result_rows) > 0:
-                return result_rows[0].get("value")
+                return [row.get("value") for row in result_rows if row.get("value") is not None]
             return None
         except Exception as e:
             return f"Query error: {str(e)}"
@@ -426,7 +482,7 @@ class SqlVenmoResultHandler(BaseActions):
                     )
                 else:
                     target_names.append(target)
-        return list(set(target_names))
+        return target_names
 
     @staticmethod
     def get_operator_related_pattern(operator: str, target: str) -> Optional[str]:

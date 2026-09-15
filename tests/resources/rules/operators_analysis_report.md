@@ -4,9 +4,9 @@
 
 - Total rules without check operators: 302
 - Total unique operators found in rules: 58
-- Total implemented PostgreSQL operators: 84
+- Total implemented PostgreSQL operators: 122
 - Missing operators (in rules but not implemented): 1
-- Extra operators (implemented but not used in rules): 27
+- Extra operators (implemented but not used in rules): 65
 
 ## ✅ Implementation Status
 
@@ -32,8 +32,46 @@ The following operators are implemented but not currently used in any rules:
 - has_next_corresponding_record
 - is_not_ordered_by
 - is_not_ordered_set
+- is_not_valid_loinc_code_reference
+- is_not_valid_loinc_code_term_pair
+- is_not_valid_loinc_term_reference
+- is_not_valid_meddra_code_reference
+- is_not_valid_meddra_code_term_pair
+- is_not_valid_meddra_term_reference
+- is_not_valid_medrt_code_reference
+- is_not_valid_medrt_code_term_pair
+- is_not_valid_medrt_term_reference
+- is_not_valid_snomed_code_reference
+- is_not_valid_snomed_code_term_pair
+- is_not_valid_snomed_term_reference
+- is_not_valid_unii_code_reference
+- is_not_valid_unii_code_term_pair
+- is_not_valid_unii_term_reference
+- is_not_valid_whodrug_code_reference
+- is_not_valid_whodrug_code_term_pair
+- is_not_valid_whodrug_level_reference
+- is_not_valid_whodrug_term_reference
 - is_ordered_set
 - is_unique_relationship
+- is_valid_loinc_code_reference
+- is_valid_loinc_code_term_pair
+- is_valid_loinc_term_reference
+- is_valid_meddra_code_reference
+- is_valid_meddra_code_term_pair
+- is_valid_meddra_term_reference
+- is_valid_medrt_code_reference
+- is_valid_medrt_code_term_pair
+- is_valid_medrt_term_reference
+- is_valid_snomed_code_reference
+- is_valid_snomed_code_term_pair
+- is_valid_snomed_term_reference
+- is_valid_unii_code_reference
+- is_valid_unii_code_term_pair
+- is_valid_unii_term_reference
+- is_valid_whodrug_code_reference
+- is_valid_whodrug_code_term_pair
+- is_valid_whodrug_level_reference
+- is_valid_whodrug_term_reference
 - longer_than_or_equal_to
 - non_conformant_value_data_type
 - non_conformant_value_length

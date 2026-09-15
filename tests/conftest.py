@@ -40,6 +40,13 @@ def pytest_collection_modifyitems(config, items):
         items[:] = [item for item in items if "regression" not in item.keywords]
 
 
+@pytest.fixture(autouse=True)
+def reset_service_singletons():
+    for cls in [InMemoryCacheService, LocalDataService, ConfigService]:
+        if getattr(cls, "_instance", None) is not None:
+            setattr(cls, "_instance", None)
+
+
 # Added the following fixture to access the
 # 'run_regression_tests' flag in test functions
 @pytest.fixture(scope="session")
@@ -802,7 +809,7 @@ def define_xml_variable_validation_rule() -> dict:
         "Authorities": [{"Standards": [{"Name": "SDTMIG", "Version": "3.4"}]}],
         "standards": [],
         "domains": {"Include": [ALL_KEYWORD]},
-        "output_variables": ["variable_size"],
+        "output_variables": ["variable_length"],
         "rule_type": RuleTypes.VARIABLE_METADATA_CHECK_AGAINST_DEFINE.value,
         "conditions": ConditionCompositeFactory.get_condition_composite(
             {
@@ -811,7 +818,7 @@ def define_xml_variable_validation_rule() -> dict:
                         "name": "get_dataset",
                         "operator": "not_equal_to",
                         "value": {
-                            "target": "variable_size",
+                            "target": "variable_length",
                         },
                     }
                 ]
@@ -821,7 +828,7 @@ def define_xml_variable_validation_rule() -> dict:
             {
                 "name": "generate_dataset_error_objects",
                 "params": {
-                    "message": ("Variable metadata variable_size " "does not match define variable size"),
+                    "message": ("Variable metadata variable_length " "does not match define variable size"),
                 },
             }
         ],
@@ -1207,7 +1214,7 @@ def installed_meddra_dictionaries(request) -> dict:
     """
     cache_service = InMemoryCacheService.get_instance()
     # install dictionaries and save to cache
-    local_data_service = LocalDataService.get_instance(cache_service=cache_service)
+    local_data_service = LocalDataService.get_instance(cache_service=cache_service, config=MagicMock())
     factory = MedDRATermsFactory(local_data_service)
 
     terms: dict = factory.install_terms(meddra_path)
@@ -1367,6 +1374,7 @@ def sdtm_standards_context() -> SdtmStandardsContext:
             custom_standard=None,
             progress=None,
             define_xml_path=None,
+            stf_file_path=None,
             validate_xml=None,
             sql_namespace="uid",
         )
