@@ -17,6 +17,7 @@ from cdisc_rules_engine.sql_operations.day_data_validator import (
 from cdisc_rules_engine.sql_operations.distinct import SqlDistinctOperation
 from cdisc_rules_engine.sql_operations.domain_label import SqlDomainLabelOperation
 from cdisc_rules_engine.sql_operations.minus import SqlMinusOperation
+from cdisc_rules_engine.sql_operations.intersect import SqlIntersectOperation
 from cdisc_rules_engine.sql_operations.numeric_operation import (
     SqlNumericOperation,
 )
@@ -67,6 +68,7 @@ class SqlOperationsFactory:
         "get_model_column_order": SqlGetModelColumnOrder,
         "get_model_filtered_variables": SqlGetModelFilteredVariables,
         "get_parent_model_column_order": SqlGetParentModelColumnOrderOperation,
+        "intersect": SqlIntersectOperation,
         "map": None,
         "max": lambda params, ds: SqlNumericOperation(params, ds, "MAX"),
         "max_date": lambda params, ds: SqlDateOperation(params, ds, "MAX"),
