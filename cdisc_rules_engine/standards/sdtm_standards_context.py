@@ -26,6 +26,7 @@ from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
 from cdisc_rules_engine.utilities.sdtm_utilities import (
+    get_all_model_wildcard_variables,
     get_class_and_domain_metadata,
     get_class_metadata,
     get_allowed_class_variables,
@@ -695,6 +696,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             relrec=data_service.pgi.schema.get_table(relrec_data.name),
             domain=dataset_metadata.domain,
             wildcard=wildcard,
+            model_wildcard_variables=get_all_model_wildcard_variables(self.get_model_metadata() or {}),
         ).name
 
     def _do_relationship_merge(
