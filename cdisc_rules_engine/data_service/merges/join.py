@@ -1,6 +1,7 @@
-from typing import List, Literal, Tuple
+from typing import List, Literal, Optional, Tuple
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -14,6 +15,7 @@ class SqlJoinMerge:
         pivot_left: list[str],
         pivot_right: list[str],
         type: Literal["INNER", "LEFT", "RIGHT", "FULL OUTER"] = "INNER",
+        extra_conditions: Optional[List[str]] = None,
     ) -> SqlTableSchema:
         """
         Perform a join operation on two SQL table schemas.
@@ -22,6 +24,9 @@ class SqlJoinMerge:
         All of the columns of the right table will be present under the name `<right>.<column_name>` (e.g. DM.ABC).
         Any columns from the right table which aren't present in the left table will also be aliased,
         so they will be available as `<column_name>` (e.g. ABC).
+
+        `extra_conditions` allows callers to AND arbitrary raw SQL fragments (e.g. a dynamic
+        IDVAR/IDVARVAL match) onto the join condition, in addition to the pivot column equalities.
 
         Example:
         Table A: USUBJID, AGE
@@ -38,11 +43,19 @@ class SqlJoinMerge:
         # Build the join condition
         join_conditions = []
         for l_var, r_var in zip(pivot_left, pivot_right):
-            left_col_hash = left.get_column_hash(l_var)
-            right_col_hash = right.get_column_hash(r_var)
-            if left_col_hash is None or right_col_hash is None:
+            left_column = left.get_column(l_var)
+            right_column = right.get_column(r_var)
+            if left_column is None or right_column is None:
                 raise ValueError(f"Column {l_var} or {r_var} not found in the respective schemas.")
-            join_conditions.append(f"l.{left_col_hash} = r.{right_col_hash}")
+            # compare numerically when possible (avoiding scientific-notation mismatches)
+            # and fall back to text otherwise.
+            if left_column.type == right_column.type:
+                join_conditions.append(f"l.{left_column.hash} = r.{right_column.hash}")
+            else:
+                join_conditions.append(numeric_aware_equals_sql(f"l.{left_column.hash}", f"r.{right_column.hash}"))
+
+        if extra_conditions:
+            join_conditions.extend(extra_conditions)
 
         name = f"{left.name}_{type}_{right.name}_ON_{'_'.join(join_conditions)}"
 

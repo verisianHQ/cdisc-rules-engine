@@ -210,3 +210,39 @@ def test_original_qnam_column_already_exists(data, sdtm_standards_context):
     with pytest.raises(Exception) as e:
         SqlSuppMerge.perform_join(ds.pgi, o_schema, s_schema, "AE")
     assert "already exists" in str(e.value)
+
+
+def test_supp_merge_idvar_numeric_with_scientific_notation(sdtm_standards_context):
+    """Test that SUPP merge correctly handles scientific notation"""
+    ds = PostgresQLDataService.instance()
+
+    data = {
+        "original": {
+            "STUDYID": ["A", "A", "A"],
+            "DOMAIN": ["AE", "AE", "AE"],
+            "USUBJID": ["A", "B", "C"],
+            "SEQ": [1000000000000000, 100000, 999],
+        },
+        "supp": {
+            "STUDYID": ["A", "A", "A"],
+            "RDOMAIN": ["AE", "AE", "AE"],
+            "USUBJID": ["A", "B", "C"],
+            "IDVAR": ["SEQ", "SEQ", "SEQ"],
+            "IDVARVAL": ["1000000000000000", "1E5", "3"],
+            "QNAM": ["COLA", "COLA", "COLA"],
+            "QVAL": ["Big", "Sci", "NoMatch"],
+        },
+    }
+    o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
+    s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
+    assert o_schema.get_column("seq").type == "Num"
+
+    schema = SqlSuppMerge.perform_join(ds.pgi, o_schema, s_schema, "AE")
+
+    cola_col = schema.get_column_hash("COLA")
+    ds.pgi.execute_sql(f"SELECT usubjid, {cola_col} as cola FROM {schema.hash} ORDER BY usubjid")
+    results = {r["usubjid"]: r["cola"] for r in ds.pgi.fetch_all()}
+
+    assert results["A"] == "Big"
+    assert results["B"] == "Sci"
+    assert results["C"] is None

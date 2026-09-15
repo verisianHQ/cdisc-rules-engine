@@ -54,6 +54,9 @@ class SQLRuleProcessor:
             # change -- pattern to domain name
             target_variable: str = operation.get("name", None)
             operation_domain: str = operation.get("domain", dataset_metadata.domain)
+            if "--" in operation_domain:
+                # resolve wildcard operation domain
+                operation_domain = dataset_metadata.domain
             operation_table = dataset_id
             if target_variable:
                 target_variable = standards_context.replace_domain_code(dataset_metadata, target_variable)

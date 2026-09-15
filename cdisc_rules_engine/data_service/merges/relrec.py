@@ -1,6 +1,7 @@
 from typing import List, Dict
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -341,18 +342,22 @@ class SqlRelrecMerge:
             if rel.get("idvarval_left") and rel["idvarval_left"]:
                 if original.has_column(rel["idvar_left"]):
                     where_filters.append(
-                        f"o.{original.get_column_hash(rel['idvar_left'])}::text = '{rel['idvarval_left']}'"
+                        numeric_aware_equals_sql(
+                            f"o.{original.get_column_hash(rel['idvar_left'])}", f"'{rel['idvarval_left']}'"
+                        )
                     )
                 if right_table.has_column(rel.get("idvar_right", "")):
                     join_conditions.append(
-                        f"r.{right_table.get_column_hash(rel['idvar_right'])}::text = '{rel['idvarval_right']}'"
+                        numeric_aware_equals_sql(
+                            f"r.{right_table.get_column_hash(rel['idvar_right'])}", f"'{rel['idvarval_right']}'"
+                        )
                     )
             else:
                 if rel.get("idvar_left") and rel.get("idvar_right"):
                     if original.has_column(rel["idvar_left"]) and right_table.has_column(rel["idvar_right"]):
                         left_hash = original.get_column_hash(rel["idvar_left"])
                         right_hash = right_table.get_column_hash(rel["idvar_right"])
-                        join_conditions.append(f"o.{left_hash}::text = r.{right_hash}::text")
+                        join_conditions.append(numeric_aware_equals_sql(f"o.{left_hash}", f"r.{right_hash}"))
 
             where_clause = f"WHERE {' AND '.join(where_filters)}"
 
