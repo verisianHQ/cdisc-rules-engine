@@ -40,7 +40,7 @@ def setup_sql_operations(
     data_service = PostgresQLDataService.instance()
     standards_context_dict = {
         "default": DefaultStandardsContext(),
-        "sdtm": SdtmStandardsContext(LibraryMetadataContainer),
+        "sdtm": SdtmStandardsContext(LibraryMetadataContainer()),
     }
     PostgresQLDataService.add_test_dataset(
         data_service,
