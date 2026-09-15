@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -13,6 +13,7 @@ class SqlRelrecMerge:
         relrec: SqlTableSchema,
         domain: str,
         wildcard: str = "__",
+        model_wildcard_variables: Optional[Set[str]] = None,
     ) -> SqlTableSchema:
         """
         Perform a RELREC merge operation on the datasets.
@@ -40,11 +41,15 @@ class SqlRelrecMerge:
             return original
 
         # Build the merged schema with renamed columns
-        schema = SqlRelrecMerge._build_merged_schema(pgi, name, original, relationships, wildcard)
+        schema = SqlRelrecMerge._build_merged_schema(
+            pgi, name, original, relationships, wildcard, model_wildcard_variables
+        )
         pgi.create_table(schema)
 
         # Process each relationship and union results
-        SqlRelrecMerge._process_relationship_records(pgi, schema, original, relationships, wildcard)
+        SqlRelrecMerge._process_relationship_records(
+            pgi, schema, original, relationships, wildcard, model_wildcard_variables
+        )
 
         return schema
 
@@ -102,18 +107,25 @@ class SqlRelrecMerge:
         pgi.execute_sql(query)
         return pgi.fetch_all()
 
+    # used only when the model metadata isn't available
+    FALLBACK_WILDCARD_SUFFIXES = frozenset({"STDY", "ENDY", "DY", "TM", "DTC", "SEQ"})
+
     @staticmethod
     def _apply_wildcard_renaming(
         pgi: PostgresQLInterface,
         right_table: SqlTableSchema,
         domain: str,
         wildcard: str,
+        model_wildcard_variables: Optional[Set[str]] = None,
     ) -> Dict[str, str]:
         """
         Apply wildcard renaming to columns from related domains.
 
-        This is a simplified version of the add_variable_wildcards function.
-        For domain-specific columns like ECSTDY, ECENDY, etc., replace domain prefix with wildcard.
+        This is the SQL equivalent of the add_variable_wildcards function.
+        A domain-prefixed column like AETERM is renamed to RELREC.<wildcard>TERM
+        when --TERM is a variable defined by the model.
+        Columns that are not model wildcard variables keep their own name under the
+        RELREC prefix.
         """
         renamed_columns = {}
 
@@ -125,12 +137,9 @@ class SqlRelrecMerge:
             domain_upper = domain.upper()
 
             if column_upper.startswith(domain_upper):
-                # Check if this looks like a domain-specific variable
                 suffix = column_upper[len(domain_upper) :]
-                # Common patterns: STDY, ENDY, DY, TM, etc.
-                if suffix in ["STDY", "ENDY", "DY", "TM", "DTC", "SEQ"] or suffix.startswith("_"):
-                    new_name = f"RELREC.{wildcard}{suffix}"
-                    renamed_columns[col_name] = new_name
+                if SqlRelrecMerge._is_model_wildcard_variable(suffix, model_wildcard_variables):
+                    renamed_columns[col_name] = f"RELREC.{wildcard}{suffix}"
                 else:
                     # Keep original name but with RELREC prefix
                     renamed_columns[col_name] = f"RELREC.{col_name}"
@@ -141,12 +150,27 @@ class SqlRelrecMerge:
         return renamed_columns
 
     @staticmethod
+    def _is_model_wildcard_variable(
+        suffix: str,
+        model_wildcard_variables: Optional[Set[str]],
+    ) -> bool:
+        """
+        Decide whether a domain-stripped suffix names a "--" variable in the model.
+        """
+        if not suffix:
+            return False
+        if model_wildcard_variables:
+            return f"--{suffix}" in model_wildcard_variables
+        return suffix in SqlRelrecMerge.FALLBACK_WILDCARD_SUFFIXES or suffix.startswith("_")
+
+    @staticmethod
     def _build_merged_schema(
         pgi: PostgresQLInterface,
         name: str,
         original: SqlTableSchema,
         relationships: List[Dict],
         wildcard: str,
+        model_wildcard_variables: Optional[Set[str]] = None,
     ) -> SqlTableSchema:
         """
         Build the output schema including original columns and renamed relationship columns.
@@ -170,7 +194,9 @@ class SqlRelrecMerge:
 
             if right_table:
                 # Get column mappings for this domain
-                column_mappings = SqlRelrecMerge._apply_wildcard_renaming(pgi, right_table, right_domain, wildcard)
+                column_mappings = SqlRelrecMerge._apply_wildcard_renaming(
+                    pgi, right_table, right_domain, wildcard, model_wildcard_variables
+                )
                 SqlRelrecMerge._add_mapped_columns(schema, right_table, column_mappings)
 
         return schema
@@ -202,6 +228,7 @@ class SqlRelrecMerge:
         original: SqlTableSchema,
         relationships: List[Dict],
         wildcard: str,
+        model_wildcard_variables: Optional[Set[str]] = None,
     ):
         """
         Process each relationship record and populate the result table.
@@ -212,7 +239,9 @@ class SqlRelrecMerge:
 
         # Group relationships by right domain and process
         domain_relationships = SqlRelrecMerge._group_relationships_by_domain(relationships)
-        queries = SqlRelrecMerge._build_domain_queries(pgi, schema, original, domain_relationships, wildcard)
+        queries = SqlRelrecMerge._build_domain_queries(
+            pgi, schema, original, domain_relationships, wildcard, model_wildcard_variables
+        )
 
         # Execute all queries
         if queries:
@@ -249,6 +278,7 @@ class SqlRelrecMerge:
         original: SqlTableSchema,
         domain_relationships: Dict[str, List[Dict]],
         wildcard: str,
+        model_wildcard_variables: Optional[Set[str]] = None,
     ) -> List[str]:
         """Build queries for all domain relationships."""
         queries = []
@@ -256,7 +286,7 @@ class SqlRelrecMerge:
             right_table = pgi.schema.get_table(right_domain.lower())
             if right_table:
                 query = SqlRelrecMerge._build_single_domain_query(
-                    pgi, schema, original, right_table, right_domain, domain_rels, wildcard
+                    pgi, schema, original, right_table, right_domain, domain_rels, wildcard, model_wildcard_variables
                 )
                 if query:
                     queries.append(query)
@@ -271,9 +301,12 @@ class SqlRelrecMerge:
         right_domain: str,
         domain_rels: List[Dict],
         wildcard: str,
+        model_wildcard_variables: Optional[Set[str]] = None,
     ) -> str:
         """Build query for a single domain's relationships."""
-        column_mappings = SqlRelrecMerge._apply_wildcard_renaming(pgi, right_table, right_domain, wildcard)
+        column_mappings = SqlRelrecMerge._apply_wildcard_renaming(
+            pgi, right_table, right_domain, wildcard, model_wildcard_variables
+        )
 
         # Build select clauses and target columns
         original_selects, right_selects, target_columns = SqlRelrecMerge._build_select_clauses(
