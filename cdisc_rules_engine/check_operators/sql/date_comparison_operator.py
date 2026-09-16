@@ -41,7 +41,7 @@ class DateComparisonOperator(BaseSqlOperator):
         if isinstance(comparator, str) and not value_is_literal:
             comparator = self.replace_prefix(comparator)
 
-        wrapped_target = f"CAST ({self._sql(target, value_is_literal=value_is_literal)} AS TEXT)"
+        wrapped_target = f"CAST ({self._sql(target)} AS TEXT)"
         wrapped_comparator = f"CAST ({self._sql(comparator, value_is_literal=value_is_literal)} AS TEXT)"
 
         if date_component:
