@@ -50,6 +50,9 @@ from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import
 from cdisc_rules_engine.sql_operations.name_referenced_variable_metadata import SqlNameReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.get_countries import SqlGetCountriesOperation
 from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
+from cdisc_rules_engine.sql_operations.referenced_domain_variable_names import (
+    SqlReferencedDomainVariableNamesOperation,
+)
 
 
 class SqlOperationsFactory:
@@ -77,6 +80,7 @@ class SqlOperationsFactory:
         "min_date": lambda params, ds: SqlDateOperation(params, ds, "MIN"),
         "minus": SqlMinusOperation,
         "record_count": lambda params, ds: SqlNumericOperation(params, ds, "COUNT"),
+        "referenced_domain_variable_names": SqlReferencedDomainVariableNamesOperation,
         "whodrug_code_hierarchy": SqlWhodrugHierarchyOperation,
         "variable_exists": SqlVariableExistsOperation,
         "variable_names": None,

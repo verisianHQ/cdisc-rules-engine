@@ -1,6 +1,7 @@
 from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -174,7 +175,9 @@ class SqlSuppMerge:
         return [
             f"""{default_clauses}
                 AND supp.{supp.get_column_hash("IDVAR")} = '{col}'
-                AND original.{original.get_column_hash(col)}::text = supp.{supp.get_column_hash("IDVARVAL")}"""
+                AND {numeric_aware_equals_sql(
+                f"original.{original.get_column_hash(col)}", f'supp.{supp.get_column_hash("IDVARVAL")}'
+            )}"""
             for col in required_original_columns
         ]
 

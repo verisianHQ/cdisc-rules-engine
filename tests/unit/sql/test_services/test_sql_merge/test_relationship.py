@@ -351,3 +351,49 @@ def test_validation_invalid_parameters(sdtm_standards_context):
             domain="RELSUB",
             relationship_columns={"column_with_names": "", "column_with_values": "IDVARVAL"},
         )
+
+
+def test_relationship_merge_scientific_notation(sdtm_standards_context):
+    """Test that relationship join correctly handles scientific notation"""
+    data = {
+        "original": {
+            "STUDYID": ["STUDY001", "STUDY001", "STUDY001"],
+            "DOMAIN": ["EC", "EC", "EC"],
+            "USUBJID": ["SUBJ001", "SUBJ002", "SUBJ003"],
+            "ECSEQ": [1000000000000000, 100000, 999],
+        },
+        "relationship": {
+            "STUDYID": ["STUDY001", "STUDY001"],
+            "RDOMAIN": ["EC", "EC"],
+            "USUBJID": ["SUBJ001", "SUBJ002"],
+            "IDVAR": ["ECSEQ", "ECSEQ"],
+            "IDVARVAL": ["1000000000000000", "1E5"],
+            "POOLID": ["POOL1", "POOL2"],
+        },
+    }
+    data_service = PostgresQLDataService.instance()
+    original_schema = PostgresQLDataService.add_test_dataset(
+        data_service, "original", data["original"], sdtm_standards_context
+    )
+    relationship_schema = PostgresQLDataService.add_test_dataset(
+        data_service, "relationship", data["relationship"], sdtm_standards_context
+    )
+    assert original_schema.get_column("ecseq").type == "Num"
+
+    relationship_columns = {"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"}
+
+    result = SqlRelationshipMerge.perform_join(
+        pgi=data_service.pgi,
+        original=original_schema,
+        relationship_dataset=relationship_schema,
+        domain="RELSUB",
+        relationship_columns=relationship_columns,
+    )
+
+    poolid_col = result.get_column_hash("POOLID.RELSUB")
+    data_service.pgi.execute_sql(f"SELECT usubjid, {poolid_col} as poolid FROM {result.hash} ORDER BY usubjid")
+    results = {r["usubjid"]: r["poolid"] for r in data_service.pgi.fetch_all() if r["usubjid"]}
+
+    assert results["SUBJ001"] == "POOL1"
+    assert results["SUBJ002"] == "POOL2"
+    assert "SUBJ003" not in results

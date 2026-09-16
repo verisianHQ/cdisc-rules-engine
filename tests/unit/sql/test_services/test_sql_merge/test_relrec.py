@@ -473,3 +473,53 @@ def test_relrec_merge_multiple_relationships_no_duplicates(sdtm_standards_contex
     assert len(faobj_values) == 2, f"Expected 2 distinct FAOBJ values, got {len(faobj_values)}"
     assert "VALUE1" in faobj_values, "Should have VALUE1"
     assert "VALUE2" in faobj_values, "Should have VALUE2"
+
+
+def test_relrec_merge_idvarval_scientific_notation(sdtm_standards_context):
+    """Test that RELREC join correctly handles scientific notation"""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    original_data = {
+        "STUDYID": ["S1", "S1"],
+        "USUBJID": ["U1", "U2"],
+        "ECSEQ": [1000000000000000, 100000],
+        "ECSTDY": [1, 2],
+    }
+    ae_data = {
+        "STUDYID": ["S1", "S1"],
+        "USUBJID": ["U1", "U2"],
+        "AESEQ": [1000000000000000, 100000],
+        "AETERM": ["Big", "Sci"],
+    }
+    relrec_data = {
+        "STUDYID": ["S1", "S1", "S1", "S1"],
+        "USUBJID": ["U1", "U1", "U2", "U2"],
+        "RELID": ["REL1", "REL1", "REL2", "REL2"],
+        "RDOMAIN": ["EC", "AE", "EC", "AE"],
+        "IDVAR": ["ECSEQ", "AESEQ", "ECSEQ", "AESEQ"],
+        "IDVARVAL": ["1000000000000000", "1000000000000000", "1E5", "1E5"],
+    }
+
+    original_schema = PostgresQLDataService.add_test_dataset(ds, "ec", original_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+    assert original_schema.get_column("ecseq").type == "Num"
+
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi,
+        original=original_schema,
+        relrec=relrec_schema,
+        domain="EC",
+        wildcard="__",
+    )
+
+    assert result_schema.has_column("relrec.aeterm")
+    pgi.execute_sql(
+        f"""SELECT usubjid, {result_schema.get_column_hash('relrec.aeterm')} as aeterm
+            FROM {result_schema.hash} ORDER BY usubjid"""
+    )
+    results = {r["usubjid"]: r["aeterm"] for r in pgi.fetch_all()}
+
+    assert results["U1"] == "Big"
+    assert results["U2"] == "Sci"

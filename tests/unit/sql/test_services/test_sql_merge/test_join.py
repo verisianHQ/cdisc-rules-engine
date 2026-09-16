@@ -274,3 +274,27 @@ def test_source_row_number_preserved_through_join():
     assert len(errors) > 0
     first_error_row = errors[0][SOURCE_ROW_NUMBER]
     assert first_error_row == 1, f"Expected row 1, got row {first_error_row}"
+
+
+def test_join_mismatched_types_with_scientific_notation():
+    """Test that join correctly handles scientific notation"""
+    ds = PostgresQLDataService.instance()
+    left_data = {"KEY": ["1000000000000000", "1E5", "3"], "NAME": ["Big", "Sci", "NoMatch"]}
+    right_data = {"KEY": [1000000000000000, 100000, 999], "AGE": [10, 20, 30]}
+
+    left_schema = PostgresQLDataService.add_test_dataset(ds, "l", left_data, DefaultStandardsContext())
+    right_schema = PostgresQLDataService.add_test_dataset(ds, "r", right_data, DefaultStandardsContext())
+    assert left_schema.get_column("key").type == "Char"
+    assert right_schema.get_column("key").type == "Num"
+
+    result = SqlJoinMerge.perform_join(
+        pgi=ds.pgi, left=left_schema, right=right_schema, pivot_left=["KEY"], pivot_right=["KEY"], type="LEFT"
+    )
+
+    age_col = result.get_column_hash("age")
+    ds.pgi.execute_sql(f"SELECT name, {age_col} as age FROM {result.hash} ORDER BY name")
+    results = {r["name"]: r["age"] for r in ds.pgi.fetch_all()}
+
+    assert results["Big"] == 10
+    assert results["Sci"] == 20
+    assert results["NoMatch"] is None

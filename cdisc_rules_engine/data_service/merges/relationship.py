@@ -1,4 +1,5 @@
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -264,7 +265,7 @@ class SqlRelationshipMerge:
         # Add first IDVAR as additional join key if present
         if first_idvar and original.has_column(first_idvar):
             col_hash = original.get_column_hash(first_idvar)
-            join_conditions.append(f"l.{col_hash}::text = r.{values_hash}::text")
+            join_conditions.append(numeric_aware_equals_sql(f"l.{col_hash}", f"r.{values_hash}"))
 
         query = f"""
             INSERT INTO {schema.hash} ({', '.join(target_columns)})
@@ -395,11 +396,12 @@ class SqlRelationshipMerge:
             col_hash = original.get_column_hash(idvar_col)
 
             column_filter = f"""
-                {original.hash}.{col_hash}::text IN (
-                    SELECT r.{values_hash}::text
+                EXISTS (
+                    SELECT 1
                     FROM {relationship_dataset.hash} r
                     WHERE r.{names_hash} = '{idvar_col}'
                     AND TRIM(COALESCE(r.{values_hash}, '')) != ''
+                    AND {numeric_aware_equals_sql(f"{original.hash}.{col_hash}", f"r.{values_hash}")}
                 )
             """
             column_filters.append(column_filter)
