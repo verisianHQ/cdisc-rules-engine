@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
@@ -5,7 +7,7 @@ from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperatio
 
 class SqlDayDataValidatorOperation(SqlBaseOperation):
 
-    def _build_to_date_comparison_sql(self, wrapped_target: str, wrapped_comparator: str) -> str:
+    def _build_to_date_comparison_sql(self, wrapped_target: str, wrapped_comparator: str) -> Tuple[str, str]:
         """
         Generates SQL to validate ISO formats, slice both dates to the lower precision,
         and cast both to DATE using TO_DATE with a dynamic format mask based on length.
