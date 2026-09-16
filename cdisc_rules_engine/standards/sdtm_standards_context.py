@@ -1,4 +1,3 @@
-import re
 from typing import Any, List, Tuple, Dict
 from collections import defaultdict
 
@@ -27,6 +26,7 @@ from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
 from cdisc_rules_engine.utilities.sdtm_utilities import (
+    get_all_model_wildcard_variables,
     get_class_and_domain_metadata,
     get_class_metadata,
     get_allowed_class_variables,
@@ -696,6 +696,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             relrec=data_service.pgi.schema.get_table(relrec_data.name),
             domain=dataset_metadata.domain,
             wildcard=wildcard,
+            model_wildcard_variables=get_all_model_wildcard_variables(self.get_model_metadata() or {}),
         ).name
 
     def _do_relationship_merge(
@@ -782,33 +783,45 @@ class SdtmStandardsContext(BaseStandardsContext):
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
         """
+        _CATEGORISED_DOMAINS = ("qs", "mh", "lb", "fa")
+        _WHOLE_DATASET_NAMES = frozenset({"relsub", "pooldef", "aprelsub"})
+
         dataset = dataset_name.lower()
 
-        # suppfa + parent domain (e.g., suppfacm -> suppfa)
-        if dataset.startswith("suppfa") and len(dataset) > 6:
-            return "suppfa"
-
-        # fa + parent domain (e.g., facm, faeg -> fa)
-        if dataset.startswith("fa") and len(dataset) == 4:
-            return "fa"
-
-        # supp + parent domain + alphanumeric suffix (e.g., suppae1 -> suppae)
-        if dataset.startswith("supp") and len(dataset) > 4:
-            match = re.match(r"^(supp[a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
-
-        # relrec + alphanumeric suffix (e.g., relreca -> relrecb)
-        if dataset.startswith("relrec") and len(dataset) > 6:
+        if dataset.startswith("relrec"):
             return "relrec"
 
-        # 2-char parent domain + alphanumeric suffix (e.g., ae1 -> ae)
-        if len(dataset) > 2:
-            match = re.match(r"^([a-z]{2})([a-z0-9]+)$", dataset)
-            if match:
-                return match.group(1)
+        numeric_stem_length = len(dataset)
+        while numeric_stem_length > 0 and dataset[numeric_stem_length - 1].isdigit():
+            numeric_stem_length -= 1
 
-        return dataset
+        if 0 < numeric_stem_length < len(dataset) and dataset[:numeric_stem_length].isalpha():
+            return dataset[:numeric_stem_length]
+
+        if numeric_stem_length == 0:
+            return dataset
+
+        if dataset in _WHOLE_DATASET_NAMES:
+            return dataset
+
+        prefix_length = 0
+        while True:
+            prefix = next(
+                (p for p in ("supp", "sqap", "sq", "ap") if dataset[prefix_length:].startswith(p)),
+                "",
+            )
+            if not prefix:
+                break
+            prefix_length += len(prefix)
+
+        domain = dataset[prefix_length:]
+        if len(domain) <= 2 or not domain.isalpha():
+            return dataset
+
+        if domain.startswith(_CATEGORISED_DOMAINS):
+            return dataset
+
+        return dataset[: prefix_length + 2]
 
     @staticmethod
     def _ig_domain_details_standardisation(

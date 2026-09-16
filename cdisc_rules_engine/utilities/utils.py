@@ -63,6 +63,10 @@ def get_execution_status(results):
         return ExecutionStatus.SKIPPED.value
 
 
+def _lower(value):
+    return value.lower() if isinstance(value, str) else value
+
+
 def get_standard_codelist_cache_key(standard: str, version: str) -> str:
     return f"{standard.lower()}-{version.replace('.', '-')}-codelists"
 
@@ -145,21 +149,23 @@ def is_ap_domain(dataset_domain: str) -> bool:
 def get_library_variables_metadata_cache_key(
     standard_type: str, standard_version: str, standard_substandard: str
 ) -> str:
+    standard_type = _lower(standard_type)
     if not standard_substandard:
         return f"library_variables_metadata/{standard_type}/{standard_version}"
     else:
-        return f"library_variables_metadata/{standard_type}/{standard_version}/{standard_substandard}"
+        return f"library_variables_metadata/{standard_type}/{standard_version}/{_lower(standard_substandard)}"
 
 
 def get_standard_details_cache_key(standard_type: str, standard_version: str, standard_substandard: str = None) -> str:
+    standard_type = _lower(standard_type)
     if not standard_substandard:
         return f"standards/{standard_type}/{standard_version}"
     else:
-        return f"standards/{standard_type}/{standard_version}/{standard_substandard}"
+        return f"standards/{standard_type}/{standard_version}/{_lower(standard_substandard)}"
 
 
 def get_model_details_cache_key(standard: str, model_version: str) -> str:
-    return f"models/{standard}/{model_version.replace('.', '-')}"
+    return f"models/{_lower(standard)}/{model_version.replace('.', '-')}"
 
 
 def get_model_details_cache_key_from_ig(standard_metadata: dict) -> str:
@@ -279,8 +285,9 @@ def get_metadata_cache_key(metadata_key: str):
 
 
 def get_variable_codelist_map_cache_key(standard: str, version: str, subversion) -> str:
+    standard = _lower(standard)
     if subversion:
-        return f"{standard}-{version}-{subversion}-codelists"
+        return f"{standard}-{version}-{_lower(subversion)}-codelists"
     else:
         return f"{standard}-{version}-codelists"
 

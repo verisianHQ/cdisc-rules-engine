@@ -24,25 +24,17 @@ def validate_datasets_payload(datasets):
 
         for var in dataset.get("variables", []):
             if var is None:
-                raise BadRequestError(
-                    f"Dataset: {dataset.get('label')} is missing variable metadata"
-                )
+                raise BadRequestError(f"Dataset: {dataset.get('label')} is missing variable metadata")
 
     if missing_keys:
-        raise KeyError(
-            f"one or more datasets missing the following keys {missing_keys}"
-        )
+        raise KeyError(f"one or more datasets missing the following keys {missing_keys}")
 
 
 def handle_exception(e: Exception):
     if isinstance(e, KeyError):
-        return func.HttpResponse(
-            json.dumps({"error": "KeyError", "message": str(e)}), status_code=400
-        )
+        return func.HttpResponse(json.dumps({"error": "KeyError", "message": str(e)}), status_code=400)
     elif isinstance(e, BadRequestError):
-        return func.HttpResponse(
-            json.dumps({"error": "BadRequestError", "message": str(e)}), status_code=400
-        )
+        return func.HttpResponse(json.dumps({"error": "BadRequestError", "message": str(e)}), status_code=400)
     else:
         return func.HttpResponse(
             json.dumps(
@@ -71,11 +63,7 @@ def main(req: func.HttpRequest, context: func.Context) -> func.HttpResponse:  # 
         asyncio.run(cache_populator.load_available_ct_packages())
         if standards_data or codelists:
             if standards_data:
-                asyncio.run(
-                    cache_populator.load_standard(
-                        standard, standard_version, standard_substandard
-                    )
-                )
+                asyncio.run(cache_populator.load_standard(standard, standard_version, standard_substandard))
             asyncio.run(cache_populator.load_codelists(codelists))
         if not rule:
             raise KeyError("'rule' required in request")
