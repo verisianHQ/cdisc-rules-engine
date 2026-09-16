@@ -419,6 +419,8 @@ class PostgresQLOperators(BaseType):
             "not_exists",
             "is_unique_set",
             "is_not_unique_set",
+            "is_unique_relationship",
+            "is_not_unique_relationship",
             "is_ordered_subset_of",
             "is_not_ordered_subset_of",
         }:
