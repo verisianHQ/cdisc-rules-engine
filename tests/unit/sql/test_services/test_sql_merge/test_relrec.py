@@ -303,6 +303,32 @@ def test_relrec_apply_wildcard_renaming(sdtm_standards_context):
     assert renamed_columns["aeterm"] == "RELREC.aeterm", "AETERM should keep original name with RELREC prefix"
 
 
+def test_relrec_apply_wildcard_renaming_with_model_variables(sdtm_standards_context):
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    domain_data = {
+        "STUDYID": ["STUDY001"],
+        "USUBJID": ["SUBJ001"],
+        "AESEQ": [1],
+        "AESTDY": [1],
+        "AETERM": ["Headache"],
+        "AEFOO": ["sponsor-defined"],
+    }
+    domain_schema = PostgresQLDataService.add_test_dataset(ds, "ae", domain_data, sdtm_standards_context)
+
+    model_wildcard_variables = {"--SEQ", "--TERM"}
+
+    renamed_columns = SqlRelrecMerge._apply_wildcard_renaming(pgi, domain_schema, "AE", "__", model_wildcard_variables)
+
+    assert renamed_columns["aeterm"] == "RELREC.__TERM", "AETERM should be wildcarded from the model"
+    assert renamed_columns["aeseq"] == "RELREC.__SEQ", "AESEQ should be wildcarded from the model"
+    assert renamed_columns["aestdy"] == "RELREC.aestdy", "AESTDY is not a model wildcard variable here"
+    assert renamed_columns["aefoo"] == "RELREC.aefoo", "Sponsor-defined AEFOO should keep its own name"
+
+    assert renamed_columns["usubjid"] == "RELREC.usubjid"
+
+
 def test_relrec_merge_cg0601_scenario(sdtm_standards_context):
     """Test the specific CG0601 scenario with data type mismatch (string vs integer)."""
     ds = PostgresQLDataService.instance()

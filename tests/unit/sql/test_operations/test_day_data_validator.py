@@ -51,25 +51,28 @@ from .helpers import assert_operation_constant, assert_operation_parameterized_c
         ),
         (
             {
-                "USUBJID": [1, 2, 3],
+                "USUBJID": [1, 2, 3, 4],
                 "EXSTDTC": [
                     "2023-01-01T12:00:00",
                     "2023-01-02T00:00:00",
                     "2022-12-31T23:59:59",
+                    "2022-12-31T23:59:59",
                 ],
             },
             {
-                "USUBJID": [1, 2, 3],
+                "USUBJID": [1, 2, 3, 4],
                 "RFSTDTC": [
                     "2023-01-01T00:00:00",
                     "2023-01-01T12:00:00",
                     "2023-01-01T00:00:00",
+                    "2022-12-31",
                 ],
             },
             [
                 {"params": {"$id": 1}, "value": [1]},
                 {"params": {"$id": 2}, "value": [2]},
                 {"params": {"$id": 3}, "value": [-1]},
+                {"params": {"$id": 4}, "value": [1]},
             ],
         ),
     ],
@@ -197,6 +200,60 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
 )
 def test_sql_dy_invalid_dates(current_data, dm_data, expected, sdtm_standards_context):
     """Test DY calculation with various invalid date formats."""
+    data_service = PostgresQLDataService.instance()
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, table_name="DM", column_data=dm_data, standards_context=sdtm_standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, table_name="EX", column_data=current_data, standards_context=sdtm_standards_context
+    )
+
+    params = SqlOperationParams(domain="EX", target="EXSTDTC", standards_context=sdtm_standards_context)
+    operation = SqlOperationsFactory.get_service("dy", params, data_service)
+    result = operation.execute()
+
+    assert_operation_parameterized_constant(operation, result, expected)
+
+
+@pytest.mark.parametrize(
+    "current_data, dm_data, expected",
+    [
+        (
+            {
+                "USUBJID": [1, 2, 3, 4, 5, 6],
+                "EXSTDTC": [
+                    "2023-01-10",
+                    "2023-01",
+                    "2023",
+                    "2023-01-10T12:00",
+                    "2023-01-9",
+                    "2023-01-10",
+                ],
+            },
+            {
+                "USUBJID": [1, 2, 3, 4, 5, 6],
+                "RFSTDTC": [
+                    "2023-01-01",
+                    "2023-01-05",
+                    "2023-06-05",
+                    "2023-01-01T00:00",
+                    "2023-01-01",
+                    "2023-01-9",
+                ],
+            },
+            [
+                {"params": {"$id": 1}, "value": [10]},
+                {"params": {"$id": 2}, "value": [1]},
+                {"params": {"$id": 3}, "value": [1]},
+                {"params": {"$id": 4}, "value": [10]},
+                {"params": {"$id": 5}, "value": [None]},
+                {"params": {"$id": 6}, "value": [None]},
+            ],
+        ),
+    ],
+)
+def test_sql_dy_truncates_to_lower_precision(current_data, dm_data, expected, sdtm_standards_context):
     data_service = PostgresQLDataService.instance()
 
     PostgresQLDataService.add_test_dataset(

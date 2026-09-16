@@ -91,6 +91,18 @@ class BaseSqlOperator:
         """
         pass
 
+    def has_missing_required_columns(self, other_value: Dict[str, Any]) -> bool:
+        """
+        Whether execute_operator would fall back to a default result (e.g. FALSE) because a
+        required column is missing, rather than a real computed result.
+
+        NotOperator uses this to decide whether to negate: negating a "couldn't check, so
+        FALSE" default would silently turn it into a false positive/negative depending on
+        polarity, so operators with such defaults should override this to report when they
+        apply, and NotOperator leaves the default result untouched when they do.
+        """
+        return False
+
     def _assert_valid_value_and_cast(self, value):
         return value
 

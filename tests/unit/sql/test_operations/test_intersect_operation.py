@@ -23,34 +23,34 @@ TEST_OPERATIONS = {
         (
             {"col_name": ["A", "B", "C", "D"], "col_subtract": ["C", "D", "E", "F"]},
             {"name": "col_name", "subtract": "col_subtract"},
-            ["A", "B"],
+            ["C", "D"],
         ),
         (
             {"col_name": [1, 2, 3, 4], "col_subtract": [3, 4, 5, 6]},
             {"name": "col_name", "subtract": "col_subtract"},
-            [1, 2],  # or ["1", "2"] depending on how the pg driver interprets the type in testing
+            [3, 4],  # or ["3", "4"] depending on how the pg driver interprets the type in testing
         ),
-        # Case 3: When the 'subtract' column has no matching values (all values should return)
+        # Case 3: When 'name' and 'subtract' have no overlapping values (empty collection)
         (
             {"col_name": ["X", "Y", "Z"], "col_subtract": [None, None, "W"]},
             {"name": "col_name", "subtract": "col_subtract"},
-            ["X", "Y", "Z"],
+            [],
         ),
         # Case 4: When the 'name' column is empty (should return empty collection)
         ({"col_name": [None, None], "col_subtract": ["A", "B"]}, {"name": "col_name", "subtract": "col_subtract"}, []),
         (
             {"dummy_col": ["1"]},  # table needs to be populated for setup_sql_operations to work
             {"name": "$op_name", "subtract": "$op_subtract"},
-            ["A"],
+            ["B"],
         ),
     ],
 )
-def test_minus_operation(data, params, expected):
+def test_intersect_operation(data, params, expected):
     """
-    Tests the MINUS operation.
+    Tests the INTERSECT operation.
     """
     operation = setup_sql_operations(
-        operation="minus",
+        operation="intersect",
         target=None,
         column_data=data,
         extra_config=params,
@@ -61,17 +61,30 @@ def test_minus_operation(data, params, expected):
     assert_operation_collection(operation, result, expected, unsorted=True)
 
 
-def test_minus_operation_preserves_name_order():
+def test_intersect_operation_preserves_name_order():
     """
-    The result should follow col_name's original row order (minus the subtracted
-    values), not be reordered by a set-difference dedup step.
+    The result should follow col_name's original row order (restricted to the overlap
+    with col_subtract), not be reordered by a set-intersection dedup step.
     """
     operation = setup_sql_operations(
-        operation="minus",
+        operation="intersect",
         target=None,
-        column_data={"col_name": ["D", "B", "A", "C", "E"], "col_subtract": ["C", "C", "C", "C", "C"]},
+        column_data={"col_name": ["D", "B", "A", "C", "E"], "col_subtract": ["A", "C", "E", "A", "C"]},
         extra_config={"name": "col_name", "subtract": "col_subtract"},
     )
 
     result = operation.execute()
-    assert_operation_collection(operation, result, ["D", "B", "A", "E"], unsorted=False)
+    assert_operation_collection(operation, result, ["A", "C", "E"], unsorted=False)
+
+
+def test_intersect_operation_deduplicates():
+    """Duplicate values in 'name' collapse to their first occurrence."""
+    operation = setup_sql_operations(
+        operation="intersect",
+        target=None,
+        column_data={"col_name": ["A", "B", "A", "C"], "col_subtract": ["A", "C", "A", "C"]},
+        extra_config={"name": "col_name", "subtract": "col_subtract"},
+    )
+
+    result = operation.execute()
+    assert_operation_collection(operation, result, ["A", "C"], unsorted=False)
