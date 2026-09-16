@@ -233,7 +233,7 @@ class PostgresQLOperators(BaseType):
         "shares_exactly_one_element_with": lambda data: SharesElementsWithOperator(data, operation_type="exactly_one"),
         "shares_no_elements_with": lambda data: SharesElementsWithOperator(data, operation_type="no_elements"),
         "is_ordered_subset_of": lambda data: IsOrderedSubsetOfOperator(data),
-        "is_not_ordered_subset_of": lambda data: IsOrderedSubsetOfOperator(data, invert=True),
+        "is_not_ordered_subset_of": lambda data: NotOperator(data, IsOrderedSubsetOfOperator),
         "is_valid_whodrug_term_reference": lambda data: ValidExDictTermReferenceOperator(
             data, StaticTables.WHODRUG_TABLE_NAME.value
         ),
@@ -421,6 +421,8 @@ class PostgresQLOperators(BaseType):
             "is_not_unique_set",
             "is_unique_relationship",
             "is_not_unique_relationship",
+            "is_ordered_subset_of",
+            "is_not_ordered_subset_of",
         }:
             return []
 
