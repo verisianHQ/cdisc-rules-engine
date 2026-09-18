@@ -9,6 +9,7 @@ from cdisc_rules_engine.constants.classes import (
     RELATIONSHIP,
     DETECTABLE_CLASSES,
 )
+from cdisc_rules_engine.constants.domains import AP_DOMAIN
 from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.merges.relationship import SqlRelationshipMerge
@@ -74,8 +75,16 @@ class SdtmStandardsContext(BaseStandardsContext):
             return "RELSPEC"
         elif filename.startswith("relsub"):
             return "RELSUB"
+        elif filename.startswith("ap"):
+            return self._get_unsplit_name(filename).upper()
         else:
             return filename[0:2].upper()
+
+    @staticmethod
+    def derive_ap_related_domain(domain: str) -> str:
+        if not domain or not domain.upper().startswith(AP_DOMAIN):
+            return ""
+        return domain.upper()[len(AP_DOMAIN) :]
 
     def derive_rdomain(self, name: str) -> str:
         if name.lower().startswith("supp"):
@@ -91,16 +100,17 @@ class SdtmStandardsContext(BaseStandardsContext):
             return "Q"
         if domain in ["RELREC", "RELSPEC", "RELSUB"]:
             return ""
-        else:
-            return domain
+        related_domain = self.derive_ap_related_domain(domain)
+        if related_domain:
+            if related_domain in ["RELREC", "RELSPEC", "RELSUB"]:
+                return ""
+            return related_domain
+        return domain
 
     def derive_is_split(self, name: str, domain: str):
         if domain in ["SUPPQUAL", "RELREC", "RELSPEC", "RELSUB"]:
             return False
-        elif name.lower().startswith("AP"):
-            return len(name) > 4
-        else:
-            return len(name) > 2
+        return name.upper() != self._get_unsplit_name(name).upper()
 
     def replace_domain_code(self, dataset_metadata: SdtmDatasetMetadata2, variable: str) -> str:
         """Replace any -- with the domain code"""
@@ -235,7 +245,7 @@ class SdtmStandardsContext(BaseStandardsContext):
 
         for var in variables:
             # Replace -- with domain code if it exists
-            var["name"] = var["name"].replace("--", dataset_metadata.domain or "")
+            var["name"] = var["name"].replace("--", dataset_metadata.variable_prefix or "")
             for key, new_key in column_name_mapping.items():
                 if key in var:
                     var[new_key] = var.pop(key)
@@ -262,12 +272,13 @@ class SdtmStandardsContext(BaseStandardsContext):
                 timing_metadata,
             ) = get_allowed_class_variables(model_details, model_class_details)
             model_variables = []
+            wildcard_domain = self.derive_ap_related_domain(domain) or domain
             for var_list in [
                 identifiers_metadata,
                 class_variables_metadata,
                 timing_metadata,
             ]:
-                replace_variable_wildcards(var_list, domain, model_variables)
+                replace_variable_wildcards(var_list, wildcard_domain, model_variables)
         # Custom domains only pull from model hierarchy
         if is_custom:
             variables_metadata = model_variables
@@ -509,7 +520,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             if domain[0:4] == "SUPP" or domain[0:2] == "SQ":
                 return True
         if "AP--" in domains_to_check or "APFA--" in domains_to_check:
-            if domain == "AP":
+            if domain.startswith(AP_DOMAIN):
                 return True
         return False
 
@@ -567,18 +578,19 @@ class SdtmStandardsContext(BaseStandardsContext):
     def _handle_special_cases(self, dataset_metadata: DatasetMetadata2, domain: str):
         if not domain:
             return None
-        if self._contains_topic_variable(dataset_metadata, domain, "TERM"):
+        prefix = self.derive_ap_related_domain(domain) or domain
+        if self._contains_topic_variable(dataset_metadata, prefix, "TERM"):
             return EVENTS
-        if self._contains_topic_variable(dataset_metadata, domain, "TRT"):
+        if self._contains_topic_variable(dataset_metadata, prefix, "TRT"):
             return INTERVENTIONS
-        if self._contains_topic_variable(dataset_metadata, domain, "QNAM"):
+        if self._contains_topic_variable(dataset_metadata, prefix, "QNAM"):
             return RELATIONSHIP
-        if self._contains_topic_variable(dataset_metadata, domain, "TESTCD"):
-            if self._contains_topic_variable(dataset_metadata, domain, "OBJ"):
+        if self._contains_topic_variable(dataset_metadata, prefix, "TESTCD"):
+            if self._contains_topic_variable(dataset_metadata, prefix, "OBJ"):
                 return FINDINGS_ABOUT
             return FINDINGS
         # if self._is_associated_persons(dataset_metadata):
-        if domain == "AP":
+        if self.derive_ap_related_domain(domain):
             return self._get_associated_persons_inherit_class(domain)
         return None
 
@@ -592,7 +604,17 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         Find the domain this AP-- domain is related to, return its class.
         """
-        # TODO: Needs access to other datasets, how will we do that?
+        related_domain = self.derive_ap_related_domain(domain)
+        if not related_domain or related_domain.startswith(AP_DOMAIN):
+            return None
+
+        class_data, _ = get_class_and_domain_metadata(
+            self.library_metadata.standard_metadata,
+            related_domain,
+        )
+        name = class_data.get("name")
+        if name:
+            return convert_library_class_name_to_ct_class(name)
         return None
         # ap_suffix = domain[2:]
         # directory_path = get_directory_path(file_path)
