@@ -14,6 +14,7 @@ def make_handler(split_part_filenames):
     handler.dataset_metadata = SimpleNamespace(
         name="MH",
         domain="MH",
+        variable_prefix="MH",
         filename="mh.xpt",
         split_part_filenames=split_part_filenames,
     )
