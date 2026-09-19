@@ -79,5 +79,4 @@ class SqlNumericOperation(SqlBaseOperation):
             )
 
         query = f"SELECT {self.function}(inner_op.value) AS value FROM ({previous_operation.group_by_query}) AS inner_op"
-        print(query)
         return SqlOperationResult(query=query, type="constant", subtype="Num")
