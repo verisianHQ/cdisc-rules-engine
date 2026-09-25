@@ -159,6 +159,48 @@ def test_filtered_grouped_record_count(data, filter, grouping, expected):
     assert_operation_parameterized_constant(operation, result, expected)
 
 
+REGEX_DATA = {
+    "STUDYID": ["CDISC01", "CDISC01", "CDISC01", "CDISC02", "CDISC02"],
+    "DOMAIN": ["AE", "AE", "AE", "AE", "AE"],
+    "values": ["2023-01-15T10:30", "2023-01-15", "2023-01", "O'BRIEN", None],
+}
+
+
+@pytest.mark.parametrize(
+    "target, regex, filter, expected",
+    [
+        ("values", r"^\d{4}-\d{2}-\d{2}", None, 2),
+        ("values", r"^\d{4}-\d{2}$", None, 1),
+        ("values", r"T\d{2}:", None, 1),
+        ("values", r"^O'B", None, 1),
+        ("values", r"^NOMATCH", None, 0),
+        ("values", r"^\d{4}", {"STUDYID": "CDISC02"}, 0),
+        (None, r"^NOMATCH", None, 5),
+    ],
+)
+def test_regex_record_count(target, regex, filter, expected):
+    operation = setup_sql_operations(
+        "record_count", target, REGEX_DATA, extra_config={"regex": regex, "filter": filter}
+    )
+    result = operation.execute()
+    assert_operation_constant(operation, result, expected)
+
+
+def test_regex_grouped_record_count():
+    operation = setup_sql_operations(
+        "record_count", "values", REGEX_DATA, extra_config={"regex": r"^\d{4}-\d{2}", "grouping": ["STUDYID"]}
+    )
+    result = operation.execute()
+    assert_operation_parameterized_constant(
+        operation,
+        result,
+        [
+            {"params": {"$1": "CDISC01"}, "value": [3]},
+            {"params": {"$1": "CDISC02"}, "value": [0]},
+        ],
+    )
+
+
 # TODO: Handle operation variables in other operations
 """
 def test_operation_result_grouping_record_count(operation_params: OperationParams):
