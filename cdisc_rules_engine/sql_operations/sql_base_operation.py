@@ -101,7 +101,9 @@ class SqlBaseOperation:
         where_clauses = []
         for column, value in self.params.filter.items():
             column_sql = self.data_service.pgi.schema.get_column_hash(self.params.domain, column)
-            if isinstance(value, str):
+            if isinstance(value, str) and value.endswith("%"):
+                where_clauses.append(f"{column_sql}::text LIKE '{self._like_prefix_pattern(value)}'")
+            elif isinstance(value, str):
                 where_clauses.append(f"{column_sql} = '{value.replace('\'', '\'\'')}'")
             elif isinstance(value, (int, float)):
                 where_clauses.append(f"{column_sql} = {value}")
@@ -109,6 +111,13 @@ class SqlBaseOperation:
                 raise ValueError(f"Unsupported filter value type: {type(value)} for column {column}")
 
         return "WHERE " + " AND ".join(where_clauses) if where_clauses else ""
+
+    @staticmethod
+    def _like_prefix_pattern(value: str) -> str:
+        prefix = value.rstrip("%")
+        for char in ("\\", "%", "_"):
+            prefix = prefix.replace(char, "\\" + char)
+        return prefix.replace("'", "''") + "%"
 
     def get_dataset_class(self, domain: str) -> Optional[str]:
         """
