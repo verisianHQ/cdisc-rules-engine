@@ -22,27 +22,28 @@ class SqlNumericOperation(SqlBaseOperation):
         else:
             column_id = self.data_service.pgi.schema.get_column_hash(table, self.params.target)
 
-        where_clause = self.construct_where_clause()
+        conditions = []
+        filter_clause = self.construct_where_clause()
+        if filter_clause:
+            conditions.append(filter_clause.removeprefix("WHERE "))
+        if self.params.regex and self.params.target is not None:
+            pattern = self.params.regex.replace("'", "''")
+            conditions.append(f"{column_id}::text ~ '{pattern}'")
 
         if not self.params.grouping:
+            where_clause = "WHERE " + " AND ".join(conditions) if conditions else ""
             query = f"SELECT {self.function}({column_id}) AS value FROM {dataset_id} {where_clause}"
             return SqlOperationResult(query=query, type="constant", subtype="Num")
         else:
             grouping_columns = [self.data_service.pgi.schema.get_column(table, group) for group in self.params.grouping]
 
-            where_conditions = []
             params = {}
             for i, col in enumerate(grouping_columns):
                 param_name = f"${i + 1}"
-                where_conditions.append(f"({col.hash} = {param_name} OR ({col.hash} IS NULL AND {param_name} IS NULL))")
+                conditions.append(f"({col.hash} = {param_name} OR ({col.hash} IS NULL AND {param_name} IS NULL))")
                 params[param_name] = col.name
 
-            where_clause_parts = []
-            if where_clause.strip():
-                where_clause_parts.append(where_clause.replace("WHERE", "").strip())
-            where_clause_parts.extend(where_conditions)
-
-            combined_where = "WHERE " + " AND ".join(where_clause_parts)
+            combined_where = "WHERE " + " AND ".join(conditions)
 
             query = f"""SELECT {self.function}({column_id}) AS value
                         FROM {dataset_id}
