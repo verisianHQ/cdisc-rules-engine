@@ -110,7 +110,7 @@ def test_record_count(data, target, expected):
                 "values": ["TEST1", "TEST1", "TEST1"],
             },
             {"USUBJID": "A%"},
-            2,
+            3,
         ),
     ],
 )
