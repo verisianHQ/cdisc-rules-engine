@@ -71,16 +71,47 @@ def test_record_count(data, target, expected):
             {"DOMAIN": "AE", "EQ": 2},
             1,
         ),
-        # (
-        #     {
-        #         "STUDYID": ["CDISC01", "CDISC02", "CDISC03"],
-        #         "DOMAIN": ["AE", "AE", "DM"],
-        #         "EQ": [1, 2, 3],
-        #         "USUBJID": ["TEST1", "TEST2", "ABC"],
-        #     },
-        #     {"USUBJID": "TEST%"},
-        #     2,
-        # ),
+        (
+            {
+                "STUDYID": ["CDISC01", "CDISC02", "CDISC03"],
+                "DOMAIN": ["AE", "AE", "DM"],
+                "EQ": [1, 2, 3],
+                "USUBJID": ["TEST1", "TEST2", "ABC"],
+                "values": ["TEST1", "TEST1", "TEST1"],
+            },
+            {"USUBJID": "TEST%"},
+            2,
+        ),
+        (
+            {
+                "STUDYID": ["CDISC01", "CDISC02", "CDISC03"],
+                "DOMAIN": ["AE", "AE", "AE"],
+                "USUBJID": ["A_1", "AB1", "A_2"],
+                "values": ["TEST1", "TEST1", "TEST1"],
+            },
+            {"USUBJID": "A_%"},
+            2,
+        ),
+        (
+            {
+                "STUDYID": ["CDISC01", "CDISC02", "CDISC03"],
+                "DOMAIN": ["AE", "AE", "AE"],
+                "USUBJID": ["TEST1", None, "ABC"],
+                "values": ["TEST1", "TEST1", "TEST1"],
+            },
+            {"USUBJID": "%"},
+            2,
+        ),
+        (
+            {
+                "STUDYID": ["CDISC01", "CDISC02", "CDISC03"],
+                "DOMAIN": ["AE", "AE", "AE"],
+                "USUBJID": ["A1", "A2", "A"],
+                "values": ["TEST1", "TEST1", "TEST1"],
+            },
+            {"USUBJID": "A%"},
+            2,
+        ),
     ],
 )
 def test_filtered_record_count(data, filter, expected):
@@ -147,6 +178,20 @@ def test_filtered_record_count(data, filter, expected):
                 {"params": {"$1": "CDISC01", "$2": "AE"}, "value": [1]},
                 {"params": {"$1": "CDISC01", "$2": None}, "value": [2]},
                 {"params": {"$1": "CDISC02", "$2": None}, "value": [2]},
+            ],
+        ),
+        (
+            {
+                "STUDYID": ["CDISC01"] * 5,
+                "DOMAIN": ["SUPPDM"] * 5,
+                "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1", "SUBJ2", "SUBJ2"],
+                "values": ["RACE1", "RACE2", "AGEU", "RACEOTH", "AGEU"],
+            },
+            {"values": "RACE%"},
+            ["USUBJID"],
+            [
+                {"params": {"$1": "SUBJ1"}, "value": [2]},
+                {"params": {"$1": "SUBJ2"}, "value": [1]},
             ],
         ),
     ],
