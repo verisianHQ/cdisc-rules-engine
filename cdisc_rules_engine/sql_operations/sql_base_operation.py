@@ -3,6 +3,7 @@ from abc import abstractmethod
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.constants.domains import AP_DOMAIN
 from cdisc_rules_engine.exceptions.custom_exceptions import (
     ColumnNotFoundError,
     DatasetNotFoundError,
@@ -142,25 +143,39 @@ class SqlBaseOperation:
             RELATIONSHIP,
         )
 
+        prefix = self.get_ap_related_domain(domain) or domain
+
         # Check if columns exist in the schema for this domain
         try:
-            if self._column_exists_in_domain(domain, "TERM"):
+            if self._column_exists_in_domain(prefix, "TERM"):
                 return EVENTS
-            if self._column_exists_in_domain(domain, "TRT"):
+            if self._column_exists_in_domain(prefix, "TRT"):
                 return INTERVENTIONS
-            if self._column_exists_in_domain(domain, "QNAM"):
+            if self._column_exists_in_domain(prefix, "QNAM"):
                 return RELATIONSHIP
-            if self._column_exists_in_domain(domain, "TESTCD"):
-                if self._column_exists_in_domain(domain, "OBJ"):
+            if self._column_exists_in_domain(prefix, "TESTCD"):
+                if self._column_exists_in_domain(prefix, "OBJ"):
                     return FINDINGS_ABOUT
                 return FINDINGS
-            # Note: Associated Persons (AP--) handling would require more complex logic
-            # that may not be suitable for SQL operations without dataset content analysis
+            if prefix != domain:
+                return self.get_dataset_class(prefix)
         except Exception:
             # If we can't determine the class through schema inspection, return None
             pass
 
         return None
+
+    def get_ap_related_domain(self, domain: Optional[str] = None) -> Optional[str]:
+        """The domain an AP-- dataset relates to, e.g. APEG -> EG."""
+        domain = (domain if domain is not None else self.params.domain) or ""
+        if not domain.upper().startswith(AP_DOMAIN):
+            return None
+
+        related_domain = domain.upper()[len(AP_DOMAIN) :]
+        if not related_domain or related_domain.startswith(AP_DOMAIN):
+            return None
+
+        return related_domain
 
     def _column_exists_in_domain(self, domain: str, column_suffix: str) -> bool:
         """
