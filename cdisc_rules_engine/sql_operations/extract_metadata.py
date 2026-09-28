@@ -27,9 +27,8 @@ class SqlExtractMetadataOperation(SqlBaseOperation):
 
     def _dataset_name_result(self) -> SqlOperationResult:
         """
-        The name of the dataset being validated (e.g. SUPPLBCH), not the library domain.
-        Resolved per record from SOURCE_DS so concatenated split datasets report the
-        dataset each record came from.
+        The name of the dataset being validated. Per record from SOURCE_DS incase of
+        concatenated split datasets.
         """
         fallback = self.params.dataset_metadata.name.upper().replace("'", "''")
         if self.params.table and self.data_service.pgi.schema.column_exists(self.params.table, SOURCE_DS):
