@@ -86,6 +86,7 @@ class SQLRuleProcessor:
                 use_rule_type_table=operation.get("use_rule_type_table", False),
                 value=operation.get("value"),
                 regex=operation.get("regex"),
+                dataset_metadata=dataset_metadata,
             )
 
             operation = SqlOperationsFactory.get_service(rule_name, params=params, data_service=data_service)
