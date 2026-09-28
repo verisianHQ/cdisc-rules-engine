@@ -1,5 +1,7 @@
 import pytest
 
+from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
+
 from .helpers import assert_series_equals, create_sql_operators
 
 equals_string_part_test_data = [
@@ -121,6 +123,33 @@ def test_does_not_equal_string_part(data, target, comparator, regex, value_is_li
             "comparator": comparator,
             "regex": regex,
             "value_is_literal": value_is_literal,
+        }
+    )
+
+    assert_series_equals(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    "operator,expected_result",
+    [
+        ("equals_string_part", [True, False, False]),
+        ("does_not_equal_string_part", [False, True, False]),
+    ],
+)
+def test_string_part_operation_variable_comparator(operator, expected_result):
+    sql_ops = create_sql_operators(
+        {"RDOMAIN": ["AE", "CM", ""]},
+        extra_operation_variables={
+            "$dataset_name": SqlOperationResult(query="SELECT 'SUPPAE'", type="constant", subtype="Char")
+        },
+    )
+
+    result = getattr(sql_ops, operator)(
+        {
+            "target": "RDOMAIN",
+            "comparator": "$dataset_name",
+            "regex": ".{4}(..).*",
+            "value_is_literal": False,
         }
     )
 

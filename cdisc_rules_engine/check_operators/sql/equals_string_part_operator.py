@@ -23,9 +23,12 @@ class EqualsStringPartOperator(BaseSqlOperator):
         if not value_is_literal:
             comparator = self.replace_prefix(comparator)
 
-        comparator_column = (
-            self._column_sql(comparator) if not value_is_literal else self._sql(comparator, value_is_literal=True)
-        )
+        if value_is_literal:
+            comparator_column = self._sql(comparator, value_is_literal=True)
+        elif comparator in self.operation_variables:
+            comparator_column = self._constant_sql(comparator)
+        else:
+            comparator_column = self._column_sql(comparator)
 
         def sql():
             extracted_part = f"(regexp_match({comparator_column}::text, '{regex}'))[1]"

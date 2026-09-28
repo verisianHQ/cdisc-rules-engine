@@ -42,3 +42,50 @@ def test_extract_metadata_exception_handling():
     operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
     with pytest.raises(Exception):
         operation.execute()
+
+
+def _load_supplbch(data_service, standards_context):
+    table = PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="supplbch",
+        column_data={"RDOMAIN": ["LB", "DM"]},
+        standards_context=standards_context,
+    )
+    return table, data_service.get_dataset_metadata("supplbch")
+
+
+def test_dataset_name_extract_metadata_uses_validated_dataset():
+    data_service = PostgresQLDataService.instance()
+    standards_context = DummyStandardsContext()
+    table, dataset_metadata = _load_supplbch(data_service, standards_context)
+    params = SqlOperationParams(
+        domain="SUPPLB",
+        target="dataset_name",
+        standards_context=standards_context,
+        table="supplbch",
+        dataset_metadata=dataset_metadata,
+    )
+    operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
+    result = operation.execute()
+
+    assert result.type == "constant"
+    query = result.query
+    for placeholder, column in result.params.items():
+        query = query.replace(placeholder, data_service.pgi.schema.get_column_hash("supplbch", column))
+    data_service.pgi.execute_sql(f"SELECT ({query}) AS value FROM {table.hash} ORDER BY id")
+    assert [row["value"] for row in data_service.pgi.fetch_all()] == ["SUPPLBCH", "SUPPLBCH"]
+
+
+def test_dataset_name_extract_metadata_without_table_uses_dataset_metadata():
+    data_service = PostgresQLDataService.instance()
+    standards_context = DummyStandardsContext()
+    _, dataset_metadata = _load_supplbch(data_service, standards_context)
+    params = SqlOperationParams(
+        domain="SUPPLB",
+        target="dataset_name",
+        standards_context=standards_context,
+        dataset_metadata=dataset_metadata,
+    )
+    operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
+    result = operation.execute()
+    assert_operation_constant(operation, result, "SUPPLBCH")

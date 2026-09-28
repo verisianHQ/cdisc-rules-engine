@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
+from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
@@ -39,6 +40,7 @@ class SqlOperationParams:
     delimiter: str = None
     value: str = None
     regex: str = None
+    dataset_metadata: BaseDatasetMetadata = None
 
     # standard_substandard: str = None
     # attribute_name: str = None
