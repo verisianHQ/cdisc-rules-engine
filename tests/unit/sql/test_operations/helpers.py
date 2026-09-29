@@ -60,6 +60,18 @@ def setup_sql_operations(
     return SqlOperationsFactory.get_service(operation, params, data_service)
 
 
+def setup_over_previous_operation(previous_operation: SqlBaseOperation, operation: str, extra_config: dict = {}):
+    """Create an operation whose name references the result of previous_operation."""
+    params = SqlOperationParams(
+        domain=TEST_TABLE_NAME,
+        target="$previous",
+        standards_context=DefaultStandardsContext(),
+        previous_operations={"$previous": previous_operation.execute()},
+        **extra_config,
+    )
+    return SqlOperationsFactory.get_service(operation, params, previous_operation.data_service)
+
+
 def assert_operation_constant(operation: SqlBaseOperation, result: SqlOperationResult, expected: Any):
     """Assert that the result of an operation is a constant value."""
     assert isinstance(result, SqlOperationResult)

@@ -1,87 +1,16 @@
-from cdisc_rules_engine.data_service.postgresql_data_service import (
-    PostgresQLDataService,
-)
-from cdisc_rules_engine.exceptions.custom_exceptions import RuleExecutionError
-from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
-from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
-from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
+from cdisc_rules_engine.sql_operations.aggregate_operation import AggregateSource, SqlAggregateOperation
 
 
-class SqlNumericOperation(SqlBaseOperation):
+class SqlNumericOperation(SqlAggregateOperation):
 
-    def __init__(self, params: SqlOperationParams, data_service: PostgresQLDataService, function: str):
-        super().__init__(params, data_service)
-        self.function = function
-
-    def _execute_operation(self):
-        previous_operation = (self.params.previous_operations or {}).get(self.params.target)
-        if previous_operation is not None:
-            return self._execute_over_previous_operation(previous_operation)
-
-        table = self.params.table if self.params.use_rule_type_table else self.params.domain
-        dataset_id = self.data_service.pgi.schema.get_table_hash(table)
-
+    def _dataset_value(self, table: str):
         # Special case for counting size of whole dataset
         if self.params.target is None:
-            column_id = "*"
-        else:
-            column_id = self.data_service.pgi.schema.get_column_hash(table, self.params.target)
+            return "*", "Num"
+        return self.data_service.pgi.schema.get_column_hash(table, self.params.target), "Num"
 
-        conditions = []
-        filter_clause = self.construct_where_clause()
-        if filter_clause:
-            conditions.append(filter_clause.removeprefix("WHERE "))
-        if self.params.regex and self.params.target is not None:
-            pattern = self.params.regex.replace("'", "''")
-            conditions.append(f"{column_id}::text ~ '{pattern}'")
+    def _aggregate_sql(self, value_sql: str, aggregate_filter: str = "") -> str:
+        return f"{self.function}({value_sql}){aggregate_filter}"
 
-        if not self.params.grouping:
-            where_clause = "WHERE " + " AND ".join(conditions) if conditions else ""
-            query = f"SELECT {self.function}({column_id}) AS value FROM {dataset_id} {where_clause}"
-            return SqlOperationResult(query=query, type="constant", subtype="Num")
-        else:
-            grouping_columns = [self.data_service.pgi.schema.get_column(table, group) for group in self.params.grouping]
-
-            aggregate_filter, group_where = "", ""
-            if conditions:
-                if self.params.ignore_empty_filtered_groups:
-                    group_where = "WHERE " + " AND ".join(conditions)
-                else:
-                    aggregate_filter = f" FILTER (WHERE {' AND '.join(conditions)})"
-            group_by_query = f"""SELECT {self.function}({column_id}){aggregate_filter} AS value
-                        FROM {dataset_id}
-                        {group_where}
-                        GROUP BY {", ".join(col.hash for col in grouping_columns)}"""
-
-            params = {}
-            for i, col in enumerate(grouping_columns):
-                param_name = f"${i + 1}"
-                conditions.append(f"({col.hash} = {param_name} OR ({col.hash} IS NULL AND {param_name} IS NULL))")
-                params[param_name] = col.name
-
-            combined_where = "WHERE " + " AND ".join(conditions)
-
-            query = f"""SELECT {self.function}({column_id}) AS value
-                        FROM {dataset_id}
-                        {combined_where}"""
-            return SqlOperationResult(
-                query=query, type="constant", subtype="Num", params=params, group_by_query=group_by_query
-            )
-
-    def _execute_over_previous_operation(self, previous_operation: SqlOperationResult) -> SqlOperationResult:
-        if self.params.grouping:
-            raise RuleExecutionError(
-                f"Operation '{self.function}' cannot combine 'group' with a 'name' that "
-                f"references another operation ('{self.params.target}')."
-            )
-        if previous_operation.group_by_query is None:
-            raise RuleExecutionError(
-                f"Operation '{self.function}' can only reference a previous operation that "
-                f"was itself grouped (e.g. record_count/max/min with a 'group'), but "
-                f"'{self.params.target}' has no grouped result to aggregate over."
-            )
-
-        query = (
-            f"SELECT {self.function}(inner_op.value) AS value FROM ({previous_operation.group_by_query}) AS inner_op"
-        )
-        return SqlOperationResult(query=query, type="constant", subtype="Num")
+    def _result_subtype(self, source: AggregateSource) -> str:
+        return "Num"
