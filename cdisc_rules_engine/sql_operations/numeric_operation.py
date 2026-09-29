@@ -42,9 +42,15 @@ class SqlNumericOperation(SqlBaseOperation):
         else:
             grouping_columns = [self.data_service.pgi.schema.get_column(table, group) for group in self.params.grouping]
 
-            aggregate_filter = f" FILTER (WHERE {' AND '.join(conditions)})" if conditions else ""
+            aggregate_filter, group_where = "", ""
+            if conditions:
+                if self.params.ignore_empty_filtered_groups:
+                    group_where = "WHERE " + " AND ".join(conditions)
+                else:
+                    aggregate_filter = f" FILTER (WHERE {' AND '.join(conditions)})"
             group_by_query = f"""SELECT {self.function}({column_id}){aggregate_filter} AS value
                         FROM {dataset_id}
+                        {group_where}
                         GROUP BY {", ".join(col.hash for col in grouping_columns)}"""
 
             params = {}
