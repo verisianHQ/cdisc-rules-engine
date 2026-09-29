@@ -40,6 +40,7 @@ class SqlOperationParams:
     delimiter: str = None
     value: str = None
     regex: str = None
+    ignore_empty_filtered_groups: bool = False
     dataset_metadata: BaseDatasetMetadata = None
 
     # standard_substandard: str = None
