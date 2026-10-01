@@ -1,11 +1,20 @@
+from typing import Optional
+
 from cdisc_rules_engine.sql_operations.aggregate_operation import SqlAggregateOperation
 
 
 class SqlDateOperation(SqlAggregateOperation):
 
+    @property
+    def operation_name(self) -> str:
+        return f"{self.function.lower()}_date"
+
     def _dataset_value(self, table: str):
-        column = self.data_service.pgi.schema.get_column(table, self.params.target)
+        column = self._dataset_column(table)
         return column.hash, column.type
+
+    def _can_aggregate(self, subtype: Optional[str]) -> bool:
+        return subtype != "Num"
 
     def _aggregate_sql(self, value_sql: str, aggregate_filter: str = "") -> str:
         return f"COALESCE({self._group_aggregate_sql(value_sql, aggregate_filter)}, '')"

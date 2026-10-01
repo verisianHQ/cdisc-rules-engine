@@ -5,7 +5,8 @@ from typing import Callable, List, Optional, Tuple
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
-from cdisc_rules_engine.exceptions.custom_exceptions import RuleExecutionError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleExecutionError
+from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
@@ -32,9 +33,18 @@ class SqlAggregateOperation(SqlBaseOperation):
         super().__init__(params, data_service)
         self.function = function
 
+    @property
+    @abstractmethod
+    def operation_name(self) -> str:
+        """Operation name as written in rules."""
+
     @abstractmethod
     def _dataset_value(self, table: str) -> Tuple[Optional[str], Optional[str]]:
         """The SQL for the values to aggregate from the dataset and their subtype."""
+
+    @abstractmethod
+    def _can_aggregate(self, subtype: Optional[str]) -> bool:
+        """Whether this operation can aggregate over a previous operation's values of this subtype."""
 
     @abstractmethod
     def _aggregate_sql(self, value_sql: str, aggregate_filter: str = "") -> str:
@@ -56,12 +66,7 @@ class SqlAggregateOperation(SqlBaseOperation):
             query = f"SELECT {self._aggregate_sql(source.value_sql)} AS value FROM {source.from_sql}"
             return SqlOperationResult(query=self._with_where(query, conditions), type="constant", subtype=subtype)
 
-        grouping = []
-        for name in self.params.grouping:
-            column = self._resolve_column(source, name, "group")
-            if column is None:
-                raise ValueError(f"Grouping column '{name}' not found in '{self._table()}'")
-            grouping.append(column)
+        grouping = [self._resolve_column(source, name, "group") for name in self.params.grouping]
         group_by_query, group_by_columns = self._group_by_query(source, conditions, grouping)
 
         params = {}
@@ -104,12 +109,23 @@ class SqlAggregateOperation(SqlBaseOperation):
     def _table(self) -> str:
         return self.params.table if self.params.use_rule_type_table else self.params.domain
 
+    def _dataset_column(self, table: str) -> SqlColumnSchema:
+        column = self.data_service.pgi.schema.get_column(table, self.params.target)
+        if column is None:
+            raise ColumnNotFoundError(column_name=self.params.target, table_id=table)
+        return column
+
     def _previous_operation_source(self, previous_operation: SqlOperationResult) -> AggregateSource:
         if previous_operation.group_by_query is None:
             raise RuleExecutionError(
-                f"Operation {self.function} can only reference a previous operation that "
+                f"Operation {self.operation_name} can only reference a previous operation that "
                 f"was itself grouped, but {self.params.target} has no grouped result to "
                 f"aggregate over."
+            )
+        if not self._can_aggregate(previous_operation.subtype):
+            raise RuleExecutionError(
+                f"Operation {self.operation_name} cannot aggregate over the values of "
+                f"{self.params.target} ({previous_operation.subtype})."
             )
 
         group_by_columns = previous_operation.group_by_columns or {}
@@ -126,22 +142,22 @@ class SqlAggregateOperation(SqlBaseOperation):
             previous_operation_name=self.params.target,
         )
 
-    def _resolve_column(self, source: AggregateSource, name: str, usage: str) -> Optional[Tuple[str, str]]:
+    def _resolve_column(self, source: AggregateSource, name: str, usage: str) -> Tuple[str, str]:
         column = source.resolve_column(name)
-        if column is None and source.previous_operation_name is not None:
+        if column is not None:
+            return column
+        if source.previous_operation_name is not None:
             raise RuleExecutionError(
-                f"Operation {self.function} can only {usage} by the grouping columns of "
+                f"Operation {self.operation_name} can only {usage} by the grouping columns of "
                 f"{source.previous_operation_name}, but {name} is not one of them."
             )
-        return column
-
-    def _filter_column_sql(self, source: AggregateSource, name: str) -> Optional[str]:
-        column = self._resolve_column(source, name, "filter")
-        return column[1] if column else None
+        raise ColumnNotFoundError(column_name=name, table_id=self._table())
 
     def _conditions(self, source: AggregateSource) -> List[str]:
         conditions = []
-        filter_clause = self.construct_where_clause(resolve_column=lambda name: self._filter_column_sql(source, name))
+        filter_clause = self.construct_where_clause(
+            resolve_column=lambda name: self._resolve_column(source, name, "filter")[1]
+        )
         if filter_clause:
             conditions.append(filter_clause.removeprefix("WHERE "))
         if self.params.regex and source.value_sql != "*":

@@ -106,6 +106,8 @@ class SqlBaseOperation:
         where_clauses = []
         for column, value in self.params.filter.items():
             column_sql = resolve_column(column)
+            if column_sql is None:
+                raise ColumnNotFoundError(column_name=column, table_id=self.params.domain)
             if isinstance(value, str) and value.endswith("%"):
                 where_clauses.append(f"{column_sql}::text LIKE '{self._like_prefix_pattern(value)}'")
             elif isinstance(value, str):

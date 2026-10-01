@@ -1,6 +1,6 @@
 import pytest
 
-from cdisc_rules_engine.exceptions.custom_exceptions import RuleExecutionError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleExecutionError
 
 from .helpers import (
     assert_operation_constant,
@@ -301,4 +301,29 @@ def test_sql_numeric_over_previous_operation_non_grouping_column_raises(extra_co
     record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp"]})
     operation = setup_over_previous_operation(record_count, "max", extra_config=extra_config)
     with pytest.raises(RuleExecutionError, match=f"can only {usage} by the grouping columns"):
+        operation.execute()
+
+
+@pytest.mark.parametrize("op", ["max", "min", "mean"])
+def test_sql_numeric_over_grouped_date_raises(op):
+    data = {"grp": [1, 1, 2], "dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}
+    grouped = setup_sql_operations("max_date", "dates", data, extra_config={"grouping": ["grp"]})
+    operation = setup_over_previous_operation(grouped, op)
+    with pytest.raises(RuleExecutionError, match=f"Operation {op} cannot aggregate"):
+        operation.execute()
+
+
+@pytest.mark.parametrize(
+    "op, target, extra_config",
+    [
+        ("max", "missing", {}),
+        ("max", "values", {"grouping": ["missing"]}),
+        ("max", "values", {"filter": {"missing": "Y"}}),
+        ("record_count", None, {"grouping": ["missing"]}),
+        ("record_count", None, {"filter": {"missing": "Y"}}),
+    ],
+)
+def test_sql_numeric_missing_column_raises(op, target, extra_config):
+    operation = setup_sql_operations(op, target, {"values": [1, 2]}, extra_config=extra_config)
+    with pytest.raises(ColumnNotFoundError, match="'missing'"):
         operation.execute()
