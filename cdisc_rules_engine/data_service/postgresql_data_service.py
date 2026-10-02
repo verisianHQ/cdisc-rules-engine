@@ -60,6 +60,7 @@ class PostgresQLDataService:
         self.pgi = postgres_interface
         self.datasets: List[BaseDatasetMetadata] = []
         self.dictionary_metadata: Dict[str, Any] = {}
+        self.cache_path: Optional[str] = None
 
     @classmethod
     def instance(
@@ -86,6 +87,7 @@ class PostgresQLDataService:
 
         instance = cls(postgres_interface=pgi)
         instance.dictionary_metadata = populate_dictionaries(pgi, external_dictionaries)
+        instance.cache_path = cache_path
         populate_codelists(pgi, cache_path, codelists)
         populate_standards(pgi)
         populate_helper_tables(pgi)
