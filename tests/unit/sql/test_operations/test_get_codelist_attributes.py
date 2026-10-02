@@ -1,3 +1,7 @@
+import pickle
+
+import pytest
+
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -130,7 +134,7 @@ def test_get_codelist_attributes_column_referenced_version_uses_table_not_domain
     )
 
 
-def test_get_codelist_attributes_provided_codelists_takes_precedence_over_column_reference(
+def test_get_codelist_attributes_column_reference_takes_precedence_over_provided_codelists(
     sdtm_standards_context,
 ):
     data_service = PostgresQLDataService.instance(provided_codelists="sdtmct-2020-03-27")
@@ -149,5 +153,152 @@ def test_get_codelist_attributes_provided_codelists_takes_precedence_over_column
     operation = SqlGetCodelistAttributesOperation(params, data_service)
     result = operation.execute()
 
-    assert result.params is None
-    assert_operation_collection(operation, result, ["C1234", "C5678"], unsorted=True)
+    assert result.params == {"$ct_version": "studydate"}
+    assert_operation_parameterized_collection(
+        operation,
+        result,
+        [
+            {"params": {"$ct_version": "2021-12-17"}, "value": ["C999"]},
+            {"params": {"$ct_version": None}, "value": ["C1234", "C5678"]},
+            {"params": {"$ct_version": ""}, "value": ["C1234", "C5678"]},
+        ],
+        unsorted=True,
+    )
+
+
+def test_loading_ct_packages_referenced_by_column(sdtm_standards_context, tmp_path):
+    version_date = "1999-01-29"
+    write_ct_package(tmp_path, version_date, "C424242")
+    data_service = PostgresQLDataService.instance(cache_path=str(tmp_path))
+    schema = SqlTableSchema.static("ts1")
+    schema.add_column(SqlColumnSchema("tsvcdver", "tsvcdver", "Char"))
+    data_service.pgi.create_table(schema)
+    data_service.pgi.insert_data("ts1", [{"tsvcdver": version_date}, {"tsvcdver": "../not-a-date"}, {"tsvcdver": ""}])
+
+    params = SqlOperationParams(
+        domain="ts",
+        table="ts1",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="tsvcdver",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert_operation_parameterized_collection(
+        operation,
+        result,
+        [{"params": {"$ct_version": version_date}, "value": ["CL9", "C424242"]}],
+        unsorted=True,
+    )
+
+
+def test_get_codelist_attributes_without_versions_uses_all_loaded_ct_packages(sdtm_standards_context):
+    data_service = PostgresQLDataService.instance()
+    setup_codelist_table(data_service)
+
+    params = SqlOperationParams(
+        domain="dataset",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert_operation_collection(operation, result, ["C1234", "C5678", "C999"], unsorted=True)
+
+
+def test_get_codelist_attributes_empty_column_version(
+    sdtm_standards_context,
+):
+    data_service = PostgresQLDataService.instance()
+    setup_codelist_table(data_service)
+    setup_data_table_with_version_column(data_service, "ae1")
+
+    params = SqlOperationParams(
+        domain="ae",
+        table="ae1",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="studydate",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert_operation_parameterized_collection(
+        operation,
+        result,
+        [
+            {"params": {"$ct_version": "2020-03-27"}, "value": ["C1234", "C5678"]},
+            {"params": {"$ct_version": None}, "value": []},
+            {"params": {"$ct_version": ""}, "value": []},
+        ],
+        unsorted=True,
+    )
+
+
+def write_ct_package(cache_dir, version_date: str, term_code: str):
+    with open(cache_dir / f"sdtmct-{version_date}.pkl", "wb") as f:
+        pickle.dump(
+            {
+                "package": f"sdtmct-{version_date}",
+                "submission_lookup": {},
+                "CL9": {"name": "Codelist Nine", "submissionValue": "CL9", "terms": [{"conceptId": term_code}]},
+            },
+            f,
+        )
+
+
+def test_loading_most_recent_cached_ct_package_by_default(sdtm_standards_context, tmp_path):
+    write_ct_package(tmp_path, "1999-01-29", "C111111")
+    write_ct_package(tmp_path, "1999-03-26", "C222222")
+    data_service = PostgresQLDataService.instance(cache_path=str(tmp_path))
+
+    params = SqlOperationParams(
+        domain="dataset",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    assert_operation_collection(operation, result, ["CL9", "C222222"], unsorted=True)
+
+
+def test_warning_for_column_referenced_ct_package_missing_from_cache(sdtm_standards_context, tmp_path):
+    write_ct_package(tmp_path, "1999-01-29", "C111111")
+    data_service = PostgresQLDataService.instance(cache_path=str(tmp_path))
+    schema = SqlTableSchema.static("ts1")
+    schema.add_column(SqlColumnSchema("tsvcdref", "tsvcdref", "Char"))
+    schema.add_column(SqlColumnSchema("tsvcdver", "tsvcdver", "Char"))
+    data_service.pgi.create_table(schema)
+    data_service.pgi.insert_data(
+        "ts1",
+        [
+            {"tsvcdref": "CDISC", "tsvcdver": "1999-01-29"},
+            {"tsvcdref": "CDISC CT", "tsvcdver": "1999-06-25"},
+            {"tsvcdref": "SNOMED", "tsvcdver": "1999-09-24"},
+        ],
+    )
+
+    params = SqlOperationParams(
+        domain="ts",
+        table="ts1",
+        target="tsvcdref",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="tsvcdver",
+    )
+
+    with pytest.warns(UserWarning, match="sdtmct-1999-06-25 referenced by column tsvcdver") as record:
+        SqlGetCodelistAttributesOperation(params, data_service).execute()
+
+    assert len(record) == 1
