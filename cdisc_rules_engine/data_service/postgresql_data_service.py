@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from dataclasses import dataclass
 from io import IOBase
 from typing import TYPE_CHECKING, Any, Dict, List, Union, Optional
@@ -36,7 +37,12 @@ from cdisc_rules_engine.data_service.database import (
     DatabaseConfigPGServer,
 )
 
-# TSVCDREF values meaning CDISC CT, as in the non-SQL get_codelist_attributes operation
+# Columns where dataset records can name the version of the CT package they use, by domain:
+# (reference terminology column, CT version column). TS is the only known one so far
+CT_VERSION_COLUMNS = {
+    "TS": ("TSVCDREF", "TSVCDVER"),
+}
+# reference terminology values meaning CDISC CT, as in the non-SQL get_codelist_attributes operation
 CDISC_CT_REFERENCES = ("CDISC", "CDISC CT")
 
 if TYPE_CHECKING:  # Only imports the below statements during type checking
@@ -233,7 +239,7 @@ class PostgresQLDataService:
     def _populate_data_referenced_codelists(self, standards_context: "BaseStandardsContext"):
         """
         Once the datasets are loaded, and before any rule runs, completes the codelists table with:
-        - the cached CT packages named in TSVCDVER, for records referencing CDISC CT in TSVCDREF
+        - the cached CT packages named in the CT_VERSION_COLUMNS (e.g. TSVCDVER), for records referencing CDISC CT
         - the most recent cached CT package, if none of the standard's type is loaded at this point
         """
         from cdisc_rules_engine.standards.adam_standards_context import AdamStandardsContext
@@ -246,17 +252,21 @@ class PostgresQLDataService:
         else:
             return
 
-        version_dates = set()
+        version_dates_by_column = defaultdict(set)
         for dataset in self.datasets:
-            version_col = self.pgi.schema.get_column_hash(dataset.name, "TSVCDVER")
-            reference_col = self.pgi.schema.get_column_hash(dataset.name, "TSVCDREF")
-            if dataset.domain != "TS" or not version_col or not reference_col:
+            if dataset.domain not in CT_VERSION_COLUMNS:
+                continue
+            reference_var, version_var = CT_VERSION_COLUMNS[dataset.domain]
+            reference_col = self.pgi.schema.get_column_hash(dataset.name, reference_var)
+            version_col = self.pgi.schema.get_column_hash(dataset.name, version_var)
+            if not reference_col or not version_col:
                 continue
             self.pgi.execute_sql(
                 f"SELECT DISTINCT TRIM({version_col}) AS version FROM {self.pgi.schema.get_table_hash(dataset.name)} "
                 f"WHERE {reference_col} IN %s",
                 (CDISC_CT_REFERENCES,),
             )
-            version_dates.update(row["version"] for row in self.pgi.fetch_all())
-        populate_referenced_codelists(self.pgi, self.cache_path, ct_type, version_dates, "TSVCDVER")
+            version_dates_by_column[version_var].update(row["version"] for row in self.pgi.fetch_all())
+        for version_var, version_dates in version_dates_by_column.items():
+            populate_referenced_codelists(self.pgi, self.cache_path, ct_type, version_dates, version_var)
         populate_latest_codelist(self.pgi, self.cache_path, ct_type)

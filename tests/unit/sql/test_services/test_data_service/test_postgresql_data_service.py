@@ -125,6 +125,18 @@ def test_ct_packages_named_in_tsvcdver_are_loaded_with_the_datasets(sdtm_standar
     assert loaded_ct_versions(data_service) == {"1999-01-29", "1999-03-26"}
 
 
+def test_ct_version_columns_are_only_read_in_their_domain(sdtm_standards_context, tmp_path):
+    write_ct_package(tmp_path, "1999-01-29", "C111111")
+    write_ct_package(tmp_path, "1999-03-26", "C222222")
+    not_ts_dataset = DatasetFixture.from_records("XX", {"TSVCDREF": ["CDISC"], "TSVCDVER": ["1999-01-29"]})
+
+    data_service = PostgresQLDataService.from_list_of_testdatasets(
+        [not_ts_dataset], sdtm_standards_context, cache_path=str(tmp_path)
+    )
+
+    assert loaded_ct_versions(data_service) == {"1999-03-26"}
+
+
 def test_warning_for_tsvcdver_ct_package_missing_from_cache(sdtm_standards_context, tmp_path, monkeypatch):
     warnings = []
     monkeypatch.setattr(populate_codelists.logger, "warning", lambda msg, *args, **kwargs: warnings.append(msg))
