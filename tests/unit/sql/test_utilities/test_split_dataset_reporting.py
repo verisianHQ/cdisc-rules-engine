@@ -168,3 +168,48 @@ def test_domain_substitution_still_applies_to_parts_with_errors():
     by_dataset = {container.dataset: container for container in containers}
     assert by_dataset["mh1.xpt"].message == "MH has a duplicate sequence"
     assert by_dataset["mh2.xpt"].message is None
+
+
+def make_dataset_sensitivity_handler(monkeypatch, split_part_filenames):
+    handler = make_handler(split_part_filenames)
+    handler.rule = {"sensitivity": "Dataset"}
+    monkeypatch.setattr(
+        SqlVenmoResultHandler,
+        "_create_error_for_row",
+        lambda _self, row, _schema, _targets: ValidationErrorEntity(value={"MHCAT": row["mhcat"]}),
+    )
+    return handler
+
+
+source_ds_schema = SimpleNamespace(get_column_hash=lambda column: column.lower())
+
+
+def test_dataset_error_is_reported_on_each_split_part_with_error_rows(monkeypatch):
+    """A domain-wide error on a concatenated split dataset is kept for every part it came from."""
+    handler = make_dataset_sensitivity_handler(monkeypatch, ["mh1.xpt", "mh2.xpt", "mh3.xpt"])
+    rows = [
+        {"source_ds": "MH1", "mhcat": "GENERAL"},
+        {"source_ds": "MH1", "mhcat": "OTHER"},
+        {"source_ds": "MH2", "mhcat": "GENERAL"},
+    ]
+
+    errors = handler._generate_errors_list(rows, {"MHCAT": True}, source_ds_schema)
+    containers = handler._bundle_error_objects_per_source("MHCAT has the same value", errors)
+
+    assert {c.dataset: [e.value for e in c.errors] for c in containers} == {
+        "mh1.xpt": [{"MHCAT": "GENERAL"}],
+        "mh2.xpt": [{"MHCAT": "GENERAL"}],
+        "mh3.xpt": [],
+    }
+
+
+def test_dataset_error_on_unsplit_dataset_is_reported_once(monkeypatch):
+    handler = make_dataset_sensitivity_handler(monkeypatch, None)
+    rows = [
+        {"source_ds": "MH", "mhcat": "GENERAL"},
+        {"source_ds": "MH", "mhcat": "GENERAL"},
+    ]
+
+    errors = handler._generate_errors_list(rows, {"MHCAT": True}, source_ds_schema)
+
+    assert [(e._dataset, e.value) for e in errors] == [("mh.xpt", {"MHCAT": "GENERAL"})]
