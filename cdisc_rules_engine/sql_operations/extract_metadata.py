@@ -1,6 +1,6 @@
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
-from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, SOURCE_DS
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, DATASET_SIZE, SOURCE_DS
 from cdisc_rules_engine.constants.metadata_mappings import METADATA_MAPPINGS
 
 
@@ -10,6 +10,8 @@ class SqlExtractMetadataOperation(SqlBaseOperation):
     def _execute_operation(self):
         if self.params.target == DATASET_NAME and self.params.dataset_metadata:
             return self._dataset_name_result()
+        if self.params.target == DATASET_SIZE and self.params.dataset_metadata:
+            return self._dataset_size_result()
 
         domain_metadata = self.params.standards_context.get_domain_metadata(self.params.domain)
 
@@ -39,3 +41,8 @@ class SqlExtractMetadataOperation(SqlBaseOperation):
                 params={self.SOURCE_DS_PARAM: SOURCE_DS},
             )
         return SqlOperationResult(query=f"SELECT '{fallback}' AS value", type="constant", subtype="Char")
+
+    def _dataset_size_result(self) -> SqlOperationResult:
+        file_size = self.params.dataset_metadata.file_size
+        value = "NULL" if file_size is None else int(file_size)
+        return SqlOperationResult(query=f"SELECT {value}::double precision AS value", type="constant", subtype="Num")

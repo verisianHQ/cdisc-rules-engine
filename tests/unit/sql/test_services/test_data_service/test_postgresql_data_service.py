@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from cdisc_rules_engine.constants.data_structures import BDS
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
@@ -68,3 +70,10 @@ def test_insert_empty_data_creates_no_rows_and_does_not_raise():
     data_service.pgi.execute_sql(f"SELECT COUNT(*) AS cnt FROM {table_hash}")
     result = data_service.pgi.fetch_one()
     assert result["cnt"] == 0
+
+
+def test_dataset_file_size_loaded_from_disk():
+    xpt_path = Path(__file__).parents[4] / "resources" / "test_dataset.xpt"
+    data_service = PostgresQLDataService.from_dataset_paths([str(xpt_path)], DefaultStandardsContext())
+    metadata = data_service.get_dataset_metadata("test_dataset")
+    assert metadata.file_size == xpt_path.stat().st_size

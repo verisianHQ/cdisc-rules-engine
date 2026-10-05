@@ -11,9 +11,9 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
     Creates a table with a single row containing dataset metadata.
 
     Example table structure:
-    dataset_location | dataset_name | dataset_label | record_count
-    -----------------|--------------|---------------|-------------
-    dm.xpt           | DM           | Demographics  | 100
+    dataset_location | dataset_name | dataset_label | record_count | dataset_size
+    -----------------|--------------|---------------|--------------|-------------
+    dm.xpt           | DM           | Demographics  | 100          | 81920
     """
 
     def build(self) -> str:
@@ -29,6 +29,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("dataset_name", "Char"))
         schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
         schema.add_column(SqlColumnSchema.generated("record_count", "Num"))
+        schema.add_column(SqlColumnSchema.generated("dataset_size", "Num"))
 
         self.data_service.pgi.create_table(schema)
 
@@ -43,6 +44,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
             "dataset_name": self.dataset_metadata.name,
             "dataset_label": self.dataset_metadata.label or "",
             "record_count": record_count,
+            "dataset_size": self.dataset_metadata.file_size,
         }
 
         self.data_service.pgi.insert_data(table_name, [row])

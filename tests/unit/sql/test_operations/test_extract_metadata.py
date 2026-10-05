@@ -89,3 +89,21 @@ def test_dataset_name_extract_metadata_without_table_uses_dataset_metadata():
     operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
     result = operation.execute()
     assert_operation_constant(operation, result, "SUPPLBCH")
+
+
+@pytest.mark.parametrize("file_size", [6_000_000_000, None])
+def test_dataset_size_extract_metadata_uses_validated_dataset(file_size):
+    data_service = PostgresQLDataService.instance()
+    standards_context = DummyStandardsContext()
+    _, dataset_metadata = _load_supplbch(data_service, standards_context)
+    dataset_metadata.file_size = file_size
+    params = SqlOperationParams(
+        domain="SUPPLB",
+        target="dataset_size",
+        standards_context=standards_context,
+        dataset_metadata=dataset_metadata,
+    )
+    operation = SqlOperationsFactory.get_service("extract_metadata", params, data_service)
+    result = operation.execute()
+    assert result.subtype == "Num"
+    assert_operation_constant(operation, result, file_size)
