@@ -1,5 +1,6 @@
+import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterable, List, Optional
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.enums.static_tables import StaticTables
@@ -9,6 +10,8 @@ from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 from cdisc_rules_engine.services import logger
 
 ROOT_PATH = Path(__file__).parents[3]
+
+_VERSION_DATE_PATTERN = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 
 def _schema():
@@ -68,6 +71,56 @@ def populate_codelists(
         except Exception as e:
             logger.error(f"Failed to load codelist {file_path.name}: {e}")
             continue
+
+
+def populate_referenced_codelists(
+    pgi: PostgresQLInterface,
+    cache_path: Optional[str],
+    ct_type: str,
+    version_dates: Iterable[str],
+    referenced_by: str,
+):
+    """
+    Loads the cached CT packages of the given type (e.g. SDTM) for the given version dates, if not loaded yet.
+    The version dates come from dataset values (e.g. TSVCDVER), so only plain YYYY-MM-DD dates become file names.
+    """
+    if not cache_path:
+        return
+    versions = {v for v in version_dates if isinstance(v, str) and _VERSION_DATE_PATTERN.fullmatch(v)}
+    to_load = []
+    for version in sorted(versions - _loaded_versions(pgi, ct_type)):
+        file_name = f"{ct_type}ct-{version}.pkl"
+        if (ROOT_PATH / Path(cache_path) / file_name).is_file():
+            to_load.append(file_name)
+        else:
+            logger.warning(
+                f"CT package {ct_type}ct-{version} referenced by {referenced_by} is not available "
+                f"in the cache ({cache_path}): records referencing it fall back to the provided CT packages if any, "
+                "otherwise they are matched to no CT package"
+            )
+    populate_codelists(pgi, cache_path, to_load)
+
+
+def populate_latest_codelist(pgi: PostgresQLInterface, cache_path: Optional[str], ct_type: str):
+    """Loads the most recent cached CT package of the given type (e.g. SDTM), if none of that type is loaded yet."""
+    if not cache_path or _loaded_versions(pgi, ct_type):
+        return
+    prefix = f"{ct_type}ct-"
+    cached = sorted(
+        path.stem[len(prefix) :]
+        for path in (ROOT_PATH / Path(cache_path)).glob(f"{prefix}*.pkl")
+        if _VERSION_DATE_PATTERN.fullmatch(path.stem[len(prefix) :])
+    )
+    if cached:
+        populate_codelists(pgi, cache_path, [f"{prefix}{cached[-1]}.pkl"])
+
+
+def _loaded_versions(pgi: PostgresQLInterface, ct_type: str) -> set:
+    table_name = StaticTables.IG_CODELIST_TABLE_NAME.value
+    if not pgi.schema.get_table(table_name):
+        return set()
+    pgi.execute_sql(f"SELECT DISTINCT version_date FROM {table_name} WHERE standard_type = %s", (ct_type,))
+    return {row["version_date"] for row in pgi.fetch_all()}
 
 
 def add_extensible_terms(
