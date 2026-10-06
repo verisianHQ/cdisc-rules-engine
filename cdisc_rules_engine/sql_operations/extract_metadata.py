@@ -43,6 +43,28 @@ class SqlExtractMetadataOperation(SqlBaseOperation):
         return SqlOperationResult(query=f"SELECT '{fallback}' AS value", type="constant", subtype="Char")
 
     def _dataset_size_result(self) -> SqlOperationResult:
-        file_size = self.params.dataset_metadata.file_size
-        value = "NULL" if file_size is None else int(file_size)
-        return SqlOperationResult(query=f"SELECT {value}::double precision AS value", type="constant", subtype="Num")
+        fallback = self._size_literal(self.params.dataset_metadata.file_size)
+        part_sizes = getattr(self.params.dataset_metadata, "split_part_sizes", None)
+        if (
+            part_sizes
+            and self.params.table
+            and self.data_service.pgi.schema.column_exists(self.params.table, SOURCE_DS)
+        ):
+            cases = " ".join(
+                f"WHEN '{filename.rsplit('.', 1)[0].upper().replace('\'', '\'\'')}' THEN {self._size_literal(size)}"
+                for filename, size in sorted(part_sizes.items())
+            )
+            return SqlOperationResult(
+                query=(
+                    f"SELECT (CASE UPPER({self.SOURCE_DS_PARAM}::text) {cases} ELSE {fallback} END)"
+                    "::double precision AS value"
+                ),
+                type="constant",
+                subtype="Num",
+                params={self.SOURCE_DS_PARAM: SOURCE_DS},
+            )
+        return SqlOperationResult(query=f"SELECT {fallback}::double precision AS value", type="constant", subtype="Num")
+
+    @staticmethod
+    def _size_literal(size) -> str:
+        return "NULL" if size is None else str(int(size))
