@@ -1,9 +1,14 @@
 from unittest.mock import patch
 
+import pytest
+
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
+
+from .helpers import setup_sql_operations
 
 
 def test_split_constant_operation(sdtm_standards_context):
@@ -91,3 +96,11 @@ def test_split_dataset_column(sdtm_standards_context):
         assert values == ["A", "B", "C"]
 
     data_service.pgi.execute_sql(f"DROP TABLE {table_name}")
+
+
+def test_split_missing_filter_column_raises():
+    operation = setup_sql_operations(
+        "split", "values", {"values": ["A,B"]}, extra_config={"delimiter": ",", "filter": {"missing": "Y"}}
+    )
+    with pytest.raises(ColumnNotFoundError, match="'missing'"):
+        operation.execute()
