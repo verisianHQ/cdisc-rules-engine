@@ -3,6 +3,7 @@ import pytest
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleExecutionError
 
 from .helpers import (
+    TEST_TABLE_NAME,
     assert_operation_constant,
     assert_operation_parameterized_constant,
     setup_over_previous_operation,

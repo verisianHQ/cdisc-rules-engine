@@ -23,6 +23,7 @@ from cdisc_rules_engine.sql_operations.numeric_operation import (
 )
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 from cdisc_rules_engine.sql_operations.variable_exists import SqlVariableExistsOperation
+from cdisc_rules_engine.sql_operations.variable_is_null import SqlVariableIsNullOperation
 from cdisc_rules_engine.sql_operations.get_model_filtered_variables import SqlGetModelFilteredVariables
 from cdisc_rules_engine.sql_operations.variable_count import SqlVariableCountOperation
 from cdisc_rules_engine.sql_operations.permissibility_operation import SqlPermissibilityOperation
@@ -87,7 +88,7 @@ class SqlOperationsFactory:
         "variable_library_metadata": None,
         "variable_value_count": None,
         "variable_count": SqlVariableCountOperation,
-        "variable_is_null": None,
+        "variable_is_null": SqlVariableIsNullOperation,
         "domain_is_custom": SqlDomainIsCustomOperation,
         "domain_label": SqlDomainLabelOperation,
         "required_variables": lambda params, ds: SqlPermissibilityOperation(params, ds, REQUIRED),

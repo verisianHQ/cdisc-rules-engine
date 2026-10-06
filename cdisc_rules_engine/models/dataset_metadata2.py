@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, field
+from typing import List, Optional
 
 from cdisc_rules_engine.models.sql import DATASET_COLUMN_TYPES
 
@@ -20,3 +20,4 @@ class DatasetMetadata2:
     name: str
     label: str
     variables: List[VariableMetadata]
+    file_size: Optional[int] = field(default=None, kw_only=True)

@@ -151,21 +151,50 @@ class SqlVenmoResultHandler(BaseActions):
             dataset=dataset or ", ".join(sorted(set(error._dataset or "" for error in error_rows))),
             targets=SqlVenmoResultHandler._get_target_columns(self.rule, self.dataset_metadata, original_schema),
             errors=error_rows,
-            message=(message.replace("--", self.dataset_metadata.domain or "") if message is not None else None),
+            message=self._resolve_message_domain(message) if message is not None else None,
         )
+
+    def _resolve_message_domain(self, message: str) -> str:
+        domain = self.dataset_metadata.domain or ""
+        for prefix in ("SUPP", "SQ", "AP"):
+            if domain.startswith(prefix):
+                message = message.replace(f"{prefix}--", domain)
+        return message.replace("--", domain)
 
     def _generate_errors_list(
         self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
     ) -> List[ValidationErrorEntity]:
         match self.rule.get("sensitivity"):
             case Sensitivity.DATASET.value | Sensitivity.STUDY.value:
-                return [self._build_dataset_error(data, target_columns, schema)]
+                return self._build_dataset_errors(data, target_columns, schema)
             case Sensitivity.RECORD.value | None:
                 return self._build_record_error_items(data, target_columns, schema)
             case Sensitivity.GROUP.value:
                 return self._build_group_error_items(data, target_columns, schema)
             case _:
                 raise ValueError(f"Invalid sensitivity value: {self.rule.get('sensitivity')}")
+
+    def _build_dataset_errors(
+        self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
+    ) -> List[ValidationErrorEntity]:
+        """
+        One error per dataset, or for a concatenated split dataset, one error per source part
+        with error rows.
+        """
+        if not getattr(self.dataset_metadata, "split_part_filenames", None) or not data:
+            return [self._build_dataset_error(data, target_columns, schema)]
+
+        first_row_per_source = {}
+        for row in data:
+            first_row_per_source.setdefault(self._source_dataset_filename(row, schema), row)
+
+        return [
+            ValidationErrorEntity(
+                value=self._create_error_for_row(row, schema, target_columns).value,
+                dataset=source_dataset,
+            )
+            for source_dataset, row in first_row_per_source.items()
+        ]
 
     def _build_dataset_error(
         self, data: List[dict], target_columns: dict[str, bool], schema: SqlTableSchema
