@@ -738,6 +738,7 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
     for _, row in datasets_df.iterrows():
         filename = row["Filename"]
         label = row["Label"]
+        file_size = row.get("File Size")
 
         # Step 4: Read the sheet for the dataset
         if filename in xlsx_data.sheet_names:
@@ -757,6 +758,7 @@ def sharepoint_xlsx_to_test_datasets(path: str) -> list[TestDataset]:
                     label=label,
                     variables=variables,
                     records=data,
+                    file_size=None if pd.isna(file_size) else int(file_size),
                 )
             )
 
