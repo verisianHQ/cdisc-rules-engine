@@ -95,7 +95,7 @@ class DefineXMLReader21(BaseDefineXMLReader):
             codelist_value = codelist.Name if hasattr(codelist, "Name") else None
 
             extended_values = []
-            items = codelist.CodeListItem
+            items = codelist.CodeListItem + codelist.EnumeratedItem
             for item in items:
                 if hasattr(item, "ExtendedValue") and item.ExtendedValue == "Yes":
                     extended_values.append(item.CodedValue)
@@ -136,7 +136,7 @@ class DefineXMLReader21(BaseDefineXMLReader):
 
         for codelist in metadata.CodeList:
             extended_values = []
-            items = codelist.CodeListItem
+            items = codelist.CodeListItem + codelist.EnumeratedItem
             for item in items:
                 if hasattr(item, "ExtendedValue") and item.ExtendedValue == "Yes":
                     extended_values.append(item.CodedValue)

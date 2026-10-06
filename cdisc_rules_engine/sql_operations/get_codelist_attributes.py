@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
@@ -40,19 +40,9 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         std_type_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "standard_type")
 
         where_clauses = []
-        params = {}
-
-        ct_version_column = None if self.data_service.provided_codelists else self._ct_version_column()
-        if ct_version_column:
-            where_clauses.append(f"{version_date_col_sql} = $ct_version")
-            params["$ct_version"] = ct_version_column
-        else:
-            raw_versions = self.data_service.provided_codelists or self.params.ct_version
-            if raw_versions:
-                ct_list = raw_versions if isinstance(raw_versions, list) else [raw_versions]
-                provided_cts = self._parse_versions(ct_list)
-                where_clause = self._build_clauses(provided_cts, std_type_col_sql, version_date_col_sql)
-                where_clauses.append(where_clause)
+        version_clause, params = self._ct_version_filter(std_type_col_sql, version_date_col_sql)
+        if version_clause:
+            where_clauses.append(version_clause)
 
         conditions = self.params.ct_conditions
         if conditions:
@@ -73,6 +63,23 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             query = base_query
 
         return SqlOperationResult(query=query, type="collection", subtype="Char", params=params or None)
+
+    def _ct_version_filter(self, std_type_col: str, version_date_col: str) -> Tuple[Optional[str], dict]:
+        """
+        Builds the WHERE clause restricting codelist rows to the CT version(s) in use, plus any
+        query params it needs. Provided codelists take precedence over the operation's version.
+        """
+        ct_version_column = None if self.data_service.provided_codelists else self._ct_version_column()
+        if ct_version_column:
+            return f"{version_date_col} = $ct_version", {"$ct_version": ct_version_column}
+
+        raw_versions = self.data_service.provided_codelists or self.params.ct_version
+        if raw_versions:
+            ct_list = raw_versions if isinstance(raw_versions, list) else [raw_versions]
+            provided_cts = self._parse_versions(ct_list)
+            return self._build_clauses(provided_cts, std_type_col, version_date_col), {}
+
+        return None, {}
 
     def _ct_version_column(self) -> Optional[str]:
         ct_version = self.params.ct_version
