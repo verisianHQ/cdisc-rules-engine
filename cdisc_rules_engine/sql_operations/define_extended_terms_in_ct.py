@@ -6,7 +6,7 @@ from cdisc_rules_engine.sql_operations.get_codelist_attributes import SqlGetCode
 class SqlDefineExtendedTermsInCtOperation(SqlGetCodelistAttributesOperation):
     """
     Returns the define.xml extended terms that already exist in the library CT version in use,
-    either as a submission value or as a synonym of a term in the same codelist. 
+    either as a submission value or as a synonym of a term in the same codelist.
     Each result identifies its define codelist, e.g. "Ophthalmic Exam Test Code (C117743): INTP".
     """
 
