@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from dataclasses import dataclass
 from io import IOBase
 from typing import TYPE_CHECKING, Any, Dict, List, Union, Optional
@@ -13,6 +14,8 @@ from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.sql_data_preprocessor import SqlDataPreprocessor
 from cdisc_rules_engine.data_service.startup.populate_codelists import (
     populate_codelists,
+    populate_latest_codelist,
+    populate_referenced_codelists,
     add_extensible_terms,
 )
 from cdisc_rules_engine.data_service.startup.populate_standards import (
@@ -33,6 +36,14 @@ from cdisc_rules_engine.data_service.database import (
     DatabaseConfigPostgres,
     DatabaseConfigPGServer,
 )
+
+# Columns where dataset records can name the version of the CT package they use, by domain:
+# (reference terminology column, CT version column). TS is the only known one so far
+CT_VERSION_COLUMNS = {
+    "TS": ("TSVCDREF", "TSVCDVER"),
+}
+# reference terminology values meaning CDISC CT, as in the non-SQL get_codelist_attributes operation
+CDISC_CT_REFERENCES = ("CDISC", "CDISC CT")
 
 if TYPE_CHECKING:  # Only imports the below statements during type checking
     from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
@@ -60,6 +71,7 @@ class PostgresQLDataService:
         self.pgi = postgres_interface
         self.datasets: List[BaseDatasetMetadata] = []
         self.dictionary_metadata: Dict[str, Any] = {}
+        self.cache_path: Optional[str] = None
 
     @classmethod
     def instance(
@@ -86,6 +98,7 @@ class PostgresQLDataService:
 
         instance = cls(postgres_interface=pgi)
         instance.dictionary_metadata = populate_dictionaries(pgi, external_dictionaries)
+        instance.cache_path = cache_path
         populate_codelists(pgi, cache_path, codelists)
         populate_standards(pgi)
         populate_helper_tables(pgi)
@@ -121,6 +134,7 @@ class PostgresQLDataService:
             standards_context.transform_dataset_metadata(SqlTestDatasetLoader.load_test_dataset(instance.pgi, ds))
             for ds in test_datasets
         ]
+        instance._populate_data_referenced_codelists(standards_context)
         SqlDataPreprocessor.run(instance, standards_context)
         return instance
 
@@ -155,6 +169,7 @@ class PostgresQLDataService:
             standards_context.transform_dataset_metadata(ds)
             for ds in SqlDatasetLoader.load_datasets(instance.pgi, dataset_paths)
         )
+        instance._populate_data_referenced_codelists(standards_context)
         SqlDataPreprocessor.run(instance, standards_context)
         return instance
 
@@ -220,3 +235,38 @@ class PostgresQLDataService:
 
     def _add_extensible_ct_terms(self, extensible_terms: Dict[str, dict]):
         add_extensible_terms(self.pgi, extensible_terms)
+
+    def _populate_data_referenced_codelists(self, standards_context: "BaseStandardsContext"):
+        """
+        Once the datasets are loaded, and before any rule runs, completes the codelists table with:
+        - the cached CT packages named in the CT_VERSION_COLUMNS (e.g. TSVCDVER), for records referencing CDISC CT
+        - the most recent cached CT package, if none of the standard's type is loaded at this point
+        """
+        from cdisc_rules_engine.standards.adam_standards_context import AdamStandardsContext
+        from cdisc_rules_engine.standards.sdtm_standards_context import SdtmStandardsContext
+
+        if isinstance(standards_context, AdamStandardsContext):
+            ct_type = "adam"
+        elif isinstance(standards_context, SdtmStandardsContext):
+            ct_type = "sdtm"
+        else:
+            return
+
+        version_dates_by_column = defaultdict(set)
+        for dataset in self.datasets:
+            if dataset.domain not in CT_VERSION_COLUMNS:
+                continue
+            reference_var, version_var = CT_VERSION_COLUMNS[dataset.domain]
+            reference_col = self.pgi.schema.get_column_hash(dataset.name, reference_var)
+            version_col = self.pgi.schema.get_column_hash(dataset.name, version_var)
+            if not reference_col or not version_col:
+                continue
+            self.pgi.execute_sql(
+                f"SELECT DISTINCT TRIM({version_col}) AS version FROM {self.pgi.schema.get_table_hash(dataset.name)} "
+                f"WHERE {reference_col} IN %s",
+                (CDISC_CT_REFERENCES,),
+            )
+            version_dates_by_column[version_var].update(row["version"] for row in self.pgi.fetch_all())
+        for version_var, version_dates in version_dates_by_column.items():
+            populate_referenced_codelists(self.pgi, self.cache_path, ct_type, version_dates, version_var)
+        populate_latest_codelist(self.pgi, self.cache_path, ct_type)
