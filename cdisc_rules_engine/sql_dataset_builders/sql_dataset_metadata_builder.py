@@ -12,9 +12,9 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
     Creates a table with a single row containing dataset metadata.
 
     Example table structure:
-    dataset_location | dataset_name | dataset_label | record_count
-    -----------------|--------------|---------------|-------------
-    dm.xpt           | DM           | Demographics  | 100
+    dataset_location | dataset_name | dataset_label | record_count | dataset_size
+    -----------------|--------------|---------------|--------------|-------------
+    dm.xpt           | DM           | Demographics  | 100          | 81920
     """
 
     def build(self) -> str:
@@ -32,6 +32,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("dataset_name", "Char"))
         schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
         schema.add_column(SqlColumnSchema.generated("record_count", "Num"))
+        schema.add_column(SqlColumnSchema.generated("dataset_size", "Num"))
         if split_parts:
             schema.add_column(SqlColumnSchema.generated(SOURCE_DS, "Char"))
 
@@ -52,6 +53,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
                     "dataset_name": self.dataset_metadata.name,
                     "dataset_label": self.dataset_metadata.label or "",
                     "record_count": record_count,
+                    "dataset_size": self.dataset_metadata.file_size,
                 }
             ]
 
@@ -67,6 +69,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
         )
         counts = {row["source_ds"]: row["count"] for row in self.data_service.pgi.fetch_all()}
         labels = getattr(self.dataset_metadata, "split_part_labels", None) or {}
+        sizes = getattr(self.dataset_metadata, "split_part_sizes", None) or {}
 
         rows = []
         for filename in sorted(split_parts):
@@ -77,6 +80,7 @@ class SqlDatasetMetadataBuilder(SqlBaseDatasetBuilder):
                     "dataset_name": part_name,
                     "dataset_label": labels.get(filename, self.dataset_metadata.label) or "",
                     "record_count": counts.get(part_name, 0),
+                    "dataset_size": sizes.get(filename),
                     SOURCE_DS: part_name,
                 }
             )

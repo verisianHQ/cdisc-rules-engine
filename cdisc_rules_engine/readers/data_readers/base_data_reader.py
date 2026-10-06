@@ -45,6 +45,7 @@ class BaseDataReader(ABC):
             variables=self._extract_variable_metadata(reader),
             # TODO: How to extract this?
             label="",
+            file_size=path.stat().st_size,
         )
 
     def _read_chunks(self, reader, metadata: DatasetMetadata2) -> Iterable[List[Dict[str, Any]]]:

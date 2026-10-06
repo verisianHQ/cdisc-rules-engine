@@ -236,6 +236,7 @@ def test_split_dataset_metadata_has_a_row_per_part():
             "suppqscqi.xpt": "Supplemental Qualifiers for QSCG",
             "suppqsswls.xpt": "Supplemental Qualifiers for QSSW",
         },
+        split_part_sizes={"suppqscqi.xpt": 1024, "suppqsswls.xpt": 2048},
     )
     builder = SqlDatasetMetadataBuilder.__new__(SqlDatasetMetadataBuilder)
     builder.data_service = SimpleNamespace(pgi=pgi)
@@ -250,6 +251,7 @@ def test_split_dataset_metadata_has_a_row_per_part():
             "dataset_name": "SUPPQSCQI",
             "dataset_label": "Supplemental Qualifiers for QSCG",
             "record_count": 2,
+            "dataset_size": 1024,
             SOURCE_DS: "SUPPQSCQI",
         },
         {
@@ -257,6 +259,7 @@ def test_split_dataset_metadata_has_a_row_per_part():
             "dataset_name": "SUPPQSSWLS",
             "dataset_label": "Supplemental Qualifiers for QSSW",
             "record_count": 3,
+            "dataset_size": 2048,
             SOURCE_DS: "SUPPQSSWLS",
         },
     ]
@@ -266,11 +269,17 @@ def test_unsplit_dataset_metadata_has_a_single_row():
     pgi = FakePgi([{"count": 4}])
     builder = SqlDatasetMetadataBuilder.__new__(SqlDatasetMetadataBuilder)
     builder.data_service = SimpleNamespace(pgi=pgi)
-    builder.dataset_metadata = SimpleNamespace(name="AE", filename="ae.xpt", label="Adverse Events")
+    builder.dataset_metadata = SimpleNamespace(name="AE", filename="ae.xpt", label="Adverse Events", file_size=4096)
 
     builder.build()
 
     assert SOURCE_DS not in pgi.created_columns
     assert pgi.inserted == [
-        {"dataset_location": "ae.xpt", "dataset_name": "AE", "dataset_label": "Adverse Events", "record_count": 4}
+        {
+            "dataset_location": "ae.xpt",
+            "dataset_name": "AE",
+            "dataset_label": "Adverse Events",
+            "record_count": 4,
+            "dataset_size": 4096,
+        }
     ]
