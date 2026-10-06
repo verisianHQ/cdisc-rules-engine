@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 import numpy as np
 import pandas as pd
 
-from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, SOURCE_DS
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -235,6 +235,8 @@ class BaseSqlOperator:
         null_return: bool = False,
     ) -> str:
         if column == DATASET_NAME:
+            if getattr(self.dataset_metadata, "split_part_filenames", None) and self._exists(SOURCE_DS):
+                return self._column_sql(SOURCE_DS, lowercase=lowercase, prefix=prefix, suffix=suffix, alias=alias)
             dataset_name = self.dataset_metadata.name
             if prefix is not None:
                 dataset_name = dataset_name[: int(prefix)]
@@ -254,16 +256,6 @@ class BaseSqlOperator:
         query = self.sql_data_service.pgi.schema.get_column_hash(self.table_id, column)
         # Prepend the table alias
         query = f"{CHECK_OPERATOR_TABLE_ALIAS}.{query}" if alias else query
-
-        # TODO: Throwing this temporarily, so we can determine which errors
-        # are actually postgres errors and which are just rules which run on
-        # optional variables without checking
-
-        # Discussed moving this to above `if alias:` with Aaron as it is failing
-        # to catch any None queries that have an alias, but doing so caused loads
-        # of regression changes, so for now just logging
-        if query is None:
-            raise KeyError(column)
 
         if lowercase:
             query = f"LOWER({query})"

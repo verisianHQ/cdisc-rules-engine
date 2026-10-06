@@ -245,6 +245,7 @@ class SqlDataPreprocessor:
         metadata.name = unsplit_name.upper()
         metadata.variables = merged_variables
         metadata.split_part_filenames = [part.filename.lower() for part in part_metadata]
+        metadata.split_part_labels = {part.filename.lower(): part.label for part in part_metadata}
 
         return metadata
 

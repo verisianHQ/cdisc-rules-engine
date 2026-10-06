@@ -316,7 +316,7 @@ class SdtmStandardsContext(BaseStandardsContext):
         rule_id = rule.get("core_id", "unknown")
         dataset_name = metadata.name
         domain = self.derive_domain(metadata.name)
-        is_split = self.derive_is_split(metadata.name, domain)
+        is_split = bool(getattr(metadata, "split_part_filenames", None)) or self.derive_is_split(metadata.name, domain)
 
         if not self.rule_applies_to_class(metadata, rule, domain):
             reason = f"Rule skipped - doesn't apply to class for " f"rule id={rule_id}, dataset={dataset_name}"
@@ -805,7 +805,6 @@ class SdtmStandardsContext(BaseStandardsContext):
         Extract the unsplit (logical) name from a dataset name following
         SDTMIG v3.4 naming conventions.
         """
-        _CATEGORISED_DOMAINS = ("qs", "mh", "lb", "fa")
         _WHOLE_DATASET_NAMES = frozenset({"relsub", "pooldef", "aprelsub"})
 
         dataset = dataset_name.lower()
@@ -838,9 +837,6 @@ class SdtmStandardsContext(BaseStandardsContext):
 
         domain = dataset[prefix_length:]
         if len(domain) <= 2 or not domain.isalpha():
-            return dataset
-
-        if domain.startswith(_CATEGORISED_DOMAINS):
             return dataset
 
         return dataset[: prefix_length + 2]
