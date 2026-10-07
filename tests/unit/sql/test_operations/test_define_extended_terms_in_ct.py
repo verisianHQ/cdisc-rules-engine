@@ -115,17 +115,16 @@ def test_define_extended_terms_in_ct_case_sensitivity(sdtm_standards_context):
     "library_value, library_synonym, extended_value, flagged",
     [
         ("newly discovered bacteria", None, "bacteria", False),
-        ("bacteria, bacteriophage", None, "bacteria", True),
+        ("bacteria; bacteriophage", None, "bacteria", True),
         ("bacteria", None, "bacteria", True),
         ("bacterias", None, "bacteria", False),
         ("microbe", "microorganism; germ; bacillus; pathogen", "bacteria", False),
         ("microbe", "microorganism; germ; bacteria; pathogen", "bacteria", True),
-        ("bacteria, bacteriophage, virus", None, "virus, bacteria", True),
-        ("bacteria, bacteriophage", None, "bacteria, virus", False),
-        ("bacteria, bacteriophage", None, "bacteria, bacteriophage, virus", False),
-        ("bacteria; bacteriophage", None, "bacteria", True),
-        ("bacteria; bacteriophage", None, "bacterias", False),
         ("bacteria; bacteriophage; virus", None, "virus; bacteria", True),
+        ("bacteria; bacteriophage", None, "bacteria; virus", False),
+        ("bacteria; bacteriophage", None, "bacteria; bacteriophage; virus", False),
+        ("bacteria; bacteriophage", None, "bacterias", False),
+        ("bacteria, bacteriophage", None, "bacteria", False),
         ("bacteria; bacteriophage; virus", None, "virus, bacteria", False),
     ],
 )
@@ -149,7 +148,7 @@ def test_define_extended_terms_in_ct_subset_case_sensitivity(sdtm_standards_cont
     setup_codelist_table(
         data_service,
         {"Microorganism": {"codelist": "C85491", "extended_values": ["Bacteria"]}},
-        [_library_term("2025-03-28", "C85491", "Microorganism", "BACTERIA, BACTERIOPHAGE")],
+        [_library_term("2025-03-28", "C85491", "Microorganism", "BACTERIA; BACTERIOPHAGE")],
     )
 
     operation, result = _execute(data_service, sdtm_standards_context)

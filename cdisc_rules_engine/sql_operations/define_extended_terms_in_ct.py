@@ -9,9 +9,8 @@ class SqlDefineExtendedTermsInCtOperation(SqlGetCodelistAttributesOperation):
     in the same codelist, as either:
     - a duplicate of a submission value
     - a synonym of a term
-    - a subset of a submission value separated by either "," or ";", i.e. each part of the extended term
-      is a part of the submission value, both split by the same separator
-      (e.g. "bacteria" in "bacteria, bacteriophage" or in "bacteria; bacteriophage")
+    - a subset of a ";"-separated submission value, i.e. each ";"-separated part of the extended term
+      is a part of the submission value (e.g. "bacteria" in "bacteria; bacteriophage")
     Each result identifies its define codelist, e.g. "Ophthalmic Exam Test Code (C117743): INTP".
     """
 
@@ -36,13 +35,12 @@ class SqlDefineExtendedTermsInCtOperation(SqlGetCodelistAttributesOperation):
                     SELECT 1 FROM UNNEST(STRING_TO_ARRAY(lib.synonym, ';')) AS syn(value)
                     WHERE {synonym} = {ext_value}
                 )
-                OR EXISTS (
-                    SELECT 1 FROM (VALUES (','), (';')) AS sep(value)
-                    WHERE STRPOS(lib.value, sep.value) > 0
+                OR (
+                    STRPOS(lib.value, ';') > 0
                     AND NOT EXISTS (
-                        SELECT 1 FROM UNNEST(STRING_TO_ARRAY(ext.value, sep.value)) AS ext_part(value)
+                        SELECT 1 FROM UNNEST(STRING_TO_ARRAY(ext.value, ';')) AS ext_part(value)
                         WHERE {ext_part} NOT IN (
-                            SELECT {lib_part} FROM UNNEST(STRING_TO_ARRAY(lib.value, sep.value)) AS lib_part(value)
+                            SELECT {lib_part} FROM UNNEST(STRING_TO_ARRAY(lib.value, ';')) AS lib_part(value)
                         )
                     )
                 )
