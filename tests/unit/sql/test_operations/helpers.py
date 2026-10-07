@@ -42,17 +42,19 @@ def setup_sql_operations(
         "default": DefaultStandardsContext(),
         "sdtm": SdtmStandardsContext(LibraryMetadataContainer()),
     }
+    if isinstance(standards_context, str):
+        standards_context = standards_context_dict.get(standards_context, DefaultStandardsContext())
     PostgresQLDataService.add_test_dataset(
         data_service,
         table_name=TEST_TABLE_NAME,
         column_data=column_data,
-        standards_context=standards_context_dict.get(standards_context, DefaultStandardsContext()),
+        standards_context=standards_context,
     )
 
     params = SqlOperationParams(
         domain=TEST_TABLE_NAME,
         target=target,
-        standards_context=standards_context_dict.get(standards_context, DefaultStandardsContext()),
+        standards_context=standards_context,
         **extra_config,
         previous_operations=extra_operation_variables,
     )

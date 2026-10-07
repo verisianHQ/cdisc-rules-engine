@@ -366,7 +366,7 @@
       "properties": {
         "operator": { "const": "variable_is_null" }
       },
-      "required": ["id", "operator"],
+      "required": ["id", "operator", "name"],
       "type": "object"
     },
     {
