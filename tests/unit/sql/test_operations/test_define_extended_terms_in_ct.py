@@ -1,3 +1,5 @@
+import pytest
+
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.data_service.startup.populate_codelists import add_extensible_terms
 from cdisc_rules_engine.enums.static_tables import StaticTables
@@ -22,14 +24,14 @@ def _library_term(version_date: str, codelist_code: str, name: str, value: str, 
     }
 
 
-def setup_codelist_table(data_service: PostgresQLDataService, extensible_terms: dict):
+def setup_codelist_table(data_service: PostgresQLDataService, extensible_terms: dict, library_terms: list = None):
     table_name = StaticTables.IG_CODELIST_TABLE_NAME.value
     schema = SqlTableSchema.static(table_name)
     for column in ["standard_type", "version_date", "codelist_code", "extensible", "name", "value", "synonym"]:
         schema.add_column(SqlColumnSchema(column, column, "Char"))
     data_service.pgi.create_table(schema)
 
-    data = [
+    data = library_terms or [
         _library_term("2025-03-28", "C116104", "Nervous System Findings Test Code", "ABRIAL"),
         _library_term("2025-03-28", "C117743", "Ophthalmic Exam Test Code", "INTP", "Interpretation"),
         _library_term("2025-03-28", "C117742", "Ophthalmic Exam Test Name", "Interpretation", "Interpretation"),
@@ -107,3 +109,51 @@ def test_define_extended_terms_in_ct_case_sensitivity(sdtm_standards_context):
 
     operation, result = _execute(data_service, sdtm_standards_context, case_sensitive=False)
     assert_operation_collection(operation, result, ["Ophthalmic Exam Test Code (C117743): intp"])
+
+
+@pytest.mark.parametrize(
+    "library_value, library_synonym, extended_value, flagged",
+    [
+        ("newly discovered bacteria", None, "bacteria", False),
+        ("bacteria, bacteriophage", None, "bacteria", True),
+        ("bacteria", None, "bacteria", True),
+        ("bacterias", None, "bacteria", False),
+        ("microbe", "microorganism; germ; bacillus; pathogen", "bacteria", False),
+        ("microbe", "microorganism; germ; bacteria; pathogen", "bacteria", True),
+        ("bacteria, bacteriophage, virus", None, "virus, bacteria", True),
+        ("bacteria, bacteriophage", None, "bacteria, virus", False),
+        ("bacteria, bacteriophage", None, "bacteria, bacteriophage, virus", False),
+        ("bacteria; bacteriophage", None, "bacteria", True),
+        ("bacteria; bacteriophage", None, "bacterias", False),
+        ("bacteria; bacteriophage; virus", None, "virus; bacteria", True),
+        ("bacteria; bacteriophage; virus", None, "virus, bacteria", False),
+    ],
+)
+def test_define_extended_terms_in_ct_duplicates_synonyms_and_subsets(
+    sdtm_standards_context, library_value, library_synonym, extended_value, flagged
+):
+    data_service = PostgresQLDataService.instance(provided_codelists="sdtmct-2025-03-28")
+    setup_codelist_table(
+        data_service,
+        {"Microorganism": {"codelist": "C85491", "extended_values": [extended_value]}},
+        [_library_term("2025-03-28", "C85491", "Microorganism", library_value, library_synonym)],
+    )
+
+    operation, result = _execute(data_service, sdtm_standards_context)
+
+    assert_operation_collection(operation, result, [f"Microorganism (C85491): {extended_value}"] if flagged else [])
+
+
+def test_define_extended_terms_in_ct_subset_case_sensitivity(sdtm_standards_context):
+    data_service = PostgresQLDataService.instance(provided_codelists="sdtmct-2025-03-28")
+    setup_codelist_table(
+        data_service,
+        {"Microorganism": {"codelist": "C85491", "extended_values": ["Bacteria"]}},
+        [_library_term("2025-03-28", "C85491", "Microorganism", "BACTERIA, BACTERIOPHAGE")],
+    )
+
+    operation, result = _execute(data_service, sdtm_standards_context)
+    assert_operation_collection(operation, result, [])
+
+    operation, result = _execute(data_service, sdtm_standards_context, case_sensitive=False)
+    assert_operation_collection(operation, result, ["Microorganism (C85491): Bacteria"])
