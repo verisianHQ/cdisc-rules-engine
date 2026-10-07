@@ -1129,7 +1129,27 @@ Operations:
 
 ## variable_is_null
 
-True if variable is missing or if all values within a variable are null or empty string
+Returns `true` if every record of the variable given by `name` is null or the variable is not in the dataset, otherwise `false`. For Char variables, empty strings and values containing only whitespace (spaces, tabs, newlines) count as null. A dataset with no records returns `true`.
+
+`name` is looked up in the operation's `domain`, which defaults to the dataset being evaluated. `--` in `name` is replaced with the domain. Set `use_rule_type_table: true` to look it up in the rule type's table instead (e.g. `define_variable_has_no_data` or `dataset_label`). If the domain or table doesn't exist, the rule is skipped.
+
+Combine it with `exists` to only flag variables that are present.
+
+Flag an error if AEDUR is in the dataset but has no populated values
+
+```yaml
+Check:
+  all:
+    - name: AEDUR
+      operator: exists
+    - name: $AEDUR_IS_NULL
+      operator: equal_to
+      value: true
+Operations:
+  - id: $AEDUR_IS_NULL
+    name: AEDUR
+    operator: variable_is_null
+```
 
 ## variable_names
 
