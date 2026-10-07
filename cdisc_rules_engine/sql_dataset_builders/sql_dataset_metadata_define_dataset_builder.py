@@ -26,6 +26,7 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
                 "dataset_location": ds_metadata.filename,
                 "dataset_label": ds_metadata.label or "",
                 "dataset_domain": ds_metadata.domain,
+                "dataset_size": ds_metadata.file_size,
             }
             define_metadata = define_ds_metadata.get(ds_metadata.domain, {k: None for k in DEFINE_DATASETS_TYPE})
             row.update(define_metadata)
@@ -36,6 +37,7 @@ class SqlDatasetMetadataWithDefineDatasetBuilder(SqlBaseDatasetBuilder):
         schema.add_column(SqlColumnSchema.generated("dataset_location", "Char"))
         schema.add_column(SqlColumnSchema.generated("dataset_label", "Char"))
         schema.add_column(SqlColumnSchema.generated("dataset_domain", "Char"))
+        schema.add_column(SqlColumnSchema.generated("dataset_size", "Num"))
         for col, type in DEFINE_DATASETS_TYPE.items():
             schema.add_column(SqlColumnSchema.generated(col, type))
 

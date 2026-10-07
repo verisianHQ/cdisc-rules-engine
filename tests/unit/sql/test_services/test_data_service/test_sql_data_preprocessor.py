@@ -2,6 +2,8 @@
 Unit tests for SqlDataPreprocessor split dataset functionality.
 """
 
+import pytest
+
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -269,6 +271,31 @@ def test_create_metadata_merges_variables(sdtm_standards_context):
     assert "STUDYID" in var_names
     assert "USUBJID" in var_names
     assert "AETERM" in var_names or "AEDECOD" in var_names
+
+
+@pytest.mark.parametrize(
+    "part_sizes, expected_total",
+    [({"ae1": 1024, "ae2": 2048}, 3072), ({"ae1": 1024, "ae2": None}, None)],
+)
+def test_create_metadata_records_part_sizes(sdtm_standards_context, part_sizes, expected_total):
+    """Test that each part's file size is kept and the merged size is their total."""
+    data_service = PostgresQLDataService.instance()
+    standards_context = sdtm_standards_context
+
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae1", {"studyid": ["ABC"], "usubjid": ["001"]}, standards_context
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service, "ae2", {"studyid": ["ABC"], "usubjid": ["002"]}, standards_context
+    )
+    for part_name, size in part_sizes.items():
+        data_service.get_dataset_metadata(part_name).file_size = size
+
+    preprocessor = SqlDataPreprocessor(data_service, standards_context)
+    metadata = preprocessor._create_metadata_from_split_parts("ae", ["ae1", "ae2"])
+
+    assert metadata.split_part_sizes == {f"{name}.xpt": size for name, size in part_sizes.items()}
+    assert metadata.file_size == expected_total
 
 
 def test_create_metadata_handles_missing_part(sdtm_standards_context):

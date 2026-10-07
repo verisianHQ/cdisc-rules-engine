@@ -29,6 +29,7 @@ from .inconsistent_enumerated_columns_operator import (
     InconsistentEnumeratedColumnsOperator,
 )
 from .invalid_date_operator import InvalidDateOperator
+from .invalid_date_interval_operator import InvalidDateIntervalOperator
 from .invalid_duration_operator import InvalidDurationOperator
 from .is_complete_date_operator import IsCompleteDateOperator
 from .is_contained_by_operator import IsContainedByOperator
@@ -184,6 +185,7 @@ class PostgresQLOperators(BaseType):
         "equals_string_part": lambda data: EqualsStringPartOperator(data),
         "does_not_equal_string_part": lambda data: EqualsStringPartOperator(data, invert=True),
         "invalid_date": lambda data: InvalidDateOperator(data),
+        "invalid_date_interval": lambda data: InvalidDateIntervalOperator(data),
         "invalid_duration": lambda data: InvalidDurationOperator(data),
         "is_complete_date": lambda data: IsCompleteDateOperator(data),
         "is_incomplete_date": lambda data: NotOperator(data, IsCompleteDateOperator),

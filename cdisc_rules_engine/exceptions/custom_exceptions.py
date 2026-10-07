@@ -92,4 +92,5 @@ class ColumnNotFoundError(Exception):
         else:
             exception_message = f"Column '{column_name}' not found in dataset"
 
+        self.message = exception_message
         super().__init__(exception_message)

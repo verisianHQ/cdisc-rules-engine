@@ -29,6 +29,15 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
         attribute = self.params.ct_attribute
 
+        # CT version precedence:
+        # - the version in an operation-referenced column (e.g. TSVCDVER), where populated with a loaded CT package
+        # - the provided codelists (Library sheet / -ct), or else a literal version given in the operation
+        # - otherwise all loaded CT packages
+        ct_version_column = self._ct_version_column()
+        fallback_versions = self.data_service.provided_codelists or (
+            None if ct_version_column else self.params.ct_version
+        )
+
         raw_col = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
 
         if attribute == "Synonym":
@@ -88,6 +97,33 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         if not self.data_service.pgi.schema.column_exists(self.params.table, ct_version):
             return None
         return ct_version
+
+    def _version_clause(
+        self,
+        ct_version_column: Optional[str],
+        fallback_versions,
+        ct_table: str,
+        std_type_col: str,
+        version_date_col: str,
+    ) -> Optional[str]:
+        fallback_clause = None
+        if fallback_versions:
+            ct_list = sorted(fallback_versions) if isinstance(fallback_versions, (list, set)) else [fallback_versions]
+            fallback_clause = self._build_clauses(self._parse_versions(ct_list), std_type_col, version_date_col)
+        if not ct_version_column:
+            return fallback_clause
+        record_clause = f"{version_date_col} = $ct_version"
+        if not fallback_clause:
+            return record_clause
+        # empty record versions, or naming packages missing from the cache, fall back to the provided codelists
+        self.data_service.pgi.execute_sql(
+            f"SELECT DISTINCT {version_date_col} AS version FROM {ct_table} WHERE {version_date_col} IS NOT NULL"
+        )
+        loaded_versions = sorted(row["version"] for row in self.data_service.pgi.fetch_all())
+        if not loaded_versions:
+            return fallback_clause
+        known_version = f"$ct_version IN ({', '.join(repr(version) for version in loaded_versions)})"
+        return f"(CASE WHEN {known_version} THEN {record_clause} ELSE {fallback_clause} END)"
 
     def _parse_versions(self, ct_list: list) -> list:
         provided_cts = []

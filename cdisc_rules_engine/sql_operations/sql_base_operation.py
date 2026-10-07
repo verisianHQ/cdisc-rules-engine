@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from functools import partial
 
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
@@ -26,7 +27,7 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.utilities.utils import convert_library_class_name_to_ct_class
 from cdisc_rules_engine.utilities.sdtm_utilities import get_class_and_domain_metadata
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 
 class SqlOperationError(Exception):
@@ -92,16 +93,21 @@ class SqlBaseOperation:
 
             raise SqlOperationError(original_exception=e, operation_name=self.__class__.__name__.lower()) from e
 
-    def construct_where_clause(self) -> str:
+    def construct_where_clause(self, resolve_column: Optional[Callable[[str], Optional[str]]] = None) -> str:
         """
         Construct a WHERE clause from the provided filter conditions.
         """
         if not self.params.filter:
             return ""
 
+        if resolve_column is None:
+            resolve_column = partial(self.data_service.pgi.schema.get_column_hash, self.params.domain)
+
         where_clauses = []
         for column, value in self.params.filter.items():
-            column_sql = self.data_service.pgi.schema.get_column_hash(self.params.domain, column)
+            column_sql = resolve_column(column)
+            if column_sql is None:
+                raise ColumnNotFoundError(column_name=column, table_id=self.params.domain)
             if isinstance(value, str) and value.endswith("%"):
                 where_clauses.append(f"{column_sql}::text LIKE '{self._like_prefix_pattern(value)}'")
             elif isinstance(value, str):

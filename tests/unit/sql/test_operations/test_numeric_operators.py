@@ -1,14 +1,11 @@
 import pytest
 
-from cdisc_rules_engine.exceptions.custom_exceptions import RuleExecutionError
-from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
-from cdisc_rules_engine.sql_operations.sql_operations_factory import SqlOperationsFactory
-from cdisc_rules_engine.standards.default_standards_context import DefaultStandardsContext
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, RuleExecutionError
 
 from .helpers import (
-    TEST_TABLE_NAME,
     assert_operation_constant,
     assert_operation_parameterized_constant,
+    setup_over_previous_operation,
     setup_sql_operations,
 )
 
@@ -95,17 +92,6 @@ def test_sql_numeric_regex_grouping():
     )
 
 
-def _setup_over_previous_operation(previous_operation, op, extra_config={}):
-    params = SqlOperationParams(
-        domain=TEST_TABLE_NAME,
-        target="$previous",
-        standards_context=DefaultStandardsContext(),
-        previous_operations={"$previous": previous_operation.execute()},
-        **extra_config,
-    )
-    return SqlOperationsFactory.get_service(op, params, previous_operation.data_service)
-
-
 def _filtered_grouped_record_count(
     data, ignore_empty_filtered_groups, target=None, grouping=("grp",), filter={"flag": "Y"}, **extra_config
 ):
@@ -133,7 +119,7 @@ def _filtered_grouped_record_count(
 def test_sql_numeric_over_grouped_record_count(op, expected):
     data = {"grp": ["A", "A", "B", "C", "C", "C"], "values": [1, 2, 3, 4, 5, 6]}
     record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp"]})
-    operation = _setup_over_previous_operation(record_count, op)
+    operation = setup_over_previous_operation(record_count, op)
     result = operation.execute()
     assert result.params is None
     assert_operation_constant(operation, result, expected)
@@ -153,7 +139,7 @@ def test_sql_numeric_over_grouped_record_count(op, expected):
 def test_sql_numeric_over_filtered_grouped_record_count(op, ignore_empty_filtered_groups, expected):
     data = {"grp": ["A", "A", "B", "C"], "flag": ["Y", "Y", "N", "Y"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups)
-    operation = _setup_over_previous_operation(record_count, op)
+    operation = setup_over_previous_operation(record_count, op)
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -162,7 +148,7 @@ def test_sql_numeric_over_filtered_grouped_record_count(op, ignore_empty_filtere
 def test_sql_numeric_over_grouped_record_count_all_groups_filtered_out(ignore_empty_filtered_groups, expected):
     data = {"grp": ["A", "B"], "flag": ["N", "N"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups)
-    operation = _setup_over_previous_operation(record_count, "max")
+    operation = setup_over_previous_operation(record_count, "max")
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -171,7 +157,7 @@ def test_sql_numeric_over_grouped_record_count_all_groups_filtered_out(ignore_em
 def test_sql_numeric_over_grouped_record_count_ignore_without_filter(ignore_empty_filtered_groups):
     data = {"grp": ["A", "A", "B"], "flag": ["Y", "Y", "N"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups, filter=None)
-    operation = _setup_over_previous_operation(record_count, "min")
+    operation = setup_over_previous_operation(record_count, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, 1)
 
@@ -182,7 +168,7 @@ def test_sql_numeric_over_regex_grouped_record_count(ignore_empty_filtered_group
     record_count = _filtered_grouped_record_count(
         data, ignore_empty_filtered_groups, target="code", filter=None, regex="^X"
     )
-    operation = _setup_over_previous_operation(record_count, "min")
+    operation = setup_over_previous_operation(record_count, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -191,7 +177,7 @@ def test_sql_numeric_over_regex_grouped_record_count(ignore_empty_filtered_group
 def test_sql_numeric_over_filtered_grouped_record_count_null_group(ignore_empty_filtered_groups, expected):
     data = {"grp": ["A", "A", None], "flag": ["Y", "Y", "N"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups)
-    operation = _setup_over_previous_operation(record_count, "min")
+    operation = setup_over_previous_operation(record_count, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -200,7 +186,7 @@ def test_sql_numeric_over_filtered_grouped_record_count_null_group(ignore_empty_
 def test_sql_numeric_over_filtered_multi_grouped_record_count(ignore_empty_filtered_groups, expected):
     data = {"grp": ["A", "A", "A", "B"], "sub": [1, 1, 2, 1], "flag": ["Y", "Y", "N", "Y"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups, grouping=("grp", "sub"))
-    operation = _setup_over_previous_operation(record_count, "min")
+    operation = setup_over_previous_operation(record_count, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -209,7 +195,7 @@ def test_sql_numeric_over_filtered_multi_grouped_record_count(ignore_empty_filte
 def test_sql_record_count_over_filtered_grouped_record_count(ignore_empty_filtered_groups, expected):
     data = {"grp": ["A", "A", "B", "C"], "flag": ["Y", "Y", "N", "Y"]}
     record_count = _filtered_grouped_record_count(data, ignore_empty_filtered_groups)
-    operation = _setup_over_previous_operation(record_count, "record_count")
+    operation = setup_over_previous_operation(record_count, "record_count")
     result = operation.execute()
     assert_operation_constant(operation, result, expected)
 
@@ -242,7 +228,7 @@ def test_sql_numeric_over_filtered_grouped_max_ignores_empty_groups(ignore_empty
             "ignore_empty_filtered_groups": ignore_empty_filtered_groups,
         },
     )
-    operation = _setup_over_previous_operation(grouped_max, "min")
+    operation = setup_over_previous_operation(grouped_max, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, 7)
 
@@ -250,7 +236,7 @@ def test_sql_numeric_over_filtered_grouped_max_ignores_empty_groups(ignore_empty
 def test_sql_numeric_over_grouped_max():
     data = {"grp": [1, 1, 2, 2, 3], "values": [5, 7, 3, 1, 9]}
     grouped_max = setup_sql_operations("max", "values", data, extra_config={"grouping": ["grp"]})
-    operation = _setup_over_previous_operation(grouped_max, "min")
+    operation = setup_over_previous_operation(grouped_max, "min")
     result = operation.execute()
     assert_operation_constant(operation, result, 3)
 
@@ -258,14 +244,86 @@ def test_sql_numeric_over_grouped_max():
 def test_sql_numeric_over_ungrouped_operation_raises():
     data = {"grp": ["A", "A", "B"], "values": [1, 2, 3]}
     record_count = setup_sql_operations("record_count", None, data)
-    operation = _setup_over_previous_operation(record_count, "max")
+    operation = setup_over_previous_operation(record_count, "max")
     with pytest.raises(RuleExecutionError, match="itself grouped"):
         operation.execute()
 
 
-def test_sql_numeric_over_previous_operation_with_grouping_raises():
+def test_sql_numeric_over_previous_operation_nested_grouping():
+    data = {"grp": ["A", "A", "A", "B"], "sub": [1, 1, 2, 1]}
+    record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp", "sub"]})
+    operation = setup_over_previous_operation(record_count, "max", extra_config={"grouping": ["grp"]})
+    result = operation.execute()
+    assert result.params == {"$1": "grp"}
+    assert_operation_parameterized_constant(
+        operation,
+        result,
+        [
+            {"params": {"$1": "A"}, "value": [2]},
+            {"params": {"$1": "B"}, "value": [1]},
+        ],
+    )
+
+    outer = setup_over_previous_operation(operation, "min")
+    assert_operation_constant(outer, outer.execute(), 1)
+
+
+def test_sql_numeric_over_previous_operation_group_by_value_column():
+    data = {"value": ["A", "A", "B"]}
+    record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["value"]})
+    operation = setup_over_previous_operation(record_count, "max")
+    assert_operation_constant(operation, operation.execute(), 2)
+
+
+def test_sql_numeric_over_previous_operation_filter_on_grouping_column():
+    data = {"grp": ["A", "A", "B", "C", "C", "C"]}
+    record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp"]})
+    operation = setup_over_previous_operation(record_count, "max", extra_config={"filter": {"grp": "B"}})
+    assert_operation_constant(operation, operation.execute(), 1)
+
+
+def test_sql_numeric_over_previous_operation_regex():
+    data = {"grp": ["A", "A", "B", "C", "C", "C"]}
+    record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp"]})
+    operation = setup_over_previous_operation(record_count, "max", extra_config={"regex": "^[12]$"})
+    assert_operation_constant(operation, operation.execute(), 2)
+
+
+@pytest.mark.parametrize(
+    "extra_config, usage",
+    [
+        ({"grouping": ["values"]}, "group"),
+        ({"filter": {"values": 1}}, "filter"),
+    ],
+)
+def test_sql_numeric_over_previous_operation_non_grouping_column_raises(extra_config, usage):
     data = {"grp": ["A", "A", "B"], "values": [1, 2, 3]}
     record_count = setup_sql_operations("record_count", None, data, extra_config={"grouping": ["grp"]})
-    operation = _setup_over_previous_operation(record_count, "max", extra_config={"grouping": ["grp"]})
-    with pytest.raises(RuleExecutionError, match="cannot combine"):
+    operation = setup_over_previous_operation(record_count, "max", extra_config=extra_config)
+    with pytest.raises(RuleExecutionError, match=f"can only {usage} by the grouping columns"):
+        operation.execute()
+
+
+@pytest.mark.parametrize("op", ["max", "min", "mean"])
+def test_sql_numeric_over_grouped_date_raises(op):
+    data = {"grp": [1, 1, 2], "dates": ["2001-01-01", "2022-01-05", "2010-12-12"]}
+    grouped = setup_sql_operations("max_date", "dates", data, extra_config={"grouping": ["grp"]})
+    operation = setup_over_previous_operation(grouped, op)
+    with pytest.raises(RuleExecutionError, match=f"Operation {op} cannot aggregate"):
+        operation.execute()
+
+
+@pytest.mark.parametrize(
+    "op, target, extra_config",
+    [
+        ("max", "missing", {}),
+        ("max", "values", {"grouping": ["missing"]}),
+        ("max", "values", {"filter": {"missing": "Y"}}),
+        ("record_count", None, {"grouping": ["missing"]}),
+        ("record_count", None, {"filter": {"missing": "Y"}}),
+    ],
+)
+def test_sql_numeric_missing_column_raises(op, target, extra_config):
+    operation = setup_sql_operations(op, target, {"values": [1, 2]}, extra_config=extra_config)
+    with pytest.raises(ColumnNotFoundError, match="'missing'"):
         operation.execute()
