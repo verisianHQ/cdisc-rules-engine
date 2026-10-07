@@ -86,6 +86,7 @@ class SQLRuleProcessor:
                 use_rule_type_table=operation.get("use_rule_type_table", False),
                 value=operation.get("value"),
                 regex=operation.get("regex"),
+                ignore_empty_filtered_groups=operation.get("ignore_empty_filtered_groups", False),
                 dataset_metadata=dataset_metadata,
             )
 

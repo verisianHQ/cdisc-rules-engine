@@ -14,3 +14,5 @@ class SqlOperationResult:
     type: Literal["collection", "constant"]
     subtype: DATASET_COLUMN_TYPES
     params: Optional[Dict[str, str]] = None
+    group_by_query: Optional[str] = None
+    group_by_columns: Optional[Dict[str, str]] = None
