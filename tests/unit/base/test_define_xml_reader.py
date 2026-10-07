@@ -339,3 +339,21 @@ def test_read_dictionary_version(dictionary_type, expected_version):
         reader = DefineXMLReaderFactory.from_file_contents(contents)
         version = reader.get_external_dictionary_version(dictionary_type)
     assert version == expected_version
+
+
+@pytest.mark.parametrize(
+    "filename, codelist_name, expected",
+    [
+        (test_define_file_path, "Nervous System Test Code", {"codelist": "C116104", "extended_values": ["INTP"]}),
+        (test_define_file_path, "Nervous System Test", {"codelist": "C116103", "extended_values": ["Interpretation"]}),
+        (test_define_2_0_file_path, "Race", {"codelist": "C74457", "extended_values": ["MULTIPLE", "OTHER"]}),
+        (test_define_2_0_file_path, "SC Tests", {"codelist": "C103330", "extended_values": ["Subject Initials"]}),
+    ],
+)
+def test_get_extensible_codelist_mappings(filename, codelist_name, expected):
+    """
+    Extended values are collected from both CodeListItems and EnumeratedItems.
+    """
+    reader = DefineXMLReaderFactory.from_filename(filename)
+    mappings: dict = reader.get_extensible_codelist_mappings()
+    assert mappings[codelist_name] == expected

@@ -45,6 +45,7 @@ from cdisc_rules_engine.sql_operations.get_define_variables_metadata import (
 from cdisc_rules_engine.sql_operations.define_exdict_version_operation import (
     SqlDefineExternalDictionaryVersionOperation,
 )
+from cdisc_rules_engine.sql_operations.define_extended_terms_in_ct import SqlDefineExtendedTermsInCtOperation
 from cdisc_rules_engine.sql_operations.whodrug_code_hierarchy import SqlWhodrugHierarchyOperation
 from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomainsOperation
 from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import SqlLabelReferencedVariableMetadata
@@ -62,6 +63,7 @@ class SqlOperationsFactory:
         "codelist_terms": None,
         "calc": SqlCalcOperation,
         "dataset_names": SqlDatasetNamesOperation,
+        "define_extended_terms_in_ct": SqlDefineExtendedTermsInCtOperation,
         "define_extensible_codelists": None,
         "distinct": SqlDistinctOperation,
         "dy": SqlDayDataValidatorOperation,

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
@@ -29,15 +29,6 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
         attribute = self.params.ct_attribute
 
-        # CT version precedence:
-        # - the version in an operation-referenced column (e.g. TSVCDVER), where populated with a loaded CT package
-        # - the provided codelists (Library sheet / -ct), or else a literal version given in the operation
-        # - otherwise all loaded CT packages
-        ct_version_column = self._ct_version_column()
-        fallback_versions = self.data_service.provided_codelists or (
-            None if ct_version_column else self.params.ct_version
-        )
-
         raw_col = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
 
         if attribute == "Synonym":
@@ -49,15 +40,9 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         std_type_col_sql = self.data_service.pgi.schema.get_column_hash(ct_table, "standard_type")
 
         where_clauses = []
-        params = {}
-
-        version_clause = self._version_clause(
-            ct_version_column, fallback_versions, ct_table, std_type_col_sql, version_date_col_sql
-        )
+        version_clause, params = self._ct_version_filter(std_type_col_sql, version_date_col_sql)
         if version_clause:
             where_clauses.append(version_clause)
-        if ct_version_column:
-            params["$ct_version"] = ct_version_column
 
         conditions = self.params.ct_conditions
         if conditions:
@@ -79,6 +64,22 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
 
         return SqlOperationResult(query=query, type="collection", subtype="Char", params=params or None)
 
+    def _ct_version_filter(self, std_type_col: str, version_date_col: str) -> Tuple[Optional[str], dict]:
+        """
+        Builds the WHERE clause restricting codelist rows to the CT version(s) in use, plus any
+        query params it needs. CT version precedence:
+        - the version in an operation-referenced column (e.g. TSVCDVER), where populated with a loaded CT package
+        - the provided codelists (Library sheet / -ct), or else a literal version given in the operation
+        - otherwise all loaded CT packages
+        """
+        ct_version_column = self._ct_version_column()
+        fallback_versions = self.data_service.provided_codelists or (
+            None if ct_version_column else self.params.ct_version
+        )
+        version_clause = self._version_clause(ct_version_column, fallback_versions, std_type_col, version_date_col)
+        params = {"$ct_version": ct_version_column} if ct_version_column else {}
+        return version_clause, params
+
     def _ct_version_column(self) -> Optional[str]:
         ct_version = self.params.ct_version
         if not ct_version or not isinstance(ct_version, str) or not self.params.table:
@@ -91,7 +92,6 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         self,
         ct_version_column: Optional[str],
         fallback_versions,
-        ct_table: str,
         std_type_col: str,
         version_date_col: str,
     ) -> Optional[str]:
@@ -105,8 +105,10 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         if not fallback_clause:
             return record_clause
         # empty record versions, or naming packages missing from the cache, fall back to the provided codelists
+        ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
+        loaded_col = self.data_service.pgi.schema.get_column_hash(ct_table, "version_date")
         self.data_service.pgi.execute_sql(
-            f"SELECT DISTINCT {version_date_col} AS version FROM {ct_table} WHERE {version_date_col} IS NOT NULL"
+            f"SELECT DISTINCT {loaded_col} AS version FROM {ct_table} WHERE {loaded_col} IS NOT NULL"
         )
         loaded_versions = sorted(row["version"] for row in self.data_service.pgi.fetch_all())
         if not loaded_versions:
