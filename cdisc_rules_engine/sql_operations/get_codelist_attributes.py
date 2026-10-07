@@ -29,15 +29,6 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
         attribute = self.params.ct_attribute
 
-        # CT version precedence:
-        # - the version in an operation-referenced column (e.g. TSVCDVER), where populated with a loaded CT package
-        # - the provided codelists (Library sheet / -ct), or else a literal version given in the operation
-        # - otherwise all loaded CT packages
-        ct_version_column = self._ct_version_column()
-        fallback_versions = self.data_service.provided_codelists or (
-            None if ct_version_column else self.params.ct_version
-        )
-
         raw_col = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
 
         if attribute == "Synonym":
@@ -76,19 +67,18 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
     def _ct_version_filter(self, std_type_col: str, version_date_col: str) -> Tuple[Optional[str], dict]:
         """
         Builds the WHERE clause restricting codelist rows to the CT version(s) in use, plus any
-        query params it needs. Provided codelists take precedence over the operation's version.
+        query params it needs. CT version precedence:
+        - the version in an operation-referenced column (e.g. TSVCDVER), where populated with a loaded CT package
+        - the provided codelists (Library sheet / -ct), or else a literal version given in the operation
+        - otherwise all loaded CT packages
         """
-        ct_version_column = None if self.data_service.provided_codelists else self._ct_version_column()
-        if ct_version_column:
-            return f"{version_date_col} = $ct_version", {"$ct_version": ct_version_column}
-
-        raw_versions = self.data_service.provided_codelists or self.params.ct_version
-        if raw_versions:
-            ct_list = raw_versions if isinstance(raw_versions, list) else [raw_versions]
-            provided_cts = self._parse_versions(ct_list)
-            return self._build_clauses(provided_cts, std_type_col, version_date_col), {}
-
-        return None, {}
+        ct_version_column = self._ct_version_column()
+        fallback_versions = self.data_service.provided_codelists or (
+            None if ct_version_column else self.params.ct_version
+        )
+        version_clause = self._version_clause(ct_version_column, fallback_versions, std_type_col, version_date_col)
+        params = {"$ct_version": ct_version_column} if ct_version_column else {}
+        return version_clause, params
 
     def _ct_version_column(self) -> Optional[str]:
         ct_version = self.params.ct_version
@@ -102,7 +92,6 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         self,
         ct_version_column: Optional[str],
         fallback_versions,
-        ct_table: str,
         std_type_col: str,
         version_date_col: str,
     ) -> Optional[str]:
@@ -116,8 +105,10 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         if not fallback_clause:
             return record_clause
         # empty record versions, or naming packages missing from the cache, fall back to the provided codelists
+        ct_table = StaticTables.IG_CODELIST_TABLE_NAME.value
+        loaded_col = self.data_service.pgi.schema.get_column_hash(ct_table, "version_date")
         self.data_service.pgi.execute_sql(
-            f"SELECT DISTINCT {version_date_col} AS version FROM {ct_table} WHERE {version_date_col} IS NOT NULL"
+            f"SELECT DISTINCT {loaded_col} AS version FROM {ct_table} WHERE {loaded_col} IS NOT NULL"
         )
         loaded_versions = sorted(row["version"] for row in self.data_service.pgi.fetch_all())
         if not loaded_versions:
