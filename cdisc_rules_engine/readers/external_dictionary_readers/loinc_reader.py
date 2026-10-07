@@ -31,7 +31,7 @@ class LoincReader:
 
     def process_data(self, metadata: LoincVersionMetadata = None) -> pd.DataFrame:
         """
-        Reads the Loinc.csv file and returns a dataframe with the mapped term code, term name, version.
+        Reads the Loinc.csv file and returns a dataframe with the mapped term code, term name, version, status.
         """
         file_path = f"{self.dictionary_path}/LoincTable/Loinc.csv"
         if not os.path.exists(file_path):
@@ -44,6 +44,7 @@ class LoincReader:
                 "LOINC_NUM": "term_code",
                 "COMPONENT": "term_name",
                 "VersionLastChanged": "version",
+                "STATUS": "status",
             },
             inplace=True,
         )

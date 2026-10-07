@@ -104,3 +104,26 @@ def test_valid_loinc_code_reference_missing_target_column(sdtm_standards_context
     config = {"dataset_id": "LB", "data_service": data_service}
     op_result = PostgresQLOperators(config).is_valid_loinc_code_reference({"target": "LBTESTCD", "comparator": None})
     assert_series_equals(op_result, [False, False])
+
+
+def test_valid_loinc_code_reference_status_filter(sdtm_standards_context, tmp_path):
+    (tmp_path / "Loinc.csv").write_text(
+        '"LOINC_NUM","COMPONENT","VersionLastChanged","STATUS"\n'
+        '"100000-9","Active term","2.74","ACTIVE"\n'
+        '"100001-7","Deprecated term","2.74","DEPRECATED"\n'
+    )
+    data_service = PostgresQLDataService.instance(
+        external_dictionaries=SqlExternalDictionariesContainer({DictionaryTypes.LOINC.value: str(tmp_path)})
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="LB",
+        column_data={"LBLOINC": ["100000-9", "100001-7", "INVALID-CODE"]},
+        standards_context=sdtm_standards_context,
+    )
+
+    config = {"dataset_id": "LB", "data_service": data_service}
+    op_result = PostgresQLOperators(config).is_valid_loinc_code_reference(
+        {"target": "LBLOINC", "filter_attribute": "status", "filter_value": "DEPRECATED"}
+    )
+    assert_series_equals(op_result, [False, True, False])

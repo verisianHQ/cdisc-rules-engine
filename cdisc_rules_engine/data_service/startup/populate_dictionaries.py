@@ -48,7 +48,7 @@ def _medrt_schema(metadata=None) -> SqlTableSchema:
 
 def _loinc_schema(metadata=None) -> SqlTableSchema:
     table = _create_standard_term_schema(StaticTables.LOINC_TABLE_NAME.value)
-    _add_char_columns(table, "version")
+    _add_char_columns(table, "version", "status")
     return table
 
 

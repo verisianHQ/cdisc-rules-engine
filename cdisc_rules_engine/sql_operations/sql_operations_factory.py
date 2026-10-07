@@ -45,6 +45,7 @@ from cdisc_rules_engine.sql_operations.get_define_variables_metadata import (
 from cdisc_rules_engine.sql_operations.define_exdict_version_operation import (
     SqlDefineExternalDictionaryVersionOperation,
 )
+from cdisc_rules_engine.sql_operations.get_exdict_version_operation import SqlGetExternalDictionaryVersionOperation
 from cdisc_rules_engine.sql_operations.define_extended_terms_in_ct import SqlDefineExtendedTermsInCtOperation
 from cdisc_rules_engine.sql_operations.whodrug_code_hierarchy import SqlWhodrugHierarchyOperation
 from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomainsOperation
@@ -107,6 +108,7 @@ class SqlOperationsFactory:
         "valid_external_dictionary_code_term_pair": None,
         "valid_define_external_dictionary_version": None,
         "get_define_external_dictionary_version": SqlDefineExternalDictionaryVersionOperation,
+        "get_external_dictionary_version": SqlGetExternalDictionaryVersionOperation,
         "get_dataset_filtered_variables": None,
         "get_countries": SqlGetCountriesOperation,
         "split": SqlSplitOperation,
