@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 from dataclasses import dataclass
+from typing import Optional
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 
 
 @dataclass
 class LoincVersionMetadata:
-    version: str
+    version: Optional[str]
 
 
 class LoincReader:
@@ -26,7 +27,7 @@ class LoincReader:
                     version = file.split("_")[1]
                     break
             else:
-                version = "unknown"
+                version = None
         return LoincVersionMetadata(version=version)
 
     def process_data(self, metadata: LoincVersionMetadata = None) -> pd.DataFrame:
