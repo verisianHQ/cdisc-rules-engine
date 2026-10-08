@@ -1,8 +1,11 @@
 import os
+import re
 import pandas as pd
 from dataclasses import dataclass
 from typing import Optional
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+
+_VERSION_RE = re.compile(r"(\d+(?:\.\d+)+)")
 
 
 @dataclass
@@ -18,17 +21,13 @@ class LoincReader:
     def _extract_version_metadata(self) -> LoincVersionMetadata:
         """Extract metadata from the LOINC directory."""
         base_dir = os.path.basename(os.path.normpath(self.dictionary_path))
-
-        if "_" in base_dir:
-            version = base_dir.split("_")[-1]
-        else:
+        match = _VERSION_RE.search(base_dir)
+        if not match:
             for file in os.listdir(self.dictionary_path):
                 if file.startswith("Loinc_") and file.endswith("_DifferenceReport.pdf"):
-                    version = file.split("_")[1]
+                    match = _VERSION_RE.search(file)
                     break
-            else:
-                version = None
-        return LoincVersionMetadata(version=version)
+        return LoincVersionMetadata(version=match.group(1) if match else None)
 
     def process_data(self, metadata: LoincVersionMetadata = None) -> pd.DataFrame:
         """

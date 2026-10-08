@@ -30,7 +30,10 @@ def _get_version_operation(data_service, sdtm_standards_context):
     return SqlOperationsFactory.get_service("get_external_dictionary_version", params, data_service)
 
 
-@pytest.mark.parametrize("folder_name", ["loinc_2.82", "Loinc_2.82", "my_loinc_2.82"])
+@pytest.mark.parametrize(
+    "folder_name",
+    ["loinc_2.82", "Loinc_2.82", "my_loinc_2.82", "loinc_v2.82", "Loinc_2.82_Text", "loinc-2.82", "loinc 2.82"],
+)
 def test_get_exdict_version(sdtm_standards_context, tmp_path, folder_name):
     data_service = _loinc_data_service(tmp_path, folder_name)
     operation = _get_version_operation(data_service, sdtm_standards_context)
@@ -39,17 +42,26 @@ def test_get_exdict_version(sdtm_standards_context, tmp_path, folder_name):
     assert_operation_constant(operation, result, expected="2.82")
 
 
-def test_get_exdict_version_from_difference_report(sdtm_standards_context, tmp_path):
-    data_service = _loinc_data_service(tmp_path, "loinc", extra_files=["Loinc_2.80_DifferenceReport.pdf"])
+@pytest.mark.parametrize("folder_name", ["loinc", "loinc_latest"])
+def test_get_exdict_version_from_difference_report(sdtm_standards_context, tmp_path, folder_name):
+    data_service = _loinc_data_service(tmp_path, folder_name, extra_files=["Loinc_2.80_DifferenceReport.pdf"])
     operation = _get_version_operation(data_service, sdtm_standards_context)
     result = operation.execute()
 
     assert_operation_constant(operation, result, expected="2.80")
 
 
-@pytest.mark.parametrize("folder_name", ["loinc", "loinc-2.82", "loinc 2.82"])
-def test_get_exdict_version_badly_named_folder_raises(sdtm_standards_context, tmp_path, folder_name):
-    data_service = _loinc_data_service(tmp_path, folder_name)
+@pytest.mark.parametrize(
+    "folder_name, extra_files",
+    [
+        ("loinc", []),
+        ("loinc_latest", []),
+        ("loinc_v2", []),
+        ("loinc", ["Loinc_latest_DifferenceReport.pdf"]),
+    ],
+)
+def test_get_exdict_version_badly_named_folder_raises(sdtm_standards_context, tmp_path, folder_name, extra_files):
+    data_service = _loinc_data_service(tmp_path, folder_name, extra_files=extra_files)
     operation = _get_version_operation(data_service, sdtm_standards_context)
 
     with pytest.raises(SqlOperationError, match="Version for external dictionary type loinc is not found"):
