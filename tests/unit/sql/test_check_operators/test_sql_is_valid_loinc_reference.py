@@ -3,6 +3,7 @@ from .helpers import assert_series_equals
 from cdisc_rules_engine.check_operators.sql import PostgresQLOperators
 from cdisc_rules_engine.check_operators.sql.base_sql_operator import BaseSqlOperator
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
+from cdisc_rules_engine.exceptions.custom_exceptions import SqlOperatorError
 from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTypes
 from cdisc_rules_engine.models.sql_external_dictionaries_container import (
     SqlExternalDictionariesContainer,
@@ -104,3 +105,114 @@ def test_valid_loinc_code_reference_missing_target_column(sdtm_standards_context
     config = {"dataset_id": "LB", "data_service": data_service}
     op_result = PostgresQLOperators(config).is_valid_loinc_code_reference({"target": "LBTESTCD", "comparator": None})
     assert_series_equals(op_result, [False, False])
+
+
+def _status_loinc_data_service(tmp_path):
+    loinc_path = tmp_path / "loinc_2.82"
+    loinc_path.mkdir()
+    (loinc_path / "Loinc.csv").write_text(
+        '"LOINC_NUM","COMPONENT","VersionLastChanged","STATUS"\n'
+        '"100000-9","Active term","2.74","ACTIVE"\n'
+        '"100001-7","Deprecated term","2.74","DEPRECATED"\n'
+    )
+    return PostgresQLDataService.instance(
+        external_dictionaries=SqlExternalDictionariesContainer({DictionaryTypes.LOINC.value: str(loinc_path)})
+    )
+
+
+@pytest.mark.parametrize(
+    "operator, target, comparator, data, result",
+    [
+        (
+            "is_valid_loinc_code_reference",
+            "LBLOINC",
+            None,
+            {"LBLOINC": ["100000-9", "100001-7", "INVALID-CODE"]},
+            [False, True, False],
+        ),
+        (
+            "is_not_valid_loinc_code_reference",
+            "LBLOINC",
+            None,
+            {"LBLOINC": ["100000-9", "100001-7", "INVALID-CODE"]},
+            [True, False, True],
+        ),
+        (
+            "is_valid_loinc_term_reference",
+            "LBTEST",
+            None,
+            {"LBTEST": ["Active term", "Deprecated term", "INVALID TERM"]},
+            [False, True, False],
+        ),
+        (
+            "is_not_valid_loinc_term_reference",
+            "LBTEST",
+            None,
+            {"LBTEST": ["Active term", "Deprecated term", "INVALID TERM"]},
+            [True, False, True],
+        ),
+        (
+            "is_valid_loinc_code_term_pair",
+            "LBLOINC",
+            "LBTEST",
+            {
+                "LBLOINC": ["100000-9", "100001-7", "100000-9"],
+                "LBTEST": ["Active term", "Deprecated term", "Deprecated term"],
+            },
+            [False, True, False],
+        ),
+        (
+            "is_not_valid_loinc_code_term_pair",
+            "LBLOINC",
+            "LBTEST",
+            {
+                "LBLOINC": ["100000-9", "100001-7", "100000-9"],
+                "LBTEST": ["Active term", "Deprecated term", "Deprecated term"],
+            },
+            [True, False, True],
+        ),
+    ],
+)
+def test_valid_loinc_references_status_filter(
+    sdtm_standards_context, tmp_path, operator, target, comparator, data, result
+):
+    data_service = _status_loinc_data_service(tmp_path)
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="LB",
+        column_data=data,
+        standards_context=sdtm_standards_context,
+    )
+
+    config = {"dataset_id": "LB", "data_service": data_service}
+    op_result = getattr(PostgresQLOperators(config), operator)(
+        {"target": target, "comparator": comparator, "filter_attribute": "status", "filter_value": "DEPRECATED"}
+    )
+    assert_series_equals(op_result, result)
+
+
+@pytest.mark.parametrize(
+    "operator",
+    [
+        "is_valid_loinc_code_reference",
+        "is_not_valid_loinc_code_reference",
+        "is_valid_loinc_term_reference",
+        "is_not_valid_loinc_term_reference",
+        "is_valid_loinc_code_term_pair",
+        "is_not_valid_loinc_code_term_pair",
+    ],
+)
+def test_valid_loinc_references_unknown_filter_attribute(sdtm_standards_context, tmp_path, operator):
+    data_service = _status_loinc_data_service(tmp_path)
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="LB",
+        column_data={"LBLOINC": ["100000-9"], "LBTEST": ["Active term"]},
+        standards_context=sdtm_standards_context,
+    )
+
+    config = {"dataset_id": "LB", "data_service": data_service}
+    with pytest.raises(SqlOperatorError, match="Filter attribute 'nonexistent' is not a column in ex_loinc"):
+        getattr(PostgresQLOperators(config), operator)(
+            {"target": "LBLOINC", "comparator": "LBTEST", "filter_attribute": "nonexistent", "filter_value": "X"}
+        )
