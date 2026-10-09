@@ -101,7 +101,8 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             fallback_clause = self._build_clauses(self._parse_versions(ct_list), std_type_col, version_date_col)
         if not ct_version_column:
             return fallback_clause
-        record_clause = f"{version_date_col} = $ct_version"
+        record_version = "CAST($ct_version AS TEXT)"
+        record_clause = f"{version_date_col} = {record_version}"
         if not fallback_clause:
             return record_clause
         # empty record versions, or naming packages missing from the cache, fall back to the provided codelists
@@ -113,7 +114,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         loaded_versions = sorted(row["version"] for row in self.data_service.pgi.fetch_all())
         if not loaded_versions:
             return fallback_clause
-        known_version = f"$ct_version IN ({', '.join(repr(version) for version in loaded_versions)})"
+        known_version = f"{record_version} IN ({', '.join(repr(version) for version in loaded_versions)})"
         return f"(CASE WHEN {known_version} THEN {record_clause} ELSE {fallback_clause} END)"
 
     def _parse_versions(self, ct_list: list) -> list:
