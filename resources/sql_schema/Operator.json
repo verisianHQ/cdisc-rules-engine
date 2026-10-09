@@ -1,7 +1,343 @@
 {
+  "$defs": {
+    "Name": {
+      "anyOf": [
+        {
+          "$ref": "CORE-base.json#/$defs/OperationResultId"
+        },
+        {
+          "$ref": "MetaVariables.json"
+        },
+        {
+          "$ref": "CORE-base.json#/$defs/VariableName"
+        },
+        {
+          "$ref": "CORE-base.json#/$defs/MergedVariableName"
+        },
+        {
+          "const": "define.xml",
+          "description": "Used with exists / not_exists to check whether a Define-XML was provided"
+        },
+        {
+          "$ref": "CORE-base.json#/$defs/TemplatedVariableName"
+        }
+      ]
+    },
+    "DictionaryReferenceOperator": {
+      "description": "is_valid_ / is_not_valid_ term_reference, code_reference and code_term_pair operators",
+      "enum": [
+        "is_not_valid_loinc_code_reference",
+        "is_not_valid_loinc_code_term_pair",
+        "is_not_valid_loinc_term_reference",
+        "is_not_valid_meddra_code_reference",
+        "is_not_valid_meddra_code_term_pair",
+        "is_not_valid_meddra_term_reference",
+        "is_not_valid_medrt_code_reference",
+        "is_not_valid_medrt_code_term_pair",
+        "is_not_valid_medrt_term_reference",
+        "is_not_valid_snomed_code_reference",
+        "is_not_valid_snomed_code_term_pair",
+        "is_not_valid_snomed_term_reference",
+        "is_not_valid_unii_code_reference",
+        "is_not_valid_unii_code_term_pair",
+        "is_not_valid_unii_term_reference",
+        "is_not_valid_whodrug_code_reference",
+        "is_not_valid_whodrug_code_term_pair",
+        "is_not_valid_whodrug_term_reference",
+        "is_valid_loinc_code_reference",
+        "is_valid_loinc_code_term_pair",
+        "is_valid_loinc_term_reference",
+        "is_valid_meddra_code_reference",
+        "is_valid_meddra_code_term_pair",
+        "is_valid_meddra_term_reference",
+        "is_valid_medrt_code_reference",
+        "is_valid_medrt_code_term_pair",
+        "is_valid_medrt_term_reference",
+        "is_valid_snomed_code_reference",
+        "is_valid_snomed_code_term_pair",
+        "is_valid_snomed_term_reference",
+        "is_valid_unii_code_reference",
+        "is_valid_unii_code_term_pair",
+        "is_valid_unii_term_reference",
+        "is_valid_whodrug_code_reference",
+        "is_valid_whodrug_code_term_pair",
+        "is_valid_whodrug_term_reference"
+      ]
+    }
+  },
   "$id": "Operator.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "variable_regex_pattern": {
+            "const": true
+          }
+        },
+        "required": ["variable_regex_pattern"]
+      },
+      "then": {
+        "properties": {
+          "name": {
+            "$ref": "CORE-base.json#/$defs/VariableRegexPattern"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/Name"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["case_insensitive"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DictionaryReferenceOperator"
+              },
+              {
+                "enum": ["in_enumerated_columns", "not_in_enumerated_columns"]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["date_component"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "date_equal_to",
+              "date_greater_than",
+              "date_greater_than_or_equal_to",
+              "date_less_than",
+              "date_less_than_or_equal_to",
+              "date_not_equal_to"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["external_dictionary_type"]
+          },
+          {
+            "required": ["version"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "is_latest_available_external_dictionary_version",
+              "is_not_latest_available_external_dictionary_version"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["filter_attribute"]
+          },
+          {
+            "required": ["filter_value"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "$ref": "#/$defs/DictionaryReferenceOperator"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["negative"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["invalid_duration"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["ordering"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "does_not_have_next_corresponding_record",
+              "empty_within_except_last_row",
+              "has_next_corresponding_record",
+              "non_empty_within_except_last_row"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["prefix"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "is_not_ordered_subset_of",
+              "is_ordered_subset_of",
+              "not_prefix_matches_regex",
+              "not_prefix_matches_regex_case_insensitive",
+              "prefix_equal_to",
+              "prefix_is_contained_by",
+              "prefix_is_contained_by_case_insensitive",
+              "prefix_is_not_contained_by",
+              "prefix_is_not_contained_by_case_insensitive",
+              "prefix_matches_regex",
+              "prefix_matches_regex_case_insensitive",
+              "prefix_not_equal_to"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["regex"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "does_not_equal_string_part",
+              "equals_string_part",
+              "in_enumerated_columns",
+              "not_in_enumerated_columns",
+              "target_is_not_sorted_by",
+              "target_is_sorted_by"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["strict_incremental_ordering"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["target_is_not_sorted_by", "target_is_sorted_by"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["suffix"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "is_not_ordered_subset_of",
+              "is_ordered_subset_of",
+              "not_suffix_matches_regex",
+              "not_suffix_matches_regex_case_insensitive",
+              "suffix_equal_to",
+              "suffix_is_contained_by",
+              "suffix_is_contained_by_case_insensitive",
+              "suffix_is_not_contained_by",
+              "suffix_is_not_contained_by_case_insensitive",
+              "suffix_matches_regex",
+              "suffix_matches_regex_case_insensitive",
+              "suffix_not_equal_to"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["type_insensitive"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "equal_to",
+              "equal_to_case_insensitive",
+              "not_equal_to",
+              "not_equal_to_case_insensitive"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["where_populated"]
+          },
+          {
+            "required": ["where_populated_columns"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["is_inconsistent_across_dataset"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["within"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "does_not_have_next_corresponding_record",
+              "has_next_corresponding_record",
+              "not_present_on_multiple_rows_within",
+              "present_on_multiple_rows_within",
+              "target_is_not_sorted_by",
+              "target_is_sorted_by"
+            ]
+          }
+        }
+      }
+    }
+  ],
   "anyOf": [
     {
       "properties": {
@@ -18,7 +354,7 @@
           "const": "contains_all"
         }
       },
-      "required": ["operator"],
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -34,6 +370,11 @@
       "properties": {
         "operator": {
           "const": "date_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -43,6 +384,11 @@
       "properties": {
         "operator": {
           "const": "date_greater_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -52,6 +398,11 @@
       "properties": {
         "operator": {
           "const": "date_greater_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -61,6 +412,11 @@
       "properties": {
         "operator": {
           "const": "date_less_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -70,6 +426,11 @@
       "properties": {
         "operator": {
           "const": "date_less_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -79,6 +440,11 @@
       "properties": {
         "operator": {
           "const": "date_not_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -106,6 +472,11 @@
       "properties": {
         "operator": {
           "const": "does_not_equal_string_part"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value", "regex"],
@@ -115,6 +486,9 @@
       "properties": {
         "operator": {
           "const": "does_not_have_next_corresponding_record"
+        },
+        "within": {
+          "type": "string"
         }
       },
       "required": ["operator", "ordering", "value", "within"],
@@ -151,6 +525,11 @@
       "properties": {
         "operator": {
           "const": "equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -160,6 +539,11 @@
       "properties": {
         "operator": {
           "const": "equal_to_case_insensitive"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -169,6 +553,11 @@
       "properties": {
         "operator": {
           "const": "equals_string_part"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value", "regex"],
@@ -187,6 +576,11 @@
       "properties": {
         "operator": {
           "const": "greater_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -196,6 +590,11 @@
       "properties": {
         "operator": {
           "const": "greater_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -214,15 +613,23 @@
       "properties": {
         "operator": {
           "const": "has_equal_length"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
-      "required": ["operator"],
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
       "properties": {
         "operator": {
           "const": "has_next_corresponding_record"
+        },
+        "within": {
+          "type": "string"
         }
       },
       "required": ["operator", "ordering", "value", "within"],
@@ -232,9 +639,14 @@
       "properties": {
         "operator": {
           "const": "has_not_equal_length"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
-      "required": ["operator"],
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -826,6 +1238,11 @@
       "properties": {
         "operator": {
           "const": "less_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -835,6 +1252,11 @@
       "properties": {
         "operator": {
           "const": "less_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -844,6 +1266,11 @@
       "properties": {
         "operator": {
           "const": "longer_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -853,6 +1280,11 @@
       "properties": {
         "operator": {
           "const": "longer_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -900,7 +1332,7 @@
           "const": "not_contains_all"
         }
       },
-      "required": ["operator"],
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -916,6 +1348,11 @@
       "properties": {
         "operator": {
           "const": "not_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -925,6 +1362,11 @@
       "properties": {
         "operator": {
           "const": "not_equal_to_case_insensitive"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -988,6 +1430,14 @@
       "properties": {
         "operator": {
           "const": "not_present_on_multiple_rows_within"
+        },
+        "value": {
+          "description": "Flag values found on more than this many rows (default 1)",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "within": {
+          "type": "string"
         }
       },
       "required": ["operator", "within"],
@@ -1096,6 +1546,14 @@
       "properties": {
         "operator": {
           "const": "present_on_multiple_rows_within"
+        },
+        "value": {
+          "description": "Flag values found on more than this many rows (default 1)",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "within": {
+          "type": "string"
         }
       },
       "required": ["operator", "within"],
@@ -1105,6 +1563,9 @@
       "properties": {
         "operator": {
           "const": "shares_at_least_one_element_with"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "required": ["operator", "value"],
@@ -1114,6 +1575,9 @@
       "properties": {
         "operator": {
           "const": "shares_exactly_one_element_with"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "required": ["operator", "value"],
@@ -1123,6 +1587,9 @@
       "properties": {
         "operator": {
           "const": "shares_no_elements_with"
+        },
+        "value": {
+          "type": "string"
         }
       },
       "required": ["operator", "value"],
@@ -1132,6 +1599,11 @@
       "properties": {
         "operator": {
           "const": "shorter_than"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -1141,6 +1613,11 @@
       "properties": {
         "operator": {
           "const": "shorter_than_or_equal_to"
+        },
+        "value": {
+          "not": {
+            "type": "array"
+          }
         }
       },
       "required": ["operator", "value"],
@@ -1253,22 +1730,13 @@
     "name": {
       "anyOf": [
         {
-          "$ref": "CORE-base.json#/$defs/OperationResultId"
+          "$ref": "#/$defs/Name"
         },
         {
-          "$ref": "MetaVariables.json"
-        },
-        {
-          "$ref": "CORE-base.json#/$defs/VariableName"
-        },
-        {
-          "$ref": "CORE-base.json#/$defs/MergedVariableName"
-        },
-        {
-          "const": "define.xml",
-          "description": "Used with exists / not_exists to check whether a Define-XML was provided"
+          "$ref": "CORE-base.json#/$defs/VariableRegexPattern"
         }
-      ]
+      ],
+      "description": "Column to check. With variable_regex_pattern: true, an anchored regex matched against the dataset's variable names"
     },
     "value": {
       "anyOf": [
@@ -1293,7 +1761,20 @@
             "additionalProperties": false,
             "properties": {
               "name": {
-                "$ref": "Operator.json#/properties/name"
+                "anyOf": [
+                  {
+                    "$ref": "CORE-base.json#/$defs/VariableName"
+                  },
+                  {
+                    "$ref": "CORE-base.json#/$defs/MergedVariableName"
+                  },
+                  {
+                    "$ref": "CORE-base.json#/$defs/TemplatedVariableName"
+                  },
+                  {
+                    "$ref": "MetaVariables.json"
+                  }
+                ]
               },
               "sort_order": {
                 "enum": ["asc", "desc", "ASC", "DESC"],
@@ -1361,7 +1842,7 @@
           "type": "array"
         }
       ],
-      "description": "Grouping variable(s). A list is only supported by target_is_sorted_by / target_is_not_sorted_by"
+      "description": "Grouping variable. A list is only supported by target_is_sorted_by / target_is_not_sorted_by"
     },
     "ordering": {
       "$ref": "CORE-base.json#/$defs/VariableName"
@@ -1382,7 +1863,8 @@
       "type": "string"
     },
     "variable_regex_pattern": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Treat name as a regex over the dataset's variable names. The rule runs once for each combination of matching variables; named groups can be referenced elsewhere in the rule as {{group}}. If nothing matches, the condition is FALSE"
     },
     "where_populated": {
       "type": "boolean"
@@ -1394,6 +1876,6 @@
       "type": "array"
     }
   },
-  "required": ["operator"],
+  "required": ["operator", "name"],
   "type": "object"
 }

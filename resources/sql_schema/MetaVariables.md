@@ -36,7 +36,7 @@ ItemGroupDef.leaf.href
 
 ## define_dataset_name
 
-ItemGroupDef.Domain
+ItemGroupDef.Name
 
 ## define_dataset_structure
 
@@ -220,7 +220,7 @@ Variable format
 
 ## variable_has_empty_values
 
-True/False value indicating whether a variable has any empty values
+TRUE only when the variable has no non-empty values (every value null/blank, or the variable is not in the dataset); despite the name it does not flag a variable with only some empty values, so it equals `variable_is_empty`. Variable Metadata Check rule types only.
 
 ## variable_label
 
@@ -248,7 +248,7 @@ Calculated length of the value at `row_number` and `variable_name`
 
 ## categories_summary
 
-STF: summary of the document's categories
+STF: study-identifier categories as `name:value|name:value...` (same on every row)
 
 ## dataset_domain
 
@@ -272,7 +272,7 @@ List of the ItemGroupDef ItemRef names
 
 ## define_key_sequence_is_unique
 
-Whether the define.xml KeySequence variables uniquely identify each record
+Per record: whether its combination of key variables (`define_dataset_key_sequence`, with the record's SUPP-- qualifiers merged in when a SUPP-- dataset exists) is unique within the dataset; TRUE when no key variables are defined. Dataset Contents Check against Define XML only.
 
 ## define_variable_source_type
 
@@ -304,7 +304,7 @@ STF: document properties as JSON
 
 ## document_properties_summary
 
-STF: summary of the document properties
+STF: document properties as `name@info-type=value|...`
 
 ## document_title
 
@@ -312,7 +312,7 @@ STF: document title
 
 ## domain
 
-Domain of the dataset (Domain Presence Check against Define XML)
+ItemGroupDef Name, same as `define_dataset_name` (Domain Presence Check against Define XML)
 
 ## dtd_version
 
@@ -328,27 +328,27 @@ STF: file tag name
 
 ## language
 
-STF: document language
+STF: root `xml:lang` attribute (same on every row)
 
 ## library_variable_ccode
 
-C-code of the codelist the library assigns to the variable
+C-code of the codelist the library assigns to the variable (comma-separated when it assigns several)
 
 ## library_variable_ccode_values
 
-Codelist C-codes the library assigns to the variable
+Submission values of the terms of the codelist in `library_variable_ccode` (ARRAY_AGG over the loaded CT, stored as text, e.g. `{N,Y}`); empty when `library_variable_ccode` holds several codes. Value Check against Library Metadata only
 
 ## library_variable_codelist_name
 
-Name of the codelist the library assigns to the variable
+Name of the codelist in `library_variable_ccode` (single value); empty when `library_variable_ccode` holds several codes. Value Check against Library Metadata only
 
 ## library_variable_codelist_value
 
-Submission values of the codelist the library assigns to the variable
+Submission value of the codelist itself in `library_variable_ccode` (single value, not its terms); empty when `library_variable_ccode` holds several codes. Value Check against Library Metadata only
 
 ## record_count
 
-Number of records in the dataset
+Number of records in the dataset (Dataset Metadata Check, Value Check with Dataset Metadata)
 
 ## study_id
 
@@ -360,8 +360,8 @@ STF: study title
 
 ## variable_count
 
-Number of variables in the dataset
+Number of non-empty (non-null, non-blank) values of the variable; 0 when the variable is not in the dataset. Variable Metadata Check against Define XML and Library Metadata only
 
 ## variable_is_empty
 
-Whether every value of the variable is empty
+Whether every value of the variable is empty, i.e. `variable_count` is 0 (TRUE also when the variable is not in the dataset). Variable Metadata Check against Define XML and Library Metadata only

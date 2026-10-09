@@ -6,6 +6,7 @@
 - `dataset_location`
 - `dataset_name`
 - `dataset_size`
+- `record_count`
 
 #### Example
 
@@ -24,19 +25,23 @@ Columns are the columns within the original dataset along with the following col
 - `dataset_label`
 - `dataset_location`
 - `dataset_name`
-- `dataset_size`
 - `dataset_domain`
 - `define_dataset_class`
 - `define_dataset_domain`
+- `define_dataset_has_no_data`
 - `define_dataset_is_non_standard`
 - `define_dataset_key_sequence`
 - `define_dataset_label`
 - `define_dataset_location`
 - `define_dataset_name`
 - `define_dataset_structure`
+- `define_dataset_variable_order`
 - `define_dataset_variables`
+- `define_key_sequence_is_unique`
 
 ## Dataset Metadata Check against Define XML
+
+One row per study dataset (every submitted dataset, not only the one being validated); the Define-XML columns are empty when no ItemGroupDef Name matches the dataset's domain
 
 #### Columns
 
@@ -52,8 +57,10 @@ Columns are the columns within the original dataset along with the following col
 - `define_dataset_class`
 - `define_dataset_structure`
 - `define_dataset_is_non_standard`
+- `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
+- `define_dataset_variable_order`
 
 #### Rule Macro
 
@@ -80,16 +87,21 @@ any:
 
 ## Define Item Group Metadata Check
 
+One row per ItemGroupDef whose Name matches the domain of a submitted dataset (not every ItemGroupDef in the Define-XML)
+
 #### Columns
 
 - `define_dataset_name`
 - `define_dataset_label`
 - `define_dataset_location`
+- `define_dataset_domain`
 - `define_dataset_class`
 - `define_dataset_structure`
 - `define_dataset_is_non_standard`
+- `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
+- `define_dataset_variable_order`
 
 ## Define Item Metadata Check
 
@@ -104,12 +116,14 @@ any:
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_is_collected`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
 - `define_variable_has_comment`
 
 #### Rule Macro
@@ -129,12 +143,14 @@ Attach variable codelist and codelist terms
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_is_collected`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
 - `define_variable_has_comment`
 - `library_variable_name`
 - `library_variable_order_number`
@@ -142,6 +158,7 @@ Attach variable codelist and codelist terms
 - `library_variable_data_type`
 - `library_variable_role`
 - `library_variable_core`
+- `library_variable_ccode`
 
 #### Rule Macro
 
@@ -151,7 +168,7 @@ Attach variable codelist and codelist terms
 
 #### Columns
 
-Single row contains a column for each domain and the value of that column is the domain's file name
+Single row contains a column for each domain and the value of that column is the domain's file name (comma-separated when several files share the domain)
 
 | AE     | EC     |
 | ------ | ------ |
@@ -194,7 +211,7 @@ all:
 - `dataset_label`
 - `dataset_location`
 - `dataset_name`
-- `dataset_size`
+- `record_count`
 
 #### Example
 
@@ -259,7 +276,7 @@ all:
     value: true
   - name: variable_value
     operator: is_not_contained_by
-    value: define_variable_codelist_coded_values`
+    value: define_variable_codelist_coded_values
 ```
 
 ## Value Check against Define XML VLM
@@ -269,6 +286,7 @@ all:
 - `row_number`
 - `variable_name`
 - `variable_value`
+- `define_variable_name`
 - `define_vlm_name`
 - `define_vlm_label`
 - `define_vlm_data_type`
@@ -285,10 +303,7 @@ all:
 - `define_vlm_has_codelist`
 - `define_vlm_codelist_coded_values`
 - `define_vlm_mandatory`
-- `define_variable_name`
-- `type_check`
-- `length_check`
-- `variable_value_length`
+- `define_vlm_has_comment`
 
 #### Example
 
@@ -312,7 +327,7 @@ all:
     operator: empty
   - name: define_vlm_mandatory
     operator: equal_to
-    value: Yes
+    value: true
 ```
 
 ## Variable Metadata Check
@@ -368,15 +383,17 @@ Attach define xml metadata at variable level
 - `variable_length`
 - `variable_data_type`
 - `variable_format`
-- `variable_has_empty_values`
 - `library_variable_name`
 - `library_variable_order_number`
 - `library_variable_label`
 - `library_variable_data_type`
 - `library_variable_role`
 - `library_variable_core`
+- `library_variable_ccode`
 
 ## Variable Metadata Check against Define XML and Library Metadata
+
+One row per Define-XML variable of the dataset, plus one per dataset variable missing from the Define-XML (for a variable only in the Define-XML, `variable_name` is empty and `variable_count` is 0)
 
 #### Columns:
 
@@ -385,6 +402,9 @@ Attach define xml metadata at variable level
 - `variable_length`
 - `variable_order_number`
 - `variable_data_type`
+- `variable_count`
+- `variable_is_empty`
+- `variable_has_empty_values`
 - `define_variable_name`
 - `define_variable_label`
 - `define_variable_data_type`
@@ -395,9 +415,9 @@ Attach define xml metadata at variable level
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
-- `define_variable_length`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`
@@ -409,11 +429,11 @@ Attach define xml metadata at variable level
 - `library_variable_core`
 - `library_variable_order_number`
 - `library_variable_data_type`
-- `variable_has_empty_values`
+- `library_variable_ccode`
 
 ## Domain Presence Check against Define XML
 
-One row per dataset defined in the Define-XML, with the filename of the matching study dataset (empty if the dataset was not submitted)
+One row per dataset (ItemGroupDef) defined in the Define-XML, with the filename of the study dataset whose domain equals the ItemGroupDef Name (empty if the dataset was not submitted). `domain` holds the ItemGroupDef Name (same as `define_dataset_name`)
 
 #### Columns
 
@@ -427,9 +447,9 @@ One row per dataset defined in the Define-XML, with the filename of the matching
 - `define_dataset_structure`
 - `define_dataset_is_non_standard`
 - `define_dataset_has_no_data`
-- `define_dataset_variables`
-- `define_dataset_key_sequence`
-- `define_dataset_variable_order`
+- `define_dataset_variables` (always empty for this rule type)
+- `define_dataset_key_sequence` (always empty for this rule type)
+- `define_dataset_variable_order` (always empty for this rule type)
 
 ## Global Value Check with Variable Metadata
 

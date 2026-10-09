@@ -1,6 +1,6 @@
 ## define_variable_metadata
 
-If a target variable `name` is specified, returns the specified metadata in the define for the specified target variable.
+Returns the define.xml metadata attribute in `attribute_name` for the variable in `name` (required), within the operation's domain. The operation fails if the variable is not in the define.xml.
 
 - Input
 
@@ -15,27 +15,6 @@ If a target variable `name` is specified, returns the specified metadata in the 
 
   `Laboratory Test Code`
 
-If no target variable `name` specified, returns a dictionary containing the specified metadata in the define for all variables.
-
-- Input
-
-  ```yaml
-  - operator: define_variable_metadata
-    attribute_name: define_variable_label
-    id: $VARIABLE_LABEL
-  ```
-
-- Output
-
-  ```json
-  {
-    "STUDYID": "Study Identifier",
-    "USUBJID": "Unique Subject Identifier",
-    "LBTESTCD": "Laboratory Test Code",
-    "...": "..."
-  }
-  ```
-
 ## dataset_names
 
 Returns a list of the submitted dataset filenames in all uppercase
@@ -46,7 +25,7 @@ ex. if TS.xpt, AE.xpt, EC.xpt, and SUPPEC.xpt are submitted -> [TS, AE, EC, SUPP
 
 Get a distinct list of values for the given `name`. If a `group` list is specified, the distinct value list will be grouped by the variables within `group`.
 
-If `group` is provided, `group_aliases` may also be provided to assign new grouping variable names so that results grouped by the values in one set of grouping variables can be merged onto a dataset according to the same grouping value(s) stored in different set of grouping variables. When both `group` and `group_aliases` are provided, columns are renamed according to corresponding list position (i.e., the 1st column in `group` is renamed to the 1st column in `group_aliases`, etc.). If there are more columns listed in `group` than in `group_aliases`, only the `group` columns with corresponding `group_aliases` columns will be renamed. If there are more columns listed in `group_aliases` than in `group`, the extra column names in `group_aliases` will be ignored. See [record_count](#record_count) for an example of the use of `group_aliases`.
+`filter` keeps only the records matching every `{column: value}` pair. Unlike the `filter` of [record_count](#record_count) and the other aggregate operations, values are matched exactly: a trailing `%` is not a wildcard.
 
 ```yaml
 Check:
@@ -146,7 +125,7 @@ Match Datasets:
 ## expected_variables
 
 Returns the expected ("Core" = Exp ) variables for the domain in the current standard
-Variable Metadata for custom domains will pull from the model while non-custom domains will be from the IG and Model.
+Variables come from the IG domain metadata only, so a custom domain (not in the IG) returns an empty list.
 
 - Input:
 
@@ -171,21 +150,20 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 Returns the requested dataset level metadata value for the current dataset. Possible `name` values are:
 
-- `dataset_size`
-- `dataset_location`
-- `dataset_name`
-- `dataset_label`
+- `dataset_name`: the name of the dataset being validated (for a split dataset, of the part each record came from)
+- `dataset_size`: the dataset's file size in bytes (for a split dataset, of the part each record came from)
+- `label`, `description`, `datasetStructure`: the domain's metadata in the IG library. The operation fails if the domain has no such metadata (e.g. a custom domain).
 
-Example
+Example: the IG domain label
 
 - Input:
 
   Target domain: `LB`
 
   ```yaml
-  - name: dataset_label
+  - name: label
     operator: extract_metadata
-    id: $dataset_label
+    id: $domain_label
   ```
 
 - Output:
@@ -196,9 +174,11 @@ Example
 
 Returns the values of a controlled terminology attribute (`ct_attribute`) for the CT version(s) in use.
 
-- `ct_attribute`: one of `Term CCODE`, `Term Signification`, `Term`, `Codelist Code`, `Codelist Name`, `Extensible`, `Synonyms`, `Definition`, `Standard Type`, `Version Date`, `Standard and Date`
+- `ct_attribute`: one of `Term CCODE`, `Term Signification`, `Term`, `Codelist Code`, `Codelist Name`, `Extensible`, `Synonyms`, `Definition`, `Standard Type`, `Version Date`, `Standard and Date`. `Synonyms` values are returned as stored: one `;`-joined string per term.
 - `ct_conditions` (optional): a list of `{attribute: value}` filters on the same attributes
-- `version` (optional): a variable holding the CT version (e.g. `TSVCDVER`) or a literal version. Without it, the CT packages provided to the engine are used.
+- `version` (optional): a variable holding each record's CT version (e.g. `TSVCDVER`) or a literal version. A literal version is ignored when CT packages are provided to the engine (`-ct`). Without `version`, the provided CT packages are used, or else all loaded ones.
+
+`name` is ignored.
 
 ```yaml
 - id: $VALID_TERM_CODES
@@ -233,6 +213,8 @@ Operations:
 ## get_column_order_from_library
 
 Fetches column order for a given domain from the CDISC library. The lists with column names are sorted in accordance to "ordinal" key of library metadata.
+
+If both `key_name` and `key_value` are provided, only the variables whose library metadata attribute `key_name` equals `key_value` are returned (e.g. `key_name: role`, `key_value: Timing`).
 
 ```yaml
 Rule Type: Variable Metadata Check
@@ -305,7 +287,7 @@ Operations:
 
 ## label_referenced_variable_metadata
 
-Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable label found in the column provided in `name`
+For each record, returns the IG library attribute in `attribute_name` (`role`, `core`, `label`, `name`, `ordinal` or `simpleDatatype`) of the variables whose label is the record's value in the column `name`. Variables of every dataset in the IG are matched, so the result is a collection: empty when no variable has that label, with several values when several do.
 
 - Input
 
@@ -329,25 +311,21 @@ Generates a dataframe where each record in the dataframe is the library ig varia
 
   ```yaml
   - operator: label_referenced_variable_metadata
-    id: $label_referenced_variable_metadata
-    name: "QLABEL"
+    id: $qlabel_variable_names
+    name: QLABEL
+    attribute_name: name
   ```
 
 - Output
 
   ```json
   {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
     "QLABEL": ["Toxicity", "Viscosity", "Analysis Method"],
-    "$label_referenced_variable_name": ["LBTOX", null, "LBANMETH"],
-    "$label_referenced_variable_role": [
-      "Variable Qualifier",
-      null,
-      "Record Qualifier"
-    ],
-    "$label_referenced_variable_ordinal": [44, null, 38],
-    "$label_referenced_variable_label": ["Toxicity", null, "Analysis Method"]
+    "$qlabel_variable_names": [
+      ["LBTOX", "VSTOX"],
+      [],
+      ["CPANMETH", "GFANMETH", "LBANMETH", "MSANMETH", "PPANMETH"]
+    ]
   }
   ```
 
@@ -371,6 +349,8 @@ Operations:
 ## max_date
 
 If no `group` is provided, returns the max date value in `name`. If `group` is provided, returns the max date value in `name`, within each unique set of the grouping variables.
+
+Values are cast to dates, so a partial date (e.g. `2023-01`) in `name` makes the operation fail; `regex: ^\d{4}-\d{2}-\d{2}` skips them. Empty values are ignored. The result is `YYYY-MM-DD` (any time part is dropped), or empty when there is no date.
 
 ```yaml
 Check:
@@ -439,7 +419,7 @@ Operations:
 
 ## min_date
 
-If no `group` is provided, returns the min date value in `name`. If `group` is provided, returns the min date value in `name`, within each unique set of the grouping variables.
+If no `group` is provided, returns the min date value in `name`. If `group` is provided, returns the min date value in `name`, within each unique set of the grouping variables. Dates are handled as in [max_date](#max_date): a partial date makes the operation fail and the result is `YYYY-MM-DD`.
 
 Example: RFSTDTC is greater than min AE.AESTDTC for the current USUBJID
 
@@ -477,13 +457,14 @@ Operations:
 
 Optional parameters for these operations:
 
-- `regex`: only aggregate values matching the regular expression (PostgreSQL syntax)
-- `ignore_empty_filtered_groups: true`: with `group` and `filter`, leave out groups that have no rows matching the filter instead of returning an empty result for them
+- `filter`: only aggregate the records matching every `{column: value}` pair; a value ending in `%` is a prefix match (see [record_count](#record_count))
+- `regex`: only aggregate the values of `name` matching the regular expression (PostgreSQL syntax, matched anywhere in the value unless anchored). Ignored without `name`.
+- `ignore_empty_filtered_groups: true`: only matters when this operation has `group` and `filter` and another operation aggregates over it as above: groups with no records matching the filter are left out instead of contributing an empty value (`0` for `record_count`). The operation's own per-record result is unchanged.
 - `use_rule_type_table: true`: aggregate over the dataset built by the rule's `Rule Type` (e.g. the variable metadata table) instead of the domain's dataset
 
 ## name_referenced_variable_metadata
 
-Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable name found in the column provided in `name`
+As [label_referenced_variable_metadata](#label_referenced_variable_metadata), but matches the IG variables whose name is the record's value in the column `name`.
 
 - Input
 
@@ -499,7 +480,7 @@ Generates a dataframe where each record in the dataframe is the library ig varia
   {
     "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
     "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QNAM": ["Toxicity", "LBVISCOS", "Analysis Method"]
+    "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"]
   }
   ```
 
@@ -507,32 +488,24 @@ Generates a dataframe where each record in the dataframe is the library ig varia
 
   ```yaml
   - operator: name_referenced_variable_metadata
-    id: $name_referenced_variable_metadata
-    name: "QNAM"
+    id: $qnam_variable_labels
+    name: QNAM
+    attribute_name: label
   ```
 
 - Output
 
   ```json
   {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
     "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"],
-    "$label_referenced_variable_name": ["LBTOX", null, "LBANMETH"],
-    "$label_referenced_variable_role": [
-      "Variable Qualifier",
-      null,
-      "Record Qualifier"
-    ],
-    "$label_referenced_variable_ordinal": [44, null, 38],
-    "$label_referenced_variable_label": ["Toxicity", null, "Analysis Method"]
+    "$qnam_variable_labels": [["Toxicity"], [], ["Analysis Method"]]
   }
   ```
 
 ## permissible_variables
 
 Returns the permissible variables ("Core" = Perm ) for a given domain and standard
-Variable Metadata for custom domains will pull from the model while non-custom domains will be from the IG and Model.
+Variables come from the IG domain metadata only, so a custom domain (not in the IG) returns an empty list.
 
 - Input:
 
@@ -555,9 +528,9 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 ## record_count
 
-If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These are column names. If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables.
+If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These are column names. If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables. If `name` is provided, only the records where `name` is not null are counted.
 
-**Wildcard Filtering**: Filter values ending with `%` will match any records where the column value starts with the specified prefix. For example, `RACE%` will match `RACE1`, `RACE2`, `RACE3`, etc. This is useful for matching related variables with numeric or alphabetic suffixes.
+**Wildcard Filtering**: Filter values ending with `%` will match any records where the column value starts with the specified prefix. For example, `RACE%` will match `RACE1`, `RACE2`, `RACE3`, etc. This is useful for matching related variables with numeric or alphabetic suffixes. The same applies to the `filter` of the other aggregate operations and of `split`, but not of `distinct`.
 
 Example: return the number of records in a dataset.
 
@@ -610,7 +583,7 @@ Example: return the number of records grouped by USUBJID where FLAGVAR = "Y".
 ## required_variables
 
 Returns the required variables ( "Core" = Req ) for a given domain and standard
-Variable Metadata for custom domains will pull from the model while non-custom domains will be from the IG and Model.
+Variables come from the IG domain metadata only, so a custom domain (not in the IG) returns an empty list.
 
 - Input:
 
@@ -658,7 +631,15 @@ the operation will return:
 ["2023-10-26", "2023-12-13"]
 ```
 
-By default, the standard is as specified when running validation - as the validation runtime parameter and/or as specified in the rule header - and the list of terminology packages is obtained from the current cache. If required, the default standard may be overridden using the optional `ct_package_types` parameter. For example, given the same list of terminology packages, the following operation:
+By default, the standard is as specified when running validation - as the validation runtime parameter and/or as specified in the rule header - and the list of terminology packages is obtained from the current cache. If required, the default standard may be overridden using the optional `ct_package_types` parameter, a list of `ADAM`, `ADAMIG`, `CDASHIG`, `SDTM`, `SDTMIG`, `SENDIG` or `USDM` (case-insensitive). Standards and package types map to terminology packages as follows:
+
+- `SDTM`, `SDTMIG`: `sdtmct`
+- `SENDIG`: `sendct`
+- `CDASHIG`: `cdashct`
+- `ADAM`, `ADAMIG`: `adamct` and `sdtmct`
+- `USDM`: `ddfct` and `sdtmct`
+
+For example, given the same list of terminology packages, the following operation:
 
 ```yaml
 Operations:
@@ -666,7 +647,7 @@ Operations:
     id: $valid_dates
     ct_package_types:
       - SDTM
-      - CDASH
+      - CDASHIG
 ```
 
 will return:
@@ -683,6 +664,8 @@ Determines whether the values are valid and in the correct hierarchical structur
 - `--CLAS`
 - `--CLASCD`
 
+A record is valid if the three values match a WHODrug entry (drug name, ATC level 4 text and ATC code), or if `--CLAS` or `--CLASCD` is `MULTIPLE` and `--DECOD` occurs more than once in the dictionary. The result is one collection of these booleans for the whole dataset, not a per-record value.
+
 **Input:**
 
 ```yaml
@@ -693,9 +676,11 @@ Operations:
 
 ## variable_count
 
-Returns a mapping of variable names to the number of times that variable appears in a domain within the study.
+Returns the number of study datasets that contain the variable in `name`. A `--` prefix (or the current domain's prefix) matches each dataset's own prefix, e.g. `--ENDTC` matches `AEENDTC` in AE and `LBENDTC` in LB.
 
 - Input
+
+  Study datasets:
 
   ```json
   {
@@ -704,18 +689,15 @@ Returns a mapping of variable names to the number of times that variable appears
   }
   ```
 
+  ```yaml
+  - operator: variable_count
+    id: $endtc_dataset_count
+    name: --ENDTC
+  ```
+
 - Output
 
-  ```json
-  {
-    "STUDYID": 2,
-    "DOMAIN": 2,
-    "USUBJID": 2,
-    "--TERM": 1,
-    "--TESTCD": 1,
-    "--ENDTC": 2
-  }
-  ```
+  `2`
 
 ## variable_exists
 
@@ -762,7 +744,10 @@ Operations:
 
 ## calc
 
-Evaluates an arithmetic formula in `value`. The formula may use numbers, dataset variables and operation results, combined with `+`, `-`, `*`, `/` and parentheses. Non-numeric values evaluate to null.
+Evaluates an arithmetic formula in `value`. The formula may use numbers, dataset variables and operation results, combined with `+`, `-`, `*`, `/` and parentheses. Non-numeric values evaluate to null, as does division by zero.
+
+- Variables are looked up in the operation's `domain`. `--` names are not supported (`-` is read as minus).
+- `$` references must be single-value (constant) operation results, such as `max` or `record_count`, not collections such as `distinct`.
 
 ```yaml
 - id: $dose_per_kg
@@ -772,7 +757,7 @@ Evaluates an arithmetic formula in `value`. The formula may use numbers, dataset
 
 ## define_extended_terms_in_ct
 
-Returns the extended codelist terms in the define.xml that already exist in the controlled terminology version in use, within the same codelist, as a duplicate submission value, a synonym, or part of a `;`-separated submission value. Each result identifies its codelist, e.g. `Ophthalmic Exam Test Code (C117743): INTP`. Optional parameters: `ct_attribute`, `ct_conditions`, `version` and `case_sensitive` (default true).
+Returns the extended codelist terms in the define.xml that already exist in the controlled terminology version in use, within the same codelist, as a duplicate submission value, a synonym, or part of a `;`-separated submission value. Each result identifies its codelist, e.g. `Ophthalmic Exam Test Code (C117743): INTP`. Optional parameters: `version` (as in [get_codelist_attributes](#get_codelist_attributes)) and `case_sensitive` (default true).
 
 ```yaml
 Check:
@@ -807,7 +792,7 @@ Returns the version of the external dictionary in `external_dictionary_type` dec
 
 ## get_external_dictionary_version
 
-Returns the version of the external dictionary in `external_dictionary_type` loaded into the engine
+Returns the version of the external dictionary in `external_dictionary_type` loaded into the engine. `whodrug` is not supported.
 
 ```yaml
 - id: $dict_loinc_version
@@ -817,7 +802,7 @@ Returns the version of the external dictionary in `external_dictionary_type` loa
 
 ## intersect
 
-Returns the values in `name` that are also in `subtract`, preserving the order of `name`. Each of `name` and `subtract` may be a variable, a list of literal values or an operation result. Comparison is case sensitive unless `case_sensitive: false`.
+Returns the values in `name` that are also in `subtract`, preserving the order of `name`. Each of `name` and `subtract` may be a variable, a list of literal values or an operation result. Comparison is case sensitive unless `case_sensitive: false`. See [minus](#minus) for details.
 
 ```yaml
 - id: $library_with_dataset_only
@@ -829,6 +814,10 @@ Returns the values in `name` that are also in `subtract`, preserving the order o
 ## minus
 
 Returns the values in `name` that are not in `subtract`, preserving the order of `name`. Each of `name` and `subtract` may be a variable, a list of literal values or an operation result. Comparison is case sensitive unless `case_sensitive: false`.
+
+- Duplicates are removed. A variable contributes its non-null values across the whole dataset.
+- `--` in `name` and `subtract` is not replaced with the domain.
+- With `case_sensitive: false`, the values are returned in upper case.
 
 ```yaml
 - id: $missing_expected_variables
@@ -856,7 +845,9 @@ Operations:
 
 ## split
 
-Splits the values in `name` (a variable or operation result) on commas into a list of values, with surrounding whitespace removed.
+Splits the values in `name` (a variable or operation result) on commas into a list of values, with surrounding whitespace removed. Empty values are skipped.
+
+When `name` is a variable, the result is one list of the distinct parts across all records of the dataset, not a list per record; `filter` restricts the records used (a value ending in `%` is a prefix match). `filter` is ignored when `name` is an operation result.
 
 ```yaml
 - id: $listed_domains
