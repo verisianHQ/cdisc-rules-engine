@@ -1,4 +1,4 @@
-from typing import Any, List, Tuple, Dict
+from typing import Any, List, Dict
 from collections import defaultdict
 
 from cdisc_rules_engine.constants.classes import (
@@ -10,7 +10,11 @@ from cdisc_rules_engine.constants.classes import (
     DETECTABLE_CLASSES,
 )
 from cdisc_rules_engine.constants.domains import AP_DOMAIN
-from cdisc_rules_engine.constants.rule_constants import ALL_KEYWORD
+from cdisc_rules_engine.constants.rule_constants import (
+    ALL_KEYWORD,
+    AP_SPLIT_DATASETS_KEYWORD,
+    SPLIT_DATASETS_KEYWORD,
+)
 from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.merges.relationship import SqlRelationshipMerge
 from cdisc_rules_engine.data_service.merges.relrec import SqlRelrecMerge
@@ -397,26 +401,17 @@ class SdtmStandardsContext(BaseStandardsContext):
         cls, dataset_metadata: DatasetMetadata2, rule: dict, domain: str, is_split: bool
     ) -> bool:
         """
-        Check that rule is applicable to dataset domain
+        Check that rule is applicable to dataset domain.
+
+        include_split_datasets does not affect scope: split datasets are always concatenated
+        during preprocessing, and rules scope to them with the SPLIT DATASETS / AP SPLIT DATASETS keywords.
         """
         domains = rule.get("domains") or {}
-        include_split_datasets: bool = domains.get("include_split_datasets")
-
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
-        is_included = cls._is_domain_name_included(
-            dataset_metadata, domain, included_domains, include_split_datasets, is_split
-        )
-        is_excluded = cls._is_domain_name_excluded(dataset_metadata, domain, excluded_domains)
-
-        # additional check for split domains based on the flag
-        is_excluded, is_included = cls._handle_split_domains(
-            is_split,
-            include_split_datasets,
-            is_excluded,
-            is_included,
-        )
+        is_included = cls._is_domain_name_included(dataset_metadata, domain, included_domains, is_split)
+        is_excluded = cls._is_domain_name_excluded(dataset_metadata, domain, excluded_domains, is_split)
 
         return is_included and not is_excluded
 
@@ -426,39 +421,33 @@ class SdtmStandardsContext(BaseStandardsContext):
         dataset_metadata: DatasetMetadata2,
         domain: str,
         included_domains: List[str],
-        include_split_datasets: bool,
         is_split: bool,
     ) -> bool:
         """
-        If included domains aren't specified
-         and include_split_datasets is True,
-         and it is not a split dataset
-         -> domain is not included
+        If included domains aren't specified -> domain is included.
         If included domains are specified,
          and the domain is not in the list of included domains,
-         and domain doesn't match with AP / APFA / APRELSUB / SUPP / SQ naming pattern
+         and the dataset doesn't match a dataset keyword
          -> domain is not included.
         In other cases domain is included
         """
         if not included_domains:
-            if include_split_datasets is True and not is_split:
-                return False
             return True
 
         if domain in included_domains or dataset_metadata.name in included_domains or ALL_KEYWORD in included_domains:
             return True
-        if cls._domain_matched_ap_or_supp(dataset_metadata, domain, included_domains):
+        if cls._domain_matched_keyword(domain, is_split, included_domains):
             return True
         return False
 
     @classmethod
     def _is_domain_name_excluded(
-        cls, dataset_metadata: DatasetMetadata2, domain: str, excluded_domains: List[str]
+        cls, dataset_metadata: DatasetMetadata2, domain: str, excluded_domains: List[str], is_split: bool
     ) -> bool:
         """
         If excluded domains are specified,
          and the domain is in the list of excluded domains,
-         or domain name match with AP / APFA / APRELSUB / SUPP / SQ naming pattern
+         or the dataset matches a dataset keyword
          domain is excluded.
 
         In other cases domain is not excluded.
@@ -473,55 +462,30 @@ class SdtmStandardsContext(BaseStandardsContext):
             or ALL_KEYWORD in excluded_domains
         ):
             return True
-        if cls._domain_matched_ap_or_supp(dataset_metadata, domain, excluded_domains):
+        if cls._domain_matched_keyword(domain, is_split, excluded_domains):
             return True
         return False
 
     @classmethod
-    def _handle_split_domains(
-        cls,
-        is_split_domain: bool,
-        include_split_datasets: bool,
-        is_excluded: bool,
-        is_included: bool,
-    ) -> Tuple[bool, bool]:
+    def _domain_matched_keyword(cls, domain: str, is_split: bool, domains_to_check: List[str]) -> bool:
         """
-        HANDLING SPLIT DOMAINS
-
-        If include_split_datasets is True -
-        add split domains to the list of included domains.
-        If no included domains specified, only validate split domains
-
-        If include_split_datasets is False - Exclude split domains
-        If include_split_datasets is None - Do nothing
+        Check that the dataset matches one of the dataset keywords:
+        SUPP-- / SQ-- -> supplemental qualifier datasets (interchangeable)
+        AP-- / APFA-- -> associated persons datasets
+        SPLIT DATASETS -> split datasets
+        AP SPLIT DATASETS -> associated persons non-supplemental qualifier split datasets
         """
-        if include_split_datasets is True and is_split_domain and not is_excluded:
-            is_included = True
-        if include_split_datasets is False and is_split_domain:
-            is_excluded = True
-        return is_excluded, is_included
+        is_supp = domain.startswith("SUPP") or domain.startswith("SQ")
+        is_ap = domain.startswith(AP_DOMAIN)
 
-    @classmethod
-    def _domain_matched_ap_or_supp(
-        cls, dataset_metadata: DatasetMetadata2, domain: str, domains_to_check: List[str]
-    ) -> bool:
-        """
-        Check that domain name match with only
-        AP / APFA / APRELSUB / SUPP / SQ naming pattern
-        """
-        # supp_ap_domains = {f"{domain}--" for domain in SUPPLEMENTARY_DOMAINS}
-        # supp_ap_domains.update({f"{AP_DOMAIN}--", f"{APFA_DOMAIN}--"})
-
-        # return any(set(domains_to_check).intersection(supp_ap_domains)) and (
-        #     domain == "SUPPQUAL"
-        #     or is_ap_domain(dataset_metadata.domain or dataset_metadata.rdomain or dataset_metadata.name)
-        # )
-        if "SUPP--" in domains_to_check or "SQ--" in domains_to_check:
-            if domain[0:4] == "SUPP" or domain[0:2] == "SQ":
-                return True
-        if "AP--" in domains_to_check or "APFA--" in domains_to_check:
-            if domain.startswith(AP_DOMAIN):
-                return True
+        if is_supp and ("SUPP--" in domains_to_check or "SQ--" in domains_to_check):
+            return True
+        if is_ap and ("AP--" in domains_to_check or "APFA--" in domains_to_check):
+            return True
+        if is_split and SPLIT_DATASETS_KEYWORD in domains_to_check:
+            return True
+        if is_split and is_ap and not is_supp and AP_SPLIT_DATASETS_KEYWORD in domains_to_check:
+            return True
         return False
 
     def rule_applies_to_class(self, dataset_metadata: DatasetMetadata2, rule: dict, domain: str):

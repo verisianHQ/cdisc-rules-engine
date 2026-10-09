@@ -103,23 +103,11 @@ class AdamStandardsContext(DefaultStandardsContext):
         Check that rule is applicable to dataset domain
         """
         domains = rule.get("domains") or {}
-        include_split_datasets: bool = domains.get("include_split_datasets")
-
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
-        is_included = cls._is_domain_name_included(
-            dataset_metadata, domain, included_domains, include_split_datasets, is_split
-        )
+        is_included = cls._is_domain_name_included(dataset_metadata, domain, included_domains)
         is_excluded = cls._is_domain_name_excluded(dataset_metadata, domain, excluded_domains)
-
-        # additional check for split domains based on the flag
-        # is_excluded, is_included = cls._handle_split_domains(
-        #     is_split,
-        #     include_split_datasets,
-        #     is_excluded,
-        #     is_included,
-        # )
 
         return is_included and not is_excluded
 
@@ -129,22 +117,15 @@ class AdamStandardsContext(DefaultStandardsContext):
         dataset_metadata: DatasetMetadata2,
         domain: str,
         included_domains: List[str],
-        include_split_datasets: bool,
-        is_split: bool,
     ) -> bool:
         """
-        If included domains aren't specified
-         and include_split_datasets is True,
-         and it is not a split dataset
-         -> domain is not included
+        If included domains aren't specified -> domain is included.
         If included domains are specified,
          and the domain is not in the list of included domains
          -> domain is not included.
         In other cases domain is included
         """
         if not included_domains:
-            if include_split_datasets is True and not is_split:
-                return False
             return True
 
         included_domains = [domain.lower() for domain in included_domains]

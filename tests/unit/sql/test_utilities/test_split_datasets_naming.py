@@ -158,13 +158,42 @@ def test_detect_split_datasets(dataset_names, expected):
     ],
 )
 def test_split_only_rule_scope_includes_concatenated_split_datasets(monkeypatch, name, split_part_filenames, expected):
-    """include_split_datasets with no included domains only validates split datasets."""
+    """SPLIT DATASETS only validates split datasets."""
     monkeypatch.setattr(SdtmStandardsContext, "rule_applies_to_class", lambda *_args: True)
     context = SdtmStandardsContext.__new__(SdtmStandardsContext)
-    rule = {"core_id": "CORE-000510", "domains": {"Exclude": ["SUPP--", "AP--"], "include_split_datasets": True}}
+    rule = {"core_id": "CORE-000510", "domains": {"Include": ["SPLIT DATASETS"], "Exclude": ["SUPP--", "AP--"]}}
     metadata = SimpleNamespace(name=name, split_part_filenames=split_part_filenames)
 
     is_suitable, _ = context.within_rule_scope(rule, metadata)
+
+    assert is_suitable is expected
+
+
+@pytest.mark.parametrize(
+    "domains, name, split_part_filenames, expected",
+    [
+        ({"Include": ["AP SPLIT DATASETS"]}, "APLB", ["aplbef.xpt", "aplbs.xpt"], True),
+        ({"Include": ["AP SPLIT DATASETS"]}, "APQSCGI", None, True),
+        ({"Include": ["AP SPLIT DATASETS"]}, "APDM", None, False),
+        ({"Include": ["AP SPLIT DATASETS"]}, "APRELSUB", None, False),
+        ({"Include": ["AP SPLIT DATASETS"]}, "QS", ["qs1.xpt", "qs2.xpt"], False),
+        ({"Include": ["AP SPLIT DATASETS"]}, "SUPPQS", ["suppqs1.xpt", "suppqs2.xpt"], False),
+        ({"Include": ["AP SPLIT DATASETS"]}, "SQAPQS", ["sqapqs1.xpt", "sqapqs2.xpt"], False),
+        ({"Include": ["SPLIT DATASETS"]}, "QS1", None, True),
+        ({"Include": ["SPLIT DATASETS"]}, "AE", None, False),
+        ({"Exclude": ["SPLIT DATASETS"]}, "QS", ["qs1.xpt", "qs2.xpt"], False),
+        ({"Exclude": ["SPLIT DATASETS"]}, "AE", None, True),
+        ({"Include": ["AP--"], "include_split_datasets": True}, "QS", ["qs1.xpt", "qs2.xpt"], False),
+        ({"Include": ["AP--"], "include_split_datasets": True}, "APDM", None, True),
+        ({"include_split_datasets": True}, "AE", None, True),
+    ],
+)
+def test_split_dataset_keywords_scope(monkeypatch, domains, name, split_part_filenames, expected):
+    monkeypatch.setattr(SdtmStandardsContext, "rule_applies_to_class", lambda *_args: True)
+    context = SdtmStandardsContext.__new__(SdtmStandardsContext)
+    metadata = SimpleNamespace(name=name, split_part_filenames=split_part_filenames)
+
+    is_suitable, _ = context.within_rule_scope({"core_id": "CORE-000778", "domains": domains}, metadata)
 
     assert is_suitable is expected
 
