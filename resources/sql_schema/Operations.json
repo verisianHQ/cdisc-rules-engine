@@ -1,0 +1,571 @@
+{
+  "$defs": {
+    "CtPackageType": {
+      "type": "string",
+      "enum": [
+        "ADAM",
+        "CDASH",
+        "COA",
+        "DDF",
+        "DEFINE-XML",
+        "GLOSSARY",
+        "MRCT",
+        "PROTOCOL",
+        "QRS",
+        "QS-FT",
+        "SDTM",
+        "SEND",
+        "TMF"
+      ]
+    }
+  },
+  "$id": "Operations.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "anyOf": [
+    {
+      "properties": {
+        "operator": {
+          "const": "calc"
+        }
+      },
+      "required": ["id", "operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "dataset_names"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "define_extended_terms_in_ct"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "define_variable_metadata"
+        }
+      },
+      "required": ["id", "operator", "attribute_name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "distinct"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "domain_is_custom"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "domain_label"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "dy"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "expected_variables"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "extract_metadata"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_codelist_attributes"
+        }
+      },
+      "required": ["id", "operator", "ct_attribute"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_column_order_from_dataset"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_column_order_from_library"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_countries"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_define_external_dictionary_version"
+        }
+      },
+      "required": ["id", "operator", "external_dictionary_type"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_external_dictionary_version"
+        }
+      },
+      "required": ["id", "operator", "external_dictionary_type"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_model_column_order"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_model_filtered_variables"
+        }
+      },
+      "required": ["id", "operator", "key_name", "key_value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "get_parent_model_column_order"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "intersect"
+        }
+      },
+      "required": ["id", "operator", "name", "subtract"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "label_referenced_variable_metadata"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "max"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "max_date"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "mean"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "min"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "min_date"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "minus"
+        }
+      },
+      "required": ["id", "operator", "name", "subtract"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "name_referenced_variable_metadata"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "permissible_variables"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "record_count"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "referenced_domain_variable_names"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "required_variables"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "split"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "standard_domains"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "study_domains"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "valid_codelist_dates"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "variable_count"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "variable_exists"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "variable_is_null"
+        }
+      },
+      "required": ["id", "operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "whodrug_code_hierarchy"
+        }
+      },
+      "required": ["id", "operator"],
+      "type": "object"
+    }
+  ],
+  "properties": {
+    "id": {
+      "$ref": "CORE-base.json#/$defs/OperationResultId"
+    },
+    "operator": {
+      "type": "string"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ],
+      "description": "Target variable. minus / intersect also accept a list of literal values"
+    },
+    "domain": {
+      "anyOf": [
+        {
+          "$ref": "CORE-base.json#/$defs/Dataset"
+        },
+        {
+          "$ref": "CORE-base.json#/$defs/DataStructure"
+        },
+        {
+          "enum": [
+            "cg_taugs",
+            "ex_loinc",
+            "ex_meddra",
+            "ex_medrt",
+            "ex_snomed",
+            "ex_unii",
+            "ex_whodrug",
+            "fda_submission_standards",
+            "global_value_check",
+            "ig_codelists",
+            "ig_datasets",
+            "ig_variables"
+          ],
+          "description": "Engine helper table, or the table built by the Global Value Check rule type"
+        }
+      ]
+    },
+    "group": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "CORE-base.json#/$defs/VariableReference"
+          },
+          {
+            "$ref": "MetaVariables.json"
+          }
+        ]
+      },
+      "type": "array"
+    },
+    "filter": {
+      "type": "object"
+    },
+    "regex": {
+      "type": "string"
+    },
+    "ignore_empty_filtered_groups": {
+      "type": "boolean"
+    },
+    "use_rule_type_table": {
+      "type": "boolean"
+    },
+    "value": {
+      "type": "string",
+      "description": "calc formula"
+    },
+    "subtract": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      ],
+      "description": "Variable, list of literal values or previous operation result to compare against"
+    },
+    "case_sensitive": {
+      "type": "boolean"
+    },
+    "attribute_name": {
+      "anyOf": [
+        {
+          "$ref": "MetaVariables.json"
+        },
+        {
+          "enum": ["country_name", "alpha_2", "alpha_3"],
+          "description": "get_countries attribute"
+        }
+      ]
+    },
+    "codelist": {
+      "type": "string"
+    },
+    "domain_class": {
+      "type": "string"
+    },
+    "key_name": {
+      "enum": [
+        "definition",
+        "examples",
+        "label",
+        "name",
+        "notes",
+        "ordinal",
+        "role",
+        "simpleDatatype",
+        "variableCcode"
+      ],
+      "type": "string"
+    },
+    "key_value": {
+      "type": "string"
+    },
+    "ct_attribute": {
+      "enum": [
+        "Standard Type",
+        "Version Date",
+        "Term CCODE",
+        "Codelist Code",
+        "Extensible",
+        "Codelist Name",
+        "Term Signification",
+        "Synonyms",
+        "Definition",
+        "Term",
+        "Standard and Date"
+      ],
+      "type": "string"
+    },
+    "ct_conditions": {
+      "items": {
+        "additionalProperties": {
+          "type": ["string", "null"]
+        },
+        "propertyNames": {
+          "enum": [
+            "Standard Type",
+            "Version Date",
+            "Term CCODE",
+            "Codelist Code",
+            "Extensible",
+            "Codelist Name",
+            "Term Signification",
+            "Synonyms",
+            "Definition",
+            "Term",
+            "Standard and Date"
+          ]
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "ct_package_types": {
+      "items": {
+        "$ref": "Operations.json#/$defs/CtPackageType"
+      },
+      "type": "array"
+    },
+    "version": {
+      "type": "string",
+      "description": "CT version, or a variable holding the CT version"
+    },
+    "external_dictionary_type": {
+      "enum": ["meddra", "whodrug", "medrt", "loinc", "snomed", "unii"]
+    }
+  },
+  "required": ["id", "operator"],
+  "type": "object"
+}
