@@ -101,7 +101,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             fallback_clause = self._build_clauses(self._parse_versions(ct_list), std_type_col, version_date_col)
         if not ct_version_column:
             return fallback_clause
-        record_version = "CAST($ct_version AS TEXT)"
+        record_version = "TRIM(CAST($ct_version AS TEXT))"
         record_clause = f"{version_date_col} = {record_version}"
         if not fallback_clause:
             return record_clause

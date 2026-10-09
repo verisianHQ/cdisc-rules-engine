@@ -158,6 +158,7 @@ def test_get_codelist_attributes_column_reference_takes_precedence_over_provided
         result,
         [
             {"params": {"$ct_version": "2021-12-17"}, "value": ["C999"]},
+            {"params": {"$ct_version": " 2021-12-17 "}, "value": ["C999"]},
             {"params": {"$ct_version": None}, "value": ["C1234", "C5678"]},
             {"params": {"$ct_version": ""}, "value": ["C1234", "C5678"]},
             {"params": {"$ct_version": "1999-12-31"}, "value": ["C1234", "C5678"]},
@@ -216,7 +217,7 @@ def test_get_codelist_attributes_empty_column_version(
 
 @pytest.mark.parametrize(
     "provided_codelists, expected",
-    [(None, []), ("sdtmct-2020-03-27", ["C1234", "C5678"])],
+    [(None, []), ("sdtmct-2021-12-17", ["C999"])],
 )
 def test_get_codelist_attributes_numeric_column_version_matches_no_ct_package(
     sdtm_standards_context, provided_codelists, expected
@@ -226,7 +227,7 @@ def test_get_codelist_attributes_numeric_column_version_matches_no_ct_package(
     schema = SqlTableSchema.static("ae1")
     schema.add_column(SqlColumnSchema("studydate", "studydate", "Num"))
     data_service.pgi.create_table(schema)
-    data_service.pgi.insert_data("ae1", [{"studydate": 22631.0}])
+    data_service.pgi.insert_data("ae1", [{"studydate": 22001.0}])
 
     params = SqlOperationParams(
         domain="ae",
