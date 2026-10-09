@@ -43,11 +43,11 @@ def test_label_referenced_variable_metadata_role():
     assert result.subtype == "Char"
     assert result.params == {"%target%": "DUMMYVAR"}
 
-    assert result.query.startswith("SELECT val FROM (VALUES ")
+    assert result.query.startswith("SELECT value FROM (VALUES ")
     assert "('Epoch', 'Timing')" in result.query
     assert "('Severity/Intensity', 'Record Qualifier')" in result.query
     assert "DummyLabel" not in result.query
-    assert result.query.endswith(" AS t(lbl, val) WHERE t.lbl = %target%")
+    assert result.query.endswith(" AS t(lbl, value) WHERE t.lbl = %target%")
 
 
 def test_label_referenced_variable_metadata_core():
@@ -67,8 +67,8 @@ def test_label_referenced_variable_metadata_core():
     assert result.subtype == "Char"
     assert result.params == {"%target%": "DUMMYVAR"}
 
-    assert result.query.startswith("SELECT val FROM (VALUES ")
+    assert result.query.startswith("SELECT value FROM (VALUES ")
     assert "('Epoch', 'Perm')" in result.query
     assert "('Severity/Intensity', 'Perm')" in result.query
     assert "DummyLabel" not in result.query
-    assert result.query.endswith(" AS t(lbl, val) WHERE t.lbl = %target%")
+    assert result.query.endswith(" AS t(lbl, value) WHERE t.lbl = %target%")
