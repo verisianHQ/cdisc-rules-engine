@@ -262,7 +262,8 @@ class PostgresQLDataService:
             if not reference_col or not version_col:
                 continue
             self.pgi.execute_sql(
-                f"SELECT DISTINCT TRIM({version_col}) AS version FROM {self.pgi.schema.get_table_hash(dataset.name)} "
+                f"SELECT DISTINCT TRIM(CAST({version_col} AS TEXT)) AS version "
+                f"FROM {self.pgi.schema.get_table_hash(dataset.name)} "
                 f"WHERE {reference_col} IN %s",
                 (CDISC_CT_REFERENCES,),
             )

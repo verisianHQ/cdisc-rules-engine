@@ -1,8 +1,11 @@
+import pytest
+
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.get_codelist_attributes import (
     SqlGetCodelistAttributesOperation,
 )
@@ -155,6 +158,7 @@ def test_get_codelist_attributes_column_reference_takes_precedence_over_provided
         result,
         [
             {"params": {"$ct_version": "2021-12-17"}, "value": ["C999"]},
+            {"params": {"$ct_version": " 2021-12-17 "}, "value": ["C999"]},
             {"params": {"$ct_version": None}, "value": ["C1234", "C5678"]},
             {"params": {"$ct_version": ""}, "value": ["C1234", "C5678"]},
             {"params": {"$ct_version": "1999-12-31"}, "value": ["C1234", "C5678"]},
@@ -208,4 +212,36 @@ def test_get_codelist_attributes_empty_column_version(
             {"params": {"$ct_version": ""}, "value": []},
         ],
         unsorted=True,
+    )
+
+
+@pytest.mark.parametrize(
+    "provided_codelists, expected",
+    [(None, []), ("sdtmct-2021-12-17", ["C999"])],
+)
+def test_get_codelist_attributes_numeric_column_version_matches_no_ct_package(
+    sdtm_standards_context, provided_codelists, expected
+):
+    data_service = PostgresQLDataService.instance(provided_codelists=provided_codelists)
+    setup_codelist_table(data_service)
+    schema = SqlTableSchema.static("ae1")
+    schema.add_column(SqlColumnSchema("studydate", "studydate", "Num"))
+    data_service.pgi.create_table(schema)
+    data_service.pgi.insert_data("ae1", [{"studydate": 22001.0}])
+
+    params = SqlOperationParams(
+        domain="ae",
+        table="ae1",
+        target="column",
+        standards_context=sdtm_standards_context,
+        ct_attribute="Term CCODE",
+        ct_version="studydate",
+    )
+
+    operation = SqlGetCodelistAttributesOperation(params, data_service)
+    result = operation.execute()
+
+    query = result.query.replace("$ct_version", "(SELECT studydate FROM ae1)")
+    assert_operation_collection(
+        operation, SqlOperationResult(query=query, type=result.type, subtype=result.subtype), expected, unsorted=True
     )
