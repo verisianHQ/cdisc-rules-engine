@@ -40,6 +40,11 @@ from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
+from cdisc_rules_engine.utilities.rule_progress import (
+    DisabledRuleProgressReporter,
+    RuleProgressPhase,
+    RuleProgressReporter,
+)
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 from cdisc_rules_engine.utilities.utils import (
     serialize_rule,
@@ -62,15 +67,18 @@ class SQLRulesEngine:
         self,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
+        progress_reporter: RuleProgressReporter = None,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
+        self.progress_reporter = progress_reporter or DisabledRuleProgressReporter()
 
     def get_schema(self):
         return export_rule_data(SqlVenmoObject, SqlVenmoResultHandler)
 
     def sql_validate_single_rule(self, rule: dict):
         results = {}
+        self.progress_reporter.set_phase(RuleProgressPhase.PARSING)
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         is_study_sensitivity = rule.get("sensitivity") == Sensitivity.STUDY.value
         study_error_already_reported = False
@@ -196,6 +204,7 @@ class SQLRulesEngine:
         It uses the sql_builder_factory to get the correct data source
         and then executes the rule against it.
         """
+        self.progress_reporter.set_phase(RuleProgressPhase.EXECUTING)
         builder = sql_builder_factory.get_service(
             rule_type=rule.get("rule_type"),
             rule=rule,
