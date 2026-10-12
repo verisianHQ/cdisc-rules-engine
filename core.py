@@ -181,7 +181,7 @@ def cli():
     "-lr",
     required=False,
     type=click.Path(exists=True, readable=True, resolve_path=True),
-    help="path to directory containing local rules.",
+    help=("path to a local rule file or to a directory of local rules."),
 )
 @click.option(
     "--custom_standard",
