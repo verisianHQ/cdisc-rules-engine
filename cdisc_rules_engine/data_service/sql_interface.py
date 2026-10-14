@@ -1,3 +1,4 @@
+import gc
 import random
 import string
 from pathlib import Path
@@ -74,7 +75,7 @@ class PostgresQLInterface:
                 affected_rows = cursor.rowcount
 
                 if query.strip().upper().startswith("SELECT"):
-                    self._last_results = cursor.fetchall()
+                    self._last_results = self._fetch_all_rows(cursor)
 
                 if commit:
                     conn.commit()
@@ -87,6 +88,18 @@ class PostgresQLInterface:
                 raise
 
         return affected_rows
+
+    @staticmethod
+    def _fetch_all_rows(cursor) -> list:
+        if cursor.rowcount < 50000:
+            return cursor.fetchall()
+        collector_was_on = gc.isenabled()
+        gc.disable()
+        try:
+            return cursor.fetchall()
+        finally:
+            if collector_was_on:
+                gc.enable()
 
     def execute_many(
         self, queries: List[str], params_list: Optional[List[Union[List, Tuple]]] = None, commit: bool = True
