@@ -1,5 +1,6 @@
 import itertools
 import time
+from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTypes
 from typing import List
 from warnings import simplefilter
 
@@ -76,6 +77,19 @@ def initialize_logger(disabled, log_level):
         engine_logger.setLevel(log_level)
 
 
+def get_dictionary_versions(dictionary_metadata: dict) -> dict:
+    """Maps dictionary type -> version string for the report's Conformance Details."""
+    versions = {}
+    for dictionary_type, metadata in (dictionary_metadata or {}).items():
+        if dictionary_type == DictionaryTypes.SNOMED.value:
+            versions[dictionary_type] = f"MAIN/{metadata.edition}/{metadata.version}"
+        elif dictionary_type == DictionaryTypes.WHODRUG.value:
+            versions[dictionary_type] = metadata.version_date
+        else:
+            versions[dictionary_type] = metadata.version
+    return versions
+
+
 def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     set_log_level(args)
 
@@ -145,7 +159,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     for reporting_service in reporting_services:
         reporting_service.write_report(
             define_xml_path=args.define_xml_path,
-            # dictionary_versions=dictionary_versions,
+            dictionary_versions=get_dictionary_versions(data_service.dictionary_metadata),
             progress_reporter=get_report_progress_reporter(args.progress),
         )
     report_elapsed = time.time() - report_start
