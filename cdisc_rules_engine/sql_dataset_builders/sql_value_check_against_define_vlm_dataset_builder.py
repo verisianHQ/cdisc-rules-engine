@@ -165,7 +165,7 @@ class SqlValueCheckAgainstDefineVLMDatasetBuilder(SqlBaseDatasetBuilder):
             except ValueError:
                 raise UntranslatableWhereClause(f"'{value}' is not numeric but is compared to a numeric column")
         literal = "'" + str(value).replace("'", "''") + "'"
-        return f"COALESCE(CAST({column} AS TEXT), '') {NUMERIC_COMPARATORS[comparator]} {literal}"
+        return f"COALESCE(CAST({column} AS TEXT) {NUMERIC_COMPARATORS[comparator]} {literal}, FALSE)"
 
     @staticmethod
     def _membership_to_sql(column: str, column_type: str, values: List[str]) -> str:
