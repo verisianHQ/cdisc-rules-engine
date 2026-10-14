@@ -181,9 +181,22 @@ class SqlBaseDatasetBuilder(ABC):
         define_reader = DefineXMLReaderFactory.get_define_xml_reader(
             self.data_service.define_xml_path, self.data_service.define_xml_path, self.data_service, None
         )
-        metadata = define_reader.extract_value_level_metadata()
-        for i, var in enumerate(metadata):
-            metadata[i] = self._format_metadata_dict(var)
+        domain = self.dataset_metadata.domain
+        rdomain = self.dataset_metadata.rdomain
+        name = self.dataset_metadata.name
+        try:
+            if rdomain:
+                metadata = define_reader.extract_value_level_metadata(domain_name=rdomain, name=domain)
+            else:
+                metadata = define_reader.extract_value_level_metadata(domain_name=domain, name=name)
+        except DomainNotFoundInDefineXMLError:
+            return []
+        for i, vlm in enumerate(metadata):
+            where_clause = vlm.pop("where_clause", [])
+            for key in ["filter", "type_check", "length_check"]:
+                vlm.pop(key, None)
+            metadata[i] = self._format_metadata_dict(vlm)
+            metadata[i]["where_clause"] = where_clause
         return metadata
 
     def get_library_vars(self) -> List[dict]:

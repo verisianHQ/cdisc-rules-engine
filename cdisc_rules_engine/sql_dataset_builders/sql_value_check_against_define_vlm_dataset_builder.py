@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
@@ -5,11 +7,22 @@ from cdisc_rules_engine.sql_dataset_builders.sql_base_dataset_builder import (
     DEFINE_VLM_TYPE,
 )
 
+SQL_TYPES = {"Bool": "BOOLEAN", "Num": "NUMERIC", "Char": "TEXT"}
+NUMERIC_COMPARATORS = {"LT": "<", "LE": "<=", "GT": ">", "GE": ">=", "EQ": "=", "NE": "<>"}
+ROW_NUMBER_ALIAS = "vlm_source_row_number"
+
 
 class SqlValueCheckAgainstDefineVLMDatasetBuilder(SqlBaseDatasetBuilder):
     """
     Returns a long dataset (unpivoted) where each value in each row of the original dataset
-    is a row in the new dataset. The Define XML VLM metadata corresponding to each row's value is attached.
+    that is described by Define XML value level metadata is a row in the new dataset.
+    A value is described by a VLM when the record matches the VLM's where clause.
+    Only variable values that have VLM attached are produced.
+
+    Columns available in the dataset are:
+        row_number, variable_name, variable_value, define_variable_name, define_vlm_...
+    plus all columns of the source record, so a rule can check other variables of the record
+    that the VLM applies to.
     """
 
     def build(self) -> str:
@@ -23,62 +36,107 @@ class SqlValueCheckAgainstDefineVLMDatasetBuilder(SqlBaseDatasetBuilder):
         source_schema = self.data_service.pgi.schema.get_table(source_table_id)
         source_table_hash = self.data_service.pgi.schema.get_table_hash(source_table_id)
 
-        define_vlms = self.get_define_vlms()
-        define_vlm_by_var = {v.get("define_variable_name", "").upper(): v for v in define_vlms}
-
+        vlm_columns = {
+            "row_number": "Num",
+            "variable_name": "Char",
+            "variable_value": "Char",
+            "define_variable_name": "Char",
+            **DEFINE_VLM_TYPE,
+        }
         schema = SqlTableSchema.derived(table_name, self.data_service.pgi)
-        schema.add_column(SqlColumnSchema.generated("row_number", "Char"))
-        schema.add_column(SqlColumnSchema.generated("variable_name", "Char"))
-        schema.add_column(SqlColumnSchema.generated("variable_value", "Char"))
-        schema.add_column(SqlColumnSchema.generated("define_variable_name", "Char"))
-        for col, type in DEFINE_VLM_TYPE.items():
+        for col, type in vlm_columns.items():
             schema.add_column(SqlColumnSchema.generated(col, type))
+
+        source_columns = [
+            (name, sc)
+            for name, sc in source_schema.get_columns()
+            if name.lower() != "id" and sc.origin == "data" and name.lower() not in vlm_columns
+        ]
+        for name, sc in source_columns:
+            schema.add_column(SqlColumnSchema.generated(name, sc.type))
 
         self.data_service.pgi.create_table(schema)
 
-        columns_list = source_schema.get_columns()
-        column_names = [
-            name
-            for name, sc in columns_list
-            if name.lower() not in ["id", "source_ds", "source_row_number"] and sc.origin == "data"
-        ]
-
         select_statements = []
-        col_hash_map = {col_name: source_schema.get_column_hash(col_name) for col_name in column_names}
-        new_col_hash_map = {
-            col_name: schema.get_column_hash(col_name)
-            for col_name in ["row_number", "variable_name", "variable_value", "define_variable_name"]
-            + list(DEFINE_VLM_TYPE.keys())
-        }
-        for col_name in column_names:
-            col_hash = col_hash_map[col_name]
-            col_upper = col_name.upper()
-            d_var = define_vlm_by_var.get(col_upper, {})
+        for vlm in self.get_define_vlms():
+            variable_name = (vlm.get("define_variable_name") or "").upper()
+            value_hash = source_schema.get_column_hash(variable_name)
+            where = self._where_clause_to_sql(vlm.get("where_clause"), source_schema)
+            if not value_hash or not where:
+                continue
 
             select_parts = [
-                f"CAST(ROW_NUMBER() OVER (ORDER BY id) AS TEXT) as {new_col_hash_map['row_number']}",
-                f"CAST('{col_upper}' AS TEXT) as {new_col_hash_map['variable_name']}",
-                f"CAST({col_hash} AS TEXT) as {new_col_hash_map['variable_value']}",
+                ROW_NUMBER_ALIAS,
+                f"CAST('{variable_name}' AS TEXT)",
+                f"CAST(src.{value_hash} AS TEXT)",
+                f"CAST('{variable_name}' AS TEXT)",
             ]
+            for key, type in DEFINE_VLM_TYPE.items():
+                select_parts.append(self._literal(vlm.get(key), type))
+            select_parts += [f"src.{sc.hash}" for _, sc in source_columns]
 
-            for key in DEFINE_VLM_TYPE.keys():
-                val = str(d_var.get(key, ""))
-                select_parts.append(f"CAST('{val}' AS TEXT) as {new_col_hash_map[key]}")
+            select_statements.append(
+                f"SELECT {', '.join(select_parts)} "
+                f"FROM (SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS {ROW_NUMBER_ALIAS} "
+                f"FROM {source_table_hash}) src WHERE {where}"
+            )
 
-            select_statements.append(f"SELECT {', '.join(select_parts)} FROM {source_table_hash}")
-
-        target_columns = [
-            new_col_hash_map["row_number"],
-            new_col_hash_map["variable_name"],
-            new_col_hash_map["variable_value"],
-            new_col_hash_map["define_variable_name"],
-        ] + [new_col_hash_map[key] for key in DEFINE_VLM_TYPE.keys()]
-
-        columns_clause = ", ".join(target_columns)
-
-        unpivot_query = " UNION ALL ".join(select_statements)
-        insert_query = f"INSERT INTO {schema.hash} ({columns_clause}) {unpivot_query};"
-
-        self.data_service.pgi.execute_sql(insert_query)
+        if select_statements:
+            target_columns = [schema.get_column_hash(col) for col in vlm_columns] + [
+                schema.get_column_hash(name) for name, _ in source_columns
+            ]
+            insert_query = (
+                f"INSERT INTO {schema.hash} ({', '.join(target_columns)}) " f"{' UNION ALL '.join(select_statements)};"
+            )
+            self.data_service.pgi.execute_sql(insert_query)
 
         return table_name
+
+    @staticmethod
+    def _literal(value, type: str) -> str:
+        sql_type = SQL_TYPES.get(type, "TEXT")
+        val = str(value).replace("'", "''").strip()
+        if value is None or val.lower() in ["", "none", "null", "''", '""']:
+            return f"CAST(NULL AS {sql_type})"
+        return f"CAST('{val}' AS {sql_type})"
+
+    @classmethod
+    def _where_clause_to_sql(cls, where_clause: List[dict], source_schema: SqlTableSchema) -> Optional[str]:
+        if not where_clause:
+            return None
+        conditions = []
+        for check in where_clause:
+            column = source_schema.get_column(check["variable"])
+            if column is None:
+                return None
+            condition = cls._range_check_to_sql(f"src.{column.hash}", column.type, check["comparator"], check["values"])
+            if condition is None:
+                return None
+            conditions.append(condition)
+        return " AND ".join(f"({condition})" for condition in conditions)
+
+    @staticmethod
+    def _range_check_to_sql(column: str, column_type: str, comparator: str, values: List[str]) -> Optional[str]:
+        if not values:
+            return None
+        numeric_values = []
+        if column_type == "Num":
+            try:
+                numeric_values = [str(float(value)) for value in values]
+            except ValueError:
+                pass
+
+        if numeric_values:
+            target = column
+            literals = numeric_values
+        else:
+            target = f"COALESCE(CAST({column} AS TEXT), '')"
+            literals = ["'" + str(value).replace("'", "''") + "'" for value in values]
+
+        if comparator in NUMERIC_COMPARATORS:
+            return f"{target} {NUMERIC_COMPARATORS[comparator]} {literals[0]}"
+        if comparator == "IN":
+            return f"{target} IN ({', '.join(literals)})"
+        if comparator == "NOTIN":
+            return f"{target} NOT IN ({', '.join(literals)})"
+        return None
