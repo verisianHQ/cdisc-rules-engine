@@ -138,6 +138,38 @@ RULES = {
         operations=[{"id": "$maxseq", "name": "AESEQ", "operator": "max", "group": ["USUBJID"]}],
         output_variables=["AESEQ"],
     ),
+    "values_that_are_not_a_unique_set": rule(
+        {"all": [condition("is_not_unique_set", "AETERM")]}, output_variables=["AETERM"]
+    ),
+    "values_that_are_a_unique_set_across_columns": rule(
+        {"all": [condition("is_unique_set", "USUBJID", ["AESEQ"])]}, output_variables=["USUBJID"]
+    ),
+    "a_relationship_that_is_not_unique": rule(
+        {"all": [condition("is_not_unique_relationship", "AETERM", "AEDECOD")]}, output_variables=["AETERM", "AEDECOD"]
+    ),
+    "a_relationship_across_several_comparators": rule(
+        {"all": [condition("is_not_unique_relationship", "USUBJID", ["AEGRP", "AEDECOD"])]},
+        output_variables=["USUBJID", "AEGRP"],
+    ),
+    "values_inconsistent_within_a_group": rule(
+        {"all": [condition("is_inconsistent_across_dataset", "AESTDTC", "AETERM")]},
+        output_variables=["AETERM", "AESTDTC"],
+    ),
+    "values_inconsistent_within_a_group_with_a_null_key": rule(
+        {"all": [condition("is_inconsistent_across_dataset", "AETERM", "AEGRP")]}, output_variables=["AEGRP", "AETERM"]
+    ),
+    "values_inconsistent_within_groups_of_several_columns": rule(
+        {"all": [condition("is_inconsistent_across_dataset", "AEENDTC", ["AETERM", "AEDECOD"])]},
+        output_variables=["AETERM", "AEDECOD", "AEENDTC"],
+    ),
+    "values_inconsistent_where_populated": rule(
+        {"all": [condition("is_inconsistent_across_dataset", "AEENDTC", "AEGRP", where_populated=True)]},
+        output_variables=["AEGRP", "AEENDTC"],
+    ),
+    "values_inconsistent_where_other_columns_are_populated": rule(
+        {"all": [condition("is_inconsistent_across_dataset", "AEENDTC", "AEGRP", where_populated_columns=["AESTDTC"])]},
+        output_variables=["AEGRP", "AEENDTC"],
+    ),
     "date_comparison": rule({"all": [condition("date_less_than", "AEENDTC", "AESTDTC")]}),
     "no_row_fails": rule({"all": [condition("equal_to", "AETERM", "NOT_IN_THE_DATA", value_is_literal=True)]}),
 }
@@ -213,3 +245,15 @@ def test_grouped_rules_fail_somewhere(name):
     """Guards the comparison against passing only because the rule never reports anything."""
     results, _, _ = run(RULES[name], compile_rules=False)
     assert next(iter(results.values()))[0].get("errors")
+
+
+COLUMN_FREE = [name for name in RULES if name.startswith(("values_that_", "a_relationship", "values_inconsistent"))]
+
+
+@pytest.mark.parametrize("name", COLUMN_FREE)
+def test_uniqueness_checks_no_longer_rewrite_the_table(name):
+    _, _, statements = run(RULES[name], compile_rules=True)
+    _, _, row_by_row_statements = run(RULES[name], compile_rules=False)
+
+    assert not any(statement.lstrip().upper().startswith("UPDATE") for statement in statements)
+    assert any(statement.lstrip().upper().startswith("UPDATE") for statement in row_by_row_statements)

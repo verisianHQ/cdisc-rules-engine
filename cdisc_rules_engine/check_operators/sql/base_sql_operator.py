@@ -3,7 +3,7 @@ import re
 import traceback
 from abc import abstractmethod
 from functools import wraps
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -323,6 +323,13 @@ class BaseSqlOperator:
     @property
     def _join_scope(self) -> Optional[Dict[str, GroupJoin]]:
         return self.original_data.get("join_scope")
+
+    def _join_derived(self, query: str, on: Callable[[str], str]) -> Optional[str]:
+        if self._join_scope is None:
+            return None
+        alias = "drv_" + hashlib.md5(f"{query}{on('_')}".encode()).hexdigest()[:10]
+        self._join_scope[alias] = GroupJoin(alias, query, on(alias))
+        return alias
 
     def _join_group_values(self, variable: SqlOperationResult) -> Optional[str]:
         """
