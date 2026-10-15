@@ -1,5 +1,4 @@
 import os
-import csv
 import re
 import pandas as pd
 from datetime import datetime
@@ -30,12 +29,23 @@ class WhoDrugReader:
         self.pgi = pgi
         self.dictionary_path = dictionary_path
 
+    def _resolve_file(self, file_name: str) -> tuple[str, str] | None:
+        for extension in (".csv", ".txt"):
+            file_path = f"{self.dictionary_path}/{file_name}{extension}"
+            if os.path.exists(file_path):
+                with open(file_path, mode="r", encoding="utf-8") as f:
+                    first_line = f.readline()
+                return file_path, "\t" if "\t" in first_line else ","
+        return None
+
     def _extract_version_metadata(self) -> WhoDrugVersionMetadata:
         """Extract metadata from the Version file."""
-        file_path = f"{self.dictionary_path}/{UniversalWhoDrugFiles.VERSION.value}.csv"
-        with open(file_path, mode="r", encoding="utf-8") as f:
-            reader = csv.reader(f)
-            version_info = next(reader)[0]
+        resolved = self._resolve_file(UniversalWhoDrugFiles.VERSION.value)
+        if resolved is None:
+            raise FileNotFoundError(f"WHODrug Version file not found in {self.dictionary_path}")
+        file_path, _ = resolved
+        with open(file_path, mode="r", encoding="utf-8-sig") as f:
+            version_info = f.readline().strip().strip('"')
 
         version_pattern = (
             r"WHODRUG\s+(?P<product_type>\w+)\s+(?P<format>C3|B3)\s+(?P<version_date>\w+\s\d{1,2},\s\d{4})"
@@ -58,14 +68,16 @@ class WhoDrugReader:
         target_col: str,
     ) -> pd.DataFrame:
 
-        file_path = f"{self.dictionary_path}/{file_name}.csv"
+        resolved = self._resolve_file(file_name)
 
-        if os.path.exists(file_path):
+        if resolved is not None:
+            file_path, delimiter = resolved
             indices = list(col_map.keys())
             col_names = list(col_map.values())
 
             df = pd.read_csv(
                 file_path,
+                sep=delimiter,
                 header=None,
                 dtype=str,
                 usecols=indices,
@@ -93,9 +105,14 @@ class WhoDrugReader:
         atc_file_name = (
             C3WHODrugFiles.ATC.value if metadata.format == WhoDrugFormats.C3.value else B3WHODrugFiles.INA.value
         )
-        atc_file_path = f"{self.dictionary_path}/{atc_file_name}.csv"
+        resolved = self._resolve_file(atc_file_name)
+        if resolved is None:
+            raise FileNotFoundError(f"WHODrug file {atc_file_name} not found in {self.dictionary_path}")
+        atc_file_path, delimiter = resolved
 
-        atc_df = pd.read_csv(atc_file_path, header=None, dtype=str, names=["atc_code", "level", "atc_text"])
+        atc_df = pd.read_csv(
+            atc_file_path, sep=delimiter, header=None, dtype=str, names=["atc_code", "level", "atc_text"]
+        )
 
         atc_df["atc_code"] = atc_df["atc_code"].str.strip()
         atc_df["atc_text"] = atc_df["atc_text"].str.strip()
