@@ -233,7 +233,8 @@ class BaseDefineXMLReader(ABC):
                 domain_metadata = next(
                     item
                     for item in metadata.ItemGroupDef
-                    if str(item.Domain).upper() == domain_name.upper() and str(item.Name).upper() == name.upper()
+                    if str(item.Name).upper() == name.upper()
+                    and (not item.Domain or item.Domain.upper() == domain_name.upper())
                 )
             else:
                 domain_metadata = next(

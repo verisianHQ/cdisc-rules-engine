@@ -35,7 +35,7 @@ def test_ordering_comparators_on_numeric_column(comparator, expected):
 
 
 def test_ordering_comparator_on_text_column_coalesces_missing():
-    assert range_check("GT", ["B"]) == "COALESCE(CAST(c AS TEXT) > 'B', FALSE)"
+    assert range_check("GT", ["B"]) == "COALESCE(NULLIF(CAST(c AS TEXT), '') > 'B', FALSE)"
 
 
 def test_ordering_comparator_with_non_numeric_value_on_numeric_column_is_untranslatable():
