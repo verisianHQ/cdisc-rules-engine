@@ -1,0 +1,23 @@
+{
+  "$id": "Sensitivity.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "const": "Dataset",
+      "title": "One issue per dataset"
+    },
+    {
+      "const": "Group",
+      "title": "One issue per combination of Grouping_Variables values"
+    },
+    {
+      "const": "Record",
+      "title": "One issue per record"
+    },
+    {
+      "const": "Study",
+      "title": "One issue per study"
+    }
+  ],
+  "markdownDescription": "Determines what level of granularity issues should be generated within the report"
+}
