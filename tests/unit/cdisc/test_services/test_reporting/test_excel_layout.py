@@ -105,14 +105,21 @@ def test_an_issue_on_some_records_keeps_one_row_per_record():
     assert report._collapse_duplicate_detail_rows(rows) == rows
 
 
-def test_collapsing_can_be_turned_off():
-    report = report_for(
-        [SimpleNamespace(filename="ae.xpt", record_count=2)],
-        args=SimpleNamespace(collapse_duplicate_issues=False),
-    )
+def test_collapsing_is_off_by_default():
+    report = report_for([SimpleNamespace(filename="ae.xpt", record_count=2)], args=SimpleNamespace())
     report.get_detailed_data = lambda excel: [detail_row("CORE-1", "ae.xpt", row) for row in (1, 2)]
 
     assert [len(chunk) for chunk in report._get_issue_detail_chunks()] == [2]
+
+
+def test_collapsing_can_be_turned_on():
+    report = report_for(
+        [SimpleNamespace(filename="ae.xpt", record_count=2)],
+        args=SimpleNamespace(collapse_duplicate_issues=True),
+    )
+    report.get_detailed_data = lambda excel: [detail_row("CORE-1", "ae.xpt", row) for row in (1, 2)]
+
+    assert [len(chunk) for chunk in report._get_issue_detail_chunks()] == [1]
 
 
 def test_details_beyond_one_sheet_overflow_onto_numbered_sheets(monkeypatch):

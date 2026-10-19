@@ -27,5 +27,5 @@ Validation_args = namedtuple(
         "sql_namespace",
         "collapse_duplicate_issues",
     ],
-    defaults=[True],
+    defaults=[False],
 )

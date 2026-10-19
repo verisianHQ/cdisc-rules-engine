@@ -159,7 +159,7 @@ class ExcelReport(BaseReport):
 
     def _get_issue_detail_chunks(self) -> List[List[List]]:
         detailed_data = self.get_detailed_data(excel=True)
-        if getattr(self._args, "collapse_duplicate_issues", True):
+        if getattr(self._args, "collapse_duplicate_issues", False):
             detailed_data = self._collapse_duplicate_detail_rows(detailed_data)
         max_rows = self._EXCEL_MAX_DATA_ROWS
         return [detailed_data[i : i + max_rows] for i in range(0, max(len(detailed_data), 1), max_rows)]

@@ -231,8 +231,9 @@ def cli():
     help="Run validation using an in-memory Postgres instance",
 )
 @click.option(
-    "--collapse-duplicate-issues/--no-collapse-duplicate-issues",
-    default=True,
+    "--collapse-duplicate-issues",
+    is_flag=True,
+    default=False,
     help=(
         "When a rule's message applies to every record in a dataset, collapse those rows in the Excel report "
         "into a single row with the record numbers shown as a range (e.g. '1-500'), instead of one row per record."
