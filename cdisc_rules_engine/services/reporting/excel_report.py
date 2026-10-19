@@ -1,4 +1,5 @@
 import logging
+from collections import Counter, defaultdict
 from datetime import datetime
 from typing import BinaryIO, List, Optional, Iterable
 
@@ -26,6 +27,11 @@ from cdisc_rules_engine.utilities.report_progress import (
 )
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from pathlib import Path
+
+
+def _collapse_key(row: List) -> tuple:
+    # CORE-ID, Message, Executability, Dataset, Variable(s), Value(s)
+    return (row[0], row[1], row[2], row[3], row[7], row[8])
 
 
 def _format_row_range(values: List) -> str:
@@ -210,30 +216,31 @@ class ExcelReport(BaseReport):
         USUBJID is excluded from the grouping key since it isn't meaningful once collapsed.
         """
         dataset_record_counts = self._get_dataset_record_counts()
-        grouped = {}
-        order = []
+        counts = Counter(_collapse_key(row) for row in detailed_data)
+        collapsible = {key for key, count in counts.items() if dataset_record_counts.get(key[3]) == count}
+        if not collapsible:
+            return detailed_data
+
+        members = defaultdict(list)
         for row in detailed_data:
-            key = (row[0], row[1], row[2], row[3], row[7], row[8])
-            if key not in grouped:
-                grouped[key] = {"template": list(row), "rows": [], "seqs": [], "entries": []}
-                order.append(key)
-            grouped[key]["rows"].append(row[5])
-            grouped[key]["seqs"].append(row[6])
-            grouped[key]["entries"].append(row)
+            key = _collapse_key(row)
+            if key in collapsible:
+                members[key].append(row)
 
         collapsed = []
-        for key in order:
-            entry = grouped[key]
-            dataset = key[3]
-            total_records = dataset_record_counts.get(dataset)
-            if total_records is not None and len(entry["entries"]) == total_records:
-                row = entry["template"]
-                row[4] = ""
-                row[5] = _format_row_range(entry["rows"])
-                row[6] = _format_row_range(entry["seqs"])
+        emitted = set()
+        for row in detailed_data:
+            key = _collapse_key(row)
+            if key not in collapsible:
                 collapsed.append(row)
-            else:
-                collapsed.extend(entry["entries"])
+            elif key not in emitted:
+                emitted.add(key)
+                entries = members[key]
+                summary = list(entries[0])
+                summary[4] = ""
+                summary[5] = _format_row_range([entry[5] for entry in entries])
+                summary[6] = _format_row_range([entry[6] for entry in entries])
+                collapsed.append(summary)
         return collapsed
 
     def write_report(self, **kwargs):

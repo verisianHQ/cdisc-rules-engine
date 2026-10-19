@@ -105,6 +105,31 @@ def test_an_issue_on_some_records_keeps_one_row_per_record():
     assert report._collapse_duplicate_detail_rows(rows) == rows
 
 
+def test_interleaved_issues_keep_their_order_when_nothing_collapses():
+    report = report_for([SimpleNamespace(filename="ae.xpt", record_count=4)])
+    rows = [
+        detail_row("CORE-1", "ae.xpt", 1, values="X"),
+        detail_row("CORE-1", "ae.xpt", 2, values="Y"),
+        detail_row("CORE-1", "ae.xpt", 3, values="X"),
+    ]
+
+    assert report._collapse_duplicate_detail_rows(rows) == rows
+
+
+def test_a_collapsed_issue_takes_the_place_of_its_first_row():
+    report = report_for([SimpleNamespace(filename="ae.xpt", record_count=2)])
+    rows = [
+        detail_row("CORE-1", "ae.xpt", 1, message="other", values="Y"),
+        detail_row("CORE-1", "ae.xpt", 1),
+        detail_row("CORE-1", "ae.xpt", 2, message="third", values="Z"),
+        detail_row("CORE-1", "ae.xpt", 2),
+    ]
+
+    collapsed = report._collapse_duplicate_detail_rows(rows)
+
+    assert [(row[1], row[5]) for row in collapsed] == [("other", 1), ("a message", "1-2"), ("third", 2)]
+
+
 def test_collapsing_is_off_by_default():
     report = report_for([SimpleNamespace(filename="ae.xpt", record_count=2)], args=SimpleNamespace())
     report.get_detailed_data = lambda excel: [detail_row("CORE-1", "ae.xpt", row) for row in (1, 2)]
