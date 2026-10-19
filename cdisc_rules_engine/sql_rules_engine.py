@@ -308,21 +308,25 @@ class SQLRulesEngine:
         if len(actions) != 1 or actions[0].get("name") != "generate_dataset_error_objects":
             return False
 
+        rule_label = f"Rule {rule.get('core_id')} on {dataset_metadata.name}"
         venmo_object = self._venmo_object(dataset_metadata, dataset_id, operation_variables, compile_only=True)
         try:
             truth = check_conditions_recursively(rule["conditions"].to_dict(), venmo_object)
         except CompileUnsupported as error:
-            logger.info(f"Rule {rule.get('core_id')} runs row by row: {error}")
+            logger.debug(f"{rule_label} not compiled, running operator by operator: {error}")
             return False
         if isinstance(truth, bool):
             truth = SqlTruth("TRUE" if truth else "FALSE")
         if not isinstance(truth, SqlTruth):
+            logger.debug(
+                f"{rule_label} not compiled, running operator by operator: conditions gave {type(truth).__name__}"
+            )
             return False
 
         try:
             failing_rows = result_handler.get_failing_rows(truth)
         except PostgresError as error:
-            logger.info(f"Rule {rule.get('core_id')} runs row by row, its query failed: {error}")
+            logger.warning(f"{rule_label} compiled query failed, rerunning operator by operator: {str(error).strip()}")
             return False
         if failing_rows:
             result_handler.report_failing_rows(**(actions[0].get("params") or {}), rows_with_error=failing_rows)

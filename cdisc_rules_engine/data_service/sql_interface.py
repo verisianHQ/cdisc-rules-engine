@@ -62,7 +62,13 @@ class PostgresQLInterface:
             logger.error(f"Failed to initialise database: {e}")
             raise
 
-    def execute_sql(self, query: str, params: Optional[Union[List, Tuple]] = None, commit: bool = True) -> int:
+    def execute_sql(
+        self,
+        query: str,
+        params: Optional[Union[List, Tuple]] = None,
+        commit: bool = True,
+        log_errors: bool = True,
+    ) -> int:
         """Execute a single SQL query"""
         if not self.db:
             raise RuntimeError("Database not initialised. Call init_database() first.")
@@ -84,7 +90,8 @@ class PostgresQLInterface:
 
             except Exception as e:
                 conn.rollback()
-                logger.error(f"Query execution failed: {e}")
+                if log_errors:
+                    logger.error(f"Query execution failed: {e}")
                 raise
 
         return affected_rows

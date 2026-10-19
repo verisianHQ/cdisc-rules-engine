@@ -98,7 +98,7 @@ class SqlVenmoResultHandler(BaseActions):
         self._report_errors(message, self._get_error_rows(results))
 
     def get_failing_rows(self, truth: SqlTruth) -> List[dict]:
-        return self._get_error_rows_for_condition(truth)
+        return self._get_error_rows_for_condition(truth, log_errors=False)
 
     def report_failing_rows(self, message: str, rows_with_error: List[dict]):
         self._report_errors(message, rows_with_error)
@@ -146,12 +146,13 @@ class SqlVenmoResultHandler(BaseActions):
         results = self.data_service.pgi.fetch_all()
         return list(results)
 
-    def _get_error_rows_for_condition(self, truth: SqlTruth) -> List[dict]:
+    def _get_error_rows_for_condition(self, truth: SqlTruth, log_errors: bool = True) -> List[dict]:
         table_hash = self.data_service.pgi.schema.get_table_hash(self.dataset_id)
         limit = " LIMIT 1" if self._reports_only_first_error() else ""
         self.data_service.pgi.execute_sql(
             f"SELECT {CHECK_OPERATOR_TABLE_ALIAS}.* FROM {truth.from_clause(table_hash, CHECK_OPERATOR_TABLE_ALIAS)} "
-            f"WHERE {truth.sql} ORDER BY {CHECK_OPERATOR_TABLE_ALIAS}.id ASC{limit}"
+            f"WHERE {truth.sql} ORDER BY {CHECK_OPERATOR_TABLE_ALIAS}.id ASC{limit}",
+            log_errors=log_errors,
         )
         return list(self.data_service.pgi.fetch_all())
 
