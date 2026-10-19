@@ -116,7 +116,16 @@ class SqlAggregateOperation(SqlBaseOperation):
         )
 
     def _table(self) -> str:
-        return self.params.table if self.params.use_rule_type_table else self.params.domain
+        if self.params.use_rule_type_table:
+            return self.params.table
+        dataset_metadata = self.params.dataset_metadata
+        if (
+            dataset_metadata is not None
+            and self.params.domain == dataset_metadata.domain
+            and self.data_service.pgi.schema.get_table(self.params.domain) is None
+        ):
+            return dataset_metadata.name
+        return self.params.domain
 
     def _dataset_column(self, table: str) -> SqlColumnSchema:
         column = self.data_service.pgi.schema.get_column(table, self.params.target)
