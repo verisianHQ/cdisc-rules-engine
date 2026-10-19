@@ -331,7 +331,9 @@ def load_rules_from_local(args) -> List[dict]:
             rule_files.extend(
                 os.path.join(root, file)
                 for file in files
-                if not file.startswith(".") and os.path.splitext(file)[1].lower() in (".yml", ".yaml")
+                if not file.startswith(".")
+                and file.lower() != "results.json"
+                and os.path.splitext(file)[1].lower() in (".yml", ".yaml", ".json")
             )
         rule_files = sorted(rule_files)
     else:
