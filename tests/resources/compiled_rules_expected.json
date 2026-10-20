@@ -1,0 +1,1105 @@
+{
+  "a_not_group": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": null
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "a_relationship_across_several_comparators": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEGRP": "A",
+              "USUBJID": "S1"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEGRP": "A",
+              "USUBJID": "S1"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEGRP": "B",
+              "USUBJID": "S2"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEGRP": "B",
+              "USUBJID": "S2"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEGRP": "C",
+              "USUBJID": "S3"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEGRP": null,
+              "USUBJID": "S3"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEGRP", "USUBJID"]
+      }
+    ]
+  },
+  "a_relationship_that_is_not_unique": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "against_an_operation": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AESEQ": 1.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AESEQ"]
+      }
+    ]
+  },
+  "all_conditions": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "all_with_a_missing_variable": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [],
+        "executionStatus": "success",
+        "message": null,
+        "variables": []
+      }
+    ]
+  },
+  "any_conditions": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "any_with_a_missing_variable_only_drops_that_branch": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "dataset_sensitivity_reports_the_first_failing_row": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "dataset": "ae.xpt",
+            "value": {
+              "AEDECOD": null
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD"]
+      }
+    ]
+  },
+  "date_comparison": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "grouped_count_over_a_group_with_a_null_key": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEGRP": "A",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEGRP": "B",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEGRP": "C",
+              "AESEQ": 1.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEGRP", "AESEQ"]
+      }
+    ]
+  },
+  "grouped_count_where_a_group_has_nothing_to_count": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEGRP": "A",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEGRP": "B",
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEGRP": "B",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEGRP": "C",
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEGRP": null,
+              "AESEQ": 2.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEGRP", "AESEQ"]
+      }
+    ]
+  },
+  "grouped_count_where_empty_groups_are_dropped": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEGRP": "A",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEGRP": "B",
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEGRP": "B",
+              "AESEQ": 2.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AEGRP": "C",
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEGRP": null,
+              "AESEQ": 2.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEGRP", "AESEQ"]
+      }
+    ]
+  },
+  "grouped_max": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AESEQ": 1.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AESEQ"]
+      }
+    ]
+  },
+  "grouped_max_date": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEENDTC": "2020-04-02",
+              "AESTDTC": "2020-04-01"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEENDTC", "AESTDTC"]
+      }
+    ]
+  },
+  "grouped_operation_by_a_variable_the_dataset_lacks": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AESEQ": 1.0
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AESEQ": 1.0
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AESEQ"]
+      }
+    ]
+  },
+  "negated_operators_over_nulls": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AEDECOD": "Nausea",
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "nested": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEDECOD": null,
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEDECOD": "Headache",
+              "AETERM": "HEADACHE"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AETERM"]
+      }
+    ]
+  },
+  "no_row_fails": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [],
+        "executionStatus": "success",
+        "message": null,
+        "variables": []
+      }
+    ]
+  },
+  "values_inconsistent_where_other_columns_are_populated": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEENDTC": "2020-01-02",
+              "AEGRP": "A"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEENDTC": "2020-01-15",
+              "AEGRP": "A"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEENDTC", "AEGRP"]
+      }
+    ]
+  },
+  "values_inconsistent_where_populated": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEENDTC": "2020-01-02",
+              "AEGRP": "A"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEENDTC": "2020-01-15",
+              "AEGRP": "A"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEENDTC", "AEGRP"]
+      }
+    ]
+  },
+  "values_inconsistent_within_a_group": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AESTDTC": "2020-01-01",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AESTDTC": "2020-02-01",
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AESTDTC": null,
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AESTDTC": "2020-04-01",
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AESTDTC", "AETERM"]
+      }
+    ]
+  },
+  "values_inconsistent_within_a_group_with_a_null_key": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEGRP": "A",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AEGRP": "A",
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEGRP": "B",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AEGRP": "B",
+              "AETERM": null
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEGRP", "AETERM"]
+      }
+    ]
+  },
+  "values_inconsistent_within_groups_of_several_columns": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AEDECOD": "Headache",
+              "AEENDTC": "2020-01-02",
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AEDECOD": "Headache",
+              "AEENDTC": null,
+              "AETERM": "HEADACHE"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AEDECOD", "AEENDTC", "AETERM"]
+      }
+    ]
+  },
+  "values_that_are_a_unique_set_across_columns": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "USUBJID": "S1"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "USUBJID": "S1"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "USUBJID": "S2"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "USUBJID": "S2"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "USUBJID": "S3"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "USUBJID": "S3"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["USUBJID"]
+      }
+    ]
+  },
+  "values_that_are_not_a_unique_set": {
+    "ae": [
+      {
+        "dataset": "ae.xpt",
+        "domain": "AE",
+        "errors": [
+          {
+            "SEQ": 1,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 1,
+            "value": {
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S1",
+            "dataset": "ae.xpt",
+            "row": 2,
+            "value": {
+              "AETERM": "NAUSEA"
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 3,
+            "value": {
+              "AETERM": "HEADACHE"
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S2",
+            "dataset": "ae.xpt",
+            "row": 4,
+            "value": {
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 1,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 5,
+            "value": {
+              "AETERM": null
+            }
+          },
+          {
+            "SEQ": 2,
+            "USUBJID": "S3",
+            "dataset": "ae.xpt",
+            "row": 6,
+            "value": {
+              "AETERM": "NAUSEA"
+            }
+          }
+        ],
+        "executionStatus": "success",
+        "message": "AE check failed",
+        "variables": ["AETERM"]
+      }
+    ]
+  }
+}

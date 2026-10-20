@@ -80,7 +80,8 @@ class PostgresQLInterface:
                 cursor.execute(query, params)
                 affected_rows = cursor.rowcount
 
-                if query.strip().upper().startswith("SELECT"):
+                # a statement returns rows when it has a result description - a SELECT, but also a WITH ... SELECT
+                if cursor.description is not None:
                     self._last_results = self._fetch_all_rows(cursor)
 
                 if commit:

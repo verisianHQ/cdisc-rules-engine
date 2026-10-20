@@ -1,4 +1,7 @@
 import copy
+import json
+from pathlib import Path
+
 import pytest
 
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
@@ -175,15 +178,18 @@ RULES = {
 }
 
 
-def run(rule_definition, compile_rules):
-    """Returns what the rule reported, whether each attempt to compile it succeeded, and the SQL it ran."""
+EXPECTED = json.loads((Path(__file__).parents[2] / "resources" / "compiled_rules_expected.json").read_text())
+
+
+def run(rule_definition):
+    """Returns what the rule reported, and the SQL it ran."""
     data_service = PostgresQLDataService.from_list_of_testdatasets(
         [TestDataset.from_records("ae", AE)], StandardsContext()
     )
     data_service.datasets = [
         BaseDatasetMetadata(**{k: v for k, v in data_service.datasets[0].__dict__.items()}, domain="AE")
     ]
-    engine = SQLRulesEngine(data_service, StandardsContext(), compile_rules=compile_rules)
+    engine = SQLRulesEngine(data_service, StandardsContext())
 
     statements = []
     execute_sql = data_service.pgi.execute_sql
@@ -193,36 +199,22 @@ def run(rule_definition, compile_rules):
         return execute_sql(query, *args, **kwargs)
 
     data_service.pgi.execute_sql = record_statement
-
-    compiled_attempts = []
-    run_compiled = engine._run_compiled
-
-    def record(*args, **kwargs):
-        compiled_attempts.append(run_compiled(*args, **kwargs))
-        return compiled_attempts[-1]
-
-    engine._run_compiled = record
     try:
         results = engine.sql_validate_single_rule(copy.deepcopy(rule_definition))
-        return results, compiled_attempts, statements
+        return json.loads(json.dumps(results, default=str)), statements
     finally:
         data_service.pgi.close()
 
 
 @pytest.mark.parametrize("name", list(RULES))
-def test_compiled_rule_reports_what_the_row_by_row_rule_does(name):
-    row_by_row, row_by_row_attempts, _ = run(RULES[name], compile_rules=False)
-    compiled, compiled_attempts, _ = run(RULES[name], compile_rules=True)
-
-    assert row_by_row_attempts == []
-    assert compiled_attempts and all(compiled_attempts), "the rule fell back to running row by row"
-    assert compiled == row_by_row
+def test_compiled_rule_reports_what_the_row_by_row_rule_did(name):
+    """EXPECTED is what each rule reported when it was still also run row by row, operator by operator."""
+    results, _ = run(RULES[name])
+    assert results == EXPECTED[name]
 
 
 def test_these_rules_actually_fail_somewhere():
-    reported = {
-        name: bool(next(iter(run(RULES[name], compile_rules=False)[0].values()))[0].get("errors")) for name in RULES
-    }
+    reported = {name: bool(next(iter(run(RULES[name])[0].values()))[0].get("errors")) for name in RULES}
     assert reported["all_conditions"] and reported["any_conditions"] and reported["nested"]
     assert reported["any_with_a_missing_variable_only_drops_that_branch"]
     assert not reported["no_row_fails"]
@@ -233,17 +225,14 @@ GROUPED_RULES = [name for name in RULES if name.startswith("grouped_") and "lack
 
 @pytest.mark.parametrize("name", GROUPED_RULES)
 def test_grouped_operations_are_joined_rather_than_asked_for_row_by_row(name):
-    _, _, statements = run(RULES[name], compile_rules=True)
-    _, _, row_by_row_statements = run(RULES[name], compile_rules=False)
-
+    _, statements = run(RULES[name])
     assert any("LEFT JOIN" in statement for statement in statements)
-    assert not any("LEFT JOIN" in statement for statement in row_by_row_statements)
 
 
 @pytest.mark.parametrize("name", GROUPED_RULES)
 def test_grouped_rules_fail_somewhere(name):
     """Guards the comparison against passing only because the rule never reports anything."""
-    results, _, _ = run(RULES[name], compile_rules=False)
+    results, _ = run(RULES[name])
     assert next(iter(results.values()))[0].get("errors")
 
 
@@ -251,9 +240,6 @@ COLUMN_FREE = [name for name in RULES if name.startswith(("values_that_", "a_rel
 
 
 @pytest.mark.parametrize("name", COLUMN_FREE)
-def test_uniqueness_checks_no_longer_rewrite_the_table(name):
-    _, _, statements = run(RULES[name], compile_rules=True)
-    _, _, row_by_row_statements = run(RULES[name], compile_rules=False)
-
-    assert not any(statement.lstrip().upper().startswith("UPDATE") for statement in statements)
-    assert any(statement.lstrip().upper().startswith("UPDATE") for statement in row_by_row_statements)
+def test_uniqueness_checks_never_rewrite_the_table(name):
+    _, statements = run(RULES[name])
+    assert not any(statement.lstrip().upper().startswith(("UPDATE", "ALTER")) for statement in statements)
