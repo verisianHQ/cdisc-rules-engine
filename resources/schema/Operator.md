@@ -188,7 +188,7 @@ Regular Expression value matching
 - Suggestion for an online regular expression tester: https://regex101.com (PostgreSQL is not one of its dialects, so check any less common syntax against the PostgreSQL documentation).
 - For regex token visualization, try https://www.debuggex.com.
 - This also applies to the other regular expression operators (`prefix_matches_regex`, `suffix_matches_regex`, their complements and their case insensitive variants).
-- The deprecated pandas engine instead matches from the start of the text and uses the Python syntax.
+- The pandas engine instead matches from the start of the text and uses the Python syntax.
 
 > --DOSTXT value is numeric
 
@@ -390,7 +390,7 @@ True if the `prefix` number of characters beginning a string in `name` match the
   value: DOMAIN
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The deprecated pandas engine compares case sensitively.
+**SQL engine:** `value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively.
 
 ## prefix_not_equal_to
 
@@ -407,7 +407,7 @@ True if the `suffix` number of characters ending a string in `name` match the st
   value: DOMAIN
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The deprecated pandas engine compares case sensitively, and only resolves `DOMAIN` for `prefix_equal_to`.
+**SQL engine:** `value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively, and only resolves `DOMAIN` for `prefix_equal_to`.
 
 ## suffix_not_equal_to
 
