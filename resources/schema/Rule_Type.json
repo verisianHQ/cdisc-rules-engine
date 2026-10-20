@@ -36,15 +36,15 @@
     },
     {
       "const": "Domain Presence Check against Define XML",
-      "title": "Define xml metadata at dataset level and content domain presence at study level (SQL engine only)"
+      "title": "Define xml metadata at dataset level and content domain presence at study level"
     },
     {
       "const": "Global Value Check with Variable Metadata",
-      "title": "Content data at value level and variable metadata at variable level, for all datasets of the study (SQL engine only)"
+      "title": "Content data at value level and variable metadata at variable level, for all datasets of the study"
     },
     {
       "const": "Global Variable Metadata Check",
-      "title": "Variable metadata at variable level, for all datasets of the study (SQL engine only)"
+      "title": "Variable metadata at variable level, for all datasets of the study"
     },
     {
       "const": "Record Data",
@@ -52,7 +52,7 @@
     },
     {
       "const": "STF Metadata Check",
-      "title": "Study Tagging File metadata at document level (SQL engine only)"
+      "title": "Study Tagging File metadata at document level"
     },
     {
       "const": "Value Check against Define XML Variable",
@@ -64,7 +64,7 @@
     },
     {
       "const": "Value Check against Library Metadata",
-      "title": "Content data at value level and library metadata at variable level (SQL engine only)"
+      "title": "Content data at value level and library metadata at variable level"
     },
     {
       "const": "Value Level Metadata Check against Define XML",

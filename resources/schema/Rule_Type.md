@@ -1,6 +1,36 @@
+# Summary
+
+| Rule type                                                                                                                           | Dataset used by the rule                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Dataset Contents Check against Define XML and Library Metadata](#dataset-contents-check-against-define-xml-and-library-metadata)   | Content data at record level, define xml metadata at variable level, and library metadata at variable level. Not supported by this engine.    |
+| [Dataset Metadata Check](#dataset-metadata-check)                                                                                   | Content metadata at dataset level.                                                                                                            |
+| [Dataset Contents Check against Define XML](#dataset-contents-check-against-define-xml)                                             | Content data at record level, dataset metadata at dataset level, and define xml metadata at dataset level.                                    |
+| [Dataset Metadata Check against Define XML](#dataset-metadata-check-against-define-xml)                                             | Content metadata at dataset level and define xml metadata at dataset level.                                                                   |
+| [Define Item Group Metadata Check](#define-item-group-metadata-check)                                                               | Define xml metadata at dataset level.                                                                                                         |
+| [Define Item Metadata Check](#define-item-metadata-check)                                                                           | Define xml metadata at variable level.                                                                                                        |
+| [Define Item Metadata Check against Library Metadata](#define-item-metadata-check-against-library-metadata)                         | Define xml metadata at variable level and corresponding library variable metadata.                                                            |
+| [Domain Presence Check](#domain-presence-check)                                                                                     | Content domain presence at study level.                                                                                                       |
+| [Domain Presence Check against Define XML](#domain-presence-check-against-define-xml)                                               | Define xml metadata at dataset level and content domain presence at study level.                                                              |
+| [Global Value Check with Variable Metadata](#global-value-check-with-variable-metadata)                                             | Content data at value level and variable metadata at variable level, for all datasets of the study.                                           |
+| [Global Variable Metadata Check](#global-variable-metadata-check)                                                                   | Variable metadata at variable level, for all datasets of the study.                                                                           |
+| [Record Data](#record-data)                                                                                                         | Content data at record level. Most common Rule Type.                                                                                          |
+| [STF Metadata Check](#stf-metadata-check)                                                                                           | Study Tagging File metadata at document level.                                                                                                |
+| [Value Check with Dataset Metadata](#value-check-with-dataset-metadata)                                                             | Content data at value level and dataset metadata at dataset level.                                                                            |
+| [Value Check with Variable Metadata](#value-check-with-variable-metadata)                                                           | Content data at value level and variable metadata at variable level.                                                                          |
+| [Value Check against Define XML Variable](#value-check-against-define-xml-variable)                                                 | Content data at value level and define xml metadata at variable level.                                                                        |
+| [Value Check against Define XML VLM](#value-check-against-define-xml-vlm)                                                           | Content data at value level and define xml metadata at value level.                                                                           |
+| [Value Check against Library Metadata](#value-check-against-library-metadata)                                                       | Content data at value level and library metadata at variable level.                                                                           |
+| [Value Level Metadata Check against Define XML](#value-level-metadata-check-against-define-xml)                                     | Content data at record level and define xml metadata at value level. Not supported by this engine.                                            |
+| [Variable Metadata Check](#variable-metadata-check)                                                                                 | Content metadata at variable level.                                                                                                           |
+| [Variable Metadata Check against Define XML](#variable-metadata-check-against-define-xml)                                           | Content metadata at variable level and define xml metadata at variable level.                                                                 |
+| [Variable Metadata Check against Library Metadata](#variable-metadata-check-against-library-metadata)                               | Content metadata at the variable level and the corresponding library metadata.                                                                |
+| [Variable Metadata Check against Define XML and Library Metadata](#variable-metadata-check-against-define-xml-and-library-metadata) | Combines metadata at the variable level with corresponding define-xml metadata at variable level and corresponding library variable metadata. |
+
+# Rule Types
+
 ## Dataset Contents Check against Define XML and Library Metadata
 
-_Not supported by the SQL engine._ The SQL engine validates the rule as `Record Data`: the rule macro is not applied.
+_Not supported by this engine._ The engine validates the rule as `Record Data`: the rule macro is not applied.
 
 ### Columns
 
@@ -50,8 +80,8 @@ Columns are the columns within the original dataset along with the following col
 - `define_dataset_name`
 - `define_dataset_structure`
 - `define_dataset_variables`
-- `define_dataset_variable_order` _(SQL engine only)_
-- `define_key_sequence_is_unique` _(SQL engine only)_
+- `define_dataset_variable_order`
+- `define_key_sequence_is_unique`
 
 ## Dataset Metadata Check against Define XML
 
@@ -72,7 +102,7 @@ Columns are the columns within the original dataset along with the following col
 - `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
-- `define_dataset_variable_order` _(SQL engine only)_
+- `define_dataset_variable_order`
 
 ### Rule Macro
 
@@ -111,7 +141,7 @@ any:
 - `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
-- `define_dataset_variable_order` _(SQL engine only)_
+- `define_dataset_variable_order`
 
 ## Define Item Metadata Check
 
@@ -140,7 +170,7 @@ any:
 
 Attach variable codelist and codelist terms
 
-**SQL engine:** the rule macro is not applied.
+This rule macro is only applied by the pandas engine.
 
 ## Define Item Metadata Check against Library Metadata
 
@@ -170,13 +200,13 @@ Attach variable codelist and codelist terms
 - `library_variable_data_type`
 - `library_variable_role`
 - `library_variable_core`
-- `library_variable_ccode` _(SQL engine only)_
+- `library_variable_ccode`
 
 ### Rule Macro
 
 Attach variable codelist and codelist terms
 
-**SQL engine:** the rule macro is not applied.
+This rule macro is only applied by the pandas engine.
 
 ## Domain Presence Check
 
@@ -188,7 +218,7 @@ Single row contains a column for each domain and the value of that column is the
 | ------ | ------ |
 | ae.xpt | ec.xpt |
 
-**SQL engine:** columns are named after the domain of each dataset, and datasets without a domain are left out. When several files have the same domain, the value is their file names separated by commas (e.g. `dm1.xpt,dm2.xpt`).
+Columns are named after the domain of each dataset, and datasets without a domain are left out. When several files have the same domain, the value is their file names separated by commas (e.g. `dm1.xpt,dm2.xpt`).
 
 ### Example
 
@@ -201,8 +231,6 @@ all:
 ```
 
 ## Domain Presence Check against Define XML
-
-_SQL engine only._
 
 ### Columns
 
@@ -239,8 +267,6 @@ all:
 ```
 
 ## Global Value Check with Variable Metadata
-
-_SQL engine only._
 
 ### Columns
 
@@ -295,8 +321,6 @@ Grouping_Variables:
 ```
 
 ## Global Variable Metadata Check
-
-_SQL engine only._
 
 ### Columns
 
@@ -353,8 +377,6 @@ all:
 ```
 
 ## STF Metadata Check
-
-_SQL engine only._
 
 Checks the Study Tagging File (STF) given with `--stf-file-path` (`-stf`).
 
@@ -432,7 +454,7 @@ all:
 - `variable_format`
 - `variable_value_length`
 
-**SQL engine:** if the rule uses the `max_variable_value_length`, `global_max_variable_length` or `global_min_variable_length` operation, the dataset instead has one row per variable of the dataset, with the columns `variable_name`, `variable_label`, `variable_data_type`, `variable_length`, `variable_order_number`, `variable_format` and `variable_max_value_length`.
+If the rule uses the `max_variable_value_length`, `global_max_variable_length` or `global_min_variable_length` operation, the dataset instead has one row per variable of the dataset, with the columns `variable_name`, `variable_label`, `variable_data_type`, `variable_length`, `variable_order_number`, `variable_format` and `variable_max_value_length`.
 
 ### Example
 
@@ -474,7 +496,7 @@ all:
     value: define_variable_codelist_coded_values
 ```
 
-**SQL engine:** `define_variable_codelist_coded_values` is comma-separated text in the SQL engine, so use a regular expression such as `(^|,)X(,|$)` instead of `is_not_contained_by` (see [MetaVariables](MetaVariables.md)).
+This example only works as intended in the pandas engine. In this engine, `define_variable_codelist_coded_values` is comma-separated text (see [MetaVariables](MetaVariables.md)), and a variable given as the `value` of `is_not_contained_by` is compared with the values of that variable in every record, not only in the same record.
 
 ## Value Check against Define XML VLM
 
@@ -500,11 +522,11 @@ all:
 - `define_vlm_mandatory`
 - `define_vlm_has_comment`
 - `define_variable_name`
-- `type_check` _(not available in the SQL engine)_
-- `length_check` _(not available in the SQL engine)_
+- `type_check` _(not available in this engine)_
+- `length_check` _(not available in this engine)_
 - `variable_value_length`
 
-**SQL engine:** the dataset also has every column of the record the value belongs to, so a condition can check other variables of that record (a record column with the same name as one of the columns above is left out). A VLM applies to the records that match every range check of its where clause; a VLM whose where clause uses a comparator other than `LT`, `LE`, `GT`, `GE`, `EQ`, `NE`, `IN` and `NOTIN`, or a variable that is not in the dataset, is skipped.
+The dataset also has every column of the record the value belongs to, so a condition can check other variables of that record (a record column with the same name as one of the columns above is left out). A VLM applies to the records that match every range check of its where clause; a VLM whose where clause uses a comparator other than `LT`, `LE`, `GT`, `GE`, `EQ`, `NE`, `IN` and `NOTIN`, or a variable that is not in the dataset, is skipped.
 
 ### Example
 
@@ -522,7 +544,7 @@ all:
     value: define_vlm_codelist_coded_values
 ```
 
-**SQL engine:** `define_vlm_codelist_coded_values` is comma-separated text in the SQL engine, so use a regular expression such as `(^|,)X(,|$)` instead of `is_not_contained_by` (see [MetaVariables](MetaVariables.md)).
+This example only works as intended in the pandas engine. In this engine, `define_vlm_codelist_coded_values` is comma-separated text (see [MetaVariables](MetaVariables.md)), and a variable given as the `value` of `is_not_contained_by` is compared with the values of that variable in every record, not only in the same record.
 
 ```yaml
 all:
@@ -548,8 +570,6 @@ all:
 ```
 
 ## Value Check against Library Metadata
-
-_SQL engine only._
 
 ### Columns
 
@@ -595,7 +615,7 @@ Operations:
 
 ## Value Level Metadata Check against Define XML
 
-_Not supported by the SQL engine._ The SQL engine validates the rule as `Record Data`: the rule macro is not applied.
+_Not supported by this engine._ The engine validates the rule as `Record Data`: the rule macro is not applied.
 
 ### Columns
 
@@ -641,7 +661,7 @@ all:
 
 Attach define xml metadata at variable level
 
-**SQL engine:** the rule macro is not applied: each condition is evaluated as written.
+This rule macro is only applied by the pandas engine: this engine evaluates each condition as written.
 
 ### Example
 
@@ -669,7 +689,7 @@ all:
 - `library_variable_data_type`
 - `library_variable_role`
 - `library_variable_core`
-- `library_variable_ccode` _(SQL engine only)_
+- `library_variable_ccode`
 
 ## Variable Metadata Check against Define XML and Library Metadata
 
@@ -705,6 +725,6 @@ all:
 - `library_variable_order_number`
 - `library_variable_data_type`
 - `variable_has_empty_values`
-- `variable_count` _(SQL engine only)_
-- `variable_is_empty` _(SQL engine only)_
-- `library_variable_ccode` _(SQL engine only)_
+- `variable_count`
+- `variable_is_empty`
+- `library_variable_ccode`

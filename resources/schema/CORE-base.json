@@ -418,7 +418,7 @@
           }
         ]
       },
-      "markdownDescription": "Variables whose values group the records reported with `Sensitivity: Group` (SQL engine only). `filter_by_dataset` reports only records whose `dataset_name` is the dataset being validated",
+      "markdownDescription": "Variables whose values group the records reported with `Sensitivity: Group`. `filter_by_dataset` reports only records whose `dataset_name` is the dataset being validated",
       "type": "array"
     },
     "Match Datasets": {

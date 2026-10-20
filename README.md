@@ -1,9 +1,11 @@
-# cdisc-rules-engine
+# cdisc-rules-engine (Verisian fork)
 
-Open source offering of the CDISC Rules Engine, a tool designed for validating clinical trial data against data standards.
-To learn more, visit our official CDISC website:  
-<br>  
-[CDISC Website](https://www.cdisc.org/)
+This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE), a tool designed for validating clinical trial data against data standards. It runs the rules with an engine built on a PostgreSQL database.
+
+> **Are you writing or testing rules?** You don't need to set up this repository yourself: follow the [core-contributor](https://github.com/verisianHQ/core-contributor) guide instead, which installs and runs this engine for you.
+
+To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.org/). 
+
 
 ## Supported python versions
 
@@ -15,11 +17,15 @@ Note: The Windows commands provided in this README are written for PowerShell. W
 
 ## **Command-line Interface**
 
+The engine has no graphical interface: you run it by typing commands in a terminal (on Windows, PowerShell; on Mac, the Terminal app; or the terminal built into VSCode, for instance). Unless stated otherwise, every command below must be run from the folder of this repository (the `cdisc-rules-engine` folder created in step 1 below). Use `cd <path>` to move to it.
+
+> On Mac and Linux, if `python` is not found, use `python3` instead (e.g. `python3 core.py --help`).
+
 ### **Getting Started**
 
 In the terminal, navigate to the directory you intend to install CORE rules engine in
 
-1. Clone the repository:
+1. Clone (download) the repository:
 
    ```
    git clone https://github.com/verisianHQ/cdisc-rules-engine
@@ -32,23 +38,9 @@ In the terminal, navigate to the directory you intend to install CORE rules engi
    ```
    If you don't have Python 3.12, please download and install it from [python.org](https://www.python.org/downloads/) or using your system's package manager.
 
-### **Code formatter**
-
-This project uses the `black` code formatter, `flake8` linter for python and `prettier` for JSON, YAML and MD.
-It also uses `pre-commit` to run `black`, `flake8` and `prettier` when you commit.
-`pre-commit` is included in _requirements.txt_ and `black` and `flake8` in _requirements-dev.txt_; `prettier` is installed automatically by `pre-commit`.
-
-**Required**
-
-Setting up `pre-commit` requires one extra step. After installing it you have to run
-
-`pre-commit install`
-
-This installs `pre-commit` in your `.git/hooks` directory.
-
 ### **Installing dependencies**
 
-These steps should be run before running any tests or core commands using the non-compiled version.
+These steps only need to be done once. They set up a "virtual environment": a private copy of Python for this project, so that the packages the engine needs don't interfere with anything else on your computer.
 
 - **Option 1: Using `pyenv` (Recommended)**
 
@@ -81,35 +73,32 @@ These steps should be run before running any tests or core commands using the no
      `source ./<virtual_environment_name>/bin/activate` -- on Linux/Mac
      `.\<virtual_environment_name>\Scripts\Activate` -- on Windows
 
-- Create the required `.env` files by duplicating the example files:
-  `./.env.example`
-  `./environment/local/.env.example`
-- In ./environment/local/.env, update the POSTGRES_DATA_DIR variable to point to the location where you want your Postgres database files to be stored.
-- The `DATABASE_*` variables in `./.env` are used by the engine to connect to Postgres and must match the `POSTGRES_*` values in `./environment/local/.env` (the example files already match).
+     You need to activate the virtual environment again every time you open a new terminal. When it is active, its name is shown in brackets at the start of the terminal line.
 
-- Ensure you have the docker desktop app running and then run these commands to set-up docker for this environment:
-  `cd ./environment/local`
-  `docker-compose up -d`
+- Install the requirements (from the root directory of the repository):
 
-- Install the requirements.
+  `python -m pip install -r requirements-dev.txt`
 
-`python -m pip install -r requirements.txt` # From the root directory
+#### Database
 
-To run the tests or use the development tools (`pytest`, `black`, `flake8`, `pgserver`), install the development requirements instead (this includes _requirements.txt_):
+The engine stores the data it validates in a PostgreSQL database while it runs. You don't need to install PostgreSQL yourself: choose one of these two options.
 
-`python -m pip install -r requirements-dev.txt`
-
-### **Running The Tests**
-
-From the root of the project run the following command (the Postgres container from the previous section must be running for the SQL engine tests):
-
-`python -m pytest tests --ignore=tests/rule_regression`
-
-Tests marked as `regression` are skipped by default. To run them, add `-m regression`.
-
-The tests in `tests/rule_regression` run every rule against the CDISC SharePoint test cases and need extra setup; see [tests/rule_regression/README.md](tests/rule_regression/README.md).
+- **Option A: temporary database (simplest)**. Add the `-mem` flag to every `validate` command (see [Running a validation](#running-a-validation)). A temporary database is created for each run and deleted at the end. Nothing else needs to be set up.
+- **Option B: Docker**. Use this if you run many validations or want the database to keep running between runs.
+  1. Install and start the [Docker Desktop](https://www.docker.com/products/docker-desktop/) app.
+  2. Create the two required `.env` files by copying the example files and removing `.example` from the copy's name:
+     `./.env.example` → `./.env`
+     `./environment/local/.env.example` → `./environment/local/.env`
+  3. In `./environment/local/.env`, change `POSTGRES_DATA_DIR` to the folder where the database files should be stored (any empty folder on your computer).
+  4. The `DATABASE_*` variables in `./.env` tell the engine how to connect to the database and must match the `POSTGRES_*` values in `./environment/local/.env` (the example files already match, so you can leave them as they are).
+  5. Start the database:
+     `cd ./environment/local`
+     `docker-compose up -d`
+     then go back to the root of the repository (`cd ../..`). The database keeps running in Docker Desktop until you stop it there.
 
 ### **Running a validation**
+
+Every validation uses this fork's engine, so **always add the `-sql` flag** to `validate` commands, as in the examples below (without it, the older pandas engine of the original CDISC project is used instead).
 
 #### From the command line
 
@@ -121,6 +110,7 @@ Run `python core.py validate --help` to see the list of validation options.
   -ca, --cache TEXT               Relative path to cache files containing pre
                                   loaded metadata and rules
   -ps, --pool-size INTEGER        Number of parallel processes for validation
+                                  (no effect with -sql)
   -d, --data TEXT                 Path to directory containing data files
   -dp, --dataset-path TEXT        Absolute path to dataset file. Can be specified multiple times.
   -l, --log-level [info|debug|error|critical|disabled|warn]
@@ -164,10 +154,13 @@ Run `python core.py validate --help` to see the list of validation options.
   --unii TEXT                     Path to directory with UNII dictionary
                                   files
   --snomed-version TEXT           Version of snomed to use. (ex. 2024-09-01)
+                                  (pandas engine only)
   --snomed-url TEXT               Base url of snomed api to use. (ex. https://snowstorm.snomedtools.org/snowstorm/snomed-ct)
+                                  (pandas engine only)
   --snomed-edition TEXT           Edition of snomed to use. (ex. SNOMEDCT-US)
+                                  (pandas engine only)
   --snomed TEXT                   Path to directory with SNOMED dictionary
-                                  files (SQL engine only)
+                                  files
   -r, --rules TEXT                Specify rule core ID ex. CORE-000001. Can be specified multiple times.
   -lr, --local_rules PATH         Specify relative path to directory or file containing
                                   local rule yml and/or json rule files.
@@ -182,13 +175,19 @@ Run `python core.py validate --help` to see the list of validation options.
   -dxp, --define-xml-path TEXT    Path to Define-XML
   -stf, --stf-file-path TEXT      Path to STF file
   -vx, --validate-xml TEXT        Enable XML validation (default 'y' to enable, otherwise disable)
-  -sql, --sql-engine              Flag to run validation using the SQL engine
+  -sql, --sql-engine              Run the validation with this fork's engine.
+                                  Always add this flag (see below)
   -ns, --sql-namespace TEXT       A prefix for all tables in the database when
                                   using the SQL engine
   -mem, --in-memory-postgres      Run validation using an in-memory Postgres
                                   instance
   --help                          Show this message and exit.
 ```
+
+- `-s` and `-v` are the standard and its version, with the version written with a dash instead of a dot (e.g. `-s sdtmig -v 3-4` for SDTMIG 3.4).
+- `-ns` (`--sql-namespace`) sets the prefix used for the database tables (default `uid`).
+- XPT and SAS7BDAT files can be mixed in the same run.
+- By default the report is written to the folder you run the command from, as an Excel (XLSX) file named `CORE-Report-<date and time>`; use `-o` and `-of` to change this.
 
 ##### Available log levels
 
@@ -201,15 +200,17 @@ Run `python core.py validate --help` to see the list of validation options.
 
 ##### **Validate folder**
 
-To validate a folder using rules for SDTM-IG version 3.4 use the following command:
+To validate all the datasets in a folder using rules for SDTM-IG version 3.4, with a temporary database, use the following command:
 
-`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets`
+`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -sql -mem`
 
-**_NOTE:_** Before running a validation in the CLI, you must first populate the cache with rules to validate against. See the update-cache command below.
+(If you set up the Docker database, leave out `-mem`.)
+
+**_NOTE:_** The rules, controlled terminology and other standards metadata are read from the cache in `resources/cache`, which is included in the repository. To refresh it with the latest data from the CDISC Library, see the update-cache command below.
 
 ##### **Validate single rule**
 
-`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/`
+`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/ -sql -mem`
 Note: JSON dataset should match the format provided by the rule editor:
 
 ```json
@@ -234,18 +235,6 @@ Note: JSON dataset should match the format provided by the rule editor:
   ]
 }
 ```
-
-##### **Validate using the SQL engine**
-
-This fork also includes a PostgreSQL-based SQL engine. Add the `-sql` flag to run a validation with it instead of the default engine:
-
-`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -sql`
-
-- By default the SQL engine connects to the Postgres database configured by the `DATABASE_*` variables in `./.env` (see the docker set-up in [Installing dependencies](#installing-dependencies)).
-- Add `-mem` (`--in-memory-postgres`) to use a temporary in-memory Postgres instance instead. This requires the `pgserver` package from _requirements-dev.txt_.
-- `-ns` (`--sql-namespace`) sets the prefix used for the database tables (default `uid`).
-- The SQL engine accepts a mix of XPT and SAS7BDAT files in the same run, and uses `--snomed` (a path to SNOMED dictionary files) instead of the `--snomed-version`, `--snomed-edition` and `--snomed-url` options.
-- The SQL engine runs rules one at a time, so `-ps` has no effect.
 
 ##### **Understanding the Rules Report**
 
@@ -426,6 +415,8 @@ Options:
 
 ## PyPI Integration
 
+> **NOTE:** the `cdisc-rules-engine` package on PyPI is the original CDISC engine, not this fork: it does not include the engine run with `-sql`.
+
 The CDISC Rules Engine is available as a Python package through PyPI. This allows you to:
 
 - Import the rules engine library directly into your Python projects
@@ -438,51 +429,9 @@ pip install cdisc-rules-engine
 
 For implementation instructions, see [PYPI.md](PYPI.md).
 
-## **Creating an executable version**
+## Development
 
-**Linux**
-
-`pyinstaller core.py --add-data=venv/lib/python3.12/site-packages/xmlschema/schemas:xmlschema/schemas --add-data=resources/cache:resources/cache --add-data=resources/templates:resources/templates --add-data=resources/schema:resources/schema`
-
-**Windows**
-
-`pyinstaller core.py --add-data=".venv/Lib/site-packages/xmlschema/schemas;xmlschema/schemas" --add-data="resources/cache;resources/cache" --add-data="resources/templates;resources/templates" --add-data="resources/schema;resources/schema"`
-
-_Note .venv should be replaced with path to python installation or virtual environment_
-
-This will create an executable version in the `dist` folder. The version does not require having Python installed and
-can be launched by running `core` script with all necessary CLI arguments.
-
-## **Creating .whl file**
-
-All non-python files should be listed in `MANIFEST.in` to be included in the distribution.
-Files must be in python package.
-
-**Unix/MacOS**
-
-`python3 -m pip install --upgrade build`
-`python3 -m build`
-
-To install from dist folder
-`pip3 install {path_to_file}/cdisc_rules_engine-{version}-py3-none-any.whl`
-
-To upload built distributive to pypi
-
-`python3 -m pip install --upgrade twine`
-`python3 -m twine upload --repository {repository_name} dist/*`
-
-**Windows(Untested)**
-
-`py -m pip install --upgrade build`
-`py -m build`
-
-To install from dist folder
-`pip install {path_to_file}/cdisc_rules_engine-{version}-py3-none-any.whl`
-
-To upload built distributive to pypi
-
-`py -m pip install --upgrade twine`
-`py -m twine upload --repository {repository_name} dist/*`
+If you want to change the engine itself (code formatting, running the tests, building an executable or a package), see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Submit an Issue
 

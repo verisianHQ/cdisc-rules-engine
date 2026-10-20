@@ -1,6 +1,75 @@
-In the examples below, `value_is_literal: true` is set wherever `value` is a literal string or a list of literal strings. The SQL engine treats a string `value` (or each string in a list) as a column name unless `value_is_literal: true` is set, and the condition returns False if no such column exists. This does not apply to numbers, `$` operation variables or the regular expression operators, whose `value` is always a pattern. In the SQL engine the condition is also False when `name`, `within` or `ordering` is not a column or a `$` operation variable (except for `exists`), and all of this applies to the negated operators too (e.g. `non_empty`, `is_not_contained_by`).
+# Summary
 
-**SQL engine:** A condition can set `variable_regex_pattern: true` to make `name` a regular expression (Python syntax) matched against whole variable names. The rule is then run once for each matching variable of the dataset. Named groups such as `(?P<root>...)` can be used elsewhere in the rule as `{{root}}`. If no variable matches, the condition is False.
+| Operators                                                                                                                                                    | What they check                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| **Relational**                                                                                                                                               |                                                                                          |
+| [`equal_to`](#equal_to), `not_equal_to`                                                                                                                      | Value equals (or differs from) `value`.                                                  |
+| [`equal_to_case_insensitive`](#equal_to_case_insensitive), `not_equal_to_case_insensitive`                                                                   | Value equals (or differs from) `value`, ignoring case.                                   |
+| [`greater_than`](#greater_than), `greater_than_or_equal_to`, `less_than`, `less_than_or_equal_to`                                                            | Numeric comparison with `value`.                                                         |
+| [`empty`](#empty), `non_empty`                                                                                                                               | Value is (or is not) empty.                                                              |
+| **String**                                                                                                                                                   |                                                                                          |
+| [`equals_string_part`](#equals_string_part), `does_not_equal_string_part`                                                                                    | Value equals the part of `value` extracted by `regex`.                                   |
+| [`matches_regex`](#matches_regex), `not_matches_regex`                                                                                                       | Value matches a regular expression (PostgreSQL syntax).                                  |
+| [`matches_regex_case_insensitive`](#matches_regex_case_insensitive), `not_matches_regex_case_insensitive`                                                    | As `matches_regex`, ignoring case.                                                       |
+| [`prefix_matches_regex`](#prefix_matches_regex), `not_prefix_matches_regex`                                                                                  | The first `prefix` characters match a regular expression.                                |
+| [`prefix_matches_regex_case_insensitive`](#prefix_matches_regex_case_insensitive), `not_prefix_matches_regex_case_insensitive`                               | As `prefix_matches_regex`, ignoring case.                                                |
+| [`suffix_matches_regex`](#suffix_matches_regex), `not_suffix_matches_regex`                                                                                  | The last `suffix` characters match a regular expression.                                 |
+| [`suffix_matches_regex_case_insensitive`](#suffix_matches_regex_case_insensitive), `not_suffix_matches_regex_case_insensitive`                               | As `suffix_matches_regex`, ignoring case.                                                |
+| [`starts_with`](#starts_with), `not_starts_with`                                                                                                             | Value starts with `value`.                                                               |
+| [`ends_with`](#ends_with), `not_ends_with`                                                                                                                   | Value ends with `value`.                                                                 |
+| [`prefix_equal_to`](#prefix_equal_to), `prefix_not_equal_to`                                                                                                 | The first `prefix` characters equal `value` (ignoring case).                             |
+| [`suffix_equal_to`](#suffix_equal_to), `suffix_not_equal_to`                                                                                                 | The last `suffix` characters equal `value` (ignoring case).                              |
+| [`contains`](#contains), `does_not_contain`                                                                                                                  | Value contains `value`.                                                                  |
+| [`contains_case_insensitive`](#contains_case_insensitive), `does_not_contain_case_insensitive`                                                               | Value contains `value`, ignoring case.                                                   |
+| [`is_substring_of`](#is_substring_of), `is_not_substring_of`                                                                                                 | Value is part of `value`.                                                                |
+| [`longer_than`](#longer_than), `longer_than_or_equal_to`, `shorter_than`, `shorter_than_or_equal_to`                                                         | Length of the value compared with `value`.                                               |
+| [`has_equal_length`](#has_equal_length), `has_not_equal_length`                                                                                              | Value has the same length as another variable's value (or a number).                     |
+| **Date**                                                                                                                                                     |                                                                                          |
+| [`date_equal_to`](#date_equal_to), `date_not_equal_to`, `date_greater_than`, `date_greater_than_or_equal_to`, `date_less_than`, `date_less_than_or_equal_to` | Date comparison with `value`, optionally on one `date_component`.                        |
+| [`is_complete_date`](#is_complete_date), `is_incomplete_date`                                                                                                | Value is (or is not) a complete ISO 8601 date.                                           |
+| [`invalid_date`](#invalid_date)                                                                                                                              | Value is not a valid ISO 8601 date.                                                      |
+| [`invalid_date_interval`](#invalid_date_interval)                                                                                                            | Value is not a valid ISO 8601 interval.                                                  |
+| [`invalid_duration`](#invalid_duration)                                                                                                                      | Value is not a valid ISO 8601 duration.                                                  |
+| **Metadata**                                                                                                                                                 |                                                                                          |
+| [`exists`](#exists), `not_exists`                                                                                                                            | Variable (or dataset) is (or is not) present.                                            |
+| [`inconsistent_enumerated_columns`](#inconsistent_enumerated_columns)                                                                                        | An enumerated variable (e.g. TSVAL1) is populated while the previous one is not.         |
+| [`in_enumerated_columns`](#in_enumerated_columns), `not_in_enumerated_columns`                                                                               | `value` equals one of the enumerated variables of `name` in the same record.             |
+| [`variable_metadata_equal_to`](#variable_metadata_equal_to), `variable_metadata_not_equal_to`                                                                | Variable metadata equals `value`. Not supported by this engine.                          |
+| **Relationship & Set**                                                                                                                                       |                                                                                          |
+| [`is_contained_by`](#is_contained_by), `is_not_contained_by`                                                                                                 | Value is one of the values in `value`.                                                   |
+| [`is_contained_by_case_insensitive`](#is_contained_by_case_insensitive), `is_not_contained_by_case_insensitive`                                              | As `is_contained_by`, ignoring case.                                                     |
+| [`prefix_is_contained_by`](#prefix_is_contained_by), `prefix_is_not_contained_by`                                                                            | The first `prefix` characters are one of the values in `value`.                          |
+| [`prefix_is_contained_by_case_insensitive`](#prefix_is_contained_by_case_insensitive), `prefix_is_not_contained_by_case_insensitive`                         | As `prefix_is_contained_by`, ignoring case.                                              |
+| [`suffix_is_contained_by`](#suffix_is_contained_by), `suffix_is_not_contained_by`                                                                            | The last `suffix` characters are one of the values in `value`.                           |
+| [`suffix_is_contained_by_case_insensitive`](#suffix_is_contained_by_case_insensitive), `suffix_is_not_contained_by_case_insensitive`                         | As `suffix_is_contained_by`, ignoring case.                                              |
+| [`contains_all`](#contains_all), `not_contains_all`                                                                                                          | All values in `value` appear somewhere in the variable.                                  |
+| [`is_inconsistent_across_dataset`](#is_inconsistent_across_dataset)                                                                                          | Variable has different values within groups of records.                                  |
+| [`is_unique_set`](#is_unique_set), `is_not_unique_set`                                                                                                       | Combination of values occurs only once in the dataset.                                   |
+| [`present_on_multiple_rows_within`](#present_on_multiple_rows_within), `not_present_on_multiple_rows_within`                                                 | Same value appears on more than one (or more than `value`) records within a group.       |
+| [`is_unique_relationship`](#is_unique_relationship), `is_not_unique_relationship`                                                                            | Two variables have a one-to-one relationship.                                            |
+| [`empty_within_except_last_row`](#empty_within_except_last_row), `non_empty_within_except_last_row`                                                          | Value is empty in a record that is not the last of its group.                            |
+| [`has_next_corresponding_record`](#has_next_corresponding_record), `does_not_have_next_corresponding_record`                                                 | Value equals another variable's value in the next record of the group.                   |
+| [`is_ordered_set`](#is_ordered_set), `is_not_ordered_set`                                                                                                    | Values are in ascending order within groups.                                             |
+| [`is_ordered_by`](#is_ordered_by), `is_not_ordered_by`                                                                                                       | Records are ordered by the variable. Not supported by this engine.                       |
+| [`target_is_sorted_by`](#target_is_sorted_by), `target_is_not_sorted_by`                                                                                     | Values follow the order of other variables within groups.                                |
+| [`shares_at_least_one_element_with`](#shares_at_least_one_element_with), `shares_exactly_one_element_with`, `shares_no_elements_with`                        | Values of two lists or variables have at least one, exactly one or no values in common.  |
+| [`has_same_values`](#has_same_values), `has_different_values`                                                                                                | All values of the variable are the same.                                                 |
+| [`value_has_multiple_references`](#value_has_multiple_references), `value_does_not_have_multiple_references`                                                 | Value is referenced more than once. Not supported by this engine.                        |
+| [`is_ordered_subset_of`](#is_ordered_subset_of), `is_not_ordered_subset_of`                                                                                  | Values appear in the same relative order in another list.                                |
+| **Define.XML**                                                                                                                                               |                                                                                          |
+| [`conformant_value_data_type`](#conformant_value_data_type), `non_conformant_value_data_type`                                                                | Value type matches the define.xml value-level metadata. Not supported by this engine.    |
+| [`conformant_value_length`](#conformant_value_length), `non_conformant_value_length`                                                                         | Value length matches the define.xml value-level metadata. Not supported by this engine.  |
+| [`references_correct_codelist`](#references_correct_codelist), `does_not_reference_correct_codelist`                                                         | Codelist is valid for the variable in the define.xml. Not supported by this engine.      |
+| **Terminology**                                                                                                                                              |                                                                                          |
+| [`is_extensible_codelist_code`](#is_extensible_codelist_code), `is_not_extensible_codelist_code`                                                             | Value is the code of an extensible codelist.                                             |
+| [`is_valid_<dictionary>_<check>`](#is_valid_dictionary_check)                                                                                                | Value (or code-term pair) is valid in MedDRA, WHODrug, MED-RT, UNII, LOINC or SNOMED CT. |
+| [`is_latest_available_external_dictionary_version`](#is_latest_available_external_dictionary_version), `is_not_latest_available_external_dictionary_version` | Dictionary version is the latest one released at a given date (MedDRA only).             |
+
+# General notes
+
+In the examples below, `value_is_literal: true` is set wherever `value` is a literal string or a list of literal strings. The engine treats a string `value` (or each string in a list) as a column name unless `value_is_literal: true` is set, and the condition returns False if no such column exists. This does not apply to numbers, `$` operation variables or the regular expression operators, whose `value` is always a pattern. The condition is also False when `name`, `within` or `ordering` is not a column or a `$` operation variable (except for `exists`), and all of this applies to the negated operators too (e.g. `non_empty`, `is_not_contained_by`).
+
+A condition can set `variable_regex_pattern: true` to make `name` a regular expression (Python syntax) matched against whole variable names. The rule is then run once for each matching variable of the dataset. Named groups such as `(?P<root>...)` can be used elsewhere in the rule as `{{root}}`. If no variable matches, the condition is False.
 
 > For each variable whose name starts with AGE, the value contains 55
 
@@ -23,11 +92,11 @@ Outcome:
 Value comparison. Works for both string and number. True if the value in `name` is equal to `value`. If `value` matches the name of a column in the dataset, the value of that column in the same record is used for the comparison. Returns False when either value is null or empty.
 Has optional parameters:
 
-- 'value_is_literal' when true, `value` is always treated as a literal, even if a column with that name exists in the dataset. Set it whenever `value` is a literal string: the SQL engine treats a string `value` as a column name unless this is set, and returns False if no such column exists.
+- 'value_is_literal' when true, `value` is always treated as a literal, even if a column with that name exists in the dataset. Set it whenever `value` is a literal string: the engine treats a string `value` as a column name unless this is set, and returns False if no such column exists.
 - 'value_is_reference' when true, the value parameter specifies a column name whose content determines which column to compare against dynamically.
 - 'type_insensitive' when true, both values are converted to strings before comparison to handle type mismatches between string and numeric data.
 
-**SQL engine:** 'type_insensitive' can also be set to `numeric`: both values are converted to numbers before comparing (e.g. `"1.50"` equals `1.5`), and a value that is not a number never equals a number.
+'type_insensitive' can also be set to `numeric`: both values are converted to numbers before comparing (e.g. `"1.50"` equals `1.5`), and a value that is not a number never equals a number.
 
 > --OCCUR = N
 
@@ -175,7 +244,7 @@ True if the value in `name` is equal to the part of `value` extracted by the reg
 
 Complement of `equals_string_part`
 
-**SQL engine:** Returns False when the value in `name` or in `value` is empty, or when `regex` does not match `value`.
+Returns False when the value in `name` or in `value` is empty, or when `regex` does not match `value`.
 
 ## matches_regex
 
@@ -210,11 +279,9 @@ Complement of `matches_regex`
   value: ^[A-Z_][A-Z0-9_]{0,7}$
 ```
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 ## matches_regex_case_insensitive
-
-_SQL engine only._
 
 Case insensitive `matches_regex`
 
@@ -227,8 +294,6 @@ Case insensitive `matches_regex`
 ```
 
 ## not_matches_regex_case_insensitive
-
-_SQL engine only._
 
 Complement of `matches_regex_case_insensitive`. Returns False when the value in `name` is empty.
 
@@ -247,17 +312,13 @@ True if the `prefix` number of characters beginning a string in `name` match a r
 
 Complement of `prefix_matches_regex`
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 ## prefix_matches_regex_case_insensitive
-
-_SQL engine only._
 
 Case insensitive `prefix_matches_regex`
 
 ## not_prefix_matches_regex_case_insensitive
-
-_SQL engine only._
 
 Complement of `prefix_matches_regex_case_insensitive`. Returns False when the value in `name` is empty.
 
@@ -296,11 +357,9 @@ Complement of `suffix_matches_regex`
   value: '\d\d'
 ```
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 ## suffix_matches_regex_case_insensitive
-
-_SQL engine only._
 
 Case insensitive `suffix_matches_regex`
 
@@ -314,8 +373,6 @@ Case insensitive `suffix_matches_regex`
 ```
 
 ## not_suffix_matches_regex_case_insensitive
-
-_SQL engine only._
 
 Complement of `suffix_matches_regex_case_insensitive`. Returns False when the value in `name` is empty.
 
@@ -332,11 +389,9 @@ Substring matching. True if the value in `name` starts with the string in `value
   value_is_literal: true
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the value starts with any of them. When `value` is a variable, each record is compared with the value of that variable in the same record. An empty `value` never matches.
+`value` can also be a list or a `$variable` collection; true if the value starts with any of them. When `value` is a variable, each record is compared with the value of that variable in the same record. An empty `value` never matches.
 
 ## not_starts_with
-
-_SQL engine only._
 
 Complement of `starts_with`
 
@@ -362,11 +417,9 @@ Substring matching. True if the value in `name` ends with the string in `value` 
   value_is_literal: true
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the value ends with any of them. When `value` is a variable, each record is compared with the value of that variable in the same record. An empty `value` never matches.
+`value` can also be a list or a `$variable` collection; true if the value ends with any of them. When `value` is a variable, each record is compared with the value of that variable in the same record. An empty `value` never matches.
 
 ## not_ends_with
-
-_SQL engine only._
 
 Complement of `ends_with`
 
@@ -390,7 +443,7 @@ True if the `prefix` number of characters beginning a string in `name` match the
   value: DOMAIN
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively.
+`value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively.
 
 ## prefix_not_equal_to
 
@@ -407,7 +460,7 @@ True if the `suffix` number of characters ending a string in `name` match the st
   value: DOMAIN
 ```
 
-**SQL engine:** `value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively, and only resolves `DOMAIN` for `prefix_equal_to`.
+`value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively, and only resolves `DOMAIN` for `prefix_equal_to`.
 
 ## suffix_not_equal_to
 
@@ -426,7 +479,7 @@ True if the value in `value` is a substring of the value in `name`
   value_is_literal: true
 ```
 
-**SQL engine:** When `value` is a variable, true if the value of that variable in the same record is a substring of the value in `name`. This also applies to `contains_case_insensitive`.
+When `value` is a variable, true if the value of that variable in the same record is a substring of the value in `name`. This also applies to `contains_case_insensitive`.
 
 ## does_not_contain
 
@@ -460,8 +513,6 @@ Complement of `contains_case_insensitive`
 
 ## is_substring_of
 
-_SQL engine only._
-
 True if the value in `name` is a substring of `value` (case sensitive). `value` can be a literal, a variable (its value in the same record is used), a list or a `$variable`; for a list or a collection `$variable`, true if the value in `name` is a substring of any of its values. Returns False when the value in `name` is empty.
 
 > 'QT' is part of 'QT Studies'
@@ -474,8 +525,6 @@ True if the value in `name` is a substring of `value` (case sensitive). `value` 
 ```
 
 ## is_not_substring_of
-
-_SQL engine only._
 
 Complement of `is_substring_of`
 
@@ -530,7 +579,7 @@ Length comparison. Complement of `longer_than_or_equal_to`: true if the length o
   value: 9
 ```
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 ## shorter_than_or_equal_to
 
@@ -544,7 +593,7 @@ Length comparison. Complement of `longer_than`: true if the length of the value 
   value: 200
 ```
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 ## has_equal_length
 
@@ -562,11 +611,11 @@ Length comparison. True if the length of the value in `name` is equal to the len
 
 Complement of `has_equal_length`
 
-**SQL engine:** Returns False when the value in `name` is empty.
+Returns False when the value in `name` is empty.
 
 # Date
 
-**SQL engine:** In the `date_*` comparison operators, without `date_component` both values must be ISO 8601 dates or datetimes (otherwise the result is False), and the longer one is cut to the length of the shorter one before comparing: a partial date is compared only to the precision it has (`2023-01` is equal to `2023-01-15`), and time zones are not taken into account. With `date_component`, the result is False when either value does not contain that component, so `value` must be a full date or datetime (only a `year` can be given on its own, e.g. `"2021"`).
+In the `date_*` comparison operators, without `date_component` both values must be ISO 8601 dates or datetimes (otherwise the result is False), and the longer one is cut to the length of the shorter one before comparing: a partial date is compared only to the precision it has (`2023-01` is equal to `2023-01-15`), and time zones are not taken into account. With `date_component`, the result is False when either value does not contain that component, so `value` must be a full date or datetime (only a `year` can be given on its own, e.g. `"2021"`).
 
 ## date_equal_to
 
@@ -686,8 +735,6 @@ Date check
 
 ## invalid_date_interval
 
-_SQL engine only._
-
 Date check. True if the value in `name` is not a valid ISO 8601 interval. A valid interval has exactly two parts separated by `/`: `<start>/<end>`, `<start>/<duration>` or `<duration>/<end>` (e.g. `2023-01-01/2023-01-02`, `2023-01-01T08:00/PT1.5H`, `P1DT2H/2023-01-02`). The date parts are validated as for `invalid_date` and the duration part as for `invalid_duration` with negative durations disallowed. Empty values are invalid.
 
 > --EVLINT is not a valid interval
@@ -718,7 +765,7 @@ Duration ISO-8601 check, returns True if a duration is not in ISO-8601 format. T
   negative: False
 ```
 
-**SQL engine:** Null values are not reported as invalid. If `negative` is not given, negative durations are invalid.
+Null values are not reported as invalid. If `negative` is not given, negative durations are invalid.
 
 # Metadata
 
@@ -743,7 +790,7 @@ Check:
       operator: "exists"
 ```
 
-**SQL engine:** Values inside list-valued variables are not searched. `name` can also be a `$variable` of the rule (always true) or `define.xml` (true if a define.xml was provided).
+Values inside list-valued variables are not searched. `name` can also be a `$variable` of the rule (always true) or `define.xml` (true if a define.xml was provided).
 
 ## not_exists
 
@@ -781,8 +828,6 @@ Check:
 
 ## in_enumerated_columns
 
-_SQL engine only._
-
 True if `value` is equal to the value of any of the enumerated variables of `name` in the same record (`name`, `name`1, `name`2, etc., as for `inconsistent_enumerated_columns`). Empty values never match. `value` can be a literal, a variable or a `$variable`.
 Has optional parameters:
 
@@ -790,8 +835,6 @@ Has optional parameters:
 - 'regex' a regular expression that selects the variables to check instead of the enumeration of `name`. It is matched from the start of the variable names, ignoring case.
 
 ## not_in_enumerated_columns
-
-_SQL engine only._
 
 Complement of `in_enumerated_columns`
 
@@ -827,19 +870,19 @@ Operations:
     name: core
 ```
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## variable_metadata_not_equal_to
 
 Complement of `variable_metadata_equal_to`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 # Relationship & Set
 
 ## is_contained_by
 
-True if the value in `name` is one of the values in the list in `value`. The list can have literal values or be a reference to a `$variable`.
+True if the value in `name` is one of the values in the list in `value`. The list can have literal values or be a reference to a `$variable`. If `value` is a variable, true if the value in `name` is equal to the value of that variable in any record.
 
 > ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment')
 
@@ -920,13 +963,9 @@ Complement of `prefix_is_contained_by`
 
 ## prefix_is_contained_by_case_insensitive
 
-_SQL engine only._
-
 Case insensitive `prefix_is_contained_by`
 
 ## prefix_is_not_contained_by_case_insensitive
-
-_SQL engine only._
 
 Complement of `prefix_is_contained_by_case_insensitive`
 
@@ -963,13 +1002,9 @@ Complement of `suffix_is_contained_by`
 
 ## suffix_is_contained_by_case_insensitive
 
-_SQL engine only._
-
 Case insensitive `suffix_is_contained_by`
 
 ## suffix_is_not_contained_by_case_insensitive
-
-_SQL engine only._
 
 Complement of `suffix_is_contained_by_case_insensitive`
 
@@ -1046,7 +1081,7 @@ Multiple grouping variables - true if the values of --STRESU differ within each 
     - "--METHOD"
 ```
 
-**SQL engine:** Has optional parameters:
+Has optional parameters:
 
 - 'where_populated' when true, only records where `name` and the grouping variables are all populated are checked; the other records return False and are left out of the comparison.
 - 'where_populated_columns' a list of variables that must also be populated, in the same way. Variables not in the dataset are ignored.
@@ -1080,17 +1115,7 @@ Relationship Integrity Check. True if the combination of values in `name` and th
     - "--TESTCD"
 ```
 
-> `name` can be a variable containing a list of columns and `value` does not need to be present
-
-```yaml
-Rule Type: Dataset Contents Check against Define XML
-Check:
-  all:
-    - name: define_dataset_key_sequence # contains list of dataset key columns
-      operator: is_unique_set
-```
-
-**SQL engine:** `name` cannot be a variable holding a list of columns (it is not expanded). To check the uniqueness of the define.xml key variables, use the `define_key_sequence_is_unique` column of the `Dataset Contents Check against Define XML` rule type.
+`name` cannot be a variable holding a list of columns (it is not expanded). To check the uniqueness of the define.xml key variables, use the `define_key_sequence_is_unique` column of the `Dataset Contents Check against Define XML` rule type.
 
 ## is_not_unique_set
 
@@ -1105,16 +1130,6 @@ Complement of `is_unique_set`
     - "DOMAIN"
     - "USUBJID"
     - "--TESTCD"
-```
-
-> `name` can be a variable containing a list of columns and `value` does not need to be present
-
-```yaml
-Rule Type: Dataset Contents Check against Define XML
-Check:
-  all:
-    - name: define_dataset_key_sequence # contains list of dataset key columns
-      operator: is_not_unique_set
 ```
 
 ## present_on_multiple_rows_within
@@ -1151,7 +1166,7 @@ Relationship Integrity Check. True if the values in `name` and `value` have a on
   value: AEDECOD
 ```
 
-**SQL engine:** `value` can also be a list of variables, whose combined values must have a one-to-one relationship with `name`. Null and empty values are treated as the same value.
+`value` can also be a list of variables, whose combined values must have a one-to-one relationship with `name`. Null and empty values are treated as the same value.
 
 ## is_not_unique_relationship
 
@@ -1168,7 +1183,7 @@ Complement of `is_unique_relationship`
   value: USUBJID
 ```
 
-**SQL engine:** The last record of each group always returns False.
+The last record of each group always returns False.
 
 ## non_empty_within_except_last_row
 
@@ -1204,7 +1219,7 @@ Check:
       value: USUBJID
 ```
 
-**SQL engine:** Gives a result for each record: records in a group whose values of `name` are not in ascending order (in dataset order) return False, the others True. `value` can also be a list of variables. Values are compared as numbers when both are numbers, otherwise as text. Records where `name` is empty return False, also for `is_not_ordered_set`.
+Gives a result for each record: records in a group whose values of `name` are not in ascending order (in dataset order) return False, the others True. `value` can also be a list of variables. Values are compared as numbers when both are numbers, otherwise as text. Records where `name` is empty return False, also for `is_not_ordered_set`.
 
 ## is_not_ordered_set
 
@@ -1230,13 +1245,13 @@ Check:
       order: asc
 ```
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## is_not_ordered_by
 
 Complement of `is_ordered_by`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## target_is_sorted_by
 
@@ -1254,7 +1269,7 @@ Check:
           null_position: last
 ```
 
-**SQL engine:** `within` can also be a list of variables. Has optional parameters:
+`within` can also be a list of variables. Has optional parameters:
 
 - 'strict_incremental_ordering' when true, checks instead that within each group the values in `name` are 1, 2, 3, ... (as integers, so `01` is 1) in the order given by `value`. Records where `name` is null return True.
 - 'regex' a regular expression whose first capture group is taken from `name` and used as an integer.
@@ -1283,13 +1298,13 @@ Complement of `target_is_sorted_by`
 
 Will raise an issue if at least one of the values in `name` is the same as one of the values in `value`
 
-**SQL engine:** The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
+The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
 
 ## shares_exactly_one_element_with
 
 Will raise an issue if exactly one of the values in `name` is the same as one of the values in `value`
 
-**SQL engine:** The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
+The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
 
 ## shares_no_elements_with
 
@@ -1305,7 +1320,7 @@ Check:
       value: $timing_variables
 ```
 
-**SQL engine:** The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
+The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
 
 ## has_same_values
 
@@ -1332,13 +1347,13 @@ Complement of `has_same_values`
 
 True if the value in `name` has a count greater than one in the dictionary held by the variable `value` (a dictionary mapping each value to the number of times it is referenced, typically produced by an operation)
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## value_does_not_have_multiple_references
 
 Complement of `value_has_multiple_references`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## is_ordered_subset_of
 
@@ -1352,7 +1367,7 @@ Checks if elements in the target list appear in the same relative order in the c
   value: $column_order_from_library
 ```
 
-**SQL engine:** `name` and `value` can be lists, `$variable` collections or variables; a variable is read as the sequence of its non-empty values in record order. The result is the same for every record.
+`name` and `value` can be lists, `$variable` collections or variables; a variable is read as the sequence of its non-empty values in record order. The result is the same for every record.
 
 ## is_not_ordered_subset_of
 
@@ -1366,13 +1381,13 @@ Value Level Metadata Check against Define XML
 
 True if the types in the row match the VLM types specified in the define.xml
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## non_conformant_value_data_type
 
 Complement of `conformant_value_data_type`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## conformant_value_length
 
@@ -1380,43 +1395,37 @@ Value Level Metadata Check against Define XML
 
 True if the lengths in the row match the VLM lengths specified in the define.xml
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## non_conformant_value_length
 
 Complement of `conformant_value_length`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## references_correct_codelist
 
 True if the codelist named within `value` is a valid codelist for the variable named within `name` in the define.xml.
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 ## does_not_reference_correct_codelist
 
 Complement of `references_correct_codelist`
 
-_Not supported by the SQL engine._
+_Not supported by this engine._
 
 # Terminology
 
 ## is_extensible_codelist_code
 
-_SQL engine only._
-
 True if the value in `name` is the code of a codelist (e.g. `C66742`) that is extensible in the controlled terminology loaded for the run. `name` can be a variable or a constant `$variable`.
 
 ## is_not_extensible_codelist_code
 
-_SQL engine only._
-
 Complement of `is_extensible_codelist_code`
 
-## is*valid*<dictionary>\_<check>
-
-_SQL engine only._
+## `is_valid_<dictionary>_<check>`
 
 Checks values against an external dictionary loaded for the run (see [External Dictionaries](ExDictionary.md)). There is one operator for each dictionary and check below, and an `is_not_valid_...` complement of each (e.g. `is_not_valid_meddra_code_reference`).
 
@@ -1493,13 +1502,9 @@ Operations:
 
 ## is_latest_available_external_dictionary_version
 
-_SQL engine only._
-
 True if `version` is the latest version of the `external_dictionary_type` dictionary released on or before the date in `name`. `version` can be a constant `$variable`, a variable or a literal. Release dates are only known for MedDRA (versions 23.1 to 29.0), so `external_dictionary_type` must be `meddra`.
 
 ## is_not_latest_available_external_dictionary_version
-
-_SQL engine only._
 
 Complement of `is_latest_available_external_dictionary_version`
 
