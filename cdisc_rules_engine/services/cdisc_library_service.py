@@ -38,10 +38,26 @@ class CDISCLibraryService:
         return catalogs.values()
 
     def get_rules_by_catalog(self, standard, version):
+        """
+        Returns the catalog's rules, and the (CORE ID, error) of the rules that could not be
+        parsed, so that one unparseable rule does not lose the whole catalog.
+        """
         rules = self._client.get_rules_catalog(standard, version)
+        parsed_rules, skipped_rules = [], []
+        for rule in rules.values():
+            try:
+                parsed_rules.append(Rule.from_cdisc_metadata(rule))
+            except Exception as e:
+                core_id = (
+                    (rule.get("Core") or {}).get("Id")
+                    if isinstance(rule, dict)
+                    else None
+                )
+                skipped_rules.append((core_id or "without a CORE ID", e))
         return {
             "key_prefix": get_rules_cache_key(standard, version),
-            "rules": [Rule.from_cdisc_metadata(rule) for rule in rules.values()],
+            "rules": parsed_rules,
+            "skipped_rules": skipped_rules,
         }
 
     def get_all_ct_packages(self) -> List[dict]:
