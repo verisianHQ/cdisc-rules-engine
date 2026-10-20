@@ -1,29 +1,29 @@
 ## codelist_terms
 
-Returns a list of valid codelist/term values. Used for evaluating whether NCI code or submission values are valid based on controlled terminology. Expects three parameters: `codelists` which is a list of the codelist submission value(s) to retrieve, `level` which is the level of data (either "codelist" or "term") at which to return data from, and `returntype` which is the type of values to return, either "code" for NCI Code(s) or "value" for submission value(s)
+Returns a list of valid codelist/term values. Used for evaluating whether NCI code or submission values are valid based on controlled terminology. Expects three parameters: `codelists` which is a list of the codelist submission value(s) to retrieve, `level` which is the level of data (either "codelist" or "term") at which to return data from, and `returntype` which is the type of values to return, either "code" for NCI Code(s) or "value" for submission value(s).
 
 ```yaml
-- Check:
-    - all:
-        - name: PPSTRESU
-          operator: is_not_contained_by
-          value: $terms
-        - name: $extensible
-          operator: equal_to
-          value: true
-- Operations:
-    - id: $terms
-      operator: codelist_terms
-      codelists:
-        - PKUDUG
-      level: term
-      returntype: value
-    - id: $extensible
-      codelist: PKUDUG
-      operator: codelist_extensible
+Check:
+  all:
+    - name: PPSTRESU
+      operator: is_not_contained_by
+      value: $terms
+    - name: $extensible
+      operator: equal_to
+      value: true
+Operations:
+  - id: $terms
+    operator: codelist_terms
+    codelists:
+      - PKUDUG
+    level: term
+    returntype: value
+  - id: $extensible
+    codelist: PKUDUG
+    operator: codelist_extensible
 ```
 
-If `ct_package_type`, `version`, and `codelist_code` parameters are provided, it will instead attach a new column containing the term for each combination provided in the source dataset. If `term_code` is provided, it will find term values using the term codes. If `term_value` is provided, it will find term codes using the term values.Only one of `term_code` or `term_value` can be provided.
+If `ct_package_type`, `version`, `codelist_code` and one of `term_code` or `term_value` are provided, it will instead attach a new column containing the term for each combination provided in the source dataset. `version` is the name of the column holding each record's CT package version date, and `codelist_code` is either the name of a column holding the codelist code or a literal codelist code. If `term_code` is provided, it will find term values using the term codes. If `term_value` is provided, it will find term codes using the term values. Matching on `term_code`/`term_value` is case-insensitive, and records with no match get a null value. Only one of `term_code` or `term_value` can be provided.
 
 For example, given the current dataset:
 
@@ -75,7 +75,7 @@ This will result in the following dataset:
 
 Returns a Series indicating whether a specified `codelist` is extensible. Used in conjunction with `codelist_terms` to determine if values outside the codelist are acceptable. From the above example, `$extensible` will contain a bool if the codelist PKUDUG is extensible in all rows of the column.
 
-If `ct_package_type`, `version`, and `codelist_code` parameters are provided, it will instead attach a new column containing the extensible value for each combination provided in the source dataset.
+If `ct_package_type`, `version`, and `codelist_code` parameters are provided, it will instead attach a new column containing the extensible value for each combination provided in the source dataset. As for `codelist_terms`, `version` is the name of the column holding each record's CT package version date, and `codelist_code` is either the name of a column holding the codelist code or a literal codelist code.
 
 For example, given the current dataset:
 
@@ -105,19 +105,18 @@ This will result in the following dataset:
 
 ## define_extensible_codelists
 
-Returns a list of valid extensible codelist term's submission values. Used for evaluating whether submission values are valid based on controlled terminology. Expects the parameter `codelists` which is a list of the codelist submission value(s) to retrieve. If the codelist argument is `["All"]` will return all extensible terms for the CT in a list.
+Returns a list of the sponsor-extended term submission values defined in the define.xml for extensible codelists. Used for evaluating whether submission values are valid based on controlled terminology. Expects the parameter `codelists` which is a list of the codelist submission value(s) to retrieve. If `codelists` is `["ALL"]`, it will return the extended terms of all extensible codelists in a single list.
 
 ```yaml
-    {
-      "id": "$ext_value",
-      "codelist": ["ALL"],
-      "operator": "define_extensible_codelists"
-    },
+- id: $ext_value
+  operator: define_extensible_codelists
+  codelists:
+    - ALL
 ```
 
 ## define_variable_metadata
 
-If a target variable `name` is specified, returns the specified metadata in the define for the specified target variable.
+If a target variable `name` is specified, returns the specified metadata in the define for the specified target variable. `--` in `name` is replaced with the domain. If the variable or attribute is not found in the define, an empty string is returned.
 
 - Input
 
@@ -137,9 +136,9 @@ If no target variable `name` specified, returns a dictionary containing the spec
 - Input
 
   ```yaml
-  - operator: define_variable_metadata`
-    attribute_name: define_variable_label`
-    id: $VARIABLE_LABEL`
+  - operator: define_variable_metadata
+    attribute_name: define_variable_label
+    id: $VARIABLE_LABEL
   ```
 
 - Output
@@ -187,7 +186,7 @@ Operations:
 
 ## domain_is_custom
 
-Checks whether the domain is in the set of domains within the provided standard.
+Returns `true` if the domain is not in the set of domains within the provided standard (i.e. it is a custom domain), otherwise `false`.
 
 - Input
 
@@ -211,7 +210,7 @@ Checks whether the domain is in the set of domains within the provided standard.
 
 Returns the label for the domain the operation is executing on within the provided standard.
 
-- Input.
+- Input
 
   Target Domain: `LB`
 
@@ -231,12 +230,14 @@ Returns the label for the domain the operation is executing on within the provid
 
 ## dy
 
-Calculates the number of days between the DTC and RFSTDTC. The Study Day value is incremented by 1 for each date following RFSTDTC. Dates prior to RFSTDTC are decreased by 1, with the date preceding RFSTDTC designated as Study Day -1 (there is no Study Day 0). . . . All Study Day values are integers. Thus, to calculate Study Day:
+Calculates the number of days between the --DTC variable given in `name` and DM.RFSTDTC (matched on USUBJID). The Study Day value is incremented by 1 for each date following RFSTDTC. Dates prior to RFSTDTC are decreased by 1, with the date preceding RFSTDTC designated as Study Day -1 (there is no Study Day 0). All Study Day values are integers. Thus, to calculate Study Day:
 
 - `--DY = (date portion of --DTC) - (date portion of RFSTDTC) + 1 if --DTC is on or after RFSTDTC`
 - `--DY = (date portion of --DTC) - (date portion of RFSTDTC) if --DTC precedes RFSTDTC`
 
 This algorithm should be used across all domains.
+
+If either date is missing or cannot be parsed as a date, the result for that record is empty. If no DM dataset is provided, the result is `0` for every record.
 
 ```yaml
 Check:
@@ -249,7 +250,7 @@ Check:
       operator: is_complete_date
     - name: --DY
       operator: not_equal_to
-      value: $dy`
+      value: $dy
 Operations:
   - name: --DTC
     operator: dy
@@ -274,8 +275,8 @@ Variable Metadata for custom domains will pull from the model while non-custom d
   Version: `3-4`
 
   ```yaml
-  - operator: expected_variables`
-    id: $expected_variables`
+  - operator: expected_variables
+    id: $expected_variables
   ```
 
 - Output:
@@ -288,8 +289,8 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 Returns the requested dataset level metadata value for the current dataset. Possible `name` values are:
 
-- `dataset_size`
-- `dataset_location`
+- `dataset_size` (file size in bytes)
+- `dataset_location` (dataset filename)
 - `dataset_name`
 - `dataset_label`
 
@@ -325,7 +326,7 @@ Fetches attribute values for a codelist specified in a dataset (like TS)
 
 ## get_column_order_from_dataset
 
-Returns list of dataset columns in order
+Returns the list of the current dataset's column names, in the order in which they appear in the dataset.
 
 ```yaml
 Check:
@@ -374,10 +375,10 @@ Operations:
 
 ## get_dataset_filtered_variables
 
-Filters variables from the dataset based on specified metadata criteria. Returns a list of variable names that exist in the dataset and match the filter criteria.
+Filters variables from the dataset based on specified library metadata criteria (`key_name` and `key_value`). Returns a list of variable names, in library order, that exist in the dataset and whose library metadata attribute `key_name` equals `key_value`.
 
 ```yaml
-- operation: get_dataset_filtered_variables
+- operator: get_dataset_filtered_variables
   id: $timing_variables
   key_name: "role"
   key_value: "Timing"
@@ -398,8 +399,8 @@ Example
   Version: `3-4`
 
   ```yaml
-  - operator: get_model_filtered_variables`
-    id: $model_filtered_variables`
+  - operator: get_model_filtered_variables
+    id: $model_filtered_variables
     key_name: "role"
     key_value: "Timing"
   ```
@@ -412,12 +413,13 @@ Example
 
 ## get_parent_model_column_order
 
-Fetches column order for a given SUPP's parent model class from the CDISC library. The lists with column names are sorted in accordance to "ordinal" key of library metadata.
+Fetches column order for a given SUPP's parent model class from the CDISC library. The parent domain of each record is taken from its `RDOMAIN` value. The lists with column names are sorted in accordance to "ordinal" key of library metadata.
 
 ```yaml
 Check:
   all:
-    - operator: is_not_contained_by
+    - name: QNAM
+      operator: is_contained_by
       value: $parent_model_variables
 Operations:
   - id: $parent_model_variables
@@ -426,7 +428,7 @@ Operations:
 
 ## label_referenced_variable_metadata
 
-Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable label found in the column provided in `name`
+Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable label found in the column provided in `name`. A column is added for each library metadata attribute, named `<id>_<attribute>` (e.g. `$label_referenced_variable_metadata_role`). Records whose label does not match a library variable get empty values.
 
 - Input
 
@@ -461,14 +463,19 @@ Generates a dataframe where each record in the dataframe is the library ig varia
     "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
     "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
     "QLABEL": ["Toxicity", "Viscosity", "Analysis Method"],
-    "$label_referenced_variable_name": ["LBTOX", null, "LBANMETH"],
-    "$label_referenced_variable_role": [
+    "$label_referenced_variable_metadata_name": ["LBTOX", "", "LBANMETH"],
+    "$label_referenced_variable_metadata_role": [
       "Variable Qualifier",
-      null,
+      "",
       "Record Qualifier"
     ],
-    "$label_referenced_variable_ordinal": [44, null, 38],
-    "$label_referenced_variable_label": ["Toxicity", null, "Analysis Method"]
+    "$label_referenced_variable_metadata_ordinal": [44, "", 38],
+    "$label_referenced_variable_metadata_label": [
+      "Toxicity",
+      "",
+      "Analysis Method"
+    ],
+    "...": "..."
   }
   ```
 
@@ -546,7 +553,7 @@ Operations:
 
 ## max_date
 
-If no `group` is provided, returns the max date value in `name`. If `group` is provided, returns the max date value in `name`, within each unique set of the grouping variables.
+If no `group` is provided, returns the max date value in `name`. If `group` is provided, returns the max date value in `name`, within each unique set of the grouping variables. The date is returned as an ISO 8601 string; if no valid date is found, the result is empty.
 
 ```yaml
 Check:
@@ -580,6 +587,8 @@ Operations:
 ```
 
 ## mean
+
+If no `group` is provided, returns the mean value in `name`. If `group` is provided, returns the mean value in `name`, within each unique set of the grouping variables.
 
 Example: AAGE > mean(DM.AGE), where AAGE is a fictitious NSV
 
@@ -615,7 +624,7 @@ Operations:
 
 ## min_date
 
-If no `group` is provided, returns the min date value in `name`. If `group` is provided, returns the min date value in `name`, within each unique set of the grouping variables.
+If no `group` is provided, returns the min date value in `name`. If `group` is provided, returns the min date value in `name`, within each unique set of the grouping variables. The date is returned as an ISO 8601 string; if no valid date is found, the result is empty.
 
 Example: RFSTDTC is greater than min AE.AESTDTC for the current USUBJID
 
@@ -636,7 +645,7 @@ Operations:
 
 ## name_referenced_variable_metadata
 
-Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable name found in the column provided in `name`
+Generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable name found in the column provided in `name`. A column is added for each library metadata attribute, named `<id>_<attribute>` (e.g. `$name_referenced_variable_metadata_role`). Records whose name does not match a library variable get empty values.
 
 - Input
 
@@ -652,15 +661,15 @@ Generates a dataframe where each record in the dataframe is the library ig varia
   {
     "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
     "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QNAM": ["Toxicity", "LBVISCOS", "Analysis Method"]
+    "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"]
   }
   ```
 
   Rule:
 
   ```yaml
-  - operator: name_referenced_variable_metadata`
-    id: $name_referenced_variable_metadata`
+  - operator: name_referenced_variable_metadata
+    id: $name_referenced_variable_metadata
     name: "QNAM"
   ```
 
@@ -671,14 +680,19 @@ Generates a dataframe where each record in the dataframe is the library ig varia
     "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
     "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
     "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"],
-    "$label_referenced_variable_name": ["LBTOX", null, "LBANMETH"],
-    "$label_referenced_variable_role": [
+    "$name_referenced_variable_metadata_name": ["LBTOX", "", "LBANMETH"],
+    "$name_referenced_variable_metadata_role": [
       "Variable Qualifier",
-      null,
+      "",
       "Record Qualifier"
     ],
-    "$label_referenced_variable_ordinal": [44, null, 38],
-    "$label_referenced_variable_label": ["Toxicity", null, "Analysis Method"]
+    "$name_referenced_variable_metadata_ordinal": [44, "", 38],
+    "$name_referenced_variable_metadata_label": [
+      "Toxicity",
+      "",
+      "Analysis Method"
+    ],
+    "...": "..."
   }
   ```
 
@@ -696,8 +710,8 @@ Variable Metadata for custom domains will pull from the model while non-custom d
   Version: `3-4`
 
   ```yaml
-  - operator: permissible_variables`
-    id: $permissible_variables`
+  - operator: permissible_variables
+    id: $permissible_variables
   ```
 
 - Output:
@@ -708,7 +722,7 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 ## record_count
 
-If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These can be static column name(s) or can be derived from other operations like `get_dataset_filtered_variables`. │ │If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables.
+If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These can be static column name(s) or can be derived from other operations like `get_dataset_filtered_variables`. If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables.
 
 **Wildcard Filtering**: Filter values ending with `%` will match any records where the column value starts with the specified prefix. For example, `RACE%` will match `RACE1`, `RACE2`, `RACE3`, etc. This is useful for matching related variables with numeric or alphabetic suffixes.
 
@@ -734,7 +748,7 @@ Example: return the number of records where STUDYID = "CDISC01" and FLAGVAR = "Y
 Example: return the number of records where QNAM starts with "RACE" (matches RACE1, RACE2, RACE3, etc.) per USUBJID.
 
 ```yaml
-- operation: record_count
+- operator: record_count
   id: $race_records_in_dataset
   filter:
     QNAM: "RACE%"
@@ -869,6 +883,121 @@ will return:
 ["2023-05-19", "2023-10-26", "2023-12-13"]
 ```
 
+## variable_count
+
+Given a variable `name`, returns the number of datasets in the study that contain that variable. `--` in `name` is replaced with each dataset's domain, so `--ENDTC` matches AEENDTC in AE, LBENDTC in LB, etc.
+
+- Input
+
+  Study datasets:
+
+  ```json
+  {
+    "AE": ["STUDYID", "DOMAIN", "USUBJID", "AETERM", "AEENDTC"],
+    "LB": ["STUDYID", "DOMAIN", "USUBJID", "LBTESTCD", "LBENDTC"]
+  }
+  ```
+
+  Rule:
+
+  ```yaml
+  - operator: variable_count
+    id: $endtc_count
+    name: --ENDTC
+  ```
+
+- Output
+
+  `2`
+
+## variable_exists
+
+Returns `true` if the variable given by `name` exists in the dataset being evaluated, otherwise `false`. `--` in `name` is replaced with the domain.
+
+Example: flag an error if MIDS is in the dataset currently being evaluated and the TM domain is not present in the study
+
+```yaml
+Rule Type: Domain Presence Check
+Check:
+  all:
+    - name: $MIDS_EXISTS
+      operator: equal_to
+      value: true
+    - name: TM
+      operator: not_exists
+Operations:
+  - id: $MIDS_EXISTS
+    name: MIDS
+    operator: variable_exists
+```
+
+## variable_is_null
+
+Returns `true` if every record of the variable given by `name` is null or the variable is not in the dataset, otherwise `false`. For Char variables, empty strings and values containing only whitespace (spaces, tabs, newlines) count as null. A dataset with no records returns `true`.
+
+`name` is looked up in the operation's `domain`, which defaults to the dataset being evaluated. `--` in `name` is replaced with the domain. Set `use_rule_type_table: true` to look it up in the rule type's table instead (e.g. `define_variable_has_no_data` or `dataset_label`). If the domain or table doesn't exist, the rule is skipped.
+
+Combine it with `exists` to only flag variables that are present.
+
+Flag an error if AEDUR is in the dataset but has no populated values
+
+```yaml
+Check:
+  all:
+    - name: AEDUR
+      operator: exists
+    - name: $AEDUR_IS_NULL
+      operator: equal_to
+      value: true
+Operations:
+  - id: $AEDUR_IS_NULL
+    name: AEDUR
+    operator: variable_is_null
+```
+
+## variable_library_metadata
+
+Get the metadata value from the library for all variables defined in the library for the current domain. Metadata attribute is specified by the `name`. Returns a mapping of variable names to the metadata value.
+
+Result
+
+```json
+{
+  "STUDYID": "Req",
+  "DOMAIN": "Req",
+  "AEGRPID": "Perm",
+  "AETERM": "Req",
+  "AELLT": "Exp",
+  "...": "..."
+}
+```
+
+> Condition: Variable Core Status = Required
+
+> Rule: Variable ^= null
+
+```yaml
+Check:
+  any:
+    - all:
+        - operator: variable_metadata_equal_to
+          value: Req
+          metadata: $var_perm
+        - operator: empty
+Operations:
+  - id: $var_perm
+    operator: variable_library_metadata
+    name: core
+```
+
+## variable_names
+
+Return the set of variable names from the library for the given standard
+
+## variable_value_count
+
+Given a variable `name`, returns a mapping of variable values to the number of domains in the study in which that value appears in the variable. `--` in `name` is replaced with each domain code. Each value is counted at most once per domain.
+
 # External Dictionary Validation Operations
 
 ## Supported External Dictionary Types
@@ -906,7 +1035,7 @@ Output:
 
 ## valid_external_dictionary_value
 
-Returns true if the target variable contains a valid external dictionary value, otherwise false
+Returns true if the target variable contains a valid external dictionary value, otherwise false.
 
 Can be case insensitive by setting `case_sensitive` attribute to false. It is true by default.
 
@@ -930,7 +1059,7 @@ Output:
 
 ## valid_external_dictionary_code
 
-Returns true if the target variable contains a valid external dictionary code, otherwise false
+Returns true if the target variable contains a valid external dictionary code, otherwise false.
 
 Input:
 
@@ -951,10 +1080,11 @@ Output:
 
 ## valid_external_dictionary_code_term_pair
 
-Returns true if the row in the dataset contains a matching pair of code and term, otherwise false
+Returns true if the row in the dataset contains a matching pair of code and term, otherwise false.
 
-For this operator, the name parameter should contain the name of the variable containing the code, and the
-external_dictionary_term_variable parameter should contain the name of the variable containing the term
+For this operator, the `name` parameter should contain the name of the variable containing the code, and the
+`external_dictionary_term_variable` parameter should contain the name of the variable containing the term.
+
 Input:
 
 ```yaml
@@ -1058,6 +1188,7 @@ Checks if a reference to whodrug term in `name` points to the existing code in A
 Operations:
   - id: $whodrug_refs_valid
     operator: valid_whodrug_references
+    name: --CLASCD
 ```
 
 **Output:**
@@ -1082,114 +1213,8 @@ Operations:
     operator: whodrug_code_hierarchy
 ```
 
-## variable_count
-
-Returns a mapping of variable names to the number of times that variable appears in a domain within the study.
-
-- Input
-
-  ```json
-  {
-    "AE": ["STUDYID", "DOMAIN", "USUBJID", "AETERM", "AEENDTC"],
-    "LB": ["STUDYID", "DOMAIN", "USUBJID", "LBTESTCD", "LBENDTC"]
-  }
-  ```
-
-- Output
-
-  ```json
-  {
-    "STUDYID": 2,
-    "DOMAIN": 2,
-    "USUBJID": 2,
-    "--TERM": 1,
-    "--TESTCD": 1,
-    "--ENDTC": 2
-  }
-  ```
-
-## variable_exists
-
-Flag an error if MIDS is in the dataset currently being evaluated and the TM domain is not present in the study
-
-```yaml
-Rule Type: Domain Presence Check
-Check:
-  all:
-    - name: $MIDS_EXISTS
-      operator: equal_to
-      value: true
-    - name: TM
-      operator: not_exists
-Operations:
-  - id: $MIDS_EXISTS
-    name: MIDS
-    operator: variable_exists
-```
-
-## variable_is_null
-
-Returns `true` if every record of the variable given by `name` is null or the variable is not in the dataset, otherwise `false`. For Char variables, empty strings and values containing only whitespace (spaces, tabs, newlines) count as null. A dataset with no records returns `true`.
-
-`name` is looked up in the operation's `domain`, which defaults to the dataset being evaluated. `--` in `name` is replaced with the domain. Set `use_rule_type_table: true` to look it up in the rule type's table instead (e.g. `define_variable_has_no_data` or `dataset_label`). If the domain or table doesn't exist, the rule is skipped.
-
-Combine it with `exists` to only flag variables that are present.
-
-Flag an error if AEDUR is in the dataset but has no populated values
-
-```yaml
-Check:
-  all:
-    - name: AEDUR
-      operator: exists
-    - name: $AEDUR_IS_NULL
-      operator: equal_to
-      value: true
-Operations:
-  - id: $AEDUR_IS_NULL
-    name: AEDUR
-    operator: variable_is_null
-```
-
-## variable_names
-
-Return the set of variable names from the library for the given standard
-
-## variable_library_metadata
-
-Get the metadata value from the library for all variables in the current dataset. Metadata attribute is specified by the `name`.
-
-Result
+**Output:**
 
 ```json
-{
-  "STUDYID": "Req",
-  "DOMAIN": "Req",
-  "AEGRPID": "Perm",
-  "AETERM": "Req",
-  "AELLT": "Exp",
-  "...": "..."
-}
+[true, false, true, true]
 ```
-
-> Condition: Variable Core Status = Required
-
-> Rule: Variable ^= null
-
-```yaml
-Check:
-  any:
-    - all:
-        - operator: variable_metadata_equal_to
-          value: Req
-          metadata: $var_perm
-        - operator: empty
-Operations:
-  - id: $var_perm
-    operator: variable_library_metadata
-    name: core
-```
-
-## variable_value_count
-
-Given a variable `name`, returns a mapping of variable values to the number of times that value appears in the variable within all datasets in the study.

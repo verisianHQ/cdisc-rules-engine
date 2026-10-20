@@ -11,19 +11,17 @@ This guide explains how to extend CDISC rule definitions with custom attributes 
 - [Custom Attributes Overview](#overview)
 - [What Can and Cannot Be Changed](#what-can-and-cannot-be-changed)
 - [Custom Schema Attributes](#custom-attributes)
-- [Custom Columns in Editor Syntax](#custom-columns-in-editor-syntax)
-- [Adding a Custom Organization](#adding-a-custom-organization)
 - [Example Rule with Custom Attributes](#example-rule-with-custom-attributes)
 - [Filtering Rules with Custom Columns](#filtering-rules-with-custom-columns)
-- [Validation](#validation)
 - [Best Practices](#best-practices)
+- [Validation](#validation)
 - [FAQ](#faq)
 
 ## Custom Columns in Editor Syntax
 
 Custom columns allow you to query nested rule structures, including arrays, using a simple path syntax. This allows for better access and filtering for both standard and custom attributes.
 
-## Overview and Basic Syntax
+### Overview and Basic Syntax
 
 Custom columns allow you to query nested rule structures, including arrays, using a simple path syntax. All custom column paths use `.` to separate each nested object property of the rule and use `@` to denote array elements.
 
@@ -38,7 +36,7 @@ The general rules for constructing paths:
 
 When viewing a YAML document, you can identify arrays by looking for these indicators:
 
-1. **Hyphen (-) at the Start**: Arrays elements are marked with a leading hyphen
+1. **Hyphen (-) at the Start**: Array elements are marked with a leading hyphen
 
 ```yaml
 Authorities: #This is an array
@@ -130,7 +128,7 @@ The following core components of the CDISC schema **must be preserved**:
 
 You can extend the schema by adding:
 
-- **Custom organization** - Define rules under your own organization name
+- **Custom organization** - Define rules under your own organization name (any name other than `CDISC` or `FDA`)
 - **Custom Category object** - Add metadata within the Category property in the Authorities section
 - **Custom attributes** - Define your own properties within the Category object
 
@@ -195,7 +193,7 @@ If you want to formally define custom properties in your schema (recommended for
 
 1. **Extend the Organization_Custom.json Schema**:
 
-```json
+```jsonc
 {
   "$id": "Organization_Custom.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -265,7 +263,7 @@ If you want to formally define custom properties in your schema (recommended for
 
 2. **Version Control Your Schema Extensions**:
    - Document changes to the schema in a changelog within the schema file itself
-   - Metadata object withing `$def` object can be updated to user's specifications
+   - The `metadata` object within the `$defs` object can be updated to user's specifications
    - Use semantic versioning for your custom schema extensions (MAJOR.MINOR.PATCH)
    - Include a metadata section with versioning information:
 
@@ -394,7 +392,7 @@ The custom columns editor syntax allows you to create powerful filters based on 
 | Trial                  | `@Authorities.Category.@Trials`                          | "ONC-2025-01"         |
 | Purpose                | `@Authorities.Category.Purpose`                          | "RAW data validation" |
 | Keyword                | `@Authorities.Category.@Keywords`                        | "mykeyword"           |
-| Custom property        | `@Authorities.Category.Department`                       | "Clinical Data Mgmt"  |
+| Custom property        | `@Authorities.Category.Department`                       | "Clinical"            |
 | Authority organization | `@Authorities.Organization`                              | "MyCompany"           |
 | Standard name          | `@Authorities.@Standards.Name`                           | "Internal Standard"   |
 | Rule ID                | `@Authorities.@Standards.@References.Rule_Identifier.Id` | "INT001"              |
@@ -438,13 +436,11 @@ It depends on which attributes:
 
 ### How do I execute custom rules?
 
-Currently, custom rules can be executed using the local rules option (`-lr`) when running the validation engine. However:
+Custom rules can be executed in two ways:
 
-- The engine currently disregards the `-s` (standard) and `-v` (version) options when executing local rules
-- All rules in the local folder will be executed regardless of standard/version
+- **Local rules** - Use the local rules option (`-lr`) when running the validation engine. Only rules whose `Authorities` > `Standards` `Name` and `Version` (and `Substandard`, when `-ss` is given) match the `-s` (standard) and `-v` (version) options are executed. Use `-r` to execute only specific rule IDs.
+- **Cached custom rules** - Add the rules to the cache with `update-cache --custom_rules_directory` (`-crd`) or `--custom_rule` (`-cr`), add a custom standard listing them with `update-cache --custom_standard` (`-cs`), then run the validation with the `--custom_standard` (`-cs`) flag and `-s`/`-v` set to the custom standard. See the README for the custom standard file format.
 - Rules need a Core: Id property for execution.
-- We are working on further support for custom rule properties and execution.
-- This will allow for more targeted execution of custom rules based on specified criteria
 
 ### Can I use custom attributes with standard CDISC/FDA rules?
 

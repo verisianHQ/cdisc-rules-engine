@@ -32,7 +32,7 @@ External dictionaries provide standardized terminology and coding systems for me
                         - soc_hlgt.asc
                         - hlgt_hlt.asc
                         - hlt_pt.asc
-                    Version file:
+                    Version file (optional, the version is left empty if missing):
                         - meddra_release.asc containing version number followed by language and additional fields
                             Example: 27.0$English$$$$
 ```
@@ -40,11 +40,10 @@ External dictionaries provide standardized terminology and coding systems for me
 #### SNOMED CT
 
 ```
-
---snomed-version TEXT Version of SNOMED to use (e.g., 2024-09-01)
---snomed-url TEXT Base URL of SNOMED API (e.g., https://snowstorm.snomedtools.org/snowstorm/snomed-ct)
---snomed-edition TEXT Edition of SNOMED to use (e.g., SNOMEDCT-US)
-
+--snomed-version TEXT   Version of SNOMED to use (e.g., 2024-09-01)
+--snomed-url TEXT       Base URL of SNOMED API
+                        (default: https://snowstorm.snomedtools.org/snowstorm/snomed-ct/)
+--snomed-edition TEXT   Edition of SNOMED to use (e.g., SNOMEDCT-US)
 ```
 
 For SNOMED CT:
@@ -58,14 +57,17 @@ For SNOMED CT:
 #### WHODrug
 
 ```
+--whodrug TEXT     Path to directory containing WHODrug dictionary files
+                   Required files in directory:
+                     - DD.txt (Drug Dictionary)
+                     - DDA.txt (ATC Classification)
+                     - INA.txt (ATC Text)
+                   Version file (optional, the version is left empty if missing):
+                     - version.txt (Contains Vault Safety label format, e.g., "GLOBALC3Mar24")
 
---whodrug TEXT Path to directory containing WHODrug dictionary files
-Required files: - DD.txt (Drug Dictionary) - DDA.txt (ATC Classification) - INA.txt (ATC Text) - version.txt (Contains Vault Safety label format, e.g., "GLOBALC3Mar24")
-
-                    Supported formats:
-                      - B3: Substance Name field is 45 characters
-                      - C3: Substance Name field is 110-250 characters (expanded after March 2022)
-
+                   Supported formats:
+                     - B3: Substance Name field is 45 characters
+                     - C3: Substance Name field is 110-250 characters (expanded after March 2022)
 ```
 
 #### Other Drug Dictionaries
@@ -77,13 +79,13 @@ Required files: - DD.txt (Drug Dictionary) - DDA.txt (ATC Classification) - INA.
                   XML Structure Requirements:
                   - The XML should contain both term and concept elements
 
-                  Term elements must include:
+                  Term elements include:
                   - <code>: Unique term code (required)
                   - <id>: ConceptID identifier (required)
                   - <status>: Term status (optional)
                   - <name>: Term name (optional)
 
-                  Concept elements must include:
+                  Concept elements may include:
                   - <name>: Concept name (optional)
                   - <code>: Concept code (optional)
                   - <status>: Concept status (optional)
@@ -107,20 +109,23 @@ Required files: - DD.txt (Drug Dictionary) - DDA.txt (ATC Classification) - INA.
                     </concepts>
                   </root>
 
---unii TEXT Path to directory containing UNII dictionary files
-Required files: - UNII*Records*_._ (tab-delimited file containing UNII codes and terms)
-Format: Tab-delimited file with following columns: 1. UNII code 2. UNII term
-Note: Version is extracted from filename (e.g., "UNII_Records_2024.txt" → version "2024")
+                  Version is read from the <namespace><version> element
 
+--unii TEXT       Path to directory containing UNII dictionary files
+                  Required files in directory:
+                    - UNII_Records_* (tab-delimited file containing UNII codes and terms)
+                  Format: Tab-delimited file with a header row and the following columns:
+                    1. UNII code
+                    2. UNII term
+                  Note: Version is extracted from filename (e.g., "UNII_Records_2024.txt" → version "2024")
 ```
 
 ### Laboratory Dictionaries
 
 ```
-
---loinc TEXT Path to directory containing LOINC dictionary files
-Directory must contain the `Loinc.csv` with capital 'L'
-
+--loinc TEXT      Path to directory containing LOINC dictionary files
+                  Directory must contain the `Loinc.csv` with capital 'L'
+                  Version is the highest VersionLastChanged value in the file
 ```
 
 ## Operations & Rule Editor
@@ -202,7 +207,7 @@ Operations:
 
 #### valid_meddra_code_term_pairs
 
-Validates corresponding code-term pairs:
+Validates the code-term pair containing the variable given in `name`. Supported pairs:
 
 - `--SOCCD`, `--SOC` (System Organ Class Code and Term)
 - `--HLGTCD`, `--HLGT` (High Level Group Term Code and Term)
@@ -215,6 +220,7 @@ Example:
 ```yaml
 Operations:
   - id: $is_valid_meddra_pairs
+    name: --DECOD
     operator: valid_meddra_code_term_pairs
 ```
 
@@ -225,7 +231,7 @@ Validates terms at each MedDRA level:
 - `--SOC` (System Organ Class)
 - `--HLGT` (High Level Group Term)
 - `--HLT` (High Level Term)
-- `--DECOD` (Decoded Term)
+- `--DECOD` (Dictionary-Derived Term)
 - `--LLT` (Lowest Level Term)
 
 Example:
@@ -240,17 +246,18 @@ Operations:
 
 #### valid_whodrug_references
 
-Validates WHODrug terms against the ATC Text (INA) file.
+Validates that the values of the variable given in `name` exist as codes in the ATC Text (INA) file.
 
 Example:
 
 ```yaml
 Operations:
   - id: $whodrug_refs_valid
+    name: --CLASCD
     operator: valid_whodrug_references
 ```
 
-#### valid_whodrug_code_hierarchy
+#### whodrug_code_hierarchy
 
 Validates hierarchical relationships between:
 

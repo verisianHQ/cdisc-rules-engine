@@ -2,9 +2,10 @@
 
 ## equal_to
 
-Value comparison. Works for both string and number.
-Has optional parameter:
+Value comparison. Works for both string and number. True if the value in `name` is equal to `value`. If `value` matches the name of a column in the dataset, the value of that column in the same record is used for the comparison. Returns False when either value is null or empty.
+Has optional parameters:
 
+- 'value_is_literal' when true, `value` is always treated as a literal, even if a column with that name exists in the dataset. Set it whenever `value` is a literal string: the SQL engine treats a string `value` as a column name unless this is set, and returns False if no such column exists.
 - 'value_is_reference' when true, the value parameter specifies a column name whose content determines which column to compare against dynamically.
 - 'type_insensitive' when true, both values are converted to strings before comparison to handle type mismatches between string and numeric data.
 
@@ -36,7 +37,7 @@ Has optional parameter:
 
 ## not_equal_to
 
-Complement of `equal_to`. Also has the optional parameters 'value_is_reference' and 'type_insensitive'.
+Complement of `equal_to`. Also has the optional parameters 'value_is_literal', 'value_is_reference' and 'type_insensitive'. Note that, like `equal_to`, it returns False when both values are null or empty.
 
 > --OCCUR ^= Y
 
@@ -48,7 +49,7 @@ Complement of `equal_to`. Also has the optional parameters 'value_is_reference' 
 
 ## equal_to_case_insensitive
 
-Case insensitive `equal_to`
+Case insensitive `equal_to`. Supports the optional parameter 'value_is_literal', but not 'value_is_reference' or 'type_insensitive'.
 
 > DSTERM is "Informed consent obtained"
 
@@ -83,7 +84,7 @@ Value comparison
 ```yaml
 - name: TSVAL
   operator: greater_than_or_equal_to
-  value: 1
+  value: 0
 ```
 
 ## less_than
@@ -134,11 +135,9 @@ Complement of `empty`
 
 # String
 
-## does_not_equal_string_part
-
-Complement of `equals_string_part`
-
 ## equals_string_part
+
+True if the value in `name` is equal to the part of `value` extracted by the regular expression in `regex` (the capture group, if the regex has one). `value` can be a variable name or a literal.
 
 > RDOMAIN equals characters 5 and 6 of SUPP dataset name
 
@@ -149,6 +148,10 @@ Complement of `equals_string_part`
   regex: ".{4}(..).*"
 ```
 
+## does_not_equal_string_part
+
+Complement of `equals_string_part`
+
 ## matches_regex
 
 Regular Expression value matching
@@ -157,10 +160,10 @@ Regular Expression value matching
 - To "search" for a regex within the entire text, prefix the regex with `.*` and do not use anchors `^` , `$`
 - To do a "fullmatch" of a regex with the entire text, suffix the regex with an anchor `$` and do not prefix the regex with `.*`
 - For syntax guide, refer to this Python documentation: [Regular Expression HOWTO](https://docs.python.org/3/howto/regex.html).
-- Suggestion for an on-line regular expression logic. tester: https://regex101.com, choose the Python dialect.
+- Suggestion for an online regular expression tester: https://regex101.com, choose the Python dialect.
 - For regex token visualization, try https://www.debuggex.com.
 
-> --DOSTXT value is non-numeric
+> --DOSTXT value is numeric
 
 ```yaml
 - name: --DOSTXT
@@ -172,7 +175,7 @@ Regular Expression value matching
 
 Complement of `matches_regex`
 
-> --TESTCD <= 8 chars and contains only letters, numbers, and underscores and can not start with a number
+> --TESTCD is not (<= 8 chars, containing only letters, numbers, and underscores, and not starting with a number)
 
 ```yaml
 - name: --TESTCD
@@ -205,7 +208,7 @@ True if the `suffix` number of characters ending a string in `name` match a regu
 - name: "QNAM"
   operator: "suffix_matches_regex"
   suffix: 2
-  value: "\d\d"
+  value: '\d\d'
 ```
 
 ## not_suffix_matches_regex
@@ -218,12 +221,12 @@ Complement of `suffix_matches_regex`
 - name: "QNAM"
   operator: "not_suffix_matches_regex"
   suffix: 2
-  value: "\d\d"
+  value: '\d\d'
 ```
 
 ## starts_with
 
-Substring matching
+Substring matching. True if the value in `name` starts with the string in `value` (case sensitive).
 
 > DOMAIN beginning with 'AP'
 
@@ -235,7 +238,7 @@ Substring matching
 
 ## ends_with
 
-Substring matching
+Substring matching. True if the value in `name` ends with the string in `value` (case sensitive).
 
 > DOMAIN ending with 'FOOBAR'
 
@@ -267,7 +270,7 @@ True if the `suffix` number of characters ending a string in `name` match the st
 ```yaml
 - name: dataset_name
   operator: suffix_equal_to
-  prefix: 2
+  suffix: 2
   value: DOMAIN
 ```
 
@@ -317,7 +320,7 @@ Complement of `contains_case_insensitive`
 
 ## longer_than
 
-Length comparison
+Length comparison. True if the length of the value in `name` is greater than `value`. If `value` is the name of a non-integer variable, the lengths of the values in the two variables are compared instead.
 
 > SETCD value length > 8
 
@@ -329,7 +332,7 @@ Length comparison
 
 ## longer_than_or_equal_to
 
-Length comparison
+Length comparison. True if the length of the value in `name` is greater than or equal to `value`. If `value` is the name of a non-integer variable, the lengths of the values in the two variables are compared instead.
 
 > TSVAL value length >= 201
 
@@ -341,7 +344,7 @@ Length comparison
 
 ## shorter_than
 
-Length comparison
+Length comparison. Complement of `longer_than_or_equal_to`: true if the length of the value in `name` is less than `value`.
 
 > SETCD value length < 9
 
@@ -353,21 +356,21 @@ Length comparison
 
 ## shorter_than_or_equal_to
 
-Length comparison
+Length comparison. Complement of `longer_than`: true if the length of the value in `name` is less than or equal to `value`.
 
 > TSVAL value length <= 200
 
 ```yaml
 - name: "TSVAL"
   operator: "shorter_than_or_equal_to"
-  value: 201
+  value: 200
 ```
 
 ## has_equal_length
 
-Length comparison
+Length comparison. True if the length of the value in `name` is equal to the length of the value in the variable `value`. If `value` is an integer, or an integer variable, the length is compared to that number instead.
 
-> Check whether variable values has equal length of another variable.
+> SEENDTC value length = SESTDTC value length
 
 ```yaml
 - name: SEENDTC
@@ -461,7 +464,7 @@ Date comparison. Compare `name` to `value`. Compares partial dates if `date_comp
 
 ## is_complete_date
 
-Date check
+Date check. True if the value in `name` is a complete ISO 8601 date, i.e. it contains at least year, month and day (e.g. `2021-03-15`); the time part is optional.
 
 > DM.RFSTDTC = complete date
 
@@ -565,6 +568,8 @@ Check:
 
 ## variable_metadata_equal_to
 
+True if the metadata value of the variable `name`, looked up in the dictionary held by `metadata` (a dictionary keyed by variable name, typically produced by an operation), is equal to `value`. When `name` is omitted, the condition is evaluated for each of the rule's target variables.
+
 Could be useful, for example, in checking variable permissibility in conjunction with the `variable_library_metadata` operation:
 
 ```yaml
@@ -588,7 +593,7 @@ Complement of `variable_metadata_equal_to`
 
 ## is_contained_by
 
-Value in `name` compared against a list in `value`. The list can have literal values or be a reference to a `$variable`.
+True if the value in `name` is one of the values in the list in `value`. The list can have literal values or be a reference to a `$variable`.
 
 > ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment')
 
@@ -620,7 +625,7 @@ Complement of `is_contained_by`
 
 Value in `name` case insensitive compared against a list in `value`. The list can have literal values or be a reference to a `$variable`.
 
-> ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment')
+> ACTARM in ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment'), regardless of text case
 
 ```yaml
 - name: "ACTARM"
@@ -636,7 +641,7 @@ Value in `name` case insensitive compared against a list in `value`. The list ca
 
 Complement of `is_contained_by_case_insensitive`
 
-> ARM not in ('Screen Failure', 'Not Assigned')
+> ARM not in ('Screen Failure', 'Not Assigned'), regardless of text case
 
 ```yaml
 - name: "ARM"
@@ -672,7 +677,7 @@ True if the `suffix` number of characters ending a string in `name` match one of
 ```yaml
 - name: dataset_name
   operator: suffix_is_contained_by
-  prefix: 2
+  suffix: 2
   value: $study_domains
 ```
 
@@ -682,7 +687,7 @@ Complement of `suffix_is_contained_by`
 
 ## contains_all
 
-True if all values in `value` are contained within the variable `name`.
+True if all values in `value` are contained within the variable `name`. The check is made across the whole dataset (each value must be present in at least one record), so the result is the same for every record.
 
 > All of ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment') in ACTARM
 
@@ -700,7 +705,7 @@ True if all values in `value` are contained within the variable `name`.
 
 Complement of `contains_all`
 
-> All of ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment') not in ACTARM
+> Not all of ('Screen Failure', 'Not Assigned', 'Not Treated', 'Unplanned Treatment') in ACTARM
 
 ```yaml
 - name: "ACTARM"
@@ -739,7 +744,7 @@ Multiple grouping variables - true if the values of --STRESU differ within each 
 
 ## is_unique_set
 
-Relationship Integrity Check
+Relationship Integrity Check. True if the combination of values in `name` and the variable(s) listed in `value` occurs only once in the dataset. Null values are treated as equal to each other.
 
 > --SEQ is unique within DOMAIN, USUBJID, and --TESTCD
 
@@ -794,7 +799,7 @@ True if the same value of `name` is present on multiple rows, grouped by `within
 ```yaml
 - operator: "present_on_multiple_rows_within"
   name: "RELID"
-  value: 4 (optional)
+  value: 4 # optional
   within: "USUBJID"
 ```
 
@@ -805,13 +810,13 @@ Complement of `present_on_multiple_rows_within`
 ```yaml
 - operator: "not_present_on_multiple_rows_within"
   name: "RELID"
-  value: 4 (optional)
+  value: 4 # optional
   within: "USUBJID"
 ```
 
 ## is_unique_relationship
 
-Relationship Integrity Check
+Relationship Integrity Check. True if the values in `name` and `value` have a one-to-one relationship: each value of `name` always corresponds to the same value of `value`, and vice versa. Records whose values break the relationship are flagged by `is_not_unique_relationship`.
 
 > AETERM and AEDECOD has a 1-to-1 relationship
 
@@ -870,9 +875,21 @@ Check:
       value: USUBJID
 ```
 
+## is_not_ordered_set
+
+Complement of `is_ordered_set`
+
+```yaml
+Check:
+  all:
+    - name: --SEQ
+      operator: is_not_ordered_set
+      value: USUBJID
+```
+
 ## is_ordered_by
 
-True if the dataset rows are ordered by the values within `name`, given the ordering specified by `order`
+True if the dataset rows are ordered by the values within `name`, given the ordering specified by `order` (`asc` or `dsc`)
 
 ```yaml
 Check:
@@ -886,13 +903,9 @@ Check:
 
 Complement of `is_ordered_by`
 
-## target_is_not_sorted_by
-
-Complement of `target_is_sorted_by`
-
 ## target_is_sorted_by
 
-True if the values in `name` are ordered according to the values specified by `value` grouped by the values in `within`. Each `value` requires a variable `name`, ordering specified by `order`, and the null position specified by `null_position`.
+True if the values in `name` are ordered according to the values specified by `value` grouped by the values in `within`. Each `value` requires a variable `name`, ordering specified by `sort_order` (`asc` or `desc`), and the null position specified by `null_position` (`first` or `last`).
 
 ```yaml
 Check:
@@ -902,9 +915,13 @@ Check:
       operator: target_is_sorted_by
       value:
         - name: --STDTC
-          order: asc
+          sort_order: asc
           null_position: last
 ```
+
+## target_is_not_sorted_by
+
+Complement of `target_is_sorted_by`
 
 ## shares_at_least_one_element_with
 
@@ -921,15 +938,11 @@ Will raise an issue if the values in `name` do not share any of the values in `v
 > Check if $dataset_variables shares no elements with $timing_variables
 
 ```yaml
-  "Check": {
-    "all": [
-      {
-        "name": "$dataset_variables",
-        "operator": "shares_no_elements_with",
-        "value": "$timing_variables"
-      }
-    ]
-  },
+Check:
+  all:
+    - name: $dataset_variables
+      operator: shares_no_elements_with
+      value: $timing_variables
 ```
 
 ## has_same_values
@@ -937,6 +950,7 @@ Will raise an issue if the values in `name` do not share any of the values in `v
 True if all values in `name` are the same
 
 > Condition: MHCAT ^= null
+>
 > Rule: MHCAT ^= the same value for all records
 
 ```yaml
@@ -954,7 +968,7 @@ Complement of `has_same_values`
 
 ## value_has_multiple_references
 
-True if the value in `name` has more than one count in the dictionary defined in `value`
+True if the value in `name` has a count greater than one in the dictionary held by the variable `value` (a dictionary mapping each value to the number of times it is referenced, typically produced by an operation)
 
 ## value_does_not_have_multiple_references
 
@@ -1005,7 +1019,3 @@ True if the codelist named within `value` is a valid codelist for the variable n
 ## does_not_reference_correct_codelist
 
 Complement of `references_correct_codelist`
-
-```
-
-```

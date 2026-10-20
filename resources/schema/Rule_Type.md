@@ -16,13 +16,15 @@ Attach define xml metadata at variable level and library metadata at variable le
 - `dataset_location`
 - `dataset_name`
 - `dataset_size`
+- `record_count`
 
 #### Example
 
 ```yaml
-- name: dataset_name
-  operator: longer_than
-  value: 6
+all:
+  - name: dataset_name
+    operator: longer_than
+    value: 6
 ```
 
 ## Dataset Contents Check against Define XML
@@ -38,6 +40,7 @@ Columns are the columns within the original dataset along with the following col
 - `dataset_domain`
 - `define_dataset_class`
 - `define_dataset_domain`
+- `define_dataset_has_no_data`
 - `define_dataset_is_non_standard`
 - `define_dataset_key_sequence`
 - `define_dataset_label`
@@ -62,6 +65,7 @@ Columns are the columns within the original dataset along with the following col
 - `define_dataset_class`
 - `define_dataset_structure`
 - `define_dataset_is_non_standard`
+- `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
 
@@ -95,9 +99,11 @@ any:
 - `define_dataset_name`
 - `define_dataset_label`
 - `define_dataset_location`
+- `define_dataset_domain`
 - `define_dataset_class`
 - `define_dataset_structure`
 - `define_dataset_is_non_standard`
+- `define_dataset_has_no_data`
 - `define_dataset_variables`
 - `define_dataset_key_sequence`
 
@@ -114,12 +120,14 @@ any:
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_is_collected`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
 - `define_variable_has_comment`
 
 #### Rule Macro
@@ -139,12 +147,14 @@ Attach variable codelist and codelist terms
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_is_collected`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
 - `define_variable_has_comment`
 - `library_variable_name`
 - `library_variable_order_number`
@@ -205,6 +215,7 @@ all:
 - `dataset_location`
 - `dataset_name`
 - `dataset_size`
+- `record_count`
 
 #### Example
 
@@ -238,7 +249,7 @@ all:
 all:
   - name: variable_data_type
     operator: equal_to
-    value: char
+    value: Char
   - name: variable_value
     operator: longer_than
     value: 200
@@ -269,7 +280,7 @@ all:
     value: true
   - name: variable_value
     operator: is_not_contained_by
-    value: define_variable_codelist_coded_values`
+    value: define_variable_codelist_coded_values
 ```
 
 ## Value Check against Define XML VLM
@@ -295,6 +306,7 @@ all:
 - `define_vlm_has_codelist`
 - `define_vlm_codelist_coded_values`
 - `define_vlm_mandatory`
+- `define_vlm_has_comment`
 - `define_variable_name`
 - `type_check`
 - `length_check`
@@ -322,7 +334,7 @@ all:
     operator: empty
   - name: define_vlm_mandatory
     operator: equal_to
-    value: Yes
+    value: "Yes"
 ```
 
 ## Value Level Metadata Check against Define XML
@@ -349,9 +361,10 @@ Attach define xml metadata at value level
 #### Example
 
 ```yaml
-- name: variable_label
-  operator: longer_than
-  value: 40
+all:
+  - name: variable_label
+    operator: longer_than
+    value: 40
 ```
 
 ## Variable Metadata Check against Define XML
@@ -373,9 +386,10 @@ Attach define xml metadata at variable level
 #### Example
 
 ```yaml
-- name: variable_name
-  operator: not_equal_to
-  value: define_variable_name
+all:
+  - name: variable_name
+    operator: not_equal_to
+    value: define_variable_name
 ```
 
 ## Variable Metadata Check against Library Metadata
@@ -396,9 +410,9 @@ Attach define xml metadata at variable level
 - `library_variable_role`
 - `library_variable_core`
 
-## Variables Metadata Check against Define XML and Library Metadata
+## Variable Metadata Check against Define XML and Library Metadata
 
-#### Columns:
+#### Columns
 
 - `variable_name`
 - `variable_label`
@@ -415,9 +429,9 @@ Attach define xml metadata at variable level
 - `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
+- `define_variable_source_type`
 - `define_variable_has_no_data`
 - `define_variable_order_number`
-- `define_variable_length`
 - `define_variable_has_codelist`
 - `define_variable_codelist_coded_values`
 - `define_variable_codelist_coded_codes`

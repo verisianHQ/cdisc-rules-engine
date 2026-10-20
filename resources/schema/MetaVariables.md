@@ -1,10 +1,14 @@
+## dataset_domain
+
+Domain of the dataset
+
 ## dataset_label
 
 Label for the dataset
 
 ## dataset_location
 
-Path to file
+File name of the dataset (e.g. `ae.xpt`)
 
 ## dataset_name
 
@@ -12,19 +16,27 @@ Name of the dataset
 
 ## dataset_size
 
-File size
+File size in bytes
 
 ## define_dataset_class
 
-ItemGroupDef.Class.Name
+ItemGroupDef.Class.Name (2.1) or ItemGroupDef.Class (2.0)
+
+## define_dataset_domain
+
+ItemGroupDef.Domain
+
+## define_dataset_has_no_data
+
+ItemGroupDef.HasNoData = \"Yes\"
 
 ## define_dataset_is_non_standard
 
-ItemGroupDef.IsNonStandard
+ItemGroupDef.IsNonStandard (2.1 only; blank for 2.0)
 
 ## define_dataset_key_sequence
 
-[ItemGroupDef/ValueListDef].ItemRef.KeySequence
+Names of the key variables, ordered by [ItemGroupDef/ValueListDef].ItemRef.KeySequence
 
 ## define_dataset_label
 
@@ -36,11 +48,15 @@ ItemGroupDef.leaf.href
 
 ## define_dataset_name
 
-ItemGroupDef.Domain
+ItemGroupDef.Name
 
 ## define_dataset_structure
 
 ItemGroupDef.Structure
+
+## define_dataset_variables
+
+ItemGroupDef.ItemRef.ItemDef.Name (list of the dataset's variable names)
 
 ## define_variable_allowed_terms
 
@@ -100,7 +116,7 @@ ItemGroupDef.ItemDef.Name
 
 ## define_variable_order_number
 
-ItemGroupDef.ItemRef.OrderNumber
+ItemGroupDef.ItemRef.OrderNumber (or the position of the ItemRef when OrderNumber is absent)
 
 ## define_variable_origin_type
 
@@ -110,9 +126,9 @@ ItemGroupDef.ItemDef.Origin.Type
 
 ItemGroupDef.ItemRef.Role
 
-## define_variable_length
+## define_variable_source_type
 
-ItemGroupDef.ItemDef.Size
+ItemGroupDef.ItemDef.Origin.Source
 
 ## define_vlm_allowed_terms
 
@@ -210,6 +226,10 @@ ordinal attribute of a variable from the CDISC Library
 
 role attribute of a variable from the CDISC Library
 
+## record_count
+
+Number of records in the dataset
+
 ## row_number
 
 1-based index of record number
@@ -240,7 +260,7 @@ Order of variable within dataset
 
 ## variable_length
 
-Variable size
+Variable length
 
 ## variable_value
 
@@ -248,4 +268,4 @@ Value at `row_number` and `variable_name`
 
 ## variable_value_length
 
-Calculated length of the value at `row_number` and `variable_name`
+Calculated length of the value at `row_number` and `variable_name`, based on the data type: number of characters for `text`, number of digits without leading zeros for `integer`, and number of digits without leading zeros or the decimal point for `float`
