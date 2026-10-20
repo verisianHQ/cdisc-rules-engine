@@ -8,14 +8,15 @@ This guide explains how to extend CDISC rule definitions with custom attributes 
   - [Overview and Basic Syntax](#overview-and-basic-syntax)
   - [Identifying Arrays in YAML](#identifying-arrays-in-yaml)
   - [Identifying Arrays in JSON](#identifying-arrays-in-json)
-- [Custom Attributes Overview](#overview)
-- [What Can and Cannot Be Changed](#what-can-and-cannot-be-changed)
-- [Custom Schema Attributes](#custom-attributes)
-- [Example Rule with Custom Attributes](#example-rule-with-custom-attributes)
-- [Filtering Rules with Custom Columns](#filtering-rules-with-custom-columns)
-- [Best Practices](#best-practices)
-- [Validation](#validation)
-- [FAQ](#faq)
+- [CDISC Custom Rule Extensions](#cdisc-custom-rule-extensions)
+  - [Custom Attributes Overview](#overview)
+  - [What Can and Cannot Be Changed](#what-can-and-cannot-be-changed)
+  - [Custom Schema Attributes](#custom-attributes)
+  - [Example Rule with Custom Attributes](#example-rule-with-custom-attributes)
+  - [Filtering Rules with Custom Columns](#filtering-rules-with-custom-columns)
+  - [Best Practices](#best-practices)
+  - [Validation](#validation)
+  - [FAQ](#faq)
 
 ## Custom Columns in Editor Syntax
 
@@ -105,17 +106,17 @@ For data structured like:
 
 Use: `@Authorities.@Standards.Name`
 
-# CDISC Custom Rule Extensions
+## CDISC Custom Rule Extensions
 
 This guide explains how to extend CDISC rule definitions with your own custom attributes while maintaining compatibility with the core CDISC schema structure, and how to access these attributes using the custom columns editor syntax.
 
-## Overview
+### Overview
 
 The CDISC Rules Engine schema supports custom extensions to help organizations better categorize, manage, and filter rules. These extensions maintain compatibility with standard CDISC rule definitions while adding organizational metadata tailored to your specific needs. The custom columns editor syntax allows you to query and filter these properties using a simple path notation.
 
-## What Can and Cannot Be Changed
+### What Can and Cannot Be Changed
 
-### Required Structure (Cannot Be Changed)
+#### Required Structure (Cannot Be Changed)
 
 The following core components of the CDISC schema **must be preserved**:
 
@@ -124,7 +125,7 @@ The following core components of the CDISC schema **must be preserved**:
 - **Data types** - Retain the data types of core properties
 - **Required fields** - All required fields of a valid rule must remain present. These are Authorities, Check, Core, Description, Outcome, Executability, Rule Type, Scope, Sensitivity
 
-### Customizable Elements (Can Be Added)
+#### Customizable Elements (Can Be Added)
 
 You can extend the schema by adding:
 
@@ -132,9 +133,9 @@ You can extend the schema by adding:
 - **Custom Category object** - Add metadata within the Category property in the Authorities section
 - **Custom attributes** - Define your own properties within the Category object
 
-## Custom Attributes
+### Custom Attributes
 
-### Predefined Category Properties
+#### Predefined Category Properties
 
 The Category object in the custom organization schema includes these predefined properties (which can be removed at your discretion):
 
@@ -149,9 +150,9 @@ The Category object in the custom organization schema includes these predefined 
 | `OutputType`         | String           | Output type (Check/Listing)                        |
 | `Keywords`           | Array of strings | Custom keywords for filtering and searching        |
 
-### Adding Your Own Custom Properties
+#### Adding Your Own Custom Properties
 
-#### Extending the Category Object in YAML Files
+##### Extending the Category Object in YAML Files
 
 You can extend the Category object with your own custom properties in your rule YAML files. The schema uses `additionalProperties: true` to allow any additional properties you need:
 
@@ -187,7 +188,7 @@ Category:
       Result: "Pass"
 ```
 
-#### Modifying the Schema to Support Custom Properties
+##### Modifying the Schema to Support Custom Properties
 
 If you want to formally define custom properties in your schema (recommended for validation and documentation purposes), follow these steps:
 
@@ -298,7 +299,7 @@ If you want to formally define custom properties in your schema (recommended for
    - Provide validation rules or constraints for each property
    - Share the documentation with all teams that will be using the rules
 
-### Accessing Custom Properties
+#### Accessing Custom Properties
 
 To access your custom properties in the editor using custom columns:
 
@@ -306,7 +307,7 @@ To access your custom properties in the editor using custom columns:
 - Nested property: `Category.ReviewInfo.LastReviewer`
 - Array property: `Category.@ValidationHistory.Result`
 
-## Example Rule with Custom Attributes
+### Example Rule with Custom Attributes
 
 Here's a complete example of a rule with custom attributes in the Category section:
 
@@ -372,17 +373,17 @@ Scope:
 Sensitivity: Record
 ```
 
-## Filtering Rules with Custom Columns
+### Filtering Rules with Custom Columns
 
 The custom columns editor syntax allows you to create powerful filters based on your custom attributes. Here are some common filtering scenarios:
 
-### Setting Up Custom Columns
+#### Setting Up Custom Columns
 
 1. Add a custom column using the column selector
 2. Enter the path to the attribute you want to display/filter
 3. Set the column name
 
-### Filter Examples
+#### Filter Examples
 
 | To Filter By           | Custom Column Path                                       | Filter Value Example  |
 | ---------------------- | -------------------------------------------------------- | --------------------- |
@@ -397,7 +398,7 @@ The custom columns editor syntax allows you to create powerful filters based on 
 | Standard name          | `@Authorities.@Standards.Name`                           | "Internal Standard"   |
 | Rule ID                | `@Authorities.@Standards.@References.Rule_Identifier.Id` | "INT001"              |
 
-### Complex Filtering
+#### Complex Filtering
 
 Combine multiple custom columns to create complex filters:
 
@@ -405,7 +406,7 @@ Combine multiple custom columns to create complex filters:
 2. Add column for `@Authorities.Category.Purpose` and filter for "RAW data validation"
 3. Add column for `@Authorities.Organization` and filter for "MyCompany"
 
-## Best Practices
+### Best Practices
 
 When adding custom attributes to rules:
 
@@ -416,7 +417,7 @@ When adding custom attributes to rules:
 5. **Avoid redundancy** - Don't duplicate information already in core CDISC properties
 6. **Path naming** - When adding custom columns, use clear names that indicate the data being displayed
 
-## Validation
+### Validation
 
 When using custom attributes, it's important to ensure your rules remain valid:
 
@@ -425,16 +426,16 @@ When using custom attributes, it's important to ensure your rules remain valid:
 3. **Required properties** - Make sure all required properties are still present in your rules
 4. **Data types** - Use the correct data types for each property as defined in the schema
 
-## FAQ
+### FAQ
 
-### Will custom attributes affect rule execution?
+#### Will custom attributes affect rule execution?
 
 It depends on which attributes:
 
 - **Organization, Standards, Custom Rule IDs, and Version**: These values may impact rule execution.
 - **Category properties**: The properties within the Category object (Sponsors, Vendors, TherapeuticAreas, etc.) are purely for organizational and filtering purposes and do not affect rule execution or validation logic.
 
-### How do I execute custom rules?
+#### How do I execute custom rules?
 
 Custom rules can be executed in two ways:
 
@@ -442,7 +443,7 @@ Custom rules can be executed in two ways:
 - **Cached custom rules** - Add the rules to the cache with `update-cache --custom_rules_directory` (`-crd`) or `--custom_rule` (`-cr`), add a custom standard listing them with `update-cache --custom_standard` (`-cs`), then run the validation with the `--custom_standard` (`-cs`) flag and `-s`/`-v` set to the custom standard. See the README for the custom standard file format.
 - Rules need a Core: Id property for execution.
 
-### Can I use custom attributes with standard CDISC/FDA rules?
+#### Can I use custom attributes with standard CDISC/FDA rules?
 
 Yes, but only within your internal systems. You can add custom attributes to standard CDISC and FDA rules in your local rule repository for internal categorization and filtering. However:
 
@@ -451,23 +452,23 @@ Yes, but only within your internal systems. You can add custom attributes to sta
 - When importing updated rules from CDISC, you'll need to re-apply your custom attributes
 - Your internal rule management system should handle the separation between official CDISC/FDA rule content and your organization's custom attributes
 
-### Can I modify the core structure of a CDISC rule?
+#### Can I modify the core structure of a CDISC rule?
 
 No, the core structure and required fields of CDISC rules must be preserved. You can only add new properties, not modify or remove existing ones.
 
-### What if I need to track additional information not listed in the examples?
+#### What if I need to track additional information not listed in the examples?
 
 Add or remove any property you need or don't need directly to the Category object. The schema is designed to allow additional properties beyond the predefined ones.
 
-### How do I add a new property to the schema itself?
+#### How do I add a new property to the schema itself?
 
 Edit your Organization_Custom.json file to add the property definition under the Category object's properties section. Define the property type, description, and any constraints (like enum values). Keep the `additionalProperties: true` to maintain flexibility or don't.
 
-### Do I need to update the schema every time I add a custom property to a rule?
+#### Do I need to update the schema every time I add a custom property to a rule?
 
 No. The schema with `additionalProperties: true` allows any property to be added to rule YAML files without updating the schema. However, formally defining properties in the schema provides better documentation.
 
-### Why must the Category be under Authorities and not at the root level?
+#### Why must the Category be under Authorities and not at the root level?
 
 The Category object needs to be placed within each Authorities item because:
 

@@ -6,7 +6,15 @@
       "const": "Dataset"
     },
     {
+      "const": "Group",
+      "title": "One result per group of records with the same values of the Grouping_Variables (SQL engine only)"
+    },
+    {
       "const": "Record"
+    },
+    {
+      "const": "Study",
+      "title": "One result for the whole study (SQL engine only)"
     }
   ],
   "markdownDescription": "Determines what level of granularity issues should be generated within the report"

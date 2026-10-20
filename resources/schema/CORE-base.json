@@ -404,6 +404,23 @@
       ],
       "type": "string"
     },
+    "Grouping_Variables": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/VariableName"
+          },
+          {
+            "$ref": "MetaVariables.json"
+          },
+          {
+            "const": "filter_by_dataset"
+          }
+        ]
+      },
+      "markdownDescription": "Variables whose values group the records reported with `Sensitivity: Group` (SQL engine only). `filter_by_dataset` reports only records whose `dataset_name` is the dataset being validated",
+      "type": "array"
+    },
     "Match Datasets": {
       "items": {
         "additionalProperties": false,

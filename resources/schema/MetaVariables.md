@@ -1,3 +1,11 @@
+**SQL engine:** list values are stored as one text value with the items separated by commas (e.g. `define_variable_codelist_coded_values` is `Y,N`), so match an item with a regular expression such as `(^|,)Y(,|$)`. `define_variable_has_no_data`, `define_variable_mandatory`, `define_vlm_has_no_data` and `define_vlm_mandatory` are booleans (`true` for `Yes`, `false` for `No`, empty when absent).
+
+## categories_summary
+
+_SQL engine only._
+
+STF study-identifier categories as `name:value`, separated by `|`
+
 ## dataset_domain
 
 Domain of the dataset
@@ -54,9 +62,21 @@ ItemGroupDef.Name
 
 ItemGroupDef.Structure
 
+## define_dataset_variable_order
+
+_SQL engine only._
+
+Names of the dataset's variables in upper case, ordered by ItemGroupDef.ItemRef.OrderNumber and separated by commas
+
 ## define_dataset_variables
 
 ItemGroupDef.ItemRef.ItemDef.Name (list of the dataset's variable names)
+
+## define_key_sequence_is_unique
+
+_SQL engine only._
+
+True/False value indicating whether no other record of the dataset has the same values of the key variables in `define_dataset_key_sequence` (true for every record when the Define-XML has no key variables)
 
 ## define_variable_allowed_terms
 
@@ -194,13 +214,111 @@ ValueListDef.ItemDef.Origin.Type
 
 ValueListDef.ItemRef.Role
 
-## define_vlm_size
+## doc_index
 
-ValueListDef.ItemDef.Size
+_SQL engine only._
+
+1-based position of the STF document (`doc-content`), in file order
+
+## document_href
+
+_SQL engine only._
+
+STF document `xlink:href`
+
+## document_href_fragment
+
+_SQL engine only._
+
+Part of `document_href` after `#`
+
+## document_href_path
+
+_SQL engine only._
+
+Part of `document_href` before `#`
+
+## document_operation
+
+_SQL engine only._
+
+`operation` attribute of the `leaf` whose ID is `document_href_fragment`, in the file at `document_href_path` (relative to the STF file)
+
+## document_properties_json
+
+_SQL engine only._
+
+STF document properties as a JSON list of `name`, `info_type` and `value`
+
+## document_properties_summary
+
+_SQL engine only._
+
+STF document properties as `name@info-type=value`, separated by `|`
+
+## document_title
+
+_SQL engine only._
+
+STF document title
+
+## domain
+
+_SQL engine only._
+
+Define-XML dataset name (ItemGroupDef.Name), in `Domain Presence Check against Define XML`
+
+## dtd_version
+
+_SQL engine only._
+
+STF `dtd-version`
+
+## file_tag_info_type
+
+_SQL engine only._
+
+STF file tag `info-type`
+
+## file_tag_name
+
+_SQL engine only._
+
+STF file tag name
 
 ## filename
 
 Name of file
+
+## language
+
+_SQL engine only._
+
+STF `xml:lang`
+
+## library_variable_ccode
+
+_SQL engine only._
+
+C-code of the codelist that the CDISC Library links to the variable (codes separated by commas when there is more than one)
+
+## library_variable_ccode_values
+
+_SQL engine only._
+
+Submission values of the terms of the codelist in `library_variable_ccode`, from the CT packages of the run
+
+## library_variable_codelist_name
+
+_SQL engine only._
+
+Name of the codelist in `library_variable_ccode`
+
+## library_variable_codelist_value
+
+_SQL engine only._
+
+Submission value of the codelist in `library_variable_ccode`
 
 ## library_variable_core
 
@@ -234,6 +352,24 @@ Number of records in the dataset
 
 1-based index of record number
 
+## study_id
+
+_SQL engine only._
+
+STF study-identifier study-id
+
+## study_title
+
+_SQL engine only._
+
+STF study-identifier title
+
+## variable_count
+
+_SQL engine only._
+
+Number of records with a non-empty value of the variable (0 when the variable is not in the dataset)
+
 ## variable_data_type
 
 Variable data type (Char or Num)
@@ -246,9 +382,21 @@ Variable format
 
 True/False value indicating whether a variable has any empty values
 
+## variable_is_empty
+
+_SQL engine only._
+
+True/False value indicating whether the variable has no non-empty values (true when the variable is not in the dataset)
+
 ## variable_label
 
 Variable long label
+
+## variable_max_value_length
+
+_SQL engine only._
+
+Length of the longest value of the variable in the dataset
 
 ## variable_name
 

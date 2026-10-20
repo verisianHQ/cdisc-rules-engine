@@ -2,6 +2,8 @@
 
 External dictionaries provide standardized terminology and coding systems for medical terms, drugs, and laboratory tests. This guide covers how to integrate and validate external dictionaries in both the Command Line Interface (CLI) and Rule Editor.
 
+**SQL engine:** the dictionaries are loaded into the database at the start of the run, and a dictionary that cannot be read stops the run. Rules check dictionary values with the terminology operators (e.g. `is_valid_meddra_term_reference`, see [Operator](Operator.md#terminology)) instead of the operations in [Operations & Rule Editor](#operations--rule-editor); of those operations, the SQL engine supports only `whodrug_code_hierarchy`. The expected files differ for some dictionaries, as noted in each section.
+
 ## Supported Dictionaries
 
 - **MedDRA**: Medical terminology for regulatory activities
@@ -37,6 +39,8 @@ External dictionaries provide standardized terminology and coding systems for me
                             Example: 27.0$English$$$$
 ```
 
+**SQL engine:** `meddra_release.asc` is required. Only the code and name (first two fields) of `soc.asc`, `hlgt.asc`, `hlt.asc`, `pt.asc` and `llt.asc` are read; the relationship files are not used.
+
 #### SNOMED CT
 
 ```
@@ -51,6 +55,8 @@ For SNOMED CT:
 - API access requires hosting your own instance using [Snowstorm](https://github.com/IHTSDO/snowstorm) or an alternative implementation
   as https://snowstorm.snomedtools.org/snowstorm/snomed-ct is not for commercial use
 - Browse terms at [SNOMED Browser](https://browser.ihtsdotools.org)
+
+**SQL engine:** SNOMED CT is read from files instead of the API: `--snomed` gives the directory (searched with its subdirectories) containing the RF2 description and text definition files, named like `sct2_Description_Full-en_INT_20240901.txt` and `sct2_TextDefinition_Full-en_INT_20240901.txt`. The version is the date in the file name. `--snomed-version`, `--snomed-url` and `--snomed-edition` are not used.
 
 ### Drug and Substance Dictionaries
 
@@ -69,6 +75,8 @@ For SNOMED CT:
                      - B3: Substance Name field is 45 characters
                      - C3: Substance Name field is 110-250 characters (expanded after March 2022)
 ```
+
+**SQL engine:** the directory must contain `Version.csv`, whose first value gives the product, format and date (e.g. `WHODRUG GLOBAL B3 September 1, 2020`). For B3 the files are `INA.csv`, `DDA.csv` and `DD.csv`; for C3, `ATC.csv`, `ThG.csv` and `MP.csv`. The files are comma-separated without a header row. `version.txt` is not read.
 
 #### Other Drug Dictionaries
 
@@ -120,6 +128,8 @@ For SNOMED CT:
                   Note: Version is extracted from filename (e.g., "UNII_Records_2024.txt" → version "2024")
 ```
 
+**SQL engine:** MED-RT is read from `MEDRT.txt` (tab-separated: `Name [TAG]`, code) and its version from the first line of `MEDRT_Release_Notes.txt` (e.g. `September 2024` from `September 2024 MED-RT (version name 2024.09.03)`); `Core_MEDRT_*_DTS.xml` is not read. The UNII file must have the `.txt` extension (`UNII_Records_*.txt`).
+
 ### Laboratory Dictionaries
 
 ```
@@ -127,6 +137,8 @@ For SNOMED CT:
                   Directory must contain the `Loinc.csv` with capital 'L'
                   Version is the highest VersionLastChanged value in the file
 ```
+
+**SQL engine:** `Loinc.csv` is read from the `LoincTable` subdirectory if there is one. The version is taken from the directory name (e.g. `Loinc_2.82`) or from the `Loinc_<version>_DifferenceReport.pdf` file name, not from `VersionLastChanged`.
 
 ## Operations & Rule Editor
 

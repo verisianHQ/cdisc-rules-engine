@@ -35,8 +35,24 @@
       "title": "Content domain presence at study level"
     },
     {
+      "const": "Domain Presence Check against Define XML",
+      "title": "Define xml metadata at dataset level and content domain presence at study level (SQL engine only)"
+    },
+    {
+      "const": "Global Value Check with Variable Metadata",
+      "title": "Content data at value level and variable metadata at variable level, for all datasets of the study (SQL engine only)"
+    },
+    {
+      "const": "Global Variable Metadata Check",
+      "title": "Variable metadata at variable level, for all datasets of the study (SQL engine only)"
+    },
+    {
       "const": "Record Data",
       "title": "Content data at record level. Most common Rule Type"
+    },
+    {
+      "const": "STF Metadata Check",
+      "title": "Study Tagging File metadata at document level (SQL engine only)"
     },
     {
       "const": "Value Check against Define XML Variable",
@@ -47,10 +63,13 @@
       "title": "Content data at value level and define xml metadata at value level"
     },
     {
+      "const": "Value Check against Library Metadata",
+      "title": "Content data at value level and library metadata at variable level (SQL engine only)"
+    },
+    {
       "const": "Value Level Metadata Check against Define XML",
       "title": "Content data at record level and define xml metadata at value level"
     },
-
     {
       "const": "Variable Metadata Check",
       "title": "Content metadata at variable level"

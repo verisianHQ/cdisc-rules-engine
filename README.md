@@ -1,56 +1,19 @@
-### Supported python versions
-
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120)
-
-### Windows Command Compatibility
-
-Note: The Windows commands provided in this README are written for PowerShell. While most commands are compatible with both PowerShell and Command Prompt, some adjustments may be necessary when using Command Prompt. If you encounter any issues running these commands in Command Prompt, try using PowerShell or consult the Command Prompt documentation for equivalent commands.
-
 # cdisc-rules-engine
 
 Open source offering of the CDISC Rules Engine, a tool designed for validating clinical trial data against data standards.
-To learn more, visit our official CDISC website or for other implementation options, see our DockerHub repository:  
+To learn more, visit our official CDISC website:  
 <br>  
-[CDISC Website](https://www.cdisc.org/)  
-<br>  
-[CDISC Rules Engine on DockerHub](https://hub.docker.com/repository/docker/cdiscdocker/cdisc-rules-engine/general)
+[CDISC Website](https://www.cdisc.org/)
 
-### **Quick start**
+## Supported python versions
 
-To quickly get up and running with CORE, users can download the latest executable version of the engine for their operating system from here: <https://github.com/cdisc-org/cdisc-rules-engine/releases>
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120)
 
-Once downloaded, simply unzip the file and run the following command based on your Operating System:
+## Windows Command Compatibility
 
-Windows:
+Note: The Windows commands provided in this README are written for PowerShell. While most commands are compatible with both PowerShell and Command Prompt, some adjustments may be necessary when using Command Prompt. If you encounter any issues running these commands in Command Prompt, try using PowerShell or consult the Command Prompt documentation for equivalent commands.
 
-```
-.\core.exe validate -s <standard> -v <standard_version> -d path/to/datasets
-
-# ex: .\core.exe validate -s sdtmig -v 3-4 -d .\xpt\
-```
-
-Linux/Mac:
-
-```
-./core validate -s <standard> -v <standard_version> -d path/to/datasets
-
-# ex: ./core validate -s sdtmig -v 3-4 -d ./xpt/
-```
-
-> **_NOTE:_** For Linux users, you will need to run this command from the executable root directory:
->
-> ```bash
-> chmod +x ./core
-> ```
->
-> For Mac users, you will need to remove the Apple signature quarantine in addition to making the app executable.
->
-> ```bash
-> xattr -rd com.apple.quarantine /path/to/core/root/dir
-> chmod +x ./core
-> ```
-
-### **Command-line Interface**
+## **Command-line Interface**
 
 ### **Getting Started**
 
@@ -59,7 +22,7 @@ In the terminal, navigate to the directory you intend to install CORE rules engi
 1. Clone the repository:
 
    ```
-   git clone https://github.com/cdisc-org/cdisc-rules-engine
+   git clone https://github.com/verisianHQ/cdisc-rules-engine
    ```
 
 2. Ensure you have Python 3.12 installed:
@@ -293,7 +256,7 @@ The possible rule run statuses are:
 - `SUCCESS` - The rule ran and data was validated against the rule. May or may not produce results
 - `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be caused by rule execution errors.
 
-# Additional Core Commands
+## Additional Core Commands
 
 **- update-cache** - update locally stored cache data (Requires an environment variable - `CDISC_LIBRARY_API_KEY`, or the `--apikey` option) This is stored in the `.env` file in the root directory, the API key does not need quotations around it.
 
@@ -305,14 +268,26 @@ The possible rule run statuses are:
 
 To obtain an api key, please follow the instructions found here: <https://wiki.cdisc.org/display/LIBSUPRT/Getting+Started%3A+Access+to+CDISC+Library+API+using+API+Key+Authentication>. Please note it can take up to an hour after sign up to have an api key issued
 
-# Custom Standards and Rules
+**- version** - print the version of the engine:
 
-## Custom Rules Storage
+```bash
+python core.py version
+```
+
+**- list-dataset-metadata** - list the metadata (domain, filename, full path, file size, label, modification date) of the given datasets:
+
+```bash
+python core.py list-dataset-metadata -dp path/to/ae.xpt -dp path/to/ex.xpt
+```
+
+## Custom Standards and Rules
+
+### Custom Rules Storage
 
 - **Custom rules** are stored in a flat file in the cache, indexed by their core ID (e.g., 'COMPANY-000123' or 'CUSTOM-000123').
 - Each rule is stored independently in this file, allowing for efficient lookup and management.
 
-## Custom Standards Management
+### Custom Standards Management
 
 - **Custom standards** act as a lookup mechanism that maps a standard identifier to a list of applicable rule IDs.
 - When adding a custom standard, you need to provide a JSON file with the following structure:
@@ -358,13 +333,13 @@ To obtain an api key, please follow the instructions found here: <https://wiki.c
 
   This rule will get metadata from SDTMIG version 3.4 but utilize the custom rules listed in the custom standard that need this library metadata.
 
-## Relationship Between Custom Rules and Standards
+### Relationship Between Custom Rules and Standards
 
 - You should first add your custom rules to the cache, then create a custom standard that references those rules.
 - Custom standards can reference both core CDISC rules and your own custom rules in the same standard definition.
 - This two-level architecture allows for flexible rule reuse across multiple standards.
 
-## Custom Rules Management
+### Custom Rules Management
 
 - **Add custom rules**: Use the `--custom_rules_directory` or `-crd` flag to specify a directory containing local rules, or `--custom_rule` or `-cr` flag to specify a single rule file:
   ```bash
@@ -384,7 +359,7 @@ To obtain an api key, please follow the instructions found here: <https://wiki.c
   python core.py update-cache --remove_custom_rules ALL
   ```
 
-## List Rules
+## List Commands
 
 **- list-rules** - list published rules available in the cache
 
@@ -434,18 +409,6 @@ python core.py list-rule-sets -o
 - `-c, --cache_path` - Relative path to cache files containing pre-loaded metadata and rules
 - `-o, --custom` - Flag to list all custom standards and versions in the cache instead of CDISC standards & rules
 
-**- version** - print the version of the engine:
-
-```bash
-python core.py version
-```
-
-**- list-dataset-metadata** - list the metadata (domain, filename, full path, file size, label, modification date) of the given datasets:
-
-```bash
-python core.py list-dataset-metadata -dp path/to/ae.xpt -dp path/to/ex.xpt
-```
-
 **- list-ct** - list ct packages available in the cache
 
 ```
@@ -475,7 +438,7 @@ pip install cdisc-rules-engine
 
 For implementation instructions, see [PYPI.md](PYPI.md).
 
-### **Creating an executable version**
+## **Creating an executable version**
 
 **Linux**
 
@@ -490,7 +453,7 @@ _Note .venv should be replaced with path to python installation or virtual envir
 This will create an executable version in the `dist` folder. The version does not require having Python installed and
 can be launched by running `core` script with all necessary CLI arguments.
 
-### **Creating .whl file**
+## **Creating .whl file**
 
 All non-python files should be listed in `MANIFEST.in` to be included in the distribution.
 Files must be in python package.
@@ -525,7 +488,7 @@ To upload built distributive to pypi
 
 If you encounter any bugs, have feature requests, or need assistance, please submit an issue on our GitHub repository:
 
-[https://github.com/cdisc-org/cdisc-rules-engine/issues](https://github.com/cdisc-org/cdisc-rules-engine/issues)
+[https://github.com/verisianHQ/cdisc-rules-engine/issues](https://github.com/verisianHQ/cdisc-rules-engine/issues)
 
 When submitting an issue, please include:
 

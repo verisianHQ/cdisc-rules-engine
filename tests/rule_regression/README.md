@@ -16,9 +16,8 @@
 ## Run regression
 
 - set `REGRESSION_PATH` in .env to the downloaded sharepoint unitTesting folder
-- make sure the Postgres container is running (see the main README), or use the `_pgserver` variants of the tests to use an in-memory Postgres instance
+- make sure the Postgres container is running (see the main README), or run `test_regression::test_regression_all_rules_pgserver` instead of `test_regression_all_rules` to use an in-memory Postgres instance
 - run `test_regression::test_regression_all_rules` to update `tests/resources/rules/rules.json`
-- Set up the two folders `tests/resources/rules/dev/test_case_results_old` and `tests/resources/rules/dev/test_case_results_sql`
 - run `test_regression::test_regression_single_rule_DEV` to run local regression on a specific rule, as set in .env under `CURRENT_RULE_DEV`. The result is written to `tests/resources/rules/dev/dev.json`.
 - run `test_regression::test_regression_single_case_DEV` to run a single test case of that rule, as set in .env under `CURRENT_RULE_DEV_CASE`
 
