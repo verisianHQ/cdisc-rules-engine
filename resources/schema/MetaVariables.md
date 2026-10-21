@@ -1,4 +1,4 @@
-List values are stored as one text value with the items separated by commas (e.g. `define_variable_codelist_coded_values` is `Y,N`), so match an item with a regular expression such as `(^|,)Y(,|$)`. `define_variable_has_no_data`, `define_variable_mandatory`, `define_vlm_has_no_data` and `define_vlm_mandatory` are booleans (`true` for `Yes`, `false` for `No`, empty when absent).
+List values are stored as one text value with the items separated by commas (e.g. `define_variable_codelist_coded_values` is `Y,N`), so match an item with a regular expression such as `(^|,)Y(,|$)`. `define_dataset_has_no_data` and the `has_codelist`, `has_comment`, `has_no_data`, `is_collected` and `mandatory` variables (`define_variable_...` and `define_vlm_...`) are booleans (`true` or `false`, empty when absent).
 
 ## categories_summary
 
@@ -92,10 +92,6 @@ ItemGroupDef.ItemDef.CodeList.[CodeListItem/EnumeratedItem].Alias.Name
 
 ItemGroupDef.ItemDef.DataType
 
-## define_variable_format
-
-[Not Implemented]
-
 ## define_variable_has_codelist
 
 ItemGroupDef.ItemDef.CodeListRef exists
@@ -159,10 +155,6 @@ ValueListDef.ItemDef.CodeList.[CodeListItem/EnumeratedItem].CodedValue
 ## define_vlm_data_type
 
 ValueListDef.ItemDef.DataType
-
-## define_vlm_format
-
-[Not Implemented]
 
 ## define_vlm_has_codelist
 
@@ -258,7 +250,7 @@ STF file tag name
 
 ## filename
 
-Name of file
+File name of the submitted dataset (e.g. `ae.xpt`)
 
 ## language
 
@@ -310,7 +302,7 @@ Number of records in the dataset
 
 ## row_number
 
-1-based index of record number
+Position of the record in the dataset, starting from 1
 
 ## study_id
 
@@ -334,7 +326,7 @@ Variable format
 
 ## variable_has_empty_values
 
-True/False value indicating whether a variable has any empty values
+True/False value indicating whether a variable has all empty values
 
 ## variable_is_empty
 
@@ -366,4 +358,4 @@ Value at `row_number` and `variable_name`
 
 ## variable_value_length
 
-Calculated length of the value at `row_number` and `variable_name`, based on the data type: number of characters for `text`, number of digits without leading zeros for `integer`, and number of digits without leading zeros or the decimal point for `float`
+Length of the value at `row_number` and `variable_name`, as text (number of characters)

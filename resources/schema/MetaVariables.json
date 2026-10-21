@@ -66,9 +66,6 @@
       "const": "define_variable_data_type"
     },
     {
-      "const": "define_variable_format"
-    },
-    {
       "const": "define_variable_has_codelist"
     },
     {
@@ -115,9 +112,6 @@
     },
     {
       "const": "define_vlm_data_type"
-    },
-    {
-      "const": "define_vlm_format"
     },
     {
       "const": "define_vlm_has_codelist"

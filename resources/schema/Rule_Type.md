@@ -134,7 +134,6 @@ any:
 - `define_variable_role`
 - `define_variable_length`
 - `define_variable_ccode`
-- `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
 - `define_variable_source_type`
@@ -157,7 +156,6 @@ any:
 - `define_variable_role`
 - `define_variable_length`
 - `define_variable_ccode`
-- `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
 - `define_variable_source_type`
@@ -448,7 +446,6 @@ all:
 - `define_variable_data_type`
 - `define_variable_`...
 
-
 ## Value Check against Define XML VLM
 
 ### Columns
@@ -462,7 +459,6 @@ all:
 - `define_vlm_is_collected`
 - `define_vlm_role`
 - `define_vlm_ccode`
-- `define_vlm_format`
 - `define_vlm_allowed_terms`
 - `define_vlm_origin_type`
 - `define_vlm_has_no_data`
@@ -620,7 +616,6 @@ all:
 - `define_variable_role`
 - `define_variable_length`
 - `define_variable_ccode`
-- `define_variable_format`
 - `define_variable_allowed_terms`
 - `define_variable_origin_type`
 - `define_variable_source_type`
