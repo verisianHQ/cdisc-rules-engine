@@ -80,6 +80,9 @@ def _condition(operator, target, comparator=None):
         # literal values never imply an input
         (_rule(conditions=_condition("equal_to", "TSPARMCD", "UNII")), set()),
         (_rule(conditions=_condition("equal_to", "DSDECOD", "define")), set()),
+        # rules that check whether a define.xml was supplied (e.g. CORE-002084) must still run without one
+        (_rule(conditions=_condition("not_exists", "define.xml")), set()),
+        (_rule(conditions=_condition("exists", "define.xml")), set()),
     ],
 )
 def test_get_required_inputs(rule, expected):
