@@ -7,9 +7,53 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
+from cdisc_rules_engine.standards.default_standards_context import DefaultStandardsContext
 from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 
-from test_compiled_rules import AE, StandardsContext, condition, rule
+
+AE = {
+    "USUBJID": ["S1", "S1", "S2", "S2", "S3", "S3"],
+    "AESEQ": [1, 2, 1, 2, 1, 2],
+    "AETERM": ["HEADACHE", "NAUSEA", "HEADACHE", "", None, "NAUSEA"],
+    "AEDECOD": ["Headache", None, "Headache", "", "Nausea", "Nausea"],
+    "AESTDTC": ["2020-01-01", "2020-02-01", "", None, "2020-03-01", "2020-04-01"],
+    "AEENDTC": ["2020-01-02", "2020-01-15", "", "2020-05-01", None, "2020-04-02"],
+    "AEGRP": ["A", "A", "B", "B", "C", None],
+}
+
+
+class StandardsContext(DefaultStandardsContext):
+    def __init__(self):
+        self.standard = "SDTMIG"
+        self.standard_version = "3.4"
+        self.standard_substandard = None
+        self.define_xml_version = None
+
+    def transform_dataset_metadata(self, source):
+        return source
+
+
+def condition(operator, target, comparator=None, **value):
+    value = {"target": target, **value}
+    if comparator is not None:
+        value["comparator"] = comparator
+    return {"name": "get_dataset", "operator": operator, "value": value}
+
+
+def rule(conditions, sensitivity="Record", operations=None, output_variables=None):
+    return {
+        "core_id": "TEST.COMPILED",
+        "classes": {"Include": ["ALL"]},
+        "domains": {"Include": ["ALL"]},
+        "rule_type": "Record Data",
+        "sensitivity": sensitivity,
+        "severity": "error",
+        "standards": [{"Name": "SDTMIG", "Version": "3.4"}],
+        "conditions": conditions,
+        "operations": operations or [],
+        "output_variables": output_variables or ["AETERM", "AEDECOD"],
+        "actions": [{"name": "generate_dataset_error_objects", "params": {"message": "AE check failed"}}],
+    }
 
 
 def run(rule_definition):

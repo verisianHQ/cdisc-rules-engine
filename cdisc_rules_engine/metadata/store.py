@@ -3,8 +3,9 @@ Study-level metadata cache: define.xml, library and friends :).
 Read once and shared by every rule.
 """
 
+import os
 from copy import deepcopy
-from typing import Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundInDefineXMLError
 from cdisc_rules_engine.services import logger
@@ -131,35 +132,40 @@ class MetadataStore:
         return self._cached(("define_variables", dataset.name), lambda: self._read_define_variables(dataset))
 
     @staticmethod
-    def _define_lookup(dataset: BaseDatasetMetadata) -> dict:
+    def _define_domain(dataset: BaseDatasetMetadata) -> str:
+        """The domain a dataset is defined under: its parent's for a SUPP/relationship dataset."""
+        return getattr(dataset, "rdomain", None) or dataset.domain
+
+    @staticmethod
+    def _define_names(dataset: BaseDatasetMetadata) -> List[str]:
         """
-        How to find a dataset in the define.
-        SUPP/relationship datasets are looked up under their parent (rdomain),
-        with the dataset's own domain as the name.
+        Names the dataset may have in the define. A split dataset (e.g. QS) is defined under the
+        names of its parts (QSCG, QSMM...), so each part is tried in turn.
         """
-        rdomain = getattr(dataset, "rdomain", None)
-        if rdomain:
-            return {"domain_name": rdomain, "name": dataset.domain}
-        return {"domain_name": dataset.domain, "name": dataset.name}
+        split_parts = getattr(dataset, "split_part_filenames", None) or []
+        names = [os.path.splitext(os.path.basename(part))[0].upper() for part in split_parts]
+        return names or [dataset.name.upper()]
+
+    def _extract_from_define(self, dataset: BaseDatasetMetadata, extract: Callable[[str], Any]) -> Tuple[str, Any]:
+        """
+        extract() under each of the dataset's define names; the first name found, with its result.
+        Raises DomainNotFoundInDefineXMLError if the define describes the dataset under none of them.
+        """
+        error = None
+        for name in self._define_names(dataset):
+            try:
+                return name, extract(name)
+            except DomainNotFoundInDefineXMLError as e:
+                error = e
+        raise error
 
     def _read_define_variables(self, dataset: BaseDatasetMetadata) -> List[dict]:
-        metadata = self._define_reader().extract_variables_metadata(**self._define_lookup(dataset))
-        return [format_metadata_dict(variable) for variable in deepcopy(metadata)]
-
-    def define_variables_by_domain(self, dataset: BaseDatasetMetadata) -> List[dict]:
-        """
-        The define.xml variables of the dataset's domain, as read by Variable Metadata Check against
-        Define XML.
-        Looked up by domain alone, lists joined, but empty strings kept.
-        """
-        return self._cached(("define_variables_by_domain", dataset.name), lambda: self._read_by_domain(dataset))
-
-    def _read_by_domain(self, dataset: BaseDatasetMetadata) -> List[dict]:
-        variables = deepcopy(self._define_reader().extract_variables_metadata(domain_name=dataset.domain))
-        for variable in variables:
-            for key, value in variable.items():
-                variable[key] = ",".join(str(item) for item in value) if isinstance(value, list) else value
-        return variables
+        reader = self._define_reader()
+        domain = self._define_domain(dataset)
+        _, metadata = self._extract_from_define(
+            dataset, lambda name: reader.extract_variables_metadata(domain_name=domain, name=name)
+        )
+        return [format_metadata_dict(dict(variable)) for variable in deepcopy(metadata)]
 
     def define_dataset(self, dataset: BaseDatasetMetadata) -> dict:
         """The define.xml dataset metadata of one dataset, or {} when the define doesn't describe it."""
@@ -168,14 +174,14 @@ class MetadataStore:
     def _read_define_dataset(self, dataset: BaseDatasetMetadata) -> dict:
         define_reader = self._define_reader()
         try:
-            metadata = format_metadata_dict(deepcopy(define_reader.extract_dataset_metadata(dataset.domain)))
-            domain = self.standards_context.derive_rdomain(dataset.name)
-            if "define_dataset_variable_order" not in metadata.keys():
-                metadata["define_dataset_variable_order"] = define_dataset_variable_order(
-                    define_reader, domain=domain, name=dataset.name
-                )
+            define_name, metadata = self._extract_from_define(dataset, define_reader.extract_dataset_metadata)
         except DomainNotFoundInDefineXMLError:
-            metadata = {}
+            return {}
+        metadata = format_metadata_dict(dict(deepcopy(metadata)))
+        if "define_dataset_variable_order" not in metadata.keys():
+            metadata["define_dataset_variable_order"] = define_dataset_variable_order(
+                define_reader, domain=self._define_domain(dataset), name=define_name
+            )
         return metadata
 
     def define_all_datasets(self) -> Dict[str, dict]:
@@ -204,8 +210,12 @@ class MetadataStore:
         return self._cached(("define_vlms", dataset.name), lambda: self._read_define_vlms(dataset))
 
     def _read_define_vlms(self, dataset: BaseDatasetMetadata) -> List[dict]:
+        reader = self._define_reader()
+        domain = self._define_domain(dataset)
         try:
-            metadata = self._define_reader().extract_value_level_metadata(**self._define_lookup(dataset))
+            _, metadata = self._extract_from_define(
+                dataset, lambda name: reader.extract_value_level_metadata(domain_name=domain, name=name)
+            )
         except DomainNotFoundInDefineXMLError as e:
             logger.warning(f"No value level metadata for dataset '{dataset.name}': {e}")
             return []

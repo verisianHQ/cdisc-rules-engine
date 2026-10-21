@@ -69,48 +69,67 @@ def _key_sequence_is_unique(context: SourceContext, table_id: str, define_datase
     back on each IDVAR, and that jsonb becomes part of the partition key.
     """
     pgi = context.pgi
-    key_sequence = define_dataset.get("define_dataset_key_sequence") or ""
-    supp_table_hash = pgi.schema.get_table_hash(f"SUPP{table_id}".lower())
+    source = pgi.schema.get_table(table_id)
+    key_sequence = [col for col in (define_dataset.get("define_dataset_key_sequence") or "").split(",") if col]
+    if not key_sequence:
+        # no keys in the define so therefore nothing to be duplicated on
+        return "true", "", ""
 
-    if not supp_table_hash:
-        if not key_sequence:
-            # no keys in the define so therefore nothing to be duplicated on
-            return "true", "", ""
-        return f"(COUNT(*) OVER (PARTITION BY {key_sequence}) = 1)", "", ""
+    supp = pgi.schema.get_table(f"SUPP{table_id}".lower())
+    if not supp:
+        return _unique_over([_column(source, "t", col) for col in key_sequence]), "", ""
 
     pgi.execute_sql(
-        f"SELECT STRING_AGG(DISTINCT IDVAR, ', ') as idvars, STRING_AGG(DISTINCT QNAM, ', ') as qnams "
-        f"from {supp_table_hash};"
+        f"SELECT STRING_AGG(DISTINCT {_column(supp, None, 'IDVAR')}, ', ') as idvars, "
+        f"STRING_AGG(DISTINCT {_column(supp, None, 'QNAM')}, ', ') as qnams from {supp.hash};"
     )
     supp_columns = pgi.fetch_one() or {}
-    idvar_cols = [col for col in (supp_columns.get("idvars") or "").split(", ") if col]
+    # a blank IDVAR (e.g. in SUPPDM) links the SUPP record to the subject rather than to a record
+    idvar_cols = (supp_columns.get("idvars") or "").split(", ")
     qnam_cols = (supp_columns.get("qnams") or "").split(", ")
-    parent_keys = [col for col in key_sequence.split(",") if col and col not in qnam_cols]
+    parent_keys = [col for col in key_sequence if col not in qnam_cols]
 
-    if not idvar_cols:
-        # a SUPP with no IDVARs can't be joined to records so only the parent's own keys count
-        if not parent_keys:
-            return "true", "", ""
-        return f"(COUNT(*) OVER (PARTITION BY {', '.join(f't.{c}' for c in parent_keys)}) = 1)", "", ""
-
+    supp_key = ", ".join(
+        f"{_column(supp, None, col)} AS {col}" for col in ("STUDYID", "RDOMAIN", "USUBJID", "IDVARVAL", "IDVAR")
+    )
     pivot = f"""WITH pivoted_supp as (
             SELECT
-                STUDYID, RDOMAIN, USUBJID, IDVARVAL, IDVAR,
-                jsonb_object_agg(QNAM, QVAL) AS all_supp_vars
-            FROM {supp_table_hash}
+                {supp_key},
+                jsonb_object_agg({_column(supp, None, "QNAM")}, {_column(supp, None, "QVAL")}) AS all_supp_vars
+            FROM {supp.hash}
             GROUP BY 1, 2, 3, 4, 5
         ) """
-    joins = "\n".join(
-        f"""LEFT JOIN pivoted_supp ps_{col}
-            ON t.STUDYID = ps_{col}.STUDYID
-            AND t.DOMAIN = ps_{col}.RDOMAIN
-            AND t.USUBJID = ps_{col}.USUBJID
-            AND ps_{col}.IDVAR = '{col}'
-            AND t.{col}::text = ps_{col}.IDVARVAL::text"""
-        for col in idvar_cols
-    )
+    joins = "\n".join(supp_join(source, index, idvar) for index, idvar in enumerate(idvar_cols))
     # a record normally only matches SUPP through one of its IDVARs
     # take whichever join hit
-    supp_values = f"COALESCE({', '.join(f'ps_{col}.all_supp_vars' for col in idvar_cols)})"
-    keys = [*(f"t.{col}" for col in parent_keys), supp_values]
-    return f"(COUNT(*) OVER (PARTITION BY {', '.join(keys)}) = 1)", joins, pivot
+    supp_values = f"COALESCE({', '.join(f'ps_{index}.all_supp_vars' for index in range(len(idvar_cols)))})"
+    keys = [*(_column(source, "t", col) for col in parent_keys), supp_values]
+    return _unique_over(keys), joins, pivot
+
+
+def supp_join(source, index: int, idvar: str) -> str:
+    """The SUPP records of a record: those for its IDVAR value, or for its subject when IDVAR is blank."""
+    join = f"""LEFT JOIN pivoted_supp ps_{index}
+            ON {_column(source, "t", "STUDYID")} = ps_{index}.STUDYID
+            AND {_column(source, "t", "DOMAIN")} = ps_{index}.RDOMAIN
+            AND {_column(source, "t", "USUBJID")} = ps_{index}.USUBJID"""
+    if not idvar:
+        return f"{join}\n            AND COALESCE(ps_{index}.IDVAR, '') = ''"
+    escaped = idvar.replace("'", "''")
+    return f"""{join}
+            AND ps_{index}.IDVAR = '{escaped}'
+            AND {_column(source, "t", idvar)}::text = ps_{index}.IDVARVAL::text"""
+
+
+def _unique_over(keys) -> str:
+    return f"(COUNT(*) OVER (PARTITION BY {', '.join(keys)}) = 1)"
+
+
+def _column(schema, alias, name: str) -> str:
+    """
+    A column by its variable name: its hash in the table (which differs from the name for
+    reserved words), or the name as written when the table doesn't have it.
+    """
+    column_hash = schema.get_column_hash(name) if schema is not None else None
+    reference = column_hash or name
+    return f"{alias}.{reference}" if alias else reference

@@ -65,7 +65,7 @@ def against_library(context: SourceContext) -> str:
 
 
 def against_define(context: SourceContext) -> str:
-    define = _by_name(context.store.define_variables_by_domain(context.dataset_metadata), "define_variable_name")
+    define = _by_name(context.store.define_variables(context.dataset_metadata), "define_variable_name")
     rows = []
     for variable in context.dataset_metadata.variables:
         name = variable.name.upper()
