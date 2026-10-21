@@ -41,8 +41,10 @@ In the pandas engine, the relationship files `soc_hlgt.asc`, `hlgt_hlt.asc` and 
 
 ```
 --snomed TEXT      Path to directory (searched with its subdirectories) containing the SNOMED CT RF2 files:
-                     - sct2_Description_Full-en_INT_<date>.txt
-                     - sct2_TextDefinition_Full-en_INT_<date>.txt
+                     - sct2_Description_Full-<language>_<edition>_<date>.txt
+                     - sct2_TextDefinition_Full-<language>_<edition>_<date>.txt
+                       (e.g. sct2_Description_Full-en_INT_20240901.txt; the edition code
+                       must contain capital letters only)
                    The version is the date in the file names (e.g. 20240901)
 ```
 
@@ -90,8 +92,10 @@ In the pandas engine, MED-RT is read from a `Core_MEDRT_*_DTS.xml` file containi
 ```
 --loinc TEXT      Path to directory containing LOINC dictionary files
                   The directory (or its LoincTable subdirectory) must contain `Loinc.csv` with capital 'L'
-                  The version is taken from the directory name (e.g. Loinc_2.82) or from the
-                  Loinc_<version>_DifferenceReport.pdf file name
+                  Name the directory Loinc_<version> (e.g. Loinc_2.82): the version is the part of
+                  the directory name after the last underscore. If the name has no underscore, the
+                  version is taken from the Loinc_<version>_DifferenceReport.pdf file name, or is
+                  "unknown" if there is no such file
 ```
 
 In the pandas engine, the version is the highest `VersionLastChanged` value in the file.
@@ -101,6 +105,8 @@ In the pandas engine, the version is the highest `VersionLastChanged` value in t
 ### Dictionary Version Validation
 
 #### valid_define_external_dictionary_version
+
+_Not supported by this engine._
 
 Validates dictionary versions against define.xml specifications.
 
@@ -114,6 +120,8 @@ Operations:
 ### Value and Code Validation
 
 #### valid_external_dictionary_value
+
+_Not supported by this engine._
 
 Validates dictionary values with optional case sensitivity.
 
@@ -129,6 +137,8 @@ Operations:
 
 #### valid_external_dictionary_code
 
+_Not supported by this engine._
+
 Validates dictionary codes.
 
 ```yaml
@@ -141,6 +151,8 @@ Operations:
 ```
 
 #### valid_external_dictionary_code_term_pair
+
+_Not supported by this engine._
 
 Validates matching of code-term pairs.
 
@@ -156,6 +168,8 @@ Operations:
 ### MedDRA-Specific Operations
 
 #### valid_meddra_code_references
+
+_Not supported by this engine._
 
 Validates MedDRA codes across all levels:
 
@@ -174,6 +188,8 @@ Operations:
 ```
 
 #### valid_meddra_code_term_pairs
+
+_Not supported by this engine._
 
 Validates the code-term pair containing the variable given in `name`. Supported pairs:
 
@@ -194,6 +210,8 @@ Operations:
 
 #### valid_meddra_term_references
 
+_Not supported by this engine._
+
 Validates terms at each MedDRA level:
 
 - `--SOC` (System Organ Class)
@@ -213,6 +231,8 @@ Operations:
 ### WHODrug-Specific Operations
 
 #### valid_whodrug_references
+
+_Not supported by this engine._
 
 Validates that the values of the variable given in `name` exist as codes in the ATC Text (INA) file.
 
