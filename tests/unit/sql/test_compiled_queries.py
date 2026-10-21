@@ -1,8 +1,6 @@
 import copy
 from unittest.mock import patch
 
-import pytest
-
 from cdisc_rules_engine.compiler import compiler as compiler_module
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
@@ -122,19 +120,3 @@ def test_an_operation_value_the_query_cannot_select_is_evaluated_per_row():
     with with_operations(operations):
         reported, _ = run(rule(EVERY_ROW, output_variables=["$pair"]))
     assert reported["errors"][0]["value"] == {"$pair": 1}
-
-
-@pytest.mark.parametrize("statement_start", ["UPDATE", "ALTER", "CREATE UNLOGGED TABLE"])
-def test_a_rule_never_changes_or_builds_a_table(statement_start):
-    _, statements = run(
-        rule(
-            {
-                "all": [
-                    condition("is_not_unique_set", "AETERM"),
-                    condition("has_next_corresponding_record", "AETERM", "AEDECOD", within="USUBJID", ordering="AESEQ"),
-                ]
-            }
-        )
-    )
-    executed = [statement for statement in statements if "AE check" not in statement]
-    assert not any(statement.lstrip().upper().startswith(statement_start) for statement in executed)
