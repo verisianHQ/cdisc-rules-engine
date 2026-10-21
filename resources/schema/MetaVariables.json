@@ -11,15 +11,9 @@
     {
       "const": "dataset_label"
     },
-    {
-      "const": "dataset_location"
-    },
-    {
-      "const": "dataset_name"
-    },
-    {
-      "const": "dataset_size"
-    },
+    { "const": "dataset_location" },
+    { "const": "dataset_name" },
+    { "const": "dataset_size" },
     {
       "const": "define_dataset_class"
     },
@@ -194,9 +188,7 @@
     {
       "const": "file_tag_name"
     },
-    {
-      "const": "filename"
-    },
+    { "const": "filename" },
     {
       "const": "language"
     },
@@ -212,24 +204,12 @@
     {
       "const": "library_variable_codelist_value"
     },
-    {
-      "const": "library_variable_core"
-    },
-    {
-      "const": "library_variable_data_type"
-    },
-    {
-      "const": "library_variable_label"
-    },
-    {
-      "const": "library_variable_name"
-    },
-    {
-      "const": "library_variable_order_number"
-    },
-    {
-      "const": "library_variable_role"
-    },
+    { "const": "library_variable_core" },
+    { "const": "library_variable_data_type" },
+    { "const": "library_variable_label" },
+    { "const": "library_variable_name" },
+    { "const": "library_variable_order_number" },
+    { "const": "library_variable_role" },
     {
       "const": "record_count"
     },
@@ -248,35 +228,25 @@
     {
       "const": "variable_data_type"
     },
-    {
-      "const": "variable_format"
-    },
-    {
-      "const": "variable_has_empty_values"
-    },
+    { "const": "variable_format" },
+    { "const": "variable_has_empty_values" },
     {
       "const": "variable_is_empty"
     },
-    {
-      "const": "variable_label"
-    },
-    {
-      "const": "variable_name"
-    },
+    { "const": "variable_label" },
+    { "const": "variable_name" },
     {
       "const": "variable_order_number"
     },
+    { "const": "variable_length" },
     {
-      "const": "variable_length"
+      "const": "variable_max_value_length"
     },
     {
       "const": "variable_value"
     },
     {
       "const": "variable_value_length"
-    },
-    {
-      "const": "variable_max_value_length"
     }
   ]
 }
