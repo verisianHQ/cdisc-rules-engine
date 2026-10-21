@@ -437,11 +437,43 @@ It depends on which attributes:
 
 #### How do I execute custom rules?
 
-Custom rules can be executed in two ways:
+Rules need a `Core: Id` property, otherwise they are skipped. Custom rules can be executed in two ways:
 
-- **Local rules** - Use the local rules option (`-lr`) when running the validation engine. Only rules whose `Authorities` > `Standards` `Name` and `Version` (and `Substandard`, when `-ss` is given) match the `-s` (standard) and `-v` (version) options are executed. Use `-r` to execute only specific rule IDs.
-- **Cached custom rules** - Add the rules to the cache with `update-cache --custom_rules_directory` (`-crd`) or `--custom_rule` (`-cr`), add a custom standard listing them with `update-cache --custom_standard` (`-cs`), then run the validation with the `--custom_standard` (`-cs`) flag and `-s`/`-v` set to the custom standard. See the README for the custom standard file format.
-- Rules need a Core: Id property for execution.
+1. **Local rules (simplest)** - Point the validation at your rule files with the local rules option (`-lr`), giving either a rule file or a folder (its subfolders are searched too, for `.yml`, `.yaml` and `.json` files):
+
+   ```bash
+   python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -lr path/to/rules -sql -mem
+   ```
+
+   - Only the rules whose `Authorities` > `Standards` include a `Name` and `Version` matching `-s` and `-v` are executed. Note that the rule's version is written with a dot (e.g. `Version: "3.4"`), while `-v` uses a dash (e.g. `3-4`).
+   - When `-ss` (substandard) is given, the rule's `Substandard` must match it too.
+   - To execute only some of the rules, add `-r <rule ID>` once for each rule (e.g. `-r CUSTOM-000001 -r CUSTOM-000002`).
+
+2. **Cached custom rules** - Store the rules in the engine's cache, group them into a custom standard, and validate against that standard:
+
+   1. Add the rules to the cache, either from a folder (subfolders are not searched) or file by file:
+
+      ```bash
+      python core.py update-cache -crd path/to/rules
+      python core.py update-cache -cr path/to/rule1.yml -cr path/to/rule2.yml
+      ```
+
+      A rule that is already in the cache is skipped: use `-ucr path/to/rule.yml` to update it.
+
+   2. Create a custom standard file listing the rule IDs (see "Custom Standards Management" in the [README](../../README.md)) and add it to the cache:
+
+      ```bash
+      python core.py update-cache -cs path/to/standard.json
+      ```
+
+   3. Run the validation with the `-cs` flag and the name and version of the custom standard:
+
+      ```bash
+      python core.py validate -cs -s cust_standard -v 1-0 -d path/to/datasets -sql -mem
+      ```
+
+   - Custom rule IDs must not start with `CORE-`: rule IDs starting with `CORE-` are taken from the CDISC rules in the cache, which is how a custom standard can also include CDISC rules.
+   - Like every `update-cache` command, these need the `CDISC_LIBRARY_API_KEY` environment variable (or the `--apikey` option) to be set.
 
 #### Can I use custom attributes with standard CDISC/FDA rules?
 
