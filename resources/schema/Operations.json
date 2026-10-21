@@ -15,33 +15,6 @@
     {
       "properties": {
         "operator": {
-          "const": "codelist_extensible"
-        }
-      },
-      "required": ["id", "operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "codelist_terms"
-        }
-      },
-      "required": ["id", "operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "define_extensible_codelists"
-        }
-      },
-      "required": ["id", "operator", "codelists"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
           "const": "define_variable_metadata"
         },
         "attribute_name": {
@@ -201,15 +174,6 @@
     {
       "properties": {
         "operator": {
-          "const": "get_dataset_filtered_variables"
-        }
-      },
-      "required": ["id", "operator", "key_name", "key_value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
           "const": "get_define_external_dictionary_version"
         }
       },
@@ -232,15 +196,6 @@
         }
       },
       "required": ["id", "operator", "name"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "map"
-        }
-      },
-      "required": ["id", "operator", "map"],
       "type": "object"
     },
     {
@@ -408,96 +363,6 @@
     {
       "properties": {
         "operator": {
-          "const": "valid_define_external_dictionary_version"
-        }
-      },
-      "required": ["id", "operator", "external_dictionary_type"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_external_dictionary_value"
-        }
-      },
-      "required": [
-        "id",
-        "operator",
-        "name",
-        "external_dictionary_type",
-        "dictionary_term_type"
-      ],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_external_dictionary_code"
-        }
-      },
-      "required": [
-        "id",
-        "operator",
-        "name",
-        "external_dictionary_type",
-        "dictionary_term_type"
-      ],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_external_dictionary_code_term_pair"
-        }
-      },
-      "required": [
-        "id",
-        "operator",
-        "name",
-        "external_dictionary_type",
-        "external_dictionary_term_variable"
-      ],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_meddra_code_references"
-        }
-      },
-      "required": ["id", "operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_meddra_code_term_pairs"
-        }
-      },
-      "required": ["id", "operator", "name"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_meddra_term_references"
-        }
-      },
-      "required": ["id", "operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "valid_whodrug_references"
-        }
-      },
-      "required": ["id", "operator", "name"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
           "const": "variable_count"
         }
       },
@@ -517,33 +382,6 @@
       "properties": {
         "operator": {
           "const": "variable_is_null"
-        }
-      },
-      "required": ["id", "operator", "name"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "variable_library_metadata"
-        }
-      },
-      "required": ["id", "operator", "name"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "variable_names"
-        }
-      },
-      "required": ["id", "operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "variable_value_count"
         }
       },
       "required": ["id", "operator", "name"],
@@ -661,12 +499,6 @@
       "type": "string"
     },
     "group": {
-      "items": {
-        "$ref": "CORE-base.json#/$defs/VariableReference"
-      },
-      "type": "array"
-    },
-    "group_aliases": {
       "items": {
         "$ref": "CORE-base.json#/$defs/VariableReference"
       },

@@ -1,57 +1,45 @@
 # Summary
 
-| Operations                                                                                                                                          | What they return                                                                                  |
-| --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Operations**                                                                                                                                      |                                                                                                   |
-| [`calc`](#calc)                                                                                                                                     | Arithmetic formula evaluated for each record.                                                     |
-| [`codelist_extensible`](#codelist_extensible)                                                                                                       | Whether a codelist is extensible. Not supported by this engine.                                   |
-| [`codelist_terms`](#codelist_terms)                                                                                                                 | Terms or codes of codelists. Not supported by this engine.                                        |
-| [`dataset_names`](#dataset_names)                                                                                                                   | Names of the submitted datasets.                                                                  |
-| [`define_extended_terms_in_ct`](#define_extended_terms_in_ct)                                                                                       | Sponsor-extended define.xml terms that already exist in the CT codelist.                          |
-| [`define_extensible_codelists`](#define_extensible_codelists)                                                                                       | Sponsor-extended define.xml terms of extensible codelists. Not supported by this engine.          |
-| [`define_variable_metadata`](#define_variable_metadata)                                                                                             | A variable's metadata from the define.xml.                                                        |
-| [`distinct`](#distinct)                                                                                                                             | Distinct values of a variable, optionally per group.                                              |
-| [`domain_is_custom`](#domain_is_custom)                                                                                                             | Whether the domain is not in the standard.                                                        |
-| [`domain_label`](#domain_label)                                                                                                                     | Label of the domain in the standard.                                                              |
-| [`dy`](#dy)                                                                                                                                         | Study day of a --DTC date, relative to DM.RFSTDTC.                                                |
-| [`expected_variables`](#expected_variables), `permissible_variables`, `required_variables`                                                          | Expected, permissible or required variables of the domain.                                        |
-| [`extract_metadata`](#extract_metadata)                                                                                                             | Dataset level metadata value (e.g. dataset name).                                                 |
-| [`get_codelist_attributes`](#get_codelist_attributes)                                                                                               | Values of a controlled terminology attribute (e.g. term codes).                                   |
-| [`get_column_order_from_dataset`](#get_column_order_from_dataset)                                                                                   | Variable names in the order of the dataset.                                                       |
-| [`get_column_order_from_library`](#get_column_order_from_library)                                                                                   | Variable names in the library order for the domain.                                               |
-| [`get_countries`](#get_countries)                                                                                                                   | List of countries (ISO 3166 or GENC).                                                             |
-| [`get_dataset_filtered_variables`](#get_dataset_filtered_variables)                                                                                 | Dataset variables filtered by library metadata. Not supported by this engine.                     |
-| [`get_model_column_order`](#get_model_column_order)                                                                                                 | Variable names in the library order for the model class.                                          |
-| [`get_model_filtered_variables`](#get_model_filtered_variables)                                                                                     | Model variables filtered by library metadata.                                                     |
-| [`get_parent_model_column_order`](#get_parent_model_column_order)                                                                                   | Variable names in the library order for a SUPP dataset's parent class.                            |
-| [`global_max_variable_length`](#global_max_variable_length), `global_min_variable_length`                                                           | Largest or smallest declared length of each variable across all datasets.                         |
-| [`intersect`](#intersect)                                                                                                                           | Values of a list that are also in another list.                                                   |
-| [`label_referenced_variable_metadata`](#label_referenced_variable_metadata), `name_referenced_variable_metadata`                                    | Library metadata of the variables whose label or name is held in a column.                        |
-| [`map`](#map)                                                                                                                                       | Lookup table mapping values to an output value. Not supported by this engine.                     |
-| [`max`](#max), `min`, `mean`                                                                                                                        | Largest, smallest or mean value, optionally per group.                                            |
-| [`max_date`](#max_date), `min_date`                                                                                                                 | Latest or earliest date, optionally per group.                                                    |
-| [`max_variable_value_length`](#max_variable_value_length)                                                                                           | Length of the longest value of each variable.                                                     |
-| [`minus`](#minus)                                                                                                                                   | Values of a list that are not in another list.                                                    |
-| [`record_count`](#record_count)                                                                                                                     | Number of records, optionally filtered and per group.                                             |
-| [`referenced_domain_variable_names`](#referenced_domain_variable_names)                                                                             | Variable names of the dataset whose domain is held in a column.                                   |
-| [`split`](#split)                                                                                                                                   | Comma-separated text split into a list of values.                                                 |
-| [`standard_domains`](#standard_domains)                                                                                                             | Domains of the standard being validated.                                                          |
-| [`study_domains`](#study_domains)                                                                                                                   | Domains of the study.                                                                             |
-| [`valid_codelist_dates`](#valid_codelist_dates)                                                                                                     | Valid terminology package dates for a standard.                                                   |
-| [`variable_count`](#variable_count)                                                                                                                 | Number of datasets containing a variable.                                                         |
-| [`variable_exists`](#variable_exists)                                                                                                               | Whether a variable exists in the dataset.                                                         |
-| [`variable_is_null`](#variable_is_null)                                                                                                             | Whether a variable has no populated values.                                                       |
-| [`variable_library_metadata`](#variable_library_metadata)                                                                                           | A metadata attribute of every library variable of the domain. Not supported by this engine.       |
-| [`variable_names`](#variable_names)                                                                                                                 | Variable names of the standard in the library. Not supported by this engine.                      |
-| [`variable_value_count`](#variable_value_count)                                                                                                     | Number of domains in which each value of a variable appears. Not supported by this engine.        |
-| **External Dictionary Validation Operations**                                                                                                       |                                                                                                   |
-| [`get_define_external_dictionary_version`](#get_define_external_dictionary_version)                                                                 | Dictionary version given in the define.xml.                                                       |
-| [`get_external_dictionary_version`](#get_external_dictionary_version)                                                                               | Dictionary version read from the dictionary files.                                                |
-| [`valid_define_external_dictionary_version`](#valid_define_external_dictionary_version)                                                             | Whether the define.xml dictionary version matches the files. Not supported by this engine.        |
-| [`valid_external_dictionary_value`](#valid_external_dictionary_value), `valid_external_dictionary_code`, `valid_external_dictionary_code_term_pair` | Whether values, codes or code-term pairs are valid in a dictionary. Not supported by this engine. |
-| [`valid_meddra_code_references`](#valid_meddra_code_references), `valid_meddra_code_term_pairs`, `valid_meddra_term_references`                     | Whether MedDRA codes, code-term pairs or terms are valid. Not supported by this engine.           |
-| [`valid_whodrug_references`](#valid_whodrug_references)                                                                                             | Whether WHODrug references point to existing ATC codes. Not supported by this engine.             |
-| [`whodrug_code_hierarchy`](#whodrug_code_hierarchy)                                                                                                 | Whether WHODrug values follow the ATC hierarchy.                                                  |
+| Operations                                                                                                       | What they return                                                           |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Operations**                                                                                                   |                                                                            |
+| [`calc`](#calc)                                                                                                  | Arithmetic formula evaluated for each record.                              |
+| [`dataset_names`](#dataset_names)                                                                                | Names of the submitted datasets.                                           |
+| [`define_extended_terms_in_ct`](#define_extended_terms_in_ct)                                                    | Sponsor-extended define.xml terms that already exist in the CT codelist.   |
+| [`define_variable_metadata`](#define_variable_metadata)                                                          | A variable's metadata from the define.xml.                                 |
+| [`distinct`](#distinct)                                                                                          | Distinct values of a variable, optionally per group.                       |
+| [`domain_is_custom`](#domain_is_custom)                                                                          | Whether the domain is not in the standard.                                 |
+| [`domain_label`](#domain_label)                                                                                  | Label of the domain in the standard.                                       |
+| [`dy`](#dy)                                                                                                      | Study day of a --DTC date, relative to DM.RFSTDTC.                         |
+| [`expected_variables`](#expected_variables), `permissible_variables`, `required_variables`                       | Expected, permissible or required variables of the domain.                 |
+| [`extract_metadata`](#extract_metadata)                                                                          | Dataset level metadata value (e.g. dataset name).                          |
+| [`get_codelist_attributes`](#get_codelist_attributes)                                                            | Values of a controlled terminology attribute (e.g. term codes).            |
+| [`get_column_order_from_dataset`](#get_column_order_from_dataset)                                                | Variable names in the order of the dataset.                                |
+| [`get_column_order_from_library`](#get_column_order_from_library)                                                | Variable names in the library order for the domain.                        |
+| [`get_countries`](#get_countries)                                                                                | List of countries (ISO 3166 or GENC).                                      |
+| [`get_model_column_order`](#get_model_column_order)                                                              | Variable names in the library order for the model class.                   |
+| [`get_model_filtered_variables`](#get_model_filtered_variables)                                                  | Model variables filtered by library metadata.                              |
+| [`get_parent_model_column_order`](#get_parent_model_column_order)                                                | Variable names in the library order for a SUPP dataset's parent class.     |
+| [`global_max_variable_length`](#global_max_variable_length), `global_min_variable_length`                        | Largest or smallest declared length of each variable across all datasets.  |
+| [`intersect`](#intersect)                                                                                        | Values of a list that are also in another list.                            |
+| [`label_referenced_variable_metadata`](#label_referenced_variable_metadata), `name_referenced_variable_metadata` | Library metadata of the variables whose label or name is held in a column. |
+| [`max`](#max), `min`, `mean`                                                                                     | Largest, smallest or mean value, optionally per group.                     |
+| [`max_date`](#max_date), `min_date`                                                                              | Latest or earliest date, optionally per group.                             |
+| [`max_variable_value_length`](#max_variable_value_length)                                                        | Length of the longest value of each variable.                              |
+| [`minus`](#minus)                                                                                                | Values of a list that are not in another list.                             |
+| [`record_count`](#record_count)                                                                                  | Number of records, optionally filtered and per group.                      |
+| [`referenced_domain_variable_names`](#referenced_domain_variable_names)                                          | Variable names of the dataset whose domain is held in a column.            |
+| [`split`](#split)                                                                                                | Comma-separated text split into a list of values.                          |
+| [`standard_domains`](#standard_domains)                                                                          | Domains of the standard being validated.                                   |
+| [`study_domains`](#study_domains)                                                                                | Domains of the study.                                                      |
+| [`valid_codelist_dates`](#valid_codelist_dates)                                                                  | Valid terminology package dates for a standard.                            |
+| [`variable_count`](#variable_count)                                                                              | Number of datasets containing a variable.                                  |
+| [`variable_exists`](#variable_exists)                                                                            | Whether a variable exists in the dataset.                                  |
+| [`variable_is_null`](#variable_is_null)                                                                          | Whether a variable has no populated values.                                |
+| **External Dictionary Validation Operations**                                                                    |                                                                            |
+| [`get_define_external_dictionary_version`](#get_define_external_dictionary_version)                              | Dictionary version given in the define.xml.                                |
+| [`get_external_dictionary_version`](#get_external_dictionary_version)                                            | Dictionary version read from the dictionary files.                         |
+| [`whodrug_code_hierarchy`](#whodrug_code_hierarchy)                                                              | Whether WHODrug values follow the ATC hierarchy.                           |
 
 # Operations
 
@@ -80,115 +68,6 @@ Operations:
     value: ((AVAL - BASE) / BASE) * 100
 ```
 
-## codelist_terms
-
-Returns a list of valid codelist/term values. Used for evaluating whether NCI code or submission values are valid based on controlled terminology. Expects three parameters: `codelists` which is a list of the codelist submission value(s) to retrieve, `level` which is the level of data (either "codelist" or "term") at which to return data from, and `returntype` which is the type of values to return, either "code" for NCI Code(s) or "value" for submission value(s).
-
-_Not supported by this engine._ To get the terms of a codelist, use [get_codelist_attributes](#get_codelist_attributes) with `ct_conditions` instead.
-
-```yaml
-Check:
-  all:
-    - name: PPSTRESU
-      operator: is_not_contained_by
-      value: $terms
-    - name: $extensible
-      operator: equal_to
-      value: true
-Operations:
-  - id: $terms
-    operator: codelist_terms
-    codelists:
-      - PKUDUG
-    level: term
-    returntype: value
-  - id: $extensible
-    codelist: PKUDUG
-    operator: codelist_extensible
-```
-
-If `ct_package_type`, `version`, `codelist_code` and one of `term_code` or `term_value` are provided, it will instead attach a new column containing the term for each combination provided in the source dataset. `version` is the name of the column holding each record's CT package version date, and `codelist_code` is either the name of a column holding the codelist code or a literal codelist code. If `term_code` is provided, it will find term values using the term codes. If `term_value` is provided, it will find term codes using the term values. Matching on `term_code`/`term_value` is case-insensitive, and records with no match get a null value. Only one of `term_code` or `term_value` can be provided.
-
-For example, given the current dataset:
-
-| id  | codeSystemVersion | $codelist_code | code    | decode     |
-| --- | ----------------- | -------------- | ------- | ---------- |
-| 1   | 2024-09-27        | C201264        | C201356 | After      |
-| 2   | 2024-09-27        | C201265        | C201352 | End to End |
-| 3   | 2023-03-29        | C127262        | C51282  | CLINIC     |
-
-and the following operation:
-
-```yaml
-- id: $found_term_value
-  operator: codelist_terms
-  ct_package_type: DDF
-  version: codeSystemVersion
-  codelist_code: $codelist_code
-  term_code: code
-```
-
-This will result in the following dataset:
-
-| id  | codeSystemVersion | $codelist_code | code    | decode     | $found_term_value |
-| --- | ----------------- | -------------- | ------- | ---------- | ----------------- |
-| 1   | 2024-09-27        | C201264        | C201356 | After      | After             |
-| 2   | 2024-09-27        | C201265        | C201352 | End to End | End to End        |
-| 3   | 2023-03-29        | C127262        | C51282  | CLINIC     | CLINIC            |
-
-Conversely, if given the same dataset, and the following operation:
-
-```yaml
-- id: $found_term_code
-  operator: codelist_terms
-  ct_package_type: DDF
-  version: codeSystemVersion
-  codelist_code: $codelist_code
-  term_value: decode
-```
-
-This will result in the following dataset:
-
-| id  | codeSystemVersion | $codelist_code | code    | decode     | $found_term_code |
-| --- | ----------------- | -------------- | ------- | ---------- | ---------------- |
-| 1   | 2024-09-27        | C201264        | C201356 | After      | C201356          |
-| 2   | 2024-09-27        | C201265        | C201352 | End to End | C201352          |
-| 3   | 2023-03-29        | C127262        | C51282  | CLINIC     | C51282           |
-
-## codelist_extensible
-
-Returns a Series indicating whether a specified `codelist` is extensible. Used in conjunction with `codelist_terms` to determine if values outside the codelist are acceptable. From the above example, `$extensible` will contain a bool if the codelist PKUDUG is extensible in all rows of the column.
-
-_Not supported by this engine._ Use the `is_extensible_codelist_code` check operator (see [Operator.md](Operator.md)) instead.
-
-If `ct_package_type`, `version`, and `codelist_code` parameters are provided, it will instead attach a new column containing the extensible value for each combination provided in the source dataset. As for `codelist_terms`, `version` is the name of the column holding each record's CT package version date, and `codelist_code` is either the name of a column holding the codelist code or a literal codelist code.
-
-For example, given the current dataset:
-
-| id  | codeSystemVersion | $codelist_code |
-| --- | ----------------- | -------------- |
-| 1   | 2024-09-27        | C201264        |
-| 2   | 2024-09-27        | C201265        |
-| 3   | 2023-03-29        | C127262        |
-
-and the following operation:
-
-```yaml
-- id: $codelist_extensible
-  operator: codelist_extensible
-  ct_package_type: DDF
-  version: codeSystemVersion
-  codelist_code: $codelist_code
-```
-
-This will result in the following dataset:
-
-| id  | codeSystemVersion | $codelist_code | $codelist_extensible |
-| --- | ----------------- | -------------- | -------------------- |
-| 1   | 2024-09-27        | C201264        | false                |
-| 2   | 2024-09-27        | C201265        | false                |
-| 3   | 2023-03-29        | C127262        | true                 |
-
 ## define_extended_terms_in_ct
 
 Returns the sponsor-extended terms of extensible codelists in the define.xml that already exist in the same codelist of the CT in use, as:
@@ -209,22 +88,9 @@ Operations:
     operator: define_extended_terms_in_ct
 ```
 
-## define_extensible_codelists
-
-Returns a list of the sponsor-extended term submission values defined in the define.xml for extensible codelists. Used for evaluating whether submission values are valid based on controlled terminology. Expects the parameter `codelists` which is a list of the codelist submission value(s) to retrieve. If `codelists` is `["ALL"]`, it will return the extended terms of all extensible codelists in a single list.
-
-_Not supported by this engine._
-
-```yaml
-- id: $ext_value
-  operator: define_extensible_codelists
-  codelists:
-    - ALL
-```
-
 ## define_variable_metadata
 
-If a target variable `name` is specified, returns the specified metadata in the define for the specified target variable. `--` in `name` is replaced with the domain. If the domain or the variable is not found in the define, the rule fails with an execution error (the pandas engine returns an empty string instead).
+If a target variable `name` is specified, returns the specified metadata in the define for the specified target variable. `--` in `name` is replaced with the domain. If the domain or the variable is not found in the define, the rule fails with an execution error.
 
 - Input
 
@@ -239,27 +105,6 @@ If a target variable `name` is specified, returns the specified metadata in the 
 
   `Laboratory Test Code`
 
-In the pandas engine only, if no target variable `name` is specified, returns a dictionary containing the specified metadata in the define for all variables.
-
-- Input
-
-  ```yaml
-  - operator: define_variable_metadata
-    attribute_name: define_variable_label
-    id: $VARIABLE_LABEL
-  ```
-
-- Output
-
-  ```json
-  {
-    "STUDYID": "Study Identifier",
-    "USUBJID": "Unique Subject Identifier",
-    "LBTESTCD": "Laboratory Test Code",
-    "...": "..."
-  }
-  ```
-
 ## dataset_names
 
 Returns a list of the submitted dataset filenames in all uppercase. The order of the names is not guaranteed.
@@ -269,8 +114,6 @@ ex. if TS.xpt, AE.xpt, EC.xpt, and SUPPEC.xpt are submitted -> [TS, AE, EC, SUPP
 ## distinct
 
 Get a distinct list of values for the given `name`. If a `group` list is specified, the distinct value list will be grouped by the variables within `group`.
-
-If `group` is provided, `group_aliases` may also be provided to assign new grouping variable names so that results grouped by the values in one set of grouping variables can be merged onto a dataset according to the same grouping value(s) stored in different set of grouping variables. When both `group` and `group_aliases` are provided, columns are renamed according to corresponding list position (i.e., the 1st column in `group` is renamed to the 1st column in `group_aliases`, etc.). If there are more columns listed in `group` than in `group_aliases`, only the `group` columns with corresponding `group_aliases` columns will be renamed. If there are more columns listed in `group_aliases` than in `group`, the extra column names in `group_aliases` will be ignored. See [record_count](#record_count) for an example of the use of `group_aliases`.
 
 ```yaml
 Check:
@@ -292,7 +135,7 @@ Operations:
       - USUBJID
 ```
 
-`group_aliases` is only used by the pandas engine. `filter` can be used to only take values from records whose columns have the given values. Values must match exactly: the `%` wildcard of [record_count](#record_count) isn't supported.
+`filter` can be used to only take values from records whose columns have the given values. Values must match exactly: the `%` wildcard of [record_count](#record_count) isn't supported.
 
 ```yaml
 - id: $empty_tsval_tsparmcds
@@ -379,7 +222,7 @@ Match Datasets:
       - USUBJID
 ```
 
-If the dataset being evaluated already has an RFSTDTC column, e.g. after `Match Datasets` with DM as above, that column is used instead of joining DM again. Partial dates are compared at the precision they share: e.g. `2023-01` and `2023-01-05` are compared as months, which gives `1` (the pandas engine gives an empty result for partial dates).
+If the dataset being evaluated already has an RFSTDTC column, e.g. after `Match Datasets` with DM as above, that column is used instead of joining DM again. Partial dates are compared at the precision they share: e.g. `2023-01` and `2023-01-05` are compared as months, which gives `1`.
 
 ## expected_variables
 
@@ -466,7 +309,7 @@ Returns the list of the current dataset's column names, in the order in which th
 Check:
   all:
     - name: $column_order_from_dataset
-      operator: is_not_ordered_by
+      operator: is_not_ordered_subset_of
       value: $column_order_from_library
 Operations:
   - id: $column_order_from_library
@@ -537,19 +380,6 @@ Check:
 Operations:
   - id: $model_variables
     operator: get_model_column_order
-```
-
-## get_dataset_filtered_variables
-
-Filters variables from the dataset based on specified library metadata criteria (`key_name` and `key_value`). Returns a list of variable names, in library order, that exist in the dataset and whose library metadata attribute `key_name` equals `key_value`.
-
-_Not supported by this engine._
-
-```yaml
-- operator: get_dataset_filtered_variables
-  id: $timing_variables
-  key_name: "role"
-  key_value: "Timing"
 ```
 
 ## get_model_filtered_variables
@@ -655,114 +485,6 @@ For each record, returns the values of the library ig variable attribute given i
   name: FATEST
   attribute_name: role
 ```
-
-In the pandas engine, `attribute_name` is not used: the operation generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable label found in the column provided in `name`. A column is added for each library metadata attribute, named `<id>_<attribute>` (e.g. `$label_referenced_variable_metadata_role`). Records whose label does not match a library variable get empty values.
-
-- Input
-
-  Target Dataset: `SUPPLB`
-
-  Product: `sdtmig`
-
-  Version: `3-4`
-
-  Dataset:
-
-  ```json
-  {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QLABEL": ["Toxicity", "Viscosity", "Analysis Method"]
-  }
-  ```
-
-  Rule:
-
-  ```yaml
-  - operator: label_referenced_variable_metadata
-    id: $label_referenced_variable_metadata
-    name: "QLABEL"
-  ```
-
-- Output
-
-  ```json
-  {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QLABEL": ["Toxicity", "Viscosity", "Analysis Method"],
-    "$label_referenced_variable_metadata_name": ["LBTOX", "", "LBANMETH"],
-    "$label_referenced_variable_metadata_role": [
-      "Variable Qualifier",
-      "",
-      "Record Qualifier"
-    ],
-    "$label_referenced_variable_metadata_ordinal": [44, "", 38],
-    "$label_referenced_variable_metadata_label": [
-      "Toxicity",
-      "",
-      "Analysis Method"
-    ],
-    "...": "..."
-  }
-  ```
-
-## map
-
-Allows the creation of a lookup table to take the values from multiple input columns and map them to values in an output column. The `map` parameter contains a list of objects. Each dictionary contains column names as properties that match the column names in the source dataset and an `output` property that will be returned as a result.
-
-If `map` has a single object and `output` is the only property specified on that object, this will function as a direct assignment.
-
-_Not supported by this engine._
-
-For example, given the following current dataset:
-
-| id  | parent_entity | parent_rel     |
-| --- | ------------- | -------------- |
-| 1   | Timing        | relativeToFrom |
-| 2   | Something     | relativeToFrom |
-| 3   | Timing        | type           |
-
-and the following operation:
-
-```yaml
-Operations:
-  - id: $codelist_code
-    operator: map
-    map:
-      - parent_entity: Timing
-        parent_rel: type
-        output: C201264
-      - parent_entity: Timing
-        parent_rel: relativeToFrom
-        output: C201265
-```
-
-This will result in the following dataset:
-
-| id  | parent_entity | parent_rel     | $codelist_code |
-| --- | ------------- | -------------- | -------------- |
-| 1   | Timing        | relativeToFrom | C201265        |
-| 2   | Something     | relativeToFrom | None           |
-| 3   | Timing        | type           | C201264        |
-
-The following operation:
-
-```yaml
-Operations:
-  - id: $codelist_code
-    operator: map
-    map:
-      - output: C201264
-```
-
-Will result in the following dataset:
-
-| id  | parent_entity | parent_rel     | $codelist_code |
-| --- | ------------- | -------------- | -------------- |
-| 1   | Timing        | relativeToFrom | C201264        |
-| 2   | Something     | relativeToFrom | C201264        |
-| 3   | Timing        | type           | C201264        |
 
 ## max
 
@@ -936,57 +658,6 @@ For each record, returns the values of the library ig variable attribute given i
   attribute_name: role
 ```
 
-In the pandas engine, `attribute_name` is not used: the operation generates a dataframe where each record in the dataframe is the library ig variable metadata corresponding with the variable name found in the column provided in `name`. A column is added for each library metadata attribute, named `<id>_<attribute>` (e.g. `$name_referenced_variable_metadata_role`). Records whose name does not match a library variable get empty values.
-
-- Input
-
-  Target Dataset: `SUPPLB`
-
-  Product: `sdtmig`
-
-  Version: `3-4`
-
-  Dataset:
-
-  ```json
-  {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"]
-  }
-  ```
-
-  Rule:
-
-  ```yaml
-  - operator: name_referenced_variable_metadata
-    id: $name_referenced_variable_metadata
-    name: "QNAM"
-  ```
-
-- Output
-
-  ```json
-  {
-    "STUDYID": ["STUDY1", "STUDY1", "STUDY1"],
-    "USUBJID": ["SUBJ1", "SUBJ1", "SUBJ1"],
-    "QNAM": ["LBTOX", "LBVISCOS", "LBANMETH"],
-    "$name_referenced_variable_metadata_name": ["LBTOX", "", "LBANMETH"],
-    "$name_referenced_variable_metadata_role": [
-      "Variable Qualifier",
-      "",
-      "Record Qualifier"
-    ],
-    "$name_referenced_variable_metadata_ordinal": [44, "", 38],
-    "$name_referenced_variable_metadata_label": [
-      "Toxicity",
-      "",
-      "Analysis Method"
-    ],
-    "...": "..."
-  }
-  ```
-
 ## permissible_variables
 
 Returns the permissible variables ("Core" = Perm ) for a given domain and standard
@@ -1013,11 +684,9 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 ## record_count
 
-If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These must be column names (in the pandas engine they can also be derived from other operations like `get_dataset_filtered_variables`). If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables.
+If no `filter` or `group` is provided, returns the number of records in the dataset. If `filter` is provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter. If `group` is provided, returns the number of rows matching each unique set of the grouping variables. These must be column names. If both `filter` and `group` are provided, returns the number of records in the dataset that contain the value(s) in the corresponding column(s) provided in the filter that also match each unique set of the grouping variables.
 
 **Wildcard Filtering**: Filter values ending with `%` will match any records where the column value starts with the specified prefix. For example, `RACE%` will match `RACE1`, `RACE2`, `RACE3`, etc. This is useful for matching related variables with numeric or alphabetic suffixes.
-
-If `group` is provided, `group_aliases` may also be provided to assign new grouping variable names so that results grouped by the values in one set of grouping variables can be merged onto a dataset according to the same grouping value(s) stored in different set of grouping variables. When both `group` and `group_aliases` are provided, columns are renamed according to corresponding list position (i.e., the 1st column in `group` is renamed to the 1st column in `group_aliases`, etc.). If there are more columns listed in `group` than in `group_aliases`, only the `group` columns with corresponding `group_aliases` columns will be renamed. If there are more columns listed in `group_aliases` than in `group`, the extra column names in `group_aliases` will be ignored.
 
 Example: return the number of records in a dataset.
 
@@ -1067,46 +736,7 @@ Example: return the number of records grouped by USUBJID where FLAGVAR = "Y".
     FLAGVAR: "Y"
 ```
 
-Example: return the number of records grouped by USUBJID and IDVARVAL where QNAM = "TEST1" and IDVAR = "GROUPID", renaming the IDVARVAL column to GROUPID for subsequent merging.
-
-```yaml
-- operator: record_count
-  id: $test1_records_per_usubjid_groupid
-  group:
-    - USUBJID
-    - IDVARVAL
-  filter:
-    QNAM: "TEST1"
-    IDVAR: "GROUPID"
-  group_aliases:
-    - USUBJID
-    - GROUPID
-```
-
-Example: Group the `StudyIdentifier` dataset by `parent_id` and merge the result back to the context dataset `StudyVersion` using `StudyVersion.id == StudyIdentifier.parent_id`
-
-```yaml
-Scope:
-  Entities:
-    Include:
-      - StudyVersion
-Operations:
-  - domain: StudyIdentifier
-    filter:
-      parent_entity: "StudyVersion"
-      parent_rel: "studyIdentifiers"
-      rel_type: "definition"
-      studyIdentifierScope.organizationType.code: "C70793"
-      studyIdentifierScope.organizationType.codeSystem: "http://www.cdisc.org"
-    group:
-      - parent_id
-    group_aliases:
-      - id
-    id: $num_sponsor_ids
-    operator: record_count
-```
-
-`group_aliases` is only used by the pandas engine, and `group` must list columns: grouping by another operation's result (e.g. `get_dataset_filtered_variables`) is only supported by the pandas engine. These extra parameters are supported:
+`group` must list columns. These parameters are also supported:
 
 - `regex`: only count records whose `name` value matches this PostgreSQL regular expression. It matches anywhere in the value unless anchored with `^` or `$`. Needs `name`.
 - `use_rule_type_table: true`: count records in the rule type's table instead of the operation's `domain`, e.g. the `variable_name` and `variable_value_length` columns of `Value Check with Variable Metadata`.
@@ -1354,55 +984,6 @@ Operations:
 
 For Char variables, values containing only whitespace (spaces, tabs, newlines) also count as null. `name` is looked up in the operation's `domain`, which defaults to the dataset being evaluated. Set `use_rule_type_table: true` to look it up in the rule type's table instead (e.g. `define_variable_has_no_data` or `dataset_label`). If the domain or table doesn't exist, the rule is skipped.
 
-## variable_library_metadata
-
-Get the metadata value from the library for all variables defined in the library for the current domain. Metadata attribute is specified by the `name`. Returns a mapping of variable names to the metadata value.
-
-_Not supported by this engine._
-
-Result
-
-```json
-{
-  "STUDYID": "Req",
-  "DOMAIN": "Req",
-  "AEGRPID": "Perm",
-  "AETERM": "Req",
-  "AELLT": "Exp",
-  "...": "..."
-}
-```
-
-> Condition: Variable Core Status = Required
-
-> Rule: Variable ^= null
-
-```yaml
-Check:
-  any:
-    - all:
-        - operator: variable_metadata_equal_to
-          value: Req
-          metadata: $var_perm
-        - operator: empty
-Operations:
-  - id: $var_perm
-    operator: variable_library_metadata
-    name: core
-```
-
-## variable_names
-
-Return the set of variable names from the library for the given standard
-
-_Not supported by this engine._
-
-## variable_value_count
-
-Given a variable `name`, returns a mapping of variable values to the number of domains in the study in which that value appears in the variable. `--` in `name` is replaced with each domain code. Each value is counted at most once per domain.
-
-_Not supported by this engine._
-
 # External Dictionary Validation Operations
 
 **Supported External Dictionary Types**
@@ -1442,206 +1023,6 @@ Operations:
 ## get_external_dictionary_version
 
 Returns the version of the external dictionary in `external_dictionary_type`, as read from the dictionary files provided for the validation run. If that dictionary wasn't provided, the rule fails with an execution error. See [get_define_external_dictionary_version](#get_define_external_dictionary_version) for an example.
-
-## valid_define_external_dictionary_version
-
-Returns true if the version of an external dictionary provided in the define.xml file matches
-the version parsed from the dictionary files.
-
-_Not supported by this engine._ Compare [get_define_external_dictionary_version](#get_define_external_dictionary_version) with [get_external_dictionary_version](#get_external_dictionary_version) instead.
-
-Input:
-
-```yaml
-Operations:
-  - operator: valid_define_external_dictionary_version
-    id: $is_valid_loinc_version
-    external_dictionary_type: loinc
-```
-
-Output:
-
-```json
-[true, true, true, true]
-```
-
-## valid_external_dictionary_value
-
-Returns true if the target variable contains a valid external dictionary value, otherwise false.
-
-Can be case insensitive by setting `case_sensitive` attribute to false. It is true by default.
-
-_Not supported by this engine._ Use the `is_valid_<dictionary>_term_reference` check operators (see [Operator.md](Operator.md)) instead.
-
-Input:
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_value
-    name: --DECOD
-    id: $is_valid_decod_value
-    external_dictionary_type: meddra
-    dictionary_term_type: PT
-    case_sensitive: false
-```
-
-Output:
-
-```json
-[true, false, false, true]
-```
-
-## valid_external_dictionary_code
-
-Returns true if the target variable contains a valid external dictionary code, otherwise false.
-
-_Not supported by this engine._ Use the `is_valid_<dictionary>_code_reference` check operators (see [Operator.md](Operator.md)) instead.
-
-Input:
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_code
-    name: --COD
-    id: $is_valid_cod_code
-    external_dictionary_type: meddra
-    dictionary_term_type: PT
-```
-
-Output:
-
-```json
-[true, false, false, true]
-```
-
-## valid_external_dictionary_code_term_pair
-
-Returns true if the row in the dataset contains a matching pair of code and term, otherwise false.
-
-For this operator, the `name` parameter should contain the name of the variable containing the code, and the
-`external_dictionary_term_variable` parameter should contain the name of the variable containing the term.
-
-_Not supported by this engine._ Use the `is_valid_<dictionary>_code_term_pair` check operators (see [Operator.md](Operator.md)) instead.
-
-Input:
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_code_term_pair
-    name: --COD
-    id: $is_valid_loinc_code_term_pair
-    external_dictionary_type: loinc
-    external_dictionary_term_variable: --DECOD
-```
-
-Output:
-
-```json
-[true, false, false, true]
-```
-
-**MedDRA-Specific Operations**
-
-## valid_meddra_code_references
-
-Determines whether the values are valid in the following variables:
-
-- `--SOCCD` (System Organ Class Code)
-- `--HLGTCD` (High Level Group Term Code)
-- `--HLTCD` (High Level Term Code)
-- `--PTCD` (Preferred Term Code)
-- `--LLTCD` (Lowest Level Term Code)
-
-_Not supported by this engine._ Use the `is_valid_meddra_code_reference` check operator (see [Operator.md](Operator.md)) on each variable instead.
-
-**Input:**
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_codes
-    operator: valid_meddra_code_references
-```
-
-**Output:**
-
-```json
-[true, false, true, true]
-```
-
-## valid_meddra_code_term_pairs
-
-Determines whether the values are valid in the following variable pairs:
-
-- `--SOCCD`, `--SOC` (System Organ Class Code and Term)
-- `--HLGTCD`, `--HLGT` (High Level Group Term Code and Term)
-- `--HLTCD`, `--HLT` (High Level Term Code and Term)
-- `--PTCD`, `--DECOD` (Preferred Term Code and Dictionary-Derived Term)
-- `--LLTCD`, `--LLT` (Lowest Level Term Code and Term)
-
-_Not supported by this engine._ Use the `is_valid_meddra_code_term_pair` check operator (see [Operator.md](Operator.md)) on each pair instead.
-
-**Input:**
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_pairs
-    operator: valid_meddra_code_term_pairs
-```
-
-**Output:**
-
-```json
-[true, true, false, true, true]
-```
-
-## valid_meddra_term_references
-
-Determines whether the values are valid in the following variables:
-
-- `--SOC` (System Organ Class)
-- `--HLGT` (High Level Group Term)
-- `--HLT` (High Level Term)
-- `--DECOD` (Dictionary-Derived Term)
-- `--LLT` (Lowest Level Term)
-
-_Not supported by this engine._ Use the `is_valid_meddra_term_reference` check operator (see [Operator.md](Operator.md)) on each variable instead.
-
-**Input:**
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_terms
-    operator: valid_meddra_term_references
-```
-
-**Output:**
-
-```json
-[true, true, false, true, true]
-```
-
-**WHODrug-Specific Operations**
-
-## valid_whodrug_references
-
-Checks if a reference to whodrug term in `name` points to the existing code in Atc Text (INA) file.
-
-_Not supported by this engine._ The `is_valid_whodrug_code_reference` check operator (see [Operator.md](Operator.md)) checks codes against the WHODrug ATC level 4 codes instead.
-
-**Input:**
-
-```yaml
-Operations:
-  - id: $whodrug_refs_valid
-    operator: valid_whodrug_references
-    name: --CLASCD
-```
-
-**Output:**
-
-```json
-[true, false, true, true]
-```
 
 ## whodrug_code_hierarchy
 

@@ -1,4 +1,4 @@
-List values are stored as one text value with the items separated by commas (e.g. `define_variable_codelist_coded_values` is `Y,N`), so match an item with a regular expression such as `(^|,)Y(,|$)`. `define_variable_has_no_data`, `define_variable_mandatory`, `define_vlm_has_no_data` and `define_vlm_mandatory` are booleans (`true` for `Yes`, `false` for `No`, empty when absent). In the pandas engine, list values are lists and these four variables hold the text `Yes` or `No`.
+List values are stored as one text value with the items separated by commas (e.g. `define_variable_codelist_coded_values` is `Y,N`), so match an item with a regular expression such as `(^|,)Y(,|$)`. `define_variable_has_no_data`, `define_variable_mandatory`, `define_vlm_has_no_data` and `define_vlm_mandatory` are booleans (`true` for `Yes`, `false` for `No`, empty when absent).
 
 ## categories_summary
 

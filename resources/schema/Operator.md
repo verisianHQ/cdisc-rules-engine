@@ -34,7 +34,6 @@
 | [`exists`](#exists), `not_exists`                                                                                                                            | Variable (or dataset) is (or is not) present.                                            |
 | [`inconsistent_enumerated_columns`](#inconsistent_enumerated_columns)                                                                                        | An enumerated variable (e.g. TSVAL1) is populated while the previous one is not.         |
 | [`in_enumerated_columns`](#in_enumerated_columns), `not_in_enumerated_columns`                                                                               | `value` equals one of the enumerated variables of `name` in the same record.             |
-| [`variable_metadata_equal_to`](#variable_metadata_equal_to), `variable_metadata_not_equal_to`                                                                | Variable metadata equals `value`. Not supported by this engine.                          |
 | **Relationship & Set**                                                                                                                                       |                                                                                          |
 | [`is_contained_by`](#is_contained_by), `is_not_contained_by`                                                                                                 | Value is one of the values in `value`.                                                   |
 | [`is_contained_by_case_insensitive`](#is_contained_by_case_insensitive), `is_not_contained_by_case_insensitive`                                              | As `is_contained_by`, ignoring case.                                                     |
@@ -50,16 +49,10 @@
 | [`empty_within_except_last_row`](#empty_within_except_last_row), `non_empty_within_except_last_row`                                                          | Value is empty in a record that is not the last of its group.                            |
 | [`has_next_corresponding_record`](#has_next_corresponding_record), `does_not_have_next_corresponding_record`                                                 | Value equals another variable's value in the next record of the group.                   |
 | [`is_ordered_set`](#is_ordered_set), `is_not_ordered_set`                                                                                                    | Values are in ascending order within groups.                                             |
-| [`is_ordered_by`](#is_ordered_by), `is_not_ordered_by`                                                                                                       | Records are ordered by the variable. Not supported by this engine.                       |
 | [`target_is_sorted_by`](#target_is_sorted_by), `target_is_not_sorted_by`                                                                                     | Values follow the order of other variables within groups.                                |
 | [`shares_at_least_one_element_with`](#shares_at_least_one_element_with), `shares_exactly_one_element_with`, `shares_no_elements_with`                        | Values of two lists or variables have at least one, exactly one or no values in common.  |
 | [`has_same_values`](#has_same_values), `has_different_values`                                                                                                | All values of the variable are the same.                                                 |
-| [`value_has_multiple_references`](#value_has_multiple_references), `value_does_not_have_multiple_references`                                                 | Value is referenced more than once. Not supported by this engine.                        |
 | [`is_ordered_subset_of`](#is_ordered_subset_of), `is_not_ordered_subset_of`                                                                                  | Values appear in the same relative order in another list.                                |
-| **Define.XML**                                                                                                                                               |                                                                                          |
-| [`conformant_value_data_type`](#conformant_value_data_type), `non_conformant_value_data_type`                                                                | Value type matches the define.xml value-level metadata. Not supported by this engine.    |
-| [`conformant_value_length`](#conformant_value_length), `non_conformant_value_length`                                                                         | Value length matches the define.xml value-level metadata. Not supported by this engine.  |
-| [`references_correct_codelist`](#references_correct_codelist), `does_not_reference_correct_codelist`                                                         | Codelist is valid for the variable in the define.xml. Not supported by this engine.      |
 | **Terminology**                                                                                                                                              |                                                                                          |
 | [`is_extensible_codelist_code`](#is_extensible_codelist_code), `is_not_extensible_codelist_code`                                                             | Value is the code of an extensible codelist.                                             |
 | [`is_valid_<dictionary>_<check>`](#is_valid_dictionary_check)                                                                                                | Value (or code-term pair) is valid in MedDRA, WHODrug, MED-RT, UNII, LOINC or SNOMED CT. |
@@ -257,7 +250,6 @@ Regular Expression value matching
 - Suggestion for an online regular expression tester: https://regex101.com (PostgreSQL is not one of its dialects, so check any less common syntax against the PostgreSQL documentation).
 - For regex token visualization, try https://www.debuggex.com.
 - This also applies to the other regular expression operators (`prefix_matches_regex`, `suffix_matches_regex`, their complements and their case insensitive variants).
-- The pandas engine instead matches from the start of the text and uses the Python syntax.
 
 > --DOSTXT value is numeric
 
@@ -443,7 +435,7 @@ True if the `prefix` number of characters beginning a string in `name` match the
   value: DOMAIN
 ```
 
-`value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively.
+`value` can also be a list or a `$variable` collection; true if the prefix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the prefix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable.
 
 ## prefix_not_equal_to
 
@@ -460,7 +452,7 @@ True if the `suffix` number of characters ending a string in `name` match the st
   value: DOMAIN
 ```
 
-`value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable. The pandas engine compares case sensitively, and only resolves `DOMAIN` for `prefix_equal_to`.
+`value` can also be a list or a `$variable` collection; true if the suffix is equal to any of them. The comparison ignores case. When `value` is `DOMAIN` (without `value_is_literal`), the suffix is compared with the domain of the dataset being evaluated, which must have a DOMAIN variable.
 
 ## suffix_not_equal_to
 
@@ -851,33 +843,6 @@ Complement of `in_enumerated_columns`
   value_is_literal: true
 ```
 
-## variable_metadata_equal_to
-
-True if the metadata value of the variable `name`, looked up in the dictionary held by `metadata` (a dictionary keyed by variable name, typically produced by an operation), is equal to `value`. When `name` is omitted, the condition is evaluated for each of the rule's target variables.
-
-Could be useful, for example, in checking variable permissibility in conjunction with the `variable_library_metadata` operation:
-
-```yaml
-Check:
-  all:
-    - operator: variable_metadata_equal_to
-      value: Exp
-      metadata: $permissibility
-    - operator: not_exists
-Operations:
-  - id: $permissibility
-    operator: variable_library_metadata
-    name: core
-```
-
-_Not supported by this engine._
-
-## variable_metadata_not_equal_to
-
-Complement of `variable_metadata_equal_to`
-
-_Not supported by this engine._
-
 # Relationship & Set
 
 ## is_contained_by
@@ -1233,26 +1198,6 @@ Check:
       value: USUBJID
 ```
 
-## is_ordered_by
-
-True if the dataset rows are ordered by the values within `name`, given the ordering specified by `order` (`asc` or `dsc`)
-
-```yaml
-Check:
-  all:
-    - name: --SEQ
-      operator: is_ordered_by
-      order: asc
-```
-
-_Not supported by this engine._
-
-## is_not_ordered_by
-
-Complement of `is_ordered_by`
-
-_Not supported by this engine._
-
 ## target_is_sorted_by
 
 True if the values in `name` are ordered according to the values specified by `value` grouped by the values in `within`. Each `value` requires a variable `name`, ordering specified by `sort_order` (`asc` or `desc`), and the null position specified by `null_position` (`first` or `last`).
@@ -1343,18 +1288,6 @@ Check:
 
 Complement of `has_same_values`
 
-## value_has_multiple_references
-
-True if the value in `name` has a count greater than one in the dictionary held by the variable `value` (a dictionary mapping each value to the number of times it is referenced, typically produced by an operation)
-
-_Not supported by this engine._
-
-## value_does_not_have_multiple_references
-
-Complement of `value_has_multiple_references`
-
-_Not supported by this engine._
-
 ## is_ordered_subset_of
 
 Checks if elements in the target list appear in the same relative order in the comparator list.
@@ -1372,48 +1305,6 @@ Checks if elements in the target list appear in the same relative order in the c
 ## is_not_ordered_subset_of
 
 Complement of `is_ordered_subset_of`
-
-# Define.XML
-
-## conformant_value_data_type
-
-Value Level Metadata Check against Define XML
-
-True if the types in the row match the VLM types specified in the define.xml
-
-_Not supported by this engine._
-
-## non_conformant_value_data_type
-
-Complement of `conformant_value_data_type`
-
-_Not supported by this engine._
-
-## conformant_value_length
-
-Value Level Metadata Check against Define XML
-
-True if the lengths in the row match the VLM lengths specified in the define.xml
-
-_Not supported by this engine._
-
-## non_conformant_value_length
-
-Complement of `conformant_value_length`
-
-_Not supported by this engine._
-
-## references_correct_codelist
-
-True if the codelist named within `value` is a valid codelist for the variable named within `name` in the define.xml.
-
-_Not supported by this engine._
-
-## does_not_reference_correct_codelist
-
-Complement of `references_correct_codelist`
-
-_Not supported by this engine._
 
 # Terminology
 

@@ -2,7 +2,7 @@
 
 External dictionaries provide standardized terminology and coding systems for medical terms, drugs, and laboratory tests. This guide covers how to provide the dictionaries to the engine from the Command Line Interface (CLI) and how rules check values against them.
 
-The dictionaries are loaded into the database at the start of the run, and a dictionary that cannot be read stops the run. Rules check dictionary values with the terminology operators (e.g. `is_valid_meddra_term_reference`, see [Operator](Operator.md#terminology)). Of the operations in [Operations & Rule Editor](#operations--rule-editor), only `whodrug_code_hierarchy` is supported by this engine; the others are only supported by the pandas engine.
+The dictionaries are loaded into the database at the start of the run, and a dictionary that cannot be read stops the run. How rules check values against them is described in [Operations & Rule Editor](#operations--rule-editor).
 
 ## Supported Dictionaries
 
@@ -35,8 +35,6 @@ The dictionaries are loaded into the database at the start of the run, and a dic
                             Example: 27.0$English$$$$
 ```
 
-In the pandas engine, the relationship files `soc_hlgt.asc`, `hlgt_hlt.asc` and `hlt_pt.asc` are also required, and `meddra_release.asc` is optional (the version is left empty if it is missing).
-
 #### SNOMED CT
 
 ```
@@ -50,8 +48,6 @@ In the pandas engine, the relationship files `soc_hlgt.asc`, `hlgt_hlt.asc` and 
 
 Browse terms at [SNOMED Browser](https://browser.ihtsdotools.org).
 
-In the pandas engine, SNOMED CT is read from an API instead, using `--snomed-version` (e.g. `2024-09-01`), `--snomed-url` (default: https://snowstorm.snomedtools.org/snowstorm/snomed-ct/) and `--snomed-edition` (e.g. `SNOMEDCT-US`). API access requires hosting your own instance using [Snowstorm](https://github.com/IHTSDO/snowstorm) or an alternative implementation, as https://snowstorm.snomedtools.org/snowstorm/snomed-ct is not for commercial use.
-
 ### Drug and Substance Dictionaries
 
 #### WHODrug
@@ -64,8 +60,6 @@ In the pandas engine, SNOMED CT is read from an API instead, using `--snomed-ver
                      - B3 format: INA.csv, DDA.csv and DD.csv
                      - C3 format: ATC.csv, ThG.csv and MP.csv
 ```
-
-In the pandas engine, the files are `DD.txt` (Drug Dictionary), `DDA.txt` (ATC Classification) and `INA.txt` (ATC Text), with an optional `version.txt` in the Vault Safety label format (e.g. `GLOBALC3Mar24`).
 
 #### Other Drug Dictionaries
 
@@ -85,8 +79,6 @@ In the pandas engine, the files are `DD.txt` (Drug Dictionary), `DDA.txt` (ATC C
                   Note: Version is extracted from filename (e.g., "UNII_Records_2024.txt" → version "2024")
 ```
 
-In the pandas engine, MED-RT is read from a `Core_MEDRT_*_DTS.xml` file containing term and concept elements, and its version from the `<namespace><version>` element.
-
 ### Laboratory Dictionaries
 
 ```
@@ -98,154 +90,14 @@ In the pandas engine, MED-RT is read from a `Core_MEDRT_*_DTS.xml` file containi
                   "unknown" if there is no such file
 ```
 
-In the pandas engine, the version is the highest `VersionLastChanged` value in the file.
-
 ## Operations & Rule Editor
 
-### Dictionary Version Validation
+Rules check dictionary values with the terminology operators, such as `is_valid_meddra_term_reference` (see [Operator](Operator.md#terminology)). These operations are also available:
 
-#### valid_define_external_dictionary_version
+- `get_define_external_dictionary_version` and `get_external_dictionary_version` return the dictionary version given in the define.xml and the one read from the dictionary files (see [Operations](Operations.md#get_define_external_dictionary_version)).
+- `whodrug_code_hierarchy`, described below.
 
-_Not supported by this engine._
-
-Validates dictionary versions against define.xml specifications.
-
-```yaml
-Operations:
-  - operator: valid_define_external_dictionary_version
-    id: $is_valid_loinc_version
-    external_dictionary_type: loinc
-```
-
-### Value and Code Validation
-
-#### valid_external_dictionary_value
-
-_Not supported by this engine._
-
-Validates dictionary values with optional case sensitivity.
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_value
-    name: --DECOD
-    id: $is_valid_decod_value
-    external_dictionary_type: meddra
-    dictionary_term_type: PT
-    case_sensitive: false
-```
-
-#### valid_external_dictionary_code
-
-_Not supported by this engine._
-
-Validates dictionary codes.
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_code
-    name: --COD
-    id: $is_valid_cod_code
-    external_dictionary_type: meddra
-    dictionary_term_type: PT
-```
-
-#### valid_external_dictionary_code_term_pair
-
-_Not supported by this engine._
-
-Validates matching of code-term pairs.
-
-```yaml
-Operations:
-  - operator: valid_external_dictionary_code_term_pair
-    name: --COD
-    id: $is_valid_loinc_code_term_pair
-    external_dictionary_type: loinc
-    external_dictionary_term_variable: --DECOD
-```
-
-### MedDRA-Specific Operations
-
-#### valid_meddra_code_references
-
-_Not supported by this engine._
-
-Validates MedDRA codes across all levels:
-
-- `--SOCCD` (System Organ Class Code)
-- `--HLGTCD` (High Level Group Term Code)
-- `--HLTCD` (High Level Term Code)
-- `--PTCD` (Preferred Term Code)
-- `--LLTCD` (Lowest Level Term Code)
-
-Example:
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_codes
-    operator: valid_meddra_code_references
-```
-
-#### valid_meddra_code_term_pairs
-
-_Not supported by this engine._
-
-Validates the code-term pair containing the variable given in `name`. Supported pairs:
-
-- `--SOCCD`, `--SOC` (System Organ Class Code and Term)
-- `--HLGTCD`, `--HLGT` (High Level Group Term Code and Term)
-- `--HLTCD`, `--HLT` (High Level Term Code and Term)
-- `--PTCD`, `--DECOD` (Preferred Term Code and Dictionary-Derived Term)
-- `--LLTCD`, `--LLT` (Lowest Level Term Code and Term)
-
-Example:
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_pairs
-    name: --DECOD
-    operator: valid_meddra_code_term_pairs
-```
-
-#### valid_meddra_term_references
-
-_Not supported by this engine._
-
-Validates terms at each MedDRA level:
-
-- `--SOC` (System Organ Class)
-- `--HLGT` (High Level Group Term)
-- `--HLT` (High Level Term)
-- `--DECOD` (Dictionary-Derived Term)
-- `--LLT` (Lowest Level Term)
-
-Example:
-
-```yaml
-Operations:
-  - id: $is_valid_meddra_terms
-    operator: valid_meddra_term_references
-```
-
-### WHODrug-Specific Operations
-
-#### valid_whodrug_references
-
-_Not supported by this engine._
-
-Validates that the values of the variable given in `name` exist as codes in the ATC Text (INA) file.
-
-Example:
-
-```yaml
-Operations:
-  - id: $whodrug_refs_valid
-    name: --CLASCD
-    operator: valid_whodrug_references
-```
-
-#### whodrug_code_hierarchy
+### whodrug_code_hierarchy
 
 Validates hierarchical relationships between:
 

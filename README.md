@@ -4,8 +4,7 @@ This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE)
 
 > **Are you writing or testing rules?** You don't need to set up this repository yourself: follow the [core-contributor](https://github.com/verisianHQ/core-contributor) guide instead, which installs and runs this engine for you.
 
-To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.org/). 
-
+To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.org/).
 
 ## Supported python versions
 
@@ -98,7 +97,7 @@ The engine stores the data it validates in a PostgreSQL database while it runs. 
 
 ### **Running a validation**
 
-Every validation uses this fork's engine, so **always add the `-sql` flag** to `validate` commands, as in the examples below (without it, the older pandas engine of the original CDISC project is used instead).
+Every validation uses this fork's engine, so **always add the `-sql` flag** to `validate` commands, as in the examples below.
 
 #### From the command line
 
@@ -109,8 +108,6 @@ Run `python core.py validate --help` to see the list of validation options.
 ```
   -ca, --cache TEXT               Relative path to cache files containing pre
                                   loaded metadata and rules
-  -ps, --pool-size INTEGER        Number of parallel processes for validation
-                                  (no effect with -sql)
   -d, --data TEXT                 Path to directory containing data files
   -dp, --dataset-path TEXT        Absolute path to dataset file. Can be specified multiple times.
   -l, --log-level [info|debug|error|critical|disabled|warn]
@@ -153,12 +150,6 @@ Run `python core.py validate --help` to see the list of validation options.
                                   files
   --unii TEXT                     Path to directory with UNII dictionary
                                   files
-  --snomed-version TEXT           Version of snomed to use. (ex. 2024-09-01)
-                                  (pandas engine only)
-  --snomed-url TEXT               Base url of snomed api to use. (ex. https://snowstorm.snomedtools.org/snowstorm/snomed-ct)
-                                  (pandas engine only)
-  --snomed-edition TEXT           Edition of snomed to use. (ex. SNOMEDCT-US)
-                                  (pandas engine only)
   --snomed TEXT                   Path to directory with SNOMED dictionary
                                   files
   -r, --rules TEXT                Specify rule core ID ex. CORE-000001. Can be specified multiple times.
@@ -174,9 +165,7 @@ Run `python core.py validate --help` to see the list of validation options.
                                   as they are completed.
   -dxp, --define-xml-path TEXT    Path to Define-XML
   -stf, --stf-file-path TEXT      Path to STF file
-  -vx, --validate-xml TEXT        Enable XML validation (default 'y' to enable, otherwise disable)
-  -sql, --sql-engine              Run the validation with this fork's engine.
-                                  Always add this flag (see below)
+  -sql, --sql-engine              Required: always add this flag (see below)
   -ns, --sql-namespace TEXT       A prefix for all tables in the database when
                                   using the SQL engine
   -mem, --in-memory-postgres      Run validation using an in-memory Postgres
@@ -412,22 +401,6 @@ Options:
                          allowed
   --help                 Show this message and exit.
 ```
-
-## PyPI Integration
-
-> **NOTE:** the `cdisc-rules-engine` package on PyPI is the original CDISC engine, not this fork: it does not include the engine run with `-sql`.
-
-The CDISC Rules Engine is available as a Python package through PyPI. This allows you to:
-
-- Import the rules engine library directly into your Python projects
-- Validate data without requiring .xpt format files
-- Integrate rules validation into your existing data pipelines
-
-```bash
-pip install cdisc-rules-engine
-```
-
-For implementation instructions, see [PYPI.md](PYPI.md).
 
 ## Development
 
