@@ -2,20 +2,28 @@
 
 External dictionaries provide standardized terminology and coding systems for medical terms, drugs, and laboratory tests. This guide covers how to provide the dictionaries to the engine from the Command Line Interface (CLI) and how rules check values against them.
 
-The dictionaries are loaded into the database at the start of the run, and a dictionary that cannot be read stops the run. How rules check values against them is described in [Operations & Rule Editor](#operations--rule-editor).
+Only the dictionaries whose folder is provided for the run are loaded into the database, at the start of the run. If one of them cannot be read, the run stops. How rules check values against them is described in [Using dictionaries in rules](#using-dictionaries-in-rules).
 
 ## Supported Dictionaries
 
 - **MedDRA**: Medical terminology for regulatory activities
 - **WHODrug**: Global drug reference dictionary
 - **LOINC**: Laboratory test terminology
-- **MEDRT**: Medication Reference Terminology
+- **MED-RT**: Medication Reference Terminology
 - **UNII**: Unique Ingredient Identifier
 - **SNOMED CT**: Clinical healthcare terminology
 
 ## CLI Usage
 
 > **IMPORTANT**: All dictionary paths must point to the _directory containing_ the dictionary files, not to specific files.
+
+For example, to validate with MedDRA and WHODrug:
+
+```
+python core.py validate -s sdtmig -v 3-4 -d path/to/datasets --meddra path/to/meddra --whodrug path/to/whodrug -sql -mem
+```
+
+With the core-contributor test script, pass the same folders with `-md` (MedDRA), `-wd` (WHODrug), `-un` (UNII), `-mrt` (MED-RT), `-lo` (LOINC) and `-sno` (SNOMED CT) instead.
 
 ### Medical Terminology Dictionaries
 
@@ -59,6 +67,7 @@ Browse terms at [SNOMED Browser](https://browser.ihtsdotools.org).
                        (e.g. "WHODRUG GLOBAL B3 September 1, 2020")
                      - B3 format: INA.csv, DDA.csv and DD.csv
                      - C3 format: ATC.csv, ThG.csv and MP.csv
+                   The format given in Version.csv (B3 or C3) decides which of the two sets of files is read
 ```
 
 #### Other Drug Dictionaries
@@ -90,7 +99,7 @@ Browse terms at [SNOMED Browser](https://browser.ihtsdotools.org).
                   "unknown" if there is no such file
 ```
 
-## Operations & Rule Editor
+## Using dictionaries in rules
 
 Rules check dictionary values with the terminology operators, such as `is_valid_meddra_term_reference` (see [Operator](Operator.md#terminology)). These operations are also available:
 
@@ -99,11 +108,7 @@ Rules check dictionary values with the terminology operators, such as `is_valid_
 
 ### whodrug_code_hierarchy
 
-Validates hierarchical relationships between:
-
-- `--DECOD`
-- `--CLAS`
-- `--CLASCD`
+Returns, for each record, `true` if `--DECOD` (drug name), `--CLAS` (ATC class text) and `--CLASCD` (ATC code) belong to the same WHODrug entry at ATC level 4, otherwise `false`. If `--CLAS` or `--CLASCD` is `MULTIPLE`, the record is valid when the `--DECOD` drug name has more than one entry in WHODrug.
 
 Example:
 
