@@ -407,15 +407,6 @@
     "codelist": {
       "type": "string"
     },
-    "codelist_code": {
-      "type": "string"
-    },
-    "codelists": {
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
     "ct_attribute": {
       "type": "string"
     },
@@ -443,32 +434,20 @@
       },
       "type": "array"
     },
-    "ct_package_type": {
-      "type": "string",
-      "enum": [
-        "ADAM",
-        "CDASH",
-        "COA",
-        "DDF",
-        "DEFINE-XML",
-        "GLOSSARY",
-        "MRCT",
-        "PROTOCOL",
-        "QRS",
-        "QS-FT",
-        "SDTM",
-        "SEND",
-        "TMF"
-      ]
-    },
     "ct_package_types": {
       "items": {
-        "$ref": "Operations.json#/properties/ct_package_type"
+        "type": "string",
+        "enum": [
+          "ADAM",
+          "ADAMIG",
+          "CDASHIG",
+          "SDTM",
+          "SDTMIG",
+          "SENDIG",
+          "USDM"
+        ]
       },
       "type": "array"
-    },
-    "dictionary_term_type": {
-      "enum": ["LLT", "PT", "HLT", "HLGT", "SOC"]
     },
     "domain": {
       "anyOf": [
@@ -483,20 +462,11 @@
     "domain_class": {
       "type": "string"
     },
-    "external_dictionary_term_variable": {
-      "type": "string"
-    },
     "external_dictionary_type": {
       "enum": ["meddra", "whodrug", "loinc", "medrt", "unii", "snomed"]
     },
     "filter": {
       "type": "object"
-    },
-    "filter_key": {
-      "type": "string"
-    },
-    "filter_value": {
-      "type": "string"
     },
     "group": {
       "items": {
@@ -527,22 +497,6 @@
     "key_value": {
       "type": "string"
     },
-    "level": {
-      "type": "string",
-      "enum": ["codelist", "term"]
-    },
-    "map": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "output": {
-            "type": "string"
-          }
-        },
-        "required": ["output"]
-      }
-    },
     "name": {
       "anyOf": [
         {
@@ -560,16 +514,6 @@
       "type": "string"
     },
     "regex": {
-      "type": "string"
-    },
-    "returntype": {
-      "type": "string",
-      "enum": ["code", "value"]
-    },
-    "term_value": {
-      "type": "string"
-    },
-    "term_code": {
       "type": "string"
     },
     "subtract": {

@@ -107,7 +107,7 @@ If a target variable `name` is specified, returns the specified metadata in the 
 
 ## dataset_names
 
-Returns a list of the submitted dataset filenames in all uppercase. The order of the names is not guaranteed.
+Returns a list of the names of the submitted datasets, in uppercase and without the file extension. The order of the names is not guaranteed.
 
 ex. if TS.xpt, AE.xpt, EC.xpt, and SUPPEC.xpt are submitted -> [TS, AE, EC, SUPPEC] will be returned
 
@@ -252,10 +252,8 @@ Variable Metadata for custom domains will pull from the model while non-custom d
 
 Returns the requested dataset level metadata value for the current dataset. Possible `name` values are:
 
-- `dataset_size` (file size in bytes)
-- `dataset_location` (dataset filename)
 - `dataset_name`
-- `dataset_label`
+- `dataset_size` (file size in bytes)
 
 Example
 
@@ -264,14 +262,14 @@ Example
   Target domain: `LB`
 
   ```yaml
-  - name: dataset_label
+  - name: dataset_name
     operator: extract_metadata
-    id: $dataset_label
+    id: $dataset_name
   ```
 
 - Output:
 
-  `Laboratory Test Results`
+  `LB`
 
 ## get_codelist_attributes
 
@@ -873,7 +871,7 @@ Given a list of terminology packages:
 [
   "sdtmct-2023-10-26",
   "sdtmct-2023-12-13",
-  "adamct-2023-12-13",
+  "adamct-2024-03-29",
   "cdashct-2023-05-19"
 ]
 ```
@@ -886,21 +884,20 @@ the operation will return:
 ["2023-10-26", "2023-12-13"]
 ```
 
-By default, the standard is as specified when running validation - as the validation runtime parameter and/or as specified in the rule header - and the list of terminology packages is obtained from the current cache. If required, the default standard may be overridden using the optional `ct_package_types` parameter. For example, given the same list of terminology packages, the following operation:
+By default, the standard is as specified when running validation - as the validation runtime parameter and/or as specified in the rule header - and the list of terminology packages is obtained from the current cache. If required, the default standard may be overridden using the optional `ct_package_types` parameter: a list of standards (`SDTM`, `SDTMIG`, `SENDIG`, `CDASHIG`, `ADAM`, `ADAMIG` or `USDM`), each using the terminology packages of that standard (e.g. `ADAM` uses both the SDTM and ADaM packages). For example, given the same list of terminology packages, the following operation:
 
 ```yaml
 Operations:
   - operator: valid_codelist_dates
     id: $valid_dates
     ct_package_types:
-      - SDTM
-      - CDASH
+      - ADAM
 ```
 
 will return:
 
 ```json
-["2023-05-19", "2023-10-26", "2023-12-13"]
+["2023-10-26", "2023-12-13", "2024-03-29"]
 ```
 
 ## variable_count
@@ -1026,11 +1023,7 @@ Returns the version of the external dictionary in `external_dictionary_type`, as
 
 ## whodrug_code_hierarchy
 
-Determines whether the values are valid and in the correct hierarchical structure in the following variables:
-
-- `--DECOD`
-- `--CLAS`
-- `--CLASCD`
+Returns, for each record, `true` if `--DECOD` (drug name), `--CLAS` (ATC class text) and `--CLASCD` (ATC code) belong to the same WHODrug entry at ATC level 4, otherwise `false`.
 
 **Input:**
 
