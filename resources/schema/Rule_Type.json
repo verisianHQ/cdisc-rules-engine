@@ -3,10 +3,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "anyOf": [
     {
-      "const": "Dataset Contents Check against Define XML and Library Metadata",
-      "title": "Content data at record level, define xml metadata at variable level, and library metadata at variable level"
-    },
-    {
       "const": "Dataset Contents Check against Define XML",
       "title": "Content data at record level, dataset metadata at dataset level, and define xml metadata at dataset level"
     },
@@ -35,8 +31,24 @@
       "title": "Content domain presence at study level"
     },
     {
+      "const": "Domain Presence Check against Define XML",
+      "title": "Define xml metadata at dataset level and content domain presence at study level"
+    },
+    {
+      "const": "Global Value Check with Variable Metadata",
+      "title": "Content data at value level and variable metadata at variable level, for all datasets of the study"
+    },
+    {
+      "const": "Global Variable Metadata Check",
+      "title": "Variable metadata at variable level, for all datasets of the study"
+    },
+    {
       "const": "Record Data",
       "title": "Content data at record level. Most common Rule Type"
+    },
+    {
+      "const": "STF Metadata Check",
+      "title": "Study Tagging File metadata at document level"
     },
     {
       "const": "Value Check against Define XML Variable",
@@ -47,10 +59,9 @@
       "title": "Content data at value level and define xml metadata at value level"
     },
     {
-      "const": "Value Level Metadata Check against Define XML",
-      "title": "Content data at record level and define xml metadata at value level"
+      "const": "Value Check against Library Metadata",
+      "title": "Content data at value level and library metadata at variable level"
     },
-
     {
       "const": "Variable Metadata Check",
       "title": "Content metadata at variable level"

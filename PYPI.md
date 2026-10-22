@@ -43,15 +43,15 @@ def load_rules_cache(path_to_rules_cache):
     return cache
 ```
 
-Rules in this cache can also be accessed by standard and version using the get_rules_cache_key function.
+Rules in this cache can also be accessed by standard and version using the get_rules_cache_key function. The cache maps each standard and version (from rules_dictionary.pkl) to a list of rule IDs, and each rule ID (from rules.pkl) to its rule.
 
 ```python
 from cdisc_rules_engine.utilities.utils import get_rules_cache_key
 
 cache = load_rules_cache("path/to/rules/cache")
 # Note that the standard version is separated by a dash, not a period
-cache_key_prefix = get_rules_cache_key("sdtmig", "3-4")
-rules = cache.get_all_by_prefix(cache_key_prefix)
+rule_ids = cache.get(get_rules_cache_key("sdtmig", "3-4"))
+rules = cache.get_all(rule_ids)
 ```
 
 `rules` will now be a list of dictionaries with the following keys:
@@ -212,6 +212,7 @@ with open(os.path.join(OUTPUT_DIR, 'results.txt'), 'w') as f:
 We will use an XPT files (SAS transport format) for this example. Other dataset readers classes to model your implementation can be found in cdisc_rules_engine/services/data_readers
 
 ```python
+import os
 import pandas as pd
 import pyreadstat
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
@@ -257,7 +258,7 @@ datasets = get_datasets_metadata("path/to/dataset/directory")
 For the RulesEngine approach, you DON'T need to manually create PandasDataset or DatasetVariable objects - the engine handles this
 Multiple SDTMDatasetMetadata datasets can be made and loaded into the `datasets = []` list which will be fed into engine
 
-### Step 3: Initialize Library Metadata
+## Step 3: Initialize Library Metadata
 
 Library metadata provides essential information about standards, models, variables, and controlled terminology:
 
@@ -296,11 +297,12 @@ variable_codelist_cache_key = get_variable_codelist_map_cache_key(
     standard, standard_version, standard_substandard
 )
 
-# Load controlled terminology packages
+# Load controlled terminology packages from their files in the rules cache folder
 ct_packages = ["sdtmct-2021-12-17"]  # Replace with your CT package versions
 ct_package_metadata = {}
 for codelist in ct_packages:
-    ct_package_metadata[codelist] = cache.get(codelist)
+    with open(os.path.join("path/to/rules/cache", f"{codelist}.pkl"), "rb") as f:
+        ct_package_metadata[codelist] = pickle.load(f)
 
 # Create the library metadata container
 library_metadata = LibraryMetadataContainer(
@@ -312,7 +314,7 @@ library_metadata = LibraryMetadataContainer(
 )
 ```
 
-### Step 4: Initialize Data Service
+## Step 4: Initialize Data Service
 
 The data service handles reading and processing dataset files:
 
@@ -320,7 +322,9 @@ The data service handles reading and processing dataset files:
 from cdisc_rules_engine.config import config as default_config
 from cdisc_rules_engine.services.data_services import DataServiceFactory
 
-max_dataset_size = max(datasets, key=lambda x: x.file_size).file_size # set to 0 for Dask implementationt
+dataset_paths = [dataset.full_path for dataset in datasets]
+# Dask is used when max_dataset_size >= DATASET_SIZE_THRESHOLD (env variable, default 25% of available memory), otherwise Pandas
+max_dataset_size = max(datasets, key=lambda x: x.file_size).file_size
 
 # Create data service factory
 data_service_factory = DataServiceFactory(
@@ -340,7 +344,7 @@ dataset_implementation = PandasDataset or DaskDataset
 data_service = data_service_factory.get_data_service(dataset_paths)
 ```
 
-### Step 5: Initialize Rules Engine
+## Step 5: Initialize Rules Engine
 
 Now you can create the rules engine with all required components:
 
@@ -365,7 +369,7 @@ rules_engine = RulesEngine(
 )
 ```
 
-### Step 6: Run Validation
+## Step 6: Run Validation
 
 Now you can iterate through the rules and validate them against your datasets:
 
@@ -395,7 +399,7 @@ end_time = time.time()
 elapsed_time = end_time - start_time
 ```
 
-### Step 7: Generate Report
+## Step 7: Generate Report
 
 The simplest way to output your validation results is to write them to a text file:
 
@@ -407,14 +411,12 @@ output_dir = os.getcwd()
 output_file = os.path.join(output_dir, "validation_results.txt")
 with open(output_file, "w") as f:
     for result in validation_results:
-        rule_id = result.rule.get("core_id", "Unknown")
-        f.write(f"Rule: {rule_id}\n")
-        if hasattr(result, 'violations') and result.violations:
-            f.write(f"Found {len(result.violations)} violations\n")
-            for violation in result.violations:
-                f.write(f"  - {json.dumps(violation, default=str)}\n")
+        f.write(f"Rule: {result.id} ({result.execution_status})\n")
+        if result.results:
+            for dataset_result in result.results:
+                f.write(f"  - {json.dumps(dataset_result, default=str)}\n")
         else:
-            f.write("  No violations found\n")
+            f.write("  No results\n")
         f.write("\n")
 print(f"Results written to {output_file}")
 ```
@@ -422,9 +424,11 @@ print(f"Results written to {output_file}")
 For more advanced reporting, you can implement custom reports using the ReportFactory class
 
 ```python
+from cdisc_rules_engine.services.reporting import ReportFactory
+
 reporting_factory = ReportFactory(
      datasets=datasets,
-     validation_results=validation_results,
+     results=validation_results,
      elapsed_time=elapsed_time,
      args=args,  # Provide validation args
      data_service=data_service
@@ -432,7 +436,7 @@ reporting_factory = ReportFactory(
 reporting_services = reporting_factory.get_report_services()
 ```
 
-### Other Information
+# Other Information
 
 ## Interpret the Results
 
@@ -607,8 +611,8 @@ def main():
         print("Successfully loaded rules cache")
 
         # Get SDTMIG 3.4 rules
-        cache_key_prefix = get_rules_cache_key("sdtmig", "3-4")
-        rules = cache.get_all_by_prefix(cache_key_prefix)
+        rule_ids = cache.get(get_rules_cache_key("sdtmig", "3-4"))
+        rules = cache.get_all(rule_ids)
         print(f"Found {len(rules)} rules for SDTMIG 3.4")
 
         # Step 2: Load and prepare the AE dataset
@@ -763,13 +767,10 @@ external_dictionaries = ExternalDictionariesContainer(
     }
 )
 
-# Instantiate the container with the paths
-external_dictionaries = ExternalDictionariesContainer(dictionary_path_mapping=dictionary_paths)
-
 # Then pass it to RulesEngine
 rules_engine = RulesEngine(
     cache=cache,
-    dataset_paths=[os.path.dirname(ae_file_path)],
+    dataset_paths=[ae_file_path],
     standard="sdtmig",
     standard_version="3.4",
     external_dictionaries=external_dictionaries

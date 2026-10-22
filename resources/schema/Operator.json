@@ -6,42 +6,6 @@
     {
       "properties": {
         "operator": {
-          "const": "additional_columns_empty"
-        }
-      },
-      "required": ["operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "additional_columns_not_empty"
-        }
-      },
-      "required": ["operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "conformant_value_data_type"
-        }
-      },
-      "required": ["operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "conformant_value_length"
-        }
-      },
-      "required": ["operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
           "const": "contains"
         }
       },
@@ -154,24 +118,6 @@
         }
       },
       "required": ["operator", "ordering", "value", "within"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "does_not_reference_correct_codelist"
-        }
-      },
-      "required": ["operator", "value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "does_not_use_valid_codelist_terms"
-        }
-      },
-      "required": ["operator", "value", "codelistlevel", "codelistcheck"],
       "type": "object"
     },
     {
@@ -321,6 +267,15 @@
     {
       "properties": {
         "operator": {
+          "const": "invalid_date_interval"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "is_complete_date"
         }
       },
@@ -348,10 +303,28 @@
     {
       "properties": {
         "operator": {
+          "const": "is_extensible_codelist_code"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "is_incomplete_date"
         }
       },
       "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_latest_available_external_dictionary_version"
+        }
+      },
+      "required": ["operator", "external_dictionary_type", "version"],
       "type": "object"
     },
     {
@@ -375,16 +348,34 @@
     {
       "properties": {
         "operator": {
-          "const": "is_not_ordered_by"
+          "const": "is_not_extensible_codelist_code"
         }
       },
-      "required": ["operator", "order"],
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_latest_available_external_dictionary_version"
+        }
+      },
+      "required": ["operator", "external_dictionary_type", "version"],
       "type": "object"
     },
     {
       "properties": {
         "operator": {
           "const": "is_not_ordered_set"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_substring_of"
         }
       },
       "required": ["operator", "value"],
@@ -411,16 +402,187 @@
     {
       "properties": {
         "operator": {
-          "const": "is_ordered_by"
+          "const": "is_not_valid_loinc_code_reference"
         }
       },
-      "required": ["operator", "order"],
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_loinc_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_loinc_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_meddra_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_meddra_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_meddra_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_medrt_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_medrt_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_medrt_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_snomed_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_snomed_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_snomed_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_unii_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_unii_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_unii_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_whodrug_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_whodrug_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_whodrug_level_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_not_valid_whodrug_term_reference"
+        }
+      },
+      "required": ["operator"],
       "type": "object"
     },
     {
       "properties": {
         "operator": {
           "const": "is_ordered_set"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_substring_of"
         }
       },
       "required": ["operator", "value"],
@@ -448,6 +610,177 @@
       "properties": {
         "operator": {
           "const": "is_unique_set"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_loinc_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_loinc_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_loinc_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_meddra_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_meddra_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_meddra_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_medrt_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_medrt_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_medrt_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_snomed_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_snomed_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_snomed_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_unii_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_unii_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_unii_term_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_whodrug_code_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_whodrug_code_term_pair"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_whodrug_level_reference"
+        }
+      },
+      "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "is_valid_whodrug_term_reference"
         }
       },
       "required": ["operator"],
@@ -501,19 +834,10 @@
     {
       "properties": {
         "operator": {
-          "const": "non_conformant_value_data_type"
+          "const": "matches_regex_case_insensitive"
         }
       },
-      "required": ["operator"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "non_conformant_value_length"
-        }
-      },
-      "required": ["operator"],
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -541,6 +865,15 @@
         }
       },
       "required": ["operator"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "not_ends_with"
+        }
+      },
+      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -582,7 +915,25 @@
     {
       "properties": {
         "operator": {
+          "const": "not_matches_regex_case_insensitive"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "not_prefix_matches_regex"
+        }
+      },
+      "required": ["operator", "prefix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "not_prefix_matches_regex_case_insensitive"
         }
       },
       "required": ["operator", "prefix", "value"],
@@ -600,6 +951,15 @@
     {
       "properties": {
         "operator": {
+          "const": "not_starts_with"
+        }
+      },
+      "required": ["operator", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "not_suffix_matches_regex"
         }
       },
@@ -609,7 +969,25 @@
     {
       "properties": {
         "operator": {
+          "const": "not_suffix_matches_regex_case_insensitive"
+        }
+      },
+      "required": ["operator", "suffix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "prefix_is_contained_by"
+        }
+      },
+      "required": ["operator", "prefix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "prefix_is_contained_by_case_insensitive"
         }
       },
       "required": ["operator", "prefix", "value"],
@@ -636,7 +1014,25 @@
     {
       "properties": {
         "operator": {
+          "const": "prefix_is_not_contained_by_case_insensitive"
+        }
+      },
+      "required": ["operator", "prefix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "prefix_matches_regex"
+        }
+      },
+      "required": ["operator", "prefix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "prefix_matches_regex_case_insensitive"
         }
       },
       "required": ["operator", "prefix", "value"],
@@ -658,15 +1054,6 @@
         }
       },
       "required": ["operator", "within"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "references_correct_codelist"
-        }
-      },
-      "required": ["operator", "value"],
       "type": "object"
     },
     {
@@ -744,6 +1131,15 @@
     {
       "properties": {
         "operator": {
+          "const": "suffix_is_contained_by_case_insensitive"
+        }
+      },
+      "required": ["operator", "suffix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "suffix_is_not_contained_by"
         }
       },
@@ -753,7 +1149,25 @@
     {
       "properties": {
         "operator": {
+          "const": "suffix_is_not_contained_by_case_insensitive"
+        }
+      },
+      "required": ["operator", "suffix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
           "const": "suffix_matches_regex"
+        }
+      },
+      "required": ["operator", "suffix", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "suffix_matches_regex_case_insensitive"
         }
       },
       "required": ["operator", "suffix", "value"],
@@ -789,46 +1203,28 @@
     {
       "properties": {
         "operator": {
-          "const": "value_does_not_have_multiple_references"
-        }
-      },
-      "required": ["operator", "value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "value_has_multiple_references"
-        }
-      },
-      "required": ["operator", "value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "variable_metadata_equal_to"
-        }
-      },
-      "required": ["operator", "metadata", "value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
-          "const": "variable_metadata_not_equal_to"
-        }
-      },
-      "required": ["operator", "metadata", "value"],
-      "type": "object"
-    },
-    {
-      "properties": {
-        "operator": {
           "const": "inconsistent_enumerated_columns"
         }
       },
       "required": ["operator", "name"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "in_enumerated_columns"
+        }
+      },
+      "required": ["operator", "name", "value"],
+      "type": "object"
+    },
+    {
+      "properties": {
+        "operator": {
+          "const": "not_in_enumerated_columns"
+        }
+      },
+      "required": ["operator", "name", "value"],
       "type": "object"
     },
     {
@@ -851,6 +1247,9 @@
     }
   ],
   "properties": {
+    "case_insensitive": {
+      "type": "boolean"
+    },
     "comparator": {
       "type": ["number", "string"]
     },
@@ -869,8 +1268,14 @@
       ],
       "type": "string"
     },
-    "metadata": {
-      "$ref": "Operations.json#/properties/id"
+    "external_dictionary_type": {
+      "$ref": "Operations.json#/properties/external_dictionary_type"
+    },
+    "filter_attribute": {
+      "type": "string"
+    },
+    "filter_value": {
+      "type": "string"
     },
     "name": {
       "anyOf": [
@@ -888,19 +1293,7 @@
     "negative": {
       "type": "boolean"
     },
-    "codelistcheck": {
-      "enum": ["code", "value"],
-      "type": "string"
-    },
-    "codelistlevel": {
-      "enum": ["term", "codelist"],
-      "type": "string"
-    },
     "operator": {
-      "type": "string"
-    },
-    "order": {
-      "enum": ["asc", "dsc"],
       "type": "string"
     },
     "ordering": {
@@ -908,6 +1301,9 @@
     },
     "prefix": {
       "type": "integer"
+    },
+    "strict_incremental_ordering": {
+      "type": "boolean"
     },
     "suffix": {
       "type": "integer"
@@ -939,10 +1335,12 @@
                 "enum": ["first", "last"],
                 "type": "string"
               },
-              "order": {
-                "$ref": "Operator.json#/properties/order"
+              "sort_order": {
+                "enum": ["asc", "desc"],
+                "type": "string"
               }
             },
+            "required": ["name", "sort_order", "null_position"],
             "type": "object"
           },
           "type": "array"
@@ -956,13 +1354,38 @@
       "const": true
     },
     "type_insensitive": {
-      "const": true
+      "enum": [true, "numeric"]
     },
     "within": {
-      "$ref": "CORE-base.json#/$defs/VariableName"
+      "anyOf": [
+        {
+          "$ref": "CORE-base.json#/$defs/VariableName"
+        },
+        {
+          "items": {
+            "$ref": "CORE-base.json#/$defs/VariableName"
+          },
+          "type": "array"
+        }
+      ]
     },
     "regex": {
       "type": "string"
+    },
+    "variable_regex_pattern": {
+      "const": true
+    },
+    "version": {
+      "type": "string"
+    },
+    "where_populated": {
+      "type": "boolean"
+    },
+    "where_populated_columns": {
+      "items": {
+        "$ref": "CORE-base.json#/$defs/VariableName"
+      },
+      "type": "array"
     }
   },
   "required": ["operator"],
