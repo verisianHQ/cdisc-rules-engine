@@ -9,6 +9,7 @@ from psycopg2.errors import ProgrammingError
 from cdisc_rules_engine.compiler.compiler import CompiledQuery, RuleQueryCompiler
 from cdisc_rules_engine.compiler.conditions import ConditionCompiler
 from cdisc_rules_engine.compiler.sources import rule_source
+from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -63,10 +64,12 @@ class SQLRulesEngine:
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
         progress_reporter: RuleProgressReporter = None,
+        max_errors_per_dataset: int = MAX_ERRORS_PER_DATASET,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
         self.progress_reporter = progress_reporter or DisabledRuleProgressReporter()
+        self.max_errors_per_dataset = max_errors_per_dataset
 
     def sql_validate_single_rule(self, rule: dict):
         results = {}
@@ -239,7 +242,13 @@ class SQLRulesEngine:
         )
 
         compiler = RuleQueryCompiler(
-            rule_copy, self.data_service, dataset_metadata, dataset_id, operation_variables, target_rule=rule
+            rule_copy,
+            self.data_service,
+            dataset_metadata,
+            dataset_id,
+            operation_variables,
+            target_rule=rule,
+            max_errors=self.max_errors_per_dataset,
         )
         compiled, rows = self._failing_rows(compiler)
 

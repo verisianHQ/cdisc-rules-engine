@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from cdisc_rules_engine.compiler.compiler import CompiledQuery
 from cdisc_rules_engine.compiler.targets import get_target_columns
@@ -67,22 +67,39 @@ class SqlResultHandler:
             return
         message = (self.rule.get("actions") or [{}])[0].get("params", {}).get("message") or ""
         errors = self._generate_errors_list(rows, compiled)
-        # only capped queries select a total; dataset/study ones don't, so this can be None
-        total = rows[0].get(TOTAL_COUNT_COLUMN)
-        shown = f" ({len(rows)} of {total} errors shown)" if total is not None and total > len(rows) else ""
-        for error_object in self._bundle_error_objects_per_source(message, errors, shown):
+        for error_object in self._bundle_error_objects_per_source(message, errors, self._shown(rows, compiled)):
             self.output_container.append(error_object.to_representation())
 
+    def _shown(self, rows: List[dict], compiled: CompiledQuery) -> Dict[Optional[str], str]:
+        """
+        The "(N of M errors shown)" note for each reported file, where
+        the errors were capped.
+        A split dataset is capped per source file, and each of its rows
+        carries the total of its own file.
+        """
+        split = bool(getattr(self.dataset_metadata, "split_part_filenames", None))
+        counts: Dict[Optional[str], List[int]] = {}
+        for row in rows:
+            total = row.get(TOTAL_COUNT_COLUMN)
+            if total is None:
+                continue
+            source = self._source_dataset_filename(row, compiled.schema).lower() if split else None
+            counts.setdefault(source, [0, total])[0] += 1
+        return {
+            source: f" ({shown} of {total} errors shown)" for source, (shown, total) in counts.items() if total > shown
+        }
+
     def _bundle_error_objects_per_source(
-        self, message: str, errors_list: List[ValidationErrorEntity], shown: str = ""
+        self, message: str, errors_list: List[ValidationErrorEntity], shown: Optional[Dict[Optional[str], str]] = None
     ) -> List[ValidationErrorContainer]:
         """
         One container per source file.
         Parts with no errors still get one (with no message).
         """
         split_parts = getattr(self.dataset_metadata, "split_part_filenames", None)
+        shown = shown or {}
         if not split_parts:
-            return [self._bundle_error_object(message=message, error_rows=errors_list, shown=shown)]
+            return [self._bundle_error_object(message=message, error_rows=errors_list, shown=shown.get(None, ""))]
 
         containers = []
         for source_dataset in sorted(split_parts):
@@ -92,7 +109,7 @@ class SqlResultHandler:
                     message=message if error_rows else None,
                     error_rows=error_rows,
                     dataset=source_dataset,
-                    shown=shown,
+                    shown=shown.get(source_dataset.lower(), ""),
                 )
             )
         return containers

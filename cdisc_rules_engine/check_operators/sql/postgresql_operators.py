@@ -523,21 +523,11 @@ class PostgresQLOperators:
         return value
 
 
-# TODO: this is broad i will admit. "None" alone already covers most entries, and "object is not" also swallows
-# things like "'int' object is not iterable", which is a bug instead of a missing value.
-# Carried over as-is from log_operator_execution so behaviour doesn't change in the port.
-NONE_TYPE_ERROR_PHRASES = (
-    "NoneType",
-    "None",
-    "object is None",
-    "None has no attribute",
-    "unsupported operand type",
-    "bad operand type",
-    "object is not",
-    "cannot be None",
-)
-
-
 def _is_none_type_error(error: TypeError) -> bool:
-    """A TypeError from a missing value which a check treats as not met rather than as an error."""
-    return any(phrase in str(error) for phrase in NONE_TYPE_ERROR_PHRASES)
+    """
+    A TypeError from a check meeting a missing value (None) while its SQL is built, which a check
+    treats as not met. Python names NoneType in every such error ("'NoneType' object is not
+    subscriptable", "unsupported operand type(s) for +: 'NoneType' and 'int'"), so any other
+    TypeError (e.g. "'int' object is not iterable") is a bug and is reported as an error.
+    """
+    return "NoneType" in str(error)

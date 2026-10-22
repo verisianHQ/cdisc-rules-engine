@@ -75,6 +75,9 @@ class ConditionCompiler:
             if key in node:
                 clauses = [self._compile_node(child) for child in node[key]]
                 return f"({joiner.join(clauses)})" if clauses else empty
+        if "not" in node:
+            # almost equivalent to NotOperator but without COALESCE
+            return f"(NOT {self._compile_node(node['not'])})"
         return self._evaluate(node.get("operator"), node.get("value", {}))
 
     def _evaluate(self, operator: str, value: dict) -> str:

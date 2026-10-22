@@ -29,6 +29,7 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
 FILTER_BY_DATASET = "filter_by_dataset"
 REPORTED = "reported"  # stops us from re-selecting already reported rows
+PART_ROW_COLUMN = "__part_row"
 SUMMARY_SENSITIVITIES = {Sensitivity.DATASET.value, Sensitivity.STUDY.value}
 ROW_SENSITIVITIES = {Sensitivity.RECORD.value, Sensitivity.GROUP.value, None}
 NULL_KEY = "CAST(NULL AS TEXT)"  # used as the group key when there's nothing to group on or the column is missing
@@ -57,8 +58,10 @@ class RuleQueryCompiler:
         dataset_id: str,
         operation_variables: Optional[Dict[str, SqlOperationResult]] = None,
         target_rule: Optional[dict] = None,
+        max_errors: int = MAX_ERRORS_PER_DATASET,
     ):
         self.rule = rule
+        self.max_errors = max_errors
         self.target_rule = target_rule or rule
         self.data_service = data_service
         self.pgi = data_service.pgi
@@ -74,21 +77,20 @@ class RuleQueryCompiler:
         ).compile(self.rule["conditions"])
         target_columns = get_target_columns(self.target_rule, self.dataset_metadata, self.schema)
 
-        inlined = []
-        if inline_outputs:
-            inlined = [
-                name
-                for name, present in target_columns.items()
-                if present and name.startswith("$") and name in self.operation_variables
-            ]
+        operation_outputs = [
+            name
+            for name, present in target_columns.items()
+            if present and name.startswith("$") and name in self.operation_variables
+        ]
+        inlined = operation_outputs if inline_outputs else []
 
-        select = ", ".join(self._select_columns(target_columns, inlined))
+        select = ", ".join(self._select_columns(target_columns, operation_outputs))
         sql = self._with_operation_outputs(self._query(select, conditions), inlined)
         return CompiledQuery(sql, self.schema, conditions, target_columns, inlined)
 
     # --- SELECT list ---------------------------------------------------------------------
 
-    def _select_columns(self, target_columns: Dict[str, bool], inlined: List[str]) -> List[str]:
+    def _select_columns(self, target_columns: Dict[str, bool], operation_outputs: List[str]) -> List[str]:
         wanted = [
             "usubjid",
             f"{self.domain}SEQ",
@@ -97,8 +99,13 @@ class RuleQueryCompiler:
             DATASET_NAME,
             *[column for column, present in target_columns.items() if present and not column.startswith("$")],
             *self._grouping_columns(),
-            # an inlined operation is computed from the reported row's columns, so they have to be selected
-            *[column for name in inlined for column in (self.operation_variables[name].params or {}).values()],
+            # an operation output is computed from the reported row's columns (in the query, or per row by the
+            # result handler when the query can't), so they have to be selected either way
+            *[
+                column
+                for name in operation_outputs
+                for column in (self.operation_variables[name].params or {}).values()
+            ],
         ]
         select = [f"{CO}.id AS id"]
         seen = {"id"}
@@ -124,7 +131,7 @@ class RuleQueryCompiler:
         if sensitivity not in ROW_SENSITIVITIES:
             raise ValueError(f"Invalid sensitivity value: {sensitivity}")
         # Record and Group with no grouping variables, which behaves like Record
-        return _capped(select, source, conditions.where, f"{CO}.id")
+        return self._capped(select, source, conditions.where, CO)
 
     def _summary_query(self, select: str, source: str, where: str) -> str:
         """Dataset / Study: one error so just the first failing row."""
@@ -142,7 +149,15 @@ class RuleQueryCompiler:
         # If filter_by_dataset was the only "grouping variable" everything lands in one group
         keys = [self._grouping_key_sql(column) for column in self._grouping_columns()] or [NULL_KEY]
         first_rows = _first_per_group(select, source, " AND ".join(f"({f})" for f in filters), keys)
-        return _capped("first_rows.*", f"({first_rows}) first_rows", "TRUE", "first_rows.id")
+        return self._capped("first_rows.*", f"({first_rows}) first_rows", "TRUE", "first_rows")
+
+    def _split_part_sql(self, alias: str) -> Optional[str]:
+        """The source file of a row of a concatenated split dataset, as rows are told apart when reported."""
+        if not (self._is_split() and self.schema.has_column(SOURCE_DS)):
+            return None
+        column_hash = self.schema.get_column_hash(SOURCE_DS)
+        column = f"{alias}.{column_hash}" if alias == CO else f'{alias}."{column_hash}"'
+        return f"LOWER(COALESCE(CAST({column} AS TEXT), ''))"
 
     def _grouping_variables(self) -> List[str]:
         return [variable for variable in self.rule.get("grouping_variables") or [] if isinstance(variable, str)]
@@ -253,17 +268,25 @@ def _first_per_group(select_sql: str, source: str, where: str, keys: List[str]) 
         f"ORDER BY {key_sql}, {CO}.id) first_per_group ORDER BY first_per_group.id"
     )
 
-
-def _capped(select_sql: str, source: str, where: str, order_column: str) -> str:
-    """
-    At most MAX_ERRORS_PER_DATASET rows.
-    COUNT(*) OVER () is evaluated before LIMIT, so every row also carries the uncapped total.
-    That's where "(50000 of 812345 errors shown)" comes from.
-    """
-    return (
-        f'SELECT {select_sql}, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM {source} WHERE {where} '
-        f"ORDER BY {order_column} LIMIT {MAX_ERRORS_PER_DATASET}"
-    )
+    def _capped(self, select_sql: str, source: str, where: str, alias: str) -> str:
+        """
+        At most max_errors rows.
+        COUNT(*) OVER () is evaluated before the cap, so every row also
+        carries the uncapped total, which is where "(50000 of 812345 errors shown)" comes from.
+        """
+        order_column = f"{alias}.id"
+        part = self._split_part_sql(alias)
+        if part is None:
+            return (
+                f'SELECT {select_sql}, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM {source} WHERE {where} '
+                f"ORDER BY {order_column} LIMIT {self.max_errors}"
+            )
+        return (
+            f'SELECT * FROM (SELECT {select_sql}, COUNT(*) OVER (PARTITION BY {part}) AS "{TOTAL_COUNT_COLUMN}", '
+            f'ROW_NUMBER() OVER (PARTITION BY {part} ORDER BY {order_column}) AS "{PART_ROW_COLUMN}" '
+            f'FROM {source} WHERE {where}) capped WHERE capped."{PART_ROW_COLUMN}" <= {self.max_errors} '
+            f"ORDER BY capped.id"
+        )
 
 
 def _quote(value: str) -> str:
