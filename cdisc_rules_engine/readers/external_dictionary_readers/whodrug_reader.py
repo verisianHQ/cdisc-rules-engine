@@ -34,8 +34,8 @@ B3_FIXED_WIDTH_COLSPECS = {
         (11, 12),
         (12, 13),
         (13, 15),
-        (15, 18),
-        (18, 24),
+        (15, 19),
+        (19, 24),
         (24, 26),
         (26, 27),
         (27, 30),
@@ -64,7 +64,9 @@ class WhoDrugReader:
                 if "\t" in first_line:
                     return file_path, "\t"
                 if extension == ".txt" and file_name in B3_FIXED_WIDTH_COLSPECS:
-                    return file_path, None
+                    first_field_width = B3_FIXED_WIDTH_COLSPECS[file_name][0][1]
+                    if "," not in first_line[: first_field_width + 1]:
+                        return file_path, None
                 return file_path, ","
         return None
 

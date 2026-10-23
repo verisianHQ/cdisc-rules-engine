@@ -1,3 +1,4 @@
+import csv
 import pytest
 
 from cdisc_rules_engine.readers.external_dictionary_readers.whodrug_reader import WhoDrugReader
@@ -60,9 +61,28 @@ def write_fixed_width_dd_with_extra_field(directory):
     )
 
 
+def write_comma_delimited_txt(directory):
+    def write_rows(path, rows):
+        with open(path, "w", newline="") as f:
+            csv.writer(f).writerows(rows)
+
+    write_rows(directory / "Version.txt", [[VERSION_LINE.rsplit(" ", 1)[0], VERSION_LINE.rsplit(" ", 1)[1]]])
+    write_rows(directory / "INA.txt", INA_ROWS)
+    write_rows(directory / "DDA.txt", [row + ("111", "*") for row in DDA_ROWS])
+    write_rows(
+        directory / "DD.txt", [[rec, seq1, seq2, check] + [""] * 7 + [name] for rec, seq1, seq2, check, name in DD_ROWS]
+    )
+
+
 @pytest.mark.parametrize(
     "write_files",
-    [write_fixed_width, write_tab_delimited, write_tab_delimited_without_level, write_fixed_width_dd_with_extra_field],
+    [
+        write_fixed_width,
+        write_tab_delimited,
+        write_tab_delimited_without_level,
+        write_fixed_width_dd_with_extra_field,
+        write_comma_delimited_txt,
+    ],
 )
 def test_whodrug_reader_b3_txt(tmp_path, write_files):
     write_files(tmp_path)
