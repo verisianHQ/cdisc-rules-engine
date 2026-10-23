@@ -46,7 +46,12 @@ def write_tab_delimited(directory):
     )
 
 
-@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited])
+def write_tab_delimited_without_level(directory):
+    write_tab_delimited(directory)
+    (directory / "INA.txt").write_text("".join(f"{code}\t{text}\n" for code, _, text in INA_ROWS))
+
+
+@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited, write_tab_delimited_without_level])
 def test_whodrug_reader_b3_txt(tmp_path, write_files):
     write_files(tmp_path)
     reader = WhoDrugReader(None, str(tmp_path))

@@ -1,3 +1,4 @@
+import csv
 import os
 import re
 import pandas as pd
@@ -41,6 +42,8 @@ B3_FIXED_WIDTH_COLSPECS = {
     ],
 }
 
+ATC_CODE_LENGTH_TO_LEVEL = {1: "1", 3: "2", 4: "3", 5: "4", 7: "5"}
+
 
 class WhoDrugReader:
     """Reader for the WHO Drug dictionary."""
@@ -76,6 +79,14 @@ class WhoDrugReader:
         if delimiter is None:
             return pd.read_fwf(file_path, colspecs=B3_FIXED_WIDTH_COLSPECS[file_name], **read_kwargs)
         return pd.read_csv(file_path, sep=delimiter, **read_kwargs)
+
+    def _count_fields(self, file_name: str) -> int | None:
+        resolved = self._resolve_file(file_name)
+        if resolved is None or resolved[1] is None:
+            return None
+        file_path, delimiter = resolved
+        with open(file_path, mode="r", encoding="utf-8-sig") as f:
+            return len(next(csv.reader([f.readline().rstrip("\r\n")], delimiter=delimiter)))
 
     def _extract_version_metadata(self) -> WhoDrugVersionMetadata:
         """Extract metadata from the Version file."""
@@ -131,12 +142,18 @@ class WhoDrugReader:
         atc_file_name = (
             C3WHODrugFiles.ATC.value if metadata.format == WhoDrugFormats.C3.value else B3WHODrugFiles.INA.value
         )
-        atc_df = self._read_file(atc_file_name, {0: "atc_code", 1: "level", 2: "atc_text"})
+        if self._count_fields(atc_file_name) == 2:
+            atc_col_map = {0: "atc_code", 1: "atc_text"}
+        else:
+            atc_col_map = {0: "atc_code", 1: "level", 2: "atc_text"}
+        atc_df = self._read_file(atc_file_name, atc_col_map)
         if atc_df is None:
             raise FileNotFoundError(f"WHODrug file {atc_file_name} not found in {self.dictionary_path}")
 
         atc_df["atc_code"] = atc_df["atc_code"].str.strip()
         atc_df["atc_text"] = atc_df["atc_text"].str.strip()
+        if "level" not in atc_df:
+            atc_df["level"] = atc_df["atc_code"].str.len().map(ATC_CODE_LENGTH_TO_LEVEL)
         code_to_text_map = dict(zip(atc_df["atc_code"], atc_df["atc_text"]))
         level_4_codes = atc_df[atc_df["level"] == "4"]
 
