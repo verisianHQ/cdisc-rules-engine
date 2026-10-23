@@ -1,4 +1,3 @@
-import csv
 import os
 import re
 import pandas as pd
@@ -6,7 +5,6 @@ from datetime import datetime
 from dataclasses import dataclass
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.enums.whodrug_files import (
     WhoDrugFormats,
     UniversalWhoDrugFiles,
@@ -34,18 +32,14 @@ B3_FIXED_WIDTH_COLSPECS = {
         (11, 12),
         (12, 13),
         (13, 15),
-        (15, 19),
-        (19, 24),
+        (15, 18),
+        (18, 24),
         (24, 26),
         (26, 27),
         (27, 30),
         (30, 1530),
     ],
 }
-
-ATC_CODE_LENGTH_TO_LEVEL = {1: "1", 3: "2", 4: "3", 5: "4", 7: "5"}
-
-B3_DD_PREFIX = re.compile(r"^\d{12}.{18}")
 
 
 class WhoDrugReader:
@@ -64,9 +58,7 @@ class WhoDrugReader:
                 if "\t" in first_line:
                     return file_path, "\t"
                 if extension == ".txt" and file_name in B3_FIXED_WIDTH_COLSPECS:
-                    first_field_width = B3_FIXED_WIDTH_COLSPECS[file_name][0][1]
-                    if "," not in first_line[: first_field_width + 1]:
-                        return file_path, None
+                    return file_path, None
                 return file_path, ","
         return None
 
@@ -84,14 +76,6 @@ class WhoDrugReader:
         if delimiter is None:
             return pd.read_fwf(file_path, colspecs=B3_FIXED_WIDTH_COLSPECS[file_name], **read_kwargs)
         return pd.read_csv(file_path, sep=delimiter, **read_kwargs)
-
-    def _count_fields(self, file_name: str) -> int | None:
-        resolved = self._resolve_file(file_name)
-        if resolved is None or resolved[1] is None:
-            return None
-        file_path, delimiter = resolved
-        with open(file_path, mode="r", encoding="utf-8-sig") as f:
-            return len(next(csv.reader([f.readline().rstrip("\r\n")], delimiter=delimiter)))
 
     def _extract_version_metadata(self) -> WhoDrugVersionMetadata:
         """Extract metadata from the Version file."""
@@ -134,33 +118,6 @@ class WhoDrugReader:
         final_df[target_col] = None
         return final_df
 
-    def _merge_short_dd(self, input_df: pd.DataFrame) -> pd.DataFrame:
-        file_path, delimiter = self._resolve_file(B3WHODrugFiles.DD.value)
-        with open(file_path, mode="rb") as f:
-            raw = f.read()
-        try:
-            text = raw.decode("utf-8-sig")
-        except UnicodeDecodeError:
-            text = raw.decode("cp1252")
-
-        linked, unlinked = [], set()
-        for line in text.splitlines():
-            first_field = line.split(delimiter)[0]
-            if B3_DD_PREFIX.match(first_field):
-                linked.append((first_field[:6], first_field[30:].strip()))
-            elif first_field.strip():
-                unlinked.add(first_field.strip())
-
-        dd_df = pd.DataFrame(linked, columns=["drug_rec_num", "drug_name"])
-        final_df = pd.merge(input_df, dd_df, on="drug_rec_num", how="left")
-        if unlinked:
-            logger.warning(
-                f"{len(unlinked)} WHODrug drug names in {file_path} have no drug record number and can't be "
-                "linked to ATC codes; code-term pair and hierarchy checks won't match them."
-            )
-            final_df = pd.concat([final_df, pd.DataFrame({"drug_name": sorted(unlinked)})], ignore_index=True)
-        return final_df
-
     def process_data(self, metadata: WhoDrugVersionMetadata) -> pd.DataFrame:
         final_df = self._process_atc_data(metadata)
         return final_df
@@ -174,18 +131,12 @@ class WhoDrugReader:
         atc_file_name = (
             C3WHODrugFiles.ATC.value if metadata.format == WhoDrugFormats.C3.value else B3WHODrugFiles.INA.value
         )
-        if self._count_fields(atc_file_name) == 2:
-            atc_col_map = {0: "atc_code", 1: "atc_text"}
-        else:
-            atc_col_map = {0: "atc_code", 1: "level", 2: "atc_text"}
-        atc_df = self._read_file(atc_file_name, atc_col_map)
+        atc_df = self._read_file(atc_file_name, {0: "atc_code", 1: "level", 2: "atc_text"})
         if atc_df is None:
             raise FileNotFoundError(f"WHODrug file {atc_file_name} not found in {self.dictionary_path}")
 
         atc_df["atc_code"] = atc_df["atc_code"].str.strip()
         atc_df["atc_text"] = atc_df["atc_text"].str.strip()
-        if "level" not in atc_df:
-            atc_df["level"] = atc_df["atc_code"].str.len().map(ATC_CODE_LENGTH_TO_LEVEL)
         code_to_text_map = dict(zip(atc_df["atc_code"], atc_df["atc_text"]))
         level_4_codes = atc_df[atc_df["level"] == "4"]
 
@@ -226,17 +177,13 @@ class WhoDrugReader:
                 join_key="atc_code",
                 target_col="drug_rec_num",
             )
-            dd_field_count = self._count_fields(B3WHODrugFiles.DD.value)
-            if dd_field_count is not None and dd_field_count < len(B3_FIXED_WIDTH_COLSPECS[B3WHODrugFiles.DD.value]):
-                final_df = self._merge_short_dd(drug_rec_df)
-            else:
-                final_df = self._apply_file_mapping(
-                    input_df=drug_rec_df,
-                    file_name=B3WHODrugFiles.DD.value,
-                    col_map={0: "drug_rec_num", 11: "drug_name"},
-                    join_key="drug_rec_num",
-                    target_col="drug_name",
-                )
+            final_df = self._apply_file_mapping(
+                input_df=drug_rec_df,
+                file_name=B3WHODrugFiles.DD.value,
+                col_map={0: "drug_rec_num", 11: "drug_name"},
+                join_key="drug_rec_num",
+                target_col="drug_name",
+            )
 
         else:
             raise ValueError(f"Unsupported format: {metadata.format}")

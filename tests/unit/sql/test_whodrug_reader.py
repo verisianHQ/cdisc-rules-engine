@@ -1,4 +1,3 @@
-import csv
 import pytest
 
 from cdisc_rules_engine.readers.external_dictionary_readers.whodrug_reader import WhoDrugReader
@@ -47,43 +46,7 @@ def write_tab_delimited(directory):
     )
 
 
-def write_tab_delimited_without_level(directory):
-    write_tab_delimited(directory)
-    (directory / "INA.txt").write_text("".join(f"{code}\t{text}\n" for code, _, text in INA_ROWS))
-
-
-def write_fixed_width_dd_with_extra_field(directory):
-    write_fixed_width(directory)
-    (directory / "DD.txt").write_text(
-        "".join(
-            f"{rec}{seq1}{seq2}{check}N  001      01 854{name}\t{name}\n" for rec, seq1, seq2, check, name in DD_ROWS
-        )
-    )
-
-
-def write_comma_delimited_txt(directory):
-    def write_rows(path, rows):
-        with open(path, "w", newline="") as f:
-            csv.writer(f).writerows(rows)
-
-    write_rows(directory / "Version.txt", [[VERSION_LINE.rsplit(" ", 1)[0], VERSION_LINE.rsplit(" ", 1)[1]]])
-    write_rows(directory / "INA.txt", INA_ROWS)
-    write_rows(directory / "DDA.txt", [row + ("111", "*") for row in DDA_ROWS])
-    write_rows(
-        directory / "DD.txt", [[rec, seq1, seq2, check] + [""] * 7 + [name] for rec, seq1, seq2, check, name in DD_ROWS]
-    )
-
-
-@pytest.mark.parametrize(
-    "write_files",
-    [
-        write_fixed_width,
-        write_tab_delimited,
-        write_tab_delimited_without_level,
-        write_fixed_width_dd_with_extra_field,
-        write_comma_delimited_txt,
-    ],
-)
+@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited])
 def test_whodrug_reader_b3_txt(tmp_path, write_files):
     write_files(tmp_path)
     reader = WhoDrugReader(None, str(tmp_path))
@@ -93,17 +56,3 @@ def test_whodrug_reader_b3_txt(tmp_path, write_files):
 
     df = reader.process_data(metadata)
     assert df.to_dict(orient="records") == [EXPECTED]
-
-
-def test_whodrug_reader_b3_dd_names_only(tmp_path):
-    write_fixed_width(tmp_path)
-    (tmp_path / "INA.txt").write_text("".join(f"{code}\t{text}\n" for code, _, text in INA_ROWS))
-    (tmp_path / "DD.txt").write_text("".join(f"{name}\t{name}\n" for *_, name in DD_ROWS))
-    reader = WhoDrugReader(None, str(tmp_path))
-
-    df = reader.process_data(reader._extract_version_metadata())
-    records = df.astype(object).where(df.notna(), None).to_dict(orient="records")
-    assert records == [
-        {**EXPECTED, "term_name": None},
-        {**{key: None for key in EXPECTED}, "term_name": "DUMMYDRUG, WITH COMMA"},
-    ]
