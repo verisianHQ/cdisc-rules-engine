@@ -22,6 +22,26 @@ class WhoDrugVersionMetadata:
     version_date: str
 
 
+B3_FIXED_WIDTH_COLSPECS = {
+    B3WHODrugFiles.INA.value: [(0, 7), (7, 8), (8, 118)],
+    B3WHODrugFiles.DDA.value: [(0, 6), (6, 8), (8, 11), (11, 12), (12, 19)],
+    B3WHODrugFiles.DD.value: [
+        (0, 6),
+        (6, 8),
+        (8, 11),
+        (11, 12),
+        (12, 13),
+        (13, 15),
+        (15, 18),
+        (18, 24),
+        (24, 26),
+        (26, 27),
+        (27, 30),
+        (30, 1530),
+    ],
+}
+
+
 class WhoDrugReader:
     """Reader for the WHO Drug dictionary."""
 
@@ -29,14 +49,33 @@ class WhoDrugReader:
         self.pgi = pgi
         self.dictionary_path = dictionary_path
 
-    def _resolve_file(self, file_name: str) -> tuple[str, str] | None:
+    def _resolve_file(self, file_name: str) -> tuple[str, str | None] | None:
         for extension in (".csv", ".txt"):
             file_path = f"{self.dictionary_path}/{file_name}{extension}"
             if os.path.exists(file_path):
                 with open(file_path, mode="r", encoding="utf-8") as f:
                     first_line = f.readline()
-                return file_path, "\t" if "\t" in first_line else ","
+                if "\t" in first_line:
+                    return file_path, "\t"
+                if extension == ".txt" and file_name in B3_FIXED_WIDTH_COLSPECS:
+                    return file_path, None
+                return file_path, ","
         return None
+
+    def _read_file(self, file_name: str, col_map: dict[int, str]) -> pd.DataFrame | None:
+        resolved = self._resolve_file(file_name)
+        if resolved is None:
+            return None
+        file_path, delimiter = resolved
+        read_kwargs = {
+            "header": None,
+            "dtype": str,
+            "usecols": list(col_map.keys()),
+            "names": list(col_map.values()),
+        }
+        if delimiter is None:
+            return pd.read_fwf(file_path, colspecs=B3_FIXED_WIDTH_COLSPECS[file_name], **read_kwargs)
+        return pd.read_csv(file_path, sep=delimiter, **read_kwargs)
 
     def _extract_version_metadata(self) -> WhoDrugVersionMetadata:
         """Extract metadata from the Version file."""
@@ -68,22 +107,9 @@ class WhoDrugReader:
         target_col: str,
     ) -> pd.DataFrame:
 
-        resolved = self._resolve_file(file_name)
+        df = self._read_file(file_name, col_map)
 
-        if resolved is not None:
-            file_path, delimiter = resolved
-            indices = list(col_map.keys())
-            col_names = list(col_map.values())
-
-            df = pd.read_csv(
-                file_path,
-                sep=delimiter,
-                header=None,
-                dtype=str,
-                usecols=indices,
-                names=col_names,
-            )
-
+        if df is not None:
             df[join_key] = df[join_key].str.strip()
 
             return pd.merge(input_df, df, on=join_key, how="left")
@@ -105,14 +131,9 @@ class WhoDrugReader:
         atc_file_name = (
             C3WHODrugFiles.ATC.value if metadata.format == WhoDrugFormats.C3.value else B3WHODrugFiles.INA.value
         )
-        resolved = self._resolve_file(atc_file_name)
-        if resolved is None:
+        atc_df = self._read_file(atc_file_name, {0: "atc_code", 1: "level", 2: "atc_text"})
+        if atc_df is None:
             raise FileNotFoundError(f"WHODrug file {atc_file_name} not found in {self.dictionary_path}")
-        atc_file_path, delimiter = resolved
-
-        atc_df = pd.read_csv(
-            atc_file_path, sep=delimiter, header=None, dtype=str, names=["atc_code", "level", "atc_text"]
-        )
 
         atc_df["atc_code"] = atc_df["atc_code"].str.strip()
         atc_df["atc_text"] = atc_df["atc_text"].str.strip()
