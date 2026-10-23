@@ -6,6 +6,7 @@ from datetime import datetime
 from dataclasses import dataclass
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
+from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.enums.whodrug_files import (
     WhoDrugFormats,
     UniversalWhoDrugFiles,
@@ -43,6 +44,8 @@ B3_FIXED_WIDTH_COLSPECS = {
 }
 
 ATC_CODE_LENGTH_TO_LEVEL = {1: "1", 3: "2", 4: "3", 5: "4", 7: "5"}
+
+B3_DD_PREFIX = re.compile(r"^\d{12}.{18}")
 
 
 class WhoDrugReader:
@@ -129,6 +132,33 @@ class WhoDrugReader:
         final_df[target_col] = None
         return final_df
 
+    def _merge_short_dd(self, input_df: pd.DataFrame) -> pd.DataFrame:
+        file_path, delimiter = self._resolve_file(B3WHODrugFiles.DD.value)
+        with open(file_path, mode="rb") as f:
+            raw = f.read()
+        try:
+            text = raw.decode("utf-8-sig")
+        except UnicodeDecodeError:
+            text = raw.decode("cp1252")
+
+        linked, unlinked = [], set()
+        for line in text.splitlines():
+            first_field = line.split(delimiter)[0]
+            if B3_DD_PREFIX.match(first_field):
+                linked.append((first_field[:6], first_field[30:].strip()))
+            elif first_field.strip():
+                unlinked.add(first_field.strip())
+
+        dd_df = pd.DataFrame(linked, columns=["drug_rec_num", "drug_name"])
+        final_df = pd.merge(input_df, dd_df, on="drug_rec_num", how="left")
+        if unlinked:
+            logger.warning(
+                f"{len(unlinked)} WHODrug drug names in {file_path} have no drug record number and can't be "
+                "linked to ATC codes; code-term pair and hierarchy checks won't match them."
+            )
+            final_df = pd.concat([final_df, pd.DataFrame({"drug_name": sorted(unlinked)})], ignore_index=True)
+        return final_df
+
     def process_data(self, metadata: WhoDrugVersionMetadata) -> pd.DataFrame:
         final_df = self._process_atc_data(metadata)
         return final_df
@@ -194,13 +224,17 @@ class WhoDrugReader:
                 join_key="atc_code",
                 target_col="drug_rec_num",
             )
-            final_df = self._apply_file_mapping(
-                input_df=drug_rec_df,
-                file_name=B3WHODrugFiles.DD.value,
-                col_map={0: "drug_rec_num", 11: "drug_name"},
-                join_key="drug_rec_num",
-                target_col="drug_name",
-            )
+            dd_field_count = self._count_fields(B3WHODrugFiles.DD.value)
+            if dd_field_count is not None and dd_field_count < len(B3_FIXED_WIDTH_COLSPECS[B3WHODrugFiles.DD.value]):
+                final_df = self._merge_short_dd(drug_rec_df)
+            else:
+                final_df = self._apply_file_mapping(
+                    input_df=drug_rec_df,
+                    file_name=B3WHODrugFiles.DD.value,
+                    col_map={0: "drug_rec_num", 11: "drug_name"},
+                    join_key="drug_rec_num",
+                    target_col="drug_name",
+                )
 
         else:
             raise ValueError(f"Unsupported format: {metadata.format}")
