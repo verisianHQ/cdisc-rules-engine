@@ -151,6 +151,26 @@ class RuleQueryCompiler:
         first_rows = _first_per_group(select, source, " AND ".join(f"({f})" for f in filters), keys)
         return self._capped("first_rows.*", f"({first_rows}) first_rows", "TRUE", "first_rows")
 
+    def _capped(self, select_sql: str, source: str, where: str, alias: str) -> str:
+        """
+        At most max_errors rows.
+        COUNT(*) OVER () is evaluated before the cap, so every row also
+        carries the uncapped total, which is where "(50000 of 812345 errors shown)" comes from.
+        """
+        order_column = f"{alias}.id"
+        part = self._split_part_sql(alias)
+        if part is None:
+            return (
+                f'SELECT {select_sql}, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM {source} WHERE {where} '
+                f"ORDER BY {order_column} LIMIT {self.max_errors}"
+            )
+        return (
+            f'SELECT * FROM (SELECT {select_sql}, COUNT(*) OVER (PARTITION BY {part}) AS "{TOTAL_COUNT_COLUMN}", '
+            f'ROW_NUMBER() OVER (PARTITION BY {part} ORDER BY {order_column}) AS "{PART_ROW_COLUMN}" '
+            f'FROM {source} WHERE {where}) capped WHERE capped."{PART_ROW_COLUMN}" <= {self.max_errors} '
+            f"ORDER BY capped.id"
+        )
+
     def _split_part_sql(self, alias: str) -> Optional[str]:
         """The source file of a row of a concatenated split dataset, as rows are told apart when reported."""
         if not (self._is_split() and self.schema.has_column(SOURCE_DS)):
@@ -267,26 +287,6 @@ def _first_per_group(select_sql: str, source: str, where: str, keys: List[str]) 
         f"SELECT * FROM (SELECT DISTINCT ON ({key_sql}) {select_sql} FROM {source} WHERE {where} "
         f"ORDER BY {key_sql}, {CO}.id) first_per_group ORDER BY first_per_group.id"
     )
-
-    def _capped(self, select_sql: str, source: str, where: str, alias: str) -> str:
-        """
-        At most max_errors rows.
-        COUNT(*) OVER () is evaluated before the cap, so every row also
-        carries the uncapped total, which is where "(50000 of 812345 errors shown)" comes from.
-        """
-        order_column = f"{alias}.id"
-        part = self._split_part_sql(alias)
-        if part is None:
-            return (
-                f'SELECT {select_sql}, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM {source} WHERE {where} '
-                f"ORDER BY {order_column} LIMIT {self.max_errors}"
-            )
-        return (
-            f'SELECT * FROM (SELECT {select_sql}, COUNT(*) OVER (PARTITION BY {part}) AS "{TOTAL_COUNT_COLUMN}", '
-            f'ROW_NUMBER() OVER (PARTITION BY {part} ORDER BY {order_column}) AS "{PART_ROW_COLUMN}" '
-            f'FROM {source} WHERE {where}) capped WHERE capped."{PART_ROW_COLUMN}" <= {self.max_errors} '
-            f"ORDER BY capped.id"
-        )
 
 
 def _quote(value: str) -> str:
