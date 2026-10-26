@@ -97,7 +97,7 @@ The engine stores the data it validates in a PostgreSQL database while it runs. 
 
 ### **Running a validation**
 
-Every validation uses this fork's engine, so **always add the `-sql` flag** to `validate` commands, as in the examples below.
+Validations run on this fork's SQL engine by default, so no extra flag is needed. To run the original CDISC (pandas) engine instead, add the `--cdisc` flag.
 
 #### From the command line
 
@@ -165,7 +165,8 @@ Run `python core.py validate --help` to see the list of validation options.
                                   as they are completed.
   -dxp, --define-xml-path TEXT    Path to Define-XML
   -stf, --stf-file-path TEXT      Path to STF file
-  -sql, --sql-engine              Required: always add this flag (see below)
+  --cdisc                         Run validation using the CDISC (pandas)
+                                  engine instead of the default SQL engine
   -ns, --sql-namespace TEXT       A prefix for all tables in the database when
                                   using the SQL engine
   -mem, --in-memory-postgres      Run validation using an in-memory Postgres
@@ -191,7 +192,7 @@ Run `python core.py validate --help` to see the list of validation options.
 
 To validate all the datasets in a folder using rules for SDTM-IG version 3.4, with a temporary database, use the following command:
 
-`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -sql -mem`
+`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -mem`
 
 (If you set up the Docker database, leave out `-mem`.)
 
@@ -199,7 +200,7 @@ To validate all the datasets in a folder using rules for SDTM-IG version 3.4, wi
 
 ##### **Validate single rule**
 
-`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/ -sql -mem`
+`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/ -mem`
 Note: JSON dataset should match the format provided by the rule editor:
 
 ```json
