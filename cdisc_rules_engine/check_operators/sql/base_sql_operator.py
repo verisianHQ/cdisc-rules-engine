@@ -101,10 +101,6 @@ class BaseSqlOperator:
     def _exists(self, column: str) -> bool:
         return self.sql_data_service.pgi.schema.column_exists(self.table_id, column)
 
-    def _fetch_for_venmo(self, column: str) -> str:
-        """Bool column read as the condition itself"""
-        return self._column_sql(column)
-
     def _do_check_operator(self, sql_subquery_fn) -> str:
         """Operator condition expressed as a sql bool over the rule's source rows (aliased co)."""
         return sql_subquery_fn()

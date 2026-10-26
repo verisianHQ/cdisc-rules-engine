@@ -14,9 +14,11 @@ from typing import Dict, Optional
 
 from cdisc_rules_engine.check_operators.sql import PostgresQLOperators
 from cdisc_rules_engine.compiler.derived import SOURCE_ALIAS, DerivedColumnRegistry, GroupJoin
+from cdisc_rules_engine.exceptions.custom_exceptions import RuleFormatError
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
 CO = "co"
+GROUP_KEYS = ("all", "any", "not")
 
 
 @dataclass
@@ -71,6 +73,12 @@ class ConditionCompiler:
     def _compile_node(self, node) -> str:
         if hasattr(node, "to_dict"):
             node = node.to_dict()
+        groups = [key for key in GROUP_KEYS if key in node]
+        if len(groups) > 1 or (groups and "operator" in node):
+            raise RuleFormatError(
+                f"A condition must be exactly one of {', '.join(GROUP_KEYS)} or a check, but has: "
+                f"{', '.join(groups + (['operator'] if 'operator' in node else []))}"
+            )
         for key, joiner, empty in (("all", " AND ", "TRUE"), ("any", " OR ", "FALSE")):
             if key in node:
                 clauses = [self._compile_node(child) for child in node[key]]

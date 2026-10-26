@@ -57,7 +57,7 @@ def contents_against_define(context: SourceContext) -> str:
     select.append(f"{unique_sql} AS {unique.hash}")
 
     body = f"{pivot}SELECT {', '.join(select)} FROM {source.hash} t {joins}".strip()
-    return ensure_view(pgi, body, columns, source=source.source)
+    return ensure_view(pgi, body, columns, source="derived")
 
 
 def _key_sequence_is_unique(context: SourceContext, table_id: str, define_dataset: dict) -> Tuple[str, str, str]:

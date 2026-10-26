@@ -1,3 +1,5 @@
+from cdisc_rules_engine.compiler.derived import SOURCE_ALIAS
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -95,18 +97,20 @@ class TargetIsSortedByOperator(BaseSqlOperator):
 
     def _positions_agree_sql(self, target_sql: str, partition: str, comparators) -> str:
         """
-        Each row's position ordered by a comparator must match its position ordered
-        by the target, using the comparator itself to break ties in the target.
+        Each row's position ordered by a comparator must match its position ordered by the target.
+        Ties are broken as target's ties by the comparators and visa versa. Then by the row.
         """
         tie_break = ", ".join(self._order_part(comparator) for comparator in comparators)
-        by_target = (
-            f"ROW_NUMBER() OVER (PARTITION BY {partition} "
-            f"ORDER BY CASE WHEN {target_sql} IS NULL THEN 1 ELSE 0 END, {target_sql} ASC, {tie_break})"
-        )
+        target_order = f"CASE WHEN {target_sql} IS NULL THEN 1 ELSE 0 END, {target_sql} ASC"
+        row = f"{SOURCE_ALIAS}.id"
+        by_target = f"ROW_NUMBER() OVER (PARTITION BY {partition} ORDER BY {target_order}, {tie_break}, {row})"
         checks = []
         for comparator in comparators:
             column = self._source_column_sql(self.replace_prefix(comparator["name"]))
-            by_comparator = f"ROW_NUMBER() OVER (PARTITION BY {partition} ORDER BY {self._order_part(comparator)})"
+            by_comparator = (
+                f"ROW_NUMBER() OVER (PARTITION BY {partition} "
+                f"ORDER BY {self._order_part(comparator)}, {target_order}, {row})"
+            )
             checks.append(f"(CASE WHEN {column} IS NULL THEN FALSE ELSE {by_comparator} = {by_target} END)")
         return " AND ".join(checks)
 

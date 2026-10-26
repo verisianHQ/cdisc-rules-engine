@@ -1,11 +1,11 @@
 import copy
+from types import SimpleNamespace
 from unittest.mock import patch
 
-import pytest
 
-from cdisc_rules_engine.check_operators.sql.postgresql_operators import _is_none_type_error
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
+from cdisc_rules_engine.models.sql_result_handler import SqlResultHandler
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
@@ -205,15 +205,25 @@ def test_an_operation_value_evaluated_per_row_reads_the_reported_row():
     assert [error["value"]["$pair"] for error in reported["errors"][:2]] == [1, 2]
 
 
-@pytest.mark.parametrize(
-    "message, swallowed",
-    [
-        ("'NoneType' object is not subscriptable", True),
-        ("unsupported operand type(s) for +: 'NoneType' and 'int'", True),
-        ("object of type 'NoneType' has no len()", True),
-        ("'int' object is not iterable", False),
-        ("unsupported operand type(s) for +: 'int' and 'str'", False),
-    ],
-)
-def test_only_a_missing_value_is_treated_as_a_check_not_met(message, swallowed):
-    assert _is_none_type_error(TypeError(message)) is swallowed
+def test_an_operator_failing_on_a_missing_value_is_an_error_not_a_pass():
+    sorted_by = condition(
+        "target_is_sorted_by", "AESEQ", [{"name": "AESTDTC", "sort_order": "ASC", "null_position": "last"}]
+    )
+    reported, _ = run(rule({"all": [sorted_by]}))
+    assert reported["executionStatus"] == "execution_error"
+    assert reported["errors"][0]["error"] == "SQL error in target_is_sorted_by operator"
+
+
+def test_a_condition_that_is_both_all_and_any_is_a_rule_format_error():
+    reported, _ = run(rule({"all": [condition("non_empty", "AETERM")], "any": [condition("empty", "AEDECOD")]}))
+    assert reported["executionStatus"] == "execution_error"
+    assert reported["errors"][0]["error"] == "Rule format error"
+
+
+def test_a_text_parameter_evaluated_per_row_is_escaped():
+    handler = SqlResultHandler.__new__(SqlResultHandler)
+    schema = SimpleNamespace(get_column_hash=lambda column: column.lower())
+    query = handler._substitute_parameters(
+        "SELECT $1 AS a, $10 AS b", {"$1": "TERM", "$10": "OTHER"}, {"term": "O'BRIEN", "other": "X"}, schema
+    )
+    assert query == "SELECT 'O''BRIEN' AS a, 'X' AS b"

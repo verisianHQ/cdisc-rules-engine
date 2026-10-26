@@ -280,7 +280,7 @@ class SqlResultHandler:
         return [r.get("value") for r in rows if r.get("value") is not None]
 
     def _substitute_parameters(self, query: str, params: dict, row: dict, schema: SqlTableSchema) -> str:
-        for placeholder, column_name in params.items():
+        for placeholder, column_name in sorted(params.items(), key=lambda item: -len(item[0])):
             if column_name == "id":
                 value = row.get("id")
             else:
@@ -290,10 +290,8 @@ class SqlResultHandler:
                 query = query.replace(placeholder, "NULL")
             elif isinstance(value, str):
                 # quoted so it's read as a literal and not a column name.
-                # TODO: doesn't escape embedded quotes.
-                # A value like O'BRIEN breaks the query (and comes back as "Query error").
-                # Should be ''-escaped, or better, bound as a param.
-                query = query.replace(placeholder, f"'{value}'")
+                escaped = value.replace("'", "''")
+                query = query.replace(placeholder, f"'{escaped}'")
             else:
                 query = query.replace(placeholder, str(value))
         return query

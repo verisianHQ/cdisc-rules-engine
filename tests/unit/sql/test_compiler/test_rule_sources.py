@@ -133,3 +133,35 @@ def test_metadata_is_read_once_per_study(study):
         rows(study, "Variable Metadata Check against Library Metadata")
         rows(study, "Value Check against Library Metadata")
     assert read.call_count == 1
+
+
+def test_a_rules_view_is_never_taken_for_an_uploaded_dataset(study):
+    from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
+    from cdisc_rules_engine.sql_operations.dataset_names import SqlDatasetNamesOperation
+
+    metadata = study.get_dataset_metadata("lb")
+    with patch.object(MetadataStore, "define_dataset", return_value={}):
+        view = rule_source(
+            {"rule_type": "Dataset Contents Check against Define XML"},
+            study,
+            metadata,
+            STANDARDS_CONTEXT,
+            study.datasets,
+        )
+    assert study.pgi.schema.get_table(view).source == "derived"
+    names = SqlDatasetNamesOperation(
+        SqlOperationParams(domain="LB", target=None, standards_context=STANDARDS_CONTEXT), study
+    ).execute()
+    study.pgi.execute_sql(names.query)
+    assert {row["value"] for row in study.pgi.fetch_all()} == {"LB", "SUPPLB"}
+
+
+def test_a_rules_views_are_dropped_with_the_studys_tables(study):
+    rows(study, "Variable Metadata Check")  # literal rows: a view that depends on no table
+    study.pgi.execute_sql("SELECT COUNT(*) AS n FROM pg_views WHERE schemaname = 'public'")
+    assert study.pgi.fetch_one()["n"] > 0
+    study.pgi._drop_prefixed_tables()
+    study.pgi.execute_sql(
+        f"SELECT COUNT(*) AS n FROM pg_views WHERE schemaname = 'public' AND viewname LIKE '{study.pgi.sql_namespace}%'"
+    )
+    assert study.pgi.fetch_one()["n"] == 0

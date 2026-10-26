@@ -501,12 +501,6 @@ class PostgresQLOperators:
                 )
                 return "FALSE"
             condition = operator.execute_operator(other_value)
-        except TypeError as error:
-            if not _is_none_type_error(error):
-                logger.error(f"Error in {operator_name}: {error}, traceback: {traceback.format_exc()}")
-                raise SqlOperatorError(original_exception=error, operator_name=operator_name) from error
-            logger.error(f"Error in {operator_name}: {error}, treating the check as not met")
-            return "FALSE"
         except Exception as error:
             logger.error(f"Error in {operator_name}: {error}, traceback: {traceback.format_exc()}")
             raise SqlOperatorError(original_exception=error, operator_name=operator_name) from error
@@ -521,13 +515,3 @@ class PostgresQLOperators:
     def _assert_valid_value_and_cast(self, value):
         """Shared method for value validation and casting."""
         return value
-
-
-def _is_none_type_error(error: TypeError) -> bool:
-    """
-    A TypeError from a check meeting a missing value (None) while its SQL is built, which a check
-    treats as not met. Python names NoneType in every such error ("'NoneType' object is not
-    subscriptable", "unsupported operand type(s) for +: 'NoneType' and 'int'"), so any other
-    TypeError (e.g. "'int' object is not iterable") is a bug and is reported as an error.
-    """
-    return "NoneType" in str(error)
