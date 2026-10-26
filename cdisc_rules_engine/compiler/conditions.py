@@ -79,10 +79,11 @@ class ConditionCompiler:
                 f"A condition must be exactly one of {', '.join(GROUP_KEYS)} or a check, but has: "
                 f"{', '.join(groups + (['operator'] if 'operator' in node else []))}"
             )
-        for key, joiner, empty in (("all", " AND ", "TRUE"), ("any", " OR ", "FALSE")):
+        for key, joiner in (("all", " AND "), ("any", " OR ")):
             if key in node:
-                clauses = [self._compile_node(child) for child in node[key]]
-                return f"({joiner.join(clauses)})" if clauses else empty
+                if not node[key]:
+                    raise RuleFormatError(f"A condition's '{key}' must hold at least one check")
+                return f"({joiner.join(self._compile_node(child) for child in node[key])})"
         if "not" in node:
             # almost equivalent to NotOperator but without COALESCE
             return f"(NOT {self._compile_node(node['not'])})"

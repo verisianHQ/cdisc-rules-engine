@@ -1,5 +1,7 @@
 import copy
 from types import SimpleNamespace
+
+import pytest
 from unittest.mock import patch
 
 
@@ -227,3 +229,16 @@ def test_a_text_parameter_evaluated_per_row_is_escaped():
         "SELECT $1 AS a, $10 AS b", {"$1": "TERM", "$10": "OTHER"}, {"term": "O'BRIEN", "other": "X"}, schema
     )
     assert query == "SELECT 'O''BRIEN' AS a, 'X' AS b"
+
+
+@pytest.mark.parametrize("group", ["all", "any"])
+def test_an_empty_all_or_any_is_a_rule_format_error(group):
+    reported, _ = run(rule({"all": [condition("non_empty", "AETERM"), {group: []}]}))
+    assert reported["executionStatus"] == "execution_error"
+    assert reported["errors"][0]["error"] == "Rule format error"
+
+
+def test_an_unimplemented_operator_is_an_error():
+    reported, _ = run(rule({"all": [condition("conformant_value_data_type", "AETERM")]}))
+    assert reported["executionStatus"] == "execution_error"
+    assert reported["errors"][0]["error"] == "SQL error in conformant_value_data_type operator"
