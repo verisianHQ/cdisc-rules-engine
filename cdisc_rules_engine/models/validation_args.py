@@ -26,6 +26,7 @@ Validation_args = namedtuple(
         "validate_xml",
         "sql_namespace",
         "collapse_duplicate_issues",
+        "exclude_rules",
     ],
-    defaults=[False],
+    defaults=[False, ()],
 )

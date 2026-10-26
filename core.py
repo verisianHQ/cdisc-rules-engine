@@ -7,7 +7,7 @@ import tempfile
 from datetime import datetime
 from multiprocessing import freeze_support
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import click
 
@@ -34,28 +34,32 @@ from scripts.run_sql_validation import run_sql_validation
 from scripts.run_validation import run_validation
 from version import __version__
 
+SQL_DATA_FORMATS = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
-def valid_data_file(data_path: list, allow_sql_mixed_formats: bool = False) -> Tuple[list, set]:
-    allowed_formats = [format.value for format in DataFormatTypes]
+
+def valid_data_file(
+    data_path: list, sql_engine: bool = False, filetype: Optional[str] = None
+) -> Tuple[list, set, list]:
+    known_formats = {format.value for format in DataFormatTypes}
+    allowed_formats = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value} if sql_engine else known_formats
+    if filetype:
+        data_path = [file for file in data_path if os.path.splitext(file)[1][1:].upper() == filetype.upper()]
     found_formats = set()
     file_list = []
+    unsupported = []
     for file in data_path:
         file_extension = os.path.splitext(file)[1][1:].upper()
         if file_extension in allowed_formats:
             found_formats.add(file_extension)
             file_list.append(file)
-    if len(found_formats) > 1:
-        allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
-        if allow_sql_mixed_formats and found_formats.issubset(allowed_sql_mix):
-            return file_list, found_formats
-        return [], found_formats
-    if len(found_formats) == 1:
-        return file_list, found_formats
-
-    return [], set()
+        elif file_extension in known_formats:
+            unsupported.append(file)
+    if len(found_formats) > 1 and not sql_engine:
+        return [], found_formats, unsupported
+    return file_list, found_formats, unsupported
 
 
-@click.group()
+@click.group(context_settings={"token_normalize_func": lambda token: token.replace("_", "-")})
 def cli():
     pass
 
@@ -79,6 +83,13 @@ def cli():
     "--data",
     required=False,
     help="Path to directory containing data files",
+)
+@click.option(
+    "-ft",
+    "--filetype",
+    default=None,
+    type=click.Choice([data_format.lower() for data_format in sorted(SQL_DATA_FORMATS)], case_sensitive=False),
+    help="Only validate dataset files with this extension, e.g. when the data directory holds both XPT and SAS7BDAT",
 )
 @click.option(
     "-dp",
@@ -177,14 +188,20 @@ def cli():
     help="specify rule core ID ex. CORE-000001. Can be specified multiple times",
 )
 @click.option(
-    "--local_rules",
+    "--exclude-rules",
+    "-er",
+    multiple=True,
+    help="Specify rule core ID to exclude, ex. CORE-000001. Can be specified multiple times",
+)
+@click.option(
+    "--local-rules",
     "-lr",
     required=False,
     type=click.Path(exists=True, readable=True, resolve_path=True),
     help=("path to a local rule file or to a directory of local rules."),
 )
 @click.option(
-    "--custom_standard",
+    "--custom-standard",
     "-cs",
     required=False,
     is_flag=True,
@@ -245,6 +262,7 @@ def validate(  # noqa: C901
     cache: str,
     pool_size: int,
     data: str,
+    filetype: str,
     dataset_path: Tuple[str],
     log_level: str,
     report_template: str,
@@ -266,6 +284,7 @@ def validate(  # noqa: C901
     snomed_url: str,
     snomed: str,
     rules: Tuple[str],
+    exclude_rules: Tuple[str],
     local_rules: str,
     custom_standard: bool,
     progress: str,
@@ -293,8 +312,11 @@ def validate(  # noqa: C901
             logger.error("Flag --raw-report can be used only when --output-format is JSON")
             ctx.exit()
 
+    if rules and exclude_rules:
+        logger.error("Arguments --rules and --exclude-rules cannot be used together")
+        ctx.exit()
+
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
-    allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
     dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer
     external_dictionaries = dict_container(
@@ -319,32 +341,33 @@ def validate(  # noqa: C901
         if dataset_path:
             logger.error("Argument --dataset-path cannot be used together with argument --data")
             ctx.exit()
-        dataset_paths, found_formats = valid_data_file(
-            [str(Path(data).joinpath(fn)) for fn in os.listdir(data)],
-            allow_sql_mixed_formats=sql_engine,
-        )
-        if len(found_formats) > 1:
-            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
-                logger.error(
-                    f"Argument --data contains more than one allowed file format ({', '.join(found_formats)}). "
-                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
-                )
-                ctx.exit()
+        candidate_paths = [str(Path(data).joinpath(fn)) for fn in os.listdir(data)]
     elif dataset_path:
-        dataset_paths, found_formats = valid_data_file(
-            [dp for dp in dataset_path],
-            allow_sql_mixed_formats=sql_engine,
-        )
-        if len(found_formats) > 1:
-            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
-                logger.error(
-                    f"Argument --dataset_path contains more than one allowed file format ({', '.join(found_formats)}). "
-                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
-                )
-                ctx.exit()
+        candidate_paths = list(dataset_path)
     else:
         logger.error("You must pass one of the following arguments: --dataset-path, --data")
         # no need to define dataset_paths here, the program execution will stop
+        ctx.exit()
+    dataset_paths, found_formats, unsupported_paths = valid_data_file(
+        candidate_paths, sql_engine=sql_engine, filetype=filetype
+    )
+    if unsupported_paths:
+        logger.warning(
+            "Skipping files the SQL engine can't read (it reads XPT and SAS7BDAT): "
+            + ", ".join(sorted(Path(path).name for path in unsupported_paths))
+        )
+    if len(found_formats) > 1 and not sql_engine:
+        logger.error(
+            f"The dataset files are in more than one format ({', '.join(sorted(found_formats))}). "
+            "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
+        )
+        ctx.exit()
+    if not dataset_paths:
+        logger.error(
+            "No dataset files to validate"
+            + (f" with the extension .{filetype.lower()}" if filetype else "")
+            + (". The SQL engine reads XPT and SAS7BDAT files." if sql_engine else ".")
+        )
         ctx.exit()
     validate_xml_bool = True if validate_xml.lower() in ("y", "yes") else False
     args = Validation_args(
@@ -371,6 +394,7 @@ def validate(  # noqa: C901
         validate_xml_bool,
         sql_namespace,
         collapse_duplicate_issues,
+        exclude_rules,
     )
     if sql_engine:
         run_sql_validation(args, in_memory_postgres=in_memory_postgres)
@@ -381,7 +405,7 @@ def validate(  # noqa: C901
 @click.command()
 @click.option(
     "-c",
-    "--cache_path",
+    "--cache-path",
     default=DefaultFilePaths.CACHE.value,
     help="Relative path to cache files containing pre loaded metadata and rules",
 )
@@ -393,18 +417,18 @@ def validate(  # noqa: C901
 )
 @click.option(
     "-crd",
-    "--custom_rules_directory",
+    "--custom-rules-directory",
     help=("Relative path to directory containing local rules in yaml or JSON formats" "to be added to the cache. "),
 )
 @click.option(
     "-cr",
-    "--custom_rule",
+    "--custom-rule",
     multiple=True,
     help=("Relative path to rule file in yaml or JSON formats" "to be added to the cache. "),
 )
 @click.option(
     "-rcr",
-    "--remove_custom_rules",
+    "--remove-custom-rules",
     help=(
         "Remove rules from the cache. Can be a single rule ID, a comma-separated list of IDs, "
         "or 'ALL' to remove all custom rules."
@@ -412,12 +436,12 @@ def validate(  # noqa: C901
 )
 @click.option(
     "-ucr",
-    "--update_custom_rule",
+    "--update-custom-rule",
     help=("Relative path to rule file in yaml or JSON formats" "Rule will be updated in cache with this file. "),
 )
 @click.option(
     "-cs",
-    "--custom_standard",
+    "--custom-standard",
     help=(
         "Relative path to JSON file containing custom standard details."
         "Will update the standard if it already exists."
@@ -425,7 +449,7 @@ def validate(  # noqa: C901
 )
 @click.option(
     "-rcs",
-    "--remove_custom_standard",
+    "--remove-custom-standard",
     help=("removes a custom standard and version from the cache. "),
     multiple=True,
 )
@@ -477,7 +501,7 @@ def update_cache(
 @click.command()
 @click.option(
     "-c",
-    "--cache_path",
+    "--cache-path",
     default=DefaultFilePaths.CACHE.value,
     help="Relative path to cache files containing pre loaded metadata and rules",
 )
@@ -492,7 +516,7 @@ def update_cache(
 )
 @click.option(
     "-cr",
-    "--custom_rules",
+    "--custom-rules",
     is_flag=True,
     default=False,
     required=False,
@@ -500,7 +524,7 @@ def update_cache(
 )
 @click.option(
     "-r",
-    "--rule_id",
+    "--rule-id",
     required=False,
     help="Rule ID to get rule for.",
     multiple=True,
@@ -547,7 +571,7 @@ def list_rules(
 @click.command()
 @click.option(
     "-c",
-    "--cache_path",
+    "--cache-path",
     default=DefaultFilePaths.CACHE.value,
     help="Relative path to cache files containing pre loaded metadata and rules",
 )
@@ -635,7 +659,7 @@ def version():
 @click.command()
 @click.option(
     "-c",
-    "--cache_path",
+    "--cache-path",
     default=DefaultFilePaths.CACHE.value,
     help="Relative path to cache files containing pre loaded metadata and rules",
 )

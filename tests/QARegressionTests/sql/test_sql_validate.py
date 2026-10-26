@@ -1,15 +1,35 @@
+import csv
+import json
 import os
 import re
+import shutil
+import tempfile
 import unittest
 
 import openpyxl
 
 from QARegressionTests.base.test_core.test_utils import run_command, tearDown
 
+AE_XPT = os.path.join("tests", "resources", "datasets", "ae.xpt")
+TS_JSON = os.path.join("tests", "resources", "datasets", "TS.json")
+ADSL_SAS7BDAT = os.path.join("tests", "resources", "clinical_data", "sas7bdat", "adam", "adsl.sas7bdat")
+
 
 class TestValidate(unittest.TestCase):
     def setUp(self):
         self.error_keyword = "error"
+        self.tmp_dir = tempfile.mkdtemp()
+
+    def data_dir(self, *files):
+        data_dir = os.path.join(self.tmp_dir, "data")
+        os.makedirs(data_dir, exist_ok=True)
+        for file in files:
+            shutil.copy(file, data_dir)
+        return data_dir
+
+    def json_report(self, name="report"):
+        with open(os.path.join(self.tmp_dir, f"{name}.json")) as f:
+            return json.load(f)
 
     def check_issue_summary_tab_empty(self):
         excel_files = [file for file in os.listdir(".") if file.endswith(".xlsx")]
@@ -283,7 +303,7 @@ class TestValidate(unittest.TestCase):
             "-o",
             "output.json",
             "-of",
-            "csv",
+            "xml",
         ]
         exit_code, stdout, stderr = run_command(args, False)
 
@@ -663,8 +683,244 @@ class TestValidate(unittest.TestCase):
         self.assertFalse(self.error_keyword in stdout)
         self.assertEqual(stderr, "")
 
+    def test_sql_validate_skips_data_formats_it_cant_read(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-d",
+            self.data_dir(AE_XPT, TS_JSON),
+            "-lr",
+            os.path.join("tests", "resources", "local_rules"),
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertIn("skipping files the sql engine can't read", stderr)
+        self.assertIn("ts.json", stderr)
+        self.assertEqual([d["filename"] for d in self.json_report()["Dataset_Details"]], ["ae.xpt"])
+
+    def test_sql_validate_mixed_xpt_and_sas7bdat(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-d",
+            self.data_dir(AE_XPT, ADSL_SAS7BDAT),
+            "-lr",
+            os.path.join("tests", "resources", "local_rules"),
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        self.assertEqual(
+            sorted(d["filename"] for d in self.json_report()["Dataset_Details"]), ["adsl.sas7bdat", "ae.xpt"]
+        )
+
+    def test_sql_validate_filetype(self):
+        data_dir = self.data_dir(AE_XPT, ADSL_SAS7BDAT)
+        for filetype, expected in (("xpt", "ae.xpt"), ("SAS7BDAT", "adsl.sas7bdat")):
+            with self.subTest(filetype=filetype):
+                args = [
+                    "python",
+                    "core.py",
+                    "validate",
+                    "-sql",
+                    "-s",
+                    "sdtmig",
+                    "-v",
+                    "3.3",
+                    "-d",
+                    data_dir,
+                    "-ft",
+                    filetype,
+                    "-lr",
+                    os.path.join("tests", "resources", "local_rules"),
+                    "-of",
+                    "json",
+                    "-o",
+                    os.path.join(self.tmp_dir, filetype),
+                ]
+                exit_code, stdout, stderr = run_command(args, False)
+                self.assertEqual(exit_code, 0)
+                self.assertEqual(stderr, "")
+                self.assertEqual([d["filename"] for d in self.json_report(filetype)["Dataset_Details"]], [expected])
+
+    def test_sql_validate_without_data_it_can_read(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-d",
+            self.data_dir(TS_JSON),
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertIn("no dataset files to validate", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
+    def test_sql_validate_exclude_rules(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-er",
+            "CORE-000172",
+            "-er",
+            "CORE-000001",
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        rule_ids = {rule["core_id"] for rule in self.json_report()["Rules_Report"]}
+        self.assertTrue(rule_ids)
+        self.assertNotIn("CORE-000172", rule_ids)
+        self.assertNotIn("CORE-000001", rule_ids)
+
+    def test_sql_validate_rules_and_exclude_rules_together(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-r",
+            "CORE-000001",
+            "-er",
+            "CORE-000172",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertIn("arguments --rules and --exclude-rules cannot be used together", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
+    def test_sql_validate_define_xml_2_1_patch_version(self):
+        with open(os.path.join("tests", "resources", "define.xml")) as f:
+            define_xml = f.read()
+        self.assertIn('DefineVersion="2.1.0"', define_xml)
+        define_xml_path = os.path.join(self.tmp_dir, "define.xml")
+        with open(define_xml_path, "w") as f:
+            f.write(define_xml.replace('DefineVersion="2.1.0"', 'DefineVersion="2.1.7"'))
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-dxp",
+            define_xml_path,
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        conformance_details = self.json_report()["Conformance_Details"]
+        self.assertEqual(conformance_details["Define_XML_Version"], "2.1.7")
+        self.assertEqual(conformance_details["CT_Version"], "sdtmct-2020-12-18")
+
+    def test_sql_validate_output_format_csv(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-of",
+            "csv",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        with open(os.path.join(self.tmp_dir, "report.csv"), newline="") as f:
+            rows = list(csv.reader(f))
+        self.assertEqual(rows[0], ["Dataset", "Record", "Variable", "Value"])
+        self.assertTrue(len(rows) > 1)
+        self.assertTrue(all(row[0] == "ae" for row in rows[1:]))
+
+    def test_sql_validate_underscore_option_names(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-sql",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-dp",
+            AE_XPT,
+            "--local_rules",
+            os.path.join("tests", "resources", "local_rules"),
+            "-r",
+            "CORE-000473",
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        self.assertEqual([rule["core_id"] for rule in self.json_report()["Rules_Report"]], ["CORE-000473"])
+
     def tearDown(self):
         tearDown()
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":
