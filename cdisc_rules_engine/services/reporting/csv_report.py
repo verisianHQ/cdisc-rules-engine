@@ -41,15 +41,7 @@ class CsvReport(BaseReport):
         for issue in self.get_detailed_data():
             dataset = self._dataset_stem(issue.get("dataset"))
             for variable, value in zip(issue.get("variables") or [], issue.get("values") or []):
-                rows.append(
-                    [
-                        dataset,
-                        str(issue.get("row", "")),
-                        variable,
-                        "" if value in (None, "null") else value,
-                        issue.get("message") or "",
-                    ]
-                )
+                rows.append([dataset, str(issue.get("row", "")), variable, "" if value in (None, "null") else value])
         for validation_result in self._results:
             for result in validation_result.results or []:
                 if result.get("executionStatus") != ExecutionStatus.EXECUTION_ERROR.value:
