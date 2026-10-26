@@ -1,5 +1,7 @@
 # CDISC Rules Engine Guide
 
+> **Note:** this guide describes the open source `cdisc-rules-engine` package published on PyPI by CDISC. Its `RulesEngine` is the CDISC (pandas) engine, not this fork's SQL engine, which runs on a PostgreSQL database and is used through `core.py` in this repository (see the [README](README.md)).
+
 ## Step 0: Install the Library
 
 ```
