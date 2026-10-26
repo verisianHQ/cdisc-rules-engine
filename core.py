@@ -41,7 +41,7 @@ def valid_data_file(
     data_path: list, sql_engine: bool = False, filetype: Optional[str] = None
 ) -> Tuple[list, set, list]:
     known_formats = {format.value for format in DataFormatTypes}
-    allowed_formats = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value} if sql_engine else known_formats
+    allowed_formats = SQL_DATA_FORMATS if sql_engine else known_formats
     if filetype:
         data_path = [file for file in data_path if os.path.splitext(file)[1][1:].upper() == filetype.upper()]
     found_formats = set()
