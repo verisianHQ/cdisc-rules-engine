@@ -211,11 +211,10 @@ def cli():
     help="Enable XML validation (default 'y' to enable, otherwise disable)",
 )
 @click.option(
-    "-sql",
-    "--sql-engine",
+    "--cdisc",
     is_flag=True,
     default=False,
-    help="Flag to run validation using the SQL engine",
+    help="Flag to run validation using the CDISC (pandas) engine instead of the default SQL engine",
 )
 @click.option(
     "-ns",
@@ -272,7 +271,7 @@ def validate(  # noqa: C901
     define_xml_path: str,
     stf_file_path: str,
     validate_xml: str,
-    sql_engine: bool,
+    cdisc: bool,
     sql_namespace: str,
     in_memory_postgres: bool,
     collapse_duplicate_issues: bool,
@@ -287,6 +286,7 @@ def validate(  # noqa: C901
 
     # Validate conditional options
     logger = logging.getLogger("validator")
+    sql_engine = not cdisc
 
     if raw_report is True:
         if not (len(output_format) == 1 and output_format[0] == ReportTypes.JSON.value):
