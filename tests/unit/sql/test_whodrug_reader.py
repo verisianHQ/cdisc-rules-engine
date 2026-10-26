@@ -1,3 +1,5 @@
+import csv
+
 import pytest
 
 from cdisc_rules_engine.readers.external_dictionary_readers.whodrug_reader import WhoDrugReader
@@ -10,8 +12,11 @@ INA_ROWS = [
     ("X99X", "3", "DUMMYLEVEL3, WITH COMMA"),
     ("X99XX", "4", "DUMMYLEVEL4"),
 ]
-DDA_ROWS = [("000001", "01", "001", "6", "X99XX")]
-DD_ROWS = [("000001", "01", "001", "6", "DUMMYDRUG, WITH COMMA")]
+DDA_ROWS = [("000001", "01", "001", "6", "X99XX"), ("000001", "02", "001", "5", "X99XX")]
+DD_ROWS = [
+    ("000001", "01", "001", "6", '"DUMMY" DRUG, WITH COMMA'),
+    ("000001", "02", "001", "5", '"DUMMY" DRUG, WITH COMMA'),
+]
 
 EXPECTED = {
     "term_code": "X99XX",
@@ -20,7 +25,7 @@ EXPECTED = {
     "level_3": "DUMMYLEVEL3, WITH COMMA",
     "level_4": "DUMMYLEVEL4",
     "drug_rec_num": "000001",
-    "term_name": "DUMMYDRUG, WITH COMMA",
+    "term_name": '"DUMMY" DRUG, WITH COMMA',
 }
 
 
@@ -46,7 +51,18 @@ def write_tab_delimited(directory):
     )
 
 
-@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited])
+def write_comma_delimited(directory):
+    def write_rows(file_name, rows):
+        with open(directory / file_name, mode="w", newline="") as f:
+            csv.writer(f).writerows(rows)
+
+    write_rows("version.txt", [[VERSION_LINE.rsplit(" ", 1)[0], "DUMMYB3Jan00"]])
+    write_rows("ina.txt", INA_ROWS)
+    write_rows("dda.txt", DDA_ROWS)
+    write_rows("dd.txt", [[rec, seq1, seq2, check] + [""] * 7 + [name] for rec, seq1, seq2, check, name in DD_ROWS])
+
+
+@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited, write_comma_delimited])
 def test_whodrug_reader_b3_txt(tmp_path, write_files):
     write_files(tmp_path)
     reader = WhoDrugReader(None, str(tmp_path))
@@ -56,3 +72,12 @@ def test_whodrug_reader_b3_txt(tmp_path, write_files):
 
     df = reader.process_data(metadata)
     assert df.to_dict(orient="records") == [EXPECTED]
+
+
+def test_whodrug_reader_raises_when_no_level_4_codes(tmp_path):
+    write_fixed_width(tmp_path)
+    (tmp_path / "INA.txt").write_text("".join(f"{code:<7}{level}{text:<110}\n" for code, level, text in INA_ROWS[:3]))
+    reader = WhoDrugReader(None, str(tmp_path))
+
+    with pytest.raises(ValueError, match=r"No level 4 ATC codes found .* \(read as fixed-width\)"):
+        reader.process_data(reader._extract_version_metadata())

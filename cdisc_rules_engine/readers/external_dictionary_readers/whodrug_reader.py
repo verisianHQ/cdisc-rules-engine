@@ -1,3 +1,4 @@
+import csv
 import os
 import re
 import pandas as pd
@@ -22,6 +23,9 @@ class WhoDrugVersionMetadata:
     version_date: str
 
 
+FILE_EXTENSIONS = (".csv", ".txt")
+DELIMITER_NAMES = {None: "fixed-width", ",": "comma-delimited", "\t": "tab-delimited"}
+
 B3_FIXED_WIDTH_COLSPECS = {
     B3WHODrugFiles.INA.value: [(0, 7), (7, 8), (8, 118)],
     B3WHODrugFiles.DDA.value: [(0, 6), (6, 8), (8, 11), (11, 12), (12, 19)],
@@ -32,8 +36,8 @@ B3_FIXED_WIDTH_COLSPECS = {
         (11, 12),
         (12, 13),
         (13, 15),
-        (15, 18),
-        (18, 24),
+        (15, 19),
+        (19, 24),
         (24, 26),
         (26, 27),
         (27, 30),
@@ -50,17 +54,30 @@ class WhoDrugReader:
         self.dictionary_path = dictionary_path
 
     def _resolve_file(self, file_name: str) -> tuple[str, str | None] | None:
-        for extension in (".csv", ".txt"):
-            file_path = f"{self.dictionary_path}/{file_name}{extension}"
-            if os.path.exists(file_path):
-                with open(file_path, mode="r", encoding="utf-8") as f:
-                    first_line = f.readline()
-                if "\t" in first_line:
-                    return file_path, "\t"
-                if extension == ".txt" and file_name in B3_FIXED_WIDTH_COLSPECS:
+        files_by_lower_name = {name.lower(): name for name in os.listdir(self.dictionary_path)}
+        for extension in FILE_EXTENSIONS:
+            actual_name = files_by_lower_name.get(f"{file_name}{extension}".lower())
+            if actual_name is None:
+                continue
+            file_path = f"{self.dictionary_path}/{actual_name}"
+            with open(file_path, mode="r", encoding="utf-8") as f:
+                first_line = f.readline()
+            if "\t" in first_line:
+                return file_path, "\t"
+            if extension == ".txt" and file_name in B3_FIXED_WIDTH_COLSPECS:
+                first_field_width = B3_FIXED_WIDTH_COLSPECS[file_name][0][1]
+                if "," not in first_line[: first_field_width + 1]:
                     return file_path, None
-                return file_path, ","
+            return file_path, ","
         return None
+
+    def _not_found_error(self, file_name: str) -> FileNotFoundError:
+        candidates = " or ".join(f"{file_name}{extension}" for extension in FILE_EXTENSIONS)
+        return FileNotFoundError(f"WHODrug file {candidates} not found in {self.dictionary_path}")
+
+    def _parse_error(self, file_name: str, problem: str) -> ValueError:
+        file_path, delimiter = self._resolve_file(file_name)
+        return ValueError(f"{problem} in {file_path} (read as {DELIMITER_NAMES[delimiter]}); check the file format.")
 
     def _read_file(self, file_name: str, col_map: dict[int, str]) -> pd.DataFrame | None:
         resolved = self._resolve_file(file_name)
@@ -75,13 +92,15 @@ class WhoDrugReader:
         }
         if delimiter is None:
             return pd.read_fwf(file_path, colspecs=B3_FIXED_WIDTH_COLSPECS[file_name], **read_kwargs)
+        if delimiter == "\t":
+            read_kwargs["quoting"] = csv.QUOTE_NONE
         return pd.read_csv(file_path, sep=delimiter, **read_kwargs)
 
     def _extract_version_metadata(self) -> WhoDrugVersionMetadata:
         """Extract metadata from the Version file."""
         resolved = self._resolve_file(UniversalWhoDrugFiles.VERSION.value)
         if resolved is None:
-            raise FileNotFoundError(f"WHODrug Version file not found in {self.dictionary_path}")
+            raise self._not_found_error(UniversalWhoDrugFiles.VERSION.value)
         file_path, _ = resolved
         with open(file_path, mode="r", encoding="utf-8-sig") as f:
             version_info = f.readline().strip().strip('"')
@@ -111,8 +130,12 @@ class WhoDrugReader:
 
         if df is not None:
             df[join_key] = df[join_key].str.strip()
+            df = df.drop_duplicates()
 
-            return pd.merge(input_df, df, on=join_key, how="left")
+            merged_df = pd.merge(input_df, df, on=join_key, how="left")
+            if merged_df[target_col].isna().all():
+                raise self._parse_error(file_name, f"No {target_col} values matched on {join_key}")
+            return merged_df
 
         final_df = input_df.copy()
         final_df[target_col] = None
@@ -133,12 +156,14 @@ class WhoDrugReader:
         )
         atc_df = self._read_file(atc_file_name, {0: "atc_code", 1: "level", 2: "atc_text"})
         if atc_df is None:
-            raise FileNotFoundError(f"WHODrug file {atc_file_name} not found in {self.dictionary_path}")
+            raise self._not_found_error(atc_file_name)
 
         atc_df["atc_code"] = atc_df["atc_code"].str.strip()
         atc_df["atc_text"] = atc_df["atc_text"].str.strip()
         code_to_text_map = dict(zip(atc_df["atc_code"], atc_df["atc_text"]))
         level_4_codes = atc_df[atc_df["level"] == "4"]
+        if level_4_codes.empty:
+            raise self._parse_error(atc_file_name, "No level 4 ATC codes found")
 
         result_df = pd.DataFrame({"atc_code": level_4_codes["atc_code"]})
         level_to_length = {
