@@ -32,7 +32,7 @@ class SqlDateOperation(SqlAggregateOperation):
     def _as_date_sql(value_sql: str) -> str:
         """
         The date part of a value, or NULL when the value is not a complete, real calendar date
-        (thus excluding partial dates like 2018-06 or impossible ones like 2012-12-32). 
+        (thus excluding partial dates like 2018-06 or impossible ones like 2012-12-32).
         The day is checked against the length of its month in a nested CASE.
         """
         text = f"{value_sql}::text"
