@@ -96,6 +96,7 @@ class WhoDrugReader:
             "dtype": str,
             "usecols": list(col_map.keys()),
             "names": list(col_map.values()),
+            "encoding": "utf-8-sig",
         }
         if delimiter is None:
             return pd.read_fwf(file_path, colspecs=B3_FIXED_WIDTH_COLSPECS[file_name], **read_kwargs)
