@@ -169,7 +169,7 @@ def cli():
     help="The Base URL of snomed to use. Defaults to snowstorm test instance. Only used with --cdisc.",
     default="https://snowstorm.snomedtools.org/snowstorm/snomed-ct/",
 )
-@click.option("--snomed-edition", help="Edition of snomed to use.")
+@click.option("--snomed-edition", help="Edition of snomed to use. Only used with --cdisc.")
 @click.option(
     "--snomed",
     help=(
