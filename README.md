@@ -76,13 +76,13 @@ These steps only need to be done once. They set up a "virtual environment": a pr
 
 - Install the requirements (from the root directory of the repository):
 
-  `python -m pip install -r requirements-dev.txt`
+  `python -m pip install -r requirements.txt`
 
 #### Database
 
 The engine stores the data it validates in a PostgreSQL database while it runs. You don't need to install PostgreSQL yourself: choose one of these two options.
 
-- **Option A: temporary database (simplest)**. Add the `-mem` flag to every `validate` command (see [Running a validation](#running-a-validation)). A temporary database is created for each run and deleted at the end. Nothing else needs to be set up.
+- **Option A: temporary database (simplest)**. Nothing needs to be set up: when the engine finds no `DATABASE_*` settings (in the environment or in a `./.env` file), it creates a temporary database for each run and deletes it at the end. You can also force this with the `-mem` flag, e.g. after setting up Option B.
 - **Option B: Docker**. Use this if you run many validations or want the database to keep running between runs.
   1. Install and start the [Docker Desktop](https://www.docker.com/products/docker-desktop/) app.
   2. Create the two required `.env` files by copying the example files and removing `.example` from the copy's name:
@@ -94,6 +94,7 @@ The engine stores the data it validates in a PostgreSQL database while it runs. 
      `cd ./environment/local`
      `docker-compose up -d`
      then go back to the root of the repository (`cd ../..`). The database keeps running in Docker Desktop until you stop it there.
+  6. From now on, the engine uses this database, because `./.env` contains the `DATABASE_*` settings. It must be running whenever you run a validation (or add `-mem` to use a temporary database instead).
 
 ### **Running a validation**
 
@@ -170,7 +171,19 @@ Run `python core.py validate --help` to see the list of validation options.
   -ns, --sql-namespace TEXT       A prefix for all tables in the database when
                                   using the SQL engine
   -mem, --in-memory-postgres      Run validation using an in-memory Postgres
-                                  instance
+                                  instance. Used automatically when no
+                                  DATABASE_* settings are found in the
+                                  environment or .env file.
+  --max-errors-per-dataset INTEGER
+                                  The most issues a rule reports per dataset
+                                  (per source file of a split dataset), with
+                                  the message saying how many there were in
+                                  total. [default: 50000]
+  --collapse-duplicate-issues     When a rule's message applies to every
+                                  record in a dataset, collapse those rows in
+                                  the Excel report into a single row with the
+                                  record numbers shown as a range (e.g.
+                                  '1-500'), instead of one row per record.
   --help                          Show this message and exit.
 ```
 
@@ -190,17 +203,15 @@ Run `python core.py validate --help` to see the list of validation options.
 
 ##### **Validate folder**
 
-To validate all the datasets in a folder using rules for SDTM-IG version 3.4, with a temporary database, use the following command:
+To validate all the datasets in a folder using rules for SDTM-IG version 3.4, use the following command (the database is chosen as described in [Database](#database)):
 
-`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -mem`
-
-(If you set up the Docker database, leave out `-mem`.)
+`python core.py validate -s sdtmig -v 3-4 -d path/to/datasets`
 
 **_NOTE:_** The rules, controlled terminology and other standards metadata are read from the cache in `resources/cache`, which is included in the repository. To refresh it with the latest data from the CDISC Library, see the update-cache command below.
 
 ##### **Validate single rule**
 
-`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/ -mem`
+`python core.py validate -s sdtmig -v 3-4 -dp <path to dataset json file> -lr <path to rule json file> --meddra ./meddra/ --whodrug ./whodrug/`
 Note: JSON dataset should match the format provided by the rule editor:
 
 ```json
@@ -233,7 +244,7 @@ The rules report tab displays the run status of each rule selected for validatio
 The possible rule run statuses are:
 
 - `SUCCESS` - The rule ran and data was validated against the rule. May or may not produce results
-- `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be caused by rule execution errors.
+- `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be caused by rule execution errors. A rule that needs an input that wasn't given (a define.xml with `-dxp`, a study tagging file with `-stf`, or an external dictionary such as `--meddra`) is skipped with a message starting with `Not applicable: requires`.
 
 ## Additional Core Commands
 

@@ -2,7 +2,7 @@
 
 External dictionaries provide standardized terminology and coding systems for medical terms, drugs, and laboratory tests. This guide covers how to provide the dictionaries to the engine from the Command Line Interface (CLI) and how rules check values against them.
 
-Only the dictionaries whose folder is provided for the run are loaded into the database, at the start of the run. If one of them cannot be read, the run stops. How rules check values against them is described in [Using dictionaries in rules](#using-dictionaries-in-rules).
+Only the dictionaries whose folder is provided for the run are loaded into the database, at the start of the run. If one of them cannot be read, the run stops. A rule that checks values against a dictionary whose folder was not given is reported as skipped, with a message starting with `Not applicable: requires`. How rules check values against them is described in [Using dictionaries in rules](#using-dictionaries-in-rules).
 
 ## Supported Dictionaries
 
@@ -20,7 +20,7 @@ Only the dictionaries whose folder is provided for the run are loaded into the d
 For example, to validate with MedDRA and WHODrug:
 
 ```
-python core.py validate -s sdtmig -v 3-4 -d path/to/datasets --meddra path/to/meddra --whodrug path/to/whodrug -sql -mem
+python core.py validate -s sdtmig -v 3-4 -d path/to/datasets --meddra path/to/meddra --whodrug path/to/whodrug
 ```
 
 With the core-contributor test script, pass the same folders with `-md` (MedDRA), `-wd` (WHODrug), `-un` (UNII), `-mrt` (MED-RT), `-lo` (LOINC) and `-sno` (SNOMED CT) instead.
@@ -62,12 +62,14 @@ Browse terms at [SNOMED Browser](https://browser.ihtsdotools.org).
 
 ```
 --whodrug TEXT     Path to directory containing WHODrug dictionary files
-                   Required files in directory (comma-separated, without a header row):
-                     - Version.csv, whose first value gives the product, format and date
+                   Required files in directory (.csv or .txt, without a header row; the file
+                   names are not case sensitive):
+                     - Version, whose first line starts with the product, format and date
                        (e.g. "WHODRUG GLOBAL B3 September 1, 2020")
-                     - B3 format: INA.csv, DDA.csv and DD.csv
-                     - C3 format: ATC.csv, ThG.csv and MP.csv
-                   The format given in Version.csv (B3 or C3) decides which of the two sets of files is read
+                     - B3 format: INA, DDA and DD
+                     - C3 format: ATC, ThG and MP
+                   The format given in the Version file (B3 or C3) decides which of the two sets of files is read
+                   Files can be comma- or tab-separated; B3 .txt files can also be in the fixed-width format
 ```
 
 #### Other Drug Dictionaries

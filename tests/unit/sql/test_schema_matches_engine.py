@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from cdisc_rules_engine.check_operators.sql.postgresql_operators import PostgresQLOperators
-from cdisc_rules_engine.sql_dataset_builders.sql_dataset_builder_factory import SqlDatasetBuilderFactory
+from cdisc_rules_engine.compiler.sources import RULE_TYPE_SOURCES
 from cdisc_rules_engine.sql_operations.sql_operations_factory import SqlOperationsFactory
 
 SCHEMA_DIR = Path(__file__).parents[3] / "resources" / "schema"
@@ -43,7 +43,8 @@ def test_operations_schema_matches_sql_operations():
     assert _schema_operators("Operations.json") == implemented
 
 
-def test_rule_type_schema_matches_sql_dataset_builders():
+def test_rule_type_schema_matches_compiler_sources():
     schema = json.loads((SCHEMA_DIR / "Rule_Type.json").read_text())
-    implemented = set(SqlDatasetBuilderFactory._builders_map) | {"Record Data"}
+    # Record Data has no entry: it's the fallback for any rule type not in RULE_TYPE_SOURCES
+    implemented = set(RULE_TYPE_SOURCES) | {"Record Data"}
     assert {entry["const"] for entry in schema["anyOf"]} == implemented

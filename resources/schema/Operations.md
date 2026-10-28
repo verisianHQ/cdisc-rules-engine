@@ -276,7 +276,7 @@ Example
 Returns the distinct values of a controlled terminology attribute, taken from the CT packages of the run. `ct_attribute` is the attribute to return: `Term CCODE`, `Codelist Code`, `Codelist Name`, `Term`, `Term Signification`, `Synonyms`, `Definition`, `Extensible`, `Standard Type`, `Version Date` or `Standard and Date`.
 Has optional parameters:
 
-- `ct_conditions`: a list of conditions, each an attribute (with the same names as `ct_attribute`) and a value, that the returned terms must all meet. A `null` value matches terms where the attribute is empty.
+- `ct_conditions`: a list of conditions, each an attribute (with the same names as `ct_attribute`) and a value, that the returned terms must all meet. A `null` value matches terms where the attribute is empty. An attribute name that is not in the list above stops the rule with an error.
 - `version`: the CT package version date to use (e.g. `2020-03-27`), or the name of a variable holding each record's CT package version date (like TSVCDVER in TS). A literal version date is only used when no CT packages are given for the run. For records whose version is empty or is not one of the loaded CT packages, the CT packages of the run are used.
 
 > Codes of the non-extensible SDTM codelists
@@ -538,7 +538,7 @@ Operations:
       - USUBJID
 ```
 
-`filter` is also supported, as for [record_count](#record_count), and so are `regex`, `use_rule_type_table` and the id of a previous grouped operation in `name`, described in [record_count](#record_count). The date is returned as `YYYY-MM-DD`, without any time part.
+`filter` is also supported, as for [record_count](#record_count), and so are `regex`, `use_rule_type_table` and the id of a previous grouped operation in `name`, described in [record_count](#record_count). Dates and times are compared as ISO 8601 text, so partial dates take part: a partial date counts as the start of its period (e.g. `2014-02` comes after `2014-01-05` but before `2014-02-10`). Values that are not valid ISO 8601 dates are left out. The date is returned as found in the data, up to its first missing component.
 
 ## max_variable_value_length
 
@@ -619,7 +619,7 @@ Operations:
       - USUBJID
 ```
 
-`filter` is also supported, as for [record_count](#record_count), and so are `regex`, `use_rule_type_table` and the id of a previous grouped operation in `name`, described in [record_count](#record_count). The date is returned as `YYYY-MM-DD`, without any time part.
+`filter` is also supported, as for [record_count](#record_count), and so are `regex`, `use_rule_type_table` and the id of a previous grouped operation in `name`, described in [record_count](#record_count). Dates and times are compared as ISO 8601 text, so partial dates take part: a partial date counts as the start of its period (e.g. `2014-02` comes after `2014-01-05` but before `2014-02-10`). Values that are not valid ISO 8601 dates are left out. The date is returned as found in the data, up to its first missing component.
 
 ## minus
 

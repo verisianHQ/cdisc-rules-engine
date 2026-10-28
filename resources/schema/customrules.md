@@ -442,7 +442,7 @@ Rules need a `Core: Id` property, otherwise they are skipped. Custom rules can b
 1. **Local rules (simplest)** - Point the validation at your rule files with the local rules option (`-lr`), giving either a rule file or a folder (its subfolders are searched too, for `.yml`, `.yaml` and `.json` files):
 
    ```bash
-   python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -lr path/to/rules -sql -mem
+   python core.py validate -s sdtmig -v 3-4 -d path/to/datasets -lr path/to/rules
    ```
 
    - Only the rules whose `Authorities` > `Standards` include a `Name` and `Version` matching `-s` and `-v` are executed. Note that the rule's version is written with a dot (e.g. `Version: "3.4"`), while `-v` uses a dash (e.g. `3-4`).
@@ -469,7 +469,7 @@ Rules need a `Core: Id` property, otherwise they are skipped. Custom rules can b
    3. Run the validation with the `-cs` flag and the name and version of the custom standard:
 
       ```bash
-      python core.py validate -cs -s cust_standard -v 1-0 -d path/to/datasets -sql -mem
+      python core.py validate -cs -s cust_standard -v 1-0 -d path/to/datasets
       ```
 
    - Custom rule IDs must not start with `CORE-`: rule IDs starting with `CORE-` are taken from the CDISC rules in the cache, which is how a custom standard can also include CDISC rules.
