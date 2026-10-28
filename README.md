@@ -98,7 +98,9 @@ The engine stores the data it validates in a PostgreSQL database while it runs. 
 
 ### **Running a validation**
 
-Validations run on this fork's SQL engine by default, so no extra flag is needed. To run the original CDISC (pandas) engine instead, add the `--cdisc` flag.
+Validations run on this fork's SQL engine by default, so no extra flag is needed.
+
+> **NOTE:** adding the `--cdisc` flag runs the validation with the pandas engine originally developed by CDISC, which is still included in this repository. This part of the engine is not maintained in this fork, so the rest of this documentation doesn't cover it. To validate rules with the pandas engine, use the upstream [CDISC Rules Engine repository](https://github.com/cdisc-org/cdisc-rules-engine) instead, where it is maintained.
 
 #### From the command line
 
@@ -168,6 +170,8 @@ Run `python core.py validate --help` to see the list of validation options.
   -stf, --stf-file-path TEXT      Path to STF file
   --cdisc                         Run validation using the CDISC (pandas)
                                   engine instead of the default SQL engine
+                                  (not maintained in this fork, see the
+                                  note above)
   -ns, --sql-namespace TEXT       A prefix for all tables in the database when
                                   using the SQL engine
   -mem, --in-memory-postgres      Run validation using an in-memory Postgres
