@@ -34,6 +34,7 @@ from cdisc_rules_engine.utilities.utils import (
 from scripts.list_dataset_metadata_handler import list_dataset_metadata_handler
 from scripts.run_sql_validation import run_sql_validation
 from scripts.run_validation import run_validation
+from scripts.sql_list_dataset_metadata_handler import sql_list_dataset_metadata_handler
 from version import __version__
 
 
@@ -527,6 +528,14 @@ def update_cache(
     print("Cache updated successfully")
 
 
+def load_rules_cache_file(cache_path: str, file_name: str, custom: bool) -> dict:
+    path = os.path.join(cache_path, file_name)
+    if custom and os.path.isdir(cache_path) and not os.path.exists(path):
+        return {}
+    with open(path, "rb") as f:
+        return pickle.load(f)
+
+
 @click.command()
 @click.option(
     "-c",
@@ -575,10 +584,8 @@ def list_rules(
     else:
         rules_file = DefaultFilePaths.RULES_CACHE_FILE.value
         dict_file = DefaultFilePaths.RULES_DICTIONARY.value
-    with open(os.path.join(cache_path, rules_file), "rb") as f:
-        rules_data = pickle.load(f)
-    with open(os.path.join(cache_path, dict_file), "rb") as f:
-        rules_dict = pickle.load(f)
+    rules_data = load_rules_cache_file(cache_path, rules_file, custom_rules)
+    rules_dict = load_rules_cache_file(cache_path, dict_file, custom_rules)
     rules = []
     if rule_id:
         for id in rule_id:
@@ -618,8 +625,7 @@ def list_rule_sets(ctx: click.Context, cache_path: str, custom: bool):
         rules_file = DefaultFilePaths.CUSTOM_RULES_DICTIONARY.value
     else:
         rules_file = DefaultFilePaths.RULES_DICTIONARY.value
-    with open(os.path.join(cache_path, rules_file), "rb") as f:
-        rules_data = pickle.load(f)
+    rules_data = load_rules_cache_file(cache_path, rules_file, custom)
 
     rule_sets = {}
     for key in rules_data.keys():
@@ -649,8 +655,17 @@ def list_rule_sets(ctx: click.Context, cache_path: str, custom: bool):
     required=True,
     multiple=True,
 )
+@click.option(
+    "--cdisc",
+    is_flag=True,
+    default=False,
+    help=(
+        "Flag to read dataset metadata with the CDISC (pandas) engine instead of the default SQL engine. "
+        "The SQL engine supports XPT and SAS7BDAT."
+    ),
+)
 @click.pass_context
-def list_dataset_metadata(ctx: click.Context, dataset_path: Tuple[str]):
+def list_dataset_metadata(ctx: click.Context, dataset_path: Tuple[str], cdisc: bool):
     """
     Command that lists metadata of given datasets.
 
@@ -677,7 +692,8 @@ def list_dataset_metadata(ctx: click.Context, dataset_path: Tuple[str]):
            ...
         ]
     """
-    print(json.dumps(list_dataset_metadata_handler(dataset_path), indent=4))
+    handler = list_dataset_metadata_handler if cdisc else sql_list_dataset_metadata_handler
+    print(json.dumps(handler(dataset_path), indent=4))
 
 
 @click.command()

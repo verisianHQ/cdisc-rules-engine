@@ -25,6 +25,7 @@ class TestListDatasetMetadata(unittest.TestCase):
             list_dataset_metadata,
             [
                 "-dp",
+                "--cdisc",
                 os.path.join("tests", "resources", dataset_file),
             ],
         )
