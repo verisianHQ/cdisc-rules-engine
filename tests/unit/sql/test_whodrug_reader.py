@@ -1,4 +1,5 @@
 import csv
+from functools import partial
 
 import pytest
 
@@ -51,10 +52,10 @@ def write_tab_delimited(directory):
     )
 
 
-def write_comma_delimited(directory):
+def write_comma_delimited(directory, quoting=csv.QUOTE_MINIMAL, encoding="utf-8"):
     def write_rows(file_name, rows):
-        with open(directory / file_name, mode="w", newline="") as f:
-            csv.writer(f).writerows(rows)
+        with open(directory / file_name, mode="w", newline="", encoding=encoding) as f:
+            csv.writer(f, quoting=quoting).writerows(rows)
 
     write_rows("version.txt", [[VERSION_LINE.rsplit(" ", 1)[0], "DUMMYB3Jan00"]])
     write_rows("ina.txt", INA_ROWS)
@@ -62,7 +63,17 @@ def write_comma_delimited(directory):
     write_rows("dd.txt", [[rec, seq1, seq2, check] + [""] * 7 + [name] for rec, seq1, seq2, check, name in DD_ROWS])
 
 
-@pytest.mark.parametrize("write_files", [write_fixed_width, write_tab_delimited, write_comma_delimited])
+@pytest.mark.parametrize(
+    "write_files",
+    [
+        write_fixed_width,
+        write_tab_delimited,
+        write_comma_delimited,
+        partial(write_comma_delimited, quoting=csv.QUOTE_ALL),
+        partial(write_comma_delimited, encoding="utf-8-sig"),
+    ],
+    ids=["fixed_width", "tab", "comma", "comma_quoted", "comma_bom"],
+)
 def test_whodrug_reader_b3_txt(tmp_path, write_files):
     write_files(tmp_path)
     reader = WhoDrugReader(None, str(tmp_path))
@@ -80,4 +91,14 @@ def test_whodrug_reader_raises_when_no_level_4_codes(tmp_path):
     reader = WhoDrugReader(None, str(tmp_path))
 
     with pytest.raises(ValueError, match=r"No level 4 ATC codes found .* \(read as fixed-width\)"):
+        reader.process_data(reader._extract_version_metadata())
+
+
+@pytest.mark.parametrize("missing_file", ["INA", "DDA", "DD"])
+def test_whodrug_reader_raises_when_file_missing(tmp_path, missing_file):
+    write_fixed_width(tmp_path)
+    (tmp_path / f"{missing_file}.txt").unlink()
+    reader = WhoDrugReader(None, str(tmp_path))
+
+    with pytest.raises(FileNotFoundError, match=rf"WHODrug file\(s\) {missing_file} not found"):
         reader.process_data(reader._extract_version_metadata())
