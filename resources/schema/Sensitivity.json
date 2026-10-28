@@ -3,14 +3,16 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "anyOf": [
     {
-      "const": "Dataset"
+      "const": "Dataset",
+      "title": "One result per dataset"
     },
     {
       "const": "Group",
       "title": "One result per group of records with the same values of the Grouping_Variables"
     },
     {
-      "const": "Record"
+      "const": "Record",
+      "title": "One result per record (default)"
     },
     {
       "const": "Study",

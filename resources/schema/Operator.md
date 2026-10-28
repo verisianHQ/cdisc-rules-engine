@@ -133,7 +133,7 @@ Complement of `equal_to`. Also has the optional parameters 'value_is_literal', '
 
 ## equal_to_case_insensitive
 
-Case insensitive `equal_to`. Supports the optional parameter 'value_is_literal', but not 'value_is_reference' or 'type_insensitive'.
+Case insensitive `equal_to`. Also has the optional parameters of `equal_to`.
 
 > DSTERM is "Informed consent obtained"
 
@@ -537,7 +537,7 @@ Operations:
 
 ## longer_than
 
-Length comparison. True if the length of the value in `name` is greater than `value`. If `value` is the name of a non-integer variable, the lengths of the values in the two variables are compared instead.
+Length comparison. True if the length of the value in `name` is greater than `value`. `value` can be a number, a Num variable or a numeric `$` operation variable; otherwise the length of the value in `name` is compared with the length of `value`'s value (e.g. another variable in the same record). Returns False when the value in `name` is empty.
 
 > SETCD value length > 8
 
@@ -549,7 +549,7 @@ Length comparison. True if the length of the value in `name` is greater than `va
 
 ## longer_than_or_equal_to
 
-Length comparison. True if the length of the value in `name` is greater than or equal to `value`. If `value` is the name of a non-integer variable, the lengths of the values in the two variables are compared instead.
+Length comparison. True if the length of the value in `name` is greater than or equal to `value`. `value` can be a number, a Num variable or a numeric `$` operation variable; otherwise the length of the value in `name` is compared with the length of `value`'s value (e.g. another variable in the same record). Returns False when the value in `name` is empty.
 
 > TSVAL value length >= 201
 
@@ -589,7 +589,7 @@ Returns False when the value in `name` is empty.
 
 ## has_equal_length
 
-Length comparison. True if the length of the value in `name` is equal to the length of the value in the variable `value`. If `value` is an integer, or an integer variable, the length is compared to that number instead.
+Length comparison. True if the length of the value in `name` is equal to the length of the value in the variable `value`. If `value` is a number, a Num variable or a numeric `$` operation variable, the length is compared to that number instead. Returns False when the value in `name` is empty.
 
 > SEENDTC value length = SESTDTC value length
 
@@ -611,17 +611,15 @@ In the `date_*` comparison operators, without `date_component` both values must 
 
 ## date_equal_to
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
+Date comparison. Compare `name` to `value`. If `date_component` is given (`year`, `month`, `day`, `hour`, `minute`, `second` or `microsecond`), only that part of the dates is compared.
 
 ## date_not_equal_to
 
 Complement of `date_equal_to`
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
-
 ## date_greater_than
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
+Date comparison. Compare `name` to `value`. If `date_component` is given (`year`, `month`, `day`, `hour`, `minute`, `second` or `microsecond`), only that part of the dates is compared.
 
 > Year part of BRTHDTC > 2021
 
@@ -635,7 +633,7 @@ Date comparison. Compare `name` to `value`. Compares partial dates if `date_comp
 
 ## date_greater_than_or_equal_to
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
+Date comparison. Compare `name` to `value`. If `date_component` is given (`year`, `month`, `day`, `hour`, `minute`, `second` or `microsecond`), only that part of the dates is compared.
 
 > Year part of BRTHDTC >= 2021
 
@@ -649,7 +647,7 @@ Date comparison. Compare `name` to `value`. Compares partial dates if `date_comp
 
 ## date_less_than
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
+Date comparison. Compare `name` to `value`. If `date_component` is given (`year`, `month`, `day`, `hour`, `minute`, `second` or `microsecond`), only that part of the dates is compared.
 
 > AEENDTC < AESTDTC
 
@@ -680,7 +678,7 @@ Operations:
 
 ## date_less_than_or_equal_to
 
-Date comparison. Compare `name` to `value`. Compares partial dates if `date_component` is specified.
+Date comparison. Compare `name` to `value`. If `date_component` is given (`year`, `month`, `day`, `hour`, `minute`, `second` or `microsecond`), only that part of the dates is compared.
 
 > AEENDTC <= AESTDTC
 
@@ -747,7 +745,7 @@ Date check. True if the value in `name` is not a valid ISO 8601 interval. A vali
 
 ## invalid_duration
 
-Duration ISO-8601 check, returns True if a duration is not in ISO-8601 format. The negative parameter must be specified to indicate if negative durations are either allowed (True) or disallowed (False)
+Duration check. True if the value in `name` is not an ISO 8601 duration. Set `negative` to `true` to allow negative durations; if `negative` is `false` or not given, negative durations are invalid. Null values are not reported as invalid.
 
 > DURVAR is invalid (negative durations disallowed)
 
@@ -757,13 +755,9 @@ Duration ISO-8601 check, returns True if a duration is not in ISO-8601 format. T
   negative: False
 ```
 
-Null values are not reported as invalid. If `negative` is not given, negative durations are invalid.
-
-# Metadata
-
 ## exists
 
-True if the column exists in the current dataframe. (Works for datasets and variables)
+True if the variable exists in the dataset being evaluated. With the `Domain Presence Check` rule type, true if the dataset (domain) exists in the study.
 
 > --OCCUR is present in dataset
 
@@ -807,7 +801,7 @@ Check:
 
 ## inconsistent_enumerated_columns
 
-Checks for inconsistencies in enumerated columns of a DataFrame. Starting with the smallest/largest enumeration of the given variable, returns True if VARIABLE(N+1) is populated but VARIABLE(N) is not populated. Repeats for all variables belonging to the enumeration. Note that the initial variable will not have an index (VARIABLE) and the next enumerated variable has index 1 (VARIABLE1).
+Checks for inconsistencies in enumerated variables of a dataset. Starting with the smallest/largest enumeration of the given variable, returns True if VARIABLE(N+1) is populated but VARIABLE(N) is not populated. Repeats for all variables belonging to the enumeration. Note that the initial variable will not have an index (VARIABLE) and the next enumerated variable has index 1 (VARIABLE1).
 
 ex: Check if there are inconsistencies in the TSVAL columns (TSVAL, TSVAL1, TSVAL2, etc.)
 
@@ -1139,6 +1133,8 @@ Complement of `is_unique_relationship`
 
 ## empty_within_except_last_row
 
+True if the value in `name` is empty in a record that is not the last of its group. Records are grouped by the variable in `value` and sorted by the variable in `ordering` (in dataset order if `ordering` is not given). The last record of each group always returns False.
+
 > SEENDTC is not empty when it is not the last record, grouped by USUBJID, sorted by SESTDTC
 
 ```yaml
@@ -1147,8 +1143,6 @@ Complement of `is_unique_relationship`
   ordering: SESTDTC
   value: USUBJID
 ```
-
-The last record of each group always returns False.
 
 ## non_empty_within_except_last_row
 
@@ -1241,19 +1235,19 @@ Complement of `target_is_sorted_by`
 
 ## shares_at_least_one_element_with
 
-Will raise an issue if at least one of the values in `name` is the same as one of the values in `value`
+True if at least one of the values in `name` is the same as one of the values in `value`
 
 The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
 
 ## shares_exactly_one_element_with
 
-Will raise an issue if exactly one of the values in `name` is the same as one of the values in `value`
+True if exactly one of the values in `name` is the same as one of the values in `value`
 
 The check is made across the whole dataset: all non-empty values of `name` (in any record) are compared with all non-empty values of `value`, and the result is the same for every record.
 
 ## shares_no_elements_with
 
-Will raise an issue if the values in `name` do not share any of the values in `value`
+True if the values in `name` do not share any of the values in `value`
 
 > Check if $dataset_variables shares no elements with $timing_variables
 
@@ -1290,7 +1284,7 @@ Complement of `has_same_values`
 
 ## is_ordered_subset_of
 
-Checks if elements in the target list appear in the same relative order in the comparator list.
+True if the values in `name` appear in the same relative order in `value`.
 
 > Check if dataset column order is a correctly ordered subset of library column order
 

@@ -252,7 +252,7 @@
           "const": "invalid_duration"
         }
       },
-      "required": ["operator", "negative"],
+      "required": ["operator"],
       "type": "object"
     },
     {
@@ -1249,12 +1249,6 @@
   "properties": {
     "case_insensitive": {
       "type": "boolean"
-    },
-    "comparator": {
-      "type": ["number", "string"]
-    },
-    "context": {
-      "type": "string"
     },
     "date_component": {
       "enum": [

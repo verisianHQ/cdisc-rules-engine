@@ -470,7 +470,14 @@
     },
     "group": {
       "items": {
-        "$ref": "CORE-base.json#/$defs/VariableReference"
+        "anyOf": [
+          {
+            "$ref": "CORE-base.json#/$defs/VariableReference"
+          },
+          {
+            "$ref": "MetaVariables.json"
+          }
+        ]
       },
       "type": "array"
     },

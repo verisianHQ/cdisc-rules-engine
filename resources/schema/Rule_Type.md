@@ -269,13 +269,13 @@ Check:
       value: $global_max_variable_length
 Operations:
   - id: $global_max_variable_length
-    domain: global_value_check
+    use_rule_type_table: true
     name: variable_length
     operator: max
     group:
       - variable_name
   - id: $global_min_variable_length
-    domain: global_value_check
+    use_rule_type_table: true
     name: variable_length
     operator: min
     group:
@@ -444,7 +444,20 @@ all:
 - `define_variable_name`
 - `define_variable_label`
 - `define_variable_data_type`
-- `define_variable_`...
+- `define_variable_is_collected`
+- `define_variable_role`
+- `define_variable_length`
+- `define_variable_ccode`
+- `define_variable_allowed_terms`
+- `define_variable_origin_type`
+- `define_variable_source_type`
+- `define_variable_has_no_data`
+- `define_variable_order_number`
+- `define_variable_has_codelist`
+- `define_variable_codelist_coded_values`
+- `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
+- `define_variable_has_comment`
 
 ## Value Check against Define XML VLM
 
@@ -568,10 +581,26 @@ all:
 - `variable_name`
 - `variable_order_number`
 - `variable_label`
-- `variable_`...
+- `variable_length`
+- `variable_data_type`
+- `variable_format`
 - `define_variable_name`
 - `define_variable_label`
-- `define_variable_`...
+- `define_variable_data_type`
+- `define_variable_is_collected`
+- `define_variable_role`
+- `define_variable_length`
+- `define_variable_ccode`
+- `define_variable_allowed_terms`
+- `define_variable_origin_type`
+- `define_variable_source_type`
+- `define_variable_has_no_data`
+- `define_variable_order_number`
+- `define_variable_has_codelist`
+- `define_variable_codelist_coded_values`
+- `define_variable_codelist_coded_codes`
+- `define_variable_mandatory`
+- `define_variable_has_comment`
 
 ### Example
 
