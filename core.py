@@ -398,14 +398,14 @@ def validate(  # noqa: C901
             f"The dataset files are in more than one format ({', '.join(sorted(found_formats))}). "
             "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
         )
-        ctx.exit()
+        ctx.exit(1)
     if not dataset_paths:
         logger.error(
             "No dataset files to validate"
             + (f" with the extension .{filetype.lower()}" if filetype else "")
             + (". The SQL engine reads XPT and SAS7BDAT files." if sql_engine else ".")
         )
-        ctx.exit()
+        ctx.exit(1)
     validate_xml_bool = True if validate_xml.lower() in ("y", "yes") else False
     args = Validation_args(
         cache_path,

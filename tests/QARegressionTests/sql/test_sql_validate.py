@@ -751,6 +751,7 @@ class TestValidate(unittest.TestCase):
             os.path.join(self.tmp_dir, "report"),
         ]
         exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 1)
         self.assertIn("no dataset files to validate", stderr)
         self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
 

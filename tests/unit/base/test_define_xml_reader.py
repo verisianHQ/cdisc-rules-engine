@@ -54,6 +54,14 @@ def test_init_from_file_contents():
         assert isinstance(reader, BaseDefineXMLReader)
 
 
+@pytest.mark.parametrize("as_bytes", [True, False])
+def test_define_version_patch_ignores_comments(as_bytes):
+    contents = test_define_file_path.read_text().replace('def:DefineVersion="2.1.0"', 'def:DefineVersion="2.1.7"')
+    contents = contents.replace("<Study", '<!-- <MetaDataVersion def:DefineVersion="2.1.9"> -->\n<Study', 1)
+    reader = DefineXMLReaderFactory.from_file_contents(contents.encode() if as_bytes else contents)
+    assert reader.get_define_version() == "2.1.7"
+
+
 def test_read_define_xml():
     """
     Unit test for DefineXMLReader.read function.

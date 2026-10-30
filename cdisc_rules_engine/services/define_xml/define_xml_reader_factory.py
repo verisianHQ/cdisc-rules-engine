@@ -1,6 +1,6 @@
 import os
 from xml.etree import ElementTree
-from re import compile
+from re import DOTALL, compile
 from typing import Optional, Tuple, Union
 
 from cdisc_rules_engine.constants.define_xml_constants import (
@@ -19,8 +19,13 @@ from cdisc_rules_engine.services.define_xml.base_define_xml_reader import (
 )
 from cdisc_rules_engine.utilities.utils import get_directory_path
 
-_DEFINE_VERSION_2_1 = compile(r"""DefineVersion\s*=\s*["'](?P<version>2\.1\.\d+)["']""")
-_DEFINE_VERSION_2_1_BYTES = compile(_DEFINE_VERSION_2_1.pattern.encode())
+_DEFINE_VERSION_2_1 = compile(
+    r"""<!--.*?-->|<!\[CDATA\[.*?\]\]>"""
+    r"""|<(?:[\w.-]+:)?MetaDataVersion\b(?:[^>"']|"[^"]*"|'[^']*')*?"""
+    r"""\s(?:[\w.-]+:)?DefineVersion\s*=\s*["'](?P<version>2\.1\.\d+)["']""",
+    DOTALL,
+)
+_DEFINE_VERSION_2_1_BYTES = compile(_DEFINE_VERSION_2_1.pattern.encode(), DOTALL)
 
 
 class DefineXMLReaderFactory:
@@ -84,7 +89,7 @@ class DefineXMLReaderFactory:
     def _normalise_define_version(file_contents: Union[str, bytes]) -> Tuple[Union[str, bytes], Optional[str]]:
         is_text = isinstance(file_contents, str)
         pattern = _DEFINE_VERSION_2_1 if is_text else _DEFINE_VERSION_2_1_BYTES
-        match = pattern.search(file_contents)
+        match = next((match for match in pattern.finditer(file_contents) if match.group("version")), None)
         if not match:
             return file_contents, None
         start, end = match.span("version")
