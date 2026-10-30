@@ -41,6 +41,8 @@ class SqlChildMerge:
         which may contain standalone records (e.g. a general comment not tied to any
         parent record) that leave all three null. A relational child with no linkable
         RDOMAIN values at all is therefore not an error - it's simply returned unchanged.
+        The same goes for any child naming no parent at all: one with no records, or a CO
+        that omits the Permissible RDOMAIN/IDVAR/IDVARVAL columns.
         """
         # Find parent dataset(s)
         parent_metadatas = SqlChildMerge._find_parents(
@@ -51,7 +53,7 @@ class SqlChildMerge:
         )
 
         if not parent_metadatas:
-            if SqlChildMerge._is_relational_child(child):
+            if SqlChildMerge._is_relational_child(child) or not SqlChildMerge._get_ordered_rdomain_values(pgi, child):
                 return child
             raise ValueError(f"Could not find parent dataset for child merge: {child.name}")
 
