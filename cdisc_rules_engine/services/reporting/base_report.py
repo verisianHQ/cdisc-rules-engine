@@ -11,7 +11,6 @@ from cdisc_rules_engine.models.rule_validation_result import RuleValidationResul
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 
-
 _PER_DATASET_SKIP_REASON = re.compile(r"^(?P<reason>.+?) for rule id=[^,]*, dataset=(?P<dataset>\S+)$")
 
 
@@ -149,21 +148,21 @@ class BaseReport(ABC):
             "CDISC RuleID",
             "FDA RuleID",
             "Message",
-            "Status",
-            "Reason for Skip"
+            "Status",  # SUCCESS, ISSUE REPORTED, SKIPPED or EXECUTION ERROR
+            "Reason"
         ]
         """
         rules_report = []
         for validation_result in self._results:
-            skipped = validation_result.execution_status != ExecutionStatus.SUCCESS.value
+            status = self._get_rule_status(validation_result)
             rules_item = {
                 "core_id": validation_result.id,
                 "version": "1",
                 "cdisc_rule_id": validation_result.cdisc_rule_id,
                 "fda_rule_id": validation_result.fda_rule_id,
                 "message": validation_result.message,
-                "status": (ExecutionStatus.SKIPPED.value.upper() if skipped else ExecutionStatus.SUCCESS.value.upper()),
-                "skip_reason": (self._get_skip_reason(validation_result) if skipped else ""),
+                "status": status.replace("_", " ").upper(),
+                "skip_reason": self._get_skip_reason(validation_result, status),
             }
             if self._item_type == "list":
                 rules_report.append([*rules_item.values()])
@@ -182,12 +181,39 @@ class BaseReport(ABC):
         return Path(filename).stem.upper()
 
     @staticmethod
-    def _get_skip_reason(validation_result) -> str:
+    def _get_rule_status(validation_result) -> str:
+        """
+        ISSUE_REPORTED if any dataset raised issues, else EXECUTION_ERROR if any dataset
+        failed to run, else SUCCESS if any dataset ran, else SKIPPED.
+        """
+        results = [result for result in validation_result.results or [] if isinstance(result, dict)]
+        statuses = {result.get("executionStatus") for result in results}
+        if any(
+            result.get("errors") for result in results if result.get("executionStatus") == ExecutionStatus.SUCCESS.value
+        ):
+            return ExecutionStatus.ISSUE_REPORTED.value
+        if ExecutionStatus.EXECUTION_ERROR.value in statuses:
+            return ExecutionStatus.EXECUTION_ERROR.value
+        if validation_result.execution_status == ExecutionStatus.SUCCESS.value:
+            return ExecutionStatus.SUCCESS.value
+        return ExecutionStatus.SKIPPED.value
+
+    @staticmethod
+    def _get_skip_reason(validation_result, status: str) -> str:
+        """
+        SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list only
+        the errors, since datasets skipped as out of scope are noise next to a failure.
+        """
+        if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
+            return ""
         datasets_by_reason = {}
         for result in validation_result.results or []:
             if not isinstance(result, dict):
                 continue
             if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
+                continue
+            is_error = result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value
+            if status == ExecutionStatus.EXECUTION_ERROR.value and not is_error:
                 continue
             reason = result.get("message")
             if not reason:
@@ -196,6 +222,10 @@ class BaseReport(ABC):
             match = _PER_DATASET_SKIP_REASON.match(reason)
             if match:
                 reason, dataset = match["reason"], match["dataset"].upper()
+            elif is_error:
+                detail = next((error.get("error") for error in result.get("errors") or [] if error.get("error")), None)
+                reason = f"{reason}: {detail}" if detail else reason
+                dataset = BaseReport._display_dataset_name(result.get("dataset"))
             datasets = datasets_by_reason.setdefault(reason, [])
             if dataset and dataset not in datasets:
                 datasets.append(dataset)

@@ -1,12 +1,16 @@
 from io import BytesIO
 from os import unlink
 from tempfile import NamedTemporaryFile
-from typing import List
+from typing import List, Optional
 
 import openpyxl
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.styles.cell_style import StyleArray
 from openpyxl.worksheet.worksheet import Worksheet
+
+_CELL_FONT = Font(name="Calibri", size=11)
+_THIN_SIDE = Side(style="thin")
+_CELL_BORDER = Border(left=_THIN_SIDE, right=_THIN_SIDE, top=_THIN_SIDE, bottom=_THIN_SIDE)
 
 
 def excel_workbook_to_stream(wb):
@@ -27,7 +31,9 @@ def excel_update_worksheet(ws, rows, align_params=None, fill_empty_rows=False):
         return
     alignment = Alignment(**align_params) if align_params else None
     empty_fill = openpyxl.styles.PatternFill(start_color="ccffff", end_color="ccffff", fill_type="solid")
-    aligned_styles = {}
+    styled = {}
+    for col_num in range(1, max(len(row_data) for row_data in rows) + 1):
+        ws.cell(row=1, column=col_num).border = _CELL_BORDER
     for row_num, row_data in enumerate(rows, 2):
         is_empty_row = fill_empty_rows and (row_data[1] == "" or row_data[1] is None)
         for col_num, col_data in enumerate(row_data, 1):
@@ -35,18 +41,20 @@ def excel_update_worksheet(ws, rows, align_params=None, fill_empty_rows=False):
             cell.value = col_data
             if is_empty_row:
                 cell.fill = empty_fill
-            if alignment is not None:
-                _align_cell(cell, alignment, aligned_styles)
+            _style_cell(cell, alignment, styled)
 
 
-def _align_cell(cell, alignment: Alignment, aligned_styles: dict) -> None:
+def _style_cell(cell, alignment: Optional[Alignment], styled: dict) -> None:
     key = tuple(cell._style) if cell.has_style else None
-    aligned = aligned_styles.get(key)
-    if aligned is None:
-        cell.alignment = alignment
-        aligned_styles[key] = StyleArray(cell._style)
+    cached = styled.get(key)
+    if cached is None:
+        cell.font = _CELL_FONT
+        cell.border = _CELL_BORDER
+        if alignment is not None:
+            cell.alignment = alignment
+        styled[key] = StyleArray(cell._style)
     else:
-        cell._style = StyleArray(aligned)
+        cell._style = StyleArray(cached)
 
 
 def excel_open_workbook(template_buffer):
