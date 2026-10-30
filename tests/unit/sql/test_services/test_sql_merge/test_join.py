@@ -6,6 +6,7 @@ from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 from cdisc_rules_engine.standards.default_standards_context import (
     DefaultStandardsContext,
 )
@@ -147,6 +148,21 @@ def test_table_not_in_data(data):
     with pytest.raises(Exception):
         SqlJoinMerge.perform_join(
             ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("unknown"), ["key", "key2"], ["key1", "key2"]
+        )
+
+
+def test_join_merge_with_absent_match_dataset_skips():
+    ds = PostgresQLDataService.instance()
+    context = DefaultStandardsContext()
+    PostgresQLDataService.add_test_dataset(ds, "dm", {"USUBJID": ["U1"], "DTHFL": ["Y"]}, context)
+
+    with pytest.raises(DomainNotFoundError, match="Match dataset SS is not present"):
+        context.perform_merge(
+            data_service=ds,
+            original="dm",
+            dataset_metadata=ds.get_dataset_metadata("dm"),
+            merge_spec={"domain_name": "SS", "match_key": ["USUBJID"]},
+            rule={},
         )
 
 

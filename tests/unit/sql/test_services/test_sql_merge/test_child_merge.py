@@ -238,6 +238,33 @@ def test_child_merge_no_parent_found(sdtm_standards_context):
         )
 
 
+@pytest.mark.parametrize(
+    "child_data",
+    [
+        {"STUDYID": [], "DOMAIN": [], "USUBJID": [], "COSEQ": [], "COVAL": []},
+        {"STUDYID": [], "DOMAIN": [], "RDOMAIN": [], "USUBJID": [], "COVAL": []},
+        {"STUDYID": ["S1"], "DOMAIN": ["CO"], "USUBJID": ["U1"], "COSEQ": [1], "COVAL": ["General comment"]},
+    ],
+)
+def test_child_merge_child_naming_no_parent_is_unchanged(sdtm_standards_context, child_data):
+    """A child with no RDOMAIN values links to nothing, so it is returned as is rather than raising."""
+    ds = PostgresQLDataService.instance()
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "co", child_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(
+        ds, "ae", {"STUDYID": ["S1"], "USUBJID": ["U1"], "AESEQ": ["1"]}, sdtm_standards_context
+    )
+
+    result_schema = SqlChildMerge.perform_merge(
+        pgi=ds.pgi,
+        child=child_schema,
+        child_domain="CO",
+        datasets=ds.datasets,
+        merge_spec={"match_key": ["USUBJID"]},
+    )
+
+    assert result_schema is child_schema
+
+
 def test_child_merge_unmatched_child_rows(sdtm_standards_context):
     """Test that unmatched child rows are preserved with NULL parent values (LEFT JOIN)."""
     ds = PostgresQLDataService.instance()

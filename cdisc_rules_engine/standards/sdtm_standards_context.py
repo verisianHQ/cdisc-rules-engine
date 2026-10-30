@@ -19,6 +19,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     BaseDatasetMetadata,
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -709,7 +710,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             None,
         )
         if not relrec_data:
-            raise ValueError("Tried to RELREC merge, but could not find RELREC dataset.")
+            raise DomainNotFoundError("Match dataset RELREC is not present")
 
         wildcard = merge_spec.get("wildcard", "__")
 
@@ -747,7 +748,7 @@ class SdtmStandardsContext(BaseStandardsContext):
             None,
         )
         if not relationship_data:
-            raise ValueError(f"Tried to relationship merge with {relationship_dataset}, but could not find dataset.")
+            raise DomainNotFoundError(f"Match dataset {relationship_dataset.upper()} is not present")
 
         relationship_columns = merge_spec.get("relationship_columns", {})
         match_keys = merge_spec.get("match_key", {})
