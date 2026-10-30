@@ -44,6 +44,28 @@ def test_every_written_row_keeps_wrapped_text():
     assert all(saved.cell(row=row, column=2).alignment.wrap_text for row in (2, 100, 300, 400))
 
 
+def test_written_cells_share_one_font_and_have_borders():
+    wb = open_template()
+    rows = [detail_row("CORE-000001", "ae.xpt", index) for index in range(1, 200)]
+
+    excel_update_worksheet(wb["Issue Details"], rows, dict(wrap_text=True))
+
+    saved = openpyxl.load_workbook(BytesIO(excel_workbook_to_stream(wb)))["Issue Details"]
+    cells = [saved.cell(row=row, column=col) for row in (2, 100, 200) for col in range(1, 10)]
+    assert {(cell.font.name, cell.font.sz) for cell in cells} == {("Calibri", 11)}
+    assert all(cell.border.left.style == "thin" and cell.border.bottom.style == "thin" for cell in cells)
+    assert all(saved.cell(row=1, column=col).border.top.style == "thin" for col in range(1, 10))
+
+
+def test_header_of_an_empty_sheet_gets_the_same_thin_border():
+    wb = open_template()
+
+    excel_update_worksheet(wb["Issue Summary"], [], dict(wrap_text=True))
+
+    headers = [cell for cell in wb["Issue Summary"][1] if cell.value is not None]
+    assert headers and all(cell.border.left.style == "thin" and cell.border.bottom.style == "thin" for cell in headers)
+
+
 def test_empty_code_rows_are_still_filled():
     wb = openpyxl.Workbook()
     ws = wb.active
