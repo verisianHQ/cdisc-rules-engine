@@ -201,39 +201,42 @@ class BaseReport(ABC):
     @staticmethod
     def _get_skip_reason(validation_result, status: str) -> str:
         """
-        SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list only
-        the errors, since datasets skipped as out of scope are noise next to a failure.
+        SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list the errors
+        first, then the datasets that reported issues, then the skip reasons.
         """
         if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
             return ""
-        datasets_by_reason = {}
+        errors, issues, skips = {}, {}, {}
         for result in validation_result.results or []:
             if not isinstance(result, dict):
                 continue
+            dataset = BaseReport._display_dataset_name(result.get("dataset"))
             if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
-                continue
-            is_error = result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value
-            if status == ExecutionStatus.EXECUTION_ERROR.value and not is_error:
+                if result.get("errors"):
+                    BaseReport._add_reason(issues, "Issues reported", dataset)
                 continue
             reason = result.get("message")
             if not reason:
                 continue
-            dataset = None
             match = _PER_DATASET_SKIP_REASON.match(reason)
             if match:
-                reason, dataset = match["reason"], match["dataset"].upper()
-            elif is_error:
+                BaseReport._add_reason(skips, match["reason"], match["dataset"].upper())
+            elif result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value:
                 error = next((error for error in result.get("errors") or [] if error.get("error")), {})
                 detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
-                reason = f"{reason}: {detail}" if detail else reason
-                dataset = BaseReport._display_dataset_name(result.get("dataset"))
-            datasets = datasets_by_reason.setdefault(reason, [])
-            if dataset and dataset not in datasets:
-                datasets.append(dataset)
+                BaseReport._add_reason(errors, f"{reason}: {detail}" if detail else reason, dataset)
+            else:
+                BaseReport._add_reason(skips, reason, None)
         return "; ".join(
             f"{reason} ({', '.join(datasets)})" if datasets else reason
-            for reason, datasets in datasets_by_reason.items()
+            for reason, datasets in {**errors, **issues, **skips}.items()
         )
+
+    @staticmethod
+    def _add_reason(datasets_by_reason: dict, reason: str, dataset: Optional[str]) -> None:
+        datasets = datasets_by_reason.setdefault(reason, [])
+        if dataset and dataset not in datasets:
+            datasets.append(dataset)
 
     @property
     @abstractmethod

@@ -57,6 +57,15 @@ def test_written_cells_share_one_font_and_have_borders():
     assert all(saved.cell(row=1, column=col).border.top.style == "thin" for col in range(1, 10))
 
 
+def test_header_of_an_empty_sheet_gets_the_same_thin_border():
+    wb = open_template()
+
+    excel_update_worksheet(wb["Issue Summary"], [], dict(wrap_text=True))
+
+    headers = [cell for cell in wb["Issue Summary"][1] if cell.value is not None]
+    assert headers and all(cell.border.left.style == "thin" and cell.border.bottom.style == "thin" for cell in headers)
+
+
 def test_empty_code_rows_are_still_filled():
     wb = openpyxl.Workbook()
     ws = wb.active

@@ -27,13 +27,14 @@ def excel_workbook_to_stream(wb):
 
 
 def excel_update_worksheet(ws, rows, align_params=None, fill_empty_rows=False):
+    for header_cell in ws[1]:
+        if header_cell.value is not None:
+            header_cell.border = _CELL_BORDER
     if not rows:
         return
     alignment = Alignment(**align_params) if align_params else None
     empty_fill = openpyxl.styles.PatternFill(start_color="ccffff", end_color="ccffff", fill_type="solid")
     styled = {}
-    for col_num in range(1, max(len(row_data) for row_data in rows) + 1):
-        ws.cell(row=1, column=col_num).border = _CELL_BORDER
     for row_num, row_data in enumerate(rows, 2):
         is_empty_row = fill_empty_rows and (row_data[1] == "" or row_data[1] is None)
         for col_num, col_data in enumerate(row_data, 1):

@@ -27,11 +27,18 @@ def skipped(core_id, *reasons):
     )
 
 
-def succeeded(core_id, errors=()):
+def succeeded(core_id, errors=(), dataset="dm.xpt"):
     return FakeResult(
         core_id,
         ExecutionStatus.SUCCESS.value,
-        [{"executionStatus": ExecutionStatus.SUCCESS.value, "message": None, "errors": list(errors)}],
+        [
+            {
+                "executionStatus": ExecutionStatus.SUCCESS.value,
+                "dataset": dataset,
+                "message": None,
+                "errors": list(errors),
+            }
+        ],
     )
 
 
@@ -91,11 +98,14 @@ def test_a_rule_that_raised_issues_is_issue_reported():
     assert rows[0][-1] == ""
 
 
-def test_a_rule_that_failed_reports_execution_error_with_only_the_errors_as_reason():
-    result = FakeResult("CORE-000001", ExecutionStatus.SKIPPED.value, [errored("ae.xpt"), skipped_dataset("lb")])
+def test_a_rule_that_failed_lists_the_errors_before_the_skipped_datasets():
+    result = FakeResult("CORE-000001", ExecutionStatus.SKIPPED.value, [skipped_dataset("lb"), errored("ae.xpt")])
     rows = report(result).get_rules_report_data()
     assert rows[0][-2] == "EXECUTION ERROR"
-    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE)"
+    assert rows[0][-1] == (
+        "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE); "
+        "Rule skipped - doesn't apply to domain (LB)"
+    )
 
 
 def test_execution_error_outranks_success():
@@ -109,7 +119,10 @@ def test_execution_error_outranks_issues_on_another_dataset():
     result.results.append(errored("ae.xpt"))
     rows = report(result).get_rules_report_data()
     assert rows[0][-2] == "EXECUTION ERROR"
-    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE)"
+    assert rows[0][-1] == (
+        "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE); "
+        "Issues reported (DM)"
+    )
 
 
 def test_issues_outrank_success_on_another_dataset():
