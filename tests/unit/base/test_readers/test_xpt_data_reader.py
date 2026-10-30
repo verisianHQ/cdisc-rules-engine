@@ -1,4 +1,5 @@
 import math
+from unittest.mock import patch
 
 import pandas as pd
 import pyreadstat
@@ -81,5 +82,8 @@ def test_read_warns_when_data_is_not_card_aligned(tmp_path):
     with open(path, "ab") as handle:
         handle.write(b"  ")
 
-    with pytest.warns(UserWarning, match="xport file may be corrupted"):
+    with patch("cdisc_rules_engine.readers.data_readers.xpt_data_reader.logger") as mock_logger:
         XptDataReader(str(path)).read()
+
+    mock_logger.warning.assert_called_once()
+    assert "xport file may be corrupted" in mock_logger.warning.call_args.args[0]

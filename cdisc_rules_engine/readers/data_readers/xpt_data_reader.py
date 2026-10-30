@@ -1,5 +1,4 @@
 import os
-import warnings
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -19,6 +18,7 @@ from cdisc_rules_engine.models.dataset_metadata2 import (
     VariableMetadata,
 )
 from cdisc_rules_engine.readers.data_readers.base_data_reader import BaseDataReader
+from cdisc_rules_engine.services import logger
 
 _TRAILING_WHITESPACE = " \t\n\r\v\f"
 _TRAILING_NUL = "\x00"
@@ -35,7 +35,7 @@ class _XportReader(XportReader):
         buffer.seek(0, 2)
         total_length = buffer.tell() - self.record_start
         if total_length % XPT_CARD_LENGTH != 0:
-            warnings.warn("xport file may be corrupted.")
+            logger.warning(f"xport file may be corrupted: {self.filepath_or_buffer.name}")
         count = total_length // self.record_length
         padding_start = total_length - XPT_CARD_LENGTH
         while count > 0 and (count - 1) * self.record_length > padding_start:
