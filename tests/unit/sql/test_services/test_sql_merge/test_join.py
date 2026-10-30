@@ -6,6 +6,7 @@ from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.standards.default_standards_context import (
     DefaultStandardsContext,
 )
@@ -160,7 +161,7 @@ def test_column_not_in_data(data):
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
     # Perform the join operation
-    with pytest.raises(Exception):
+    with pytest.raises(ColumnNotFoundError, match="Column 'KEY1' not found in table 'r'"):
         SqlJoinMerge.perform_join(
             ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key", "key2"], ["key1", "key2"]
         )

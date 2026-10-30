@@ -2,6 +2,7 @@ from typing import List, Literal, Optional, Tuple
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -45,8 +46,10 @@ class SqlJoinMerge:
         for l_var, r_var in zip(pivot_left, pivot_right):
             left_column = left.get_column(l_var)
             right_column = right.get_column(r_var)
-            if left_column is None or right_column is None:
-                raise ValueError(f"Column {l_var} or {r_var} not found in the respective schemas.")
+            if left_column is None:
+                raise ColumnNotFoundError(l_var.upper(), left.name)
+            if right_column is None:
+                raise ColumnNotFoundError(r_var.upper(), right.name)
             # compare numerically when possible (avoiding scientific-notation mismatches)
             # and fall back to text otherwise.
             if left_column.type == right_column.type:

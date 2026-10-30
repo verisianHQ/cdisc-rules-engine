@@ -1,5 +1,6 @@
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -55,6 +56,10 @@ class SqlRelationshipMerge:
 
             return schema
 
+        except ColumnNotFoundError as e:
+            raise ColumnNotFoundError(
+                f"Relationship merge failed for {original.name} with {relationship_dataset.name}: {str(e)}"
+            )
         except ValueError as e:
             raise ValueError(
                 f"Relationship merge failed for {original.name} with {relationship_dataset.name}: {str(e)}"
@@ -73,9 +78,9 @@ class SqlRelationshipMerge:
         # Check match key columns exist in both datasets
         for col in match_keys:
             if not original.has_column(col):
-                raise ValueError(f"RELATIONSHIP MERGE: Original schema missing match key column: {col}")
+                raise ColumnNotFoundError(col, original.name)
             if not relationship_dataset.has_column(col):
-                raise ValueError(f"RELATIONSHIP MERGE: Relationship schema missing match key column: {col}")
+                raise ColumnNotFoundError(col, relationship_dataset.name)
 
         if not relationship_columns:
             raise ValueError("RELATIONSHIP MERGE: relationship_columns parameter is required but was None or empty")

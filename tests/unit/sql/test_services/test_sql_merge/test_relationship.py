@@ -5,6 +5,7 @@ from cdisc_rules_engine.data_service.merges.relationship import SqlRelationshipM
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 
 SIMPLE_RELATIONSHIP_DATA = {
     "original": {
@@ -249,7 +250,7 @@ def test_validation_missing_original_columns(sdtm_standards_context):
 
     relationship_columns = {"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"}
 
-    with pytest.raises(ValueError, match="Original schema missing match key column"):
+    with pytest.raises(ColumnNotFoundError, match="Column 'USUBJID' not found in table 'original'"):
         SqlRelationshipMerge.perform_join(
             pgi=data_service.pgi,
             original=original_schema,
