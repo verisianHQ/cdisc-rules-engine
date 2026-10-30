@@ -1,4 +1,5 @@
 import os
+import warnings
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
@@ -26,20 +27,22 @@ XPT_CARD_LENGTH = 80
 
 class _XportReader(XportReader):
     """
-    overrides pandas XportReader to produce a corrected record count.
+    Overrides pandas XportReader to produce a corrected record count.
     """
 
     def _record_count(self) -> int:
         buffer = self.filepath_or_buffer
         buffer.seek(0, 2)
         total_length = buffer.tell() - self.record_start
+        if total_length % XPT_CARD_LENGTH != 0:
+            warnings.warn("xport file may be corrupted.")
         count = total_length // self.record_length
-        if self.record_length <= XPT_CARD_LENGTH:
-            while count > 0 and total_length - (count - 1) * self.record_length < XPT_CARD_LENGTH:
-                buffer.seek(self.record_start + (count - 1) * self.record_length)
-                if buffer.read(self.record_length).strip(b" "):
-                    break
-                count -= 1
+        padding_start = total_length - XPT_CARD_LENGTH
+        while count > 0 and (count - 1) * self.record_length > padding_start:
+            buffer.seek(self.record_start + (count - 1) * self.record_length)
+            if buffer.read(self.record_length).strip(b" "):
+                break
+            count -= 1
         buffer.seek(self.record_start)
         return count
 
