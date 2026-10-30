@@ -4,6 +4,7 @@ from cdisc_rules_engine.data_service.merges.relrec import SqlRelrecMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 
 SIMPLE_RELREC_DATA = {
     "original": {
@@ -236,7 +237,7 @@ def test_relrec_validation_errors(sdtm_standards_context):
     relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
 
     # Should raise validation error
-    with pytest.raises(ValueError, match="Original schema is missing required column"):
+    with pytest.raises(ColumnNotFoundError, match="Column 'STUDYID' not found in table 'ec_invalid'"):
         SqlRelrecMerge.perform_join(
             pgi=pgi,
             original=invalid_original_schema,

@@ -5,6 +5,7 @@ from cdisc_rules_engine.data_service.merges.supp import SqlSuppMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 
 SIMPLE_DATA_DM = {
@@ -145,9 +146,8 @@ def test_original_base_column_missing(data, sdtm_standards_context):
 
     o_schema._columns.pop("usubjid", None)
 
-    with pytest.raises(Exception) as e:
+    with pytest.raises(ColumnNotFoundError, match="Column 'USUBJID' not found in table 'original'"):
         SqlSuppMerge.perform_join(ds.pgi, o_schema, s_schema, "DM")
-    assert "Original schema" in str(e.value)
 
 
 @pytest.mark.parametrize(

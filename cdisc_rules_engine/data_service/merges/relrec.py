@@ -2,6 +2,7 @@ from typing import List, Dict, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -68,11 +69,11 @@ class SqlRelrecMerge:
 
         for col in required_original_columns:
             if not original.has_column(col):
-                raise ValueError(f"RELREC MERGE: Original schema is missing required column: {col}")
+                raise ColumnNotFoundError(col, original.name)
 
         for col in required_relrec_columns:
             if not relrec.has_column(col):
-                raise ValueError(f"RELREC MERGE: RELREC schema is missing required column: {col}")
+                raise ColumnNotFoundError(col, relrec.name)
 
     @staticmethod
     def _filter_relrec_for_domain(

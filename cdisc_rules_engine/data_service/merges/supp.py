@@ -2,6 +2,7 @@ from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -115,7 +116,7 @@ class SqlSuppMerge:
 
         for col in ["STUDYID", "DOMAIN", "USUBJID"]:
             if not original.has_column(col):
-                raise ValueError(f"SUPP MERGE: Original schema is missing required base column: {col}")
+                raise ColumnNotFoundError(col, original.name)
 
         for col in required_original_columns:
             if not original.has_column(col):
