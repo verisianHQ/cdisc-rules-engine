@@ -1,65 +1,33 @@
-### Supported python versions
+# cdisc-rules-engine (Verisian fork)
+
+This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE), a tool designed for validating clinical trial data against data standards. It runs the rules with an engine built on a PostgreSQL database.
+
+> **Are you writing or testing rules?** You don't need to set up this repository yourself: follow the [core-contributor](https://github.com/verisianHQ/core-contributor) guide instead, which installs and runs this engine for you.
+
+To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.org/).
+
+## Supported python versions
 
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120)
 
-### Windows Command Compatibility
+## Windows Command Compatibility
 
 Note: The Windows commands provided in this README are written for PowerShell. While most commands are compatible with both PowerShell and Command Prompt, some adjustments may be necessary when using Command Prompt. If you encounter any issues running these commands in Command Prompt, try using PowerShell or consult the Command Prompt documentation for equivalent commands.
 
-# cdisc-rules-engine
+## **Command-line Interface**
 
-Open source offering of the CDISC Rules Engine, a tool designed for validating clinical trial data against data standards.
-To learn more, visit our official CDISC website or for other implementation options, see our DockerHub repository:  
-<br>  
-[CDISC Website](https://www.cdisc.org/)  
-<br>  
-[CDISC Rules Engine on DockerHub](https://hub.docker.com/repository/docker/cdiscdocker/cdisc-rules-engine/general)
+The engine has no graphical interface: you run it by typing commands in a terminal (on Windows, PowerShell; on Mac, the Terminal app; or the terminal built into VSCode, for instance). Unless stated otherwise, every command below must be run from the folder of this repository (the `cdisc-rules-engine` folder created in step 1 below). Use `cd <path>` to move to it.
 
-### **Quick start**
-
-To quickly get up and running with CORE, users can download the latest executable version of the engine for their operating system from here: <https://github.com/cdisc-org/cdisc-rules-engine/releases>
-
-Once downloaded, simply unzip the file and run the following command based on your Operating System:
-
-Windows:
-
-```
-.\core.exe validate -s <standard> -v <standard_version> -d path/to/datasets
-
-# ex: .\core.exe validate -s sdtmig -v 3-4 -d .\xpt\
-```
-
-Linux/Mac:
-
-```
-./core validate -s <standard> -v <standard_version> -d path/to/datasets
-
-# ex: ./core validate -s sdtmig -v 3-4 -d .\xpt\
-```
-
-> **_NOTE:_** For Linux users, you will need to run this command from the executable root directory:
->
-> ```bash
-> chmod +x ./core
-> ```
->
-> For Mac users, you will need to remove the Apple signature quarantine in addition to making the app executable.
->
-> ```bash
-> xattr -rd com.apple.quarantine /path/to/core/root/dir
-> chmod +x ./core
-> ```
-
-### **Command-line Interface**
+> On Mac and Linux, if `python` is not found, use `python3` instead (e.g. `python3 core.py --help`).
 
 ### **Getting Started**
 
 In the terminal, navigate to the directory you intend to install CORE rules engine in
 
-1. Clone the repository:
+1. Clone (download) the repository:
 
    ```
-   git clone https://github.com/cdisc-org/cdisc-rules-engine
+   git clone https://github.com/verisianHQ/cdisc-rules-engine
    ```
 
 2. Ensure you have Python 3.12 installed:
@@ -69,23 +37,9 @@ In the terminal, navigate to the directory you intend to install CORE rules engi
    ```
    If you don't have Python 3.12, please download and install it from [python.org](https://www.python.org/downloads/) or using your system's package manager.
 
-### **Code formatter**
-
-This project uses the `black` code formatter, `flake8` linter for python and `prettier` for JSON, YAML and MD.
-It also uses `pre-commit` to run `black`, `flake8` and `prettier` when you commit.
-Both dependencies are added to _requirements.txt_.
-
-**Required**
-
-Setting up `pre-commit` requires one extra step. After installing it you have to run
-
-`pre-commit install`
-
-This installs `pre-commit` in your `.git/hooks` directory.
-
 ### **Installing dependencies**
 
-These steps should be run before running any tests or core commands using the non-compiled version.
+These steps only need to be done once. They set up a "virtual environment": a private copy of Python for this project, so that the packages the engine needs don't interfere with anything else on your computer.
 
 - **Option 1: Using `pyenv` (Recommended)**
 
@@ -118,26 +72,35 @@ These steps should be run before running any tests or core commands using the no
      `source ./<virtual_environment_name>/bin/activate` -- on Linux/Mac
      `.\<virtual_environment_name>\Scripts\Activate` -- on Windows
 
-- Create the required `.env` files by duplicating the example files:
-  `./.env.example`
-  `./environment/local/.env.example`
-- In ./environment/local/.env, update the POSTGRES_DATA_DIR variable to point to the location where you want your Postgres database files to be stored.
+     You need to activate the virtual environment again every time you open a new terminal. When it is active, its name is shown in brackets at the start of the terminal line.
 
-- Ensure you have the docker desktop app running and then run these commands to set-up docker for this environment:
-  `cd ./environment/local`
-  `docker-compose up -d`
+- Install the requirements (from the root directory of the repository):
 
-- Install the requirements.
+  `python -m pip install -r requirements.txt`
 
-`python -m pip install -r requirements.txt` # From the root directory
+#### Database
 
-### **Running The Tests**
+The engine stores the data it validates in a PostgreSQL database while it runs. You don't need to install PostgreSQL yourself: choose one of these two options.
 
-From the root of the project run the following command (this will run both the unit and regression tests):
-
-`python -m pytest tests`
+- **Option A: temporary database (simplest)**. Nothing needs to be set up: when the engine finds no `DATABASE_*` settings (in the environment or in a `./.env` file), it creates a temporary database for each run and deletes it at the end. You can also force this with the `-mem` flag, e.g. after setting up Option B.
+- **Option B: Docker**. Use this if you run many validations or want the database to keep running between runs.
+  1. Install and start the [Docker Desktop](https://www.docker.com/products/docker-desktop/) app.
+  2. Create the two required `.env` files by copying the example files and removing `.example` from the copy's name:
+     `./.env.example` → `./.env`
+     `./environment/local/.env.example` → `./environment/local/.env`
+  3. In `./environment/local/.env`, change `POSTGRES_DATA_DIR` to the folder where the database files should be stored (any empty folder on your computer).
+  4. The `DATABASE_*` variables in `./.env` tell the engine how to connect to the database and must match the `POSTGRES_*` values in `./environment/local/.env` (the example files already match, so you can leave them as they are).
+  5. Start the database:
+     `cd ./environment/local`
+     `docker-compose up -d`
+     then go back to the root of the repository (`cd ../..`). The database keeps running in Docker Desktop until you stop it there.
+  6. From now on, the engine uses this database, because `./.env` contains the `DATABASE_*` settings. It must be running whenever you run a validation (or add `-mem` to use a temporary database instead).
 
 ### **Running a validation**
+
+Validations run on this fork's SQL engine by default, so no extra flag is needed.
+
+> **NOTE:** adding the `--cdisc` flag runs the validation with the pandas engine originally developed by CDISC, which is still included in this repository. This part of the engine is not maintained in this fork, so the rest of this documentation doesn't cover it. To validate rules with the pandas engine, use the upstream [CDISC Rules Engine repository](https://github.com/cdisc-org/cdisc-rules-engine) instead, where it is maintained.
 
 #### From the command line
 
@@ -148,14 +111,12 @@ Run `python core.py validate --help` to see the list of validation options.
 ```
   -ca, --cache TEXT               Relative path to cache files containing pre
                                   loaded metadata and rules
-  -ps, --pool-size INTEGER         Number of parallel processes for validation
   -d, --data TEXT                 Path to directory containing data files
   -ft, --filetype [sas7bdat|xpt]  Only validate dataset files with this extension,
                                   e.g. when the data directory holds both XPT and SAS7BDAT.
                                   With the SQL engine (the default), files in other formats
                                   (e.g. Dataset-JSON) are skipped with a warning.
   -dp, --dataset-path TEXT        Absolute path to dataset file. Can be specified multiple times.
-  -dxp, --define-xml-path TEXT    Path to Define-XML
   -l, --log-level [info|debug|error|critical|disabled|warn]
                                   Sets log level for engine logs, logs are
                                   disabled by default
@@ -177,43 +138,67 @@ Run `python core.py validate --help` to see the list of validation options.
                                   relative to the validation execution directory
                                   and should end in the desired output filename
                                   without file extension
-                                  '/user/reports/result' will be 'user/report' directory
+                                  '/user/reports/result' will be 'user/reports' directory
                                   with the filename as 'result'
   -of, --output-format [JSON|XLSX]
-                                  Output file format
+                                  Output file format. Can be specified multiple times.
   -rr, --raw-report               Report in a raw format as it is generated by
                                   the engine. This flag must be used only with
                                   --output-format JSON.
-  -dv, --define-version TEXT      Define-XML version used for validation
-  -dxp, --define-xml-path         Path to define-xml file.
-  -vx, --validate-xml             Enable XML validation (default 'y' to enable, otherwise disable)
+  -dv, --define-version [2-1|2-0|2.0|2.1]
+                                  Define-XML version used for validation
   --whodrug TEXT                  Path to directory with WHODrug dictionary
                                   files
   --meddra TEXT                   Path to directory with MedDRA dictionary
                                   files
-  --loinc TEXT                  Path to directory with LOINC dictionary
+  --loinc TEXT                    Path to directory with LOINC dictionary
                                   files
-  --medrt TEXT                  Path to directory with MEDRT dictionary
+  --medrt TEXT                    Path to directory with MEDRT dictionary
                                   files
-  --unii TEXT                  Path to directory with UNII dictionary
+  --unii TEXT                     Path to directory with UNII dictionary
                                   files
-  --snomed-version TEXT        Version of snomed to use. (ex. 2024-09-01)
-  --snomed-url TEXT            Base url of snomed api to use. (ex. https://snowstorm.snomedtools.org/snowstorm/snomed-ct)
-  --snomed-edition TEXT        Edition of snomed to use. (ex. SNOMEDCT-US)
+  --snomed TEXT                   Path to directory with SNOMED dictionary
+                                  files
   -r, --rules TEXT                Specify rule core ID ex. CORE-000001. Can be specified multiple times.
-  -lr, --local_rules TEXT         Specify relative path to directory or file containing
+  -lr, --local_rules PATH         Specify relative path to directory or file containing
                                   local rule yml and/or json rule files.
-  -cs, --custom_standard       Adding this flag tells engine to use a custom standard specified with -s and -v
+  -cs, --custom_standard          Adding this flag tells engine to use a custom standard specified with -s and -v
                                   that has been uploaded to the cache using update-cache
-  -vo, --verbose-output           Specify this option to print rules as they
-                                  are completed
-  -p, --progress [verbose_output|disabled|percents|bar]
+  -p, --progress [bar|verbose_output|percents|disabled]
                                   Defines how to display the validation
                                   progress. By default a progress bar like
                                   "[████████████████████████████--------]
-                                  78%"is printed.
+                                  78%"is printed. verbose_output prints rules
+                                  as they are completed.
+  -dxp, --define-xml-path TEXT    Path to Define-XML
+  -stf, --stf-file-path TEXT      Path to STF file
+  --cdisc                         Run validation using the CDISC (pandas)
+                                  engine instead of the default SQL engine
+                                  (not maintained in this fork, see the
+                                  note above)
+  -ns, --sql-namespace TEXT       A prefix for all tables in the database when
+                                  using the SQL engine
+  -mem, --in-memory-postgres      Run validation using an in-memory Postgres
+                                  instance. Used automatically when no
+                                  DATABASE_* settings are found in the
+                                  environment or .env file.
+  --max-errors-per-dataset INTEGER
+                                  The most issues a rule reports per dataset
+                                  (per source file of a split dataset), with
+                                  the message saying how many there were in
+                                  total. [default: 50000]
+  --collapse-duplicate-issues     When a rule's message applies to every
+                                  record in a dataset, collapse those rows in
+                                  the Excel report into a single row with the
+                                  record numbers shown as a range (e.g.
+                                  '1-500'), instead of one row per record.
   --help                          Show this message and exit.
 ```
+
+- `-s` and `-v` are the standard and its version, with the version written with a dash instead of a dot (e.g. `-s sdtmig -v 3-4` for SDTMIG 3.4).
+- `-ns` (`--sql-namespace`) sets the prefix used for the database tables (default `uid`).
+- XPT and SAS7BDAT files can be mixed in the same run.
+- By default the report is written to the folder you run the command from, as an Excel (XLSX) file named `CORE-Report-<date and time>`; use `-o` and `-of` to change this.
 
 ##### Available log levels
 
@@ -222,14 +207,15 @@ Run `python core.py validate --help` to see the list of validation options.
 - `warn` - Display warnings and errors
 - `error` - Display only error logs
 - `critical` - Display critical logs
+- `disabled` - Disable engine logs (default)
 
 ##### **Validate folder**
 
-To validate a folder using rules for SDTM-IG version 3.4 use the following command:
+To validate all the datasets in a folder using rules for SDTM-IG version 3.4, use the following command (the database is chosen as described in [Database](#database)):
 
 `python core.py validate -s sdtmig -v 3-4 -d path/to/datasets`
 
-**_NOTE:_** Before running a validation in the CLI, you must first populate the cache with rules to validate against. See the update-cache command below.
+**_NOTE:_** The rules, controlled terminology and other standards metadata are read from the cache in `resources/cache`, which is included in the repository. To refresh it with the latest data from the CDISC Library, see the update-cache command below.
 
 ##### **Validate single rule**
 
@@ -266,11 +252,11 @@ The rules report tab displays the run status of each rule selected for validatio
 The possible rule run statuses are:
 
 - `SUCCESS` - The rule ran and data was validated against the rule. May or may not produce results
-- `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be cause by rule execution errors.
+- `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be caused by rule execution errors. A rule that needs an input that wasn't given (a define.xml with `-dxp`, a study tagging file with `-stf`, or an external dictionary such as `--meddra`) is skipped with a message starting with `Not applicable: requires`.
 
-# Additional Core Commands
+## Additional Core Commands
 
-**- update-cache** - update locally stored cache data (Requires an environment variable - `CDISC_LIBRARY_API_KEY`) This is stored in the .env folder in the root directory, the API key does not need quotations around it.
+**- update-cache** - update locally stored cache data (Requires an environment variable - `CDISC_LIBRARY_API_KEY`, or the `--apikey` option) This is stored in the `.env` file in the root directory, the API key does not need quotations around it.
 
 ```bash
   python core.py update-cache
@@ -280,14 +266,26 @@ The possible rule run statuses are:
 
 To obtain an api key, please follow the instructions found here: <https://wiki.cdisc.org/display/LIBSUPRT/Getting+Started%3A+Access+to+CDISC+Library+API+using+API+Key+Authentication>. Please note it can take up to an hour after sign up to have an api key issued
 
-# Custom Standards and Rules
+**- version** - print the version of the engine:
 
-## Custom Rules Management
+```bash
+python core.py version
+```
+
+**- list-dataset-metadata** - list the metadata (domain, filename, full path, file size, label, modification date) of the given datasets:
+
+```bash
+python core.py list-dataset-metadata -dp path/to/ae.xpt -dp path/to/ex.xpt
+```
+
+## Custom Standards and Rules
+
+### Custom Rules Storage
 
 - **Custom rules** are stored in a flat file in the cache, indexed by their core ID (e.g., 'COMPANY-000123' or 'CUSTOM-000123').
 - Each rule is stored independently in this file, allowing for efficient lookup and management.
 
-## Custom Standards Management
+### Custom Standards Management
 
 - **Custom standards** act as a lookup mechanism that maps a standard identifier to a list of applicable rule IDs.
 - When adding a custom standard, you need to provide a JSON file with the following structure:
@@ -333,13 +331,13 @@ To obtain an api key, please follow the instructions found here: <https://wiki.c
 
   This rule will get metadata from SDTMIG version 3.4 but utilize the custom rules listed in the custom standard that need this library metadata.
 
-## Relationship Between Custom Rules and Standards
+### Relationship Between Custom Rules and Standards
 
 - You should first add your custom rules to the cache, then create a custom standard that references those rules.
 - Custom standards can reference both core CDISC rules and your own custom rules in the same standard definition.
 - This two-level architecture allows for flexible rule reuse across multiple standards.
 
-## Custom Rules Management
+### Custom Rules Management
 
 - **Add custom rules**: Use the `--custom_rules_directory` or `-crd` flag to specify a directory containing local rules, or `--custom_rule` or `-cr` flag to specify a single rule file:
   ```bash
@@ -359,7 +357,7 @@ To obtain an api key, please follow the instructions found here: <https://wiki.c
   python core.py update-cache --remove_custom_rules ALL
   ```
 
-## List Rules
+## List Commands
 
 **- list-rules** - list published rules available in the cache
 
@@ -385,7 +383,7 @@ To obtain an api key, please follow the instructions found here: <https://wiki.c
   python core.py list-rules --custom_rules
   ```
 
-- List custom rules with a specific ID:
+- List custom rules for a custom standard:
   ```bash
   python core.py list-rules --custom_rules -s custom_standard -v 1-0
   ```
@@ -424,71 +422,15 @@ Options:
   --help                 Show this message and exit.
 ```
 
-## PyPI Integration
+## Development
 
-The CDISC Rules Engine is available as a Python package through PyPI. This allows you to:
-
-- Import the rules engine library directly into your Python projects
-- Validate data without requiring .xpt format files
-- Integrate rules validation into your existing data pipelines
-
-```python
-pip install cdisc-rules-engine
-```
-
-For implementation instructions, see [PYPI.md](PYPI.md).
-
-### **Creating an executable version**
-
-**Linux**
-
-`pyinstaller core.py --add-data=venv/lib/python3.12/site-packages/xmlschema/schemas:xmlschema/schemas --add-data=resources/cache:resources/cache --add-data=resources/templates:resources/templates`
-
-**Windows**
-
-`pyinstaller core.py --add-data=".venv/Lib/site-packages/xmlschema/schemas;xmlschema/schemas" --add-data="resources/cache;resources/cache" --add-data="resources/templates;resources/templates"`
-
-_Note .venv should be replaced with path to python installation or virtual environment_
-
-This will create an executable version in the `dist` folder. The version does not require having Python installed and
-can be launched by running `core` script with all necessary CLI arguments.
-
-### **Creating .whl file**
-
-All non-python files should be listed in `MANIFEST.in` to be included in the distribution.
-Files must be in python package.
-
-**Unix/MacOS**
-
-`python3 -m pip install --upgrade build`
-`python3 -m build`
-
-To install from dist folder
-`pip3 install {path_to_file}/cdisc_rules_engine-{version}-py3-none-any.whl`
-
-To upload built distributive to pypi
-
-`python3 -m pip install --upgrade twine`
-`python3 -m twine upload --repository {repository_name} dist/*`
-
-**Windows(Untested)**
-
-`py -m pip install --upgrade build`
-`py -m build`
-
-To install from dist folder
-`pip install {path_to_file}/cdisc_rules_engine-{version}-py3-none-any.whl`
-
-To upload built distributive to pypi
-
-`py -m pip install --upgrade twine`
-`py -m twine upload --repository {repository_name} dist/*`
+If you want to change the engine itself (code formatting, running the tests, building an executable or a package), see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Submit an Issue
 
 If you encounter any bugs, have feature requests, or need assistance, please submit an issue on our GitHub repository:
 
-[https://github.com/cdisc-org/cdisc-rules-engine/issues](https://github.com/cdisc-org/cdisc-rules-engine/issues)
+[https://github.com/verisianHQ/cdisc-rules-engine/issues](https://github.com/verisianHQ/cdisc-rules-engine/issues)
 
 When submitting an issue, please include:
 
