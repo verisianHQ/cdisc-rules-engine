@@ -183,17 +183,17 @@ class BaseReport(ABC):
     @staticmethod
     def _get_rule_status(validation_result) -> str:
         """
-        ISSUE_REPORTED if any dataset raised issues, else EXECUTION_ERROR if any dataset
-        failed to run, else SUCCESS if any dataset ran, else SKIPPED.
+        Rule takes the highest-priority status among them:
+        EXECUTION_ERROR > ISSUE_REPORTED > SUCCESS > SKIPPED.
         """
         results = [result for result in validation_result.results or [] if isinstance(result, dict)]
         statuses = {result.get("executionStatus") for result in results}
+        if ExecutionStatus.EXECUTION_ERROR.value in statuses:
+            return ExecutionStatus.EXECUTION_ERROR.value
         if any(
             result.get("errors") for result in results if result.get("executionStatus") == ExecutionStatus.SUCCESS.value
         ):
             return ExecutionStatus.ISSUE_REPORTED.value
-        if ExecutionStatus.EXECUTION_ERROR.value in statuses:
-            return ExecutionStatus.EXECUTION_ERROR.value
         if validation_result.execution_status == ExecutionStatus.SUCCESS.value:
             return ExecutionStatus.SUCCESS.value
         return ExecutionStatus.SKIPPED.value

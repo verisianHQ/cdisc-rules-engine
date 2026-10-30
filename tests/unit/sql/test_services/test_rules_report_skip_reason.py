@@ -98,15 +98,29 @@ def test_a_rule_that_failed_reports_execution_error_with_only_the_errors_as_reas
     assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator (AE)"
 
 
-def test_execution_error_outranks_success_when_no_issues_were_raised():
+def test_execution_error_outranks_success():
     result = succeeded("CORE-000001")
     result.results.append(errored("ae.xpt"))
     assert report(result).get_rules_report_data()[0][-2] == "EXECUTION ERROR"
 
 
-def test_issues_outrank_an_execution_error_on_another_dataset():
+def test_execution_error_outranks_issues_on_another_dataset():
     result = succeeded("CORE-000001", errors=[{"row": 1}])
     result.results.append(errored("ae.xpt"))
     rows = report(result).get_rules_report_data()
-    assert rows[0][-2] == "ISSUE REPORTED"
+    assert rows[0][-2] == "EXECUTION ERROR"
+    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator (AE)"
+
+
+def test_issues_outrank_success_on_another_dataset():
+    result = succeeded("CORE-000001", errors=[{"row": 1}])
+    result.results.append({"executionStatus": ExecutionStatus.SUCCESS.value, "message": None, "errors": []})
+    assert report(result).get_rules_report_data()[0][-2] == "ISSUE REPORTED"
+
+
+def test_success_outranks_skipped_datasets():
+    result = succeeded("CORE-000001")
+    result.results.append(skipped_dataset("lb"))
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2] == "SUCCESS"
     assert rows[0][-1] == ""
