@@ -18,9 +18,33 @@ from cdisc_rules_engine.models.dataset_metadata2 import (
     VariableMetadata,
 )
 from cdisc_rules_engine.readers.data_readers.base_data_reader import BaseDataReader
+from cdisc_rules_engine.services import logger
 
 _TRAILING_WHITESPACE = " \t\n\r\v\f"
 _TRAILING_NUL = "\x00"
+XPT_CARD_LENGTH = 80
+
+
+class _XportReader(XportReader):
+    """
+    Overrides pandas XportReader to produce a corrected record count.
+    """
+
+    def _record_count(self) -> int:
+        buffer = self.filepath_or_buffer
+        buffer.seek(0, 2)
+        total_length = buffer.tell() - self.record_start
+        if total_length % XPT_CARD_LENGTH != 0:
+            logger.warning(f"xport file may be corrupted: {self.filepath_or_buffer.name}")
+        count = total_length // self.record_length
+        padding_start = total_length - XPT_CARD_LENGTH
+        while count > 0 and (count - 1) * self.record_length > padding_start:
+            buffer.seek(self.record_start + (count - 1) * self.record_length)
+            if buffer.read(self.record_length).strip(b" "):
+                break
+            count -= 1
+        buffer.seek(self.record_start)
+        return count
 
 
 @dataclass(frozen=True)
@@ -50,7 +74,7 @@ class XptDataReader(BaseDataReader):
         self._layout: Optional[_XptLayout] = None
 
     def read(self) -> Tuple[DatasetMetadata2, Iterable[pa.Table]]:
-        self._reader = XportReader(self.file_path, encoding=None, chunksize=self.CHUNKSIZE)
+        self._reader = _XportReader(self.file_path, encoding=None, chunksize=self.CHUNKSIZE)
         metadata = self._extract_metadata(self._reader)
         self._layout = self._build_layout(self._reader, metadata)
         self._reader.close()
