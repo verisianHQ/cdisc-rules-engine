@@ -223,7 +223,8 @@ class BaseReport(ABC):
             if match:
                 reason, dataset = match["reason"], match["dataset"].upper()
             elif is_error:
-                detail = next((error.get("error") for error in result.get("errors") or [] if error.get("error")), None)
+                error = next((error for error in result.get("errors") or [] if error.get("error")), {})
+                detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
                 reason = f"{reason}: {detail}" if detail else reason
                 dataset = BaseReport._display_dataset_name(result.get("dataset"))
             datasets = datasets_by_reason.setdefault(reason, [])

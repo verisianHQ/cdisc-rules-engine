@@ -95,7 +95,7 @@ def test_a_rule_that_failed_reports_execution_error_with_only_the_errors_as_reas
     result = FakeResult("CORE-000001", ExecutionStatus.SKIPPED.value, [errored("ae.xpt"), skipped_dataset("lb")])
     rows = report(result).get_rules_report_data()
     assert rows[0][-2] == "EXECUTION ERROR"
-    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator (AE)"
+    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE)"
 
 
 def test_execution_error_outranks_success():
@@ -109,7 +109,7 @@ def test_execution_error_outranks_issues_on_another_dataset():
     result.results.append(errored("ae.xpt"))
     rows = report(result).get_rules_report_data()
     assert rows[0][-2] == "EXECUTION ERROR"
-    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator (AE)"
+    assert rows[0][-1] == "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE)"
 
 
 def test_issues_outrank_success_on_another_dataset():
