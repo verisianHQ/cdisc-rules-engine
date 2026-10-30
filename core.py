@@ -44,6 +44,7 @@ def valid_data_file(
 ) -> Tuple[list, set, list]:
     known_formats = {format.value for format in DataFormatTypes}
     allowed_formats = SQL_DATA_FORMATS if sql_engine else known_formats
+    data_path = [file for file in data_path if not os.path.basename(file).startswith("._")]
     if filetype:
         data_path = [file for file in data_path if os.path.splitext(file)[1][1:].upper() == filetype.upper()]
     found_formats = set()
@@ -351,7 +352,7 @@ def validate(  # noqa: C901
     if raw_report is True:
         if not (len(output_format) == 1 and output_format[0] == ReportTypes.JSON.value):
             logger.error("Flag --raw-report can be used only when --output-format is JSON")
-            ctx.exit()
+            ctx.exit(1)
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 
@@ -377,14 +378,14 @@ def validate(  # noqa: C901
     if data:
         if dataset_path:
             logger.error("Argument --dataset-path cannot be used together with argument --data")
-            ctx.exit()
+            ctx.exit(1)
         candidate_paths = [str(Path(data).joinpath(fn)) for fn in os.listdir(data)]
     elif dataset_path:
         candidate_paths = list(dataset_path)
     else:
         logger.error("You must pass one of the following arguments: --dataset-path, --data")
         # no need to define dataset_paths here, the program execution will stop
-        ctx.exit()
+        ctx.exit(1)
     dataset_paths, found_formats, unsupported_paths = valid_data_file(
         candidate_paths, sql_engine=sql_engine, filetype=filetype
     )

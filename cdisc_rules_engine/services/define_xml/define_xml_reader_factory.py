@@ -19,6 +19,8 @@ from cdisc_rules_engine.services.define_xml.base_define_xml_reader import (
 )
 from cdisc_rules_engine.utilities.utils import get_directory_path
 
+_DEFINE_VERSION_2_1_PATCH = compile(r"2\.1\.\d+")
+
 
 class DefineXMLReaderFactory:
     """
@@ -81,11 +83,11 @@ class DefineXMLReaderFactory:
     def _normalise_define_version(root: ElementTree.Element, define_xml_version) -> Optional[str]:
         attribute = f"{{{define_xml_version.namespace}}}DefineVersion"
         mdv = root.find("Study/MetaDataVersion", namespaces={"": ODM_NAMESPACE})
-        version = mdv.get(attribute) if mdv is not None else None
-        if not version or version == "2.1.0" or not version.startswith("2.1."):
+        version = (mdv.get(attribute) or "").strip() if mdv is not None else ""
+        if not _DEFINE_VERSION_2_1_PATCH.fullmatch(version):
             return None
         mdv.set(attribute, "2.1.0")
-        return version
+        return None if version == "2.1.0" else version
 
     @classmethod
     def _get_define_xml_reader(cls, root: ElementTree.Element) -> BaseDefineXMLReader:

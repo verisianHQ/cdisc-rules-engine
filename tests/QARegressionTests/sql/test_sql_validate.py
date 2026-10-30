@@ -512,7 +512,7 @@ class TestValidate(unittest.TestCase):
             f"-l error"
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         self.assertFalse(self.error_keyword in stdout)
         self.assertFalse(self.error_keyword in stdout)
         expected_pattern = (
@@ -536,7 +536,7 @@ class TestValidate(unittest.TestCase):
             f"-v 3.4 "
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         expected_pattern = (
             r"\[error \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} - "
             r"core\.py:\d+\] - you must pass one of the following arguments: "

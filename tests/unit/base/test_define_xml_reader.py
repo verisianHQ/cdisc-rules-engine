@@ -62,6 +62,29 @@ def test_define_version_patch_ignores_comments(as_bytes):
     assert reader.get_define_version() == "2.1.7"
 
 
+@pytest.mark.parametrize(
+    "define_version, expected",
+    [("2.1.10", "2.1.10"), ("2.1", "2.1"), (" 2.1.7", "2.1.7"), ("2.1.7 ", "2.1.7"), ("2.1.0 ", "2.1.0")],
+)
+def test_define_version_2_1_variants(define_version, expected):
+    contents = test_define_file_path.read_text().replace(
+        'def:DefineVersion="2.1.0"', f'def:DefineVersion="{define_version}"'
+    )
+    reader = DefineXMLReaderFactory.from_file_contents(contents)
+    assert reader.get_define_version() == expected
+    assert reader.get_ct_version()
+
+
+@pytest.mark.parametrize("define_version", ["2.1.x", "2.2.0"])
+def test_define_version_not_2_1_patch_is_rejected(define_version):
+    contents = test_define_file_path.read_text().replace(
+        'def:DefineVersion="2.1.0"', f'def:DefineVersion="{define_version}"'
+    )
+    reader = DefineXMLReaderFactory.from_file_contents(contents)
+    with pytest.raises(Exception, match="DefineVersion"):
+        reader.get_define_version()
+
+
 def test_read_define_xml():
     """
     Unit test for DefineXMLReader.read function.

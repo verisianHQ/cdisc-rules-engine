@@ -1,5 +1,7 @@
 import os
 import re
+import shutil
+import tempfile
 import unittest
 
 import openpyxl
@@ -510,7 +512,7 @@ class TestValidate(unittest.TestCase):
             f"-l error"
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         self.assertFalse(self.error_keyword in stdout)
         self.assertFalse(self.error_keyword in stdout)
         expected_pattern = (
@@ -534,7 +536,7 @@ class TestValidate(unittest.TestCase):
             f"-v 3.4 "
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         expected_pattern = (
             r"\[error \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} - "
             r"core\.py:\d+\] - you must pass one of the following arguments: "
@@ -613,6 +615,16 @@ class TestValidate(unittest.TestCase):
         exit_code, stdout, stderr = run_command(args, True)
         self.assertEqual(exit_code, 0)
         self.assertTrue(stderr == "")
+
+    def test_validate_mixed_formats_exits_with_error(self):
+        data_dir = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, data_dir, ignore_errors=True)
+        shutil.copy(os.path.join("tests", "resources", "datasets", "ae.xpt"), data_dir)
+        shutil.copy(os.path.join("tests", "resources", "datasets", "TS.json"), data_dir)
+        args = ["python", "core.py", "validate", "--cdisc", "-s", "sdtmig", "-v", "3.4", "-d", data_dir]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 1)
+        self.assertIn("the dataset files are in more than one format (json, xpt)", stderr)
 
     def tearDown(self):
         tearDown()
