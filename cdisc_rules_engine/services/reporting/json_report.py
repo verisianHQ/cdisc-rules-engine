@@ -114,5 +114,6 @@ class JsonReport(BaseReport):
             dictionary_versions=dictionary_versions,
             substandard=(self._args.substandard if hasattr(self._args, "substandard") else None),
         )
+        self._create_output_dir()
         with open(self._output_name, "w") as f:
             json.dump(report_data, f)

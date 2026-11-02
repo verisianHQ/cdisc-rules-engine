@@ -143,7 +143,7 @@ class TestValidate(unittest.TestCase):
             "-o",
             "output.json",
             "-of",
-            "csv",
+            "xml",
         ]
         exit_code, stdout, stderr = run_command(args, False)
 

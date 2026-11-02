@@ -174,6 +174,9 @@ class BaseReport(ABC):
             key=lambda x: x[0] if (self._item_type == "list") else x["core_id"],
         )
 
+    def _create_output_dir(self):
+        Path(self._output_name).parent.mkdir(parents=True, exist_ok=True)
+
     @staticmethod
     def _display_dataset_name(filename: Optional[str]) -> Optional[str]:
         """
