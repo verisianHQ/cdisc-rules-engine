@@ -2,6 +2,277 @@
   "$id": "Operations.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "required": ["attribute_name"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "define_variable_metadata",
+              "get_countries",
+              "label_referenced_variable_metadata",
+              "name_referenced_variable_metadata"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["case_sensitive"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["define_extended_terms_in_ct", "intersect", "minus"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["codelist"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["get_countries"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["ct_attribute"]
+          },
+          {
+            "required": ["ct_conditions"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["get_codelist_attributes"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["ct_package_types"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["valid_codelist_dates"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["domain_class"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["standard_domains"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["external_dictionary_type"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "get_define_external_dictionary_version",
+              "get_external_dictionary_version"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["filter"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "distinct",
+              "max",
+              "max_date",
+              "mean",
+              "min",
+              "min_date",
+              "record_count",
+              "split"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["group"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "distinct",
+              "max",
+              "max_date",
+              "mean",
+              "min",
+              "min_date",
+              "record_count"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["ignore_empty_filtered_groups"]
+          },
+          {
+            "required": ["regex"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "max",
+              "max_date",
+              "mean",
+              "min",
+              "min_date",
+              "record_count"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "anyOf": [
+          {
+            "required": ["key_name"]
+          },
+          {
+            "required": ["key_value"]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "get_column_order_from_library",
+              "get_model_filtered_variables"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["subtract"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["intersect", "minus"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["use_rule_type_table"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": [
+              "max",
+              "max_date",
+              "mean",
+              "min",
+              "min_date",
+              "record_count",
+              "variable_is_null"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["value"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["calc"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["version"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["define_extended_terms_in_ct", "get_codelist_attributes"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": ["regex"]
+      },
+      "then": {
+        "required": ["name"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "name": {
+            "type": "array"
+          }
+        },
+        "required": ["name"]
+      },
+      "then": {
+        "properties": {
+          "operator": {
+            "enum": ["intersect", "minus"]
+          }
+        }
+      }
+    }
+  ],
   "anyOf": [
     {
       "properties": {
@@ -21,7 +292,7 @@
           "$ref": "MetaVariables.json"
         }
       },
-      "required": ["id", "operator", "attribute_name"],
+      "required": ["id", "operator", "attribute_name", "name"],
       "type": "object"
     },
     {
@@ -64,6 +335,16 @@
       "properties": {
         "operator": {
           "const": "extract_metadata"
+        },
+        "name": {
+          "description": "dataset_name / dataset_size describe the dataset itself; the others are read from the IG library's domain metadata",
+          "enum": [
+            "dataset_name",
+            "dataset_size",
+            "datasetStructure",
+            "description",
+            "label"
+          ]
         }
       },
       "required": ["id", "operator", "name"],
@@ -184,6 +465,10 @@
       "properties": {
         "operator": {
           "const": "get_external_dictionary_version"
+        },
+        "external_dictionary_type": {
+          "description": "WHODrug versions are not available",
+          "enum": ["meddra", "medrt", "loinc", "snomed", "unii"]
         }
       },
       "required": ["id", "operator", "external_dictionary_type"],
@@ -193,9 +478,12 @@
       "properties": {
         "operator": {
           "const": "label_referenced_variable_metadata"
+        },
+        "attribute_name": {
+          "enum": ["core", "label", "name", "ordinal", "role", "simpleDatatype"]
         }
       },
-      "required": ["id", "operator", "name"],
+      "required": ["id", "operator", "attribute_name", "name"],
       "type": "object"
     },
     {
@@ -265,9 +553,12 @@
       "properties": {
         "operator": {
           "const": "name_referenced_variable_metadata"
+        },
+        "attribute_name": {
+          "enum": ["core", "label", "name", "ordinal", "role", "simpleDatatype"]
         }
       },
-      "required": ["id", "operator", "name"],
+      "required": ["id", "operator", "attribute_name", "name"],
       "type": "object"
     },
     {
@@ -375,7 +666,7 @@
           "const": "variable_exists"
         }
       },
-      "required": ["id", "operator"],
+      "required": ["id", "operator", "name"],
       "type": "object"
     },
     {
@@ -399,7 +690,19 @@
   ],
   "properties": {
     "attribute_name": {
-      "type": "string"
+      "anyOf": [
+        {
+          "$ref": "MetaVariables.json"
+        },
+        {
+          "enum": ["country_name", "alpha_2", "alpha_3"],
+          "description": "get_countries attribute"
+        },
+        {
+          "description": "Library variable attribute (label_ / name_referenced_variable_metadata)",
+          "enum": ["core", "label", "name", "ordinal", "role", "simpleDatatype"]
+        }
+      ]
     },
     "case_sensitive": {
       "type": "boolean"
@@ -408,6 +711,19 @@
       "type": "string"
     },
     "ct_attribute": {
+      "enum": [
+        "Standard Type",
+        "Version Date",
+        "Term CCODE",
+        "Codelist Code",
+        "Extensible",
+        "Codelist Name",
+        "Term Signification",
+        "Synonyms",
+        "Definition",
+        "Term",
+        "Standard and Date"
+      ],
       "type": "string"
     },
     "ct_conditions": {
@@ -456,6 +772,23 @@
         },
         {
           "$ref": "CORE-base.json#/$defs/DataStructure"
+        },
+        {
+          "enum": [
+            "cg_taugs",
+            "ex_loinc",
+            "ex_meddra",
+            "ex_medrt",
+            "ex_snomed",
+            "ex_unii",
+            "ex_whodrug",
+            "fda_submission_standards",
+            "global_value_check",
+            "ig_codelists",
+            "ig_datasets",
+            "ig_variables"
+          ],
+          "description": "Engine helper table, or the table built by the Global Value Check rule type"
         }
       ]
     },
@@ -482,7 +815,7 @@
       "type": "array"
     },
     "id": {
-      "type": "string"
+      "$ref": "CORE-base.json#/$defs/OperationResultId"
     },
     "ignore_empty_filtered_groups": {
       "type": "boolean"
@@ -515,7 +848,8 @@
           },
           "type": "array"
         }
-      ]
+      ],
+      "description": "Target variable. minus / intersect also accept a list of literal values"
     },
     "operator": {
       "type": "string"
@@ -534,7 +868,8 @@
           },
           "type": "array"
         }
-      ]
+      ],
+      "description": "Variable, list of literal values or previous operation result to compare against"
     },
     "use_rule_type_table": {
       "type": "boolean"
