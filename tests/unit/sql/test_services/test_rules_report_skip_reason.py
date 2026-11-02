@@ -86,9 +86,9 @@ def test_reasons_recorded_per_dataset_are_grouped_by_reason():
         )
     ).get_rules_report_data()
     assert rows[0][-1] == (
+        "rule execution error; "
         "Rule skipped - doesn't apply to domain (LB, QS); "
-        "Rule skipped - doesn't apply to class (AE); "
-        "rule execution error"
+        "Rule skipped - doesn't apply to class (AE)"
     )
 
 
@@ -188,7 +188,7 @@ def test_a_skip_that_hit_every_in_scope_dataset_does_not_list_them():
         ]
         + [skipped_dataset("lb")],
     )
-    assert report(result).get_rules_report_data()[0][-1] == (f"Rule skipped - doesn't apply to domain (LB); {reason}")
+    assert report(result).get_rules_report_data()[0][-1] == (f"{reason}; Rule skipped - doesn't apply to domain (LB)")
 
 
 def test_a_skip_on_the_only_in_scope_dataset_still_names_it():
@@ -196,5 +196,5 @@ def test_a_skip_on_the_only_in_scope_dataset_still_names_it():
         "CORE-000001", ExecutionStatus.SKIPPED.value, [missing_variable("ae.xpt"), skipped_dataset("lb")]
     )
     assert report(result).get_rules_report_data()[0][-1] == (
-        "Rule skipped - doesn't apply to domain (LB); Rule skipped - variables not in dataset: AESER (AE)"
+        "Rule skipped - variables not in dataset: AESER (AE); Rule skipped - doesn't apply to domain (LB)"
     )

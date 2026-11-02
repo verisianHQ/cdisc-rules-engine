@@ -215,7 +215,7 @@ class BaseReport(ABC):
         """
         if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
             return ""
-        reasons = {"errors": {}, "issues": {}, "out_of_scope": {}, "skips": {}}
+        reasons = {"errors": {}, "issues": {}, "skips": {}, "out_of_scope": {}}
         in_scope = set()
         for result in validation_result.results or []:
             if not isinstance(result, dict):

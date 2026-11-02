@@ -258,7 +258,14 @@ The possible rule run statuses are:
 
 A rule runs on each dataset separately, so its datasets can end up with different statuses. The rule then shows the highest-priority one: `EXECUTION ERROR` > `ISSUE REPORTED` > `SUCCESS` > `SKIPPED`.
 
-The `Reason` column within the 'Rules Report' of the report explains `SKIPPED` and `EXECUTION ERROR` rules, naming the affected datasets in brackets. For an `EXECUTION ERROR` it lists the errors first, then any datasets where issues were reported, then any skips that weren't simply the dataset being out of the rule's scope.
+The `Reason` column within the 'Rules Report' of the report explains `SKIPPED` and `EXECUTION ERROR` rules, naming the affected datasets in brackets. Reasons are listed in this order:
+
+1. Execution errors, e.g. `SQL operator execution error: ... (AE)`
+2. Datasets where issues were reported, as `Issues reported (DM)`
+3. Skips with a cause, such as a missing variable or a missing define.xml
+4. Datasets out of the rule's scope, e.g. `Rule skipped - doesn't apply to domain (LB, QS)`. These are only shown for `SKIPPED` rules; next to an error they're left out.
+
+A skip with a cause names the datasets it hit, unless it hit every one of several in-scope datasets (e.g. a define.xml missing for the whole study), in which case the list is left out because it would add nothing.
 
 ## Additional Core Commands
 
