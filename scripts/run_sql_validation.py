@@ -10,6 +10,7 @@ import click
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.enums.progress_parameter_options import ProgressParameterOptions
 from cdisc_rules_engine.models.library_metadata_container import (
     LibraryMetadataContainer,
@@ -18,6 +19,7 @@ from cdisc_rules_engine.models.rule_conditions import ConditionCompositeFactory
 from cdisc_rules_engine.models.rule_validation_result import RuleValidationResult
 from cdisc_rules_engine.models.sql_rule import SQLRule
 from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.models.validation_error_container import ValidationErrorContainer
 from cdisc_rules_engine.services import logger as engine_logger
 from cdisc_rules_engine.services.reporting import BaseReport, ReportFactory
 from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
@@ -80,7 +82,10 @@ def sql_validate_single_rule(
 ):
     if not SQLRuleProcessor.valid_rule_structure(rule):
         engine_logger.error(f"Invalid rule structure: {rule}")
-        return RuleValidationResult(rule, [])
+        invalid = ValidationErrorContainer(
+            status=ExecutionStatus.EXECUTION_ERROR.value, message="Invalid rule structure"
+        ).to_representation()
+        return RuleValidationResult(rule, [invalid])
 
     rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
     # call rule engine; a rule that needs an input the user didn't supply is reported as not applicable

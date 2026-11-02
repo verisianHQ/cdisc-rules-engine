@@ -98,14 +98,32 @@ def test_a_rule_that_raised_issues_is_issue_reported():
     assert rows[0][-1] == ""
 
 
-def test_a_rule_that_failed_lists_the_errors_before_the_skipped_datasets():
-    result = FakeResult("CORE-000001", ExecutionStatus.SKIPPED.value, [skipped_dataset("lb"), errored("ae.xpt")])
+def test_a_rule_that_failed_lists_the_errors_before_the_skips_but_not_out_of_scope_datasets():
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [
+            skipped_dataset("lb"),
+            {"executionStatus": ExecutionStatus.SKIPPED.value, "message": "Rule skipped - variables not in dataset"},
+            errored("ae.xpt"),
+        ],
+    )
     rows = report(result).get_rules_report_data()
     assert rows[0][-2] == "EXECUTION ERROR"
     assert rows[0][-1] == (
         "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE); "
-        "Rule skipped - doesn't apply to domain (LB)"
+        "Rule skipped - variables not in dataset"
     )
+
+
+def test_an_invalid_rule_is_reported_as_an_execution_error():
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [{"executionStatus": ExecutionStatus.EXECUTION_ERROR.value, "message": "Invalid rule structure", "errors": []}],
+    )
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2:] == ["EXECUTION ERROR", "Invalid rule structure"]
 
 
 def test_execution_error_outranks_success():

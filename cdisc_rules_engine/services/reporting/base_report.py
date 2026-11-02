@@ -203,6 +203,7 @@ class BaseReport(ABC):
         """
         SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list the errors
         first, then the datasets that reported issues, then the skip reasons.
+        Datasets that are simply out of the rule's scope are left out there.
         """
         if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
             return ""
@@ -220,7 +221,8 @@ class BaseReport(ABC):
                 continue
             match = _PER_DATASET_SKIP_REASON.match(reason)
             if match:
-                BaseReport._add_reason(skips, match["reason"], match["dataset"].upper())
+                if status == ExecutionStatus.SKIPPED.value:
+                    BaseReport._add_reason(skips, match["reason"], match["dataset"].upper())
             elif result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value:
                 error = next((error for error in result.get("errors") or [] if error.get("error")), {})
                 detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
