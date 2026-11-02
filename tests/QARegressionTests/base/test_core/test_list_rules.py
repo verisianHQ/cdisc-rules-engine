@@ -1,5 +1,6 @@
 import json
 import os
+import tempfile
 from core import list_rules
 from QARegressionTests.base.test_core.test_utils import tearDown
 
@@ -39,6 +40,12 @@ class TestListRules(unittest.TestCase):
         output = json.loads(result.output)
         self.assertIsInstance(output, list)
         self.assertTrue(all(isinstance(rule, dict) for rule in output))
+
+    def test_list_rules_custom_without_custom_rules(self):
+        with tempfile.TemporaryDirectory() as cache_path:
+            result = self.runner.invoke(list_rules, ["-c", cache_path, "-cr"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(json.loads(result.output), [])
 
     def tearDown(self):
         tearDown()

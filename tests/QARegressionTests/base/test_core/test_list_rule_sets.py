@@ -1,4 +1,5 @@
 import os
+import tempfile
 from core import list_rule_sets
 import unittest
 from click.testing import CliRunner
@@ -26,6 +27,12 @@ class TestListRuleSets(unittest.TestCase):
         self.assertIn("SDTMIG, 3-3", result.output)
         self.assertIn("SDTMIG, 3-4", result.output)
         self.assertIn("SENDIG, 3-1", result.output)
+
+    def test_list_rule_sets_custom_without_custom_rules(self):
+        with tempfile.TemporaryDirectory() as cache_path:
+            result = self.runner.invoke(list_rule_sets, ["-c", cache_path, "-o"])
+        self.assertEqual(result.exit_code, 0)
+        self.assertEqual(result.output, "")
 
     def tearDown(self):
         tearDown()
