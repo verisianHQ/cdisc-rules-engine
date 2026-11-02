@@ -2,7 +2,7 @@ import re
 from abc import ABC, abstractmethod
 from io import IOBase
 from pathlib import Path
-from typing import List, Optional, Union, Iterable
+from typing import List, Optional, Tuple, Union, Iterable
 
 from openpyxl import Workbook
 
@@ -210,35 +210,59 @@ class BaseReport(ABC):
         SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list the errors
         first, then the datasets that reported issues, then the skip reasons.
         Datasets that are simply out of the rule's scope are left out there.
+        A skip reason names its datasets unless it hit every in-scope dataset (e.g. a missing define.xml),
+        where the list would add nothing.
         """
         if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
             return ""
-        errors, issues, skips = {}, {}, {}
+        reasons = {"errors": {}, "issues": {}, "out_of_scope": {}, "skips": {}}
+        in_scope = set()
         for result in validation_result.results or []:
             if not isinstance(result, dict):
                 continue
-            dataset = BaseReport._display_dataset_name(result.get("dataset"))
-            if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
-                if result.get("errors"):
-                    BaseReport._add_reason(issues, "Issues reported", dataset)
-                continue
-            reason = result.get("message")
-            if not reason:
-                continue
-            match = _PER_DATASET_SKIP_REASON.match(reason)
-            if match:
-                if status == ExecutionStatus.SKIPPED.value:
-                    BaseReport._add_reason(skips, match["reason"], match["dataset"].upper())
-            elif result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value:
-                error = next((error for error in result.get("errors") or [] if error.get("error")), {})
-                detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
-                BaseReport._add_reason(errors, f"{reason}: {detail}" if detail else reason, dataset)
-            else:
-                BaseReport._add_reason(skips, reason, None)
+            part, reason, dataset = BaseReport._reason_entry(result)
+            if dataset and part != "out_of_scope":
+                in_scope.add(dataset)
+            if part:
+                BaseReport._add_reason(reasons[part], reason, dataset)
+        for reason, datasets in reasons["skips"].items():
+            if in_scope <= set(datasets):
+                reasons["skips"][reason] = []
+        if status == ExecutionStatus.EXECUTION_ERROR.value:
+            reasons["out_of_scope"] = {}
+        return BaseReport._join_reasons({key: value for part in reasons.values() for key, value in part.items()})
+
+    @staticmethod
+    def _reason_entry(result: dict) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+        """
+        Returns which part of the Reason column a dataset's result belongs to
+        ("errors", "issues", "out_of_scope", "skips" or None), with its reason and dataset.
+        """
+        dataset = BaseReport._display_dataset_name(result.get("dataset"))
+        reason = result.get("message")
+        if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
+            return ("issues" if result.get("errors") else None), "Issues reported", dataset
+        if not reason:
+            return None, None, dataset
+        match = _PER_DATASET_SKIP_REASON.match(reason)
+        if match:
+            return "out_of_scope", match["reason"], match["dataset"].upper()
+        if result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value:
+            return "errors", BaseReport._error_reason(result, reason), dataset
+        return "skips", reason, dataset
+
+    @staticmethod
+    def _join_reasons(datasets_by_reason: dict) -> str:
         return "; ".join(
             f"{reason} ({', '.join(datasets)})" if datasets else reason
-            for reason, datasets in {**errors, **issues, **skips}.items()
+            for reason, datasets in datasets_by_reason.items()
         )
+
+    @staticmethod
+    def _error_reason(result: dict, reason: str) -> str:
+        error = next((error for error in result.get("errors") or [] if error.get("error")), {})
+        detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
+        return f"{reason}: {detail}" if detail else reason
 
     @staticmethod
     def _add_reason(datasets_by_reason: dict, reason: str, dataset: Optional[str]) -> None:
