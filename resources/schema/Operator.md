@@ -62,6 +62,8 @@
 
 In the examples below, `value_is_literal: true` is set wherever `value` is a literal string or a list of literal strings. The engine treats a string `value` (or each string in a list) as a column name unless `value_is_literal: true` is set, and the condition returns False if no such column exists. This does not apply to numbers, `$` operation variables or the regular expression operators, whose `value` is always a pattern. The condition is also False when `name`, `within` or `ordering` is not a column or a `$` operation variable (except for `exists`), and all of this applies to the negated operators too (e.g. `non_empty`, `is_not_contained_by`).
 
+Every condition needs a `name`. Optional keys such as `prefix`, `within`, `regex` or `case_insensitive` are only accepted on the operators that read them, as described in each operator's section; `prefix` and `suffix` are also accepted by `is_contained_by` and its variants. `value_is_literal`, `value_is_reference` and `variable_regex_pattern` are accepted on every operator.
+
 A condition can set `variable_regex_pattern: true` to make `name` a regular expression (Python syntax) matched against whole variable names. The rule is then run once for each matching variable of the dataset. Named groups such as `(?P<root>...)` can be used elsewhere in the rule as `{{root}}`. If no variable matches, the condition is False.
 
 > For each variable whose name starts with AGE, the value contains 55
