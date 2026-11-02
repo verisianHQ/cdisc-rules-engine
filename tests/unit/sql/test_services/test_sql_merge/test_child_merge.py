@@ -9,7 +9,7 @@ from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
-from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, MatchDatasetNotFoundError
 
 SIMPLE_RDOMAIN_DATA = {
     "child": {
@@ -264,6 +264,25 @@ def test_child_merge_child_naming_no_parent_is_unchanged(sdtm_standards_context,
     )
 
     assert result_schema is child_schema
+
+
+def test_child_merge_missing_match_key(sdtm_standards_context):
+    """A non-relational child without one of the match keys can't be merged, so the rule is skipped."""
+    ds = PostgresQLDataService.instance()
+
+    child_data = {"STUDYID": ["S1"], "RDOMAIN": ["AE"], "USUBJID": ["U1"]}
+    parent_data = {"STUDYID": ["S1"], "USUBJID": ["U1"], "AESEQ": ["1"]}
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "child", child_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", parent_data, sdtm_standards_context)
+
+    with pytest.raises(ColumnNotFoundError, match="Column 'AESEQ' not found in table 'child'"):
+        SqlChildMerge.perform_merge(
+            pgi=ds.pgi,
+            child=child_schema,
+            child_domain="CHILD",
+            datasets=ds.datasets,
+            merge_spec={"match_key": ["USUBJID", "AESEQ"]},
+        )
 
 
 def test_child_merge_unmatched_child_rows(sdtm_standards_context):

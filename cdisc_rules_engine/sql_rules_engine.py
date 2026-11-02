@@ -23,6 +23,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     DomainNotFoundInDefineXMLError,
     MatchDatasetNotFoundError,
     FailedSchemaValidation,
+    InvalidMatchKeyError,
     RuleFormatError,
     VariableMetadataNotFoundError,
     ColumnNotFoundError,
@@ -57,6 +58,12 @@ def clean_postgres_message(message: str) -> str:
     elif "invalid input syntax" in message:
         return "invalid input syntax"
     return message
+
+
+def sorted_exception_message(exception: Exception) -> str:
+    """Sort the exception's comma-separated message; tolerates a missing or non-string first arg."""
+    message = str(exception.args[0]) if exception.args else ""
+    return ", ".join(sorted(message.split(", ")))
 
 
 class SQLRulesEngine:
@@ -362,6 +369,13 @@ class SQLRulesEngine:
                 message=exception.message,
             )
             message = "rule execution error"
+        elif isinstance(exception, InvalidMatchKeyError):
+            error_obj = FailedValidationEntity(
+                dataset=name,
+                error=InvalidMatchKeyError.description,
+                message=exception.message,
+            )
+            message = "rule execution error"
         elif isinstance(exception, AssertionError):
             error_obj = FailedValidationEntity(
                 dataset=name,
@@ -383,7 +397,7 @@ class SQLRulesEngine:
                 status=ExecutionStatus.SKIPPED.value,
             )
         elif isinstance(exception, KeyError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error="Column not found in data",
@@ -391,7 +405,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, DomainNotFoundInDefineXMLError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=DomainNotFoundInDefineXMLError.description,
@@ -399,7 +413,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, VariableMetadataNotFoundError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=VariableMetadataNotFoundError.description,
@@ -408,7 +422,7 @@ class SQLRulesEngine:
             message = "rule execution error"
         elif isinstance(exception, FailedSchemaValidation):
             if self.validate_xml:
-                message = ", ".join(sorted(exception.args[0].split(", ")))
+                message = sorted_exception_message(exception)
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     error=FailedSchemaValidation.description,
@@ -476,12 +490,11 @@ class SQLRulesEngine:
         elif isinstance(exception, ValueError):
             error_message = str(exception)
 
-            schema_pattern = r"Column\s+(\w+)\s+or\s+(\w+)\s+not found in the respective schemas"
-            match = re.search(schema_pattern, error_message, re.IGNORECASE)
+            column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
+            match = re.search(column_pattern, error_message, re.IGNORECASE)
 
             if match:
                 column_name = match.group(1).upper()
-
                 error_obj = FailedValidationEntity(
                     dataset=name,
                     error="Column not found in data",
@@ -489,24 +502,12 @@ class SQLRulesEngine:
                 )
                 message = "rule execution error"
             else:
-                column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
-                match = re.search(column_pattern, error_message, re.IGNORECASE)
-
-                if match:
-                    column_name = match.group(1).upper()
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Column not found in data",
-                        message=column_name,
-                    )
-                    message = "rule execution error"
-                else:
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Validation error",
-                        message=error_message,
-                    )
-                    message = "rule execution error"
+                error_obj = FailedValidationEntity(
+                    dataset=name,
+                    error="Validation error",
+                    message=error_message,
+                )
+                message = "rule execution error"
         else:
             error_obj = FailedValidationEntity(
                 dataset=name,
