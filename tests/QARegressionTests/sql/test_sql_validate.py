@@ -681,7 +681,7 @@ class TestValidate(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertIn("skipping files the sql engine can't read", stderr)
         self.assertIn("ts.json", stderr)
-        self.assertEqual([d["filename"] for d in self.json_report()["Dataset_Details"]], ["ae.xpt"])
+        self.assertEqual([d["filename"] for d in self.json_report()["Dataset_Details"]], ["AE"])
 
     def test_sql_validate_mixed_xpt_and_sas7bdat(self):
         args = [
@@ -704,13 +704,11 @@ class TestValidate(unittest.TestCase):
         exit_code, stdout, stderr = run_command(args, False)
         self.assertEqual(exit_code, 0)
         self.assertEqual(stderr, "")
-        self.assertEqual(
-            sorted(d["filename"] for d in self.json_report()["Dataset_Details"]), ["adsl.sas7bdat", "ae.xpt"]
-        )
+        self.assertEqual(sorted(d["filename"] for d in self.json_report()["Dataset_Details"]), ["ADSL", "AE"])
 
     def test_sql_validate_filetype(self):
         data_dir = self.data_dir(AE_XPT, ADSL_SAS7BDAT)
-        for filetype, expected in (("xpt", "ae.xpt"), ("SAS7BDAT", "adsl.sas7bdat")):
+        for filetype, expected in (("xpt", "AE"), ("SAS7BDAT", "ADSL")):
             with self.subTest(filetype=filetype):
                 args = [
                     "python",
