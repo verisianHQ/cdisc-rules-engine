@@ -59,6 +59,12 @@ def clean_postgres_message(message: str) -> str:
     return message
 
 
+def sorted_exception_message(exception: Exception) -> str:
+    """Sort the exception's comma-separated message; tolerates a missing or non-string first arg."""
+    message = str(exception.args[0]) if exception.args else ""
+    return ", ".join(sorted(message.split(", ")))
+
+
 class SQLRulesEngine:
     def __init__(
         self,
@@ -390,7 +396,7 @@ class SQLRulesEngine:
                 status=ExecutionStatus.SKIPPED.value,
             )
         elif isinstance(exception, KeyError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error="Column not found in data",
@@ -398,7 +404,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, DomainNotFoundInDefineXMLError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=DomainNotFoundInDefineXMLError.description,
@@ -406,7 +412,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, VariableMetadataNotFoundError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=VariableMetadataNotFoundError.description,
@@ -415,7 +421,7 @@ class SQLRulesEngine:
             message = "rule execution error"
         elif isinstance(exception, FailedSchemaValidation):
             if self.validate_xml:
-                message = ", ".join(sorted(exception.args[0].split(", ")))
+                message = sorted_exception_message(exception)
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     error=FailedSchemaValidation.description,

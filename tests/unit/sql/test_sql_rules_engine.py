@@ -1,3 +1,5 @@
+import pytest
+
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -51,3 +53,16 @@ def test_missing_match_key_skips_but_typo_fails():
             "message": "Match key USUBID is not a variable in any dataset in the study",
         }
     ]
+
+
+@pytest.mark.parametrize(
+    "exception, expected",
+    [(KeyError("B, A"), "A, B"), (KeyError(None), "None"), (KeyError(), "")],
+)
+def test_key_error_without_a_string_message_is_reported_not_raised(exception, expected):
+    engine = SQLRulesEngine.__new__(SQLRulesEngine)
+
+    result = engine.handle_validation_exceptions(exception, "ae.xpt")
+
+    assert result.status == ExecutionStatus.EXECUTION_ERROR.value
+    assert result.errors[0].to_representation()["message"] == expected
