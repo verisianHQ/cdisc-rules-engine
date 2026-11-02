@@ -21,6 +21,7 @@ from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.metadata.store import DEFINE_VARIABLES_TYPE, LIBRARY_VARIABLES_TYPE
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+from cdisc_rules_engine.sql_operations.get_codelist_attributes import ct_versions_clause
 
 VALUES_WITH_VARIABLE_METADATA = {
     "row_number": "Num",
@@ -265,6 +266,8 @@ def _codelist_lookups(context: SourceContext, ccodes: set) -> Dict[str, tuple]:
     """
     ccode -> (its terms as a text array, name, value).
     Two queries total, instead of per variable.
+    Only the library CT versions in use count: the define's extended values (standard_type NULL)
+    are the sponsor's additions, not terms of the codelist.
     """
     ccodes = {ccode for ccode in ccodes if ccode}
     if not ccodes:
@@ -278,13 +281,18 @@ def _codelist_lookups(context: SourceContext, ccodes: set) -> Dict[str, tuple]:
         return {}
 
     in_list = ", ".join(literal(ccode) for ccode in sorted(ccodes))
+    library = "standard_type IS NOT NULL"
+    versions = ct_versions_clause(context.data_service.provided_codelists, "standard_type", "version_date")
+    if versions:
+        library += f" AND {versions}"
     pgi.execute_sql(
-        f"SELECT codelist_code, CAST(ARRAY_AGG(value) AS TEXT) AS terms FROM {table} "
-        f"WHERE codelist_code <> '' AND codelist_code IN ({in_list}) GROUP BY codelist_code"
+        f"SELECT codelist_code, CAST(ARRAY_AGG(value ORDER BY value) AS TEXT) AS terms FROM {table} "
+        f"WHERE {library} AND codelist_code <> '' AND codelist_code IN ({in_list}) GROUP BY codelist_code"
     )
     terms = {row["codelist_code"]: row["terms"] for row in pgi.fetch_all()}
     pgi.execute_sql(
-        f"SELECT DISTINCT ON (item_code) item_code, name, value FROM {table} WHERE item_code IN ({in_list})"
+        f"SELECT DISTINCT ON (item_code) item_code, name, value FROM {table} "
+        f"WHERE {library} AND item_code IN ({in_list})"
     )
     entries = {row["item_code"]: (row["name"], row["value"]) for row in pgi.fetch_all()}
     return {

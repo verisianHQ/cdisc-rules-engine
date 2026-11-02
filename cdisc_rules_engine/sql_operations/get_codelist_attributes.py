@@ -19,6 +19,27 @@ _COLUMN_MAP = {
 }
 
 
+def ct_versions_clause(ct_versions, std_type_col: str, version_date_col: str) -> Optional[str]:
+    """
+    Restricts codelist rows to the given CT packages (e.g. "sdtmct-2024-03-29", or a bare version date).
+    None when no packages are given, i.e. every loaded package is in use.
+    """
+    ct_list = sorted(ct_versions) if isinstance(ct_versions, (list, set)) else [ct_versions]
+    or_conditions = []
+    for ct in ct_list:
+        if not isinstance(ct, str):
+            continue
+        ct_type, version = ct.split("ct-", 1) if "ct-" in ct else (None, ct)
+        and_conditions = []
+        if ct_type:
+            and_conditions.append(f"{std_type_col} = '{ct_type}'")
+        if version:
+            and_conditions.append(f"{version_date_col} = '{version}'")
+        if and_conditions:
+            or_conditions.append(f"({' AND '.join(and_conditions)})")
+    return f"({' OR '.join(or_conditions)})" if or_conditions else None
+
+
 class SqlGetCodelistAttributesOperation(SqlBaseOperation):
     """
     Retrieves a list of codelist attributes (e.g. Term CCODEs) for a specific
@@ -111,10 +132,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         std_type_col: str,
         version_date_col: str,
     ) -> Optional[str]:
-        fallback_clause = None
-        if fallback_versions:
-            ct_list = sorted(fallback_versions) if isinstance(fallback_versions, (list, set)) else [fallback_versions]
-            fallback_clause = self._build_clauses(self._parse_versions(ct_list), std_type_col, version_date_col)
+        fallback_clause = ct_versions_clause(fallback_versions, std_type_col, version_date_col)
         if not ct_version_column:
             return fallback_clause
         record_version = "TRIM(CAST($ct_version AS TEXT))"
@@ -132,27 +150,3 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             return fallback_clause
         known_version = f"{record_version} IN ({', '.join(repr(version) for version in loaded_versions)})"
         return f"(CASE WHEN {known_version} THEN {record_clause} ELSE {fallback_clause} END)"
-
-    def _parse_versions(self, ct_list: list) -> list:
-        provided_cts = []
-        for ct in ct_list:
-            if isinstance(ct, str):
-                if "ct-" in ct:
-                    parts = ct.split("ct-")
-                    provided_cts.append({"type": parts[0], "version": parts[1]})
-                else:
-                    provided_cts.append({"type": None, "version": ct})
-        return provided_cts
-
-    def _build_clauses(self, provided_cts: list, std_type_col: str, version_date_col: str) -> str:
-        or_conditions = []
-        for ct in provided_cts:
-            and_conditions = []
-            if ct["type"]:
-                and_conditions.append(f"{std_type_col} = '{ct['type']}'")
-            if ct["version"]:
-                and_conditions.append(f"{version_date_col} = '{ct['version']}'")
-            if and_conditions:
-                or_conditions.append(f"({' AND '.join(and_conditions)})")
-
-        return f"({' OR '.join(or_conditions)})" if or_conditions else "TRUE"
