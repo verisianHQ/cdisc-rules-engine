@@ -32,9 +32,7 @@ class CsvReport(BaseReport):
     def _file_format(self) -> str:
         return ReportTypes.CSV.value.lower()
 
-    def get_export(
-        self, define_version=None, cdiscCt=None, standard=None, version=None, dictionary_versions={}, **kwargs
-    ):
+    def get_export(self, define_version=None, cdiscCt=None, standard=None, version=None, **kwargs):
         rows = []
         for issue in self.get_detailed_data():
             dataset = self._display_dataset_name(issue.get("dataset")) or ""
