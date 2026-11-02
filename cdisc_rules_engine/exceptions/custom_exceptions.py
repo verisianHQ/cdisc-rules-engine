@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class EngineError(Exception):
     """All custom API Exceptions"""
 
@@ -81,7 +84,7 @@ class SqlOperatorError(Exception):
 
 
 class ColumnNotFoundError(Exception):
-    def __init__(self, column_name: str, table_id: str = None, message: str = None):
+    def __init__(self, column_name: str, table_id: Optional[str] = None, message: Optional[str] = None):
         self.column_name = column_name
         self.table_id = table_id
 
@@ -94,3 +97,9 @@ class ColumnNotFoundError(Exception):
 
         self.message = exception_message
         super().__init__(exception_message)
+
+
+class DatabaseConnectionError(Exception):
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)

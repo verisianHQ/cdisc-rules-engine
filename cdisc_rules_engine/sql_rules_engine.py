@@ -1,12 +1,15 @@
 import re
 import traceback
 from copy import deepcopy
-from typing import Callable, List, Union
+from typing import Callable, List, Tuple, Union
 
-from business_rules import export_rule_data
-from business_rules.engine import run
+from psycopg2 import Error as PostgresError
 from psycopg2.errors import ProgrammingError
 
+from cdisc_rules_engine.compiler.compiler import CompiledQuery, RuleQueryCompiler
+from cdisc_rules_engine.compiler.conditions import ConditionCompiler
+from cdisc_rules_engine.compiler.sources import rule_source
+from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -19,6 +22,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     DomainNotFoundError,
     DomainNotFoundInDefineXMLError,
     FailedSchemaValidation,
+    InvalidMatchKeyError,
     RuleFormatError,
     VariableMetadataNotFoundError,
     ColumnNotFoundError,
@@ -28,22 +32,20 @@ from cdisc_rules_engine.models.failed_validation_entity import FailedValidationE
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import (
     ConditionCompositeFactory,
 )
-from cdisc_rules_engine.models.sql_venmo_object import SqlVenmoObject
-from cdisc_rules_engine.models.sql_venmo_result_handler import (
-    SqlVenmoResultHandler,
-)
+from cdisc_rules_engine.models.sql_result_handler import SqlResultHandler
 from cdisc_rules_engine.models.validation_error_container import (
     ValidationErrorContainer,
 )
 from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.sql_dataset_builders import sql_builder_factory
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlOperationError
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
 from cdisc_rules_engine.standards.base_standards_context import BaseStandardsContext
-from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
-from cdisc_rules_engine.utilities.utils import (
-    serialize_rule,
+from cdisc_rules_engine.utilities.rule_progress import (
+    DisabledRuleProgressReporter,
+    RuleProgressPhase,
+    RuleProgressReporter,
 )
+from cdisc_rules_engine.utilities.sql_rule_processor import SQLRuleProcessor
 
 
 def clean_postgres_message(message: str) -> str:
@@ -57,25 +59,38 @@ def clean_postgres_message(message: str) -> str:
     return message
 
 
+def sorted_exception_message(exception: Exception) -> str:
+    """Sort the exception's comma-separated message; tolerates a missing or non-string first arg."""
+    message = str(exception.args[0]) if exception.args else ""
+    return ", ".join(sorted(message.split(", ")))
+
+
 class SQLRulesEngine:
     def __init__(
         self,
         data_service: PostgresQLDataService,
         standards_context: BaseStandardsContext,
+        progress_reporter: RuleProgressReporter = None,
+        max_errors_per_dataset: int = MAX_ERRORS_PER_DATASET,
     ):
         self.data_service = data_service
         self.standards_context = standards_context
+        self.progress_reporter = progress_reporter or DisabledRuleProgressReporter()
+        self.max_errors_per_dataset = max_errors_per_dataset
 
-    def get_schema(self):
-        return export_rule_data(SqlVenmoObject, SqlVenmoResultHandler)
-
-    def sql_validate_single_rule(self, rule: dict):
+    def sql_validate_single_rule(self, rule: dict, not_applicable_reason: str = None):
+        """
+        Runs the rule against every uploaded dataset in its scope. If not_applicable_reason is given
+        (e.g. the rule needs a define.xml that wasn't supplied), the rule isn't run and each dataset
+        in scope is reported as skipped with that reason.
+        """
         results = {}
+        self.progress_reporter.set_phase(RuleProgressPhase.PARSING)
         rule["conditions"] = ConditionCompositeFactory.get_condition_composite(rule["conditions"])
         is_study_sensitivity = rule.get("sensitivity") == Sensitivity.STUDY.value
         study_error_already_reported = False
 
-        # Collect all dataset metadata for builders that need it (e.g., DomainListDatasetBuilder)
+        # Collect all dataset metadata for rule types that read every dataset (e.g. Domain Presence Check)
         all_datasets = [
             self.data_service.get_dataset_metadata(ds_id) for ds_id in self.data_service.get_uploaded_dataset_ids()
         ]
@@ -91,7 +106,17 @@ class SQLRulesEngine:
                     None,
                 ),
             )
-            if is_suitable:
+            if is_suitable and not_applicable_reason:
+                results[dataset_metadata.name] = self._containers_per_reported_file(
+                    dataset_metadata,
+                    lambda filename: ValidationErrorContainer(
+                        status=ExecutionStatus.SKIPPED.value,
+                        message=not_applicable_reason,
+                        dataset=filename,
+                        domain=dataset_metadata.domain,
+                    ),
+                )
+            elif is_suitable:
                 if is_study_sensitivity and study_error_already_reported:
                     results[dataset_metadata.name] = self._containers_per_reported_file(
                         dataset_metadata,
@@ -193,19 +218,10 @@ class SQLRulesEngine:
     ) -> List[Union[dict, str]]:
         """
         This function is an entrypoint for rule validation.
-        It uses the sql_builder_factory to get the correct data source
-        and then executes the rule against it.
+        It gets the rows the rule's type checks and then executes the rule against them.
         """
-        builder = sql_builder_factory.get_service(
-            rule_type=rule.get("rule_type"),
-            rule=rule,
-            data_service=self.data_service,
-            dataset_metadata=dataset_metadata,
-            datasets=datasets,
-            standards_context=self.standards_context,
-        )
-
-        dataset_id = builder.get_dataset_id()
+        self.progress_reporter.set_phase(RuleProgressPhase.EXECUTING)
+        dataset_id = rule_source(rule, self.data_service, dataset_metadata, self.standards_context, datasets)
 
         return self.execute_rule(rule, dataset_metadata, dataset_id)
 
@@ -247,29 +263,86 @@ class SQLRulesEngine:
             standards_context=self.standards_context,
         )
 
-        # Translator between venmo and the check operators
-        venmo_object = SqlVenmoObject(
-            dataset_id=dataset_id,
-            data_service=self.data_service,
-            column_prefix_map={"--": dataset_metadata.domain},
-            operation_variables=operation_variables,
-            dataset_metadata=dataset_metadata,
+        compiler = RuleQueryCompiler(
+            rule_copy,
+            self.data_service,
+            dataset_metadata,
+            dataset_id,
+            operation_variables,
+            target_rule=rule,
+            max_errors=self.max_errors_per_dataset,
         )
+        compiled, rows = self._failing_rows(compiler)
 
         results = []
-        run(
-            serialize_rule(rule_copy),
-            defined_variables=venmo_object,
-            defined_actions=SqlVenmoResultHandler(
-                results,
-                dataset_metadata=dataset_metadata,
-                rule=rule,
-                data_service=self.data_service,
-                dataset_id=dataset_id,
-                operation_variables=operation_variables,
-            ),
-        )
+        SqlResultHandler(
+            results,
+            dataset_metadata=dataset_metadata,
+            rule=rule,
+            data_service=self.data_service,
+            dataset_id=dataset_id,
+            operation_variables=operation_variables,
+        ).report(compiled, rows)
         return results
+
+    def _failing_rows(self, compiler: RuleQueryCompiler) -> Tuple[CompiledQuery, List[dict]]:
+        """
+        Run the compiled rule and return a tuple of the query that actually ran and its rows.
+        First try selects operation outputs inside the query. If the cursor rejects that then we
+        recompile without them and let the result handler evaluate them per row. This is ARGUABLY
+        slower, but it's what the old engine did anyway. A failure with nothing inlined is a
+        real error in one of the checks.
+        """
+        compiled = compiler.compile()
+        try:
+            return compiled, self._fetch(compiled.sql)
+        except PostgresError as error:
+            if not compiled.inline_outputs:
+                self._raise_for_failing_check(error, compiler)
+                raise
+            logger.warning(
+                f"Rule {compiler.rule.get('core_id')} on {compiler.dataset_metadata.name}: operation outputs "
+                f"could not be selected in the query, evaluating them per row: {str(error).strip()}"
+            )
+
+        compiled = compiler.compile(inline_outputs=False)
+        try:
+            return compiled, self._fetch(compiled.sql)
+        except PostgresError as error:
+            self._raise_for_failing_check(error, compiler)
+            raise
+
+    def _fetch(self, sql: str) -> List[dict]:
+        self.progress_reporter.set_phase(RuleProgressPhase.EXECUTING)
+        self.data_service.pgi.execute_sql(sql, log_errors=False)
+        rows = self.data_service.pgi.fetch_all()
+        self.progress_reporter.set_phase(RuleProgressPhase.EVALUATING)
+        return rows
+
+    def _raise_for_failing_check(self, error: PostgresError, compiler: RuleQueryCompiler) -> None:
+        """
+        The whole rule is one statement so a pg query error doesn't say which check broke it annoyingly.
+        Sooooo... we re-run the checks one at a time and blame the first one that fails.
+        This way the user sees "error in operator A" rather than a wall of generated sql.
+        If every check runs fine alone (e.g. it's the combination, or the reporting part of the
+        query), this just logs and returns, and the caller re-raises the original error.
+        """
+        rule, dataset_metadata, dataset_id = compiler.rule, compiler.dataset_metadata, compiler.dataset_id
+        operation_variables = compiler.operation_variables
+        table_hash = self.data_service.pgi.schema.get_table_hash(dataset_id)
+        for condition in rule["conditions"].values():
+            operator = condition.get("operator")
+            compiled = ConditionCompiler(
+                self.data_service, dataset_id, dataset_metadata, operation_variables
+            ).compile_condition(operator, condition.get("value", {}))
+            try:
+                self.data_service.pgi.execute_sql(
+                    f"SELECT COUNT(*) AS count FROM {compiled.from_clause(table_hash)} WHERE {compiled.where}",
+                    log_errors=False,
+                )
+            except PostgresError as e:
+                raise SqlOperatorError(original_exception=e, operator_name=operator) from error
+        logger.error(f"Compiled query for rule {rule.get('core_id')} on {dataset_metadata.name} failed: {error}")
 
     # def get_define_xml_value_level_metadata(self, dataset_path: str, domain_name: str) -> List[dict]:
     #     """
@@ -295,6 +368,13 @@ class SQLRulesEngine:
                 message=exception.message,
             )
             message = "rule execution error"
+        elif isinstance(exception, InvalidMatchKeyError):
+            error_obj = FailedValidationEntity(
+                dataset=name,
+                error=InvalidMatchKeyError.description,
+                message=exception.message,
+            )
+            message = "rule execution error"
         elif isinstance(exception, AssertionError):
             error_obj = FailedValidationEntity(
                 dataset=name,
@@ -316,7 +396,7 @@ class SQLRulesEngine:
                 status=ExecutionStatus.SKIPPED.value,
             )
         elif isinstance(exception, KeyError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error="Column not found in data",
@@ -324,7 +404,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, DomainNotFoundInDefineXMLError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=DomainNotFoundInDefineXMLError.description,
@@ -332,7 +412,7 @@ class SQLRulesEngine:
             )
             message = "rule execution error"
         elif isinstance(exception, VariableMetadataNotFoundError):
-            message = ", ".join(sorted(exception.args[0].split(", ")))
+            message = sorted_exception_message(exception)
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error=VariableMetadataNotFoundError.description,
@@ -341,7 +421,7 @@ class SQLRulesEngine:
             message = "rule execution error"
         elif isinstance(exception, FailedSchemaValidation):
             if self.validate_xml:
-                message = ", ".join(sorted(exception.args[0].split(", ")))
+                message = sorted_exception_message(exception)
                 error_obj: ValidationErrorContainer = ValidationErrorContainer(
                     status=ExecutionStatus.SKIPPED.value,
                     error=FailedSchemaValidation.description,
@@ -406,12 +486,11 @@ class SQLRulesEngine:
         elif isinstance(exception, ValueError):
             error_message = str(exception)
 
-            schema_pattern = r"Column\s+(\w+)\s+or\s+(\w+)\s+not found in the respective schemas"
-            match = re.search(schema_pattern, error_message, re.IGNORECASE)
+            column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
+            match = re.search(column_pattern, error_message, re.IGNORECASE)
 
             if match:
                 column_name = match.group(1).upper()
-
                 error_obj = FailedValidationEntity(
                     dataset=name,
                     error="Column not found in data",
@@ -419,24 +498,12 @@ class SQLRulesEngine:
                 )
                 message = "rule execution error"
             else:
-                column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
-                match = re.search(column_pattern, error_message, re.IGNORECASE)
-
-                if match:
-                    column_name = match.group(1).upper()
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Column not found in data",
-                        message=column_name,
-                    )
-                    message = "rule execution error"
-                else:
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Validation error",
-                        message=error_message,
-                    )
-                    message = "rule execution error"
+                error_obj = FailedValidationEntity(
+                    dataset=name,
+                    error="Validation error",
+                    message=error_message,
+                )
+                message = "rule execution error"
         else:
             error_obj = FailedValidationEntity(
                 dataset=name,

@@ -1,8 +1,8 @@
 import re
+import traceback
 
-from business_rules.fields import FIELD_DATAFRAME
-from business_rules.operators import BaseType, type_operator
 from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME
+from cdisc_rules_engine.exceptions.custom_exceptions import SqlOperatorError
 from cdisc_rules_engine.services import logger
 
 from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_operator import (
@@ -11,7 +11,6 @@ from cdisc_rules_engine.check_operators.sql.is_valid_whodrug_level_reference_ope
 from cdisc_rules_engine.check_operators.sql.not_operator import NotOperator
 from cdisc_rules_engine.enums.static_tables import StaticTables
 
-from .base_sql_operator import log_operator_execution
 from .conformant_value_data_type_operator import ConformantValueDataTypeOperator
 from .conformant_value_length_operator import ConformantValueLengthOperator
 from .contains_all_operator import ContainsAllOperator
@@ -100,7 +99,7 @@ MEDDRA_PAIR_MAP = {
 }
 
 
-class PostgresQLOperators(BaseType):
+class PostgresQLOperators:
     """
     Main SQL operators class with dynamic method registration.
 
@@ -483,37 +482,35 @@ class PostgresQLOperators(BaseType):
 
         return missing_columns
 
-    @staticmethod
-    def _false_result(operator_instance):
-        return operator_instance._do_check_operator(lambda: "FALSE")
-
-    def __getattr__(self, name):
+    def evaluate(self, operator_name: str, other_value) -> str:
         """
-        Dynamically create and cache an operator method on its first access.
-        Handles both simple operators and wrapped operators.
+        SQL boolean condition for one check over the rule's source rows (aliased co).
+        A missing value (NULL) counts as False.
+        A check on a column the dataset doesn't have is False.
         """
-        if name in self._operator_map:
-            operator_factory = self._operator_map[name]
-            operator_instance = operator_factory(self.data)
+        operator_factory = self._operator_map.get(operator_name)
+        if operator_factory is None:
+            raise ValueError(f"Unknown check operator: {operator_name}")
 
-            # Define the method with the necessary decorators, passing the operator name
-            @log_operator_execution(name)
-            @type_operator(FIELD_DATAFRAME)
-            def operator_method(self, other_value):
-                missing_columns = self._missing_columns_for_operator(name, operator_instance, other_value)
-                if missing_columns:
-                    logger.info(
-                        f"Operator '{name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
-                    )
-                    return self._false_result(operator_instance)
-                return operator_instance.execute_operator(other_value)
+        operator = operator_factory(self.data)
+        try:
+            missing_columns = self._missing_columns_for_operator(operator_name, operator, other_value)
+            if missing_columns:
+                logger.info(
+                    f"Operator '{operator_name}' cannot be executed because the following columns are missing: {missing_columns}"  # noqa
+                )
+                return "FALSE"
+            condition = operator.execute_operator(other_value)
+        except Exception as error:
+            logger.error(f"Error in {operator_name}: {error}, traceback: {traceback.format_exc()}")
+            raise SqlOperatorError(original_exception=error, operator_name=operator_name) from error
 
-            # Cache the new method on the instance
-            bound_method = operator_method.__get__(self, type(self))
-            setattr(self, name, bound_method)
-            return bound_method
-
-        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
+        if condition is None:
+            return "FALSE"
+        # SQL NULL here would otherwise poison the surrounding AND/OR/NOT.
+        # e.g. NOT NULL is still NULL so a negated check on a missing value would never fire.
+        # Hence... we coalesce the condition to FALSE to ensure missing values are treated as not met.
+        return f"COALESCE(({condition}), FALSE)"
 
     def _assert_valid_value_and_cast(self, value):
         """Shared method for value validation and casting."""

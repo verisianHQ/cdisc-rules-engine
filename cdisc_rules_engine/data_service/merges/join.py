@@ -2,8 +2,15 @@ from typing import List, Literal, Optional, Tuple
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, InvalidMatchKeyError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+
+
+def missing_match_key_error(pgi: PostgresQLInterface, key: str, table: SqlTableSchema) -> Exception:
+    if any(schema.source == "data" and schema.has_column(key) for _, schema in pgi.schema.get_tables()):
+        return ColumnNotFoundError(key.upper(), table.dataset_name)
+    return InvalidMatchKeyError(f"Match key {key.upper()} is not a variable in any dataset in the study")
 
 
 class SqlJoinMerge:
@@ -45,8 +52,10 @@ class SqlJoinMerge:
         for l_var, r_var in zip(pivot_left, pivot_right):
             left_column = left.get_column(l_var)
             right_column = right.get_column(r_var)
-            if left_column is None or right_column is None:
-                raise ValueError(f"Column {l_var} or {r_var} not found in the respective schemas.")
+            if left_column is None:
+                raise missing_match_key_error(pgi, l_var, left)
+            if right_column is None:
+                raise missing_match_key_error(pgi, r_var, right)
             # compare numerically when possible (avoiding scientific-notation mismatches)
             # and fall back to text otherwise.
             if left_column.type == right_column.type:

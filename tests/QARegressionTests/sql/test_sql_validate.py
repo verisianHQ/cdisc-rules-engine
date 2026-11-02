@@ -1,15 +1,34 @@
+import json
 import os
 import re
+import shutil
+import tempfile
 import unittest
 
 import openpyxl
 
 from QARegressionTests.base.test_core.test_utils import run_command, tearDown
 
+AE_XPT = os.path.join("tests", "resources", "datasets", "ae.xpt")
+TS_JSON = os.path.join("tests", "resources", "datasets", "TS.json")
+ADSL_SAS7BDAT = os.path.join("tests", "resources", "clinical_data", "sas7bdat", "adam", "adsl.sas7bdat")
+
 
 class TestValidate(unittest.TestCase):
     def setUp(self):
         self.error_keyword = "error"
+        self.tmp_dir = tempfile.mkdtemp()
+
+    def data_dir(self, *files):
+        data_dir = os.path.join(self.tmp_dir, "data")
+        os.makedirs(data_dir, exist_ok=True)
+        for file in files:
+            shutil.copy(file, data_dir)
+        return data_dir
+
+    def json_report(self, name="report"):
+        with open(os.path.join(self.tmp_dir, f"{name}.json")) as f:
+            return json.load(f)
 
     def check_issue_summary_tab_empty(self):
         excel_files = [file for file in os.listdir(".") if file.endswith(".xlsx")]
@@ -39,7 +58,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-v",
             "3.4",
             "-dp",
@@ -55,7 +73,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -73,7 +90,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-dp",
@@ -89,7 +105,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -108,7 +123,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-dp",
             os.path.join("tests", "resources", "test_dataset.xpt"),
             "-s",
@@ -127,7 +141,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-d",
             os.path.join("tests", "resources", "report_test_data"),
         ]
@@ -141,7 +154,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-ca",
             os.path.join("resources", "cache"),
             "-ps",
@@ -184,11 +196,10 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
-            "3.4",
+            "3.3",
             "-dp",
             os.path.join("tests", "resources", "datasets", "ae.xpt"),
             "-lr",
@@ -206,7 +217,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -221,7 +231,7 @@ class TestValidate(unittest.TestCase):
         self.assertFalse(self.error_keyword in stdout)
 
     def test_sql_validate_less_than_minimum_options(self):
-        args = ["python", "core.py", "validate", "-sql", "-s", "sdtmig"]
+        args = ["python", "core.py", "validate", "-s", "sdtmig"]
         exit_code, stdout, stderr = run_command(args, False)
         self.assertNotEqual(exit_code, 0)
         self.assertIn("error: missing option", stderr)
@@ -231,7 +241,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -252,7 +261,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -273,7 +281,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -295,7 +302,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -317,7 +323,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -339,7 +344,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -360,7 +364,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -381,7 +384,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -401,7 +403,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -421,7 +422,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -440,7 +440,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -461,7 +460,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -478,7 +476,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_all_options_one_data_source(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-ca {os.path.join('resources', 'cache')} "
             f"-dp {os.path.join("tests", "resources", "test_dataset.xpt")} "
             f"-lr {os.path.join('tests', 'resources', 'Rule-CG0027.json')} "
@@ -499,7 +497,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_all_options(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-ca {os.path.join('resources', 'cache')} "
             f"-dp {os.path.join('tests', 'resources', 'CG0027-positive.json')} "
             f"-d {os.path.join('tests', 'resources', 'report_test_data')} "
@@ -514,7 +512,7 @@ class TestValidate(unittest.TestCase):
             f"-l error"
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         self.assertFalse(self.error_keyword in stdout)
         self.assertFalse(self.error_keyword in stdout)
         expected_pattern = (
@@ -531,14 +529,14 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_without_dataset_path(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-ca {os.path.join('resources', 'cache')} "
             f"-lr {os.path.join('tests', 'resources', 'Rule-CG0027.json')} "
             f"-s sdtmig "
             f"-v 3.4 "
         )
         exit_code, stdout, stderr = run_command(args, True)
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(exit_code, 1)
         expected_pattern = (
             r"\[error \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3} - "
             r"core\.py:\d+\] - you must pass one of the following arguments: "
@@ -553,7 +551,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_default_cache_path(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-s sdtmig "
             f"-v 3.4 "
             f"-dp {os.path.join("tests", "resources", "test_dataset.xpt")} "
@@ -566,7 +564,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_without_whodrug_and_meddra(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-s sdtmig "
             f"-v 3.4 "
             f"-ca {os.path.join('resources', 'cache')} "
@@ -580,7 +578,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_invalid_whodrug_and_meddra(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-ca {os.path.join('resources', 'cache')} "
             f"-dp {os.path.join('tests', 'resources', 'CG0027-positive.json')} "
             f"-lr {os.path.join('tests', 'resources', 'Rule-CG0027.json')} "
@@ -593,7 +591,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_vx_as_no(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-s sendig "
             f"-v 3.1 "
             f"-dv 2.1 "
@@ -606,7 +604,7 @@ class TestValidate(unittest.TestCase):
 
     def test_sql_validate_dummy_with_vx_as_yes(self):
         args = (
-            f"python core.py validate -sql "
+            f"python core.py validate "
             f"-s sendig "
             f"-v 3.1 "
             f"-dv 2.1 "
@@ -624,7 +622,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -644,7 +641,6 @@ class TestValidate(unittest.TestCase):
             "python",
             "core.py",
             "validate",
-            "-sql",
             "-s",
             "sdtmig",
             "-v",
@@ -663,8 +659,134 @@ class TestValidate(unittest.TestCase):
         self.assertFalse(self.error_keyword in stdout)
         self.assertEqual(stderr, "")
 
+    def test_sql_validate_skips_data_formats_it_cant_read(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-d",
+            self.data_dir(AE_XPT, TS_JSON),
+            "-lr",
+            os.path.join("tests", "resources", "local_rules"),
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertIn("skipping files the sql engine can't read", stderr)
+        self.assertIn("ts.json", stderr)
+        self.assertEqual([d["filename"] for d in self.json_report()["Dataset_Details"]], ["AE"])
+
+    def test_sql_validate_mixed_xpt_and_sas7bdat(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-d",
+            self.data_dir(AE_XPT, ADSL_SAS7BDAT),
+            "-lr",
+            os.path.join("tests", "resources", "local_rules"),
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        self.assertEqual(sorted(d["filename"] for d in self.json_report()["Dataset_Details"]), ["ADSL", "AE"])
+
+    def test_sql_validate_filetype(self):
+        data_dir = self.data_dir(AE_XPT, ADSL_SAS7BDAT)
+        for filetype, expected in (("xpt", "AE"), ("SAS7BDAT", "ADSL")):
+            with self.subTest(filetype=filetype):
+                args = [
+                    "python",
+                    "core.py",
+                    "validate",
+                    "-s",
+                    "sdtmig",
+                    "-v",
+                    "3.3",
+                    "-d",
+                    data_dir,
+                    "-ft",
+                    filetype,
+                    "-lr",
+                    os.path.join("tests", "resources", "local_rules"),
+                    "-of",
+                    "json",
+                    "-o",
+                    os.path.join(self.tmp_dir, filetype),
+                ]
+                exit_code, stdout, stderr = run_command(args, False)
+                self.assertEqual(exit_code, 0)
+                self.assertEqual(stderr, "")
+                self.assertEqual([d["filename"] for d in self.json_report(filetype)["Dataset_Details"]], [expected])
+
+    def test_sql_validate_without_data_it_can_read(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-d",
+            self.data_dir(TS_JSON),
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 1)
+        self.assertIn("no dataset files to validate", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
+    def test_sql_validate_define_xml_2_1_patch_version(self):
+        with open(os.path.join("tests", "resources", "define.xml")) as f:
+            define_xml = f.read()
+        self.assertIn('DefineVersion="2.1.0"', define_xml)
+        define_xml_path = os.path.join(self.tmp_dir, "define.xml")
+        with open(define_xml_path, "w") as f:
+            f.write(define_xml.replace('DefineVersion="2.1.0"', 'DefineVersion="2.1.7"'))
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-dxp",
+            define_xml_path,
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        conformance_details = self.json_report()["Conformance_Details"]
+        self.assertEqual(conformance_details["Define_XML_Version"], "2.1.7")
+        self.assertEqual(conformance_details["CT_Version"], "sdtmct-2020-12-18")
+
     def tearDown(self):
         tearDown()
+        shutil.rmtree(self.tmp_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
+
 Validation_args = namedtuple(
     "Validation_args",
     [
@@ -25,5 +27,8 @@ Validation_args = namedtuple(
         "stf_file_path",
         "validate_xml",
         "sql_namespace",
+        "collapse_duplicate_issues",
+        "max_errors_per_dataset",
     ],
+    defaults=[False, MAX_ERRORS_PER_DATASET],
 )

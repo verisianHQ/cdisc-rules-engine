@@ -1,7 +1,10 @@
+import gc
 import random
 import string
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
+
+import pyarrow as pa
 
 from cdisc_rules_engine.constants.rule_constants import COMPLETE_DATE_REGEX, YEAR_MONTH_REGEX, YEAR_REGEX
 from cdisc_rules_engine.data_service.database import (
@@ -11,6 +14,7 @@ from cdisc_rules_engine.data_service.database import (
 )
 from cdisc_rules_engine.data_service.sql_compiler import SQLCompiler
 from cdisc_rules_engine.data_service.sql_serialiser import SQLSerialiser
+from cdisc_rules_engine.data_service.util import generate_hash
 from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
@@ -58,7 +62,13 @@ class PostgresQLInterface:
             logger.error(f"Failed to initialise database: {e}")
             raise
 
-    def execute_sql(self, query: str, params: Optional[Union[List, Tuple]] = None, commit: bool = True) -> int:
+    def execute_sql(
+        self,
+        query: str,
+        params: Optional[Union[List, Tuple]] = None,
+        commit: bool = True,
+        log_errors: bool = True,
+    ) -> int:
         """Execute a single SQL query"""
         if not self.db:
             raise RuntimeError("Database not initialised. Call init_database() first.")
@@ -70,8 +80,9 @@ class PostgresQLInterface:
                 cursor.execute(query, params)
                 affected_rows = cursor.rowcount
 
-                if query.strip().upper().startswith("SELECT"):
-                    self._last_results = cursor.fetchall()
+                # a statement returns rows when it has a result description - a SELECT, but also a WITH ... SELECT
+                if cursor.description is not None:
+                    self._last_results = self._fetch_all_rows(cursor)
 
                 if commit:
                     conn.commit()
@@ -80,10 +91,23 @@ class PostgresQLInterface:
 
             except Exception as e:
                 conn.rollback()
-                logger.error(f"Query execution failed: {e}")
+                if log_errors:
+                    logger.error(f"Query execution failed: {e}")
                 raise
 
         return affected_rows
+
+    @staticmethod
+    def _fetch_all_rows(cursor) -> list:
+        if cursor.rowcount < 50000:
+            return cursor.fetchall()
+        collector_was_on = gc.isenabled()
+        gc.disable()
+        try:
+            return cursor.fetchall()
+        finally:
+            if collector_was_on:
+                gc.enable()
 
     def execute_many(
         self, queries: List[str], params_list: Optional[List[Union[List, Tuple]]] = None, commit: bool = True
@@ -135,6 +159,20 @@ class PostgresQLInterface:
 
         self.schema.add_table(schema)
         logger.info(f"Table {schema.name} created successfully")
+
+    def create_index(self, table: str, columns: List[str]) -> None:
+        table_schema = self.schema.get_table(table)
+        if not table_schema:
+            return
+        column_hashes = [table_schema.get_column_hash(column) for column in columns]
+        if any(column_hash is None for column_hash in column_hashes):
+            return
+
+        index_name = generate_hash(f"idx_{table_schema.hash}_{'_'.join(columns)}", length=16)
+        self.execute_sql(
+            f'CREATE INDEX IF NOT EXISTS "{index_name}" ON {table_schema.hash} ({", ".join(column_hashes)})'
+        )
+        logger.info(f"Index created on {table}({', '.join(columns)})")
 
     def add_column(self, table: str, schema: SqlColumnSchema) -> None:
         """Adds a column to an existing table"""
@@ -202,6 +240,31 @@ class PostgresQLInterface:
             logger.info(f"Inserted {rows} rows into {table_name}")
             return rows
 
+    def copy_dataframe(self, table_name: str, frame) -> int:
+        if not self.db:
+            raise RuntimeError("Database not initialised. Call init_database() first.")
+
+        schema = self.schema.get_table(table_name)
+        if not schema:
+            raise ValueError(f"Table {table_name} does not exist in the schema")
+        columns = list(frame.column_names) if isinstance(frame, pa.Table) else list(frame.columns)
+        if len(frame) == 0:
+            return 0
+
+        statement = SQLSerialiser.copy_statement(schema, columns)
+        buffer = SQLSerialiser.dataframe_to_csv_buffer(frame)
+
+        with self.db.get_connection_and_cursor() as (conn, cursor):
+            try:
+                cursor.copy_expert(statement, buffer)
+                conn.commit()
+            except Exception as e:
+                conn.rollback()
+                logger.error(f"COPY into {table_name} failed: {e}")
+                raise
+
+        return len(frame)
+
     def compile_and_execute(self, statements: List[str], commit: bool = True) -> None:
         """Compile multiple statements and execute as a single query"""
         if not self.db:
@@ -234,8 +297,32 @@ class PostgresQLInterface:
             logger.error(f"Failed to execute schema file: {e}")
             raise
 
+    def _drop_views(self, view_filter: str):
+        """
+        Drop the views matching view_filter.
+        A view over a table goes when its table is dropped, but one written as literal rows depends on no table at all.
+        """
+        self.execute_sql(
+            f"""
+            DO $$
+            DECLARE
+                r RECORD;
+            BEGIN
+                FOR r IN
+                    SELECT viewname
+                    FROM pg_views
+                    WHERE schemaname = 'public'
+                    AND {view_filter}
+                LOOP
+                    EXECUTE format('DROP VIEW IF EXISTS %I CASCADE;', r.viewname);
+                END LOOP;
+            END $$;
+        """
+        )
+
     def _drop_prefixed_tables(self):
         """Drop all tables that start with the configured sql_namespace"""
+        self._drop_views(f"viewname LIKE '{self.sql_namespace}%'")
         drop_query = f"""
             DO $$
             DECLARE
@@ -263,6 +350,7 @@ class PostgresQLInterface:
 
     def _drop_non_static_tables(self):
         """Drop all non-static tables"""
+        self._drop_views("TRUE")
         exclusion_list = ", ".join([f"'{table}'" for table in StaticTables.values()])
 
         drop_query = f"""

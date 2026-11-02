@@ -48,9 +48,12 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         if conditions:
             for condition in conditions:
                 for k, v in condition.items():
-                    where_clauses.append(
-                        f"{_COLUMN_MAP.get(k)} = '{v}'" if v is not None else f"{_COLUMN_MAP.get(k)} IS NULL"
-                    )
+                    column_sql = self.data_service.pgi.schema.get_column_hash(ct_table, self._condition_column(k))
+                    if v is None:
+                        where_clauses.append(f"{column_sql} IS NULL")
+                    else:
+                        escaped_value = str(v).replace("'", "''")
+                        where_clauses.append(f"{column_sql} = '{escaped_value}'")
 
         base_query = f"""
             SELECT DISTINCT {select_col_sql} AS value
@@ -63,6 +66,19 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             query = base_query
 
         return SqlOperationResult(query=query, type="collection", subtype="Char", params=params or None)
+
+    @staticmethod
+    def _condition_column(attribute: str) -> str:
+        """
+        Maps a ct_conditions attribute (e.g. "Codelist Code") to its column. The CLI's rule loader
+        replaces spaces in rule keys with underscores, so "Codelist_Code" is accepted too.
+        """
+        column = _COLUMN_MAP.get(attribute) or _COLUMN_MAP.get(str(attribute).replace("_", " "))
+        if not column:
+            raise ValueError(
+                f"Unknown ct_conditions attribute '{attribute}'. Expected one of: {', '.join(_COLUMN_MAP)}"
+            )
+        return column
 
     def _ct_version_filter(self, std_type_col: str, version_date_col: str) -> Tuple[Optional[str], dict]:
         """
@@ -101,7 +117,8 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
             fallback_clause = self._build_clauses(self._parse_versions(ct_list), std_type_col, version_date_col)
         if not ct_version_column:
             return fallback_clause
-        record_clause = f"{version_date_col} = $ct_version"
+        record_version = "TRIM(CAST($ct_version AS TEXT))"
+        record_clause = f"{version_date_col} = {record_version}"
         if not fallback_clause:
             return record_clause
         # empty record versions, or naming packages missing from the cache, fall back to the provided codelists
@@ -113,7 +130,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
         loaded_versions = sorted(row["version"] for row in self.data_service.pgi.fetch_all())
         if not loaded_versions:
             return fallback_clause
-        known_version = f"$ct_version IN ({', '.join(repr(version) for version in loaded_versions)})"
+        known_version = f"{record_version} IN ({', '.join(repr(version) for version in loaded_versions)})"
         return f"(CASE WHEN {known_version} THEN {record_clause} ELSE {fallback_clause} END)"
 
     def _parse_versions(self, ct_list: list) -> list:

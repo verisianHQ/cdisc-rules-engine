@@ -7,7 +7,7 @@ import tempfile
 from datetime import datetime
 from multiprocessing import freeze_support
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import click
 
@@ -16,11 +16,13 @@ from cdisc_rules_engine.enums.dataformat_types import DataFormatTypes
 from cdisc_rules_engine.enums.default_file_paths import DefaultFilePaths
 from cdisc_rules_engine.enums.progress_parameter_options import ProgressParameterOptions
 from cdisc_rules_engine.enums.report_types import ReportTypes
+from cdisc_rules_engine.exceptions.custom_exceptions import DatabaseConnectionError
 from cdisc_rules_engine.models.external_dictionaries_container import (
     DictionaryTypes,
     ExternalDictionariesContainer,
 )
 from cdisc_rules_engine.models.sql_external_dictionaries_container import SqlExternalDictionariesContainer
+from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
@@ -34,25 +36,30 @@ from scripts.run_sql_validation import run_sql_validation
 from scripts.run_validation import run_validation
 from version import __version__
 
+SQL_DATA_FORMATS = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
-def valid_data_file(data_path: list, allow_sql_mixed_formats: bool = False) -> Tuple[list, set]:
-    allowed_formats = [format.value for format in DataFormatTypes]
+
+def valid_data_file(
+    data_path: list, sql_engine: bool = False, filetype: Optional[str] = None
+) -> Tuple[list, set, list]:
+    known_formats = {format.value for format in DataFormatTypes}
+    allowed_formats = SQL_DATA_FORMATS if sql_engine else known_formats
+    data_path = [file for file in data_path if not os.path.basename(file).startswith("._")]
+    if filetype:
+        data_path = [file for file in data_path if os.path.splitext(file)[1][1:].upper() == filetype.upper()]
     found_formats = set()
     file_list = []
+    unsupported = []
     for file in data_path:
         file_extension = os.path.splitext(file)[1][1:].upper()
         if file_extension in allowed_formats:
             found_formats.add(file_extension)
             file_list.append(file)
-    if len(found_formats) > 1:
-        allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
-        if allow_sql_mixed_formats and found_formats.issubset(allowed_sql_mix):
-            return file_list, found_formats
-        return [], found_formats
-    if len(found_formats) == 1:
-        return file_list, found_formats
-
-    return [], set()
+        elif file_extension in known_formats:
+            unsupported.append(file)
+    if len(found_formats) > 1 and not sql_engine:
+        return [], found_formats, unsupported
+    return file_list, found_formats, unsupported
 
 
 @click.group()
@@ -79,6 +86,13 @@ def cli():
     "--data",
     required=False,
     help="Path to directory containing data files",
+)
+@click.option(
+    "-ft",
+    "--filetype",
+    default=None,
+    type=click.Choice([data_format.lower() for data_format in sorted(SQL_DATA_FORMATS)], case_sensitive=False),
+    help="Only validate dataset files with this extension, e.g. when the data directory holds both XPT and SAS7BDAT",
 )
 @click.option(
     "-dp",
@@ -162,14 +176,20 @@ def cli():
 @click.option("--loinc", help="Path to directory with LOINC dictionary files")
 @click.option("--medrt", help="Path to directory with MEDRT dictionary files")
 @click.option("--unii", help="Path to directory with UNII dictionary files")
-@click.option("--snomed-version", help="Version of snomed to use.")
+@click.option("--snomed-version", help="Version of snomed to use. Only used with --cdisc.")
 @click.option(
     "--snomed-url",
-    help="The Base URL of snomed to use. Defaults to snowstorm test instance",
+    help="The Base URL of snomed to use. Defaults to snowstorm test instance. Only used with --cdisc.",
     default="https://snowstorm.snomedtools.org/snowstorm/snomed-ct/",
 )
-@click.option("--snomed-edition", help="Edition of snomed to use.")
-@click.option("--snomed", help="Path to directory with SNOMED dictionary files")
+@click.option("--snomed-edition", help="Edition of snomed to use. Only used with --cdisc.")
+@click.option(
+    "--snomed",
+    help=(
+        "Path to directory with SNOMED dictionary files. Only used by the SQL engine, "
+        "which reads the edition and version from the file names."
+    ),
+)
 @click.option(
     "--rules",
     "-r",
@@ -181,7 +201,7 @@ def cli():
     "-lr",
     required=False,
     type=click.Path(exists=True, readable=True, resolve_path=True),
-    help="path to directory containing local rules.",
+    help=("path to a local rule file or to a directory of local rules."),
 )
 @click.option(
     "--custom_standard",
@@ -211,11 +231,10 @@ def cli():
     help="Enable XML validation (default 'y' to enable, otherwise disable)",
 )
 @click.option(
-    "-sql",
-    "--sql-engine",
+    "--cdisc",
     is_flag=True,
     default=False,
-    help="Flag to run validation using the SQL engine",
+    help="Flag to run validation using the CDISC (pandas) engine instead of the default SQL engine",
 )
 @click.option(
     "-ns",
@@ -228,7 +247,29 @@ def cli():
     "--in-memory-postgres",
     is_flag=True,
     default=False,
-    help="Run validation using an in-memory Postgres instance",
+    help=(
+        "Run validation using an in-memory Postgres instance. "
+        "Used automatically when no DATABASE_* settings are found in the environment or .env file."
+    ),
+)
+@click.option(
+    "--collapse-duplicate-issues",
+    is_flag=True,
+    default=False,
+    help=(
+        "When a rule's message applies to every record in a dataset, collapse those rows in the Excel report "
+        "into a single row with the record numbers shown as a range (e.g. '1-500'), instead of one row per record."
+    ),
+)
+@click.option(
+    "--max-errors-per-dataset",
+    type=click.IntRange(min=1),
+    default=MAX_ERRORS_PER_DATASET,
+    show_default=True,
+    help=(
+        "The most issues a rule reports per dataset (per source file of a split dataset), with the message "
+        "saying how many there were in total. SQL engine only."
+    ),
 )
 @click.pass_context
 def validate(  # noqa: C901
@@ -236,6 +277,7 @@ def validate(  # noqa: C901
     cache: str,
     pool_size: int,
     data: str,
+    filetype: str,
     dataset_path: Tuple[str],
     log_level: str,
     report_template: str,
@@ -263,9 +305,11 @@ def validate(  # noqa: C901
     define_xml_path: str,
     stf_file_path: str,
     validate_xml: str,
-    sql_engine: bool,
+    cdisc: bool,
     sql_namespace: str,
     in_memory_postgres: bool,
+    collapse_duplicate_issues: bool,
+    max_errors_per_dataset: int,
 ):
     """
     Validate data using CDISC Rules Engine
@@ -277,14 +321,40 @@ def validate(  # noqa: C901
 
     # Validate conditional options
     logger = logging.getLogger("validator")
+    sql_engine = not cdisc
+
+    if cdisc:
+        if in_memory_postgres:
+            logger.warning("Flag --in-memory-postgres is ignored when --cdisc is used")
+        if snomed:
+            logger.warning("Argument --snomed is only used by the SQL engine and is ignored when --cdisc is used")
+    else:
+        snomed_api_options = [
+            f"--{name.replace('_', '-')}"
+            for name in ("snomed_version", "snomed_edition", "snomed_url")
+            if ctx.get_parameter_source(name) != click.core.ParameterSource.DEFAULT
+        ]
+        if snomed_api_options:
+            logger.warning(
+                f"{', '.join(snomed_api_options)} only apply to the CDISC engine (--cdisc) and are ignored. "
+                "The SQL engine reads SNOMED from the files passed with --snomed."
+            )
+        if not in_memory_postgres and not any(
+            os.getenv(var)
+            for var in ("DATABASE_HOST", "DATABASE_PORT", "DATABASE_NAME", "DATABASE_USER", "DATABASE_PASSWORD")
+        ):
+            logger.warning(
+                "No DATABASE_* settings found in the environment or .env file, "
+                "using an in-memory Postgres instance instead"
+            )
+            in_memory_postgres = True
 
     if raw_report is True:
         if not (len(output_format) == 1 and output_format[0] == ReportTypes.JSON.value):
             logger.error("Flag --raw-report can be used only when --output-format is JSON")
-            ctx.exit()
+            ctx.exit(1)
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
-    allowed_sql_mix = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
     dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer
     external_dictionaries = dict_container(
@@ -308,34 +378,35 @@ def validate(  # noqa: C901
     if data:
         if dataset_path:
             logger.error("Argument --dataset-path cannot be used together with argument --data")
-            ctx.exit()
-        dataset_paths, found_formats = valid_data_file(
-            [str(Path(data).joinpath(fn)) for fn in os.listdir(data)],
-            allow_sql_mixed_formats=sql_engine,
-        )
-        if len(found_formats) > 1:
-            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
-                logger.error(
-                    f"Argument --data contains more than one allowed file format ({', '.join(found_formats)}). "
-                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
-                )
-                ctx.exit()
+            ctx.exit(1)
+        candidate_paths = [str(Path(data).joinpath(fn)) for fn in os.listdir(data)]
     elif dataset_path:
-        dataset_paths, found_formats = valid_data_file(
-            [dp for dp in dataset_path],
-            allow_sql_mixed_formats=sql_engine,
-        )
-        if len(found_formats) > 1:
-            if not (sql_engine and found_formats.issubset(allowed_sql_mix)):
-                logger.error(
-                    f"Argument --dataset_path contains more than one allowed file format ({', '.join(found_formats)}). "
-                    "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
-                )
-                ctx.exit()
+        candidate_paths = list(dataset_path)
     else:
         logger.error("You must pass one of the following arguments: --dataset-path, --data")
         # no need to define dataset_paths here, the program execution will stop
-        ctx.exit()
+        ctx.exit(1)
+    dataset_paths, found_formats, unsupported_paths = valid_data_file(
+        candidate_paths, sql_engine=sql_engine, filetype=filetype
+    )
+    if unsupported_paths:
+        logger.warning(
+            "Skipping files the SQL engine can't read (it reads XPT and SAS7BDAT): "
+            + ", ".join(sorted(Path(path).name for path in unsupported_paths))
+        )
+    if len(found_formats) > 1 and not sql_engine:
+        logger.error(
+            f"The dataset files are in more than one format ({', '.join(sorted(found_formats))}). "
+            "Mixed formats are supported only for SQL engine runs and only for XPT + SAS7BDAT files."
+        )
+        ctx.exit(1)
+    if not dataset_paths:
+        logger.error(
+            "No dataset files to validate"
+            + (f" with the extension .{filetype.lower()}" if filetype else "")
+            + (". The SQL engine reads XPT and SAS7BDAT files." if sql_engine else ".")
+        )
+        ctx.exit(1)
     validate_xml_bool = True if validate_xml.lower() in ("y", "yes") else False
     args = Validation_args(
         cache_path,
@@ -360,9 +431,15 @@ def validate(  # noqa: C901
         stf_file_path,
         validate_xml_bool,
         sql_namespace,
+        collapse_duplicate_issues,
+        max_errors_per_dataset,
     )
     if sql_engine:
-        run_sql_validation(args, in_memory_postgres=in_memory_postgres)
+        try:
+            run_sql_validation(args, in_memory_postgres=in_memory_postgres)
+        except DatabaseConnectionError as e:
+            logger.error(e.message)
+            ctx.exit(1)
     else:
         run_validation(args)
 
@@ -454,7 +531,11 @@ def update_cache(
     elif remove_custom_standard:
         cache_populator.remove_custom_standards_from_cache()
     else:
-        asyncio.run(cache_populator.update_cache())
+        report = asyncio.run(cache_populator.update_cache())
+        print(report.summary())
+        if not report.succeeded:
+            ctx.exit(1)
+        return
 
     print("Cache updated successfully")
 

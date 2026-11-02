@@ -3,6 +3,7 @@ import pytest
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.sql_operations.sql_operations_factory import (
     SqlOperationsFactory,
@@ -165,6 +166,30 @@ def test_sql_dy_missing_usubjid(current_data, dm_data, expected, sdtm_standards_
     result = operation.execute()
 
     assert_operation_parameterized_constant(operation, result, expected)
+
+
+def test_sql_dy_dataset_without_usubjid(sdtm_standards_context):
+    """Without USUBJID the dataset can't be joined to DM for RFSTDTC, so the rule is skipped."""
+    data_service = PostgresQLDataService.instance()
+
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="DM",
+        column_data={"USUBJID": [1], "RFSTDTC": ["1997-07-16"]},
+        standards_context=sdtm_standards_context,
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="TS",
+        column_data={"TSPARMCD": ["SSTDTC"], "TSVAL": ["1997-07-19"]},
+        standards_context=sdtm_standards_context,
+    )
+
+    params = SqlOperationParams(domain="TS", target="TSVAL", standards_context=sdtm_standards_context)
+    operation = SqlOperationsFactory.get_service("dy", params, data_service)
+
+    with pytest.raises(ColumnNotFoundError, match="Column 'USUBJID' not found in table 'ts'"):
+        operation.execute()
 
 
 @pytest.mark.parametrize(
