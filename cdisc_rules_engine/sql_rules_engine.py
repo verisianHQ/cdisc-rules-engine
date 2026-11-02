@@ -22,6 +22,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     DomainNotFoundError,
     DomainNotFoundInDefineXMLError,
     FailedSchemaValidation,
+    InvalidMatchKeyError,
     RuleFormatError,
     VariableMetadataNotFoundError,
     ColumnNotFoundError,
@@ -367,6 +368,13 @@ class SQLRulesEngine:
                 message=exception.message,
             )
             message = "rule execution error"
+        elif isinstance(exception, InvalidMatchKeyError):
+            error_obj = FailedValidationEntity(
+                dataset=name,
+                error=InvalidMatchKeyError.description,
+                message=exception.message,
+            )
+            message = "rule execution error"
         elif isinstance(exception, AssertionError):
             error_obj = FailedValidationEntity(
                 dataset=name,
@@ -478,12 +486,11 @@ class SQLRulesEngine:
         elif isinstance(exception, ValueError):
             error_message = str(exception)
 
-            schema_pattern = r"Column\s+(\w+)\s+or\s+(\w+)\s+not found in the respective schemas"
-            match = re.search(schema_pattern, error_message, re.IGNORECASE)
+            column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
+            match = re.search(column_pattern, error_message, re.IGNORECASE)
 
             if match:
                 column_name = match.group(1).upper()
-
                 error_obj = FailedValidationEntity(
                     dataset=name,
                     error="Column not found in data",
@@ -491,24 +498,12 @@ class SQLRulesEngine:
                 )
                 message = "rule execution error"
             else:
-                column_pattern = r"Column\s+['\"]?(\w+)['\"]?\s+(?:does not exist|not found|missing)"
-                match = re.search(column_pattern, error_message, re.IGNORECASE)
-
-                if match:
-                    column_name = match.group(1).upper()
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Column not found in data",
-                        message=column_name,
-                    )
-                    message = "rule execution error"
-                else:
-                    error_obj = FailedValidationEntity(
-                        dataset=name,
-                        error="Validation error",
-                        message=error_message,
-                    )
-                    message = "rule execution error"
+                error_obj = FailedValidationEntity(
+                    dataset=name,
+                    error="Validation error",
+                    message=error_message,
+                )
+                message = "rule execution error"
         else:
             error_obj = FailedValidationEntity(
                 dataset=name,

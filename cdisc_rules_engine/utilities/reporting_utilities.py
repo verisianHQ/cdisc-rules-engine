@@ -1,10 +1,13 @@
 import os
+import re
 from typing import List, Optional
 
 from cdisc_rules_engine.constants.define_xml_constants import DEFINE_XML_FILE_NAME
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
 )
+
+_DEFINE_VERSION_2_1 = re.compile(r"2\.1\.\d+")
 
 
 def get_define_version(dataset_paths: List[str]) -> Optional[str]:
@@ -34,7 +37,7 @@ def get_define_ct(dataset_paths: List[str], define_version) -> Optional[str]:
     if not dataset_paths:
         return None
     ct = None
-    if dataset_paths[0].endswith(".xml") and define_version == "2.1.0":
+    if dataset_paths[0].endswith(".xml") and _DEFINE_VERSION_2_1.fullmatch(define_version or ""):
         define_xml_reader = DefineXMLReaderFactory.from_filename(dataset_paths[0])
         return define_xml_reader.get_ct_version()
     path_to_data = os.path.dirname(dataset_paths[0])
@@ -42,6 +45,6 @@ def get_define_ct(dataset_paths: List[str], define_version) -> Optional[str]:
         return None
     path_to_define = os.path.join(path_to_data, DEFINE_XML_FILE_NAME)
     define_xml_reader = DefineXMLReaderFactory.from_filename(path_to_define)
-    if define_version == "2.1.0":
+    if _DEFINE_VERSION_2_1.fullmatch(define_version or ""):
         ct = define_xml_reader.get_ct_version()
     return ct
