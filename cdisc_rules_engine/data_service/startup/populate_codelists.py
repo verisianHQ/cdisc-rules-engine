@@ -18,7 +18,7 @@ ROOT_PATH = Path(__file__).parents[3]
 _VERSION_DATE_PATTERN = re.compile(r"\d{4}-\d{2}-\d{2}")
 
 
-def _schema():
+def codelist_schema():
     table = SqlTableSchema.static(StaticTables.IG_CODELIST_TABLE_NAME.value)
     table.add_column(SqlColumnSchema(name="standard_type", hash="standard_type", type="Char"))
     table.add_column(SqlColumnSchema(name="version_date", hash="version_date", type="Char"))
@@ -59,7 +59,7 @@ def populate_codelists(
     if invalid_ct_paths:
         logger.warning(f"The following requested codelists were not found: {invalid_ct_paths}")
 
-    schema = _schema()
+    schema = codelist_schema()
     pgi.create_table(schema)
 
     reporter = progress_reporter or DisabledIngestionProgressReporter()
