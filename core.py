@@ -324,7 +324,7 @@ def validate(  # noqa: C901
 
     Example:
 
-    python core.py -s SDTM -v 3.4 -d /path/to/datasets
+    python core.py validate -s sdtmig -v 3-4 -d /path/to/datasets
     """
 
     # Validate conditional options
@@ -467,8 +467,10 @@ def validate(  # noqa: C901
 @click.option(
     "--apikey",
     envvar="CDISC_LIBRARY_API_KEY",
-    help=("CDISC Library api key. " "Can be provided in the environment " "variable CDISC_LIBRARY_API_KEY"),
-    required=True,
+    help=(
+        "CDISC Library api key. Can be provided in the environment variable CDISC_LIBRARY_API_KEY. "
+        "Only needed to download the latest data from CDISC Library, not to manage custom rules and standards."
+    ),
 )
 @click.option(
     "-crd",
@@ -544,6 +546,8 @@ def update_cache(
     elif remove_custom_standard:
         cache_populator.remove_custom_standards_from_cache()
     else:
+        if not apikey:
+            raise click.UsageError("Missing option '--apikey' (or the CDISC_LIBRARY_API_KEY environment variable).")
         report = asyncio.run(cache_populator.update_cache())
         print(report.summary())
         if not report.succeeded:
@@ -694,28 +698,12 @@ def list_dataset_metadata(ctx: click.Context, dataset_path: Tuple[str], cdisc: b
     """
     Command that lists metadata of given datasets.
 
-    Input:
-        core.py list-ds-metadata -dp=path_1 -dp=path_2 -dp=path_3 ...
-    Output:
-        [
-           {
-              "domain":"AE",
-              "filename":"ae.xpt",
-              "full_path":"/Users/Aleksei_Furmenkov/PycharmProjects/cdisc-rules-engine/resources/data/ae.xpt",
-              "file_size":"38000",
-              "label":"Adverse Events",
-              "modification_date":"2020-08-21T09:14:26"
-           },
-           {
-              "domain":"EX",
-              "filename":"ex.xpt",
-              "full_path":"/Users/Aleksei_Furmenkov/PycharmProjects/cdisc-rules-engine/resources/data/ex.xpt",
-              "file_size":"78050",
-              "label":"Exposure",
-              "modification_date":"2021-09-17T09:23:22"
-           },
-           ...
-        ]
+    Example:
+
+    python core.py list-dataset-metadata -dp path/to/ae.xpt -dp path/to/ex.xpt
+
+    Prints a JSON list with the domain, filename, full_path, file_size,
+    label and modification_date of each dataset.
     """
     handler = list_dataset_metadata_handler if cdisc else sql_list_dataset_metadata_handler
     print(json.dumps(handler(dataset_path), indent=4))
