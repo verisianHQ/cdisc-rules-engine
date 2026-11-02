@@ -52,18 +52,28 @@
     },
     "Classes": {
       "items": {
-        "enum": [
-          "ALL",
-          "EVENTS",
-          "FINDINGS",
-          "FINDINGS ABOUT",
-          "INTERVENTIONS",
-          "RELATIONSHIP",
-          "SPECIAL PURPOSE",
-          "STUDY REFERENCE",
-          "TRIAL DESIGN"
-        ],
-        "type": "string"
+        "anyOf": [
+          {
+            "enum": [
+              "ALL",
+              "EVENTS",
+              "FINDINGS",
+              "FINDINGS ABOUT",
+              "INTERVENTIONS",
+              "RELATIONSHIP",
+              "SPECIAL PURPOSE",
+              "STUDY REFERENCE",
+              "TRIAL DESIGN"
+            ],
+            "type": "string"
+          },
+          {
+            "$ref": "#/$defs/DataStructure"
+          },
+          {
+            "$ref": "#/$defs/DataStructureAlias"
+          }
+        ]
       },
       "type": "array"
     },
@@ -84,16 +94,10 @@
           "type": "string"
         },
         {
-          "pattern": "^([A-Z]{2}|[A-Z]{4}|SUPP[A-Z]{2}|SUPP[A-Z]{4}|SQAP[A-Z]{4})$",
+          "pattern": "^([A-Z]{2}|[A-Z]{4}|SUPP[A-Z]{2}|SUPP[A-Z]{4}|SQAP[A-Z]{4}|AD[A-Z0-9]{2,6})$",
           "type": "string"
         }
       ]
-    },
-    "Datasets": {
-      "items": {
-        "$ref": "#/$defs/Dataset"
-      },
-      "type": "array"
     },
     "DataStructure": {
       "enum": [
@@ -108,9 +112,21 @@
       ],
       "type": "string"
     },
+    "DataStructureAlias": {
+      "description": "Short ADaM data structure names, treated the same as the full names",
+      "enum": ["ADDL", "ADSL", "BDS", "MDBDS", "MDOCCDS", "OCCDS"],
+      "type": "string"
+    },
     "DataStructures": {
       "items": {
-        "$ref": "#/$defs/DataStructure"
+        "anyOf": [
+          {
+            "$ref": "#/$defs/DataStructure"
+          },
+          {
+            "$ref": "#/$defs/DataStructureAlias"
+          }
+        ]
       },
       "type": "array"
     },
@@ -136,7 +152,7 @@
       "type": "object"
     },
     "JoinType": {
-      "enum": ["inner", "left"],
+      "enum": ["inner", "left", "INNER", "LEFT"],
       "type": "string"
     },
     "LeftRightKeys": {
@@ -151,27 +167,6 @@
       },
       "required": ["Left", "Right"],
       "type": "object"
-    },
-    "PascalCases": {
-      "items": {
-        "pattern": "^[A-Z](([a-z]+[A-Z]?)*)$",
-        "type": "string"
-      },
-      "minItems": 1,
-      "type": "array"
-    },
-    "Subclasses": {
-      "items": {
-        "enum": [
-          "ADVERSE EVENT",
-          "ALL",
-          "MEDICAL DEVICE TIME-TO-EVENT",
-          "NON-COMPARTMENTAL ANALYSIS",
-          "TIME-TO-EVENT"
-        ],
-        "type": "string"
-      },
-      "type": "array"
     },
     "VariableName": {
       "pattern": "^(--[A-Z0-9]{1,6}|[A-Z][A-Z0-9]{0,7})$",
@@ -191,6 +186,20 @@
         }
       ],
       "description": "Can reference either a dataset variable name or an operation result"
+    },
+    "MergedVariableName": {
+      "pattern": "^[A-Z][A-Z0-9]{0,7}\\.(--[A-Z0-9]{1,6}|[A-Z][A-Z0-9]{0,7}|[*_]{2}[A-Z0-9]{1,7})$",
+      "type": "string"
+    },
+    "TemplatedVariableName": {
+      "description": "Variable name built from {{capture}} references to named groups of a variable_regex_pattern name, e.g. {{root}}FL. Resolved for each matching variable when the rule is expanded",
+      "pattern": "^(?=.*\\{\\{[A-Za-z_][A-Za-z0-9_]*\\}\\})(--)?([A-Z0-9]|\\{\\{[A-Za-z_][A-Za-z0-9_]*\\}\\})+$",
+      "type": "string"
+    },
+    "VariableRegexPattern": {
+      "description": "Anchored regular expression (Python syntax) matched in full against the dataset's variable names. Named groups, e.g. (?P<root>[A-Z]+), can be referenced elsewhere in the rule as {{root}}",
+      "pattern": "^\\^.*\\$$",
+      "type": "string"
     }
   },
   "$id": "https://cdisc.org/CORE-base.json",
@@ -419,7 +428,8 @@
         ]
       },
       "markdownDescription": "Variables whose values group the records reported with `Sensitivity: Group`. `filter_by_dataset` reports only records whose `dataset_name` is the dataset being validated",
-      "type": "array"
+      "type": "array",
+      "minItems": 1
     },
     "Match Datasets": {
       "items": {
@@ -435,7 +445,7 @@
               }
             ]
           },
-          "Is Relationship": {
+          "Is_Relationship": {
             "const": true
           },
           "Child": {
@@ -482,7 +492,14 @@
         },
         "Output Variables": {
           "items": {
-            "$ref": "Operator.json#/properties/name"
+            "anyOf": [
+              {
+                "$ref": "Operator.json#/$defs/Name"
+              },
+              {
+                "$ref": "#/$defs/VariableRegexPattern"
+              }
+            ]
           },
           "type": "array"
         }
@@ -544,62 +561,11 @@
             }
           ]
         },
-        "Datasets": {
-          "additionalProperties": false,
-          "properties": {
-            "Exclude": {
-              "$ref": "#/$defs/Datasets"
-            },
-            "Include": {
-              "$ref": "#/$defs/Datasets"
-            }
-          },
-          "type": "object"
-        },
         "Domains": {
-          "$ref": "#/$defs/DomainStructure"
-        },
-        "Dataset or Domain or Item Group": {
           "$ref": "#/$defs/DomainStructure"
         },
         "Use Case": {
           "type": "string"
-        },
-        "Entities": {
-          "anyOf": [
-            {
-              "additionalProperties": false,
-              "properties": {
-                "Exclude": {
-                  "$ref": "#/$defs/PascalCases"
-                },
-                "Include": {
-                  "$ref": "#/$defs/PascalCases"
-                }
-              },
-              "anyOf": [
-                {
-                  "required": ["Exclude"]
-                },
-                {
-                  "required": ["Include"]
-                }
-              ],
-              "type": "object"
-            }
-          ]
-        },
-        "Subclasses": {
-          "additionalProperties": false,
-          "properties": {
-            "Exclude": {
-              "$ref": "#/$defs/Subclasses"
-            },
-            "Include": {
-              "$ref": "#/$defs/Subclasses"
-            }
-          },
-          "type": "object"
         }
       },
       "oneOf": [
@@ -608,9 +574,6 @@
         },
         {
           "required": ["Data Structures"]
-        },
-        {
-          "required": ["Entities"]
         }
       ],
       "type": "object"

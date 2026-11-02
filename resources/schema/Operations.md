@@ -43,6 +43,8 @@
 
 # Operations
 
+Every operation needs an `id` starting with `$`. Optional keys such as `filter`, `group`, `regex` or `attribute_name` are only accepted on the operations that read them, as described in each operation's section.
+
 ## calc
 
 Evaluates the arithmetic formula in `value` for each record and returns a number. The formula can contain:
@@ -254,6 +256,7 @@ Returns the requested dataset level metadata value for the current dataset. Poss
 
 - `dataset_name`
 - `dataset_size` (file size in bytes)
+- `label`, `description` or `datasetStructure`, from the library metadata of the domain
 
 Example
 
@@ -475,7 +478,7 @@ Operations:
 
 ## label_referenced_variable_metadata
 
-For each record, returns the values of the library ig variable attribute given in `attribute_name` (e.g. `role`) for every library variable whose label matches the value in the column provided in `name`. `attribute_name` is required.
+For each record, returns the values of the library ig variable attribute given in `attribute_name` (e.g. `role`) for every library variable whose label matches the value in the column provided in `name`. `attribute_name` is required and is one of `core`, `label`, `name`, `ordinal`, `role` or `simpleDatatype`.
 
 ```yaml
 - id: $fatest_lib_roles
@@ -647,7 +650,7 @@ Operations:
 
 ## name_referenced_variable_metadata
 
-For each record, returns the values of the library ig variable attribute given in `attribute_name` (e.g. `role`) for every library variable whose name matches the value in the column provided in `name`. `attribute_name` is required.
+For each record, returns the values of the library ig variable attribute given in `attribute_name` (e.g. `role`) for every library variable whose name matches the value in the column provided in `name`. `attribute_name` is required and is one of `core`, `label`, `name`, `ordinal`, `role` or `simpleDatatype`.
 
 ```yaml
 - id: $qnam_lib_roles
@@ -1019,7 +1022,7 @@ Operations:
 
 ## get_external_dictionary_version
 
-Returns the version of the external dictionary in `external_dictionary_type`, as read from the dictionary files provided for the validation run. If that dictionary wasn't provided, the rule fails with an execution error. See [get_define_external_dictionary_version](#get_define_external_dictionary_version) for an example.
+Returns the version of the external dictionary in `external_dictionary_type`, as read from the dictionary files provided for the validation run. If that dictionary wasn't provided, the rule fails with an execution error. `whodrug` isn't supported, as the WHODrug files only give a release date. See [get_define_external_dictionary_version](#get_define_external_dictionary_version) for an example.
 
 ## whodrug_code_hierarchy
 
