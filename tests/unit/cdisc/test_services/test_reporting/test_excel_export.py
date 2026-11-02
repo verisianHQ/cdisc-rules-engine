@@ -139,7 +139,7 @@ def test_get_rules_report_data():
                     result.cdisc_rule_id,
                     result.fda_rule_id,
                     result.message,
-                    ExecutionStatus.SUCCESS.value.upper(),
+                    "ISSUE REPORTED",
                     "",
                 ]
             )
