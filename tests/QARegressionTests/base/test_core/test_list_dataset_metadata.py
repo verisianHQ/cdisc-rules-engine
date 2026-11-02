@@ -34,6 +34,11 @@ class TestListDatasetMetadata(unittest.TestCase):
         self.assertEqual(result.exit_code, 1)
         self.assertNotIn(expected_output, result.output)
 
+    def test_list_dataset_metadata_unsupported_format_suggests_cdisc(self):
+        result = self.runner.invoke(list_dataset_metadata, ["-dp", "dm.json"])
+        self.assertEqual(result.exit_code, 1)
+        self.assertIn("use --cdisc for other formats", result.output)
+
     def test_list_dataset_metadata_sql_engine_formats(self):
         result = self.runner.invoke(
             list_dataset_metadata,

@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple, Union
 
+import click
 import pandas as pd
 import pyarrow as pa
 
@@ -20,7 +21,12 @@ def sql_list_dataset_metadata_handler(dataset_paths: Tuple[str]) -> List[dict]:
 
 
 def _dataset_metadata(path: str) -> dict:
-    reader = DataReaderFactory.get_data_reader(path)
+    try:
+        reader = DataReaderFactory.get_data_reader(path)
+    except ValueError as error:
+        raise click.ClickException(
+            f"{error}. The SQL engine supports XPT and SAS7BDAT; use --cdisc for other formats."
+        ) from error
     reader.CHUNKSIZE = 1
     metadata, chunk_stream = reader.read()
     return {
