@@ -1,6 +1,5 @@
 import csv
 import os
-from pathlib import Path
 from typing import BinaryIO, Iterable, List, Optional
 
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
@@ -9,12 +8,12 @@ from cdisc_rules_engine.models.rule_validation_result import RuleValidationResul
 from cdisc_rules_engine.models.validation_args import Validation_args
 from .base_report import BaseReport
 
-CSV_HEADER = ["Dataset", "Record", "Variable", "Value"]
+CSV_HEADER = ["Rule ID", "Dataset", "Record", "Variable", "Value", "Message"]
 
 
 class CsvReport(BaseReport):
     """
-    Writes a results.csv with one row per variable of each issue.
+    Writes a results.csv with one row per variable of each issue (one row if it has no variables).
     Execution errors get a row with "EXECUTION_ERROR" as the variable.
     """
 
@@ -39,16 +38,36 @@ class CsvReport(BaseReport):
     ):
         rows = []
         for issue in self.get_detailed_data():
-            dataset = self._dataset_stem(issue.get("dataset"))
-            for variable, value in zip(issue.get("variables") or [], issue.get("values") or []):
-                rows.append([dataset, str(issue.get("row", "")), variable, "" if value in (None, "null") else value])
+            dataset = self._display_dataset_name(issue.get("dataset")) or ""
+            pairs = list(zip(issue.get("variables") or [], issue.get("values") or [])) or [("", "")]
+            for variable, value in pairs:
+                rows.append(
+                    [
+                        issue.get("core_id") or "",
+                        dataset,
+                        str(issue.get("row", "")),
+                        variable,
+                        "" if value in (None, "null") else value,
+                        issue.get("message") or "",
+                    ]
+                )
         for validation_result in self._results:
             for result in validation_result.results or []:
                 if result.get("executionStatus") != ExecutionStatus.EXECUTION_ERROR.value:
                     continue
-                for error in result.get("errors") or []:
-                    dataset = self._dataset_stem(error.get("dataset") or result.get("dataset"))
-                    rows.append([dataset, "", "EXECUTION_ERROR", error.get("message") or result.get("message") or ""])
+                message = result.get("message") or ""
+                for error in result.get("errors") or [{}]:
+                    dataset = self._display_dataset_name(error.get("dataset") or result.get("dataset")) or ""
+                    rows.append(
+                        [
+                            validation_result.id or "",
+                            dataset,
+                            "",
+                            "EXECUTION_ERROR",
+                            error.get("message") or message,
+                            message,
+                        ]
+                    )
         return CSV_HEADER, sorted(rows, key=_csv_sort_key)
 
     def write_report(self, **kwargs):
@@ -62,10 +81,6 @@ class CsvReport(BaseReport):
             writer.writerows(rows)
         if self._template:
             self._template.close()
-
-    @staticmethod
-    def _dataset_stem(filename: Optional[str]) -> str:
-        return Path(filename).stem if filename else ""
 
 
 def _csv_sort_key(row: List[str]) -> tuple:

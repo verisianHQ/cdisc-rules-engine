@@ -856,9 +856,9 @@ class TestValidate(unittest.TestCase):
         self.assertEqual(stderr, "")
         with open(os.path.join(self.tmp_dir, "report.csv"), newline="") as f:
             rows = list(csv.reader(f))
-        self.assertEqual(rows[0], ["Dataset", "Record", "Variable", "Value"])
+        self.assertEqual(rows[0], ["Rule ID", "Dataset", "Record", "Variable", "Value", "Message"])
         self.assertTrue(len(rows) > 1)
-        self.assertTrue(all(row[0] == "ae" for row in rows[1:]))
+        self.assertTrue(all(row[0].startswith("CORE-") and row[1] == "AE" for row in rows[1:]))
 
     def test_sql_validate_underscore_option_names(self):
         args = [
