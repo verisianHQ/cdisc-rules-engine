@@ -9,7 +9,13 @@
 
 This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE), a tool designed for validating clinical trial data against data standards. It runs the rules with an engine built on a PostgreSQL database.
 
-This engine is built to support SDTM and ADaM rules. The source of truth for these rules is the [core-contributor](https://github.com/verisianHQ/core-contributor) repository, which currently has all rules for SDTMIG 3.2, 3.3 and 3.4, written from the SDTMIG and the FDA business rules. The Define-XML validation rules and ADaM rules are still being developed and will be released soon!
+The engine, and the rules it runs, are developed separately:
+
+- **Standards**: the engine is built to support the SDTM and ADaM standards, i.e. validating data against the SDTM Implementation Guide (SDTMIG) and the ADaM Implementation Guide (ADaMIG).
+- **Rules**: the rules are written and tested in the [core-contributor](https://github.com/verisianHQ/core-contributor) repository, which is their source of truth. The rules included in this repository come from there.
+  - **SDTM**: the rules for SDTMIG 3.2, 3.3 and 3.4 are complete. They implement the CDISC [SDTM and SDTMIG Conformance Rules v2.0](https://www.cdisc.org/standards/foundational/sdtmig/sdtm-and-sdtmig-conformance-rules-v2-0) and the [FDA Business Rules v1.5](https://www.fda.gov/industry/fda-data-standards-advisory-board/study-data-standards-resources).
+  - **ADaM**: the rules, based on the CDISC [ADaM Conformance Rules v5.0](https://www.cdisc.org/standards/foundational/adam/adam-conformance-rules-v5-0), are in development and will be released soon. Until then, a validation against ADaMIG (`-s adamig`) finds no rules to run.
+  - **Define-XML**: the rules validating the Define-XML are also in development.
 
 The engine is designed to support submissions of up to about 2.5 GB, though for best results datasets no larger than 1.5 GB are recommended. You can try larger submissions, but we cannot guarantee performance given the open source nature of the project. For production-sized submissions, Verisian offers a comprehensive submission analysis platform, which includes a fully integrated and hosted version of the CORE engine.
 
