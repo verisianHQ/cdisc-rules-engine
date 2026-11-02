@@ -24,8 +24,8 @@ class TestListDatasetMetadata(unittest.TestCase):
         result = self.runner.invoke(
             list_dataset_metadata,
             [
-                "-dp",
                 "--cdisc",
+                "-dp",
                 os.path.join("tests", "resources", dataset_file),
             ],
         )

@@ -57,6 +57,10 @@ class TestListDatasetMetadata(unittest.TestCase):
             ],
         )
         self.assertEqual(metadata[0]["file_size"], 823120)
+        self.assertEqual(
+            [item["modification_date"] for item in metadata],
+            ["2020-08-21T09:14:26", "2025-04-11T15:44:36", "2025-04-11T15:44:37"],
+        )
 
     def test_list_dataset_metadata_cdisc_engine(self):
         result = self.runner.invoke(
