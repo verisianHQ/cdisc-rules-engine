@@ -291,6 +291,8 @@ python core.py version
 python core.py list-dataset-metadata -dp path/to/ae.xpt -dp path/to/ex.xpt
 ```
 
+By default this uses the SQL engine, which reads XPT and SAS7BDAT. Add `--cdisc` to use the CDISC (pandas) engine for other formats such as Dataset-JSON.
+
 ## Custom Standards and Rules
 
 ### Custom Rules Storage

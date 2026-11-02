@@ -180,6 +180,10 @@ class XptDataReader(BaseDataReader):
         member = getattr(reader, "member_info", None) or {}
         return self._decode(member.get("label", "") or "").strip()
 
+    def _extract_modification_date(self, reader: XportReader, stat) -> str:
+        modified = (getattr(reader, "member_info", None) or {}).get("modified")
+        return modified.isoformat() if modified else super()._extract_modification_date(reader, stat)
+
     def _get_total_rows(self, reader: XportReader = None) -> Optional[int]:
         if self._layout is not None:
             return self._layout.nobs
