@@ -189,3 +189,12 @@ def test_a_skip_that_hit_every_in_scope_dataset_does_not_list_them():
         + [skipped_dataset("lb")],
     )
     assert report(result).get_rules_report_data()[0][-1] == (f"Rule skipped - doesn't apply to domain (LB); {reason}")
+
+
+def test_a_skip_on_the_only_in_scope_dataset_still_names_it():
+    result = FakeResult(
+        "CORE-000001", ExecutionStatus.SKIPPED.value, [missing_variable("ae.xpt"), skipped_dataset("lb")]
+    )
+    assert report(result).get_rules_report_data()[0][-1] == (
+        "Rule skipped - doesn't apply to domain (LB); Rule skipped - variables not in dataset: AESER (AE)"
+    )

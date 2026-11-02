@@ -210,8 +210,8 @@ class BaseReport(ABC):
         SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list the errors
         first, then the datasets that reported issues, then the skip reasons.
         Datasets that are simply out of the rule's scope are left out there.
-        A skip reason names its datasets unless it hit every in-scope dataset (e.g. a missing define.xml),
-        where the list would add nothing.
+        A skip reason names its datasets unless it hit every one of several in-scope datasets
+        (e.g. a missing define.xml), where the list would add nothing.
         """
         if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
             return ""
@@ -226,7 +226,7 @@ class BaseReport(ABC):
             if part:
                 BaseReport._add_reason(reasons[part], reason, dataset)
         for reason, datasets in reasons["skips"].items():
-            if in_scope <= set(datasets):
+            if len(in_scope) > 1 and in_scope <= set(datasets):
                 reasons["skips"][reason] = []
         if status == ExecutionStatus.EXECUTION_ERROR.value:
             reasons["out_of_scope"] = {}
