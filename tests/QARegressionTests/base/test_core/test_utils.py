@@ -27,7 +27,5 @@ def run_command(args, shell):
 
 def tearDown():
     for file_name in listdir("."):
-        if file_name not in ("host.json", "local.settings.json") and (
-            file_name.endswith(".xlsx") or file_name.endswith(".json")
-        ):
+        if file_name.endswith(".xlsx") or file_name.endswith(".json"):
             remove(file_name)

@@ -150,9 +150,6 @@ resources/cache/custom_rules.pkl
 
 Organization_Custom.json
 
-# local rule regression
-tests/resources/rules/dev
-
 # Python virtual environment (add your own directory)
 venv_cdisc/
 
