@@ -48,6 +48,12 @@ class DomainNotFoundError(EngineError):
     description = "Domain Not Found"
 
 
+class MatchDatasetNotFoundError(DomainNotFoundError):
+    """Raised when a dataset the rule merges in (match dataset, RELREC, parent) is not present"""
+
+    description = "Match dataset not found"
+
+
 class DomainNotFoundInDefineXMLError(EngineError):
     code = 400
     description = "Domain is not found in Define XML file"
