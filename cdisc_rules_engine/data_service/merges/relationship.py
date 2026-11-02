@@ -1,6 +1,7 @@
+from cdisc_rules_engine.data_service.merges.join import missing_match_key_error
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
-from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, InvalidMatchKeyError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
@@ -25,7 +26,7 @@ class SqlRelationshipMerge:
                 match_keys = ["STUDYID", "USUBJID"]
 
             # Validate required columns
-            SqlRelationshipMerge._validate_merge(original, relationship_dataset, relationship_columns, match_keys)
+            SqlRelationshipMerge._validate_merge(pgi, original, relationship_dataset, relationship_columns, match_keys)
 
             name = f"{original.name}_REL_{domain}"
 
@@ -56,10 +57,8 @@ class SqlRelationshipMerge:
 
             return schema
 
-        except ColumnNotFoundError as e:
-            raise ColumnNotFoundError(
-                f"Relationship merge failed for {original.name} with {relationship_dataset.name}: {str(e)}"
-            )
+        except (ColumnNotFoundError, InvalidMatchKeyError):
+            raise
         except ValueError as e:
             raise ValueError(
                 f"Relationship merge failed for {original.name} with {relationship_dataset.name}: {str(e)}"
@@ -69,6 +68,7 @@ class SqlRelationshipMerge:
 
     @staticmethod
     def _validate_merge(
+        pgi: PostgresQLInterface,
         original: SqlTableSchema,
         relationship_dataset: SqlTableSchema,
         relationship_columns: dict,
@@ -78,9 +78,9 @@ class SqlRelationshipMerge:
         # Check match key columns exist in both datasets
         for col in match_keys:
             if not original.has_column(col):
-                raise ColumnNotFoundError(col, original.name)
+                raise missing_match_key_error(pgi, col, original)
             if not relationship_dataset.has_column(col):
-                raise ColumnNotFoundError(col, relationship_dataset.name)
+                raise missing_match_key_error(pgi, col, relationship_dataset)
 
         if not relationship_columns:
             raise ValueError("RELATIONSHIP MERGE: relationship_columns parameter is required but was None or empty")

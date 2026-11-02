@@ -1,5 +1,5 @@
 from collections import OrderedDict
-from typing import Any, Literal, Tuple, Union, TYPE_CHECKING
+from typing import Any, Literal, Optional, Tuple, Union, TYPE_CHECKING
 
 from cdisc_rules_engine.data_service.util import generate_hash
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
@@ -41,6 +41,14 @@ class SqlTableSchema:
     def get_columns(self) -> list[Tuple[str, SqlColumnSchema]]:
         """Return columns in insertion order."""
         return list(self._columns.items())
+
+    @property
+    def dataset_name(self) -> Optional[str]:
+        """
+        The submitted dataset this table holds, safe to show in a report. None for a derived
+        table, whose name is built from the merges that made it (column hashes and all).
+        """
+        return self.name if self.source == "data" else None
 
     @classmethod
     def from_data(cls, table_name: str, data: dict[str, Any], pgi: "PostgresQLInterface") -> "SqlTableSchema":

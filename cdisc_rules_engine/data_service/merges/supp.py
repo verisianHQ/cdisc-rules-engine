@@ -112,11 +112,11 @@ class SqlSuppMerge:
         """
         for col in required_supp_columns:
             if not supp.has_column(col):
-                raise ValueError(f"SUPP MERGE: SUPP schema is missing required column: {col}")
+                raise ColumnNotFoundError(col, supp.dataset_name)
 
         for col in ["STUDYID", "DOMAIN", "USUBJID"]:
             if not original.has_column(col):
-                raise ColumnNotFoundError(col, original.name)
+                raise ColumnNotFoundError(col, original.dataset_name)
 
         for col in required_original_columns:
             if not original.has_column(col):
@@ -147,7 +147,7 @@ class SqlSuppMerge:
             return []
         else:
             if not supp.has_column("IDVAR"):
-                raise ValueError("SUPP MERGE: SUPP schema is missing required column: IDVAR")
+                raise ColumnNotFoundError("IDVAR", supp.dataset_name)
 
             pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash}")
             result = pgi.fetch_all()

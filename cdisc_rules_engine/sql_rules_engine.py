@@ -22,6 +22,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     DomainNotFoundError,
     DomainNotFoundInDefineXMLError,
     FailedSchemaValidation,
+    InvalidMatchKeyError,
     RuleFormatError,
     VariableMetadataNotFoundError,
     ColumnNotFoundError,
@@ -358,6 +359,13 @@ class SQLRulesEngine:
             error_obj = FailedValidationEntity(
                 dataset=name,
                 error="Rule format error",
+                message=exception.message,
+            )
+            message = "rule execution error"
+        elif isinstance(exception, InvalidMatchKeyError):
+            error_obj = FailedValidationEntity(
+                dataset=name,
+                error=InvalidMatchKeyError.description,
                 message=exception.message,
             )
             message = "rule execution error"

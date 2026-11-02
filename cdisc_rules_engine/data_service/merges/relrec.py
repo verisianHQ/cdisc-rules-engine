@@ -69,11 +69,11 @@ class SqlRelrecMerge:
 
         for col in required_original_columns:
             if not original.has_column(col):
-                raise ColumnNotFoundError(col, original.name)
+                raise ColumnNotFoundError(col, original.dataset_name)
 
         for col in required_relrec_columns:
             if not relrec.has_column(col):
-                raise ColumnNotFoundError(col, relrec.name)
+                raise ColumnNotFoundError(col, relrec.dataset_name)
 
     @staticmethod
     def _filter_relrec_for_domain(
