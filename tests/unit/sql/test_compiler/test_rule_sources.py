@@ -6,6 +6,8 @@ import pytest
 
 from cdisc_rules_engine.compiler.sources import rule_source
 from cdisc_rules_engine.data_service.postgresql_data_service import PostgresQLDataService
+from cdisc_rules_engine.data_service.startup.populate_codelists import add_extensible_terms, codelist_schema
+from cdisc_rules_engine.enums.static_tables import StaticTables
 from cdisc_rules_engine.metadata.store import MetadataStore
 from cdisc_rules_engine.models.test_dataset import TestDataset
 from cdisc_rules_engine.standards.base_dataset_metdata import BaseDatasetMetadata
@@ -107,6 +109,46 @@ def test_library_metadata_missing_from_a_variable_is_the_text_none(study):
     assert testcd["library_variable_core"] == "Req"
     assert testcd["library_variable_ccode"] == "None"
     assert testcd["library_variable_order_number"] is None
+
+
+def load_ct(data_service, terms, extensible_terms=None):
+    data_service.pgi.create_table(codelist_schema())
+    data_service.pgi.insert_data(
+        StaticTables.IG_CODELIST_TABLE_NAME.value,
+        [
+            {
+                "standard_type": "sdtm",
+                "version_date": version,
+                "codelist_code": "C66742",
+                "extensible": "No",
+                "value": value,
+            }
+            for version, value in terms
+        ],
+    )
+    add_extensible_terms(data_service.pgi, extensible_terms)
+
+
+def library_terms(data_service) -> str:
+    library = [{"library_variable_name": "LBORRES", "library_variable_ccode": "C66742"}]
+    with patch.object(MetadataStore, "library_variables", return_value=library):
+        values = rows(data_service, "Value Check against Library Metadata")
+    return next(row for row in values if row["variable_name"] == "LBORRES")["library_variable_ccode_values"]
+
+
+def test_a_codelists_terms_leave_out_the_defines_extended_values(study):
+    load_ct(
+        study,
+        [("2024-03-29", "N"), ("2024-03-29", "Y")],
+        {"No Yes Response": {"codelist": "C66742", "extended_values": ["ZZ"]}},
+    )
+    assert library_terms(study) == "{N,Y}"
+
+
+def test_a_codelists_terms_come_from_the_provided_ct_versions(study):
+    load_ct(study, [("2023-12-15", "N"), ("2024-03-29", "N"), ("2024-03-29", "U")])
+    study.provided_codelists = ["sdtmct-2023-12-15"]
+    assert library_terms(study) == "{N}"
 
 
 def test_define_keys_are_unique_when_their_values_identify_a_record(study):

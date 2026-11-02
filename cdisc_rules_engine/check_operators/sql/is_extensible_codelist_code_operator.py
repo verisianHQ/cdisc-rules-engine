@@ -30,7 +30,7 @@ class IsExtensibleCodelistCodeOperator(BaseSqlOperator):
                     WHEN {target_sql} IN (
                         SELECT codelist_code
                         FROM {StaticTables.IG_CODELIST_TABLE_NAME.value}
-                        WHERE extensible = 'Yes'
+                        WHERE extensible = 'Yes' AND standard_type IS NOT NULL
                     ) THEN TRUE
                     ELSE FALSE
                 END

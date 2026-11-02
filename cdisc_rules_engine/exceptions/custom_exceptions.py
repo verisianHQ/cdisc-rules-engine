@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class EngineError(Exception):
     """All custom API Exceptions"""
 
@@ -45,6 +48,12 @@ class DomainNotFoundError(EngineError):
     description = "Domain Not Found"
 
 
+class MatchDatasetNotFoundError(DomainNotFoundError):
+    """Raised when a dataset the rule merges in (match dataset, RELREC, parent) is not present"""
+
+    description = "Match dataset not found"
+
+
 class DomainNotFoundInDefineXMLError(EngineError):
     code = 400
     description = "Domain is not found in Define XML file"
@@ -81,7 +90,7 @@ class SqlOperatorError(Exception):
 
 
 class ColumnNotFoundError(Exception):
-    def __init__(self, column_name: str, table_id: str = None, message: str = None):
+    def __init__(self, column_name: str, table_id: Optional[str] = None, message: Optional[str] = None):
         self.column_name = column_name
         self.table_id = table_id
 

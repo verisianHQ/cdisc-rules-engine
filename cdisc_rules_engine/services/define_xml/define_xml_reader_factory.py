@@ -1,7 +1,7 @@
 import os
 from xml.etree import ElementTree
 from re import compile
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 from cdisc_rules_engine.constants.define_xml_constants import (
     DEFINE_XML_FILE_NAME,
@@ -19,8 +19,7 @@ from cdisc_rules_engine.services.define_xml.base_define_xml_reader import (
 )
 from cdisc_rules_engine.utilities.utils import get_directory_path
 
-_DEFINE_VERSION_2_1 = compile(r"""DefineVersion\s*=\s*["'](?P<version>2\.1\.\d+)["']""")
-_DEFINE_VERSION_2_1_BYTES = compile(_DEFINE_VERSION_2_1.pattern.encode())
+_DEFINE_VERSION_2_1_PATCH = compile(r"2\.1\.\d+")
 
 
 class DefineXMLReaderFactory:
@@ -76,23 +75,19 @@ class DefineXMLReaderFactory:
     ) -> BaseDefineXMLReader:
         define_xml_reader_class: type = cls._get_define_xml_reader(ElementTree.fromstring(file_contents))
         reader: BaseDefineXMLReader = define_xml_reader_class(cache_service_obj, study_id, data_bundle_id)
-        file_contents, reader._original_define_version = cls._normalise_define_version(file_contents)
-        reader._odm_loader.load_odm_string(file_contents)
+        root = reader._odm_loader.load_odm_string(file_contents)
+        reader._original_define_version = cls._normalise_define_version(root, reader.class_define_xml_version())
         return reader
 
     @staticmethod
-    def _normalise_define_version(file_contents: Union[str, bytes]) -> Tuple[Union[str, bytes], Optional[str]]:
-        is_text = isinstance(file_contents, str)
-        pattern = _DEFINE_VERSION_2_1 if is_text else _DEFINE_VERSION_2_1_BYTES
-        match = pattern.search(file_contents)
-        if not match:
-            return file_contents, None
-        start, end = match.span("version")
-        version = match.group("version")
-        return (
-            file_contents[:start] + ("2.1.0" if is_text else b"2.1.0") + file_contents[end:],
-            version if is_text else version.decode(),
-        )
+    def _normalise_define_version(root: ElementTree.Element, define_xml_version) -> Optional[str]:
+        attribute = f"{{{define_xml_version.namespace}}}DefineVersion"
+        mdv = root.find("Study/MetaDataVersion", namespaces={"": ODM_NAMESPACE})
+        version = (mdv.get(attribute) or "").strip() if mdv is not None else ""
+        if not _DEFINE_VERSION_2_1_PATCH.fullmatch(version):
+            return None
+        mdv.set(attribute, "2.1.0")
+        return None if version == "2.1.0" else version
 
     @classmethod
     def _get_define_xml_reader(cls, root: ElementTree.Element) -> BaseDefineXMLReader:
