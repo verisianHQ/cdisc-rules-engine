@@ -10,7 +10,7 @@ Install the development requirements (they include _requirements.txt_):
 
 This project uses the `black` code formatter, `flake8` linter for python and `prettier` for JSON, YAML and MD.
 It also uses `pre-commit` to run `black`, `flake8` and `prettier` when you commit.
-`pre-commit` is included in _requirements.txt_ and `black` and `flake8` in _requirements-dev.txt_; `prettier` is installed automatically by `pre-commit`.
+`pre-commit`, `black` and `flake8` are included in _requirements-dev.txt_; `prettier` is installed automatically by `pre-commit`.
 
 **Required**
 
