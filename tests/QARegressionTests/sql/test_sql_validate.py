@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 import re
@@ -290,7 +291,7 @@ class TestValidate(unittest.TestCase):
             "-o",
             "output.json",
             "-of",
-            "csv",
+            "xml",
         ]
         exit_code, stdout, stderr = run_command(args, False)
 
@@ -783,6 +784,133 @@ class TestValidate(unittest.TestCase):
         conformance_details = self.json_report()["Conformance_Details"]
         self.assertEqual(conformance_details["Define_XML_Version"], "2.1.7")
         self.assertEqual(conformance_details["CT_Version"], "sdtmct-2020-12-18")
+
+    def test_sql_validate_exclude_rules(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-er",
+            "CORE-000172",
+            "-er",
+            "CORE-000001",
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        rule_ids = {rule["core_id"] for rule in self.json_report()["Rules_Report"]}
+        self.assertTrue(rule_ids)
+        self.assertNotIn("CORE-000172", rule_ids)
+        self.assertNotIn("CORE-000001", rule_ids)
+
+    def test_sql_validate_rules_and_exclude_rules_together(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-r",
+            "CORE-000001",
+            "-er",
+            "CORE-000172",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertIn("arguments --rules and --exclude-rules cannot be used together", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
+    def test_sql_validate_output_format_csv(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-of",
+            "csv",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        with open(os.path.join(self.tmp_dir, "report.csv"), newline="") as f:
+            rows = list(csv.reader(f))
+        self.assertEqual(rows[0], ["Rule ID", "Dataset", "Record", "Variable", "Value", "Message"])
+        self.assertTrue(len(rows) > 1)
+        self.assertTrue(all(row[0].startswith("CORE-") and row[1] == "AE" for row in rows[1:]))
+
+    def test_sql_validate_creates_missing_output_dir(self):
+        output = os.path.join(self.tmp_dir, "missing", "nested", "report")
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-of",
+            "csv",
+            "-of",
+            "json",
+            "-of",
+            "xlsx",
+            "-o",
+            output,
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        for extension in ("csv", "json", "xlsx"):
+            self.assertTrue(os.path.exists(f"{output}.{extension}"))
+
+    def test_sql_validate_underscore_option_names(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.3",
+            "-dp",
+            AE_XPT,
+            "--local_rules",
+            os.path.join("tests", "resources", "local_rules"),
+            "-r",
+            "CORE-000473",
+            "-of",
+            "json",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        self.assertEqual([rule["core_id"] for rule in self.json_report()["Rules_Report"]], ["CORE-000473"])
 
     def tearDown(self):
         tearDown()
