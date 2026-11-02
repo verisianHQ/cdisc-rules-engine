@@ -1,5 +1,3 @@
-from cdisc_rules_engine.data_service.merges.join import missing_match_key_error
-from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 
@@ -18,60 +16,29 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         - If --DTC < RFSTDTC: --DY = (--DTC date) - (RFSTDTC date)
         - No Study Day 0 exists (goes from -1 to +1)
 
-        Both dates are read from the row being checked ($1, $2), never looked up by row id in another table,
-        so rows dropped or duplicated by the rule's merges can't pair a row with another row's dates.
+        Both dates are read from the row being checked, so a rule using this operation must merge DM.
         """
-        schema = self.data_service.pgi.schema
-        table = (schema.get_table(self.params.table) if self.params.table else None) or schema.get_table(
-            self.params.domain
-        )
+        table = self.data_service.pgi.schema.get_table(self.params.table)
         if not table:
-            raise ValueError(f"Table for domain {self.params.domain} not found")
+            raise ValueError(f"Table {self.params.table} not found")
+        # target before RFSTDTC: a dataset without the target isn't checked, even when DM has no RFSTDTC
+        if not table.has_column(self.params.target):
+            return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
+        if not table.has_column("RFSTDTC"):
+            raise ValueError("RFSTDTC not found: rules using the dy operation must merge DM")
 
-        if table.has_column("RFSTDTC"):
-            # the rule merged DM, so the row carries its own RFSTDTC
-            if not table.has_column(self.params.target):
-                return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
-            reference_sql, reference_column = "$2", "RFSTDTC"
-        else:
-            dm_table = schema.get_table("DM")
-            if not dm_table:
-                return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
-            usubjid_match = self._usubjid_match_sql(table, dm_table)
-            if not table.has_column(self.params.target):
-                return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
-            rfstdtc = dm_table.get_column("RFSTDTC")
-            if rfstdtc is None:
-                raise ValueError("RFSTDTC column not found in joined table")
-            # the subject's DM record, the first one if DM repeats the subject
-            reference_sql = (
-                f"(SELECT dm.{rfstdtc.hash} FROM {dm_table.hash} dm WHERE {usubjid_match} ORDER BY dm.id LIMIT 1)"
-            )
-            reference_column = "USUBJID"
-
-        query = self._study_day_sql("$1", reference_sql)
         return SqlOperationResult(
-            query=query, type="constant", subtype="Num", params={"$1": self.params.target, "$2": reference_column}
+            query=self._study_day_sql("$dtc", "$rfstdtc"),
+            type="constant",
+            subtype="Num",
+            params={"$dtc": self.params.target, "$rfstdtc": "RFSTDTC"},
         )
-
-    def _usubjid_match_sql(self, table, dm_table) -> str:
-        """DM's USUBJID equal to the row's USUBJID ($2), compared the same way SqlJoinMerge joins on it."""
-        row_usubjid, dm_usubjid = table.get_column("usubjid"), dm_table.get_column("usubjid")
-        if row_usubjid is None:
-            raise missing_match_key_error(self.data_service.pgi, "usubjid", table)
-        if dm_usubjid is None:
-            raise missing_match_key_error(self.data_service.pgi, "usubjid", dm_table)
-        if row_usubjid.type == dm_usubjid.type:
-            return f"dm.{dm_usubjid.hash} = $2"
-        return numeric_aware_equals_sql(f"dm.{dm_usubjid.hash}", "$2")
 
     @staticmethod
-    def _study_day_sql(target_sql: str, reference_sql: str) -> str:
-        dates = f"""SELECT {target_sql}::text AS target, {reference_sql}::text AS reference OFFSET 0"""
+    def _study_day_sql(target: str, reference: str) -> str:
         cleaned = f"""SELECT
-                CASE WHEN v.target ~ '{ISO_PATTERN}' THEN v.target END AS target,
-                CASE WHEN v.reference ~ '{ISO_PATTERN}' THEN v.reference END AS reference
-            FROM ({dates}) v
+                CASE WHEN {target}::text ~ '{ISO_PATTERN}' THEN {target}::text END AS target,
+                CASE WHEN {reference}::text ~ '{ISO_PATTERN}' THEN {reference}::text END AS reference
             OFFSET 0"""
         precision = f"""SELECT c.target, c.reference, LEAST(LENGTH(c.target), LENGTH(c.reference)) AS min_len
             FROM ({cleaned}) c
