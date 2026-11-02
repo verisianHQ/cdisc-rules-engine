@@ -24,11 +24,9 @@ This installs `pre-commit` in your `.git/hooks` directory.
 
 From the root of the project run the following command (the Postgres database must be running for the SQL engine tests: see Option B in the README's Database section):
 
-`python -m pytest tests --ignore=tests/rule_regression`
+`python -m pytest tests`
 
 The end-to-end tests in `tests/QARegressionTests` (marked `regression`) are skipped by default. To run only those, add `-m regression`.
-
-The tests in `tests/rule_regression` need a rule editor export and a SharePoint dump of the CDISC test cases, so they are left out of the command above (see [tests/rule_regression/README.md](tests/rule_regression/README.md)).
 
 ## **Creating an executable version**
 
