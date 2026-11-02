@@ -170,6 +170,15 @@ def test_cli_rule_with_missing_input_is_skipped_with_reason():
     assert [r["message"] for r in result.results] == ["Not applicable: requires a define.xml (-dxp)"]
 
 
+def test_cli_rule_with_invalid_structure_is_an_execution_error_not_a_success():
+    engine = _engine({"AE": True})
+    engine.validate_single_dataset = MagicMock()
+    result = rsv.sql_validate_single_rule(engine, MagicMock(progress="disabled"), _rule(), [])
+    engine.validate_single_dataset.assert_not_called()
+    assert [r["executionStatus"] for r in result.results] == [ExecutionStatus.EXECUTION_ERROR.value]
+    assert [r["message"] for r in result.results] == ["Invalid rule structure"]
+
+
 def test_is_not_applicable():
     assert is_not_applicable({"executionStatus": "skipped", "message": get_not_applicable_reason([DEFINE_XML])})
     assert not is_not_applicable({"executionStatus": "skipped", "message": "Rule skipped - doesn't apply to domain"})
