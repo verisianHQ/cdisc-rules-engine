@@ -276,6 +276,7 @@ class ExcelReport(BaseReport):
             )
 
             progress_reporter.start_step("Saving workbook to disk")
+            self._create_output_dir()
             with open(self._output_name, "wb") as f:
                 f.write(excel_workbook_to_stream(report_data))
             progress_reporter.end_step()

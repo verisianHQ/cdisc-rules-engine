@@ -1,5 +1,4 @@
 import csv
-import os
 from typing import BinaryIO, Iterable, List, Optional
 
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
@@ -47,7 +46,7 @@ class CsvReport(BaseReport):
                         dataset,
                         str(issue.get("row", "")),
                         variable,
-                        "" if value in (None, "null") else value,
+                        value,
                         issue.get("message") or "",
                     ]
                 )
@@ -71,9 +70,7 @@ class CsvReport(BaseReport):
         return CSV_HEADER, sorted(rows, key=_csv_sort_key)
 
     def write_report(self, **kwargs):
-        output_dir = os.path.dirname(self._output_name)
-        if output_dir:
-            os.makedirs(output_dir, exist_ok=True)
+        self._create_output_dir()
         header, rows = self.get_export()
         with open(self._output_name, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)

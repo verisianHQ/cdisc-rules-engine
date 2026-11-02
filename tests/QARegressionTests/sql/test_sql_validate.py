@@ -860,6 +860,33 @@ class TestValidate(unittest.TestCase):
         self.assertTrue(len(rows) > 1)
         self.assertTrue(all(row[0].startswith("CORE-") and row[1] == "AE" for row in rows[1:]))
 
+    def test_sql_validate_creates_missing_output_dir(self):
+        output = os.path.join(self.tmp_dir, "missing", "nested", "report")
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-of",
+            "csv",
+            "-of",
+            "json",
+            "-of",
+            "xlsx",
+            "-o",
+            output,
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr, "")
+        for extension in ("csv", "json", "xlsx"):
+            self.assertTrue(os.path.exists(f"{output}.{extension}"))
+
     def test_sql_validate_underscore_option_names(self):
         args = [
             "python",

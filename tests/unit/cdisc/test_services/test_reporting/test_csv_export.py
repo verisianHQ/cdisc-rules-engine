@@ -60,7 +60,7 @@ def test_csv_export_rows():
     assert header == CSV_HEADER
     assert rows == [
         ["CORE-000001", "AE", "", "", "", "Dataset-level issue"],
-        ["CORE-000002", "AE", "10", "AESTDY", "", "AESTDY is null"],
+        ["CORE-000002", "AE", "10", "AESTDY", "null", "AESTDY is null"],
         ["CORE-000002", "AE", "10", "DOMAIN", "AE", "AESTDY is null"],
         ["CORE-000003", "DM", "", "EXECUTION_ERROR", "boom", "rule execution error"],
         ["CORE-000003", "EX", "", "EXECUTION_ERROR", "rule execution error", "rule execution error"],
