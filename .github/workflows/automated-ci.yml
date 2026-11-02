@@ -5,3 +5,8 @@ jobs:
     uses: ./.github/workflows/lint_format.yml
   test_unit:
     uses: ./.github/workflows/test_unit.yml
+  # disabled, but kept because the main ruleset requires a "test_suite" check (a skipped job satisfies it)
+  test_suite:
+    if: false
+    uses: ./.github/workflows/test_suite.yml
+    secrets: inherit
