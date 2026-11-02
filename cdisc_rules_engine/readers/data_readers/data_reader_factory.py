@@ -9,7 +9,7 @@ class DataReaderFactory:
     @staticmethod
     def get_data_reader(file_path: str) -> BaseDataReader:
         extension = file_path.split(".")[-1]
-        constructor = DataReaderFactory._lookup.get("." + extension, None)
+        constructor = DataReaderFactory._lookup.get("." + extension.lower(), None)
         if not constructor:
             raise ValueError("No data reader found for dataset file extension: ." + extension)
         return constructor(file_path)

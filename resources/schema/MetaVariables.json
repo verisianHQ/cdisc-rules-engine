@@ -3,6 +3,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "anyOf": [
     {
+      "const": "categories_summary"
+    },
+    {
+      "const": "dataset_domain"
+    },
+    {
       "const": "dataset_label"
     },
     { "const": "dataset_location" },
@@ -10,6 +16,12 @@
     { "const": "dataset_size" },
     {
       "const": "define_dataset_class"
+    },
+    {
+      "const": "define_dataset_domain"
+    },
+    {
+      "const": "define_dataset_has_no_data"
     },
     {
       "const": "define_dataset_is_non_standard"
@@ -30,6 +42,15 @@
       "const": "define_dataset_structure"
     },
     {
+      "const": "define_dataset_variable_order"
+    },
+    {
+      "const": "define_dataset_variables"
+    },
+    {
+      "const": "define_key_sequence_is_unique"
+    },
+    {
       "const": "define_variable_allowed_terms"
     },
     {
@@ -43,9 +64,6 @@
     },
     {
       "const": "define_variable_data_type"
-    },
-    {
-      "const": "define_variable_format"
     },
     {
       "const": "define_variable_has_codelist"
@@ -81,7 +99,7 @@
       "const": "define_variable_role"
     },
     {
-      "const": "define_variable_length"
+      "const": "define_variable_source_type"
     },
     {
       "const": "define_vlm_allowed_terms"
@@ -94,9 +112,6 @@
     },
     {
       "const": "define_vlm_data_type"
-    },
-    {
-      "const": "define_vlm_format"
     },
     {
       "const": "define_vlm_has_codelist"
@@ -132,9 +147,57 @@
       "const": "define_vlm_role"
     },
     {
-      "const": "define_vlm_size"
+      "const": "doc_index"
+    },
+    {
+      "const": "document_href"
+    },
+    {
+      "const": "document_href_fragment"
+    },
+    {
+      "const": "document_href_path"
+    },
+    {
+      "const": "document_operation"
+    },
+    {
+      "const": "document_properties_json"
+    },
+    {
+      "const": "document_properties_summary"
+    },
+    {
+      "const": "document_title"
+    },
+    {
+      "const": "domain"
+    },
+    {
+      "const": "dtd_version"
+    },
+    {
+      "const": "file_tag_info_type"
+    },
+    {
+      "const": "file_tag_name"
     },
     { "const": "filename" },
+    {
+      "const": "language"
+    },
+    {
+      "const": "library_variable_ccode"
+    },
+    {
+      "const": "library_variable_ccode_values"
+    },
+    {
+      "const": "library_variable_codelist_name"
+    },
+    {
+      "const": "library_variable_codelist_value"
+    },
     { "const": "library_variable_core" },
     { "const": "library_variable_data_type" },
     { "const": "library_variable_label" },
@@ -142,19 +205,37 @@
     { "const": "library_variable_order_number" },
     { "const": "library_variable_role" },
     {
+      "const": "record_count"
+    },
+    {
       "const": "row_number"
+    },
+    {
+      "const": "study_id"
+    },
+    {
+      "const": "study_title"
+    },
+    {
+      "const": "variable_count"
     },
     {
       "const": "variable_data_type"
     },
     { "const": "variable_format" },
     { "const": "variable_has_empty_values" },
+    {
+      "const": "variable_is_empty"
+    },
     { "const": "variable_label" },
     { "const": "variable_name" },
     {
       "const": "variable_order_number"
     },
     { "const": "variable_length" },
+    {
+      "const": "variable_max_value_length"
+    },
     {
       "const": "variable_value"
     },

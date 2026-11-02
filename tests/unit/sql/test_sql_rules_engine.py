@@ -1,6 +1,9 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
+
+from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import ConditionCompositeFactory
 from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
 
@@ -30,3 +33,16 @@ def test_execute_rule_runs_once_per_regex_variable():
         ["AESTDY"],
         ["AEENDY"],
     ]
+
+
+@pytest.mark.parametrize(
+    "exception, expected",
+    [(KeyError("B, A"), "A, B"), (KeyError(None), "None"), (KeyError(), "")],
+)
+def test_key_error_without_a_string_message_is_reported_not_raised(exception, expected):
+    engine = SQLRulesEngine.__new__(SQLRulesEngine)
+
+    result = engine.handle_validation_exceptions(exception, "ae.xpt")
+
+    assert result.status == ExecutionStatus.EXECUTION_ERROR.value
+    assert result.errors[0].to_representation()["message"] == expected
