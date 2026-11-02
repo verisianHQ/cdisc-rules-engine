@@ -255,8 +255,21 @@ The rules report tab displays the run status of each rule selected for validatio
 
 The possible rule run statuses are:
 
-- `SUCCESS` - The rule ran and data was validated against the rule. May or may not produce results
-- `SKIPPED` - The rule was unable to be run. Usually due to missing required data, but could also be caused by rule execution errors. A rule that needs an input that wasn't given (a define.xml with `-dxp`, a study tagging file with `-stf`, or an external dictionary such as `--meddra`) is skipped with a message starting with `Not applicable: requires`.
+- `EXECUTION ERROR` - The rule ran into an error and couldn't finish running on at least one dataset, or the rule itself is invalid (`Invalid rule structure`).
+- `ISSUE REPORTED` - The rule ran and found issues, which are listed in the Issue Summary and Issue Details tabs.
+- `SUCCESS` - The rule ran and found no issues.
+- `SKIPPED` - The rule didn't run on any dataset. Either no dataset was in its scope (e.g. `Rule skipped - doesn't apply to domain`), or it needs an input that wasn't given (a define.xml with `-dxp`, a study tagging file with `-stf`, or an external dictionary such as `--meddra`), in which case the reason starts with `Not applicable: requires`.
+
+A rule runs on each dataset separately, so its datasets can end up with different statuses. The rule then shows the highest-priority one: `EXECUTION ERROR` > `ISSUE REPORTED` > `SUCCESS` > `SKIPPED`.
+
+The `Reason` column within the 'Rules Report' of the report explains `SKIPPED` and `EXECUTION ERROR` rules, naming the affected datasets in brackets. Reasons are listed in this order:
+
+1. Execution errors, e.g. `SQL operator execution error: ... (AE)`
+2. Datasets where issues were reported, as `Issues reported (DM)`
+3. Skips with a cause, such as a missing variable or a missing define.xml
+4. Datasets out of the rule's scope, e.g. `Rule skipped - doesn't apply to domain (LB, QS)`. These are only shown for `SKIPPED` rules; next to an error they're left out.
+
+A skip with a cause names the datasets it hit, unless it hit every one of several in-scope datasets (e.g. a define.xml missing for the whole study), in which case the list is left out because it would add nothing.
 
 ## Additional Core Commands
 

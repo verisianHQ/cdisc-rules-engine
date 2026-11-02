@@ -1,4 +1,3 @@
-from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 from cdisc_rules_engine.sql_operations.sql_base_operation import SqlBaseOperation
 
@@ -16,51 +15,30 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         - If --DTC >= RFSTDTC: --DY = (--DTC date) - (RFSTDTC date) + 1
         - If --DTC < RFSTDTC: --DY = (--DTC date) - (RFSTDTC date)
         - No Study Day 0 exists (goes from -1 to +1)
+
+        Both dates are read from the row being checked, so a rule using this operation must merge DM.
         """
-        current_table = self.data_service.pgi.schema.get_table(self.params.domain)
-        if not current_table:
-            raise ValueError(f"Table for domain {self.params.domain} not found")
-
-        if current_table.has_column("RFSTDTC"):
-            joined_table = current_table
-        else:
-            dm_table = self.data_service.pgi.schema.get_table("DM")
-            if not dm_table:
-                return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
-            joined_table = SqlJoinMerge.perform_join(
-                pgi=self.data_service.pgi,
-                left=current_table,
-                right=dm_table,
-                pivot_left=["USUBJID"],
-                pivot_right=["USUBJID"],
-                type="LEFT",
-            )
-
-        if not joined_table.has_column(self.params.target):
+        table = self.data_service.pgi.schema.get_table(self.params.table)
+        if not table:
+            raise ValueError(f"Table {self.params.table} not found")
+        # target before RFSTDTC: a dataset without the target isn't checked, even when DM has no RFSTDTC
+        if not table.has_column(self.params.target):
             return SqlOperationResult(query="SELECT 0 AS value", type="constant", subtype="Num")
+        if not table.has_column("RFSTDTC"):
+            raise ValueError("RFSTDTC not found: rules using the dy operation must merge DM")
 
-        target_date_col = self.data_service.pgi.schema.get_column(joined_table.name, self.params.target)
-
-        if not joined_table.has_column("RFSTDTC"):
-            raise ValueError("RFSTDTC column not found in joined table")
-
-        rfstdtc_date_col = self.data_service.pgi.schema.get_column(joined_table.name, "RFSTDTC")
-
-        id_col = self.data_service.pgi.schema.get_column_hash(joined_table.name, "id")
-
-        query = self._study_day_sql(
-            target_date_col.hash, rfstdtc_date_col.hash, joined_table.hash, where=f"{id_col} = $id"
+        return SqlOperationResult(
+            query=self._study_day_sql("$dtc", "$rfstdtc"),
+            type="constant",
+            subtype="Num",
+            params={"$dtc": self.params.target, "$rfstdtc": "RFSTDTC"},
         )
 
-        return SqlOperationResult(query=query, type="constant", subtype="Num", params={"$id": "id"})
-
     @staticmethod
-    def _study_day_sql(target_col: str, reference_col: str, table: str, where: str) -> str:
+    def _study_day_sql(target: str, reference: str) -> str:
         cleaned = f"""SELECT
-                CASE WHEN {target_col}::text ~ '{ISO_PATTERN}' THEN {target_col}::text END AS target,
-                CASE WHEN {reference_col}::text ~ '{ISO_PATTERN}' THEN {reference_col}::text END AS reference
-            FROM {table}
-            WHERE {where}
+                CASE WHEN {target}::text ~ '{ISO_PATTERN}' THEN {target}::text END AS target,
+                CASE WHEN {reference}::text ~ '{ISO_PATTERN}' THEN {reference}::text END AS reference
             OFFSET 0"""
         precision = f"""SELECT c.target, c.reference, LEAST(LENGTH(c.target), LENGTH(c.reference)) AS min_len
             FROM ({cleaned}) c

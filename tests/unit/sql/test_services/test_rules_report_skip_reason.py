@@ -27,12 +27,35 @@ def skipped(core_id, *reasons):
     )
 
 
-def succeeded(core_id):
+def succeeded(core_id, errors=(), dataset="dm.xpt"):
     return FakeResult(
         core_id,
         ExecutionStatus.SUCCESS.value,
-        [{"executionStatus": ExecutionStatus.SUCCESS.value, "message": None, "errors": []}],
+        [
+            {
+                "executionStatus": ExecutionStatus.SUCCESS.value,
+                "dataset": dataset,
+                "message": None,
+                "errors": list(errors),
+            }
+        ],
     )
+
+
+def errored(dataset, error="SQL error in equal_to operator"):
+    return {
+        "executionStatus": ExecutionStatus.EXECUTION_ERROR.value,
+        "dataset": dataset,
+        "message": "SQL operator execution error",
+        "errors": [{"dataset": dataset, "error": error, "message": "column does not exist"}],
+    }
+
+
+def skipped_dataset(dataset):
+    return {
+        "executionStatus": ExecutionStatus.SKIPPED.value,
+        "message": f"Rule skipped - doesn't apply to domain for rule id=CORE-000001, dataset={dataset}",
+    }
 
 
 def test_a_skipped_rule_reports_its_reason():
@@ -63,7 +86,115 @@ def test_reasons_recorded_per_dataset_are_grouped_by_reason():
         )
     ).get_rules_report_data()
     assert rows[0][-1] == (
+        "rule execution error; "
         "Rule skipped - doesn't apply to domain (LB, QS); "
-        "Rule skipped - doesn't apply to class (AE); "
-        "rule execution error"
+        "Rule skipped - doesn't apply to class (AE)"
+    )
+
+
+def test_a_rule_that_raised_issues_is_issue_reported():
+    rows = report(succeeded("CORE-000022", errors=[{"row": 1}])).get_rules_report_data()
+    assert rows[0][-2] == "ISSUE REPORTED"
+    assert rows[0][-1] == ""
+
+
+def test_a_rule_that_failed_lists_the_errors_before_the_skips_but_not_out_of_scope_datasets():
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [
+            skipped_dataset("lb"),
+            {"executionStatus": ExecutionStatus.SKIPPED.value, "message": "Rule skipped - variables not in dataset"},
+            errored("ae.xpt"),
+        ],
+    )
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2] == "EXECUTION ERROR"
+    assert rows[0][-1] == (
+        "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE); "
+        "Rule skipped - variables not in dataset"
+    )
+
+
+def test_an_invalid_rule_is_reported_as_an_execution_error():
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [{"executionStatus": ExecutionStatus.EXECUTION_ERROR.value, "message": "Invalid rule structure", "errors": []}],
+    )
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2:] == ["EXECUTION ERROR", "Invalid rule structure"]
+
+
+def test_execution_error_outranks_success():
+    result = succeeded("CORE-000001")
+    result.results.append(errored("ae.xpt"))
+    assert report(result).get_rules_report_data()[0][-2] == "EXECUTION ERROR"
+
+
+def test_execution_error_outranks_issues_on_another_dataset():
+    result = succeeded("CORE-000001", errors=[{"row": 1}])
+    result.results.append(errored("ae.xpt"))
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2] == "EXECUTION ERROR"
+    assert rows[0][-1] == (
+        "SQL operator execution error: SQL error in equal_to operator: column does not exist (AE); "
+        "Issues reported (DM)"
+    )
+
+
+def test_issues_outrank_success_on_another_dataset():
+    result = succeeded("CORE-000001", errors=[{"row": 1}])
+    result.results.append({"executionStatus": ExecutionStatus.SUCCESS.value, "message": None, "errors": []})
+    assert report(result).get_rules_report_data()[0][-2] == "ISSUE REPORTED"
+
+
+def test_success_outranks_skipped_datasets():
+    result = succeeded("CORE-000001")
+    result.results.append(skipped_dataset("lb"))
+    rows = report(result).get_rules_report_data()
+    assert rows[0][-2] == "SUCCESS"
+    assert rows[0][-1] == ""
+
+
+def missing_variable(dataset):
+    return {
+        "executionStatus": ExecutionStatus.SKIPPED.value,
+        "dataset": dataset,
+        "message": "Rule skipped - variables not in dataset: AESER",
+    }
+
+
+def test_a_skip_that_hit_only_some_datasets_names_them():
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [missing_variable("ae.xpt"), missing_variable("suppae.xpt"), errored("cm.xpt"), skipped_dataset("lb")],
+    )
+    assert report(result).get_rules_report_data()[0][-1] == (
+        "SQL operator execution error: SQL error in equal_to operator: column does not exist (CM); "
+        "Rule skipped - variables not in dataset: AESER (AE, SUPPAE)"
+    )
+
+
+def test_a_skip_that_hit_every_in_scope_dataset_does_not_list_them():
+    reason = "Not applicable: requires a define.xml (-dxp)"
+    result = FakeResult(
+        "CORE-000001",
+        ExecutionStatus.SKIPPED.value,
+        [
+            {"executionStatus": ExecutionStatus.SKIPPED.value, "dataset": name, "message": reason}
+            for name in ("ae.xpt", "dm.xpt")
+        ]
+        + [skipped_dataset("lb")],
+    )
+    assert report(result).get_rules_report_data()[0][-1] == (f"{reason}; Rule skipped - doesn't apply to domain (LB)")
+
+
+def test_a_skip_on_the_only_in_scope_dataset_still_names_it():
+    result = FakeResult(
+        "CORE-000001", ExecutionStatus.SKIPPED.value, [missing_variable("ae.xpt"), skipped_dataset("lb")]
+    )
+    assert report(result).get_rules_report_data()[0][-1] == (
+        "Rule skipped - variables not in dataset: AESER (AE); Rule skipped - doesn't apply to domain (LB)"
     )

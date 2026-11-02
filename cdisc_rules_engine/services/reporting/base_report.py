@@ -2,7 +2,7 @@ import re
 from abc import ABC, abstractmethod
 from io import IOBase
 from pathlib import Path
-from typing import List, Optional, Union, Iterable
+from typing import List, Optional, Tuple, Union, Iterable
 
 from openpyxl import Workbook
 
@@ -10,7 +10,6 @@ from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.models.rule_validation_result import RuleValidationResult
 from cdisc_rules_engine.models.validation_args import Validation_args
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
-
 
 _PER_DATASET_SKIP_REASON = re.compile(r"^(?P<reason>.+?) for rule id=[^,]*, dataset=(?P<dataset>\S+)$")
 
@@ -149,21 +148,21 @@ class BaseReport(ABC):
             "CDISC RuleID",
             "FDA RuleID",
             "Message",
-            "Status",
-            "Reason for Skip"
+            "Status",  # SUCCESS, ISSUE REPORTED, SKIPPED or EXECUTION ERROR
+            "Reason"
         ]
         """
         rules_report = []
         for validation_result in self._results:
-            skipped = validation_result.execution_status != ExecutionStatus.SUCCESS.value
+            status = self._get_rule_status(validation_result)
             rules_item = {
                 "core_id": validation_result.id,
                 "version": "1",
                 "cdisc_rule_id": validation_result.cdisc_rule_id,
                 "fda_rule_id": validation_result.fda_rule_id,
                 "message": validation_result.message,
-                "status": (ExecutionStatus.SKIPPED.value.upper() if skipped else ExecutionStatus.SUCCESS.value.upper()),
-                "skip_reason": (self._get_skip_reason(validation_result) if skipped else ""),
+                "status": status.replace("_", " ").upper(),
+                "skip_reason": self._get_skip_reason(validation_result, status),
             }
             if self._item_type == "list":
                 rules_report.append([*rules_item.values()])
@@ -188,27 +187,88 @@ class BaseReport(ABC):
         return Path(filename).stem.upper()
 
     @staticmethod
-    def _get_skip_reason(validation_result) -> str:
-        datasets_by_reason = {}
+    def _get_rule_status(validation_result) -> str:
+        """
+        Rule takes the highest-priority status among them:
+        EXECUTION_ERROR > ISSUE_REPORTED > SUCCESS > SKIPPED.
+        """
+        results = [result for result in validation_result.results or [] if isinstance(result, dict)]
+        statuses = {result.get("executionStatus") for result in results}
+        if ExecutionStatus.EXECUTION_ERROR.value in statuses:
+            return ExecutionStatus.EXECUTION_ERROR.value
+        if any(
+            result.get("errors") for result in results if result.get("executionStatus") == ExecutionStatus.SUCCESS.value
+        ):
+            return ExecutionStatus.ISSUE_REPORTED.value
+        if validation_result.execution_status == ExecutionStatus.SUCCESS.value:
+            return ExecutionStatus.SUCCESS.value
+        return ExecutionStatus.SKIPPED.value
+
+    @staticmethod
+    def _get_skip_reason(validation_result, status: str) -> str:
+        """
+        SKIPPED rules list every reason a dataset was skipped. EXECUTION_ERROR rules list the errors
+        first, then the datasets that reported issues, then the skip reasons.
+        Datasets that are simply out of the rule's scope are left out there.
+        A skip reason names its datasets unless it hit every one of several in-scope datasets
+        (e.g. a missing define.xml), where the list would add nothing.
+        """
+        if status not in (ExecutionStatus.SKIPPED.value, ExecutionStatus.EXECUTION_ERROR.value):
+            return ""
+        reasons = {"errors": {}, "issues": {}, "skips": {}, "out_of_scope": {}}
+        in_scope = set()
         for result in validation_result.results or []:
             if not isinstance(result, dict):
                 continue
-            if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
-                continue
-            reason = result.get("message")
-            if not reason:
-                continue
-            dataset = None
-            match = _PER_DATASET_SKIP_REASON.match(reason)
-            if match:
-                reason, dataset = match["reason"], match["dataset"].upper()
-            datasets = datasets_by_reason.setdefault(reason, [])
-            if dataset and dataset not in datasets:
-                datasets.append(dataset)
+            part, reason, dataset = BaseReport._reason_entry(result)
+            if dataset and part != "out_of_scope":
+                in_scope.add(dataset)
+            if part:
+                BaseReport._add_reason(reasons[part], reason, dataset)
+        for reason, datasets in reasons["skips"].items():
+            if len(in_scope) > 1 and in_scope <= set(datasets):
+                reasons["skips"][reason] = []
+        if status == ExecutionStatus.EXECUTION_ERROR.value:
+            reasons["out_of_scope"] = {}
+        return BaseReport._join_reasons({key: value for part in reasons.values() for key, value in part.items()})
+
+    @staticmethod
+    def _reason_entry(result: dict) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+        """
+        Returns which part of the Reason column a dataset's result belongs to
+        ("errors", "issues", "out_of_scope", "skips" or None), with its reason and dataset.
+        """
+        dataset = BaseReport._display_dataset_name(result.get("dataset"))
+        reason = result.get("message")
+        if result.get("executionStatus") == ExecutionStatus.SUCCESS.value:
+            return ("issues" if result.get("errors") else None), "Issues reported", dataset
+        if not reason:
+            return None, None, dataset
+        match = _PER_DATASET_SKIP_REASON.match(reason)
+        if match:
+            return "out_of_scope", match["reason"], match["dataset"].upper()
+        if result.get("executionStatus") == ExecutionStatus.EXECUTION_ERROR.value:
+            return "errors", BaseReport._error_reason(result, reason), dataset
+        return "skips", reason, dataset
+
+    @staticmethod
+    def _join_reasons(datasets_by_reason: dict) -> str:
         return "; ".join(
             f"{reason} ({', '.join(datasets)})" if datasets else reason
             for reason, datasets in datasets_by_reason.items()
         )
+
+    @staticmethod
+    def _error_reason(result: dict, reason: str) -> str:
+        error = next((error for error in result.get("errors") or [] if error.get("error")), {})
+        detail = ": ".join(str(part) for part in (error.get("error"), error.get("message")) if part)
+        return f"{reason}: {detail}" if detail else reason
+
+    @staticmethod
+    def _add_reason(datasets_by_reason: dict, reason: str, dataset: Optional[str]) -> None:
+        datasets = datasets_by_reason.setdefault(reason, [])
+        if dataset and dataset not in datasets:
+            datasets.append(dataset)
 
     @property
     @abstractmethod

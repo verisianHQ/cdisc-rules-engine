@@ -68,7 +68,7 @@ def test_CG0019():
 
     assert len(coreid_values) == 4
 
-    assert rule_status_column_values[0] == "SUCCESS"
+    assert rule_status_column_values[0] == "ISSUE REPORTED"
 
     # Close the workbook
     workbook.close()
