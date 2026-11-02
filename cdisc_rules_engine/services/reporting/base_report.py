@@ -177,6 +177,12 @@ class BaseReport(ABC):
 
     @staticmethod
     def _display_dataset_name(filename: Optional[str]) -> Optional[str]:
+        """
+        Formats a raw dataset filename (e.g. "ae.sas7bdat") for report display
+        only: extension stripped, uppercased (e.g. "AE"). Must only be applied
+        to values about to be written to a report, never to the underlying
+        filename used for internal matching/grouping.
+        """
         if not filename:
             return filename
         return Path(filename).stem.upper()

@@ -6,6 +6,11 @@ from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import (
+    ColumnNotFoundError,
+    InvalidMatchKeyError,
+    MatchDatasetNotFoundError,
+)
 from cdisc_rules_engine.standards.default_standards_context import (
     DefaultStandardsContext,
 )
@@ -150,6 +155,21 @@ def test_table_not_in_data(data):
         )
 
 
+def test_join_merge_with_absent_match_dataset_skips():
+    ds = PostgresQLDataService.instance()
+    context = DefaultStandardsContext()
+    PostgresQLDataService.add_test_dataset(ds, "dm", {"USUBJID": ["U1"], "DTHFL": ["Y"]}, context)
+
+    with pytest.raises(MatchDatasetNotFoundError, match="Match dataset SS is not present"):
+        context.perform_merge(
+            data_service=ds,
+            original="dm",
+            dataset_metadata=ds.get_dataset_metadata("dm"),
+            merge_spec={"domain_name": "SS", "match_key": ["USUBJID"]},
+            rule={},
+        )
+
+
 @pytest.mark.parametrize(
     "data",
     [SIMPLE_DATA],
@@ -160,10 +180,40 @@ def test_column_not_in_data(data):
     PostgresQLDataService.add_test_dataset(ds, "r", data["right"], DefaultStandardsContext())
 
     # Perform the join operation
-    with pytest.raises(Exception):
+    with pytest.raises(InvalidMatchKeyError, match="Match key KEY1 is not a variable in any dataset in the study"):
         SqlJoinMerge.perform_join(
             ds.pgi, ds.pgi.schema.get_table("l"), ds.pgi.schema.get_table("r"), ["key", "key2"], ["key1", "key2"]
         )
+
+
+def test_key_missing_from_both_sides_but_in_study_skips():
+    ds = PostgresQLDataService.instance()
+    context = DefaultStandardsContext()
+    PostgresQLDataService.add_test_dataset(ds, "ts", {"TSPARMCD": ["STYPE"], "TSVAL": ["INTERVENTIONAL"]}, context)
+    PostgresQLDataService.add_test_dataset(ds, "ta", {"ARMCD": ["A"], "ETCD": ["SCRN"]}, context)
+    PostgresQLDataService.add_test_dataset(ds, "dm", {"USUBJID": ["U1"], "ARMCD": ["A"]}, context)
+
+    with pytest.raises(ColumnNotFoundError, match="Column 'USUBJID' not found in table 'ts'"):
+        SqlJoinMerge.perform_join(
+            ds.pgi, ds.pgi.schema.get_table("ts"), ds.pgi.schema.get_table("ta"), ["USUBJID"], ["USUBJID"]
+        )
+
+
+def test_missing_key_on_merged_table_does_not_name_it():
+    """A chained merge's left side is a derived table whose name holds column hashes - keep it out of the message."""
+    ds = PostgresQLDataService.instance()
+    context = DefaultStandardsContext()
+    PostgresQLDataService.add_test_dataset(ds, "ae", {"USUBJID": ["U1"], "AETERM": ["Headache"]}, context)
+    PostgresQLDataService.add_test_dataset(ds, "dm", {"USUBJID": ["U1"], "ARMCD": ["A"]}, context)
+    PostgresQLDataService.add_test_dataset(ds, "tv", {"VISITNUM": [1], "VISIT": ["Day 1"]}, context)
+    merged = SqlJoinMerge.perform_join(
+        ds.pgi, ds.pgi.schema.get_table("ae"), ds.pgi.schema.get_table("dm"), ["USUBJID"], ["USUBJID"]
+    )
+
+    with pytest.raises(ColumnNotFoundError) as e:
+        SqlJoinMerge.perform_join(ds.pgi, merged, ds.pgi.schema.get_table("tv"), ["VISITNUM"], ["VISITNUM"])
+
+    assert e.value.message == "Column 'VISITNUM' not found in dataset"
 
 
 @pytest.mark.parametrize(

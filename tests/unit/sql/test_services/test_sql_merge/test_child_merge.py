@@ -9,6 +9,7 @@ from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, MatchDatasetNotFoundError
 
 SIMPLE_RDOMAIN_DATA = {
     "child": {
@@ -214,7 +215,7 @@ def test_child_merge_run_twice(sdtm_standards_context):
 
 
 def test_child_merge_no_parent_found(sdtm_standards_context):
-    """Test that error is raised when no parent dataset is found."""
+    """A child whose RDOMAIN names only missing datasets skips, like any missing match dataset."""
     ds = PostgresQLDataService.instance()
 
     child_data = {
@@ -228,13 +229,59 @@ def test_child_merge_no_parent_found(sdtm_standards_context):
 
     merge_spec = {"match_key": ["STUDYID", "USUBJID"]}
 
-    with pytest.raises(ValueError, match="Could not find parent dataset"):
+    with pytest.raises(MatchDatasetNotFoundError, match="Match dataset NONEXISTENT is not present"):
         SqlChildMerge.perform_merge(
             pgi=ds.pgi,
             child=child_schema,
             child_domain="CHILD",
             datasets=datasets,
             merge_spec=merge_spec,
+        )
+
+
+@pytest.mark.parametrize(
+    "child_data",
+    [
+        {"STUDYID": [], "DOMAIN": [], "USUBJID": [], "COSEQ": [], "COVAL": []},
+        {"STUDYID": [], "DOMAIN": [], "RDOMAIN": [], "USUBJID": [], "COVAL": []},
+        {"STUDYID": ["S1"], "DOMAIN": ["CO"], "USUBJID": ["U1"], "COSEQ": [1], "COVAL": ["General comment"]},
+    ],
+)
+def test_child_merge_child_naming_no_parent_is_unchanged(sdtm_standards_context, child_data):
+    """A child with no RDOMAIN values links to nothing, so it is returned as is rather than raising."""
+    ds = PostgresQLDataService.instance()
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "co", child_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(
+        ds, "ae", {"STUDYID": ["S1"], "USUBJID": ["U1"], "AESEQ": ["1"]}, sdtm_standards_context
+    )
+
+    result_schema = SqlChildMerge.perform_merge(
+        pgi=ds.pgi,
+        child=child_schema,
+        child_domain="CO",
+        datasets=ds.datasets,
+        merge_spec={"match_key": ["USUBJID"]},
+    )
+
+    assert result_schema is child_schema
+
+
+def test_child_merge_missing_match_key(sdtm_standards_context):
+    """A non-relational child without one of the match keys can't be merged, so the rule is skipped."""
+    ds = PostgresQLDataService.instance()
+
+    child_data = {"STUDYID": ["S1"], "RDOMAIN": ["AE"], "USUBJID": ["U1"]}
+    parent_data = {"STUDYID": ["S1"], "USUBJID": ["U1"], "AESEQ": ["1"]}
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "child", child_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", parent_data, sdtm_standards_context)
+
+    with pytest.raises(ColumnNotFoundError, match="Column 'AESEQ' not found in table 'child'"):
+        SqlChildMerge.perform_merge(
+            pgi=ds.pgi,
+            child=child_schema,
+            child_domain="CHILD",
+            datasets=ds.datasets,
+            merge_spec={"match_key": ["USUBJID", "AESEQ"]},
         )
 
 

@@ -5,6 +5,7 @@ from cdisc_rules_engine.data_service.merges.relationship import SqlRelationshipM
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, InvalidMatchKeyError
 
 SIMPLE_RELATIONSHIP_DATA = {
     "original": {
@@ -249,13 +250,33 @@ def test_validation_missing_original_columns(sdtm_standards_context):
 
     relationship_columns = {"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"}
 
-    with pytest.raises(ValueError, match="Original schema missing match key column"):
+    with pytest.raises(ColumnNotFoundError, match="Column 'USUBJID' not found in table 'original'"):
         SqlRelationshipMerge.perform_join(
             pgi=data_service.pgi,
             original=original_schema,
             relationship_dataset=relationship_schema,
             domain="RELSUB",
             relationship_columns=relationship_columns,
+        )
+
+
+def test_validation_match_key_in_no_dataset(sdtm_standards_context):
+    data_service = PostgresQLDataService.instance()
+    original_schema = PostgresQLDataService.add_test_dataset(
+        data_service, "original", SIMPLE_RELATIONSHIP_DATA["original"], sdtm_standards_context
+    )
+    relationship_schema = PostgresQLDataService.add_test_dataset(
+        data_service, "relationship", SIMPLE_RELATIONSHIP_DATA["relationship"], sdtm_standards_context
+    )
+
+    with pytest.raises(InvalidMatchKeyError, match="Match key USUBID is not a variable in any dataset in the study"):
+        SqlRelationshipMerge.perform_join(
+            pgi=data_service.pgi,
+            original=original_schema,
+            relationship_dataset=relationship_schema,
+            domain="RELSUB",
+            relationship_columns={"column_with_names": "IDVAR", "column_with_values": "IDVARVAL"},
+            match_keys=["STUDYID", "USUBID"],
         )
 
 
