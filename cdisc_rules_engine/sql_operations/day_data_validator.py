@@ -17,7 +17,14 @@ class SqlDayDataValidatorOperation(SqlBaseOperation):
         - If --DTC < RFSTDTC: --DY = (--DTC date) - (RFSTDTC date)
         - No Study Day 0 exists (goes from -1 to +1)
         """
-        current_table = self.data_service.pgi.schema.get_table(self.params.domain)
+        # $id is the id of the row being checked, so when the table the rule checks already has RFSTDTC (the rule
+        # merges DM) it must be read from that table. A table rebuilt from the raw domain numbers its rows
+        # differently as soon as a subject is missing from DM, pairing each row with another row's study day.
+        checked_table = self.data_service.pgi.schema.get_table(self.params.table) if self.params.table else None
+        if checked_table and checked_table.has_column("RFSTDTC"):
+            current_table = checked_table
+        else:
+            current_table = self.data_service.pgi.schema.get_table(self.params.domain)
         if not current_table:
             raise ValueError(f"Table for domain {self.params.domain} not found")
 

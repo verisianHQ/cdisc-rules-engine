@@ -1,5 +1,6 @@
 import pytest
 
+from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -293,3 +294,45 @@ def test_sql_dy_truncates_to_lower_precision(current_data, dm_data, expected, sd
     result = operation.execute()
 
     assert_operation_parameterized_constant(operation, result, expected)
+
+
+def test_sql_dy_uses_checked_table_when_subject_missing_from_dm(sdtm_standards_context):
+    """$id is the checked (rule-merged) table's row id, so a subject missing from DM must not shift the lookups."""
+    data_service = PostgresQLDataService.instance()
+
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="DM",
+        column_data={"USUBJID": [2, 3], "RFSTDTC": ["2023-01-01", "2023-02-01"]},
+        standards_context=sdtm_standards_context,
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        table_name="EX",
+        column_data={"USUBJID": [1, 2, 3], "EXSTDTC": ["2023-01-05", "2023-01-10", "2023-02-20"]},
+        standards_context=sdtm_standards_context,
+    )
+    # the rule's own DM merge (CORE-000529 merges DM on USUBJID, INNER by default) drops subject 1
+    merged = SqlJoinMerge.perform_join(
+        pgi=data_service.pgi,
+        left=data_service.pgi.schema.get_table("EX"),
+        right=data_service.pgi.schema.get_table("DM"),
+        pivot_left=["USUBJID"],
+        pivot_right=["USUBJID"],
+        type="INNER",
+    )
+
+    params = SqlOperationParams(
+        domain="EX", target="EXSTDTC", table=merged.name, standards_context=sdtm_standards_context
+    )
+    operation = SqlOperationsFactory.get_service("dy", params, data_service)
+    result = operation.execute()
+
+    assert_operation_parameterized_constant(
+        operation,
+        result,
+        [
+            {"params": {"$id": 1}, "value": [10]},
+            {"params": {"$id": 2}, "value": [20]},
+        ],
+    )
