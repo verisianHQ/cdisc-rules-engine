@@ -3,6 +3,7 @@ from typing import List, Optional
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.standards.sdtm_dataset_metadata import SdtmDatasetMetadata2
@@ -42,7 +43,9 @@ class SqlChildMerge:
         parent record) that leave all three null. A relational child with no linkable
         RDOMAIN values at all is therefore not an error - it's simply returned unchanged.
         The same goes for any child naming no parent at all: one with no records, or a CO
-        that omits the Permissible RDOMAIN/IDVAR/IDVARVAL columns.
+        that omits the Permissible RDOMAIN/IDVAR/IDVARVAL columns. Any other child whose
+        RDOMAIN names only datasets that aren't present skips the rule, like any missing
+        match dataset.
         """
         # Find parent dataset(s)
         parent_metadatas = SqlChildMerge._find_parents(
@@ -53,9 +56,10 @@ class SqlChildMerge:
         )
 
         if not parent_metadatas:
-            if SqlChildMerge._is_relational_child(child) or not SqlChildMerge._get_ordered_rdomain_values(pgi, child):
+            rdomain_values = SqlChildMerge._get_ordered_rdomain_values(pgi, child)
+            if SqlChildMerge._is_relational_child(child) or not rdomain_values:
                 return child
-            raise ValueError(f"Could not find parent dataset for child merge: {child.name}")
+            raise MatchDatasetNotFoundError(f"Match dataset {', '.join(rdomain_values)} is not present")
 
         # Perform sequential merges with each parent (already in correct order from _find_parents)
         result_schema = child

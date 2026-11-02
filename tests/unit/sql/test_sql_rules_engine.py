@@ -1,6 +1,10 @@
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
+
+from cdisc_rules_engine.enums.execution_status import ExecutionStatus
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError, MatchDatasetNotFoundError
 from cdisc_rules_engine.models.rule_conditions.condition_composite_factory import ConditionCompositeFactory
 from cdisc_rules_engine.sql_rules_engine import SQLRulesEngine
 
@@ -30,3 +34,22 @@ def test_execute_rule_runs_once_per_regex_variable():
         ["AESTDY"],
         ["AEENDY"],
     ]
+
+
+@pytest.mark.parametrize(
+    "exception, expected_message",
+    [
+        (
+            MatchDatasetNotFoundError("Match dataset SS is not present"),
+            "rule evaluation skipped - match dataset not found",
+        ),
+        (DomainNotFoundError("Domain DM not found"), "rule evaluation skipped - operation domain not found"),
+    ],
+)
+def test_missing_dataset_skip_message(exception, expected_message):
+    engine = SQLRulesEngine.__new__(SQLRulesEngine)
+
+    result = engine.handle_validation_exceptions(exception, "ae.xpt")
+
+    assert result.status == ExecutionStatus.SKIPPED.value
+    assert result.message == expected_message

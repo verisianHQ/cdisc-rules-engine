@@ -9,6 +9,7 @@ from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
 
 SIMPLE_RDOMAIN_DATA = {
     "child": {
@@ -214,7 +215,7 @@ def test_child_merge_run_twice(sdtm_standards_context):
 
 
 def test_child_merge_no_parent_found(sdtm_standards_context):
-    """Test that error is raised when no parent dataset is found."""
+    """A child whose RDOMAIN names only missing datasets skips, like any missing match dataset."""
     ds = PostgresQLDataService.instance()
 
     child_data = {
@@ -228,7 +229,7 @@ def test_child_merge_no_parent_found(sdtm_standards_context):
 
     merge_spec = {"match_key": ["STUDYID", "USUBJID"]}
 
-    with pytest.raises(ValueError, match="Could not find parent dataset"):
+    with pytest.raises(MatchDatasetNotFoundError, match="Match dataset NONEXISTENT is not present"):
         SqlChildMerge.perform_merge(
             pgi=ds.pgi,
             child=child_schema,

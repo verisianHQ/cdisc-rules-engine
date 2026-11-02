@@ -21,6 +21,7 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     DatasetNotFoundError,
     DomainNotFoundError,
     DomainNotFoundInDefineXMLError,
+    MatchDatasetNotFoundError,
     FailedSchemaValidation,
     RuleFormatError,
     VariableMetadataNotFoundError,
@@ -440,7 +441,10 @@ class SQLRulesEngine:
                 message=str(exception),
                 status=ExecutionStatus.SKIPPED.value,
             )
-            message = "rule evaluation skipped - operation domain not found"
+            if isinstance(exception, MatchDatasetNotFoundError):
+                message = "rule evaluation skipped - match dataset not found"
+            else:
+                message = "rule evaluation skipped - operation domain not found"
             errors = [error_obj]
             return ValidationErrorContainer(
                 dataset=name,

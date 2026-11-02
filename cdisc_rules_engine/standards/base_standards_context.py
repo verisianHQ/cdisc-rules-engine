@@ -6,7 +6,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
     BaseDatasetMetadata,
     PostgresQLDataService,
 )
-from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
+from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
 from cdisc_rules_engine.models.dataset_metadata2 import DatasetMetadata2
 from cdisc_rules_engine.services.define_xml.define_xml_reader_factory import (
     DefineXMLReaderFactory,
@@ -97,7 +97,7 @@ class BaseStandardsContext(ABC):
 
         right_table = ds.pgi.schema.get_table(right)
         if right_table is None:
-            raise DomainNotFoundError(f"Match dataset {right.upper()} is not present")
+            raise MatchDatasetNotFoundError(f"Match dataset {right.upper()} is not present")
 
         joined_schema = SqlJoinMerge.perform_join(
             pgi=ds.pgi,
