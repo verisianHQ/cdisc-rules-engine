@@ -1,5 +1,5 @@
 <p>
-  <a href="https://github.com/cdisc-org/cdisc-rules-engine"><img align="right" src=".github/assets/core_logo.png" alt="CDISC CORE Open Rules Engine" width="120"></a>
+  <a href="https://www.cdisc.org"><img align="right" src=".github/assets/core_logo.png" alt="CDISC CORE Open Rules Engine" width="120"></a>
   <a href="https://www.verisian.com"><img src=".github/assets/verisian_logo.svg" alt="Verisian" width="240"></a>
 </p>
 
