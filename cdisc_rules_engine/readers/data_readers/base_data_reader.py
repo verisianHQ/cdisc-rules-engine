@@ -55,8 +55,11 @@ class BaseDataReader(ABC):
             label=self._extract_label(reader),
             file_size=stat.st_size,
             full_path=str(path.resolve()),
-            modification_date=datetime.fromtimestamp(stat.st_mtime).replace(microsecond=0).isoformat(),
+            modification_date=self._extract_modification_date(reader, stat),
         )
+
+    def _extract_modification_date(self, reader, stat) -> str:
+        return datetime.fromtimestamp(stat.st_mtime).replace(microsecond=0).isoformat()
 
     def _read_chunks(self, reader, metadata: DatasetMetadata2) -> Iterable[pd.DataFrame]:
         for chunk in reader:

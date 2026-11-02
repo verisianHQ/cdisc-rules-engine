@@ -66,6 +66,13 @@ class Sas7DataReader(BaseDataReader):
             return ""
         return (self._pyreadstat_meta.file_label or "").strip()
 
+    def _extract_modification_date(self, reader: SAS7BDATReader, stat) -> str:
+        # pandas' value, not pyreadstat's: pyreadstat shifts the stored timestamp to local time
+        modified = getattr(reader, "date_modified", None)
+        if not modified:
+            return super()._extract_modification_date(reader, stat)
+        return modified.replace(microsecond=0).isoformat()
+
     def _get_total_rows(self, reader=None) -> Optional[int]:
         if self._pyreadstat_meta is None:
             return None
