@@ -363,7 +363,7 @@ def validate(  # noqa: C901
 
     if rules and exclude_rules:
         logger.error("Arguments --rules and --exclude-rules cannot be used together")
-        ctx.exit()
+        ctx.exit(1)
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 
