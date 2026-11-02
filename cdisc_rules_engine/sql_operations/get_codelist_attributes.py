@@ -52,7 +52,7 @@ class SqlGetCodelistAttributesOperation(SqlBaseOperation):
 
         raw_col = self.data_service.pgi.schema.get_column_hash(ct_table, _COLUMN_MAP.get(attribute, "item_code"))
 
-        if attribute == "Synonym":
+        if attribute == "Synonyms":
             select_col_sql = f"TRIM(UNNEST(STRING_TO_ARRAY({raw_col}, ';')))"
         else:
             select_col_sql = raw_col

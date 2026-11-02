@@ -292,7 +292,7 @@ def _codelist_lookups(context: SourceContext, ccodes: set) -> Dict[str, tuple]:
     terms = {row["codelist_code"]: row["terms"] for row in pgi.fetch_all()}
     pgi.execute_sql(
         f"SELECT DISTINCT ON (item_code) item_code, name, value FROM {table} "
-        f"WHERE {library} AND item_code IN ({in_list})"
+        f"WHERE {library} AND item_code IN ({in_list}) ORDER BY item_code, version_date DESC"
     )
     entries = {row["item_code"]: (row["name"], row["value"]) for row in pgi.fetch_all()}
     return {
