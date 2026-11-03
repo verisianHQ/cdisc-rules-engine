@@ -418,8 +418,6 @@ class PostgresQLOperators:
         if operator_name in {
             "exists",
             "not_exists",
-            "is_unique_set",
-            "is_not_unique_set",
             "is_unique_relationship",
             "is_not_unique_relationship",
             "is_ordered_subset_of",
@@ -444,6 +442,10 @@ class PostgresQLOperators:
         _check(other_value.get("target"), regex=variable_regex_pattern)
         _check(other_value.get("within"))
         _check(other_value.get("ordering"))
+
+        if operator_name in {"is_unique_set", "is_not_unique_set"}:
+            # comparators are optional grouping keys (eg. --CAT, --TPTNUM) that the operator drops when absent
+            return missing_columns
 
         if operator_name in {"target_is_sorted_by", "target_is_not_sorted_by"}:
             # comparator is a list of {"name": ..., "sort_order": ..., "null_position": ...}

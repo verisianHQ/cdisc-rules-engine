@@ -491,14 +491,12 @@ class SdtmStandardsContext(BaseStandardsContext):
         HANDLING SPLIT DOMAINS
 
         If include_split_datasets is True -
-        add split domains to the list of included domains.
-        If no included domains specified, only validate split domains
+        split domains still have to match the included domains.
+        If no included domains specified, only validate split domains (see _is_domain_name_included)
 
         If include_split_datasets is False - Exclude split domains
         If include_split_datasets is None - Do nothing
         """
-        if include_split_datasets is True and is_split_domain and not is_excluded:
-            is_included = True
         if include_split_datasets is False and is_split_domain:
             is_excluded = True
         return is_excluded, is_included

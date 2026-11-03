@@ -286,3 +286,25 @@ def test_unsplit_dataset_metadata_has_a_single_row(monkeypatch):
             "dataset_size": 4096,
         }
     ]
+
+
+@pytest.mark.parametrize(
+    "name, split_part_filenames, expected",
+    [
+        ("LB", ["lbch.xpt", "lbhe.xpt"], False),
+        ("LBCH", None, False),
+        ("SUPPLB", ["supplbch.xpt", "supplbhe.xpt"], False),
+        ("APQS", ["apqs1.xpt", "apqs2.xpt"], True),
+        ("APDM", None, True),
+    ],
+)
+def test_split_rule_scope_still_respects_included_domains(monkeypatch, name, split_part_filenames, expected):
+    """include_split_datasets with included domains doesn't pull in split datasets of other domains."""
+    monkeypatch.setattr(SdtmStandardsContext, "rule_applies_to_class", lambda *_args: True)
+    context = SdtmStandardsContext.__new__(SdtmStandardsContext)
+    rule = {"core_id": "CORE-000778", "domains": {"Include": ["AP--"], "include_split_datasets": True}}
+    metadata = SimpleNamespace(name=name, split_part_filenames=split_part_filenames)
+
+    is_suitable, _ = context.within_rule_scope(rule, metadata)
+
+    assert is_suitable is expected
