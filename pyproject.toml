@@ -10,7 +10,7 @@ readme = "PYPI.md"
 requires-python = ">=3.12, <3.13"
 license = {text = "MIT"}
 authors = [
-    {name = "cdisc-org", email = "info@cdisc.org"}
+    {name = "Verisian"}
 ]
 dependencies = [
     "business_rules_enhanced==1.4.6",
@@ -36,8 +36,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/cdisc-org/cdisc-rules-engine"
-"Bug Tracker" = "https://github.com/cdisc-org/cdisc-rules-engine/issues"
+"Homepage" = "https://github.com/verisianHQ/cdisc-rules-engine"
+"Bug Tracker" = "https://github.com/verisianHQ/cdisc-rules-engine/issues"
 
 [tool.setuptools]
 packages = { find = { exclude = ["tests", "scripts", "cdisc_rule_tester"] } }
