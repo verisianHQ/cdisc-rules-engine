@@ -377,10 +377,19 @@ def validate(  # noqa: C901
     }
     unknown_ct = sorted(set(controlled_terminology_package) - ct_packages)
     if unknown_ct:
-        logger.error(
-            f"Controlled terminology package(s) not found in the cache: {', '.join(unknown_ct)}. "
-            "Run `python core.py list-ct` to see the available packages."
-        )
+        cached = {file_name.split(".")[0] for file_name in cache_files}
+        unsupported = [package for package in unknown_ct if package in cached]
+        missing = [package for package in unknown_ct if package not in cached]
+        if unsupported:
+            logger.error(
+                f"Controlled terminology package(s) not supported: {', '.join(unsupported)}. "
+                "Only SDTM and ADaM packages (sdtmct-*, adamct-*) can be used."
+            )
+        if missing:
+            logger.error(
+                f"Controlled terminology package(s) not found in the cache: {', '.join(missing)}. "
+                "Run `python core.py list-ct` to see the available packages."
+            )
         ctx.exit(1)
 
     dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer

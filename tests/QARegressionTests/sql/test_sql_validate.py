@@ -878,6 +878,28 @@ class TestValidate(unittest.TestCase):
         self.assertIn("not found in the cache: sdtmct-2025-03-28", stderr)  # run_command lowercases the output
         self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
 
+    def test_sql_validate_ct_package_of_an_unsupported_type(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-ct",
+            "sendct-2024-03-29",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertNotEqual(exit_code, 0)
+        self.assertIn("not supported: sendct-2024-03-29", stderr)
+        self.assertNotIn("not found in the cache", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
     def test_sql_validate_output_format_csv(self):
         args = [
             "python",

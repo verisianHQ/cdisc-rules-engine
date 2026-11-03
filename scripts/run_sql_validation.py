@@ -2,8 +2,9 @@ import itertools
 import signal
 import sys
 import time
+from contextlib import contextmanager
 from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTypes
-from typing import List
+from typing import Iterator, List
 from warnings import simplefilter
 
 import click
@@ -129,9 +130,11 @@ def get_dictionary_versions(dictionary_metadata: dict) -> dict:
     return versions
 
 
-def exit_on_termination_signals() -> List[int]:
+@contextmanager
+def exit_on_termination_signals() -> Iterator[List[int]]:
     """
     Turn Ctrl-C / SIGTERM / SIGHUP (closing the terminal) into a normal exit that cleans up resources properly.
+    The previous handlers are put back on the way out.
     """
     received: List[int] = []
 
@@ -139,10 +142,16 @@ def exit_on_termination_signals() -> List[int]:
         received.append(signum)
         sys.exit(128 + signum)
 
+    previous = {}
     for name in ("SIGINT", "SIGTERM", "SIGHUP"):  # no SIGHUP on Windows
         if hasattr(signal, name):
-            signal.signal(getattr(signal, name), handler)
-    return received
+            signum = getattr(signal, name)
+            previous[signum] = signal.signal(signum, handler)
+    try:
+        yield received
+    finally:
+        for signum, old_handler in previous.items():
+            signal.signal(signum, old_handler)
 
 
 def exit_if_signalled(received: List[int]):
@@ -151,7 +160,11 @@ def exit_if_signalled(received: List[int]):
 
 
 def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
-    signals_received = exit_on_termination_signals()
+    with exit_on_termination_signals() as signals_received:
+        _run_sql_validation(args, in_memory_postgres, signals_received)
+
+
+def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals_received: List[int]):
     set_log_level(args)
 
     rules = get_rules(args)
