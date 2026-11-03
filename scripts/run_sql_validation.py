@@ -1,4 +1,5 @@
 import itertools
+import signal
 import sys
 import time
 from cdisc_rules_engine.models.dictionaries.dictionary_types import DictionaryTypes
@@ -128,7 +129,29 @@ def get_dictionary_versions(dictionary_metadata: dict) -> dict:
     return versions
 
 
+def exit_on_termination_signals() -> List[int]:
+    """
+    Turn Ctrl-C / SIGTERM / SIGHUP (closing the terminal) into a normal exit that cleans up resources properly.
+    """
+    received: List[int] = []
+
+    def handler(signum, _frame):
+        received.append(signum)
+        sys.exit(128 + signum)
+
+    for name in ("SIGINT", "SIGTERM", "SIGHUP"):  # no SIGHUP on Windows
+        if hasattr(signal, name):
+            signal.signal(getattr(signal, name), handler)
+    return received
+
+
+def exit_if_signalled(received: List[int]):
+    if received:
+        sys.exit(128 + received[0])
+
+
 def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
+    signals_received = exit_on_termination_signals()
     set_log_level(args)
 
     rules = get_rules(args)
@@ -186,6 +209,7 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
     #     results = progress_handler(rules, validation_results, results)
     rule_progress_reporter.start(len(rules))
     try:
+        exit_if_signalled(signals_received)  # one that came in while the datasets were loading
         for rule_index, rule in enumerate(rules):
             rule_progress_reporter.start_rule(rule.get("core_id"), rule_index, len(rules))
             missing_inputs = get_missing_inputs(rule, supplied_inputs)
@@ -195,10 +219,10 @@ def run_sql_validation(args: Validation_args, in_memory_postgres: bool = False):
                 missing_inputs_by_rule[rule.get("core_id")] = missing_inputs
             results.append(result)
             rule_progress_reporter.end_rule()
+            exit_if_signalled(signals_received)
     finally:
         rule_progress_reporter.finish()
-
-    data_service.pgi.wipe()
+        data_service.pgi.wipe()
 
     # build all desired reports
     end = time.time()

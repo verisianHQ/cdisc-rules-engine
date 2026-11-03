@@ -1,5 +1,7 @@
 from .base_sql_operator import BaseSqlOperator
 
+CODELIST_TERMS_COLUMN = "library_variable_ccode_values"
+
 
 class IsSubstringOfOperator(BaseSqlOperator):
     """Checks if the target column value is a substring of the comparator values."""
@@ -66,7 +68,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
                 CROSS JOIN {target_sql} AS target_vals(t_val)
                 WHERE comp_vals.c_val IS NOT NULL AND comp_vals.c_val != ''
                   AND target_vals.t_val IS NOT NULL AND target_vals.t_val != ''
-                  AND comp_vals.c_val LIKE '%' || target_vals.t_val || '%'
+                  AND strpos(comp_vals.c_val, target_vals.t_val) > 0
             )"""
 
         return self._do_check_operator(sql)
@@ -79,7 +81,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
             return f"""EXISTS (
                 SELECT 1 FROM {target_sql} AS target_vals(t_val)
                 WHERE target_vals.t_val IS NOT NULL AND target_vals.t_val != ''
-                AND {comparator_sql} LIKE '%' || target_vals.t_val || '%'
+                AND strpos({comparator_sql}, target_vals.t_val) > 0
             )"""
 
         return self._do_check_operator(sql)
@@ -95,7 +97,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
                    AND EXISTS (
                        SELECT 1 FROM {target_sql} AS target_vals(t_val)
                        WHERE target_vals.t_val IS NOT NULL AND target_vals.t_val != ''
-                       AND {comparator_sql} LIKE '%' || target_vals.t_val || '%'
+                       AND strpos({comparator_sql}, target_vals.t_val) > 0
                    )"""
 
         return self._do_check_operator(sql)
@@ -112,7 +114,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
                 CROSS JOIN {target_sql} AS target_vals(t_val)
                 WHERE comp_vals.c_val IS NOT NULL AND comp_vals.c_val != ''
                   AND target_vals.t_val IS NOT NULL AND target_vals.t_val != ''
-                  AND comp_vals.c_val LIKE '%' || target_vals.t_val || '%'
+                  AND strpos(comp_vals.c_val, target_vals.t_val) > 0
             )"""
 
         return self._do_check_operator(sql)
@@ -126,7 +128,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
                           SELECT 1 FROM (VALUES {values_sql}) AS list_values(value)
                           WHERE list_values.value IS NOT NULL
                           AND list_values.value != ''
-                          AND list_values.value LIKE '%' || {target_sql} || '%'
+                          AND strpos(list_values.value, {target_sql}) > 0
                       )"""
 
         return self._do_check_operator(sql)
@@ -153,7 +155,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
                           SELECT 1 FROM {collection_sql} AS collection_values(value)
                           WHERE collection_values.value IS NOT NULL
                           AND collection_values.value != ''
-                          AND collection_values.value LIKE '%' || {target_sql} || '%'
+                          AND strpos(collection_values.value, {target_sql}) > 0
                       )"""
 
         return self._do_check_operator(sql)
@@ -165,20 +167,28 @@ class IsSubstringOfOperator(BaseSqlOperator):
             return f"""NOT ({self._is_empty_sql(target_column)})
                       AND {comparator_sql} IS NOT NULL
                       AND {comparator_sql} != ''
-                      AND {comparator_sql} LIKE '%' || {target_sql} || '%'"""
+                      AND strpos({comparator_sql}, {target_sql}) > 0"""
 
         return self._do_check_operator(sql)
 
     def _handle_column_comparator(self, target_column, comparator):
         comparator_column = self.replace_prefix(comparator)
+        # this column holds a codelist's terms as a text array ('{F,M,U}'),
+        # so a value must be one of the terms, not just appear somewhere in the text
+        is_term_list = comparator_column == CODELIST_TERMS_COLUMN
 
         def sql():
             target_sql = self._column_sql(target_column, lowercase=self.case_insensitive)
             comparator_sql = self._column_sql(comparator_column, lowercase=self.case_insensitive)
+            match = (
+                f"{target_sql} = ANY(CAST({comparator_sql} AS TEXT[]))"
+                if is_term_list
+                else f"strpos({comparator_sql}, {target_sql}) > 0"
+            )
             return f"""NOT ({self._is_empty_sql(target_column)})
                       AND {comparator_sql} IS NOT NULL
                       AND {comparator_sql} != ''
-                      AND {comparator_sql} LIKE '%' || {target_sql} || '%'"""
+                      AND {match}"""
 
         return self._do_check_operator(sql)
 
@@ -189,7 +199,7 @@ class IsSubstringOfOperator(BaseSqlOperator):
             return f"""NOT ({self._is_empty_sql(target_column)})
                       AND {comparator_sql} IS NOT NULL
                       AND {comparator_sql} != ''
-                      AND {comparator_sql} LIKE '%' || {target_sql} || '%'"""
+                      AND strpos({comparator_sql}, {target_sql}) > 0"""
 
         return self._do_check_operator(sql)
 

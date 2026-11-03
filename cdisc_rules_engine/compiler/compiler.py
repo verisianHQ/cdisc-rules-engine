@@ -161,8 +161,9 @@ class RuleQueryCompiler:
         part = self._split_part_sql(alias)
         if part is None:
             return (
-                f'SELECT {select_sql}, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM {source} WHERE {where} '
-                f"ORDER BY {order_column} LIMIT {self.max_errors}"
+                f"WITH capped_rows AS MATERIALIZED (SELECT {select_sql} FROM {source} WHERE {where}) "
+                f'SELECT *, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM capped_rows '
+                f"ORDER BY capped_rows.id LIMIT {self.max_errors}"
             )
         return (
             f'SELECT * FROM (SELECT {select_sql}, COUNT(*) OVER (PARTITION BY {part}) AS "{TOTAL_COUNT_COLUMN}", '

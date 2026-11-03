@@ -368,6 +368,19 @@ def validate(  # noqa: C901
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 
+    # an unknown package would otherwise load as empty and silently pass the CT checks
+    unknown_ct = sorted(
+        package
+        for package in set(controlled_terminology_package)
+        if not os.path.isfile(os.path.join(cache_path, f"{package}.pkl"))
+    )
+    if unknown_ct:
+        logger.error(
+            f"Controlled terminology package(s) not found in the cache: {', '.join(unknown_ct)}. "
+            "Run `python core.py list-ct` to see the available packages."
+        )
+        ctx.exit(1)
+
     dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer
     external_dictionaries = dict_container(
         {

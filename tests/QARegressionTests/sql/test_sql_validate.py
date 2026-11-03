@@ -835,6 +835,27 @@ class TestValidate(unittest.TestCase):
         self.assertIn("arguments --rules and --exclude-rules cannot be used together", stderr)
         self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
 
+    def test_sql_validate_unknown_ct_package(self):
+        args = [
+            "python",
+            "core.py",
+            "validate",
+            "-s",
+            "sdtmig",
+            "-v",
+            "3.4",
+            "-dp",
+            AE_XPT,
+            "-ct",
+            "sdtmct-2024-03-28",
+            "-o",
+            os.path.join(self.tmp_dir, "report"),
+        ]
+        exit_code, stdout, stderr = run_command(args, False)
+        self.assertNotEqual(exit_code, 0)
+        self.assertIn("not found in the cache: sdtmct-2024-03-28", stderr)
+        self.assertFalse(os.path.exists(os.path.join(self.tmp_dir, "report.xlsx")))
+
     def test_sql_validate_output_format_csv(self):
         args = [
             "python",
