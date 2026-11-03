@@ -5,7 +5,7 @@
 
 # cdisc-rules-engine (Verisian fork)
 
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-31210/)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-31210/) [![Latest release](https://img.shields.io/github/v/release/verisianHQ/cdisc-rules-engine)](https://github.com/verisianHQ/cdisc-rules-engine/releases/latest)
 
 This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE), a tool designed for validating clinical trial data against data standards. It runs the rules with an engine built on a PostgreSQL database.
 
@@ -60,7 +60,7 @@ If you already have Python 3.12 and Git installed, these commands install the en
 **Mac / Linux**
 
 ```bash
-git clone https://github.com/verisianHQ/cdisc-rules-engine
+git clone --branch v1.0.0 https://github.com/verisianHQ/cdisc-rules-engine
 cd cdisc-rules-engine
 python3.12 -m venv venv
 source ./venv/bin/activate
@@ -71,13 +71,15 @@ python core.py validate -s sdtmig -v 3-4 -d path/to/datasets
 **Windows (PowerShell)**
 
 ```powershell
-git clone https://github.com/verisianHQ/cdisc-rules-engine
+git clone --branch v1.0.0 https://github.com/verisianHQ/cdisc-rules-engine
 cd cdisc-rules-engine
 py -3.12 -m venv venv
 .\venv\Scripts\Activate
 python -m pip install -r requirements.txt
 python core.py validate -s sdtmig -v 3-4 -d path\to\datasets
 ```
+
+Replace `path/to/datasets` with the folder holding your study's dataset files: `.xpt` or `.sas7bdat` files, one per dataset, named after the dataset (e.g. `ae.xpt`, `dm.xpt`, `suppae.xpt`). See [Running a validation](#running-a-validation) for how to name and organise them.
 
 The report is written to the folder you ran the command from, as an Excel file named `CORE-Report-<date and time>.xlsx`.
 
@@ -120,14 +122,21 @@ These steps only need to be done once.
 
 ### 1. Download the repository
 
-In the terminal, navigate to the folder you want to install the engine in, then clone (download) the repository and move into it:
+Download the latest release, which is the tested version of the engine:
+
+**Without Git**: go to the [latest release](https://github.com/verisianHQ/cdisc-rules-engine/releases/latest), download **Source code (zip)** under **Assets**, unzip it where you want to install the engine, and `cd` into the unzipped folder (named after the version, e.g. `cdisc-rules-engine-1.0.0`).
+
+**With Git**: in the terminal, navigate to the folder in which you want to install the engine, then clone (download) the release and move into it:
 
 ```bash
-git clone https://github.com/verisianHQ/cdisc-rules-engine
+git clone --branch v1.0.0 https://github.com/verisianHQ/cdisc-rules-engine
 cd cdisc-rules-engine
 ```
 
-Without Git: on the [repository page](https://github.com/verisianHQ/cdisc-rules-engine), click **Code** → **Download ZIP**, unzip it, and `cd` into the unzipped folder.
+Git may print a message about a "detached HEAD": this is normal and can be ignored.
+
+> [!NOTE]
+> Avoid **Code** → **Download ZIP** on the repository page: it downloads the code still in development rather than the latest release.
 
 ### 2. Create a virtual environment
 
