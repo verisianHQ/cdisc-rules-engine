@@ -24,6 +24,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
 from cdisc_rules_engine.models.sql_external_dictionaries_container import SqlExternalDictionariesContainer
 from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
 from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
 from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
@@ -369,11 +370,12 @@ def validate(  # noqa: C901
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 
     # an unknown package would otherwise load as empty and silently pass the CT checks
-    unknown_ct = sorted(
-        package
-        for package in set(controlled_terminology_package)
-        if not os.path.isfile(os.path.join(cache_path, f"{package}.pkl"))
-    )
+    # names are matched exactly as get_library_metadata_from_cache does (os.path.isfile ignores case on macOS/Windows)
+    cache_files = next(os.walk(cache_path), (None, None, []))[2]
+    ct_packages = {
+        file_name.split(".")[0] for file_name in cache_files if CodelistReader.FILENAME_PATTERN.match(file_name)
+    }
+    unknown_ct = sorted(set(controlled_terminology_package) - ct_packages)
     if unknown_ct:
         logger.error(
             f"Controlled terminology package(s) not found in the cache: {', '.join(unknown_ct)}. "

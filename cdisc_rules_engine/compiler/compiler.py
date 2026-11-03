@@ -160,6 +160,7 @@ class RuleQueryCompiler:
         order_column = f"{alias}.id"
         part = self._split_part_sql(alias)
         if part is None:
+            # MATERIALIZED stops Postgres planning the filter for the LIMIT, which picks a nested loop on large datasets
             return (
                 f"WITH capped_rows AS MATERIALIZED (SELECT {select_sql} FROM {source} WHERE {where}) "
                 f'SELECT *, COUNT(*) OVER () AS "{TOTAL_COUNT_COLUMN}" FROM capped_rows '
