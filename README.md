@@ -5,7 +5,7 @@
 
 # cdisc-rules-engine (Verisian fork)
 
-[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-31210/)
 
 This is Verisian's version ("fork") of the open source CDISC Rules Engine (CORE), a tool designed for validating clinical trial data against data standards. It runs the rules with an engine built on a PostgreSQL database.
 
@@ -30,6 +30,7 @@ To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.
 
 - [Quick start](#quick-start)
 - [Before you start](#before-you-start)
+  - [System requirements](#system-requirements)
 - [Installation](#installation)
   - [1. Download the repository](#1-download-the-repository)
   - [2. Create a virtual environment](#2-create-a-virtual-environment)
@@ -39,6 +40,7 @@ To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.
 - [Running a validation](#running-a-validation)
   - [Validate a folder](#validate-a-folder)
   - [Validate specific datasets or rules](#validate-specific-datasets-or-rules)
+  - [External dictionaries](#external-dictionaries)
   - [Validation options](#validation-options)
 - [Understanding the report](#understanding-the-report)
 - [Updating the cache](#updating-the-cache)
@@ -49,6 +51,9 @@ To learn more about CDISC, visit the official [CDISC Website](https://www.cdisc.
 - [Submit an issue](#submit-an-issue)
 
 ## Quick start
+
+> [!IMPORTANT]
+> The engine needs **Python 3.12** exactly: it doesn't work with Python 3.11 or older, or with 3.13 or newer. The newest Python offered on python.org's download page is a later version, so install 3.12 as described in [Before you start](#before-you-start).
 
 If you already have Python 3.12 and Git installed, these commands install the engine and validate a folder of datasets (each step is explained in [Installation](#installation)):
 
@@ -82,7 +87,14 @@ The engine has no graphical interface: you run it by typing commands in a termin
 
 You need:
 
-- **Python 3.12**. Check your version with `python --version` (on Mac and Linux, `python3 --version`). If you don't have Python 3.12, download and install it from [python.org](https://www.python.org/downloads/). On Windows, tick "Add python.exe to PATH" in the installer.
+- **Python 3.12** (not 3.13 or newer). Check your version with `python --version` (on Mac and Linux, `python3 --version`). If you don't have Python 3.12, install it from the [Python 3.12.10 download page](https://www.python.org/downloads/release/python-31210/), the last 3.12 release with installers. Under **Files** at the bottom of the page, choose:
+
+  - Windows: **Windows installer (64-bit)** (`python-3.12.10-amd64.exe`). In the installer, tick "Add python.exe to PATH".
+  - Mac: **macOS 64-bit universal2 installer** (`python-3.12.10-macos11.pkg`), which works on both Intel and Apple silicon Macs.
+  - Linux: on Ubuntu 24.04 (recommended, see [System requirements](#system-requirements)), Python 3.12 is already installed as `python3`; add the virtual environment package with `sudo apt install python3.12-venv`. On Red Hat Enterprise Linux 9, Rocky Linux 9 or AlmaLinux 9, run `sudo dnf install python3.12`. On other distributions, install `python3.12` with the package manager, or use [`pyenv`](#2-create-a-virtual-environment) if it doesn't offer 3.12.
+
+  You can keep other Python versions installed alongside it.
+
 - **Git** (optional), to download the repository. You can get it from [git-scm.com](https://git-scm.com/downloads), or skip it and download the repository as a ZIP file instead (see [step 1](#1-download-the-repository)).
 
 > [!NOTE]
@@ -90,6 +102,15 @@ You need:
 
 > [!NOTE]
 > The Windows commands in this README are written for PowerShell. Most of them also work in Command Prompt, but some may need adjusting: if a command doesn't work in Command Prompt, try PowerShell instead.
+
+### System requirements
+
+- **Operating system**: 64-bit Windows 10 or later, macOS 11 or later, or Linux Ubuntu 24.04 LTS.
+- **Memory (RAM)**: 8 GB minimum, 16 GB recommended for large studies. As a guide, a validation used at most about 1 GB on a typical study (31 datasets, 59 MB), and about 1.4 GB on a single lab dataset of 327,000 records (66 MB). Memory use grows with the size of the largest datasets, so submissions near the upper end of the supported size (about 2.5 GB in total) need more.
+- **Disk space**: about 2 GB for the repository and its virtual environment, plus free space for the temporary database, which holds a copy of the datasets while a validation runs.
+
+> [!WARNING]
+> Validating very large datasets (e.g. lab or questionnaire datasets of several million records) can use most of your computer's memory, making it slow or unresponsive while the validation runs. Close other large programs first, or validate the largest datasets on their own with `-dp` (see [Validate specific datasets or rules](#validate-specific-datasets-or-rules)).
 
 [↑ Back to top](#contents)
 
@@ -141,6 +162,8 @@ A "virtual environment" is a private copy of Python for this project, so that th
    ```
 
    When it is active, its name (`(venv)`) is shown in brackets at the start of the terminal line.
+
+   To leave the virtual environment when you're done, type `deactivate` (on every system) or close the terminal.
 
 > [!IMPORTANT]
 > You need to activate the virtual environment again (step 2 only) every time you open a new terminal.
@@ -220,7 +243,14 @@ CDISC_LIBRARY_API_KEY=your-api-key
 
 ## Running a validation
 
-Validations run on this fork's SQL engine by default, so no extra flag is needed. The engine validates XPT and SAS7BDAT files (they can be mixed in the same run); files in other formats, such as Dataset-JSON, are skipped with a warning.
+Validations run on this fork's SQL engine by default, so no extra flag is needed. The engine validates XPT and SAS7BDAT files (different datasets can be in different formats in the same run); files in other formats, such as Dataset-JSON, are skipped with a warning.
+
+> [!IMPORTANT]
+> Check how the files in your data folder are named before you validate them, or the report can be wrong without any warning.
+>
+> **Name each dataset file after its dataset**, e.g. `ae.xpt`, `dm.xpt`, `suppae.xpt`, or for a split dataset the split name, e.g. `lbch.xpt` and `lbhe.xpt` (upper or lower case). The engine works out the domain from the first letters of the file name, not from the `DOMAIN` variable. A file named e.g. `study01_ae.xpt` is therefore not recognised as AE, and the AE rules are skipped for it without a warning, while `ae_final.xpt` or `ae_v2.xpt` is mistaken for a split AE dataset. Names containing spaces, hyphens or extra dots (e.g. `ae (1).xpt`, `ae-v2.xpt`) stop the validation with an error.
+>
+> **Keep only one copy of each dataset in the folder.** If a dataset is there as both `ae.xpt` and `ae.sas7bdat`, the engine loads both into the same dataset without a warning, so every record appears twice, and the report shows many false issues (e.g. duplicate sequence numbers) and misses others. If your folder holds both formats, add `-ft xpt` (or `-ft sas7bdat`) to validate only one of them. Also remove other copies, such as older versions saved in the same folder under a different name.
 
 > [!NOTE]
 > The `--cdisc` flag runs the validation with the pandas engine originally developed by CDISC, which is still included in this repository. This part of the engine is not maintained in this fork, so the rest of this documentation doesn't cover it. To validate with the pandas engine, use the upstream [CDISC Rules Engine repository](https://github.com/cdisc-org/cdisc-rules-engine) instead, where it is maintained.
@@ -251,9 +281,30 @@ To run a rule from a local file (e.g. one you are writing) instead of the rules 
 python core.py validate -s sdtmig -v 3-4 -dp path/to/ae.xpt -lr path/to/rule.yml
 ```
 
-If the rule uses an external dictionary, add its folder too, e.g. `--meddra path/to/meddra`.
+If the rule uses an external dictionary, add its folder too, e.g. `--meddra path/to/meddra` (see [External dictionaries](#external-dictionaries)).
 
 **_NOTE:_** A local rule only runs if the standards listed under `Authorities` in the rule file include the standard and version given with `-s` and `-v`. Otherwise the engine skips it, and prints `No rules were found with the specified parameters` if no rule is left.
+
+### External dictionaries
+
+Some rules check values against external dictionaries such as MedDRA or WHODrug. **The engine does not include any dictionaries.** You need your own copy, saved in a folder on your computer, and you give the engine that folder's path with the matching option:
+
+```bash
+python core.py validate -s sdtmig -v 3-4 -d path/to/datasets --meddra path/to/meddra --whodrug path/to/whodrug
+```
+
+MedDRA and WHODrug need a licence. SNOMED CT needs a licence in some countries. LOINC, UNII and MED-RT can be downloaded free of charge. If you don't provide a dictionary, the rules that need it are reported as `SKIPPED` with a reason starting with `Not applicable: requires`; they are not counted as failures.
+
+Each folder must hold the dictionary files as they come in the supplier's download, with these names. Other files in the folder are ignored.
+
+| Option      | Files the folder must contain                                                                                                                                                                                                                                                                                                                                    |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--meddra`  | The ASCII files from the `MedAscii` folder of the MedDRA release: `meddra_release.asc` (required, gives the version) and the term files `soc.asc`, `hlgt.asc`, `hlt.asc`, `pt.asc` and `llt.asc`, all in lower case. A term file that is missing is skipped, but at least one is needed.                                                                         |
+| `--whodrug` | A `Version` file whose first line gives the release, e.g. `WHODRUG Global C3 March 1, 2024`, and the files for its format. C3 format: `ATC`, `ThG` and `MP`. B3 format: `INA`, `DDA` and `DD`. Each file can end in `.txt` or `.csv` (upper or lower case), and be tab-delimited, comma-delimited or, for B3 `.txt` files, fixed-width.                          |
+| `--loinc`   | `Loinc.csv`, either in the folder itself or in its `LoincTable` subfolder (as in the LOINC download). The version is read from the folder name (e.g. `Loinc_2.78`), or else from the `Loinc_<version>_DifferenceReport.pdf` file in the folder.                                                                                                                  |
+| `--medrt`   | `MEDRT.txt` (the tab-delimited term list) and `MEDRT_Release_Notes.txt` (gives the version).                                                                                                                                                                                                                                                                     |
+| `--unii`    | `UNII_Records_<date>.txt` from the FDA UNII download (e.g. `UNII_Records_22Jun2024.txt`). The date in the name is used as the version.                                                                                                                                                                                                                           |
+| `--snomed`  | The RF2 **Full** release files, which can be in subfolders (e.g. point it at the unzipped release folder): `sct2_Description_Full-<language>_<edition>_<date>.txt` (required, e.g. `sct2_Description_Full-en_INT_20240101.txt`) and, optionally, the matching `sct2_TextDefinition_Full-…` file. The edition, language and version are read from the file names. |
 
 ### Validation options
 
@@ -287,7 +338,7 @@ Run `python core.py validate --help` to see the full list of validation options.
 | `-dv`, `--define-version`                                           | Define-XML version: `2-1`, `2-0`, `2.1` or `2.0`.                                                                                                                                                                                                                                                  |
 | `-stf`, `--stf-file-path`                                           | Path to the study tagging file (STF).                                                                                                                                                                                                                                                              |
 | `-ct`, `--controlled-terminology-package`                           | Controlled terminology package to validate against, e.g. `sdtmct-2024-03-29` (see [`list-ct`](#list-ct)). Can be specified multiple times. With a Define-XML 2.1 file, the engine uses the CT listed in the define, and `-ct` can't be used. With a Define-XML 2.0 file, give at most one package. |
-| `--meddra`, `--whodrug`, `--loinc`, `--medrt`, `--unii`, `--snomed` | Path to the folder holding the files of that external dictionary.                                                                                                                                                                                                                                  |
+| `--meddra`, `--whodrug`, `--loinc`, `--medrt`, `--unii`, `--snomed` | Path to the folder holding the files of that external dictionary (see [External dictionaries](#external-dictionaries)).                                                                                                                                                                            |
 
 **Report**
 
@@ -553,7 +604,7 @@ A custom standard maps a standard name and version to the list of rules to run f
 <details>
 <summary><code>python</code> is not found, or <code>python --version</code> shows the wrong version</summary>
 
-On Mac and Linux, use `python3` (or `python3.12`) instead of `python`. On Windows, use `py -3.12`, or reinstall Python from [python.org](https://www.python.org/downloads/) with "Add python.exe to PATH" ticked. Once the [virtual environment](#2-create-a-virtual-environment) is active, `python` is always the right version.
+On Mac and Linux, use `python3` (or `python3.12`) instead of `python`. On Windows, use `py -3.12`, or reinstall Python from the [Python 3.12.10 download page](https://www.python.org/downloads/release/python-31210/) with "Add python.exe to PATH" ticked. Once the [virtual environment](#2-create-a-virtual-environment) is active, `python` is always the right version.
 
 </details>
 
