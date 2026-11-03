@@ -308,3 +308,22 @@ def test_split_rule_scope_still_respects_included_domains(monkeypatch, name, spl
     is_suitable, _ = context.within_rule_scope(rule, metadata)
 
     assert is_suitable is expected
+
+
+@pytest.mark.parametrize(
+    "name, split_part_filenames, expected",
+    [
+        ("LB", ["lbch.xpt", "lbhe.xpt"], False),
+        ("FACM", None, False),
+        ("AE", None, True),
+    ],
+)
+def test_split_rule_scope_excludes_split_datasets_when_flag_is_false(monkeypatch, name, split_part_filenames, expected):
+    monkeypatch.setattr(SdtmStandardsContext, "rule_applies_to_class", lambda *_args: True)
+    context = SdtmStandardsContext.__new__(SdtmStandardsContext)
+    rule = {"core_id": "CORE-000001", "domains": {"Include": ["ALL"], "include_split_datasets": False}}
+    metadata = SimpleNamespace(name=name, split_part_filenames=split_part_filenames)
+
+    is_suitable, _ = context.within_rule_scope(rule, metadata)
+
+    assert is_suitable is expected
