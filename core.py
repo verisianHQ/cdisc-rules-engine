@@ -377,7 +377,7 @@ def validate(  # noqa: C901
     }
     unknown_ct = sorted(set(controlled_terminology_package) - ct_packages)
     if unknown_ct:
-        cached = {file_name.split(".")[0] for file_name in cache_files}
+        cached = {file_name.split(".")[0] for file_name in cache_files if "ct-" in file_name}
         unsupported = [package for package in unknown_ct if package in cached]
         missing = [package for package in unknown_ct if package not in cached]
         if unsupported:
