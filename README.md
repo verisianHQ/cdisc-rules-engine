@@ -286,7 +286,7 @@ Some rules check values against external dictionaries such as MedDRA or WHODrug.
 python core.py validate -s sdtmig -v 3-4 -d path/to/datasets --meddra path/to/meddra --whodrug path/to/whodrug
 ```
 
-MedDRA and WHODrug need a licence. SNOMED CT needs a licence in some countries. LOINC, UNII and MED-RT can be downloaded free of charge. If you don't give a dictionary, the rules that need it are reported as `SKIPPED` with a reason starting `Not applicable: requires`. They aren't counted as failures.
+MedDRA and WHODrug need a licence. SNOMED CT needs a licence in some countries. LOINC, UNII and MED-RT can be downloaded free of charge. If you don't provide a dictionary, the rules that need it are reported as `SKIPPED` with a reason starting with `Not applicable: requires`; they are not counted as failures.
 
 Each folder must hold the dictionary files as they come in the supplier's download, with these names. Other files in the folder are ignored.
 
