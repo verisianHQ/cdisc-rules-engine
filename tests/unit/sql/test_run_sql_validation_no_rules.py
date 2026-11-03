@@ -50,3 +50,15 @@ def test_run_sql_validation_does_not_prompt_when_rules_are_found():
         with pytest.raises(RuntimeError, match="stop after rule check"):
             rsv.run_sql_validation(args)
     confirm.assert_not_called()
+
+
+def test_run_sql_validation_puts_the_previous_signal_handlers_back():
+    before = rsv.signal.getsignal(rsv.signal.SIGINT)
+    args = MagicMock(log_level="disabled", progress="disabled")
+    with (
+        patch.object(rsv, "get_rules", return_value=[]),
+        patch.object(rsv, "confirm_run_without_rules", return_value=False),
+    ):
+        with pytest.raises(SystemExit):
+            rsv.run_sql_validation(args)
+    assert rsv.signal.getsignal(rsv.signal.SIGINT) is before

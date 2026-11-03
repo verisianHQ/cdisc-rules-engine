@@ -180,6 +180,9 @@ Nothing needs to be set up: when the engine finds no `DATABASE_*` settings (in t
 
 Use this if you run many validations or want the database to keep running between runs.
 
+> [!WARNING]
+> The engine treats the database given by the `DATABASE_*` settings as its own: at the start and end of every run, it **deletes the tables in that database's `public` schema**. Use a dedicated, empty database for the engine (the Docker setup below creates one), never one that holds other data. Run one validation at a time against it: two runs at once delete each other's tables, and both reports end up with `EXECUTION ERROR` for many rules.
+
 1. Install and start the [Docker Desktop](https://www.docker.com/products/docker-desktop/) app.
 2. Create the two required `.env` files by copying the example files and removing `.example` from the copy's name:
    - `./.env.example` → `./.env`

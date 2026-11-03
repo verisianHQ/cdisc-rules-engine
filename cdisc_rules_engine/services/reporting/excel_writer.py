@@ -4,6 +4,7 @@ from tempfile import NamedTemporaryFile
 from typing import List, Optional
 
 import openpyxl
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.styles.cell_style import StyleArray
 from openpyxl.worksheet.worksheet import Worksheet
@@ -39,7 +40,7 @@ def excel_update_worksheet(ws, rows, align_params=None, fill_empty_rows=False):
         is_empty_row = fill_empty_rows and (row_data[1] == "" or row_data[1] is None)
         for col_num, col_data in enumerate(row_data, 1):
             cell = ws.cell(row=row_num, column=col_num)
-            cell.value = col_data
+            cell.value = ILLEGAL_CHARACTERS_RE.sub("", col_data) if isinstance(col_data, str) else col_data
             if is_empty_row:
                 cell.fill = empty_fill
             _style_cell(cell, alignment, styled)

@@ -112,6 +112,16 @@ class SqlResultHandler:
                     shown=shown.get(source_dataset.lower(), ""),
                 )
             )
+        parts = {part.lower() for part in split_parts}
+        unmatched = [error for error in errors_list if (error._dataset or "").lower() not in parts]
+        if unmatched:
+            containers.append(
+                self._bundle_error_object(
+                    message=message,
+                    error_rows=unmatched,
+                    shown=shown.get((unmatched[0]._dataset or "").lower(), ""),
+                )
+            )
         return containers
 
     def _bundle_error_object(

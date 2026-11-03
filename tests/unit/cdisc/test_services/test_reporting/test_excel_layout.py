@@ -57,6 +57,17 @@ def test_written_cells_share_one_font_and_have_borders():
     assert all(saved.cell(row=1, column=col).border.top.style == "thin" for col in range(1, 10))
 
 
+def test_control_characters_in_values_are_stripped_so_the_report_can_be_saved():
+    wb = open_template()
+    rows = [detail_row("CORE-000001", "ae.xpt", 1, values="HEAD\x0bACHE\x00")]
+
+    excel_update_worksheet(wb["Issue Details"], rows, dict(wrap_text=True))
+
+    saved = openpyxl.load_workbook(BytesIO(excel_workbook_to_stream(wb)))["Issue Details"]
+    assert saved.cell(row=2, column=9).value == "HEADACHE"
+    assert saved.cell(row=2, column=6).value == 1
+
+
 def test_header_of_an_empty_sheet_gets_the_same_thin_border():
     wb = open_template()
 

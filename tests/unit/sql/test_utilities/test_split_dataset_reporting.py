@@ -58,6 +58,24 @@ def test_errors_are_split_across_their_source_parts():
     assert {c.dataset: len(c.errors) for c in containers} == {"mh1.xpt": 1, "mh2.xpt": 1}
 
 
+def test_errors_without_a_source_part_are_kept_under_the_dataset_filename():
+    # e.g. rules on derived views, which have no source-file column, so rows carry "mh.xpt"
+    handler = make_handler(["mh1.xpt", "mh2.xpt"])
+
+    containers = handler._bundle_error_objects_per_source(
+        "Leading spaces",
+        [error_in("mh.xpt", 3), error_in("mh.xpt", 9), error_in("mh2.xpt", 7)],
+    )
+
+    by_dataset = {c.dataset: c for c in containers}
+    assert {dataset: len(c.errors) for dataset, c in by_dataset.items()} == {
+        "mh1.xpt": 0,
+        "mh2.xpt": 1,
+        "mh.xpt": 2,
+    }
+    assert by_dataset["mh.xpt"].message == "Leading spaces"
+
+
 def test_every_part_reported_when_no_part_has_errors():
     handler = make_handler(["mh1.xpt", "mh2.xpt"])
 

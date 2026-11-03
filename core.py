@@ -24,6 +24,7 @@ from cdisc_rules_engine.models.external_dictionaries_container import (
 from cdisc_rules_engine.models.sql_external_dictionaries_container import SqlExternalDictionariesContainer
 from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
 from cdisc_rules_engine.models.validation_args import Validation_args
+from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
 from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
@@ -367,6 +368,29 @@ def validate(  # noqa: C901
         ctx.exit(1)
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
+
+    # an unknown package would otherwise load as empty and silently pass the CT checks
+    # names are matched exactly as get_library_metadata_from_cache does (os.path.isfile ignores case on macOS/Windows)
+    cache_files = next(os.walk(cache_path), (None, None, []))[2]
+    ct_packages = {
+        file_name.split(".")[0] for file_name in cache_files if CodelistReader.FILENAME_PATTERN.match(file_name)
+    }
+    unknown_ct = sorted(set(controlled_terminology_package) - ct_packages)
+    if unknown_ct:
+        cached = {file_name.split(".")[0] for file_name in cache_files if "ct-" in file_name}
+        unsupported = [package for package in unknown_ct if package in cached]
+        missing = [package for package in unknown_ct if package not in cached]
+        if unsupported:
+            logger.error(
+                f"Controlled terminology package(s) not supported: {', '.join(unsupported)}. "
+                "Only SDTM and ADaM packages (sdtmct-*, adamct-*) can be used."
+            )
+        if missing:
+            logger.error(
+                f"Controlled terminology package(s) not found in the cache: {', '.join(missing)}. "
+                "Run `python core.py list-ct` to see the available packages."
+            )
+        ctx.exit(1)
 
     dict_container = SqlExternalDictionariesContainer if sql_engine else ExternalDictionariesContainer
     external_dictionaries = dict_container(

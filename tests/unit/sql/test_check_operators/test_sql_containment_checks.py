@@ -400,6 +400,29 @@ IS_SUBSTRING_OF_TEST_DATA = [
         True,
         [False, False, True],
     ),
+    (
+        # % and _ are not wildcards
+        {"target": ["%", "_", "A"]},
+        "Vitamin A",
+        True,
+        [False, False, True],
+    ),
+    (
+        # a codelist's terms: exact terms only, not substrings of the term list text
+        {
+            "target": ["X", "INTER", "M", "INTERSEX", "{F", "F,I"],
+            "library_variable_ccode_values": ["{F,INTERSEX,M,U}"] * 6,
+        },
+        "library_variable_ccode_values",
+        False,
+        [False, False, True, True, False, False],
+    ),
+    (
+        {"target": ["A, B", "A", "C"], "library_variable_ccode_values": ['{"A, B",C}'] * 3},
+        "library_variable_ccode_values",
+        False,
+        [True, False, True],
+    ),
 ]
 
 
