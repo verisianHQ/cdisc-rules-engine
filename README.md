@@ -79,6 +79,8 @@ python -m pip install -r requirements.txt
 python core.py validate -s sdtmig -v 3-4 -d path\to\datasets
 ```
 
+Replace `path/to/datasets` with the folder holding your study's dataset files: `.xpt` or `.sas7bdat` files, one per dataset, named after the dataset (e.g. `ae.xpt`, `dm.xpt`, `suppae.xpt`). See [Running a validation](#running-a-validation) for how to name and organise them.
+
 The report is written to the folder you ran the command from, as an Excel file named `CORE-Report-<date and time>.xlsx`.
 
 ## Before you start
