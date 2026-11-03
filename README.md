@@ -91,7 +91,7 @@ You need:
 
   - Windows: **Windows installer (64-bit)** (`python-3.12.10-amd64.exe`). In the installer, tick "Add python.exe to PATH".
   - Mac: **macOS 64-bit universal2 installer** (`python-3.12.10-macos11.pkg`), which works on both Intel and Apple silicon Macs.
-  - Linux: install `python3.12` with your distribution's package manager.
+  - Linux: on Ubuntu 24.04 (recommended, see [System requirements](#system-requirements)), Python 3.12 is already installed as `python3`; add the virtual environment package with `sudo apt install python3.12-venv`. On Red Hat Enterprise Linux 9, Rocky Linux 9 or AlmaLinux 9, run `sudo dnf install python3.12`. On other distributions, install `python3.12` with the package manager, or use [`pyenv`](#2-create-a-virtual-environment) if it doesn't offer 3.12.
 
   You can keep other Python versions installed alongside it.
 
@@ -105,7 +105,7 @@ You need:
 
 ### System requirements
 
-- **Operating system**: 64-bit Windows 10 or later, macOS 11 or later, or Linux.
+- **Operating system**: 64-bit Windows 10 or later, macOS 11 or later, or Linux Ubuntu 24.04 LTS.
 - **Memory (RAM)**: 8 GB minimum, 16 GB recommended for large studies. As a guide, a validation used at most about 1 GB on a typical study (31 datasets, 59 MB), and about 1.4 GB on a single lab dataset of 327,000 records (66 MB). Memory use grows with the size of the largest datasets, so submissions near the upper end of the supported size (about 2.5 GB in total) need more.
 - **Disk space**: about 2 GB for the repository and its virtual environment, plus free space for the temporary database, which holds a copy of the datasets while a validation runs.
 
@@ -243,7 +243,14 @@ CDISC_LIBRARY_API_KEY=your-api-key
 
 ## Running a validation
 
-Validations run on this fork's SQL engine by default, so no extra flag is needed. The engine validates XPT and SAS7BDAT files (they can be mixed in the same run); files in other formats, such as Dataset-JSON, are skipped with a warning.
+Validations run on this fork's SQL engine by default, so no extra flag is needed. The engine validates XPT and SAS7BDAT files (different datasets can be in different formats in the same run); files in other formats, such as Dataset-JSON, are skipped with a warning.
+
+> [!IMPORTANT]
+> Check how the files in your data folder are named before you validate them, or the report can be wrong without any warning.
+>
+> **Name each dataset file after its dataset**, e.g. `ae.xpt`, `dm.xpt`, `suppae.xpt`, or for a split dataset the split name, e.g. `lbch.xpt` and `lbhe.xpt` (upper or lower case). The engine works out the domain from the first letters of the file name, not from the `DOMAIN` variable. A file named e.g. `study01_ae.xpt` is therefore not recognised as AE, and the AE rules are skipped for it without a warning, while `ae_final.xpt` or `ae_v2.xpt` is mistaken for a split AE dataset. Names containing spaces, hyphens or extra dots (e.g. `ae (1).xpt`, `ae-v2.xpt`) stop the validation with an error.
+>
+> **Keep only one copy of each dataset in the folder.** If a dataset is there as both `ae.xpt` and `ae.sas7bdat`, the engine loads both into the same dataset without a warning, so every record appears twice, and the report shows many false issues (e.g. duplicate sequence numbers) and misses others. If your folder holds both formats, add `-ft xpt` (or `-ft sas7bdat`) to validate only one of them. Also remove other copies, such as older versions saved in the same folder under a different name.
 
 > [!NOTE]
 > The `--cdisc` flag runs the validation with the pandas engine originally developed by CDISC, which is still included in this repository. This part of the engine is not maintained in this fork, so the rest of this documentation doesn't cover it. To validate with the pandas engine, use the upstream [CDISC Rules Engine repository](https://github.com/cdisc-org/cdisc-rules-engine) instead, where it is maintained.
