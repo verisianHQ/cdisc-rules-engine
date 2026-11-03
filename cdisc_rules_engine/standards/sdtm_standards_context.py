@@ -1,4 +1,4 @@
-from typing import Any, List, Tuple, Dict
+from typing import Any, List, Dict
 from collections import defaultdict
 
 from cdisc_rules_engine.constants.classes import (
@@ -403,22 +403,18 @@ class SdtmStandardsContext(BaseStandardsContext):
         """
         domains = rule.get("domains") or {}
         include_split_datasets: bool = domains.get("include_split_datasets")
-
         included_domains = domains.get("Include", [])
         excluded_domains = domains.get("Exclude", [])
 
-        is_included = cls._is_domain_name_included(
-            dataset_metadata, domain, included_domains, include_split_datasets, is_split
-        )
-        is_excluded = cls._is_domain_name_excluded(dataset_metadata, domain, excluded_domains)
+        # False -> no split datasets. True -> only split datasets when no domains are included,
+        # otherwise the included domains decide, split or not.
+        if include_split_datasets is False and is_split:
+            return False
+        if include_split_datasets is True and not is_split and not included_domains:
+            return False
 
-        # additional check for split domains based on the flag
-        is_excluded, is_included = cls._handle_split_domains(
-            is_split,
-            include_split_datasets,
-            is_excluded,
-            is_included,
-        )
+        is_included = cls._is_domain_name_included(dataset_metadata, domain, included_domains)
+        is_excluded = cls._is_domain_name_excluded(dataset_metadata, domain, excluded_domains)
 
         return is_included and not is_excluded
 
@@ -428,14 +424,8 @@ class SdtmStandardsContext(BaseStandardsContext):
         dataset_metadata: DatasetMetadata2,
         domain: str,
         included_domains: List[str],
-        include_split_datasets: bool,
-        is_split: bool,
     ) -> bool:
         """
-        If included domains aren't specified
-         and include_split_datasets is True,
-         and it is not a split dataset
-         -> domain is not included
         If included domains are specified,
          and the domain is not in the list of included domains,
          and domain doesn't match with AP / APFA / APRELSUB / SUPP / SQ naming pattern
@@ -443,8 +433,6 @@ class SdtmStandardsContext(BaseStandardsContext):
         In other cases domain is included
         """
         if not included_domains:
-            if include_split_datasets is True and not is_split:
-                return False
             return True
 
         if domain in included_domains or dataset_metadata.name in included_domains or ALL_KEYWORD in included_domains:
@@ -478,30 +466,6 @@ class SdtmStandardsContext(BaseStandardsContext):
         if cls._domain_matched_ap_or_supp(dataset_metadata, domain, excluded_domains):
             return True
         return False
-
-    @classmethod
-    def _handle_split_domains(
-        cls,
-        is_split_domain: bool,
-        include_split_datasets: bool,
-        is_excluded: bool,
-        is_included: bool,
-    ) -> Tuple[bool, bool]:
-        """
-        HANDLING SPLIT DOMAINS
-
-        If include_split_datasets is True -
-        add split domains to the list of included domains.
-        If no included domains specified, only validate split domains
-
-        If include_split_datasets is False - Exclude split domains
-        If include_split_datasets is None - Do nothing
-        """
-        if include_split_datasets is True and is_split_domain and not is_excluded:
-            is_included = True
-        if include_split_datasets is False and is_split_domain:
-            is_excluded = True
-        return is_excluded, is_included
 
     @classmethod
     def _domain_matched_ap_or_supp(

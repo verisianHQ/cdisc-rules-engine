@@ -20,3 +20,22 @@ def test_regex_target_is_missing_only_when_no_columns_match():
 
     assert matching == []
     assert missing == ["^ZZ.*$"]
+
+
+def test_unique_set_is_skipped_only_when_target_is_missing():
+    sql_operators = create_sql_operators({"DOMAIN": ["SV"], "USUBJID": ["U1"]})
+    operator_instance = sql_operators._operator_map["is_not_unique_set"](sql_operators.data)
+
+    missing_target = PostgresQLOperators._missing_columns_for_operator(
+        "is_not_unique_set",
+        operator_instance,
+        {"target": "SVSEQ", "comparator": ["DOMAIN", "USUBJID"]},
+    )
+    missing_comparator = PostgresQLOperators._missing_columns_for_operator(
+        "is_not_unique_set",
+        operator_instance,
+        {"target": "USUBJID", "comparator": ["DOMAIN", "SVCAT"]},
+    )
+
+    assert missing_target == ["SVSEQ"]
+    assert missing_comparator == []
