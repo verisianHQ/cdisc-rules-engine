@@ -8,31 +8,36 @@ dynamic = ["version"]
 description = "Open source offering of the cdisc rules engine"
 readme = "PYPI.md"
 requires-python = ">=3.12, <3.13"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "Verisian"}
 ]
 dependencies = [
-    "business_rules_enhanced==1.4.6",
+    "business_rules_enhanced==1.4.7",
     "cdisc-library-client==0.1.6",
+    "click==8.1.7",
     "importlib-metadata==8.5.0",
     "jsonpath-ng==1.6.1",
     "jsonschema==4.18.5",
-    "numpy~=1.23.2",
+    "numpy~=1.26.0",
     "odmlib==0.1.4",
     "openpyxl==3.1.5",
-    "pandas==1.5.2",
+    "pandas==2.1.4",
     "python-dotenv==1.2.2",
     "pyyaml==6.0.2",
-    "redis==4.0.2",
+    "redis==4.5.4",
     "requests~=2.32.3",
+    "setuptools~=78.1.1",
     "cachetools==5.5.0",
     "Pympler==1.1",
     "psutil==6.1.1",
+    "dask[dataframe]==2024.6.0",
+    "dask[array]==2024.6.0",
     "pyreadstat==1.2.7",
     "fastparquet==2024.2.0",
-    "dask[dataframe]==2024.2.0",
-    "dask[array]==2024.2.0",
+    "psycopg2-binary==2.9.10",
+    "pyarrow==24.0.0",
+    "pgserver==0.1.4",
 ]
 
 [project.urls]

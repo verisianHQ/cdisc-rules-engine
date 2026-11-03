@@ -6,6 +6,23 @@ Install the development requirements (they include _requirements.txt_):
 
 `python -m pip install -r requirements-dev.txt`
 
+## **Updating dependencies**
+
+_requirements.txt_ and _requirements-dev.txt_ pin the direct dependencies. _constraints.txt_ pins their indirect dependencies, and _requirements.txt_ applies it with `-c constraints.txt`, so every install gets the same versions.
+
+When you add, remove or bump a package in _requirements.txt_:
+
+1. Make the same change in the `dependencies` list of _pyproject.toml_ (`tests/unit/test_dependencies.py` fails if they differ).
+2. Regenerate _constraints.txt_ in a fresh virtual environment, with the `-c constraints.txt` line of _requirements.txt_ temporarily removed so the old pins don't apply:
+
+   ```
+   python3.12 -m venv /tmp/deps-venv
+   /tmp/deps-venv/bin/python -m pip install -r requirements-dev.txt
+   /tmp/deps-venv/bin/python -m pip freeze
+   ```
+
+   Replace the pins in _constraints.txt_ with the output, leaving out every package already pinned in _requirements.txt_ or _requirements-dev.txt_, then restore the `-c constraints.txt` line.
+
 ## **Code formatter**
 
 This project uses the `black` code formatter, `flake8` linter for python and `prettier` for JSON, YAML and MD.

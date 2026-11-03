@@ -2,6 +2,7 @@ include resources/schema/USDM.yaml
 include resources/schema/dataset-ndjson-schema.json
 include resources/schema/dataset.schema.json
 recursive-include cdisc_rules_engine/services/define_xml
+recursive-include cdisc_rules_engine/data_service/schemas *.sql
 exclude README.md
 
 prune tests
