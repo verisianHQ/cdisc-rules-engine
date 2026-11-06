@@ -1,7 +1,7 @@
 from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.data_service.util import NUMERIC_LITERAL_PATTERN
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -40,36 +40,73 @@ class SqlSuppMerge:
         schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns, pgi=pgi)
 
         pgi.create_table(schema)
-
-        queries = []
-
-        # Copy everything from original table
-        new_selectors = ", ".join(schema.get_column_hash(col) for col, _ in original.get_columns() if col != "id")
-        old_selectors = ", ".join(schema.hash for _, schema in original.get_columns() if schema.name != "id")
-        queries.append(
-            f"""
-            INSERT INTO {schema.hash} ({new_selectors})
-                SELECT
-                    {old_selectors}
-                FROM {original.hash}"""
-        )
-
-        # Splitting each new column into its own query to avoid a the arbitrarily large number of
-        # joins which would be required to do everything in one go
-        for linking_clauses in SqlSuppMerge._get_linking_clauses(original, supp, required_original_columns):
-            for col in new_columns:
-                queries.append(
-                    f"""
-                    UPDATE {schema.hash} AS original
-                        SET {schema.get_column_hash(col)} = supp.{supp.get_column_hash("QVAL")}
-                        FROM {supp.hash} AS supp
-                        WHERE {linking_clauses}
-                            AND supp.{supp.get_column_hash("QNAM")} = '{col}'"""
-                )
-
-        pgi.execute_many(queries)
+        pgi.execute_sql(SqlSuppMerge._merge_query(schema, original, supp, required_original_columns, new_columns))
 
         return schema
+
+    @staticmethod
+    def _merge_query(
+        schema: SqlTableSchema,
+        original: SqlTableSchema,
+        supp: SqlTableSchema,
+        idvars: List[str],
+        new_columns: List[str],
+    ) -> str:
+        """
+        One pass over the original instead of a copy plus an UPDATE per QNAM per IDVAR
+        (each of which rewrote every matching row).
+        """
+
+        def supp_alias(column: str) -> str:
+            return f"s.{supp.get_column_hash(column)}"
+
+        def original_alias(column: str) -> str:
+            return f"o.{original.get_column_hash(column)}"
+
+        copied = [(name, column) for name, column in original.get_columns() if name != "id" and not column.alias]
+        targets = [schema.get_column_hash(name) for name, _ in copied]
+        values = [f"o.{column.hash}" for _, column in copied]
+        joins, pivots = [], []
+
+        if new_columns:
+            qvals = [
+                f"MAX(CASE WHEN {supp_alias('QNAM')} = {_quote(qnam)} THEN {supp_alias('QVAL')} END) AS c{index}"
+                for index, qnam in enumerate(new_columns)
+            ]
+            for index, idvar in enumerate(idvars or [None]):
+                keys = [supp_alias("STUDYID"), supp_alias("RDOMAIN"), supp_alias("USUBJID")]
+                on = [
+                    f"{original_alias('STUDYID')} = p{index}.k0",
+                    f"{original_alias('DOMAIN')} = p{index}.k1",
+                    f"{original_alias('USUBJID')} = p{index}.k2",
+                ]
+                where = ""
+                if idvar is not None:
+                    keys.append(_link_key_sql(supp_alias("IDVARVAL")))
+                    on.append(f"{_link_key_sql(original_alias(idvar))} = p{index}.k3")
+                    where = f"WHERE {supp_alias('IDVAR')} = {_quote(idvar)}"
+                key_select = ", ".join(f"{key} AS k{position}" for position, key in enumerate(keys))
+                group_by = ", ".join(str(position) for position in range(1, len(keys) + 1))
+                pivots.append(
+                    f"p{index} AS (SELECT {key_select}, {', '.join(qvals)} "
+                    f"FROM {supp.hash} s {where} GROUP BY {group_by})"
+                )
+                joins.append(f"LEFT JOIN p{index} ON {' AND '.join(on)}")
+
+            last_first = list(reversed(range(len(pivots))))
+            for index, qnam in enumerate(new_columns):
+                targets.append(schema.get_column_hash(qnam))
+                values.append(f"COALESCE({', '.join(f'p{link}.c{index}' for link in last_first)})")
+
+        with_clause = f"WITH {', '.join(pivots)}" if pivots else ""
+        return f"""
+            {with_clause}
+            INSERT INTO {schema.hash} ({', '.join(targets)})
+                SELECT {', '.join(values)}
+                FROM {original.hash} o
+                {' '.join(joins)}
+                ORDER BY o.id
+        """
 
     @staticmethod
     def _build_schemas(
@@ -154,35 +191,6 @@ class SqlSuppMerge:
             return [row["col"] for row in result]
 
     @staticmethod
-    def _get_linking_clauses(
-        original: SqlTableSchema,
-        supp: SqlTableSchema,
-        required_original_columns: List[str],
-    ) -> List[str]:
-        """
-        Returns the list of linking clauses for the where clause.
-        """
-        default_clauses = " AND ".join(
-            [
-                f"original.{original.get_column_hash("STUDYID")} = supp.{supp.get_column_hash("STUDYID")}",
-                f"original.{original.get_column_hash("DOMAIN")} = supp.{supp.get_column_hash("RDOMAIN")}",
-                f"original.{original.get_column_hash("USUBJID")} = supp.{supp.get_column_hash("USUBJID")}",
-            ]
-        )
-
-        if len(required_original_columns) == 0:
-            return [default_clauses]
-
-        return [
-            f"""{default_clauses}
-                AND supp.{supp.get_column_hash("IDVAR")} = '{col}'
-                AND {numeric_aware_equals_sql(
-                f"original.{original.get_column_hash(col)}", f'supp.{supp.get_column_hash("IDVARVAL")}'
-            )}"""
-            for col in required_original_columns
-        ]
-
-    @staticmethod
     def _determine_new_columns(pgi: PostgresQLInterface, supp_table: SqlTableSchema) -> List[str]:
         """
         Determines the new columns that will be added to the schema after the join.
@@ -190,3 +198,19 @@ class SqlSuppMerge:
         pgi.execute_sql(f"SELECT DISTINCT {supp_table.get_column_hash("QNAM")} AS col FROM {supp_table.hash}")
         result = pgi.fetch_all()
         return [row["col"] for row in result]
+
+
+def _quote(value: str) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
+def _link_key_sql(value_sql: str) -> str:
+    """
+    A join key equal on both sides exactly using a numeric-aware regex.
+    """
+    text = f"TRIM(CAST({value_sql} AS TEXT))"
+    return (
+        f"(CASE WHEN {text} ~ '{NUMERIC_LITERAL_PATTERN}' "
+        f"THEN CAST(trim_scale(CAST({text} AS NUMERIC)) AS TEXT) "
+        f"ELSE CAST({value_sql} AS TEXT) END)"
+    )
