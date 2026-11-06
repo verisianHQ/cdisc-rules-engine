@@ -85,25 +85,21 @@ class SqlJoinMerge:
         if len(right_columns) == 0:
             raise ValueError("No columns to join from the right table.")
 
-        pgi.create_table(schema)
-
         selected_left_columns = [f"l.{old_hash} AS {new_hash}" for old_hash, new_hash in left_columns]
         selected_right_columns = [f"r.{old_hash} AS {new_hash}" for old_hash, new_hash in right_columns]
-        target_columns = [new_hash for _, new_hash in (left_columns + right_columns)]
 
         join_condition = " AND ".join(join_conditions)
         query = f"""
-            INSERT INTO {schema.hash} ({', '.join(target_columns)})
+            CREATE OR REPLACE VIEW {schema.hash} AS
                 SELECT
-                    {', '.join(selected_left_columns)}
-                    ,
-                    {', '.join(selected_right_columns)}
+                    row_number() OVER (ORDER BY l.source_row_number, l.id) AS id,
+                    {', '.join(selected_left_columns + selected_right_columns)}
                 FROM {left.hash} l
                 {type} JOIN {right.hash} r ON {join_condition}
-                ORDER BY l.source_row_number, l.id
         """
 
         pgi.execute_sql(query)
+        pgi.schema.add_table(schema)
 
         return schema
 
