@@ -73,3 +73,39 @@ def test_referenced_domain_variable_names(sdtm_standards_context):
         ],
         unsorted=True,
     )
+
+
+def test_referenced_domain_variable_names_only_lists_referenced_domains(sdtm_standards_context):
+    """Domains the target column never names are left out of the lookup list."""
+    data_service = PostgresQLDataService.instance()
+
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        "ae",
+        {"STUDYID": ["S1"], "USUBJID": ["U1"], "AESEQ": ["1"], "AETERM": ["Headache"]},
+        sdtm_standards_context,
+    )
+    PostgresQLDataService.add_test_dataset(
+        data_service,
+        "lb",
+        {"STUDYID": ["S1"], "USUBJID": ["U1"], "LBSEQ": ["1"], "LBTEST": ["Glucose"]},
+        sdtm_standards_context,
+    )
+    co_table = PostgresQLDataService.add_test_dataset(
+        data_service,
+        "co",
+        {"STUDYID": ["S1", "S1"], "RDOMAIN": ["AE", "AE"], "USUBJID": ["U1", "U1"], "IDVAR": ["AESEQ", "AESEQ"]},
+        sdtm_standards_context,
+    )
+
+    params = SqlOperationParams(
+        domain="co",
+        target="RDOMAIN",
+        table=co_table.hash,
+        standards_context=sdtm_standards_context,
+    )
+    result = SqlOperationsFactory.get_service("referenced_domain_variable_names", params, data_service).execute()
+
+    assert result.query.count("('AE', 'AESEQ')") == 1
+    assert "LB" not in result.query
+    assert "DISTINCT" not in result.query
