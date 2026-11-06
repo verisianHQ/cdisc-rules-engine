@@ -25,6 +25,10 @@ class RuleProgressReporter(ABC):
         pass
 
     @abstractmethod
+    def set_dataset(self, dataset_name: str):
+        pass
+
+    @abstractmethod
     def set_phase(self, phase: RuleProgressPhase):
         pass
 
@@ -42,6 +46,9 @@ class DisabledRuleProgressReporter(RuleProgressReporter):
         pass
 
     def start_rule(self, rule_id: str, rule_index: int, total_rules: int):
+        pass
+
+    def set_dataset(self, dataset_name: str):
         pass
 
     def set_phase(self, phase: RuleProgressPhase):
@@ -67,6 +74,9 @@ class PercentRuleProgressReporter(RuleProgressReporter):
     def start_rule(self, rule_id: str, rule_index: int, total_rules: int):
         pass
 
+    def set_dataset(self, dataset_name: str):
+        pass
+
     def set_phase(self, phase: RuleProgressPhase):
         pass
 
@@ -90,7 +100,7 @@ class ClickRuleProgressBar(RuleProgressReporter):
     Renders two lines above the shell prompt: a status line naming the rule
     currently running and its phase, and beneath it the plain click progress
     bar over the rules being validated:
-    Current rule: CORE-000123 (12/369) - Executing
+    Current rule: CORE-000123 (12/369) - Dataset: AE - Executing
     [████████████████████████████--------]   40%
     """
 
@@ -99,6 +109,8 @@ class ClickRuleProgressBar(RuleProgressReporter):
         self._bar = None
         self._show_status_line = False
         self._rule_label = ""
+        self._dataset_name = ""
+        self._phase = RuleProgressPhase.PARSING
 
     def start(self, total_rules: int):
         self._bar = click.progressbar(
@@ -115,16 +127,23 @@ class ClickRuleProgressBar(RuleProgressReporter):
 
     def start_rule(self, rule_id: str, rule_index: int, total_rules: int):
         self._rule_label = self._format_rule_label(rule_id, rule_index, total_rules)
+        self._dataset_name = ""
         if not self._show_status_line:
             self._output.write(f"Current rule: {self._rule_label}\n")
             self._output.flush()
             return
         self.set_phase(RuleProgressPhase.PARSING)
 
+    def set_dataset(self, dataset_name: str):
+        self._dataset_name = dataset_name or ""
+        self.set_phase(self._phase)
+
     def set_phase(self, phase: RuleProgressPhase):
+        self._phase = phase
         if not self._show_status_line:
             return
-        self._redraw_status_line(f"Current rule: {self._rule_label} - {phase.value}")
+        dataset_part = f" - Dataset: {self._dataset_name}" if self._dataset_name else ""
+        self._redraw_status_line(f"Current rule: {self._rule_label}{dataset_part} - {phase.value}")
 
     def _redraw_status_line(self, text: str) -> None:
         width = shutil.get_terminal_size(fallback=(120, 24)).columns
