@@ -174,6 +174,11 @@ class PostgresQLInterface:
         )
         logger.info(f"Index created on {table}({', '.join(columns)})")
 
+    def analyze_table(self, table: str) -> None:
+        table_hash = self.schema.get_table_hash(table)
+        if table_hash:
+            self.execute_sql(f"ANALYZE {table_hash}")
+
     def add_column(self, table: str, schema: SqlColumnSchema) -> None:
         """Adds a column to an existing table"""
         table_schema = self.schema.get_table(table)

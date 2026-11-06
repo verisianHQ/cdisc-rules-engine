@@ -94,6 +94,7 @@ class SqlDataPreprocessor:
 
         self._execute_merge_insert(unsplit_schema, target_columns, union_parts)
         self._create_unsplit_indexes(unsplit_name, unsplit_schema)
+        self.data_service.pgi.analyze_table(unsplit_name)
 
         logger.info(f"Concatenated dataset: {unsplit_name}")
 

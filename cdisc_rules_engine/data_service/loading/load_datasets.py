@@ -87,6 +87,7 @@ class SqlDatasetLoader:
 
             pgi.create_index(table_name, ["USUBJID"])
             pgi.create_index(table_name, ["USUBJID", "VISIT"])
+            pgi.analyze_table(table_name)
 
             reporter.end_file(metadata.record_count)
 
