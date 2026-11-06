@@ -244,3 +244,37 @@ def test_supp_merge_idvar_numeric_with_scientific_notation(sdtm_standards_contex
     assert results["A"] == "Big"
     assert results["B"] == "Sci"
     assert results["C"] is None
+
+
+def test_supp_merge_equal_idvarvals_do_not_duplicate_rows(sdtm_standards_context):
+    """IDVARVALs written differently but equal as numbers ("1", "1.0") link to the same record once."""
+    ds = PostgresQLDataService.instance()
+
+    data = {
+        "original": {
+            "STUDYID": ["A", "A"],
+            "DOMAIN": ["AE", "AE"],
+            "USUBJID": ["A", "B"],
+            "SEQ": [1, 1],
+        },
+        "supp": {
+            "STUDYID": ["A", "A"],
+            "RDOMAIN": ["AE", "AE"],
+            "USUBJID": ["A", "A"],
+            "IDVAR": ["SEQ", "SEQ"],
+            "IDVARVAL": ["1", "1.0"],
+            "QNAM": ["COLA", "COLB"],
+            "QVAL": ["VAL1", "VAL2"],
+        },
+    }
+    o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
+    s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
+
+    schema = SqlSuppMerge.perform_join(ds.pgi, o_schema, s_schema, "AE")
+
+    cola, colb = schema.get_column_hash("COLA"), schema.get_column_hash("COLB")
+    ds.pgi.execute_sql(f"SELECT usubjid, {cola} AS cola, {colb} AS colb FROM {schema.hash} ORDER BY usubjid")
+    assert ds.pgi.fetch_all() == [
+        {"usubjid": "A", "cola": "VAL1", "colb": "VAL2"},
+        {"usubjid": "B", "cola": None, "colb": None},
+    ]
