@@ -1,4 +1,4 @@
-from .base_sql_operator import BaseSqlOperator
+from .base_sql_operator import CHECK_OPERATOR_TABLE_ALIAS, BaseSqlOperator
 
 
 class IsOrderedSetOperator(BaseSqlOperator):
@@ -52,8 +52,8 @@ class IsOrderedSetOperator(BaseSqlOperator):
             """
 
             dataset_is_ordered = f"""
-                ctid NOT IN (
-                    SELECT t_all.ctid
+                {CHECK_OPERATOR_TABLE_ALIAS}.id NOT IN (
+                    SELECT t_all.id
                     FROM {table_hash} t_all
                     INNER JOIN (
                         SELECT DISTINCT {partition_sql}
@@ -61,7 +61,7 @@ class IsOrderedSetOperator(BaseSqlOperator):
                             SELECT
                                 {partition_sql},
                                 {name_hash} AS curr,
-                                LAG({name_hash}) OVER (PARTITION BY {partition_sql} ORDER BY ctid) AS prev
+                                LAG({name_hash}) OVER (PARTITION BY {partition_sql} ORDER BY id) AS prev
                             FROM {table_hash}
                         ) sub
                         WHERE {compare_logic}
