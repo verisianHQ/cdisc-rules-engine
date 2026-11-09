@@ -78,7 +78,8 @@ def test_join(data, type, expected):
     assert schema.get_column("r.age") is not None
     assert ds.pgi.schema.get_table(schema.name) == schema
 
-    ds.pgi.execute_sql(f"SELECT key::int, name, {schema.get_column_hash("age")}::int AS age FROM {schema.hash}")
+    age = schema.get_column_hash("age")
+    ds.pgi.execute_sql(f"SELECT key::int, name, {age}::int AS age FROM {schema.hash} ORDER BY id")
     result = pd.DataFrame(ds.pgi.fetch_all())
     assert pd.DataFrame(expected).equals(result)
 
@@ -133,7 +134,8 @@ def test_multiple_keys(data, expected):
                 name,
                 {schema.get_column_hash("age")}::int AS age,
                 {schema.get_column_hash("r.name")} as "r.name"
-            FROM {schema.hash}"""
+            FROM {schema.hash}
+            ORDER BY id"""
     )
     result = pd.DataFrame(ds.pgi.fetch_all())
     assert pd.DataFrame(expected).equals(result)
