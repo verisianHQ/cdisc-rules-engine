@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Optional, Union
 
 from cdisc_rules_engine.interfaces import RepresentationInterface
 from cdisc_rules_engine.utilities.utils import get_execution_status
@@ -17,6 +17,7 @@ class RuleValidationResult(RepresentationInterface):
             self.message = actions[0].get("params", {}).get("message")
         self.execution_status: str = get_execution_status(results)
         self.results = results
+        self.elapsed_time: Optional[float] = None
 
     def _get_rule_ids(self, rule: Rule, org: str) -> str:
         return ", ".join(

@@ -259,3 +259,31 @@ def test_get_export():
         assert wb["Dataset Details"]["D2"].value == "2022-04-19T16:17:45"  # Modified Time Stamp
         assert wb["Dataset Details"]["E2"].value == 20  # Size in kb
         assert wb["Dataset Details"]["F2"].value == 700  # Number of records
+
+
+def _rules_report_sheet(rule_runtimes: bool):
+    results = [
+        RuleValidationResult(rule={"core_id": core_id, "actions": []}, results=[]) for core_id in ("CORE2", "CORE1")
+    ]
+    results[0].elapsed_time = 1.23456
+    with open(test_report_template, "rb") as f:
+        report = ExcelReport([], ["test"], results, 1.0, MagicMock(rule_runtimes=rule_runtimes), f)
+        wb = report.get_export(
+            define_version="2.1", cdiscCt=[], standard="sdtmig", version="3.4", dictionary_versions={}
+        )
+    return wb["Rules Report"]
+
+
+def test_rules_report_has_runtime_column_when_requested():
+    ws = _rules_report_sheet(rule_runtimes=True)
+    assert ws["H1"].value == "Run Time (s)"
+    assert ws["H1"].font.b == ws["G1"].font.b
+    assert ws.auto_filter.ref == "A1:H1"
+    assert [ws["A2"].value, ws["H2"].value] == ["CORE1", ""]
+    assert [ws["A3"].value, ws["H3"].value] == ["CORE2", 1.235]
+
+
+def test_rules_report_has_no_runtime_column_by_default():
+    ws = _rules_report_sheet(rule_runtimes=False)
+    assert ws.max_column == 7
+    assert ws.auto_filter.ref == "A1:G1"

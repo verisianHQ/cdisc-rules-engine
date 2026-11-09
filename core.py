@@ -279,6 +279,12 @@ def cli():
         "saying how many there were in total. SQL engine only."
     ),
 )
+@click.option(
+    "--rule-runtimes",
+    is_flag=True,
+    default=False,
+    help="Add a column to the Excel Rules Report with how long each rule took to run, in seconds. SQL engine only.",
+)
 @click.pass_context
 def validate(  # noqa: C901
     ctx,
@@ -319,6 +325,7 @@ def validate(  # noqa: C901
     in_memory_postgres: bool,
     collapse_duplicate_issues: bool,
     max_errors_per_dataset: int,
+    rule_runtimes: bool,
 ):
     """
     Validate data using CDISC Rules Engine
@@ -470,6 +477,7 @@ def validate(  # noqa: C901
         collapse_duplicate_issues,
         max_errors_per_dataset,
         exclude_rules,
+        rule_runtimes,
     )
     if sql_engine:
         try:

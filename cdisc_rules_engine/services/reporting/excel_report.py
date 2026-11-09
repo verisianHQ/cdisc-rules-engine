@@ -1,5 +1,6 @@
 import logging
 from collections import Counter, defaultdict
+from copy import copy
 from datetime import datetime
 from typing import BinaryIO, List, Optional, Iterable
 
@@ -103,8 +104,7 @@ class ExcelReport(BaseReport):
         self._write_issue_details(wb, detail_chunks, progress_reporter)
 
         progress_reporter.start_step("Writing Rules Report")
-        rules_report_data = self.get_rules_report_data()
-        excel_update_worksheet(wb["Rules Report"], rules_report_data, dict(wrap_text=True))
+        self._write_rules_report(wb["Rules Report"])
         progress_reporter.end_step()
 
         progress_reporter.start_step("Writing Dataset Details")
@@ -162,6 +162,21 @@ class ExcelReport(BaseReport):
             wb["Conformance Details"]["B16"] = snomed_version
         progress_reporter.end_step()
         return wb
+
+    def _write_rules_report(self, ws) -> None:
+        include_runtime = getattr(self._args, "rule_runtimes", False) is True
+        if include_runtime:
+            self._add_runtime_column(ws)
+        excel_update_worksheet(ws, self.get_rules_report_data(include_runtime=include_runtime), dict(wrap_text=True))
+
+    @staticmethod
+    def _add_runtime_column(ws) -> None:
+        last = ws.cell(row=1, column=ws.max_column)
+        header = ws.cell(row=1, column=last.column + 1, value="Run Time (s)")
+        header._style = copy(last._style)
+        ws.column_dimensions[header.column_letter].width = 14
+        if ws.auto_filter.ref:
+            ws.auto_filter.ref = f"A1:{header.column_letter}1"
 
     def _get_issue_detail_chunks(self) -> List[List[List]]:
         detailed_data = self.get_detailed_data(excel=True)

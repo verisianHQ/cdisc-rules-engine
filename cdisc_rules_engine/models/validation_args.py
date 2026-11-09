@@ -30,6 +30,7 @@ Validation_args = namedtuple(
         "collapse_duplicate_issues",
         "max_errors_per_dataset",
         "exclude_rules",
+        "rule_runtimes",
     ],
-    defaults=[False, MAX_ERRORS_PER_DATASET, ()],
+    defaults=[False, MAX_ERRORS_PER_DATASET, (), False],
 )

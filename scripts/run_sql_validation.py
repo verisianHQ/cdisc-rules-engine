@@ -226,7 +226,9 @@ def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals
         for rule_index, rule in enumerate(rules):
             rule_progress_reporter.start_rule(rule.get("core_id"), rule_index, len(rules))
             missing_inputs = get_missing_inputs(rule, supplied_inputs)
+            rule_start = time.perf_counter()
             result = sql_validate_single_rule(engine, args, rule, missing_inputs)
+            result.elapsed_time = time.perf_counter() - rule_start
             # count the rule only if a dataset in its scope was reported as not applicable
             if missing_inputs and any(is_not_applicable(entry) for entry in result.results):
                 missing_inputs_by_rule[rule.get("core_id")] = missing_inputs

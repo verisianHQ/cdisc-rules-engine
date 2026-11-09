@@ -137,7 +137,7 @@ class BaseReport(ABC):
                 processed_values.append(value)
         return ", ".join(processed_values) if excel else processed_values
 
-    def get_rules_report_data(self) -> List[List]:
+    def get_rules_report_data(self, include_runtime: bool = False) -> List[List]:
         """
         Generates the rules report data that goes into the excel export.
         Each row is represented by a list or a dict containing the following
@@ -149,7 +149,8 @@ class BaseReport(ABC):
             "FDA RuleID",
             "Message",
             "Status",  # SUCCESS, ISSUE REPORTED, SKIPPED or EXECUTION ERROR
-            "Reason"
+            "Reason",
+            "Run Time (s)"  # only with include_runtime
         ]
         """
         rules_report = []
@@ -164,6 +165,9 @@ class BaseReport(ABC):
                 "status": status.replace("_", " ").upper(),
                 "skip_reason": self._get_skip_reason(validation_result, status),
             }
+            if include_runtime:
+                elapsed = getattr(validation_result, "elapsed_time", None)
+                rules_item["runtime"] = round(elapsed, 3) if elapsed is not None else ""
             if self._item_type == "list":
                 rules_report.append([*rules_item.values()])
             elif self._item_type == "dict":
