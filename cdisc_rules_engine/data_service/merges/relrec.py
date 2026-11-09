@@ -362,11 +362,12 @@ class SqlRelrecMerge:
         for (has_subject, left_col, right_col, by_value), rels in SqlRelrecMerge._group_by_link(
             original, right_table, domain_rels
         ).items():
-            values = ", ".join(
+            rows = dict.fromkeys(
                 f"({_quote(rel['studyid'])}, {_quote(rel.get('usubjid'))}, "
                 f"{_quote(rel['idvarval_left'])}, {_quote(rel['idvarval_right'])})"
                 for rel in rels
             )
+            values = ", ".join(rows)
             original_on = [f"UPPER(o.{original.get_column_hash('STUDYID')}::text) = UPPER(v.studyid)"]
             if has_subject:
                 original_on.append(f"UPPER(o.{original.get_column_hash('USUBJID')}::text) = UPPER(v.usubjid)")
