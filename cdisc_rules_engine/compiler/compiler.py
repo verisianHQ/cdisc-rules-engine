@@ -359,7 +359,7 @@ def _with_right_values(query: str, join, where: str, right_columns: List[tuple])
     values = []
     for column, joined in right_columns:
         values.append(f'r.{column} AS "{joined}"')
-    first_failing = _failing_right_rows(join, where, ", ".join(values)) + " LIMIT 1"
+    first_failing = _failing_right_rows(join, where, ", ".join(values)) + " ORDER BY r.id LIMIT 1"
 
     return (
         f"SELECT {SEMI}.*, matched.* FROM ({query}) {SEMI} "
