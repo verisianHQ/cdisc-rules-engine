@@ -150,7 +150,7 @@ class BaseReport(ABC):
             "Message",
             "Status",  # SUCCESS, ISSUE REPORTED, SKIPPED or EXECUTION ERROR
             "Reason",
-            "Run Time (s)"  # only with include_runtime
+            "Run Time (s)"
         ]
         """
         rules_report = []
