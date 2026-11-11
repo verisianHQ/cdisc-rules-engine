@@ -3,10 +3,6 @@ from cdisc_rules_engine.models.sql_operation_params import SqlOperationParams
 from cdisc_rules_engine.standards.default_standards_context import DefaultStandardsContext
 from cdisc_rules_engine.sql_operations.sql_operations_factory import SqlOperationsFactory
 
-TEST_DATASET = {
-    "DUMMYVAR": ["Severity/Intensity", "Epoch", "DummyLabel"],
-}
-
 
 class DummyStandardsContext(DefaultStandardsContext):
     def get_standard_metadata(self):
@@ -26,49 +22,23 @@ class DummyStandardsContext(DefaultStandardsContext):
         }
 
 
-def test_name_referenced_variable_metadata_role():
+def _lookup(attribute_name, key):
     data_service = PostgresQLDataService.instance()
-    PostgresQLDataService.add_test_dataset(
-        data_service=data_service, table_name="AE", column_data=TEST_DATASET, standards_context=DummyStandardsContext()
-    )
-
     params = SqlOperationParams(
-        domain="AE", target="DUMMYVAR", attribute_name="role", standards_context=DummyStandardsContext()
+        domain="AE", target="DUMMYVAR", attribute_name=attribute_name, standards_context=DummyStandardsContext()
     )
-    operation = SqlOperationsFactory.get_service("name_referenced_variable_metadata", params, data_service)
+    result = SqlOperationsFactory.get_service("name_referenced_variable_metadata", params, data_service).execute()
+    assert (result.type, result.subtype, result.params) == ("collection", "Char", {"%target%": "DUMMYVAR"})
+    data_service.pgi.execute_sql(result.query.replace("%target%", f"'{key}'"))
+    return [row["value"] for row in data_service.pgi.fetch_all()]
 
-    result = operation.execute()
 
-    assert result.type == "collection"
-    assert result.subtype == "Char"
-    assert result.params == {"%target%": "DUMMYVAR"}
-
-    assert result.query.startswith("SELECT value FROM (VALUES ")
-    assert "('EPOCH', 'Timing')" in result.query
-    assert "('AESEV', 'Record Qualifier')" in result.query
-    assert "DummyLabel" not in result.query
-    assert result.query.endswith(" AS t(name, value) WHERE t.name = %target%")
+def test_name_referenced_variable_metadata_role():
+    assert _lookup("role", "EPOCH") == ["Timing"]
+    assert _lookup("role", "AESEV") == ["Record Qualifier"]
+    assert _lookup("role", "DUMMYNAME") == []
 
 
 def test_name_referenced_variable_metadata_core():
-    data_service = PostgresQLDataService.instance()
-    PostgresQLDataService.add_test_dataset(
-        data_service=data_service, table_name="AE", column_data=TEST_DATASET, standards_context=DummyStandardsContext()
-    )
-
-    params = SqlOperationParams(
-        domain="AE", target="DUMMYVAR", attribute_name="core", standards_context=DummyStandardsContext()
-    )
-    operation = SqlOperationsFactory.get_service("name_referenced_variable_metadata", params, data_service)
-
-    result = operation.execute()
-
-    assert result.type == "collection"
-    assert result.subtype == "Char"
-    assert result.params == {"%target%": "DUMMYVAR"}
-
-    assert result.query.startswith("SELECT value FROM (VALUES ")
-    assert "('EPOCH', 'Perm')" in result.query
-    assert "('AESEV', 'Perm')" in result.query
-    assert "DummyLabel" not in result.query
-    assert result.query.endswith(" AS t(name, value) WHERE t.name = %target%")
+    assert _lookup("core", "EPOCH") == ["Perm"]
+    assert _lookup("core", "DUMMYNAME") == []
