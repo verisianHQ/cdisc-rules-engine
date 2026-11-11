@@ -29,6 +29,7 @@ from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
 
 FILTER_BY_DATASET = "filter_by_dataset"
 REPORTED = "reported"  # stops us from re-selecting already reported rows
+SEMI = "semi"
 PART_ROW_COLUMN = "__part_row"
 SUMMARY_SENSITIVITIES = {Sensitivity.DATASET.value, Sensitivity.STUDY.value}
 ROW_SENSITIVITIES = {Sensitivity.RECORD.value, Sensitivity.GROUP.value, None}
@@ -84,13 +85,19 @@ class RuleQueryCompiler:
         ]
         inlined = operation_outputs if inline_outputs else []
 
-        select = ", ".join(self._select_columns(target_columns, operation_outputs))
-        sql = self._with_operation_outputs(self._query(select, conditions), inlined)
+        columns = self._select_hashes(target_columns, operation_outputs)
+        join = self._semi_join(conditions)
+        if join is None:
+            query = self._joined_query(conditions, columns)
+        else:
+            query = self._semi_join_query(join, conditions.where, columns)
+
+        sql = self._with_operation_outputs(query, inlined)
         return CompiledQuery(sql, self.schema, conditions, target_columns, inlined)
 
     # --- SELECT list ---------------------------------------------------------------------
 
-    def _select_columns(self, target_columns: Dict[str, bool], operation_outputs: List[str]) -> List[str]:
+    def _select_hashes(self, target_columns: Dict[str, bool], operation_outputs: List[str]) -> List[str]:
         wanted = [
             "usubjid",
             f"{self.domain}SEQ",
@@ -107,31 +114,67 @@ class RuleQueryCompiler:
                 for column in (self.operation_variables[name].params or {}).values()
             ],
         ]
-        select = [f"{CO}.id AS id"]
-        seen = {"id"}
+        hashes = []
         for column in wanted:
             column_hash = self.schema.get_column_hash(column)
             # missing columns are just skipped
             # the handler reports them as "Not in dataset"
-            if column_hash and column_hash not in seen:
-                seen.add(column_hash)
-                select.append(f'{CO}.{column_hash} AS "{column_hash}"')
-        return select
+            if column_hash and column_hash != "id" and column_hash not in hashes:
+                hashes.append(column_hash)
+        return hashes
+
+    def _joined_query(self, conditions: CompiledConditions, columns: List[str]) -> str:
+        select = _select(columns)
+        source = conditions.from_clause(self.schema.hash)
+        return self._query(select, source, conditions.where)
+
+    def _semi_join(self, conditions: CompiledConditions):
+        join = self.schema.join_source
+        if join is None:
+            return None
+        if conditions.derived_columns or conditions.joins:
+            return None
+
+        is_grouped = self.rule.get("sensitivity") == Sensitivity.GROUP.value
+        if is_grouped and self._grouping_variables():
+            return None
+
+        if _realiases_source(conditions.where):
+            return None
+
+        where = _right_side(conditions.where, join)
+        if _mentions_right_columns(where, join):
+            return None
+        return join
+
+    def _semi_join_query(self, join, where: str, columns: List[str]) -> str:
+        where = _right_side(where, join)
+        right_hashes = {joined for _, joined in join.right_columns}
+
+        left_columns = [column for column in columns if column not in right_hashes]
+        right_columns = [(column, joined) for column, joined in join.right_columns if joined in columns]
+
+        select = _select(left_columns)
+        source = f"{join.left.hash} {CO}"
+        exists = f"EXISTS ({_failing_right_rows(join, where, '1')})"
+        query = self._query(select, source, exists)
+
+        if not right_columns:
+            return query
+        return _with_right_values(query, join, where, right_columns)
 
     # --- sensitivity ---------------------------------------------------------------------
 
-    def _query(self, select: str, conditions: CompiledConditions) -> str:
+    def _query(self, select: str, source: str, where: str) -> str:
         sensitivity = self.rule.get("sensitivity")
-        source = conditions.from_clause(self.schema.hash)
-
         if sensitivity in SUMMARY_SENSITIVITIES:
-            return self._summary_query(select, source, conditions.where)
+            return self._summary_query(select, source, where)
         if sensitivity == Sensitivity.GROUP.value and self._grouping_variables():
-            return self._group_query(select, source, conditions.where)
+            return self._group_query(select, source, where)
         if sensitivity not in ROW_SENSITIVITIES:
             raise ValueError(f"Invalid sensitivity value: {sensitivity}")
         # Record and Group with no grouping variables, which behaves like Record
-        return self._capped(select, source, conditions.where, CO)
+        return self._capped(select, source, where, CO)
 
     def _summary_query(self, select: str, source: str, where: str) -> str:
         """Dataset / Study: one error so just the first failing row."""
@@ -280,6 +323,50 @@ class RuleQueryCompiler:
         for placeholder, column in sorted((result.params or {}).items(), key=lambda item: -len(item[0])):
             query = query.replace(placeholder, self._reported_column_sql(column))
         return query
+
+
+def _select(columns: List[str]) -> str:
+    items = [f"{CO}.id AS id"]
+    for column in columns:
+        items.append(f'{CO}.{column} AS "{column}"')
+    return ", ".join(items)
+
+
+def _right_side(where: str, join) -> str:
+    for column, joined in join.right_columns:
+        pattern = rf"\b{CO}\.{re.escape(joined)}\b"
+        where = re.sub(pattern, f"r.{column}", where)
+    return where
+
+
+def _realiases_source(where: str) -> bool:
+    return re.search(rf"\bAS\s+{CO}\b", where, re.IGNORECASE) is not None
+
+
+def _mentions_right_columns(where: str, join) -> bool:
+    for _, joined in join.right_columns:
+        if joined in where:
+            return True
+    return False
+
+
+def _failing_right_rows(join, where: str, select: str) -> str:
+    keys = join.on(CO, "r")
+    return f"SELECT {select} FROM {join.right.hash} r WHERE {keys} AND ({where})"
+
+
+def _with_right_values(query: str, join, where: str, right_columns: List[tuple]) -> str:
+    values = []
+    for column, joined in right_columns:
+        values.append(f'r.{column} AS "{joined}"')
+    first_failing = _failing_right_rows(join, where, ", ".join(values)) + " ORDER BY r.id LIMIT 1"
+
+    return (
+        f"SELECT {SEMI}.*, matched.* FROM ({query}) {SEMI} "
+        f"JOIN {join.left.hash} {CO} ON {CO}.id = {SEMI}.id "
+        f"LEFT JOIN LATERAL ({first_failing}) matched ON TRUE "
+        f"ORDER BY {SEMI}.id"
+    )
 
 
 def _first_per_group(select_sql: str, source: str, where: str, keys: List[str]) -> str:
