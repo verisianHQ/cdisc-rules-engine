@@ -110,7 +110,6 @@ class ClickRuleProgressBar(RuleProgressReporter):
         self._show_status_line = False
         self._rule_label = ""
         self._dataset_name = ""
-        self._phase = RuleProgressPhase.PARSING
 
     def start(self, total_rules: int):
         self._bar = click.progressbar(
@@ -136,10 +135,8 @@ class ClickRuleProgressBar(RuleProgressReporter):
 
     def set_dataset(self, dataset_name: str):
         self._dataset_name = dataset_name or ""
-        self.set_phase(self._phase)
 
     def set_phase(self, phase: RuleProgressPhase):
-        self._phase = phase
         if not self._show_status_line:
             return
         dataset_part = f" - Dataset: {self._dataset_name}" if self._dataset_name else ""
