@@ -499,3 +499,30 @@ def test_sql_contains_all_collection_target_list_comparator():
         {"target": "$collection_abc", "comparator": ["A", "B", "D"], "value_is_literal": True}
     )
     assert_series_equals(result, [False])
+
+
+CODELIST_CONTAINED_BY_TEST_DATA = [
+    ("$list", False, [True, True, False, False, True]),
+    (["A", "B"], True, [True, True, False, False, True]),
+    (["A"], True, [True, False, False, False, False]),
+]
+
+
+@pytest.mark.parametrize("comparator,value_is_literal,expected_result", CODELIST_CONTAINED_BY_TEST_DATA)
+def test_is_contained_by_code_list_column(comparator, value_is_literal, expected_result):
+    sql_ops = create_sql_operators({"define_variable_codelist_coded_codes": ["A", "A,B", "A,C", None, "B,"]})
+    other_value = {
+        "target": "define_variable_codelist_coded_codes",
+        "comparator": comparator,
+        "value_is_literal": value_is_literal,
+    }
+    assert_series_equals(sql_ops.is_contained_by(other_value), expected_result)
+    assert_series_equals(sql_ops.is_not_contained_by(other_value), ~pd.Series(expected_result))
+
+
+def test_is_contained_by_case_insensitive_code_list_column():
+    sql_ops = create_sql_operators({"define_variable_codelist_coded_codes": ["a,B", "a,c"]})
+    result = sql_ops.is_contained_by_case_insensitive(
+        {"target": "define_variable_codelist_coded_codes", "comparator": ["A", "b"], "value_is_literal": True}
+    )
+    assert_series_equals(result, [True, False])

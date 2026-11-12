@@ -1,3 +1,5 @@
+from cdisc_rules_engine.constants.metadata_columns import CODELIST_COLUMNS
+
 from .base_sql_operator import BaseSqlOperator
 
 
@@ -39,8 +41,28 @@ class IsContainedByOperator(BaseSqlOperator):
         if is_target_list or is_target_collection:
             return self._handle_array_target(target, comparator, value_is_literal, is_target_list)
 
+        target_name = self.replace_prefix(target)
+        if target_name in CODELIST_COLUMNS and self._exists(target_name):
+            return self._handle_code_list_target(target_name, prefix, suffix, comparator, value_is_literal)
+
         target_sql, target_empty_sql = self._get_scalar_target_sql(target, prefix, suffix)
         return self._handle_scalar_target(target_sql, target_empty_sql, comparator, value_is_literal)
+
+    def _handle_code_list_target(self, target_name, prefix, suffix, comparator, value_is_literal):
+        """Contained when every code of the comma-joined list is."""
+        code_sql = "LOWER(codes.code)" if self.case_insensitive else "codes.code"
+        if prefix is not None:
+            code_sql = f"LEFT({code_sql}, {prefix})"
+        if suffix is not None:
+            code_sql = f"RIGHT({code_sql}, {suffix})"
+        code_contained = self._scalar_contained_sql(code_sql, "FALSE", comparator, value_is_literal)
+        column_sql = self._column_sql(target_name)
+        target_empty_sql = self._is_empty_sql(target_name)
+        contained_sql = f"""NOT ({target_empty_sql}) AND NOT EXISTS (
+                SELECT 1 FROM UNNEST(STRING_TO_ARRAY({column_sql}, ',')) AS codes(code)
+                WHERE TRIM(codes.code) != '' AND NOT COALESCE(({code_contained}), FALSE)
+            )"""
+        return self._do_check_operator(lambda: contained_sql)
 
     def _get_scalar_target_sql(self, target, prefix, suffix):
         target_name = self.replace_prefix(target)
@@ -61,39 +83,37 @@ class IsContainedByOperator(BaseSqlOperator):
         return target_sql, target_empty_sql
 
     def _handle_scalar_target(self, target_sql, target_empty_sql, comparator, value_is_literal):
+        contained_sql = self._scalar_contained_sql(target_sql, target_empty_sql, comparator, value_is_literal)
+        return self._do_check_operator(lambda: contained_sql)
+
+    def _scalar_contained_sql(self, target_sql, target_empty_sql, comparator, value_is_literal) -> str:
         if isinstance(comparator, list):
             if not comparator:
-                return self._do_check_operator(lambda: "FALSE")
+                return "FALSE"
             comparator_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
-            return self._do_check_operator(lambda: f"NOT ({target_empty_sql}) AND {target_sql} IN {comparator_sql}")
+            return f"NOT ({target_empty_sql}) AND {target_sql} IN {comparator_sql}"
 
         elif isinstance(comparator, str) and comparator in self.operation_variables:
             var = self.operation_variables[comparator]
             if var.type == "constant":
                 comp_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
-                return self._do_check_operator(lambda: f"NOT ({target_empty_sql}) AND {target_sql} = {comp_sql}")
-            else:
-                comp_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
-                return self._do_check_operator(lambda: f"NOT ({target_empty_sql}) AND {target_sql} IN {comp_sql}")
+                return f"NOT ({target_empty_sql}) AND {target_sql} = {comp_sql}"
+            comp_sql = self._collection_sql(comparator, lowercase=self.case_insensitive)
+            return f"NOT ({target_empty_sql}) AND {target_sql} IN {comp_sql}"
 
         elif isinstance(comparator, str) and not value_is_literal and self._exists(self.replace_prefix(comparator)):
             comp_col = self.replace_prefix(comparator)
             comp_sql = self._column_sql(comp_col, lowercase=self.case_insensitive, alias=False)
             comp_empty = self._is_empty_sql(comp_col, alias=False)
+            return f"""NOT ({target_empty_sql})
+                      AND {target_sql} IN (
+                          SELECT DISTINCT {comp_sql}
+                          FROM {self._table_sql()}
+                          WHERE NOT ({comp_empty})
+                      )"""
 
-            def sql():
-                return f"""NOT ({target_empty_sql})
-                          AND {target_sql} IN (
-                              SELECT DISTINCT {comp_sql}
-                              FROM {self._table_sql()}
-                              WHERE NOT ({comp_empty})
-                          )"""
-
-            return self._do_check_operator(sql)
-
-        else:
-            comp_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
-            return self._do_check_operator(lambda: f"NOT ({target_empty_sql}) AND {target_sql} = {comp_sql}")
+        comp_sql = self._constant_sql(comparator, lowercase=self.case_insensitive)
+        return f"NOT ({target_empty_sql}) AND {target_sql} = {comp_sql}"
 
     def _handle_array_target(self, target, comparator, value_is_literal, is_target_list):
         if is_target_list:
