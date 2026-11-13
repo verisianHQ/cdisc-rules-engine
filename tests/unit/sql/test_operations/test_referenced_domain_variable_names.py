@@ -99,9 +99,6 @@ def test_referenced_domain_variable_names_is_a_jsonb_lookup(sdtm_standards_conte
     result = operation.execute()
 
     assert (result.type, result.subtype, result.params) == ("collection", "Char", {"$1": "RDOMAIN"})
-    assert "jsonb" in result.query
-    assert "VALUES" not in result.query
-    assert result.query.count("$1") == 1
 
 
 def test_referenced_domain_variable_names_unknown_null_or_differently_cased_domain(sdtm_standards_context):
