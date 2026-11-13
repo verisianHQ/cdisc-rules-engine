@@ -1,7 +1,7 @@
 from typing import List, Dict, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -315,7 +315,6 @@ class SqlRelrecMerge:
             original, right_table, schema, column_mappings
         )
 
-        # Build union parts for all relationships
         union_parts = SqlRelrecMerge._build_union_parts(
             original, right_table, domain_rels, original_selects, right_selects
         )
@@ -358,49 +357,67 @@ class SqlRelrecMerge:
 
     @staticmethod
     def _build_union_parts(original, right_table, domain_rels, original_selects, right_selects):
-        """Build union parts for all relationships in a domain."""
+        """Build one SELECT per kind of relationship in a domain."""
         union_parts = []
-        for rel in domain_rels:
-            join_conditions = [
+        for (has_subject, left_col, right_col, by_value), rels in SqlRelrecMerge._group_by_link(
+            original, right_table, domain_rels
+        ).items():
+            rows = dict.fromkeys(
+                f"({_quote(rel['studyid'])}, {_quote(rel.get('usubjid'))}, "
+                f"{_quote(rel['idvarval_left'])}, {_quote(rel['idvarval_right'])})"
+                for rel in rels
+            )
+            values = ", ".join(rows)
+            original_on = [f"UPPER(o.{original.get_column_hash('STUDYID')}::text) = UPPER(v.studyid)"]
+            if has_subject:
+                original_on.append(f"UPPER(o.{original.get_column_hash('USUBJID')}::text) = UPPER(v.usubjid)")
+            right_on = [
                 f"o.{original.get_column_hash('STUDYID')} = r.{right_table.get_column_hash('STUDYID')}",
                 f"o.{original.get_column_hash('USUBJID')} = r.{right_table.get_column_hash('USUBJID')}",
             ]
+            left_sql = f"o.{original.get_column_hash(left_col)}" if left_col else None
+            right_sql = f"r.{right_table.get_column_hash(right_col)}" if right_col else None
+            key = numeric_aware_key_sql
+            if by_value:
+                if left_sql:
+                    original_on.append(f"{key(left_sql)} = {key('v.idvarval_left')}")
+                if right_sql:
+                    right_on.append(f"{key(right_sql)} = {key('v.idvarval_right')}")
+            elif left_sql and right_sql:
+                right_on.append(f"{key(left_sql)} = {key(right_sql)}")
 
-            where_filters = [f"UPPER(o.{original.get_column_hash('STUDYID')}::text) = UPPER('{rel['studyid']}')"]
-
-            if rel.get("usubjid") and rel["usubjid"].strip():
-                where_filters.append(
-                    f"UPPER(o.{original.get_column_hash('USUBJID')}::text) = UPPER('{rel['usubjid']}')"
-                )
-
-            if rel.get("idvarval_left") and rel["idvarval_left"]:
-                if original.has_column(rel["idvar_left"]):
-                    where_filters.append(
-                        numeric_aware_equals_sql(
-                            f"o.{original.get_column_hash(rel['idvar_left'])}", f"'{rel['idvarval_left']}'"
-                        )
-                    )
-                if right_table.has_column(rel.get("idvar_right", "")):
-                    join_conditions.append(
-                        numeric_aware_equals_sql(
-                            f"r.{right_table.get_column_hash(rel['idvar_right'])}", f"'{rel['idvarval_right']}'"
-                        )
-                    )
-            else:
-                if rel.get("idvar_left") and rel.get("idvar_right"):
-                    if original.has_column(rel["idvar_left"]) and right_table.has_column(rel["idvar_right"]):
-                        left_hash = original.get_column_hash(rel["idvar_left"])
-                        right_hash = right_table.get_column_hash(rel["idvar_right"])
-                        join_conditions.append(numeric_aware_equals_sql(f"o.{left_hash}", f"r.{right_hash}"))
-
-            where_clause = f"WHERE {' AND '.join(where_filters)}"
-
-            union_part = f"""
-                SELECT {', '.join(original_selects + right_selects)}
-                FROM {original.hash} o
-                INNER JOIN {right_table.hash} r ON {' AND '.join(join_conditions)}
-                {where_clause}
+            part = f"""
+                SELECT DISTINCT {', '.join(original_selects + right_selects)}
+                FROM (VALUES {values}) AS v(studyid, usubjid, idvarval_left, idvarval_right)
+                INNER JOIN {original.hash} o ON {' AND '.join(original_on)}
+                INNER JOIN {right_table.hash} r ON {' AND '.join(right_on)}
             """
-            union_parts.append(union_part)
+            union_parts.append(part)
 
         return union_parts
+
+    @staticmethod
+    def _group_by_link(original, right_table, domain_rels) -> Dict[tuple, List[Dict]]:
+        """
+        RELREC rows keyed by how they link:
+        (has a subject, original IDVAR column, related IDVAR column, linked by IDVARVAL value or by column).
+        A column is None where the per-row branch would have skipped its condition.
+        """
+        groups: Dict[tuple, List[Dict]] = {}
+        for rel in domain_rels:
+            has_subject = bool(rel.get("usubjid") and rel["usubjid"].strip())
+            by_value = bool(rel.get("idvarval_left"))
+            idvar_left, idvar_right = rel.get("idvar_left"), rel.get("idvar_right", "")
+            if by_value:
+                left_col = idvar_left if original.has_column(idvar_left) else None
+                right_col = idvar_right if right_table.has_column(idvar_right) else None
+            elif idvar_left and idvar_right and original.has_column(idvar_left) and right_table.has_column(idvar_right):
+                left_col, right_col = idvar_left, idvar_right
+            else:
+                left_col = right_col = None
+            groups.setdefault((has_subject, left_col, right_col, by_value), []).append(rel)
+        return groups
+
+
+def _quote(value) -> str:
+    return "'" + str(value).replace("'", "''") + "'"

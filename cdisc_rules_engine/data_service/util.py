@@ -47,3 +47,16 @@ def numeric_aware_equals_sql(left_sql: str, right_sql: str) -> str:
             ELSE CAST({left_sql} AS TEXT) = CAST({right_sql} AS TEXT)
         END
     )"""
+
+
+def numeric_aware_key_sql(value_sql: str) -> str:
+    """
+    A value two sides are equal on exactly when numeric_aware_equals_sql would consider them equal.
+    Unlike that CASE comparison it's a plain expression, so Postgres can hash join / hash IN on it.
+    """
+    text = f"TRIM(CAST({value_sql} AS TEXT))"
+    return (
+        f"(CASE WHEN {text} ~ '{NUMERIC_LITERAL_PATTERN}' "
+        f"THEN CAST(trim_scale(CAST({text} AS NUMERIC)) AS TEXT) "
+        f"ELSE CAST({value_sql} AS TEXT) END)"
+    )
