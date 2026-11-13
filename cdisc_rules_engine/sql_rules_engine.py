@@ -178,6 +178,7 @@ class SQLRulesEngine:
         It validates a given rule against datasets.
         """
         logger.info(f"Validating {dataset_metadata.name}. rule={rule}.")
+        self.progress_reporter.set_dataset(dataset_metadata.name)
         try:
             result: List[Union[dict, str]] = self.validate_rule(rule, dataset_metadata, datasets)
             logger.info(f"Validated dataset {dataset_metadata.name}. Result = {result}")
