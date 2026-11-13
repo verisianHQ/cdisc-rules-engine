@@ -1,0 +1,62 @@
+name: Port label
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: port-label-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  port-label:
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a port label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          labels=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name')
+          has() { grep -qxF "$1" <<<"$labels"; }
+
+          ok=true
+          if has "port: needed" && has "port: skip"; then
+            ok=false
+            status="Both labels are set. Remove one."
+          elif has "port: needed"; then
+            status="\`port: needed\`: a draft PR will be opened in the platform fork when this merges."
+          elif has "port: skip"; then
+            status="\`port: skip\`: this won't be ported."
+          else
+            ok=false
+            status="Waiting for a label. Merging is blocked until one is set."
+          fi
+
+          marker="<!-- port-label -->"
+          body="$marker
+          **Does this change need porting to the platform fork?** Add one label:
+
+          - \`port: needed\`: a draft PR is opened in the platform fork when this merges.
+          - \`port: skip\`: old-engine only, e.g. CLI args the new engine won't use.
+
+          $status"
+
+          comment_id=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n1)
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$comment_id" -f body="$body" > /dev/null
+          elif [ "$ok" = false ]; then
+            gh pr comment "$PR_NUMBER" --body "$body"
+          fi
+
+          if [ "$ok" = false ]; then
+            echo "::error::Add exactly one of the labels 'port: needed' or 'port: skip'."
+            exit 1
+          fi

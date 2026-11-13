@@ -1,0 +1,142 @@
+name: Port to platform fork
+
+on:
+  pull_request_target:
+    types: [closed, labeled]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Merged PR number to port
+        type: number
+        required: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: port-${{ github.event.pull_request.number || inputs.pr_number }}
+
+jobs:
+  open-port-pr:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged &&
+       contains(github.event.pull_request.labels.*.name, 'port: needed') &&
+       (github.event.action == 'closed' || github.event.label.name == 'port: needed'))
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      TARGET_REPO: verisianHQ/verisian-core
+      PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+      BRANCH: port/${{ github.event.pull_request.number || inputs.pr_number }}
+    steps:
+      - name: Read PR
+        id: pr
+        env:
+          PORT_TOKEN: ${{ secrets.PLATFORM_FORK_PORT_TOKEN }}
+        run: |
+          if [ -z "$PORT_TOKEN" ]; then
+            echo "::error::The PLATFORM_FORK_PORT_TOKEN secret isn't set."
+            exit 1
+          fi
+          gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --json title,body,url,author,state,mergeCommit > "$RUNNER_TEMP/pr.json"
+          if [ "$(jq -r .state "$RUNNER_TEMP/pr.json")" != MERGED ]; then
+            echo "::error::#$PR_NUMBER isn't merged."
+            exit 1
+          fi
+          echo "sha=$(jq -r .mergeCommit.oid "$RUNNER_TEMP/pr.json")" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pr.outputs.sha }}
+          fetch-depth: 2
+          path: old
+          persist-credentials: false
+
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ env.TARGET_REPO }}
+          token: ${{ secrets.PLATFORM_FORK_PORT_TOKEN }}
+          path: core
+
+      - name: Open draft PR in platform fork
+        id: port
+        working-directory: core
+        env:
+          GH_TOKEN: ${{ secrets.PLATFORM_FORK_PORT_TOKEN }}
+          SHA: ${{ steps.pr.outputs.sha }}
+        run: |
+          existing=$(gh pr list --repo "$TARGET_REPO" --head "$BRANCH" --state all --json url --jq '.[0].url // empty')
+          if [ -n "$existing" ] || git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null; then
+            echo "::notice::Already ported: ${existing:-$TARGET_REPO has a $BRANCH branch}"
+            exit 0
+          fi
+
+          pr="$RUNNER_TEMP/pr.json"
+          title=$(jq -r .title "$pr" | sed -E 's/^[[:alnum:]]+(\([^)]*\))?!?:[[:space:]]*//')
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          echo "$GITHUB_WORKSPACE/old/.git/objects" >> .git/objects/info/alternates
+          git -C ../old diff --binary "$SHA^" "$SHA" > "$RUNNER_TEMP/port.patch"
+          git switch -q -c "$BRANCH"
+
+          if git apply --3way "$RUNNER_TEMP/port.patch" 2> "$RUNNER_TEMP/apply.log"; then
+            applied=true
+            git commit -q --author="$(git -C ../old log -1 --format='%an <%ae>' "$SHA")" \
+              -m "port: #$PR_NUMBER $title" -m "From $GITHUB_REPOSITORY#$PR_NUMBER ($SHA)"
+          else
+            applied=false
+            git reset -q --hard
+            git clean -fdq
+            git commit -q --allow-empty \
+              -m "port: #$PR_NUMBER $title" -m "Placeholder: $GITHUB_REPOSITORY#$PR_NUMBER didn't apply cleanly."
+          fi
+          git push -q origin "$BRANCH"
+
+          # bare #123 refs would link to platform fork PRs
+          orig_body=$(jq -r '.body // ""' "$pr" | perl -pe 's{(?<![\w/&#])#(\d+)\b}{$ENV{GITHUB_REPOSITORY}#$1}g')
+          {
+            echo "Port of $GITHUB_REPOSITORY#$PR_NUMBER: **$(jq -r .title "$pr")** by $(jq -r .author.login "$pr")."
+            echo
+            if [ "$applied" = true ]; then
+              echo "The original diff applied cleanly. Check it fits the platform fork and run the rule regression before marking ready."
+            else
+              echo "The original diff didn't apply cleanly, so this branch only has an empty commit. Port the changes by hand."
+              echo
+              echo "<details><summary>git apply output</summary>"
+              echo
+              echo '```'
+              cat "$RUNNER_TEMP/apply.log"
+              echo '```'
+              echo
+              echo "</details>"
+            fi
+            echo
+            echo "<details><summary>Original description</summary>"
+            echo
+            echo "${orig_body:-_No description._}"
+            echo
+            echo "</details>"
+          } > "$RUNNER_TEMP/body.md"
+
+          url=$(gh pr create --repo "$TARGET_REPO" --base main --head "$BRANCH" --draft \
+            --title "port: #$PR_NUMBER $title" --body-file "$RUNNER_TEMP/body.md")
+          if [ "$(jq -r .author.is_bot "$pr")" != true ]; then
+            gh pr edit "$url" --add-assignee "$(jq -r .author.login "$pr")" \
+              || echo "::warning::Couldn't assign the original author."
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "applied=$applied" >> "$GITHUB_OUTPUT"
+
+      - name: Link port PR on the original
+        if: steps.port.outputs.url != ''
+        env:
+          PORT_URL: ${{ steps.port.outputs.url }}
+          APPLIED: ${{ steps.port.outputs.applied }}
+        run: |
+          if [ "$APPLIED" = true ]; then note="diff applied cleanly"; else note="needs a manual port"; fi
+          gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "Port PR opened in the platform fork: $PORT_URL ($note)."
