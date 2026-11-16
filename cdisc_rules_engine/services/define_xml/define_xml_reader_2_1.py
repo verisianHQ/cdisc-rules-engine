@@ -88,9 +88,8 @@ class DefineXMLReader21(BaseDefineXMLReader):
         standard_oids = {standard.oid: standard for standard in standards}
         extensible = {}
         for codelist in metadata.CodeList:
-            standard_oid = codelist.StandardOID
-            standard = standard_oids[standard_oid]
-            standard_key = f"{standard.publishing_set.lower()}ct-{standard.version}"
+            standard = standard_oids.get(codelist.StandardOID)
+            standard_key = f"{standard.publishing_set.lower()}ct-{standard.version}" if standard else None
             codelist_code = codelist.Alias[0].Name if codelist.Alias else None
             codelist_value = codelist.Name if hasattr(codelist, "Name") else None
 
