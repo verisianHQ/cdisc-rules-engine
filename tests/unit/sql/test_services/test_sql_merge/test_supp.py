@@ -244,3 +244,33 @@ def test_supp_merge_idvar_numeric_with_scientific_notation(sdtm_standards_contex
     assert results["A"] == "Big"
     assert results["B"] == "Sci"
     assert results["C"] is None
+
+
+def test_supp_merge_several_supp_records_for_one_row_take_max_qval(sdtm_standards_context):
+    """Several SUPP records with the same QNAM linking to one row ("1" and "1.0" both link to SEQ 1) give MAX(QVAL)."""
+    ds = PostgresQLDataService.instance()
+
+    data = {
+        "original": {
+            "STUDYID": ["A", "A"],
+            "DOMAIN": ["AE", "AE"],
+            "USUBJID": ["A", "B"],
+            "SEQ": [1, 1],
+        },
+        "supp": {
+            "STUDYID": ["A", "A", "A", "A"],
+            "RDOMAIN": ["AE", "AE", "AE", "AE"],
+            "USUBJID": ["A", "A", "B", "B"],
+            "IDVAR": ["SEQ", "SEQ", "SEQ", "SEQ"],
+            "IDVARVAL": ["1", "1.0", "1.0", "1"],
+            "QNAM": ["COLA", "COLA", "COLA", "COLA"],
+            "QVAL": ["VAL2", "VAL1", "VAL3", "VAL4"],
+        },
+    }
+    o_schema = PostgresQLDataService.add_test_dataset(ds, "original", data["original"], sdtm_standards_context)
+    s_schema = PostgresQLDataService.add_test_dataset(ds, "supp", data["supp"], sdtm_standards_context)
+
+    schema = SqlSuppMerge.perform_join(ds.pgi, o_schema, s_schema, "AE")
+
+    ds.pgi.execute_sql(f"SELECT usubjid, {schema.get_column_hash('COLA')} AS cola FROM {schema.hash} ORDER BY usubjid")
+    assert ds.pgi.fetch_all() == [{"usubjid": "A", "cola": "VAL2"}, {"usubjid": "B", "cola": "VAL4"}]
