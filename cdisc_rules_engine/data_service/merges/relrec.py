@@ -1,7 +1,7 @@
 from typing import List, Dict, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -10,10 +10,6 @@ from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 BY_VALUE_SQL = "idvarval_left <> ''"
 # a pair names a subject unless its USUBJID is blank
 BY_SUBJECT_SQL = r"usubjid ~ '\S'"
-
-
-def _quote(value: str) -> str:
-    return "'" + value.replace("'", "''") + "'"
 
 
 class SqlRelrecMerge:
@@ -131,8 +127,8 @@ class SqlRelrecMerge:
                 ON left_rel.{relrec.get_column_hash("STUDYID")} = right_rel.{relrec.get_column_hash("STUDYID")}
                 AND left_rel.{relrec.get_column_hash("USUBJID")} = right_rel.{relrec.get_column_hash("USUBJID")}
                 AND left_rel.{relrec.get_column_hash("RELID")} = right_rel.{relrec.get_column_hash("RELID")}
-            WHERE left_rel.{relrec.get_column_hash("RDOMAIN")} = {_quote(domain)}
-                AND right_rel.{relrec.get_column_hash("RDOMAIN")} != {_quote(domain)}
+            WHERE left_rel.{relrec.get_column_hash("RDOMAIN")} = {quote_literal_sql(domain)}
+                AND right_rel.{relrec.get_column_hash("RDOMAIN")} != {quote_literal_sql(domain)}
         """
 
     # used only when the model metadata isn't available
@@ -400,9 +396,9 @@ class SqlRelrecMerge:
         for rel in domain_rels:
             idvar_left, idvar_right = rel["idvar_left"], rel["idvar_right"]
             pair_filters = [
-                f"rdomain_right = {_quote(right_domain)}",
-                f"idvar_left = {_quote(idvar_left)}",
-                f"idvar_right = {_quote(idvar_right)}",
+                f"rdomain_right = {quote_literal_sql(right_domain)}",
+                f"idvar_left = {quote_literal_sql(idvar_left)}",
+                f"idvar_right = {quote_literal_sql(idvar_right)}",
                 f"({BY_VALUE_SQL}) IS {'TRUE' if rel['by_value'] else 'NOT TRUE'}",
                 f"({BY_SUBJECT_SQL}) IS {'TRUE' if rel['by_subject'] else 'NOT TRUE'}",
             ]
