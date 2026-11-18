@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -54,7 +54,7 @@ class SqlSuppMerge:
                 FROM {original.hash}"""
         )
 
-        # Splitting each new column into its own query to avoid a the arbitrarily large number of
+        # Splitting each new column into its own query to avoid the arbitrarily large number of
         # joins which would be required to do everything in one go
         for idvar in required_original_columns or [None]:
             for col in new_columns:
@@ -156,16 +156,17 @@ class SqlSuppMerge:
     ) -> str:
         """
         Fills the QNAM column from the SUPP records linked to each row (through IDVAR when given).
-        When several records link to the same row, MAX() picks the QVAL so the result is deterministic.
+        When several records link to the same row through this IDVAR, MAX() picks the QVAL so the result is
+        deterministic. Across IDVARs, the last one applied (in alphabetical order) wins.
         """
         links = [("STUDYID", "STUDYID"), ("DOMAIN", "RDOMAIN"), ("USUBJID", "USUBJID")]
         original_keys = [f"original.{original.get_column_hash(column)}" for column, _ in links]
         supp_keys = [supp.get_column_hash(column) for _, column in links]
-        filters = [f"{supp.get_column_hash('QNAM')} = '{qnam}'"]
+        filters = [f"{supp.get_column_hash('QNAM')} = {quote_literal_sql(qnam)}"]
         if idvar is not None:
             original_keys.append(numeric_aware_key_sql(f"original.{original.get_column_hash(idvar)}"))
             supp_keys.append(numeric_aware_key_sql(supp.get_column_hash("IDVARVAL")))
-            filters.append(f"{supp.get_column_hash('IDVAR')} = '{idvar}'")
+            filters.append(f"{supp.get_column_hash('IDVAR')} = {quote_literal_sql(idvar)}")
 
         return f"""
             UPDATE {schema.hash} AS original

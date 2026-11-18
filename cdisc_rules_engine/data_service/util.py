@@ -16,6 +16,10 @@ def generate_hash(input_string: str, length: int = 10) -> str:
     return f"{clean_input}_{alphanum_hash[:length]}"
 
 
+def quote_literal_sql(value: str) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
 # Matches a plain or scientific-notation numeric literal (e.g. "1", "-1.5", "1E5", "1e+15").
 NUMERIC_LITERAL_PATTERN = r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$"
 
