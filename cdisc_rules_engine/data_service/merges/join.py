@@ -23,6 +23,7 @@ class SqlJoinMerge:
         pivot_right: list[str],
         type: Literal["INNER", "LEFT", "RIGHT", "FULL OUTER"] = "INNER",
         extra_conditions: Optional[List[str]] = None,
+        right_source: Optional[str] = None,
     ) -> SqlTableSchema:
         """
         Perform a join operation on two SQL table schemas.
@@ -34,6 +35,8 @@ class SqlJoinMerge:
 
         `extra_conditions` allows callers to AND arbitrary raw SQL fragments (e.g. a dynamic
         IDVAR/IDVARVAL match) onto the join condition, in addition to the pivot column equalities.
+        `right_source` is sql read in place of the right table (e.g. a subquery adding key columns);
+        it must expose all of the right table's columns.
 
         Example:
         Table A: USUBJID, AGE
@@ -67,6 +70,8 @@ class SqlJoinMerge:
             join_conditions.extend(extra_conditions)
 
         name = f"{left.name}_{type}_{right.name}_ON_{'_'.join(join_conditions)}"
+        if right_source:
+            name += f"_FROM_{right_source}"
 
         # Check if the table already exists
         if pgi.schema.get_table(name) is not None:
@@ -95,7 +100,7 @@ class SqlJoinMerge:
                     row_number() OVER (ORDER BY l.source_row_number, l.id) AS id,
                     {', '.join(selected_left_columns + selected_right_columns)}
                 FROM {left.hash} l
-                {type} JOIN {right.hash} r ON {join_condition}
+                {type} JOIN {right_source or right.hash} r ON {join_condition}
         """
 
         pgi.execute_sql(query)

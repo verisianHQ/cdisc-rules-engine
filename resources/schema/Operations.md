@@ -478,7 +478,9 @@ Operations:
 
 ## label_referenced_variable_metadata
 
-For each record, returns the values of the library ig variable attribute given in `attribute_name` (e.g. `role`) for every library variable whose label matches the value in the column provided in `name`. `attribute_name` is required and is one of `core`, `label`, `name`, `ordinal`, `role` or `simpleDatatype`.
+For each record, returns the distinct values of the library IG variable attribute given in `attribute_name` (e.g. `role`) across the library variables whose label matches the value in the column provided in `name`. `name_referenced_variable_metadata` does the same, matching on the variable name instead of the label. `attribute_name` is required and is one of `core`, `label`, `name`, `ordinal`, `role` or `simpleDatatype`.
+
+Repeated values are returned once, so two of these operations on the same column (e.g. one for `name`, one for `role`) are not paired by position: for the label `Severity/Intensity`, `name` gives `[AESEV, CESEV, ...]` while `role` gives `[Record Qualifier]`.
 
 ```yaml
 - id: $fatest_lib_roles

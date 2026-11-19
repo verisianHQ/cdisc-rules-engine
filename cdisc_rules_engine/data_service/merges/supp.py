@@ -1,7 +1,7 @@
-from typing import List
+from typing import List, Optional
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -54,18 +54,11 @@ class SqlSuppMerge:
                 FROM {original.hash}"""
         )
 
-        # Splitting each new column into its own query to avoid a the arbitrarily large number of
+        # Splitting each new column into its own query to avoid the arbitrarily large number of
         # joins which would be required to do everything in one go
-        for linking_clauses in SqlSuppMerge._get_linking_clauses(original, supp, required_original_columns):
+        for idvar in required_original_columns or [None]:
             for col in new_columns:
-                queries.append(
-                    f"""
-                    UPDATE {schema.hash} AS original
-                        SET {schema.get_column_hash(col)} = supp.{supp.get_column_hash("QVAL")}
-                        FROM {supp.hash} AS supp
-                        WHERE {linking_clauses}
-                            AND supp.{supp.get_column_hash("QNAM")} = '{col}'"""
-                )
+                queries.append(SqlSuppMerge._update_query(schema, original, supp, idvar, col))
 
         pgi.execute_many(queries)
 
@@ -149,38 +142,43 @@ class SqlSuppMerge:
             if not supp.has_column("IDVAR"):
                 raise ColumnNotFoundError("IDVAR", supp.dataset_name)
 
-            pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash}")
+            pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash} ORDER BY 1")
             result = pgi.fetch_all()
             return [row["col"] for row in result]
 
     @staticmethod
-    def _get_linking_clauses(
+    def _update_query(
+        schema: SqlTableSchema,
         original: SqlTableSchema,
         supp: SqlTableSchema,
-        required_original_columns: List[str],
-    ) -> List[str]:
+        idvar: Optional[str],
+        qnam: str,
+    ) -> str:
         """
-        Returns the list of linking clauses for the where clause.
+        Fills the QNAM column from the SUPP records linked to each row (through IDVAR when given).
+        When several records link to the same row through this IDVAR, MAX() picks the QVAL so the result is
+        deterministic. Across IDVARs, the last one applied (in alphabetical order) wins.
         """
-        default_clauses = " AND ".join(
-            [
-                f"original.{original.get_column_hash("STUDYID")} = supp.{supp.get_column_hash("STUDYID")}",
-                f"original.{original.get_column_hash("DOMAIN")} = supp.{supp.get_column_hash("RDOMAIN")}",
-                f"original.{original.get_column_hash("USUBJID")} = supp.{supp.get_column_hash("USUBJID")}",
-            ]
-        )
+        links = [("STUDYID", "STUDYID"), ("DOMAIN", "RDOMAIN"), ("USUBJID", "USUBJID")]
+        original_keys = [f"original.{original.get_column_hash(column)}" for column, _ in links]
+        supp_keys = [supp.get_column_hash(column) for _, column in links]
+        filters = [f"{supp.get_column_hash('QNAM')} = {quote_literal_sql(qnam)}"]
+        if idvar is not None:
+            original_keys.append(numeric_aware_key_sql(f"original.{original.get_column_hash(idvar)}"))
+            supp_keys.append(numeric_aware_key_sql(supp.get_column_hash("IDVARVAL")))
+            filters.append(f"{supp.get_column_hash('IDVAR')} = {quote_literal_sql(idvar)}")
 
-        if len(required_original_columns) == 0:
-            return [default_clauses]
-
-        return [
-            f"""{default_clauses}
-                AND supp.{supp.get_column_hash("IDVAR")} = '{col}'
-                AND {numeric_aware_equals_sql(
-                f"original.{original.get_column_hash(col)}", f'supp.{supp.get_column_hash("IDVARVAL")}'
-            )}"""
-            for col in required_original_columns
-        ]
+        return f"""
+            UPDATE {schema.hash} AS original
+                SET {schema.get_column_hash(qnam)} = supp.qval
+                FROM (
+                    SELECT {", ".join(f"{key} AS k{i}" for i, key in enumerate(supp_keys))},
+                        MAX({supp.get_column_hash("QVAL")}) AS qval
+                    FROM {supp.hash}
+                    WHERE {" AND ".join(filters)}
+                    GROUP BY {", ".join(str(i + 1) for i in range(len(supp_keys)))}
+                ) AS supp
+                WHERE {" AND ".join(f"{key} = supp.k{i}" for i, key in enumerate(original_keys))}"""
 
     @staticmethod
     def _determine_new_columns(pgi: PostgresQLInterface, supp_table: SqlTableSchema) -> List[str]:

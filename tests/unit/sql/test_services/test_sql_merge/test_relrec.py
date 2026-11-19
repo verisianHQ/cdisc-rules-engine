@@ -247,8 +247,8 @@ def test_relrec_validation_errors(sdtm_standards_context):
         )
 
 
-def test_relrec_filter_for_domain(sdtm_standards_context):
-    """Test the _filter_relrec_for_domain method."""
+def test_relrec_relationship_kinds(sdtm_standards_context):
+    """Test the _relationship_kinds method."""
     ds = PostgresQLDataService.instance()
     pgi = ds.pgi
 
@@ -263,7 +263,7 @@ def test_relrec_filter_for_domain(sdtm_standards_context):
     relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
 
     # Filter for EC domain
-    relationships = SqlRelrecMerge._filter_relrec_for_domain(pgi, relrec_schema, "EC")
+    relationships = SqlRelrecMerge._relationship_kinds(pgi, relrec_schema, "EC")
 
     # Should return relationships where left side is EC and right side is not EC
     assert len(relationships) == 2, "Should find 2 relationships for EC domain"
