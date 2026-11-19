@@ -4,6 +4,7 @@ This module contains unit tests for DefineXMLReader class.
 
 from pathlib import Path
 from typing import List
+from unittest.mock import patch
 
 import pytest
 
@@ -388,3 +389,29 @@ def test_get_extensible_codelist_mappings(filename, codelist_name, expected):
     reader = DefineXMLReaderFactory.from_filename(filename)
     mappings: dict = reader.get_extensible_codelist_mappings()
     assert mappings[codelist_name] == expected
+
+
+def test_get_ct_standards_metadata_multiple_ct_with_codelists_without_ct_standard():
+    """
+    Codelists without a CT def:StandardOID (sponsor-defined, subsets) must not break multi-CT merging.
+    """
+    second_ct = (
+        '<def:Standard OID="STD.5" Name="CDISC/NCI" Type="CT" PublishingSet="SDTM" Version="2018-03-30" '
+        'Status="Final"/>\n</def:Standards>'
+    )
+    contents = test_define_file_path.read_text().replace("</def:Standards>", second_ct, 1)
+    contents = contents.replace(
+        '<CodeList OID="CL.AESEV" Name="Severity/Intensity Scale for Adverse Events" DataType="text" '
+        'def:StandardOID="STD.3"',
+        '<CodeList OID="CL.AESEV" Name="Severity/Intensity Scale for Adverse Events" DataType="text" '
+        'def:StandardOID="STD.MISSING"',
+    )
+    reader = DefineXMLReaderFactory.from_file_contents(contents)
+    with patch("cdisc_rules_engine.services.define_xml.define_xml_reader_2_1.logger") as mock_logger:
+        standards, merged_ct, _, multiple_ct = reader.get_ct_standards_metadata()
+    assert multiple_ct
+    assert {standard.oid for standard in standards} == {"STD.3", "STD.4", "STD.5"}
+    assert merged_ct["submission_lookup"]["Arm"] == {"codelist": None, "term": "N/A"}
+    assert merged_ct["C49503"]["standard"] == "sdtmct-2020-12-18"
+    mock_logger.warning.assert_called_once()
+    assert "CL.AESEV references StandardOID STD.MISSING" in mock_logger.warning.call_args.args[0]
