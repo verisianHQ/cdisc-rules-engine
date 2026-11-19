@@ -117,3 +117,14 @@ class DatabasePostgres:
         if self._pool:
             self._pool.closeall()
             logger.info("Database connection pool closed")
+
+    def reset_pool(self):
+        """
+        Close every pooled connection and open a fresh pool.
+        A Postgres backend keeps the memory it peaked at for as long as it lives, even once it has been
+        freed internally (e.g. after planning a very large statement), so a long-lived connection can hold
+        on to tens of GB and starve the server's page cache for the rest of the run.
+        A new connection means a new backend, which starts small.
+        """
+        self.close_pool()
+        self._init_pool()
