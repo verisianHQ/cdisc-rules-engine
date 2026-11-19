@@ -1,10 +1,15 @@
 from typing import List, Dict, Optional, Set
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
+
+# a pair links specific records when its left IDVARVAL is set, otherwise it links the IDVAR columns themselves
+BY_VALUE_SQL = "idvarval_left <> ''"
+# a pair names a subject unless its USUBJID is blank
+BY_SUBJECT_SQL = r"usubjid ~ '\S'"
 
 
 class SqlRelrecMerge:
@@ -21,9 +26,9 @@ class SqlRelrecMerge:
         Perform a RELREC merge operation on the datasets.
 
         This merge creates relationships between records based on the RELREC dataset:
-        1. Filter RELREC records for the target domain
-        2. Find all related domains through relationship records
-        3. For each relationship, join the original dataset with related datasets
+        1. Pair RELREC records for the target domain with their related records
+        2. Find all related domains through those pairs
+        3. For each kind of pair, join the original dataset with the related dataset through the pairs
         4. Apply wildcard column renaming (e.g., ECSTDY -> RELREC.__STDY)
         5. Union all results
         """
@@ -36,8 +41,7 @@ class SqlRelrecMerge:
         if pgi.schema.get_table(name) is not None:
             return pgi.schema.get_table(name)
 
-        # Get relationship records for the target domain
-        relationships = SqlRelrecMerge._filter_relrec_for_domain(pgi, relrec, domain)
+        relationships = SqlRelrecMerge._relationship_kinds(pgi, relrec, domain)
 
         if not relationships:
             return original
@@ -50,7 +54,13 @@ class SqlRelrecMerge:
 
         # Process each relationship and union results
         SqlRelrecMerge._process_relationship_records(
-            pgi, schema, original, relationships, wildcard, model_wildcard_variables
+            pgi,
+            schema,
+            original,
+            relationships,
+            SqlRelrecMerge._relationship_pairs_sql(relrec, domain),
+            wildcard,
+            model_wildcard_variables,
         )
 
         return schema
@@ -76,17 +86,32 @@ class SqlRelrecMerge:
                 raise ColumnNotFoundError(col, relrec.dataset_name)
 
     @staticmethod
-    def _filter_relrec_for_domain(
+    def _relationship_kinds(
         pgi: PostgresQLInterface,
         relrec: SqlTableSchema,
         domain: str,
     ) -> List[Dict]:
         """
-        Filter RELREC records for the target domain and create relationship pairs.
+        The distinct kinds of relationship pair for the target domain: right domain, IDVARs,
+        and whether the pair links by value and by subject.
+        Each kind becomes one join.
+        """
+        pgi.execute_sql(
+            f"""SELECT DISTINCT rdomain_right, idvar_left, idvar_right,
+                    {BY_VALUE_SQL} AS by_value, {BY_SUBJECT_SQL} AS by_subject
+                FROM ({SqlRelrecMerge._relationship_pairs_sql(relrec, domain)}) pairs
+                ORDER BY 1, 2, 3, 4, 5"""
+        )
+        return pgi.fetch_all()
+
+    @staticmethod
+    def _relationship_pairs_sql(relrec: SqlTableSchema, domain: str) -> str:
+        """
+        RELREC records for the target domain paired with the records they relate to.
 
         This is the SQL equivalent of the Python filter_relrec_for_domain function.
         """
-        query = f"""
+        return f"""
             SELECT
                 left_rel.{relrec.get_column_hash("STUDYID")} as studyid,
                 left_rel.{relrec.get_column_hash("USUBJID")} as usubjid,
@@ -102,12 +127,9 @@ class SqlRelrecMerge:
                 ON left_rel.{relrec.get_column_hash("STUDYID")} = right_rel.{relrec.get_column_hash("STUDYID")}
                 AND left_rel.{relrec.get_column_hash("USUBJID")} = right_rel.{relrec.get_column_hash("USUBJID")}
                 AND left_rel.{relrec.get_column_hash("RELID")} = right_rel.{relrec.get_column_hash("RELID")}
-            WHERE left_rel.{relrec.get_column_hash("RDOMAIN")} = '{domain}'
-                AND right_rel.{relrec.get_column_hash("RDOMAIN")} != '{domain}'
+            WHERE left_rel.{relrec.get_column_hash("RDOMAIN")} = {quote_literal_sql(domain)}
+                AND right_rel.{relrec.get_column_hash("RDOMAIN")} != {quote_literal_sql(domain)}
         """
-
-        pgi.execute_sql(query)
-        return pgi.fetch_all()
 
     # used only when the model metadata isn't available
     FALLBACK_WILDCARD_SUFFIXES = frozenset({"STDY", "ENDY", "DY", "TM", "DTC", "SEQ"})
@@ -229,6 +251,7 @@ class SqlRelrecMerge:
         schema: SqlTableSchema,
         original: SqlTableSchema,
         relationships: List[Dict],
+        pairs_sql: str,
         wildcard: str,
         model_wildcard_variables: Optional[Set[str]] = None,
     ):
@@ -242,7 +265,7 @@ class SqlRelrecMerge:
         # Group relationships by right domain and process
         domain_relationships = SqlRelrecMerge._group_relationships_by_domain(relationships)
         queries = SqlRelrecMerge._build_domain_queries(
-            pgi, schema, original, domain_relationships, wildcard, model_wildcard_variables
+            pgi, schema, original, domain_relationships, pairs_sql, wildcard, model_wildcard_variables
         )
 
         # Execute all queries
@@ -279,6 +302,7 @@ class SqlRelrecMerge:
         schema: SqlTableSchema,
         original: SqlTableSchema,
         domain_relationships: Dict[str, List[Dict]],
+        pairs_sql: str,
         wildcard: str,
         model_wildcard_variables: Optional[Set[str]] = None,
     ) -> List[str]:
@@ -288,7 +312,15 @@ class SqlRelrecMerge:
             right_table = pgi.schema.get_table(right_domain.lower())
             if right_table:
                 query = SqlRelrecMerge._build_single_domain_query(
-                    pgi, schema, original, right_table, right_domain, domain_rels, wildcard, model_wildcard_variables
+                    pgi,
+                    schema,
+                    original,
+                    right_table,
+                    right_domain,
+                    domain_rels,
+                    pairs_sql,
+                    wildcard,
+                    model_wildcard_variables,
                 )
                 if query:
                     queries.append(query)
@@ -302,6 +334,7 @@ class SqlRelrecMerge:
         right_table: SqlTableSchema,
         right_domain: str,
         domain_rels: List[Dict],
+        pairs_sql: str,
         wildcard: str,
         model_wildcard_variables: Optional[Set[str]] = None,
     ) -> str:
@@ -315,8 +348,9 @@ class SqlRelrecMerge:
             original, right_table, schema, column_mappings
         )
 
+        # Build union parts for all relationships
         union_parts = SqlRelrecMerge._build_union_parts(
-            original, right_table, domain_rels, original_selects, right_selects
+            original, right_table, right_domain, domain_rels, original_selects, right_selects
         )
 
         if not union_parts:
@@ -325,6 +359,7 @@ class SqlRelrecMerge:
         id_col_hash = original.get_column_hash("id")
 
         return f"""
+            WITH pairs AS ({pairs_sql})
             INSERT INTO {schema.hash} ({', '.join(target_columns)})
             SELECT {', '.join(target_columns)} FROM (
                 {' UNION '.join(union_parts)}
@@ -356,68 +391,46 @@ class SqlRelrecMerge:
         return original_selects, right_selects, target_columns
 
     @staticmethod
-    def _build_union_parts(original, right_table, domain_rels, original_selects, right_selects):
-        """Build one SELECT per kind of relationship in a domain."""
+    def _build_union_parts(original, right_table, right_domain, domain_rels, original_selects, right_selects):
         union_parts = []
-        for (has_subject, left_col, right_col, by_value), rels in SqlRelrecMerge._group_by_link(
-            original, right_table, domain_rels
-        ).items():
-            rows = dict.fromkeys(
-                f"({_quote(rel['studyid'])}, {_quote(rel.get('usubjid'))}, "
-                f"{_quote(rel['idvarval_left'])}, {_quote(rel['idvarval_right'])})"
-                for rel in rels
-            )
-            values = ", ".join(rows)
-            original_on = [f"UPPER(o.{original.get_column_hash('STUDYID')}::text) = UPPER(v.studyid)"]
-            if has_subject:
-                original_on.append(f"UPPER(o.{original.get_column_hash('USUBJID')}::text) = UPPER(v.usubjid)")
-            right_on = [
+        for rel in domain_rels:
+            idvar_left, idvar_right = rel["idvar_left"], rel["idvar_right"]
+            pair_filters = [
+                f"rdomain_right = {quote_literal_sql(right_domain)}",
+                f"idvar_left = {quote_literal_sql(idvar_left)}",
+                f"idvar_right = {quote_literal_sql(idvar_right)}",
+                f"({BY_VALUE_SQL}) IS {'TRUE' if rel['by_value'] else 'NOT TRUE'}",
+                f"({BY_SUBJECT_SQL}) IS {'TRUE' if rel['by_subject'] else 'NOT TRUE'}",
+            ]
+            pair_conditions = [f"UPPER(o.{original.get_column_hash('STUDYID')}::text) = UPPER(p.studyid::text)"]
+            if rel["by_subject"]:
+                pair_conditions.append(f"UPPER(o.{original.get_column_hash('USUBJID')}::text) = UPPER(p.usubjid::text)")
+            join_conditions = [
                 f"o.{original.get_column_hash('STUDYID')} = r.{right_table.get_column_hash('STUDYID')}",
                 f"o.{original.get_column_hash('USUBJID')} = r.{right_table.get_column_hash('USUBJID')}",
             ]
-            left_sql = f"o.{original.get_column_hash(left_col)}" if left_col else None
-            right_sql = f"r.{right_table.get_column_hash(right_col)}" if right_col else None
-            key = numeric_aware_key_sql
-            if by_value:
-                if left_sql:
-                    original_on.append(f"{key(left_sql)} = {key('v.idvarval_left')}")
-                if right_sql:
-                    right_on.append(f"{key(right_sql)} = {key('v.idvarval_right')}")
-            elif left_sql and right_sql:
-                right_on.append(f"{key(left_sql)} = {key(right_sql)}")
 
-            part = f"""
+            if rel["by_value"]:
+                if original.has_column(idvar_left):
+                    left_key = numeric_aware_key_sql(f"o.{original.get_column_hash(idvar_left)}")
+                    pair_conditions.append(f"{left_key} = {numeric_aware_key_sql('p.idvarval_left')}")
+                if right_table.has_column(idvar_right):
+                    right_key = numeric_aware_key_sql(f"r.{right_table.get_column_hash(idvar_right)}")
+                    join_conditions.append(f"{right_key} = {numeric_aware_key_sql('p.idvarval_right')}")
+            elif idvar_left and idvar_right and original.has_column(idvar_left) and right_table.has_column(idvar_right):
+                left_key = numeric_aware_key_sql(f"o.{original.get_column_hash(idvar_left)}")
+                right_key = numeric_aware_key_sql(f"r.{right_table.get_column_hash(idvar_right)}")
+                join_conditions.append(f"{left_key} = {right_key}")
+
+            # i'm adding distinct here because several pairs can link the same two records
+            # which should still give one row
+            union_part = f"""
                 SELECT DISTINCT {', '.join(original_selects + right_selects)}
-                FROM (VALUES {values}) AS v(studyid, usubjid, idvarval_left, idvarval_right)
-                INNER JOIN {original.hash} o ON {' AND '.join(original_on)}
-                INNER JOIN {right_table.hash} r ON {' AND '.join(right_on)}
+                FROM {original.hash} o
+                INNER JOIN (SELECT * FROM pairs WHERE {' AND '.join(pair_filters)}) p
+                    ON {' AND '.join(pair_conditions)}
+                INNER JOIN {right_table.hash} r ON {' AND '.join(join_conditions)}
             """
-            union_parts.append(part)
+            union_parts.append(union_part)
 
         return union_parts
-
-    @staticmethod
-    def _group_by_link(original, right_table, domain_rels) -> Dict[tuple, List[Dict]]:
-        """
-        RELREC rows keyed by how they link:
-        (has a subject, original IDVAR column, related IDVAR column, linked by IDVARVAL value or by column).
-        A column is None where the per-row branch would have skipped its condition.
-        """
-        groups: Dict[tuple, List[Dict]] = {}
-        for rel in domain_rels:
-            has_subject = bool(rel.get("usubjid") and rel["usubjid"].strip())
-            by_value = bool(rel.get("idvarval_left"))
-            idvar_left, idvar_right = rel.get("idvar_left"), rel.get("idvar_right", "")
-            if by_value:
-                left_col = idvar_left if original.has_column(idvar_left) else None
-                right_col = idvar_right if right_table.has_column(idvar_right) else None
-            elif idvar_left and idvar_right and original.has_column(idvar_left) and right_table.has_column(idvar_right):
-                left_col, right_col = idvar_left, idvar_right
-            else:
-                left_col = right_col = None
-            groups.setdefault((has_subject, left_col, right_col, by_value), []).append(rel)
-        return groups
-
-
-def _quote(value) -> str:
-    return "'" + str(value).replace("'", "''") + "'"

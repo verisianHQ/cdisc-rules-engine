@@ -1,6 +1,6 @@
 from cdisc_rules_engine.data_service.merges.join import missing_match_key_error
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, InvalidMatchKeyError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -403,12 +403,11 @@ class SqlRelationshipMerge:
 
             col_hash = original.get_column_hash(idvar_col)
 
-            escaped_idvar = idvar_col.replace("'", "''")
             column_filter = f"""
                 {numeric_aware_key_sql(f"{original.hash}.{col_hash}")} IN (
                     SELECT {numeric_aware_key_sql(f"r.{values_hash}")}
                     FROM {relationship_dataset.hash} r
-                    WHERE r.{names_hash} = '{escaped_idvar}'
+                    WHERE r.{names_hash} = {quote_literal_sql(idvar_col)}
                     AND TRIM(COALESCE(r.{values_hash}, '')) != ''
                 )
             """

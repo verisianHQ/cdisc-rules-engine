@@ -38,10 +38,10 @@ jobs:
           gh pr comment "$PR_NUMBER" --body "Run rule regression (engine \`$BASE_REF\` vs this PR) against core-contributor?
 
           Once you've reviewed the PR's code, reply with one of:
-          - \`/regression sdtm <commit sha>\`
-          - \`/regression adam <commit sha>\`
+          - \`/regression sdtm [commit sha]\`
+          - \`/regression adam [commit sha]\`
 
-          where \`<commit sha>\` is the head commit you reviewed.
+          where \`[commit sha]\` is the head commit you reviewed (defaults to the PR's latest commit).
           Only run it on code you've read since the run executes the PR's code.
           Only people with write access can trigger it."
 
@@ -77,16 +77,16 @@ jobs:
           fi
 
           first_line=$(printf '%s' "$COMMENT_BODY" | head -n1 | tr -d '\r')
-          if [[ ! "$first_line" =~ ^/regression[[:space:]]+(sdtm|adam)[[:space:]]+([0-9a-f]{7,40})[[:space:]]*$ ]]; then
-            gh pr comment "$PR_NUMBER" --body "Use \`/regression sdtm <commit sha>\` or \`/regression adam <commit sha>\`."
+          if [[ ! "$first_line" =~ ^/regression[[:space:]]+(sdtm|adam)([[:space:]]+([0-9a-f]{7,40}))?[[:space:]]*$ ]]; then
+            gh pr comment "$PR_NUMBER" --body "Use \`/regression sdtm [commit sha]\` or \`/regression adam [commit sha]\`."
             exit 1
           fi
           standard="${BASH_REMATCH[1]}"
-          requested_sha="${BASH_REMATCH[2]}"
+          requested_sha="${BASH_REMATCH[3]}"
 
           pr=$(gh api "repos/$GH_REPO/pulls/$PR_NUMBER")
           head_sha=$(jq -r .head.sha <<<"$pr")
-          if [[ "$head_sha" != "$requested_sha"* ]]; then
+          if [[ -n "$requested_sha" && "$head_sha" != "$requested_sha"* ]]; then
             gh pr comment "$PR_NUMBER" --body "The PR is now at \`${head_sha:0:8}\`, not \`$requested_sha\`. Check the new commits, then re-run with the new SHA."
             exit 1
           fi
