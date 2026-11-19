@@ -1,4 +1,5 @@
 from odmlib.define_2_1.rules.metadata_schema import MetadataSchema
+from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.services.define_xml.base_define_xml_reader import (
     BaseDefineXMLReader,
     DefineXMLVersion,
@@ -88,8 +89,7 @@ class DefineXMLReader21(BaseDefineXMLReader):
         standard_oids = {standard.oid: standard for standard in standards}
         extensible = {}
         for codelist in metadata.CodeList:
-            standard = standard_oids.get(codelist.StandardOID)
-            standard_key = f"{standard.publishing_set.lower()}ct-{standard.version}" if standard else None
+            standard_key = self._get_codelist_standard_key(codelist, standard_oids)
             codelist_code = codelist.Alias[0].Name if codelist.Alias else None
             codelist_value = codelist.Name if hasattr(codelist, "Name") else None
 
@@ -128,6 +128,22 @@ class DefineXMLReader21(BaseDefineXMLReader):
                     }
 
         return combined_CT_package, extensible
+
+    @staticmethod
+    def _get_codelist_standard_key(codelist, standard_oids) -> Optional[str]:
+        """
+        A codelist without def:StandardOID is valid.
+        One pointing at an unknown standard isn't.
+        """
+        standard = standard_oids.get(codelist.StandardOID)
+        if standard:
+            return f"{standard.publishing_set.lower()}ct-{standard.version}"
+        if codelist.StandardOID:
+            logger.warning(
+                f"Codelist {codelist.OID} references StandardOID {codelist.StandardOID}, "
+                "which is not a CT standard in def:Standards"
+            )
+        return None
 
     def get_extensible_codelist_mappings(self):
         metadata = self._odm_loader.MetaDataVersion()
