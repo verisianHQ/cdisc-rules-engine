@@ -23,6 +23,7 @@ from cdisc_rules_engine.compiler.conditions import CO, CompiledConditions, Condi
 from cdisc_rules_engine.compiler.targets import get_target_columns
 from cdisc_rules_engine.constants.metadata_columns import DATASET_NAME, SOURCE_DS, SOURCE_ROW_NUMBER, TOTAL_COUNT_COLUMN
 from cdisc_rules_engine.constants.rule_constants import MAX_ERRORS_PER_DATASET
+from cdisc_rules_engine.data_service.util import quote_literal_sql
 from cdisc_rules_engine.enums.sensitivity import Sensitivity
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.models.sql_operation_result import SqlOperationResult
@@ -244,7 +245,7 @@ class RuleQueryCompiler:
         column_hash = self.schema.get_column_hash(DATASET_NAME)
         if not column_hash:
             return "FALSE"
-        return f"{CO}.{column_hash} = {_quote(self.dataset_metadata.name)}"
+        return f"{CO}.{column_hash} = {quote_literal_sql(self.dataset_metadata.name)}"
 
     def _is_split(self) -> bool:
         return bool(getattr(self.dataset_metadata, "split_part_filenames", None))
@@ -376,7 +377,3 @@ def _first_per_group(select_sql: str, source: str, where: str, keys: List[str]) 
         f"SELECT * FROM (SELECT DISTINCT ON ({key_sql}) {select_sql} FROM {source} WHERE {where} "
         f"ORDER BY {key_sql}, {CO}.id) first_per_group ORDER BY first_per_group.id"
     )
-
-
-def _quote(value: str) -> str:
-    return "'" + str(value).replace("'", "''") + "'"

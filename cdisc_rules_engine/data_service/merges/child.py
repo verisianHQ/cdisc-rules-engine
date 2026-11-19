@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import List
 
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
@@ -11,6 +11,9 @@ from cdisc_rules_engine.utilities.utils import (
     get_sided_match_keys,
     replace_pattern_in_list_of_strings,
 )
+
+LINK_IDVAR = "_link_idvar"
+LINK_KEY = "_link_key"
 
 
 class SqlChildMerge:
@@ -114,6 +117,10 @@ class SqlChildMerge:
         Mirrors the linking rules SqlSuppMerge applies - STUDYID/USUBJID/RDOMAIN plus a
         dynamic match of IDVARVAL against the parent column named by IDVAR - without
         requiring the caller to spell them out via match_key.
+
+        IDVARVAL is matched through a key computed once per row on each side (see
+        numeric_aware_key_sql) meaning we can hash the join with postgresql instead of testing every
+        child row against every parent row of the same subject.
         """
         pivot_left: List[str] = []
         pivot_right: List[str] = []
@@ -126,8 +133,17 @@ class SqlChildMerge:
             pivot_left.append("rdomain")
             pivot_right.append("domain")
 
-        idvar_condition = SqlChildMerge._find_idvar_linking_condition(pgi, child, parent, parent_domain)
-        extra_conditions = [idvar_condition] if idvar_condition else None
+        link = {}
+        idvars = SqlChildMerge._find_linking_idvars(pgi, child, parent, parent_domain)
+        if idvars:
+            idvarval_key = numeric_aware_key_sql(f"l.{child.get_column_hash('idvarval')}")
+            link = {
+                "extra_conditions": [
+                    f"l.{child.get_column_hash('idvar')} = r.{LINK_IDVAR}",
+                    f"{idvarval_key} = r.{LINK_KEY}",
+                ],
+                "right_source": SqlChildMerge._parent_keyed_by_idvar(parent, idvars),
+            }
 
         return SqlJoinMerge.perform_join(
             pgi=pgi,
@@ -136,31 +152,40 @@ class SqlChildMerge:
             pivot_left=pivot_left,
             pivot_right=pivot_right,
             type="LEFT",
-            extra_conditions=extra_conditions,
+            **link,
         )
 
     @staticmethod
-    def _find_idvar_linking_condition(
+    def _parent_keyed_by_idvar(parent: SqlTableSchema, idvars: List[str]) -> str:
+        """The parent's rows once per IDVAR, each carrying that IDVAR and the key of the column it names."""
+        branches = []
+        for idvar in idvars:
+            escaped = idvar.replace("'", "''")
+            key = numeric_aware_key_sql(f"p.{parent.get_column_hash(idvar)}")
+            branches.append(f"SELECT p.*, '{escaped}'::text AS {LINK_IDVAR}, {key} AS {LINK_KEY} FROM {parent.hash} p")
+        return f"({' UNION ALL '.join(branches)})"
+
+    @staticmethod
+    def _find_linking_idvars(
         pgi: PostgresQLInterface,
         child: SqlTableSchema,
         parent: SqlTableSchema,
         parent_domain: str,
-    ) -> Optional[str]:
+    ) -> List[str]:
         """
-        Build a join condition matching each child row's IDVARVAL against the parent
-        column named by that row's IDVAR (e.g. IDVAR='AESEQ' -> parent.AESEQ).
+        The child's IDVAR values that name a real column on the parent, i.e. the parent
+        columns its IDVARVALs are matched against (e.g. IDVAR='AESEQ' -> parent.AESEQ).
 
         Restricted to rows relating to parent_domain: datasets like RELREC hold rows for
         many different RDOMAIN values in one table (e.g. AESEQ for AE-side rows, LBSEQ for
         LB-side rows), so IDVAR values from unrelated domains must not be considered when
         linking to this particular parent.
 
-        Returns None when there are no matching non-null IDVAR values (e.g. for SUPPDM-style
+        Empty when there are no matching non-null IDVAR values (e.g. for SUPPDM-style
         parents where USUBJID alone identifies the single parent record), or when none of the
         IDVAR values found name a real column on the parent.
         """
         idvar_hash = child.get_column_hash("idvar")
-        idvarval_hash = child.get_column_hash("idvarval")
 
         where_clauses = [f"{idvar_hash} IS NOT NULL"]
         if child.has_column("rdomain"):
@@ -171,10 +196,7 @@ class SqlChildMerge:
         pgi.execute_sql(f"SELECT DISTINCT {idvar_hash} AS col FROM {child.hash} WHERE {' AND '.join(where_clauses)}")
         idvar_values = [row["col"] for row in pgi.fetch_all() if row.get("col")]
 
-        if not idvar_values:
-            return None
-
-        cases = []
+        linking = []
         for value in idvar_values:
             if not parent.has_column(value):
                 # An IDVAR value that doesn't name a real column in the parent is invalid
@@ -187,15 +209,8 @@ class SqlChildMerge:
                     f"referenced by IDVAR in '{child.name}'; treating as unmatched."
                 )
                 continue
-            parent_col_hash = parent.get_column_hash(value)
-            escaped_value = value.replace("'", "''")
-            cases.append(f"WHEN '{escaped_value}' THEN r.{parent_col_hash}::text")
-
-        if not cases:
-            return None
-
-        case_expression = f"CASE l.{idvar_hash} {' '.join(cases)} END"
-        return numeric_aware_equals_sql(case_expression, f"l.{idvarval_hash}")
+            linking.append(value)
+        return linking
 
     @staticmethod
     def _get_ordered_rdomain_values(pgi: PostgresQLInterface, child: SqlTableSchema) -> List[str]:
