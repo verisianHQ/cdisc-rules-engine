@@ -9,6 +9,7 @@ from cdisc_rules_engine.data_service.merges.child import SqlChildMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
+from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql, numeric_aware_key_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, MatchDatasetNotFoundError
 
 SIMPLE_RDOMAIN_DATA = {
@@ -374,3 +375,89 @@ def test_child_merge_idvar_numeric_parent_with_scientific_notation(sdtm_standard
     assert results["U1"] == "Big"
     assert results["U2"] == "Sci"
     assert results["U3"] is None
+
+
+def test_child_merge_idvarval_matched_per_idvar_numerically_or_as_text(sdtm_standards_context):
+    """Each row matches only the column its own IDVAR names, numerically when both sides are numbers."""
+    ds = PostgresQLDataService.instance()
+
+    child_data = {
+        "STUDYID": ["S1"] * 7,
+        "RDOMAIN": ["AE"] * 7,
+        "USUBJID": ["U1"] * 7,
+        "IDVAR": ["AESEQ", "AESEQ", "AESPID", "AESPID", "AESEQ", "AESPID", "AENOPE"],
+        "IDVARVAL": ["1.0", " 2 ", "SP-3", "sp-3", "SP-3", "1", "1"],
+        "QNAM": ["Q"] * 7,
+        "QVAL": ["a", "b", "c", "d", "e", "f", "g"],
+    }
+    parent_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "USUBJID": ["U1", "U1", "U1"],
+        "AESEQ": [1, 2, 3],
+        "AESPID": ["01", "X", "SP-3"],
+        "AETERM": ["One", "Two", "Three"],
+    }
+
+    child_schema = PostgresQLDataService.add_test_dataset(ds, "suppae", child_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", parent_data, sdtm_standards_context)
+
+    result_schema = SqlChildMerge.perform_merge(
+        pgi=ds.pgi,
+        child=child_schema,
+        child_domain="SUPPAE",
+        datasets=ds.datasets,
+        merge_spec={},
+    )
+
+    aeterm_col = result_schema.get_column_hash("aeterm")
+    ds.pgi.execute_sql(f"SELECT qval, {aeterm_col} AS aeterm FROM {result_schema.hash} ORDER BY qval")
+    results = [(row["qval"], row["aeterm"]) for row in ds.pgi.fetch_all()]
+
+    assert results == [
+        ("a", "One"),
+        ("b", "Two"),
+        ("c", "Three"),
+        ("d", None),
+        ("e", None),
+        ("f", "One"),
+        ("g", None),
+    ]
+
+
+def test_numeric_aware_key_agrees_with_numeric_aware_equals():
+    """Keys are equal for exactly the pairs numeric_aware_equals_sql calls equal."""
+    ds = PostgresQLDataService.instance()
+    values = [
+        "1",
+        "1.0",
+        "01",
+        " 1 ",
+        "1.",
+        "1E0",
+        "1e+0",
+        "10E-1",
+        "2",
+        "-0",
+        "0.000",
+        "+0",
+        ".5",
+        "0.50",
+        "5E-1",
+        "-.5",
+        "100",
+        "1E2",
+        "abc",
+        "ABC",
+        " abc",
+        "1.0.0",
+        "1E",
+        "",
+        None,
+    ]
+    rows = ", ".join("(NULL)" if value is None else f"('{value}')" for value in values)
+    ds.pgi.execute_sql(
+        f"""SELECT a.v AS a, b.v AS b FROM (VALUES {rows}) a(v) CROSS JOIN (VALUES {rows}) b(v)
+            WHERE ({numeric_aware_key_sql("a.v")} = {numeric_aware_key_sql("b.v")})
+                IS DISTINCT FROM {numeric_aware_equals_sql("a.v", "b.v")}"""
+    )
+    assert ds.pgi.fetch_all() == []

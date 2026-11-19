@@ -49,8 +49,7 @@ from cdisc_rules_engine.sql_operations.get_exdict_version_operation import SqlGe
 from cdisc_rules_engine.sql_operations.define_extended_terms_in_ct import SqlDefineExtendedTermsInCtOperation
 from cdisc_rules_engine.sql_operations.whodrug_code_hierarchy import SqlWhodrugHierarchyOperation
 from cdisc_rules_engine.sql_operations.standard_domains import SqlStandardDomainsOperation
-from cdisc_rules_engine.sql_operations.label_referenced_variable_metadata import SqlLabelReferencedVariableMetadata
-from cdisc_rules_engine.sql_operations.name_referenced_variable_metadata import SqlNameReferencedVariableMetadata
+from cdisc_rules_engine.sql_operations.referenced_variable_metadata import SqlReferencedVariableMetadata
 from cdisc_rules_engine.sql_operations.get_countries import SqlGetCountriesOperation
 from cdisc_rules_engine.sql_operations.split import SqlSplitOperation
 from cdisc_rules_engine.sql_operations.referenced_domain_variable_names import (
@@ -110,8 +109,8 @@ class SqlOperationsFactory:
         "standard_domains": SqlStandardDomainsOperation,
         "study_domains": SqlStudyDomainsOperation,
         "valid_codelist_dates": SqlValidCodelistDates,
-        "label_referenced_variable_metadata": SqlLabelReferencedVariableMetadata,
-        "name_referenced_variable_metadata": SqlNameReferencedVariableMetadata,
+        "label_referenced_variable_metadata": lambda params, ds: SqlReferencedVariableMetadata(params, ds, "label"),
+        "name_referenced_variable_metadata": lambda params, ds: SqlReferencedVariableMetadata(params, ds, "name"),
         "define_variable_metadata": SqlGetDefineVariablesMetadata,
         "valid_external_dictionary_value": None,
         "valid_external_dictionary_code": None,

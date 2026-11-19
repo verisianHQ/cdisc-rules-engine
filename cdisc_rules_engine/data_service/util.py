@@ -16,6 +16,10 @@ def generate_hash(input_string: str, length: int = 10) -> str:
     return f"{clean_input}_{alphanum_hash[:length]}"
 
 
+def quote_literal_sql(value: str) -> str:
+    return "'" + str(value).replace("'", "''") + "'"
+
+
 # Matches a plain or scientific-notation numeric literal (e.g. "1", "-1.5", "1E5", "1e+15").
 NUMERIC_LITERAL_PATTERN = r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$"
 
@@ -47,3 +51,18 @@ def numeric_aware_equals_sql(left_sql: str, right_sql: str) -> str:
             ELSE CAST({left_sql} AS TEXT) = CAST({right_sql} AS TEXT)
         END
     )"""
+
+
+def numeric_aware_key_sql(value_sql: str) -> str:
+    """
+    A text key on which two values are equal exactly when numeric_aware_equals_sql says they are,
+    but usable as a hash join key. Numbers become canonical decimal text (1.50, 1.5 and 15E-1 all
+    give '1.5'), anything else is left as it is.
+    """
+    text = f"CAST({value_sql} AS TEXT)"
+    number = f"CAST(CAST(TRIM({text}) AS NUMERIC) AS TEXT)"
+    return f"""CASE
+            WHEN TRIM({text}) ~ '{NUMERIC_LITERAL_PATTERN}'
+                THEN CASE WHEN POSITION('.' IN {number}) > 0 THEN RTRIM(RTRIM({number}, '0'), '.') ELSE {number} END
+            ELSE {text}
+        END"""

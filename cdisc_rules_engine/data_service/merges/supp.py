@@ -1,7 +1,7 @@
 from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import NUMERIC_LITERAL_PATTERN
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError
 from cdisc_rules_engine.models.sql.column_schema import SqlColumnSchema
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
@@ -55,6 +55,8 @@ class SqlSuppMerge:
         """
         One pass over the original instead of a copy plus an UPDATE per QNAM per IDVAR
         (each of which rewrote every matching row).
+        When several SUPP records link to the same row through one IDVAR, MAX() picks the QVAL so the result
+        is deterministic. Across IDVARs, the last one (in alphabetical order) with a value wins.
         """
 
         def supp_alias(column: str) -> str:
@@ -70,7 +72,8 @@ class SqlSuppMerge:
 
         if new_columns:
             qvals = [
-                f"MAX(CASE WHEN {supp_alias('QNAM')} = {_quote(qnam)} THEN {supp_alias('QVAL')} END) AS c{index}"
+                f"MAX(CASE WHEN {supp_alias('QNAM')} = {quote_literal_sql(qnam)} "
+                f"THEN {supp_alias('QVAL')} END) AS c{index}"
                 for index, qnam in enumerate(new_columns)
             ]
             for index, idvar in enumerate(idvars or [None]):
@@ -82,9 +85,9 @@ class SqlSuppMerge:
                 ]
                 where = ""
                 if idvar is not None:
-                    keys.append(_link_key_sql(supp_alias("IDVARVAL")))
-                    on.append(f"{_link_key_sql(original_alias(idvar))} = p{index}.k3")
-                    where = f"WHERE {supp_alias('IDVAR')} = {_quote(idvar)}"
+                    keys.append(numeric_aware_key_sql(supp_alias("IDVARVAL")))
+                    on.append(f"{numeric_aware_key_sql(original_alias(idvar))} = p{index}.k3")
+                    where = f"WHERE {supp_alias('IDVAR')} = {quote_literal_sql(idvar)}"
                 key_select = ", ".join(f"{key} AS k{position}" for position, key in enumerate(keys))
                 group_by = ", ".join(str(position) for position in range(1, len(keys) + 1))
                 pivots.append(
@@ -186,7 +189,7 @@ class SqlSuppMerge:
             if not supp.has_column("IDVAR"):
                 raise ColumnNotFoundError("IDVAR", supp.dataset_name)
 
-            pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash}")
+            pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash} ORDER BY 1")
             result = pgi.fetch_all()
             return [row["col"] for row in result]
 
@@ -198,19 +201,3 @@ class SqlSuppMerge:
         pgi.execute_sql(f"SELECT DISTINCT {supp_table.get_column_hash("QNAM")} AS col FROM {supp_table.hash}")
         result = pgi.fetch_all()
         return [row["col"] for row in result]
-
-
-def _quote(value: str) -> str:
-    return "'" + str(value).replace("'", "''") + "'"
-
-
-def _link_key_sql(value_sql: str) -> str:
-    """
-    A join key equal on both sides exactly using a numeric-aware regex.
-    """
-    text = f"TRIM(CAST({value_sql} AS TEXT))"
-    return (
-        f"(CASE WHEN {text} ~ '{NUMERIC_LITERAL_PATTERN}' "
-        f"THEN CAST(trim_scale(CAST({text} AS NUMERIC)) AS TEXT) "
-        f"ELSE CAST({value_sql} AS TEXT) END)"
-    )
