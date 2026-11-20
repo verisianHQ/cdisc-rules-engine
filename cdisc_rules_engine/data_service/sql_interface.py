@@ -414,6 +414,15 @@ class PostgresQLInterface:
         if self.db:
             self.db.close_pool()
 
+    def reset_connections(self):
+        """
+        Swap the connection(s) for fresh ones, releasing the memory the old backend held.
+        Everything a run creates is a regular (unlogged) table or view, never session state,
+        so it all survives the reset.
+        """
+        if self.db:
+            self.db.reset_pool()
+
     @staticmethod
     def _get_unique_prefix_uid() -> str:
         length = 8

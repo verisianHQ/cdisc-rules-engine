@@ -224,6 +224,10 @@ def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals
     try:
         exit_if_signalled(signals_received)  # one that came in while the datasets were loading
         for rule_index, rule in enumerate(rules):
+            # Each rule gets a fresh backend: one that planned a huge statement keeps that memory
+            # until it disconnects, starving the page cache for every rule after it.
+            # Skipped if the previous rule ran no SQL, and never fatal (see DatabasePostgres.reset_pool)
+            data_service.pgi.reset_connections()
             rule_progress_reporter.start_rule(rule.get("core_id"), rule_index, len(rules))
             missing_inputs = get_missing_inputs(rule, supplied_inputs)
             result = sql_validate_single_rule(engine, args, rule, missing_inputs)
