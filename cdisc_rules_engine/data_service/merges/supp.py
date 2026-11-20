@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
 from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
@@ -40,29 +40,76 @@ class SqlSuppMerge:
         schema = SqlSuppMerge._build_schemas(name=name, original=original, new_columns=new_columns, pgi=pgi)
 
         pgi.create_table(schema)
-
-        queries = []
-
-        # Copy everything from original table
-        new_selectors = ", ".join(schema.get_column_hash(col) for col, _ in original.get_columns() if col != "id")
-        old_selectors = ", ".join(schema.hash for _, schema in original.get_columns() if schema.name != "id")
-        queries.append(
-            f"""
-            INSERT INTO {schema.hash} ({new_selectors})
-                SELECT
-                    {old_selectors}
-                FROM {original.hash}"""
-        )
-
-        # Splitting each new column into its own query to avoid the arbitrarily large number of
-        # joins which would be required to do everything in one go
-        for idvar in required_original_columns or [None]:
-            for col in new_columns:
-                queries.append(SqlSuppMerge._update_query(schema, original, supp, idvar, col))
-
-        pgi.execute_many(queries)
+        pgi.execute_sql(SqlSuppMerge._merge_query(schema, original, supp, required_original_columns, new_columns))
 
         return schema
+
+    @staticmethod
+    def _merge_query(
+        schema: SqlTableSchema,
+        original: SqlTableSchema,
+        supp: SqlTableSchema,
+        idvars: List[str],
+        new_columns: List[str],
+    ) -> str:
+        """
+        One pass over the original instead of a copy plus an UPDATE per QNAM per IDVAR
+        (each of which rewrote every matching row).
+        When several SUPP records link to the same row through one IDVAR, MAX() picks the QVAL so the result
+        is deterministic. Across IDVARs, the last one (in alphabetical order) with a value wins.
+        """
+
+        def supp_alias(column: str) -> str:
+            return f"s.{supp.get_column_hash(column)}"
+
+        def original_alias(column: str) -> str:
+            return f"o.{original.get_column_hash(column)}"
+
+        copied = [(name, column) for name, column in original.get_columns() if name != "id" and not column.alias]
+        targets = [schema.get_column_hash(name) for name, _ in copied]
+        values = [f"o.{column.hash}" for _, column in copied]
+        joins, pivots = [], []
+
+        if new_columns:
+            qvals = [
+                f"MAX(CASE WHEN {supp_alias('QNAM')} = {quote_literal_sql(qnam)} "
+                f"THEN {supp_alias('QVAL')} END) AS c{index}"
+                for index, qnam in enumerate(new_columns)
+            ]
+            for index, idvar in enumerate(idvars or [None]):
+                keys = [supp_alias("STUDYID"), supp_alias("RDOMAIN"), supp_alias("USUBJID")]
+                on = [
+                    f"{original_alias('STUDYID')} = p{index}.k0",
+                    f"{original_alias('DOMAIN')} = p{index}.k1",
+                    f"{original_alias('USUBJID')} = p{index}.k2",
+                ]
+                where = ""
+                if idvar is not None:
+                    keys.append(numeric_aware_key_sql(supp_alias("IDVARVAL")))
+                    on.append(f"{numeric_aware_key_sql(original_alias(idvar))} = p{index}.k3")
+                    where = f"WHERE {supp_alias('IDVAR')} = {quote_literal_sql(idvar)}"
+                key_select = ", ".join(f"{key} AS k{position}" for position, key in enumerate(keys))
+                group_by = ", ".join(str(position) for position in range(1, len(keys) + 1))
+                pivots.append(
+                    f"p{index} AS (SELECT {key_select}, {', '.join(qvals)} "
+                    f"FROM {supp.hash} s {where} GROUP BY {group_by})"
+                )
+                joins.append(f"LEFT JOIN p{index} ON {' AND '.join(on)}")
+
+            last_first = list(reversed(range(len(pivots))))
+            for index, qnam in enumerate(new_columns):
+                targets.append(schema.get_column_hash(qnam))
+                values.append(f"COALESCE({', '.join(f'p{link}.c{index}' for link in last_first)})")
+
+        with_clause = f"WITH {', '.join(pivots)}" if pivots else ""
+        return f"""
+            {with_clause}
+            INSERT INTO {schema.hash} ({', '.join(targets)})
+                SELECT {', '.join(values)}
+                FROM {original.hash} o
+                {' '.join(joins)}
+                ORDER BY o.id
+        """
 
     @staticmethod
     def _build_schemas(
@@ -145,40 +192,6 @@ class SqlSuppMerge:
             pgi.execute_sql(f"SELECT DISTINCT {supp.get_column_hash("IDVAR")} AS col FROM {supp.hash} ORDER BY 1")
             result = pgi.fetch_all()
             return [row["col"] for row in result]
-
-    @staticmethod
-    def _update_query(
-        schema: SqlTableSchema,
-        original: SqlTableSchema,
-        supp: SqlTableSchema,
-        idvar: Optional[str],
-        qnam: str,
-    ) -> str:
-        """
-        Fills the QNAM column from the SUPP records linked to each row (through IDVAR when given).
-        When several records link to the same row through this IDVAR, MAX() picks the QVAL so the result is
-        deterministic. Across IDVARs, the last one applied (in alphabetical order) wins.
-        """
-        links = [("STUDYID", "STUDYID"), ("DOMAIN", "RDOMAIN"), ("USUBJID", "USUBJID")]
-        original_keys = [f"original.{original.get_column_hash(column)}" for column, _ in links]
-        supp_keys = [supp.get_column_hash(column) for _, column in links]
-        filters = [f"{supp.get_column_hash('QNAM')} = {quote_literal_sql(qnam)}"]
-        if idvar is not None:
-            original_keys.append(numeric_aware_key_sql(f"original.{original.get_column_hash(idvar)}"))
-            supp_keys.append(numeric_aware_key_sql(supp.get_column_hash("IDVARVAL")))
-            filters.append(f"{supp.get_column_hash('IDVAR')} = {quote_literal_sql(idvar)}")
-
-        return f"""
-            UPDATE {schema.hash} AS original
-                SET {schema.get_column_hash(qnam)} = supp.qval
-                FROM (
-                    SELECT {", ".join(f"{key} AS k{i}" for i, key in enumerate(supp_keys))},
-                        MAX({supp.get_column_hash("QVAL")}) AS qval
-                    FROM {supp.hash}
-                    WHERE {" AND ".join(filters)}
-                    GROUP BY {", ".join(str(i + 1) for i in range(len(supp_keys)))}
-                ) AS supp
-                WHERE {" AND ".join(f"{key} = supp.k{i}" for i, key in enumerate(original_keys))}"""
 
     @staticmethod
     def _determine_new_columns(pgi: PostgresQLInterface, supp_table: SqlTableSchema) -> List[str]:
