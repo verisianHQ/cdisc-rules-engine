@@ -41,10 +41,18 @@ from scripts.sql_list_dataset_metadata_handler import sql_list_dataset_metadata_
 from version import __version__
 
 
+# characters Windows doesn't allow in file names; '/' and '\' would also point to another folder
+_FORBIDDEN_TAG_CHARACTERS = '<>:"/\\|?*'
+
+
 def _validate_custom_run_tag(ctx, param, value: Optional[str]) -> Optional[str]:
-    # the tag goes into file names, so it can't point somewhere else
-    if value is not None and (not value.strip() or any(char in value for char in "/\\:")):
-        raise click.BadParameter("must be non-empty and can't contain '/', '\\' or ':'")
+    # the tag goes into file names, so it must be valid in a file name on any OS, checked before any rule runs
+    if value is not None and (
+        not value.strip() or any(char in _FORBIDDEN_TAG_CHARACTERS or ord(char) < 32 for char in value)
+    ):
+        raise click.BadParameter(
+            f"must be non-empty and can't contain control characters or any of {' '.join(_FORBIDDEN_TAG_CHARACTERS)}"
+        )
     return value
 
 

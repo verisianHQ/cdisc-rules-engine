@@ -1,10 +1,13 @@
+import os
 import subprocess
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 from click.testing import CliRunner
 
+import core
 from cdisc_rules_engine.utilities.runtime_analysis import (
     add_rule_runtime,
     read_runtime_analysis,
@@ -18,6 +21,7 @@ import scripts.compare_runtime_analysis as compare_script
 from scripts.compare_runtime_analysis import compare_runtime_analysis
 
 RUN_TIME = "2026-10-29T12:13:39.123456"
+VALIDATE_ARGS = ["-s", "sdtmig", "-v", "3-4", "-dp", "tests/resources/test_dataset.xpt", "-mem"]
 COMPARE_SCRIPT = Path(__file__).resolve().parents[3] / "scripts" / "compare_runtime_analysis.py"
 
 
@@ -50,6 +54,28 @@ def test_write_then_read_runtime_analysis(tmp_path):
     write_runtime_analysis(str(path), {"CORE-000001": 12.3456, "CORE-000002": 0.5})
     assert path.read_text().splitlines() == ["core_id,runtime_ms", "CORE-000001,12.346", "CORE-000002,0.500"]
     assert read_runtime_analysis(str(path)) == {"CORE-000001": 12.346, "CORE-000002": 0.5}
+
+
+def run_validate(extra_args):
+    with patch.object(core, "run_sql_validation") as run:
+        result = CliRunner().invoke(core.validate, VALIDATE_ARGS + extra_args)
+    return result, run
+
+
+def test_valid_custom_run_tag_is_accepted():
+    # also shows VALIDATE_ARGS are valid, so the rejections below are down to the tag alone
+    result, run = run_validate(["-crt", "mStudy1_v2-final.run"])
+    assert result.exit_code == 0, result.output
+    assert os.path.basename(run.call_args.args[0].output).startswith("CORE-Report_mStudy1_v2-final.run_")
+
+
+@pytest.mark.parametrize(
+    "tag", ["", " ", "a/b", "a\\b", "a:b", "a?b", "a*b", 'a"b', "a<b", "a>b", "a|b", "a\tb", "a\x00b", "a\x1fb"]
+)
+def test_custom_run_tag_that_is_empty_or_not_valid_in_a_file_name_is_rejected(tag):
+    result, run = run_validate(["-crt", tag])
+    assert result.exit_code == 2
+    run.assert_not_called()
 
 
 def write_before_and_after(folder: Path):
