@@ -28,8 +28,10 @@ from cdisc_rules_engine.readers.codelist_reader import CodelistReader
 from cdisc_rules_engine.services.cache.cache_populator_service import CachePopulator
 from cdisc_rules_engine.services.cache.cache_service_factory import CacheServiceFactory
 from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
+from cdisc_rules_engine.utilities.runtime_analysis import RUNTIME_ANALYSIS_DIR
 from cdisc_rules_engine.utilities.utils import (
     generate_report_filename,
+    generate_runtime_analysis_filename,
     get_rules_cache_key,
 )
 from scripts.list_dataset_metadata_handler import list_dataset_metadata_handler
@@ -37,6 +39,14 @@ from scripts.run_sql_validation import run_sql_validation
 from scripts.run_validation import run_validation
 from scripts.sql_list_dataset_metadata_handler import sql_list_dataset_metadata_handler
 from version import __version__
+
+
+def _validate_custom_run_tag(ctx, param, value: Optional[str]) -> Optional[str]:
+    # the tag goes into file names, so it can't point somewhere else
+    if value is not None and (not value.strip() or any(char in value for char in "/\\:")):
+        raise click.BadParameter("must be non-empty and can't contain '/', '\\' or ':'")
+    return value
+
 
 SQL_DATA_FORMATS = {DataFormatTypes.XPT.value, DataFormatTypes.SAS7BDAT.value}
 
@@ -147,6 +157,16 @@ def cli():
     "--output",
     default=generate_report_filename(datetime.now().isoformat()),
     help="Report output file destination",
+)
+@click.option(
+    "-crt",
+    "--custom-run-tag",
+    default=None,
+    callback=_validate_custom_run_tag,
+    help=(
+        "Tag to add to the run's default output file names, "
+        "e.g. 'mStudy1' gives CORE-Report_mStudy1_<timestamp>. Ignored when --output is given."
+    ),
 )
 @click.option(
     "-of",
@@ -279,6 +299,16 @@ def cli():
         "saying how many there were in total. SQL engine only."
     ),
 )
+@click.option(
+    "-ra",
+    "--runtime-analysis",
+    is_flag=True,
+    default=False,
+    help=(
+        "Write each rule's execution time, in milliseconds, to a CSV file in the runtime_analysis folder. "
+        "Compare two of these files with scripts/compare_runtime_analysis.py."
+    ),
+)
 @click.pass_context
 def validate(  # noqa: C901
     ctx,
@@ -319,6 +349,8 @@ def validate(  # noqa: C901
     in_memory_postgres: bool,
     collapse_duplicate_issues: bool,
     max_errors_per_dataset: int,
+    custom_run_tag: Optional[str],
+    runtime_analysis: bool,
 ):
     """
     Validate data using CDISC Rules Engine
@@ -366,6 +398,19 @@ def validate(  # noqa: C901
     if rules and exclude_rules:
         logger.error("Arguments --rules and --exclude-rules cannot be used together")
         ctx.exit(1)
+
+    # one timestamp for all of the run's output files
+    run_time = datetime.now().isoformat()
+    if ctx.get_parameter_source("output") == click.core.ParameterSource.DEFAULT:
+        output = generate_report_filename(run_time, custom_run_tag)
+    elif custom_run_tag:
+        logger.warning("Argument --custom-run-tag is ignored when --output is given")
+        custom_run_tag = None
+    runtime_analysis_path = (
+        os.path.join(RUNTIME_ANALYSIS_DIR, generate_runtime_analysis_filename(run_time, custom_run_tag))
+        if runtime_analysis
+        else None
+    )
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 
@@ -470,6 +515,7 @@ def validate(  # noqa: C901
         collapse_duplicate_issues,
         max_errors_per_dataset,
         exclude_rules,
+        runtime_analysis_path,
     )
     if sql_engine:
         try:

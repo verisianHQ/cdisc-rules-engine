@@ -1,0 +1,129 @@
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+from click.testing import CliRunner
+
+from cdisc_rules_engine.utilities.runtime_analysis import (
+    add_rule_runtime,
+    read_runtime_analysis,
+    write_runtime_analysis,
+)
+from cdisc_rules_engine.utilities.utils import (
+    generate_report_filename,
+    generate_runtime_analysis_filename,
+)
+import scripts.compare_runtime_analysis as compare_script
+from scripts.compare_runtime_analysis import compare_runtime_analysis
+
+RUN_TIME = "2026-10-29T12:13:39.123456"
+COMPARE_SCRIPT = Path(__file__).resolve().parents[3] / "scripts" / "compare_runtime_analysis.py"
+
+
+def test_report_filename_without_tag_is_unchanged():
+    assert generate_report_filename(RUN_TIME) == "CORE-Report-2026-10-29T12-13-39"
+
+
+def test_report_filename_with_tag():
+    assert generate_report_filename(RUN_TIME, "mBigNexara1") == "CORE-Report_mBigNexara1_2026-10-29T12-13-39"
+
+
+def test_runtime_analysis_filename():
+    assert generate_runtime_analysis_filename(RUN_TIME) == "CORE-runtime-analysis_2026-10-29T12-13-39.csv"
+    assert (
+        generate_runtime_analysis_filename(RUN_TIME, "mBigNexara1")
+        == "CORE-runtime-analysis_mBigNexara1_2026-10-29T12-13-39.csv"
+    )
+
+
+def test_repeated_core_id_runtimes_are_added_up():
+    runtimes = {}
+    add_rule_runtime(runtimes, "CORE-000001", 10.0)
+    add_rule_runtime(runtimes, "CORE-000002", 5.0)
+    add_rule_runtime(runtimes, "CORE-000001", 2.5)
+    assert runtimes == {"CORE-000001": 12.5, "CORE-000002": 5.0}
+
+
+def test_write_then_read_runtime_analysis(tmp_path):
+    path = tmp_path / "runtime_analysis" / "run.csv"
+    write_runtime_analysis(str(path), {"CORE-000001": 12.3456, "CORE-000002": 0.5})
+    assert path.read_text().splitlines() == ["core_id,runtime_ms", "CORE-000001,12.346", "CORE-000002,0.500"]
+    assert read_runtime_analysis(str(path)) == {"CORE-000001": 12.346, "CORE-000002": 0.5}
+
+
+def write_before_and_after(folder: Path):
+    before = folder / "before.csv"
+    after = folder / "after.csv"
+    # shares before: 50%, 20%, 20%, 10%; after: 50%, 28%, 14%, 8%
+    write_runtime_analysis(
+        str(before), {"CORE-000001": 500.0, "CORE-000002": 200.0, "CORE-000003": 200.0, "CORE-000004": 100.0}
+    )
+    write_runtime_analysis(
+        str(after),
+        {"CORE-000001": 1000.0, "CORE-000002": 560.0, "CORE-000003": 280.0, "CORE-000004": 160.0, "CORE-000005": 0.0},
+    )
+    return str(before), str(after)
+
+
+@pytest.fixture
+def runtime_analysis_dir(tmp_path, monkeypatch):
+    monkeypatch.setattr(compare_script, "RUNTIME_ANALYSIS_DIR", str(tmp_path))
+    write_before_and_after(tmp_path)
+    return tmp_path
+
+
+def test_compare_runtime_analysis(runtime_analysis_dir):
+    before, after = "before.csv", "after.csv"
+    result = CliRunner().invoke(compare_runtime_analysis, [before, after, "-pc", "25"])
+    assert result.exit_code == 0, result.output
+    assert result.output.splitlines() == [
+        "Total runtime: 1.0s -> 2.0s (+100%)",
+        "2 of 4 rules changed by more than 25%",
+        "CORE-000002 runtime: +40%, 20.00% -> 28.00% of total runtime",
+        "CORE-000003 runtime: -30%, 20.00% -> 14.00% of total runtime",
+        "Rules only in the second run: CORE-000005",
+    ]
+
+
+def test_compare_runtime_analysis_leaves_out_rules_below_minimum_runtime_in_both_runs(runtime_analysis_dir):
+    before, after = "before.csv", "after.csv"
+    without_minimum = CliRunner().invoke(compare_runtime_analysis, [before, after, "-pc", "15"])
+    assert "CORE-000004 runtime: -20%, 10.00% -> 8.00% of total runtime" in without_minimum.output.splitlines()
+
+    # CORE-000004 is under 15% in both runs, CORE-000003 only in the second one
+    result = CliRunner().invoke(compare_runtime_analysis, [before, after, "-pc", "15", "-mpr", "15"])
+    assert result.exit_code == 0, result.output
+    assert result.output.splitlines() == [
+        "Total runtime: 1.0s -> 2.0s (+100%)",
+        "2 of 3 rules taking at least 15% of the total runtime in either run changed by more than 15%",
+        "CORE-000002 runtime: +40%, 20.00% -> 28.00% of total runtime",
+        "CORE-000003 runtime: -30%, 20.00% -> 14.00% of total runtime",
+        "Rules only in the second run: CORE-000005",
+    ]
+
+
+def test_compare_runtime_analysis_reads_files_from_the_runtime_analysis_folder(runtime_analysis_dir, monkeypatch):
+    # the folder the script is run from doesn't matter
+    other_folder = runtime_analysis_dir / "other"
+    other_folder.mkdir()
+    monkeypatch.chdir(other_folder)
+    result = CliRunner().invoke(compare_runtime_analysis, ["before.csv", "after.csv", "-pc", "25"])
+    assert result.exit_code == 0, result.output
+
+    missing = CliRunner().invoke(compare_runtime_analysis, ["missing.csv", "after.csv", "-pc", "25"])
+    assert missing.exit_code != 0
+    assert f"no file named 'missing.csv' in {runtime_analysis_dir}" in missing.output
+
+
+def test_compare_runtime_analysis_runs_as_a_file_from_another_folder(tmp_path):
+    # run as a separate process, the script reads the real runtime_analysis folder: absolute paths still work there
+    before, after = write_before_and_after(tmp_path)
+    result = subprocess.run(
+        [sys.executable, str(COMPARE_SCRIPT), before, after, "-pc", "25"],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.splitlines()[1] == "2 of 4 rules changed by more than 25%"
