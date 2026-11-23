@@ -47,7 +47,7 @@ def populate_helper_tables(pgi: PostgresQLInterface):
         schema = schema_func()
         pgi.create_table(schema)
 
-        with open(HELPER_DATA_PATH / file_path, "r") as f:
+        with open(HELPER_DATA_PATH / file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         if data:

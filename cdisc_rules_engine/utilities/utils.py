@@ -4,6 +4,8 @@ that can be reused.
 """
 
 import copy
+import json
+import locale
 import os
 import re
 import pandas as pd
@@ -236,6 +238,18 @@ def serialize_rule(rule: dict) -> dict:
 
 def get_cache_last_updated_key() -> str:
     return "CACHE_LAST_UPDATED"
+
+
+def load_json_with_optional_encoding(path: str, encoding: Optional[str] = None) -> Any:
+    candidates = dict.fromkeys(filter(None, (encoding, "utf-8-sig", locale.getpreferredencoding(False))))
+    errors = []
+    for candidate in candidates:
+        try:
+            with open(path, "r", encoding=candidate) as f:
+                return json.load(f)
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            errors.append(f"{candidate}: {e}")
+    raise ValueError(f"Unable to load JSON file '{path}'. Tried {'; '.join(errors)}")
 
 
 def remove_none_keys_from_dict(dict_to_remove: dict):

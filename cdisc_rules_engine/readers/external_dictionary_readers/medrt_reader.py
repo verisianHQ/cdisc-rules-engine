@@ -18,7 +18,7 @@ class MedRTReader:
     def _extract_version_metadata(self) -> MedRTVersionMetadata:
         """Extract metadata from the MedRT Release txt file name."""
         file_path = glob.glob(f"{self.dictionary_path}/MEDRT_Release_Notes.txt")[0]
-        with open(file_path, "r") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             first_line = f.readline()
             version = first_line.split(" MED-RT ")[0]
             return MedRTVersionMetadata(version=version)

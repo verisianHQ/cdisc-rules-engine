@@ -375,7 +375,7 @@ def load_and_parse_rule(rule_file):
     _, file_extension = os.path.splitext(rule_file)
     file_extension = file_extension.lower()
     try:
-        with open(rule_file, "r", encoding="utf-8") as file:
+        with open(rule_file, "r", encoding="utf-8-sig") as file:
             if file_extension in [".yml", ".yaml"]:
                 loaded_data = yaml.safe_load(file)
                 return Rule.from_cdisc_metadata(replace_yml_spaces(loaded_data))
