@@ -78,7 +78,8 @@ def test_join(data, type, expected):
     assert schema.get_column("r.age") is not None
     assert ds.pgi.schema.get_table(schema.name) == schema
 
-    ds.pgi.execute_sql(f"SELECT key::int, name, {schema.get_column_hash("age")}::int AS age FROM {schema.hash}")
+    age = schema.get_column_hash("age")
+    ds.pgi.execute_sql(f"SELECT key::int, name, {age}::int AS age FROM {schema.hash} ORDER BY id")
     result = pd.DataFrame(ds.pgi.fetch_all())
     assert pd.DataFrame(expected).equals(result)
 
@@ -133,7 +134,8 @@ def test_multiple_keys(data, expected):
                 name,
                 {schema.get_column_hash("age")}::int AS age,
                 {schema.get_column_hash("r.name")} as "r.name"
-            FROM {schema.hash}"""
+            FROM {schema.hash}
+            ORDER BY id"""
     )
     result = pd.DataFrame(ds.pgi.fetch_all())
     assert pd.DataFrame(expected).equals(result)
@@ -348,3 +350,66 @@ def test_join_mismatched_types_with_scientific_notation():
     assert results["Big"] == 10
     assert results["Sci"] == 20
     assert results["NoMatch"] is None
+
+
+def _relkind(ds, table_hash):
+    ds.pgi.execute_sql(f"SELECT relkind FROM pg_class WHERE relname = '{table_hash}'")
+    return ds.pgi.fetch_one()["relkind"]
+
+
+def _rows(ds, schema):
+    age = schema.get_column_hash("age")
+    ds.pgi.execute_sql(f"SELECT key::int, name, {age}::int AS age FROM {schema.hash} ORDER BY id")
+    return ds.pgi.fetch_all()
+
+
+def test_join_is_a_view_until_reused():
+    ds = PostgresQLDataService.instance()
+    left = PostgresQLDataService.add_test_dataset(ds, "l", SIMPLE_DATA["left"], DefaultStandardsContext())
+    right = PostgresQLDataService.add_test_dataset(ds, "r", SIMPLE_DATA["right"], DefaultStandardsContext())
+
+    schema = SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT")
+    view_hash = schema.hash
+    assert _relkind(ds, view_hash) == "v"
+    expected = _rows(ds, schema)
+
+    reused = SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT")
+    assert reused is schema
+    assert schema.hash != view_hash
+    assert _relkind(ds, schema.hash) == "r"
+    assert _rows(ds, schema) == expected
+
+    ds.pgi.execute_sql(f"SELECT COUNT(*) AS n FROM {view_hash}")
+    assert ds.pgi.fetch_one()["n"] == len(expected)
+
+    assert SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT").hash == schema.hash
+
+
+def test_join_with_right_source_is_stored_straight_away():
+    ds = PostgresQLDataService.instance()
+    left = PostgresQLDataService.add_test_dataset(ds, "l", SIMPLE_DATA["left"], DefaultStandardsContext())
+    right = PostgresQLDataService.add_test_dataset(ds, "r", SIMPLE_DATA["right"], DefaultStandardsContext())
+    right_source = f"(SELECT * FROM {right.hash})"
+
+    schema = SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT", right_source=right_source)
+    stored_hash = schema.hash
+    assert _relkind(ds, stored_hash) == "r"
+
+    SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT", right_source=right_source)
+    assert schema.hash == stored_hash
+
+
+def test_one_to_many_rows_follow_right_row_order():
+    ds = PostgresQLDataService.instance()
+    context = DefaultStandardsContext()
+    left = PostgresQLDataService.add_test_dataset(ds, "l", {"key": [1, 2], "name": ["Alice", "Bob"]}, context)
+    right = PostgresQLDataService.add_test_dataset(ds, "r", {"key": [2, 1, 1, 1], "age": [5, 30, 20, 10]}, context)
+
+    schema = SqlJoinMerge.perform_join(ds.pgi, left, right, ["key"], ["key"], "LEFT")
+
+    assert _rows(ds, schema) == [
+        {"key": 1, "name": "Alice", "age": 30},
+        {"key": 1, "name": "Alice", "age": 20},
+        {"key": 1, "name": "Alice", "age": 10},
+        {"key": 2, "name": "Bob", "age": 5},
+    ]
