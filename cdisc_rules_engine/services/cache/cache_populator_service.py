@@ -103,9 +103,9 @@ class CachePopulator:
         remove_custom_rules=None,
         update_custom_rule=None,
         custom_standards=None,
-        custom_standards_encoding=None,
         remove_custom_standards=None,
         cache_path="",
+        custom_standards_encoding=None,
     ):
         self.cache = cache
         self.library_service = library_service

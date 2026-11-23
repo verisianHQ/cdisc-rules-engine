@@ -28,6 +28,7 @@ from cdisc_rules_engine.constants.domains import (
 from cdisc_rules_engine.constants.classes import SPECIAL_PURPOSE
 from cdisc_rules_engine.enums.execution_status import ExecutionStatus
 from cdisc_rules_engine.interfaces import ConditionInterface
+from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.models.base_validation_entity import BaseValidationEntity
 from business_rules.utils import is_valid_date
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
@@ -246,9 +247,13 @@ def load_json_with_optional_encoding(path: str, encoding: Optional[str] = None) 
     for candidate in candidates:
         try:
             with open(path, "r", encoding=candidate) as f:
-                return json.load(f)
+                data = json.load(f)
         except (UnicodeDecodeError, json.JSONDecodeError) as e:
             errors.append(f"{candidate}: {e}")
+            continue
+        if errors:
+            logger.warning(f"Read '{path}' as {candidate} after {'; '.join(errors)}")
+        return data
     raise ValueError(f"Unable to load JSON file '{path}'. Tried {'; '.join(errors)}")
 
 

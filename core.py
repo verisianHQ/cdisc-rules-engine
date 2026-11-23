@@ -69,9 +69,11 @@ def validate_encoding(_ctx, _param, value):
     if value is None:
         return None
     try:
-        codecs.lookup(value)
+        is_text = getattr(codecs.lookup(value), "_is_text_encoding", True)
     except LookupError:
-        raise click.BadParameter(f"Unknown encoding '{value}' (e.g. utf-8, cp932, shift_jis, latin-1).")
+        is_text = False
+    if not is_text:
+        raise click.BadParameter(f"Unsupported encoding '{value}' (e.g. utf-8, cp932, shift_jis, latin-1).")
     return value
 
 
@@ -567,6 +569,8 @@ def update_cache(
     custom_standard_encoding: str,
     remove_custom_standard: str,
 ):
+    if custom_standard_encoding and not custom_standard:
+        raise click.UsageError("--custom-standard-encoding requires --custom-standard.")
     cache = CacheServiceFactory(config).get_cache_service()
     library_service = CDISCLibraryService(apikey, cache)
     cache_populator = CachePopulator(
@@ -577,9 +581,9 @@ def update_cache(
         remove_custom_rules,
         update_custom_rule,
         custom_standard,
-        custom_standard_encoding,
         remove_custom_standard,
         cache_path,
+        custom_standards_encoding=custom_standard_encoding,
     )
     if custom_rule or custom_rules_directory:
         cache_populator.add_custom_rules()

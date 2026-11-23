@@ -81,15 +81,24 @@ def test_cli_passes_custom_standard_encoding(tmp_path):
     assert cached_standards(tmp_path) == STANDARD
 
 
-def test_cli_rejects_unknown_encoding(tmp_path):
+@pytest.mark.parametrize("encoding", ["not-a-codec", "hex", "rot13"])
+def test_cli_rejects_unknown_encoding(tmp_path, encoding):
     with patch("core.CachePopulator") as populator:
         result = CliRunner().invoke(
             update_cache,
-            ["-cs", cp932_file(tmp_path), "-cse", "not-a-codec"],
+            ["-cs", cp932_file(tmp_path), "-cse", encoding],
             env={"CDISC_LIBRARY_API_KEY": ""},
         )
     assert result.exit_code == 2
-    assert "not-a-codec" in result.output
+    assert encoding in result.output
+    populator.assert_not_called()
+
+
+def test_cli_rejects_encoding_without_custom_standard():
+    with patch("core.CachePopulator") as populator:
+        result = CliRunner().invoke(update_cache, ["-cse", "cp932"], env={"CDISC_LIBRARY_API_KEY": ""})
+    assert result.exit_code == 2
+    assert "--custom-standard" in result.output
     populator.assert_not_called()
 
 
