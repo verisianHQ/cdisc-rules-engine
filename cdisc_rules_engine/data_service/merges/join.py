@@ -75,25 +75,25 @@ class SqlJoinMerge:
         pivot_left = [col.lower() for col in pivot_left]
         pivot_right = [col.lower() for col in pivot_right]
 
-        keys = []
-        for l_var, r_var in zip(pivot_left, pivot_right):
-            left_column = left.get_column(l_var)
-            right_column = right.get_column(r_var)
-            if left_column is None:
-                raise missing_match_key_error(pgi, l_var, left)
-            if right_column is None:
-                raise missing_match_key_error(pgi, r_var, right)
-            keys.append((left_column, right_column))
+        keys = SqlJoinMerge._pivot_keys(pgi, left, right, pivot_left, pivot_right)
         join_conditions = [_key_condition(left_column, right_column, "l", "r") for left_column, right_column in keys]
-        join_conditions.extend(extra_conditions or [])
+        if extra_conditions:
+            join_conditions.extend(extra_conditions)
 
         name = f"{left.name}_{type}_{right.name}_ON_{'_'.join(join_conditions)}"
         if right_source:
             name += f"_FROM_{right_source}"
+        stored_hash = SqlTableSchema.derived(f"{name}_stored", pgi).hash
 
-        # Check if the table already exists
-        if pgi.schema.get_table(name) is not None:
-            return pgi.schema.get_table(name)
+        existing = pgi.schema.get_table(name)
+        if existing is not None:
+            # rules check a join_source join with EXISTS so storing it would build the join they avoid
+            if existing.hash != stored_hash and existing.join_source is None:
+                view_hash = existing.hash
+                SqlJoinMerge._store(pgi, existing, f"SELECT * FROM {view_hash}", stored_hash)
+                # anything already built on the view reads the table from now on
+                pgi.execute_sql(f"CREATE OR REPLACE VIEW {view_hash} AS SELECT * FROM {stored_hash}")
+            return existing
 
         # Build the new schema
         schema, left_columns, right_columns = SqlJoinMerge._join_schemas(
@@ -112,21 +112,48 @@ class SqlJoinMerge:
         selected_right_columns = [f"r.{old_hash} AS {new_hash}" for old_hash, new_hash in right_columns]
 
         join_condition = " AND ".join(join_conditions)
-        query = f"""
-            CREATE OR REPLACE VIEW {schema.hash} AS
-                SELECT
-                    row_number() OVER (ORDER BY l.source_row_number, l.id) AS id,
-                    {', '.join(selected_left_columns + selected_right_columns)}
-                FROM {left.hash} l
-                {type} JOIN {right_source or right.hash} r ON {join_condition}
+        body = f"""
+            SELECT
+                row_number() OVER (ORDER BY l.source_row_number, l.id, r.source_row_number, r.id) AS id,
+                {', '.join(selected_left_columns + selected_right_columns)}
+            FROM {left.hash} l
+            {type} JOIN {right_source or right.hash} r ON {join_condition}
         """
 
-        pgi.execute_sql(query)
-        if type == "INNER" and not extra_conditions and not right_source:
-            schema.join_source = JoinSource(left, right, tuple(keys), tuple(right_columns))
+        if right_source:
+            SqlJoinMerge._store(pgi, schema, body, stored_hash)
+        else:
+            pgi.execute_sql(f"CREATE OR REPLACE VIEW {schema.hash} AS {body}")
+            if type == "INNER" and not extra_conditions:
+                schema.join_source = JoinSource(left, right, tuple(keys), tuple(right_columns))
         pgi.schema.add_table(schema)
 
         return schema
+
+    @staticmethod
+    def _store(pgi: PostgresQLInterface, schema: SqlTableSchema, body: str, table_hash: str) -> None:
+        pgi.execute_sql(f"CREATE UNLOGGED TABLE {table_hash} AS {body}")
+        pgi.execute_sql(f"ANALYZE {table_hash}")
+        schema.hash = table_hash
+
+    @staticmethod
+    def _pivot_keys(
+        pgi: PostgresQLInterface,
+        left: SqlTableSchema,
+        right: SqlTableSchema,
+        pivot_left: list[str],
+        pivot_right: list[str],
+    ) -> List[Tuple[SqlColumnSchema, SqlColumnSchema]]:
+        keys = []
+        for l_var, r_var in zip(pivot_left, pivot_right):
+            left_column = left.get_column(l_var)
+            right_column = right.get_column(r_var)
+            if left_column is None:
+                raise missing_match_key_error(pgi, l_var, left)
+            if right_column is None:
+                raise missing_match_key_error(pgi, r_var, right)
+            keys.append((left_column, right_column))
+        return keys
 
     @staticmethod
     def _join_schemas(

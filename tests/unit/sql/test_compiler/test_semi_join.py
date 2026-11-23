@@ -16,7 +16,7 @@ def _visitdy_rule():
     }
 
 
-def _setup(join_type):
+def _datasets():
     ds = PostgresQLDataService.instance()
     ae = PostgresQLDataService.add_test_dataset(
         ds,
@@ -36,9 +36,18 @@ def _setup(join_type):
         {"STUDYID": ["S1", "S1", "S1"], "VISITNUM": [1, 1, 2], "ARMCD": ["A", "B", "A"], "VISITDY": [1, 3, 8]},
         DefaultStandardsContext(),
     )
-    joined = SqlJoinMerge.perform_join(
+    return ds, ae, tv
+
+
+def _join(ds, ae, tv, join_type="INNER"):
+    return SqlJoinMerge.perform_join(
         pgi=ds.pgi, left=ae, right=tv, pivot_left=["VISITNUM"], pivot_right=["VISITNUM"], type=join_type
     )
+
+
+def _setup(join_type):
+    ds, ae, tv = _datasets()
+    joined = _join(ds, ae, tv, join_type)
     compiled = RuleQueryCompiler(_visitdy_rule(), ds, ds.get_dataset_metadata("ae"), joined.name).compile()
     ds.pgi.execute_sql(compiled.sql)
     return joined, compiled, ds.pgi.fetch_all()
@@ -53,8 +62,19 @@ def test_inner_join_rule_reports_each_left_row_once():
     by_subject = {row[joined.get_column_hash("USUBJID")]: row for row in rows}
     assert sorted(by_subject) == ["U1", "U2"]
     assert by_subject["U1"][tv_visitdy] == 3
-    assert by_subject["U2"][tv_visitdy] in (1, 3)
+    assert by_subject["U2"][tv_visitdy] == 1
     assert all(row[TOTAL_COUNT_COLUMN] == 2 for row in rows)
+
+
+def test_reused_inner_join_stays_a_view():
+    ds, ae, tv = _datasets()
+    joined = _join(ds, ae, tv)
+    view_hash = joined.hash
+
+    assert _join(ds, ae, tv) is joined
+    assert joined.hash == view_hash
+    ds.pgi.execute_sql(f"SELECT relkind FROM pg_class WHERE relname = '{view_hash}'")
+    assert ds.pgi.fetch_one()["relkind"] == "v"
 
 
 def test_left_join_rule_keeps_joined_rows():
