@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import List, Literal, Optional, Tuple
 
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
@@ -11,6 +12,30 @@ def missing_match_key_error(pgi: PostgresQLInterface, key: str, table: SqlTableS
     if any(schema.source == "data" and schema.has_column(key) for _, schema in pgi.schema.get_tables()):
         return ColumnNotFoundError(key.upper(), table.dataset_name)
     return InvalidMatchKeyError(f"Match key {key.upper()} is not a variable in any dataset in the study")
+
+
+def _key_condition(left: SqlColumnSchema, right: SqlColumnSchema, left_alias: str, right_alias: str) -> str:
+    left_sql = f"{left_alias}.{left.hash}"
+    right_sql = f"{right_alias}.{right.hash}"
+    if left.type == right.type:
+        return f"{left_sql} = {right_sql}"
+    return numeric_aware_equals_sql(left_sql, right_sql)
+
+
+@dataclass(frozen=True)
+class JoinSource:
+    """What an INNER join view was built from meaning a rule can check its right side with EXISTS instead."""
+
+    left: SqlTableSchema
+    right: SqlTableSchema
+    keys: Tuple[Tuple[SqlColumnSchema, SqlColumnSchema], ...]
+    right_columns: Tuple[Tuple[str, str], ...]
+
+    def on(self, left_alias: str, right_alias: str) -> str:
+        conditions = []
+        for left_column, right_column in self.keys:
+            conditions.append(_key_condition(left_column, right_column, left_alias, right_alias))
+        return " AND ".join(conditions)
 
 
 class SqlJoinMerge:
@@ -50,7 +75,8 @@ class SqlJoinMerge:
         pivot_left = [col.lower() for col in pivot_left]
         pivot_right = [col.lower() for col in pivot_right]
 
-        join_conditions = SqlJoinMerge._pivot_conditions(pgi, left, right, pivot_left, pivot_right)
+        keys = SqlJoinMerge._pivot_keys(pgi, left, right, pivot_left, pivot_right)
+        join_conditions = [_key_condition(left_column, right_column, "l", "r") for left_column, right_column in keys]
         if extra_conditions:
             join_conditions.extend(extra_conditions)
 
@@ -61,7 +87,8 @@ class SqlJoinMerge:
 
         existing = pgi.schema.get_table(name)
         if existing is not None:
-            if existing.hash != stored_hash:
+            # rules check a join_source join with EXISTS so storing it would build the join they avoid
+            if existing.hash != stored_hash and existing.join_source is None:
                 view_hash = existing.hash
                 SqlJoinMerge._store(pgi, existing, f"SELECT * FROM {view_hash}", stored_hash)
                 # anything already built on the view reads the table from now on
@@ -97,6 +124,8 @@ class SqlJoinMerge:
             SqlJoinMerge._store(pgi, schema, body, stored_hash)
         else:
             pgi.execute_sql(f"CREATE OR REPLACE VIEW {schema.hash} AS {body}")
+            if type == "INNER" and not extra_conditions:
+                schema.join_source = JoinSource(left, right, tuple(keys), tuple(right_columns))
         pgi.schema.add_table(schema)
 
         return schema
@@ -108,14 +137,14 @@ class SqlJoinMerge:
         schema.hash = table_hash
 
     @staticmethod
-    def _pivot_conditions(
+    def _pivot_keys(
         pgi: PostgresQLInterface,
         left: SqlTableSchema,
         right: SqlTableSchema,
         pivot_left: list[str],
         pivot_right: list[str],
-    ) -> List[str]:
-        join_conditions = []
+    ) -> List[Tuple[SqlColumnSchema, SqlColumnSchema]]:
+        keys = []
         for l_var, r_var in zip(pivot_left, pivot_right):
             left_column = left.get_column(l_var)
             right_column = right.get_column(r_var)
@@ -123,11 +152,8 @@ class SqlJoinMerge:
                 raise missing_match_key_error(pgi, l_var, left)
             if right_column is None:
                 raise missing_match_key_error(pgi, r_var, right)
-            if left_column.type == right_column.type:
-                join_conditions.append(f"l.{left_column.hash} = r.{right_column.hash}")
-            else:
-                join_conditions.append(numeric_aware_equals_sql(f"l.{left_column.hash}", f"r.{right_column.hash}"))
-        return join_conditions
+            keys.append((left_column, right_column))
+        return keys
 
     @staticmethod
     def _join_schemas(

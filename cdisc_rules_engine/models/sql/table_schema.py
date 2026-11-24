@@ -17,6 +17,7 @@ class SqlTableSchema:
         self.hash = hash
         self._columns: OrderedDict[str, SqlColumnSchema] = OrderedDict()
         self.source = source
+        self.join_source = None
 
         id_column = SqlColumnSchema(name="id", hash="id", type="Num")
         self.add_column(id_column)
