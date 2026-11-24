@@ -1,9 +1,10 @@
 """
-Compares two runtime analysis CSV files (written by `core.py validate -ra`) and prints the rules whose share of
-the total runtime changed by more than the given percentage between the two runs.
+Compares two runtime analysis CSV files (written by `core.py validate -ra`) and prints the rules whose runtime
+went up or down by more than the given percentage between the two runs. The change is between the rule's runtimes
+in milliseconds: a rule going from 400ms to 500ms has changed by +25%, one going from 400ms to 300ms by -25%.
 
-Each rule's share is its runtime as a percentage of the run's total runtime (the sum of all its rules' runtimes),
-and the change is relative: a rule going from 4.00% to 5.00% of the total has changed by +25%.
+Each rule's share of the total runtime (the sum of all its rules' runtimes) is printed alongside, and rules taking
+a small share in both runs can be left out. Shares aren't compared, as one rule's change would move all the others'.
 
 BEFORE and AFTER are file names in the engine's runtime_analysis folder, wherever the script is run from.
 Example, from the engine's folder (from any other folder, give the path to this script instead):
@@ -49,8 +50,8 @@ def format_runtime(runtime_ms: float) -> str:
     return f"{runtime_ms / 1000:.1f}s" if runtime_ms >= 1000 else f"{runtime_ms:.1f}ms"
 
 
-def share_change(before: float, after: float) -> float:
-    """Relative change from one share to the other, in percent."""
+def percent_change(before: float, after: float) -> float:
+    """Relative change from one runtime to the other, in percent."""
     if before == 0:
         return 0.0 if after == 0 else math.inf
     return (after - before) / before * 100
@@ -64,7 +65,7 @@ def share_change(before: float, after: float) -> float:
     "--percentage-change",
     required=True,
     type=click.FloatRange(min=0),
-    help="Print the rules whose share of the total runtime changed by more than this percentage, up or down",
+    help="Print the rules whose runtime in milliseconds went up or down by more than this percentage",
 )
 @click.option(
     "-mpr",
@@ -79,7 +80,7 @@ def compare_runtime_analysis(before: str, after: str, percentage_change: float, 
     after_runtimes = read_runtime_analysis(after)
     before_total = sum(before_runtimes.values())
     after_total = sum(after_runtimes.values())
-    total_change = f" ({share_change(before_total, after_total):+.0f}%)" if before_total else ""
+    total_change = f" ({percent_change(before_total, after_total):+.0f}%)" if before_total else ""
     click.echo(f"Total runtime: {format_runtime(before_total)} -> {format_runtime(after_total)}{total_change}")
 
     before_shares = runtime_shares(before_runtimes)
@@ -93,7 +94,7 @@ def compare_runtime_analysis(before: str, after: str, percentage_change: float, 
         (
             (core_id, change)
             for core_id in compared
-            if abs(change := share_change(before_shares[core_id], after_shares[core_id])) > percentage_change
+            if abs(change := percent_change(before_runtimes[core_id], after_runtimes[core_id])) > percentage_change
         ),
         key=lambda item: (-abs(item[1]), item[0]),
     )
@@ -104,7 +105,8 @@ def compare_runtime_analysis(before: str, after: str, percentage_change: float, 
     for core_id, change in changed:
         click.echo(
             f"{core_id} runtime: {change:+.0f}%, "
-            f"{before_shares[core_id]:.2f}% -> {after_shares[core_id]:.2f}% of total runtime"
+            f"{format_runtime(before_runtimes[core_id])} -> {format_runtime(after_runtimes[core_id])} "
+            f"({before_shares[core_id]:.2f}% -> {after_shares[core_id]:.2f}% of total runtime)"
         )
 
     # with the same study and ruleset these should be empty, so they're only listed when they're not

@@ -400,19 +400,21 @@ python scripts/compare_runtime_analysis.py CORE-runtime-analysis_myStudy_before_
 
 Give the file names only: the script always reads them from the `runtime_analysis` folder. It can be run from any folder, e.g. as `python engine/scripts/compare_runtime_analysis.py ...` from the root of the parent repository.
 
-| Option                                 | Description                                                                                                                                                                                       |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `-pc`, `--percentage-change`           | Required. Print the rules whose share of the total runtime changed by more than this percentage, up or down. The change is relative to the rule's share in the first run: 5.00% to 6.50% is +30%. |
-| `-mpr`, `--minimum-percentage-runtime` | Leave out the rules that take less than this percentage of the total runtime in both runs, e.g. with `-mpr 1.5` a rule going from 0.2% to 0.4% isn't compared. Default: `0` (compare all rules).  |
+| Option                                 | Description                                                                                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `-pc`, `--percentage-change`           | Required. Print the rules whose runtime in milliseconds went up or down by more than this percentage, e.g. 20.0s to 26.0s is +30% and 20.0s to 14.0s is -30%.                                    |
+| `-mpr`, `--minimum-percentage-runtime` | Leave out the rules that take less than this percentage of the total runtime in both runs, e.g. with `-mpr 1.5` a rule going from 0.2% to 0.4% isn't compared. Default: `0` (compare all rules). |
 
-This prints the total runtime of both runs, then the rules that changed by more than `-pc`, largest change first:
+This prints the total runtime of both runs, then the rules whose runtime changed by more than `-pc`, largest change first, with their share of the total runtime in each run:
 
 ```
 Total runtime: 412.3s -> 398.7s (-3%)
 2 of 23 rules taking at least 1.5% of the total runtime in either run changed by more than 25%
-CORE-000767 runtime: +30%, 5.00% -> 6.50% of total runtime
-CORE-000852 runtime: -30%, 3.30% -> 2.31% of total runtime
+CORE-000767 runtime: +30%, 20.6s -> 26.8s (5.00% -> 6.72% of total runtime)
+CORE-000852 runtime: -30%, 13.6s -> 9.5s (3.30% -> 2.38% of total runtime)
 ```
+
+Rules are compared on their own runtimes, not on their shares: if one rule got faster, the others' shares would grow even though their runtimes didn't change. As the runtimes themselves are compared, run both validations on the same machine, under a similar load.
 
 [↑ Back to top](#contents)
 
