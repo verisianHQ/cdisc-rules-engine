@@ -496,6 +496,8 @@ class SqlRelrecMerge:
             if rel["by_value"]:
                 pair_conditions.append(f"{left_key} = p.key_left")
                 join_conditions.append(f"{right_key} = p.key_right")
+                # a blank related IDVARVAL names no record, so it isn't linked to the records with a blank value
+                pair_filters.append("TRIM(key_right) <> ''")
             else:
                 join_conditions.append(f"{left_key} = {right_key}")
                 # a record with a blank --GRPID/--LNKID is in no group, so it isn't linked to the other blank ones

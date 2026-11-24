@@ -641,6 +641,43 @@ def test_relrec_merge_idvar_naming_missing_variable_links_nothing(sdtm_standards
     assert [(r["ecseq"], r["aeseq"]) for r in pgi.fetch_all()] == [(1, 1)]
 
 
+def test_relrec_merge_blank_related_idvarval_links_nothing(sdtm_standards_context):
+    """A pair whose related record has a blank IDVARVAL names no record, so it isn't linked to the blank ones."""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    ec_data = {"STUDYID": ["S1", "S1", "S1"], "USUBJID": ["U1", "U1", "U1"], "ECSEQ": [1, 2, 3]}
+    ae_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "USUBJID": ["U1", "U1", "U1"],
+        "AESEQ": [1, 2, 3],
+        "AESPID": ["A1", "", " "],
+    }
+    relrec_data = {
+        "STUDYID": ["S1"] * 6,
+        "USUBJID": ["U1"] * 6,
+        "RELID": ["R1", "R1", "R2", "R2", "R3", "R3"],
+        "RDOMAIN": ["EC", "AE"] * 3,
+        "IDVAR": ["ECSEQ", "AESPID"] * 3,
+        "IDVARVAL": ["1", "A1", "2", "", "3", " "],
+    }
+    ec_schema = PostgresQLDataService.add_test_dataset(ds, "ec", ec_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi, original=ec_schema, relrec=relrec_schema, domain="EC", wildcard="__"
+    )
+
+    # only R1 links records: R2 and R3 give no AE value, so they don't link the AEs with a blank AESPID
+    pgi.execute_sql(
+        f"""SELECT {ec_schema.get_column_hash('ECSEQ')} AS ecseq,
+                {result_schema.get_column_hash('relrec.__seq')} AS aeseq
+            FROM {result_schema.hash} ORDER BY id"""
+    )
+    assert [(r["ecseq"], r["aeseq"]) for r in pgi.fetch_all()] == [(1, 1)]
+
+
 def test_relrec_merge_leaves_connections_as_they_were(sdtm_standards_context, monkeypatch):
     """The merge changes planner settings and creates tables for its own transaction only."""
     ds = PostgresQLDataService.instance()
