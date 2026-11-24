@@ -11,6 +11,7 @@ from cdisc_rules_engine.data_service.postgresql_data_service import (
 )
 from cdisc_rules_engine.data_service.util import numeric_aware_equals_sql, numeric_aware_key_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import ColumnNotFoundError, MatchDatasetNotFoundError
+from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 
 SIMPLE_RDOMAIN_DATA = {
     "child": {
@@ -422,6 +423,66 @@ def test_child_merge_idvarval_matched_per_idvar_numerically_or_as_text(sdtm_stan
         ("f", "One"),
         ("g", None),
     ]
+
+
+def test_child_merge_parent_rows_narrowed_to_linked_ones(sdtm_standards_context):
+    """
+    Parent rows linked through IDVARs that few child rows use are narrowed down to the linked ones first,
+    which must give the same rows: matched per subject, numerically, and once per parent row sharing a group.
+    """
+    ds = PostgresQLDataService.instance()
+
+    ae_data = {
+        "STUDYID": ["S1"] * 6,
+        "USUBJID": ["U1", "U1", "U1", "U2", "U2", "U2"],
+        "AESEQ": [1, 2, 3, 1, 2, 3],
+        "AEGRPID": ["G1", "G1", "", "G1", "", ""],
+    }
+    fa_data = {
+        "STUDYID": ["S1"] * 8,
+        "USUBJID": ["U1"] * 4 + ["U2"] * 4,
+        "FASEQ": [1, 2, 3, 4, 1, 2, 3, 4],
+        "FAGRPID": ["G1", "G1", "", "", "G1", "", "", ""],
+    }
+    relrec_data = {
+        "STUDYID": ["S1"] * 4,
+        "USUBJID": ["U1"] * 4,
+        "RDOMAIN": ["AE", "FA", "AE", "FA"],
+        "IDVAR": ["AESEQ", "FASEQ", "AEGRPID", "FAGRPID"],
+        "IDVARVAL": ["1.0", "2", "G1", "G1"],
+        "RELID": ["R1", "R1", "R2", "R2"],
+    }
+    PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "fa", fa_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+
+    def merged_rows():
+        result_schema = SqlChildMerge.perform_merge(
+            pgi=ds.pgi, child=relrec_schema, child_domain="RELREC", datasets=ds.datasets, merge_spec={}
+        )
+        ds.pgi.execute_sql(
+            f"""SELECT idvar, {result_schema.get_column_hash('aeseq')} AS aeseq,
+                    {result_schema.get_column_hash('faseq')} AS faseq
+                FROM {result_schema.hash} ORDER BY id"""
+        )
+        return [(row["idvar"], row["aeseq"], row["faseq"]) for row in ds.pgi.fetch_all()]
+
+    expected = [
+        ("AESEQ", 1, None),
+        ("FASEQ", None, 2),
+        ("AEGRPID", 1, None),
+        ("AEGRPID", 2, None),
+        ("FAGRPID", None, 1),
+        ("FAGRPID", None, 2),
+    ]
+    assert merged_rows() == expected
+    # the narrowed parent rows were stored, and merging again reuses them
+    for parent in ("ae", "fa"):
+        ds.pgi.execute_sql(
+            f"SELECT to_regclass('{SqlTableSchema.derived(f'{parent}_LINKED_FROM_relrec', ds.pgi).hash}') AS oid"
+        )
+        assert ds.pgi.fetch_all()[0]["oid"] is not None
+    assert merged_rows() == expected
 
 
 def test_numeric_aware_key_agrees_with_numeric_aware_equals():
