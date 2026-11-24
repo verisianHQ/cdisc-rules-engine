@@ -1,6 +1,8 @@
+from contextlib import contextmanager
+
 import pytest
 
-from cdisc_rules_engine.data_service.merges.relrec import SqlRelrecMerge
+from cdisc_rules_engine.data_service.merges.relrec import LINK_PLANNER_SETTINGS, SqlRelrecMerge
 from cdisc_rules_engine.data_service.postgresql_data_service import (
     PostgresQLDataService,
 )
@@ -524,3 +526,163 @@ def test_relrec_merge_idvarval_scientific_notation(sdtm_standards_context):
 
     assert results["U1"] == "Big"
     assert results["U2"] == "Sci"
+
+
+def test_relrec_merge_dataset_level_blank_group_ids(sdtm_standards_context):
+    """A dataset-level relationship links records by --GRPID, and records with a blank --GRPID aren't linked."""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    ae_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "USUBJID": ["U1", "U1", "U1"],
+        "AESEQ": [1, 2, 3],
+        "AEGRPID": ["G1", "", ""],
+        "AETERM": ["HEADACHE", "FATIGUE", "NAUSEA"],
+    }
+    fa_data = {
+        "STUDYID": ["S1", "S1", "S1"],
+        "USUBJID": ["U1", "U1", "U1"],
+        "FASEQ": [1, 2, 3],
+        "FAGRPID": ["G1", "", ""],
+        "FAOBJ": ["HEADACHE", "OTHER", "OTHER"],
+    }
+    relrec_data = {
+        "STUDYID": ["S1", "S1"],
+        "USUBJID": ["", ""],
+        "RELID": ["AEFA", "AEFA"],
+        "RDOMAIN": ["AE", "FA"],
+        "IDVAR": ["AEGRPID", "FAGRPID"],
+        "IDVARVAL": ["", ""],
+    }
+    ae_schema = PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "fa", fa_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi, original=ae_schema, relrec=relrec_schema, domain="AE", wildcard="FA"
+    )
+
+    pgi.execute_sql(
+        f"""SELECT {ae_schema.get_column_hash('AESEQ')} AS aeseq,
+                {result_schema.get_column_hash('relrec.faseq')} AS faseq
+            FROM {result_schema.hash}"""
+    )
+    assert [(r["aeseq"], r["faseq"]) for r in pgi.fetch_all()] == [(1, 1)]
+
+
+def test_relrec_merge_pairs_linking_same_records_give_one_row(sdtm_standards_context):
+    """Pairs of different kinds that link the same two records give one row."""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    ec_data = {"STUDYID": ["S1"], "USUBJID": ["U1"], "ECSEQ": [1], "ECGRPID": ["G1"]}
+    ae_data = {
+        "STUDYID": ["S1", "S1"],
+        "USUBJID": ["U1", "U1"],
+        "AESEQ": [1, 2],
+        "AEGRPID": ["G1", "G1"],
+        "AETERM": ["HEADACHE", "HEADACHE"],
+    }
+    relrec_data = {
+        "STUDYID": ["S1"] * 4,
+        "USUBJID": ["U1"] * 4,
+        "RELID": ["R1", "R1", "R2", "R2"],
+        "RDOMAIN": ["EC", "AE", "EC", "AE"],
+        "IDVAR": ["ECSEQ", "AESEQ", "ECGRPID", "AEGRPID"],
+        "IDVARVAL": ["1", "1", "G1", "G1"],
+    }
+    ec_schema = PostgresQLDataService.add_test_dataset(ds, "ec", ec_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi, original=ec_schema, relrec=relrec_schema, domain="EC", wildcard="__"
+    )
+
+    # R1 links ECSEQ 1 to AESEQ 1, R2 links group G1 (ECSEQ 1) to group G1 (AESEQ 1 and 2)
+    pgi.execute_sql(
+        f"""SELECT {result_schema.get_column_hash('relrec.__seq')} AS aeseq,
+                {result_schema.get_column_hash('relrec.aeterm')} AS aeterm
+            FROM {result_schema.hash} ORDER BY id"""
+    )
+    assert [(r["aeseq"], r["aeterm"]) for r in pgi.fetch_all()] == [(1, "HEADACHE"), (2, "HEADACHE")]
+
+
+def test_relrec_merge_idvar_naming_missing_variable_links_nothing(sdtm_standards_context):
+    """A pair whose IDVAR names a variable that isn't in the dataset links nothing, on either side."""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+
+    ec_data = {"STUDYID": ["S1", "S1"], "USUBJID": ["U1", "U1"], "ECSEQ": [1, 2]}
+    ae_data = {"STUDYID": ["S1", "S1"], "USUBJID": ["U1", "U1"], "AESEQ": [1, 2]}
+    relrec_data = {
+        "STUDYID": ["S1"] * 6,
+        "USUBJID": ["U1"] * 6,
+        "RELID": ["R1", "R1", "R2", "R2", "R3", "R3"],
+        "RDOMAIN": ["EC", "AE"] * 3,
+        "IDVAR": ["ECSEQ", "AESEQ", "ECSEQ", "AESEQX", "ECSEQX", "AESEQ"],
+        "IDVARVAL": ["1", "1", "2", "2", "1", "2"],
+    }
+    ec_schema = PostgresQLDataService.add_test_dataset(ds, "ec", ec_data, sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", ae_data, sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", relrec_data, sdtm_standards_context)
+
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi, original=ec_schema, relrec=relrec_schema, domain="EC", wildcard="__"
+    )
+
+    # only R1 links records: R2 names no AE variable (AESEQX), R3 no EC one (ECSEQX)
+    pgi.execute_sql(
+        f"""SELECT {ec_schema.get_column_hash('ECSEQ')} AS ecseq,
+                {result_schema.get_column_hash('relrec.__seq')} AS aeseq
+            FROM {result_schema.hash} ORDER BY id"""
+    )
+    assert [(r["ecseq"], r["aeseq"]) for r in pgi.fetch_all()] == [(1, 1)]
+
+
+def test_relrec_merge_leaves_connections_as_they_were(sdtm_standards_context, monkeypatch):
+    """The merge changes planner settings and creates tables for its own transaction only."""
+    ds = PostgresQLDataService.instance()
+    pgi = ds.pgi
+    data = SIMPLE_RELREC_DATA
+    original_schema = PostgresQLDataService.add_test_dataset(ds, "ec", data["original"], sdtm_standards_context)
+    relrec_schema = PostgresQLDataService.add_test_dataset(ds, "relrec", data["relrec"], sdtm_standards_context)
+    PostgresQLDataService.add_test_dataset(ds, "ae", data["ae"], sdtm_standards_context)
+
+    def show_settings(connection):
+        with connection.cursor() as cursor:
+            values = {}
+            for name in LINK_PLANNER_SETTINGS:
+                cursor.execute(f"SHOW {name}")
+                values[name] = cursor.fetchone()[0]
+        connection.rollback()
+        return values
+
+    get_connection_and_cursor = pgi.db.get_connection_and_cursor
+    with get_connection_and_cursor() as (connection, _):
+        settings_before = show_settings(connection)
+
+    # the connections the merge uses
+    connections = []
+
+    @contextmanager
+    def recording_connection_and_cursor(*args, **kwargs):
+        with get_connection_and_cursor(*args, **kwargs) as (connection, cursor):
+            connections.append(connection)
+            yield connection, cursor
+
+    monkeypatch.setattr(pgi.db, "get_connection_and_cursor", recording_connection_and_cursor)
+    result_schema = SqlRelrecMerge.perform_join(
+        pgi=pgi, original=original_schema, relrec=relrec_schema, domain="EC", wildcard="__"
+    )
+    monkeypatch.undo()
+
+    assert connections
+    for connection in set(connections):
+        assert show_settings(connection) == settings_before
+        with connection.cursor() as cursor:
+            for table in (f"pairs_{result_schema.hash}", f"links_{result_schema.hash}"):
+                cursor.execute("SELECT to_regclass(%s) AS oid", (table,))
+                assert cursor.fetchone()[0] is None, f"{table} outlived the merge"
+        connection.rollback()
