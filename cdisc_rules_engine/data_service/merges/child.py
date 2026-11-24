@@ -1,8 +1,8 @@
-from typing import List
+from typing import Dict, List, Optional, Tuple
 
 from cdisc_rules_engine.data_service.merges.join import SqlJoinMerge
 from cdisc_rules_engine.data_service.sql_interface import PostgresQLInterface
-from cdisc_rules_engine.data_service.util import numeric_aware_key_sql
+from cdisc_rules_engine.data_service.util import numeric_aware_key_sql, quote_literal_sql
 from cdisc_rules_engine.exceptions.custom_exceptions import MatchDatasetNotFoundError
 from cdisc_rules_engine.models.sql.table_schema import SqlTableSchema
 from cdisc_rules_engine.services import logger
@@ -75,6 +75,7 @@ class SqlChildMerge:
                     child=result_schema,
                     parent=parent,
                     parent_domain=parent_metadata.domain,
+                    links=child,
                 )
                 continue
 
@@ -110,9 +111,13 @@ class SqlChildMerge:
         child: SqlTableSchema,
         parent: SqlTableSchema,
         parent_domain: str,
+        links: Optional[SqlTableSchema] = None,
     ) -> SqlTableSchema:
         """
         Join a relational (SUPP--/SQ--/CO/RELREC) child onto its parent.
+        `links` is the child's own dataset, from which its IDVARs and IDVARVALs are read
+        (by default `child`, which is wider and possibly longer
+        once earlier parents have been joined onto it, but holds the same links).
 
         Mirrors the linking rules SqlSuppMerge applies - STUDYID/USUBJID/RDOMAIN plus a
         dynamic match of IDVARVAL against the parent column named by IDVAR - without
@@ -133,16 +138,19 @@ class SqlChildMerge:
             pivot_left.append("rdomain")
             pivot_right.append("domain")
 
+        links = links if links is not None else child
         link = {}
-        idvars = SqlChildMerge._find_linking_idvars(pgi, child, parent, parent_domain)
-        if idvars:
+        idvar_rows = SqlChildMerge._find_linking_idvars(pgi, links, parent, parent_domain)
+        if idvar_rows:
             idvarval_key = numeric_aware_key_sql(f"l.{child.get_column_hash('idvarval')}")
             link = {
                 "extra_conditions": [
                     f"l.{child.get_column_hash('idvar')} = r.{LINK_IDVAR}",
                     f"{idvarval_key} = r.{LINK_KEY}",
                 ],
-                "right_source": SqlChildMerge._parent_keyed_by_idvar(parent, idvars),
+                "right_source": SqlChildMerge._parent_keyed_by_idvar(
+                    pgi, parent, idvar_rows, links, list(zip(pivot_left, pivot_right))
+                ),
             }
 
         return SqlJoinMerge.perform_join(
@@ -156,14 +164,58 @@ class SqlChildMerge:
         )
 
     @staticmethod
-    def _parent_keyed_by_idvar(parent: SqlTableSchema, idvars: List[str]) -> str:
-        """The parent's rows once per IDVAR, each carrying that IDVAR and the key of the column it names."""
-        branches = []
-        for idvar in idvars:
-            escaped = idvar.replace("'", "''")
+    def _parent_keyed_by_idvar(
+        pgi: PostgresQLInterface,
+        parent: SqlTableSchema,
+        idvar_rows: Dict[str, int],
+        links: SqlTableSchema,
+        pivots: List[Tuple[str, str]],
+    ) -> str:
+        """
+        The parent's rows once per IDVAR, each carrying that IDVAR and the key of the column it names.
+        For the IDVARs that few child rows use
+        (fewer than half as many as the parent has rows, e.g. FAGRPID in RELREC),
+        only the parent rows that a child row names through that IDVAR are kept, as no other row can be joined
+        (otherwise all of FA is copied, and sorted, for the one RELREC record using FAGRPID).
+        These rows are stored in an analysed table, as Postgres can't estimate how many are kept,
+        and would then pick a join testing every child row against every parent row of the same subject.
+        """
+
+        # (child column, parent column) pairs that the join compares as they are, so they can be filtered on too
+        filter_pivots = [
+            (links.get_column_hash(child_column), parent.get_column_hash(parent_column))
+            for child_column, parent_column in pivots
+            if links.has_column(child_column)
+            and links.get_column(child_column).type == parent.get_column(parent_column).type
+        ]
+        linked_key = numeric_aware_key_sql(f"c.{links.get_column_hash('idvarval')}")
+
+        def keyed_rows(idvar: str, linked_only: bool) -> str:
+            idvar_sql = quote_literal_sql(idvar)
             key = numeric_aware_key_sql(f"p.{parent.get_column_hash(idvar)}")
-            branches.append(f"SELECT p.*, '{escaped}'::text AS {LINK_IDVAR}, {key} AS {LINK_KEY} FROM {parent.hash} p")
-        return f"({' UNION ALL '.join(branches)})"
+            rows = f"SELECT p.*, {idvar_sql}::text AS {LINK_IDVAR}, {key} AS {LINK_KEY} FROM {parent.hash} p"
+            if linked_only:
+                parent_values = [f"p.{parent_hash}" for _, parent_hash in filter_pivots] + [key]
+                child_values = [f"c.{child_hash}" for child_hash, _ in filter_pivots] + [linked_key]
+                rows += (
+                    f" WHERE ({', '.join(parent_values)}) IN (SELECT {', '.join(child_values)} FROM {links.hash} c"
+                    f" WHERE c.{links.get_column_hash('idvar')} = {idvar_sql})"
+                )
+            return rows
+
+        pgi.execute_sql(f"SELECT COALESCE(MAX(id), 0) AS n FROM {parent.hash}")
+        parent_rows = pgi.fetch_all()[0]["n"]
+        sparse_idvars = [idvar for idvar, rows in idvar_rows.items() if rows * 2 < parent_rows]
+        sources = [keyed_rows(idvar, linked_only=False) for idvar in idvar_rows if idvar not in sparse_idvars]
+        if sparse_idvars:
+            linked = SqlTableSchema.derived(f"{parent.name}_LINKED_FROM_{links.name}", pgi).hash
+            pgi.execute_sql(f"SELECT to_regclass({quote_literal_sql(linked)}) IS NOT NULL AS stored")
+            if not pgi.fetch_all()[0]["stored"]:
+                linked_rows = " UNION ALL ".join(keyed_rows(idvar, linked_only=True) for idvar in sparse_idvars)
+                pgi.execute_sql(f"CREATE UNLOGGED TABLE {linked} AS {linked_rows}")
+                pgi.execute_sql(f"ANALYZE {linked}")
+            sources.append(f"SELECT * FROM {linked}")
+        return f"({' UNION ALL '.join(sources)})"
 
     @staticmethod
     def _find_linking_idvars(
@@ -171,10 +223,11 @@ class SqlChildMerge:
         child: SqlTableSchema,
         parent: SqlTableSchema,
         parent_domain: str,
-    ) -> List[str]:
+    ) -> Dict[str, int]:
         """
         The child's IDVAR values that name a real column on the parent, i.e. the parent
-        columns its IDVARVALs are matched against (e.g. IDVAR='AESEQ' -> parent.AESEQ).
+        columns its IDVARVALs are matched against (e.g. IDVAR='AESEQ' -> parent.AESEQ),
+        with the number of child rows using each.
 
         Restricted to rows relating to parent_domain: datasets like RELREC hold rows for
         many different RDOMAIN values in one table (e.g. AESEQ for AE-side rows, LBSEQ for
@@ -193,11 +246,14 @@ class SqlChildMerge:
             escaped_domain = parent_domain.replace("'", "''")
             where_clauses.append(f"{rdomain_hash} = '{escaped_domain}'")
 
-        pgi.execute_sql(f"SELECT DISTINCT {idvar_hash} AS col FROM {child.hash} WHERE {' AND '.join(where_clauses)}")
-        idvar_values = [row["col"] for row in pgi.fetch_all() if row.get("col")]
+        pgi.execute_sql(
+            f"SELECT {idvar_hash} AS col, COUNT(*) AS n FROM {child.hash} "
+            f"WHERE {' AND '.join(where_clauses)} GROUP BY 1 ORDER BY 1"
+        )
+        idvar_rows = {row["col"]: row["n"] for row in pgi.fetch_all() if row.get("col")}
 
-        linking = []
-        for value in idvar_values:
+        linking = {}
+        for value, rows in idvar_rows.items():
             if not parent.has_column(value):
                 # An IDVAR value that doesn't name a real column in the parent is invalid
                 # data, not a reason to abort the merge - rows referencing it simply don't
@@ -209,7 +265,7 @@ class SqlChildMerge:
                     f"referenced by IDVAR in '{child.name}'; treating as unmatched."
                 )
                 continue
-            linking.append(value)
+            linking[value] = rows
         return linking
 
     @staticmethod
