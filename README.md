@@ -586,6 +586,12 @@ A custom standard maps a standard name and version to the list of rules to run f
   python core.py update-cache --custom-standard 'path/to/standard.json'
   ```
 
+  The file is read as UTF-8 (with or without a BOM), falling back to the system encoding. If it was saved in another encoding, such as Shift-JIS, pass it with `--custom-standard-encoding` or `-cse`:
+
+  ```bash
+  python core.py update-cache --custom-standard 'path/to/standard.json' --custom-standard-encoding cp932
+  ```
+
 - To remove custom standards, use the `--remove-custom-standard` or `-rcs` flag:
 
   ```bash

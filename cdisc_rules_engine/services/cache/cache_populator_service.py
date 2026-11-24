@@ -1,6 +1,5 @@
 import asyncio
 import pickle
-import json
 import uuid
 from contextlib import suppress
 from dataclasses import dataclass, field
@@ -21,6 +20,7 @@ from cdisc_rules_engine.utilities.utils import (
     get_library_variables_metadata_cache_key,
     get_standard_details_cache_key,
     get_model_details_cache_key,
+    load_json_with_optional_encoding,
 )
 from scripts.script_utils import load_and_parse_rule
 from cdisc_rules_engine.constants.cache_constants import PUBLISHED_CT_PACKAGES
@@ -105,6 +105,7 @@ class CachePopulator:
         custom_standards=None,
         remove_custom_standards=None,
         cache_path="",
+        custom_standards_encoding=None,
     ):
         self.cache = cache
         self.library_service = library_service
@@ -113,6 +114,7 @@ class CachePopulator:
         self.remove_custom_rules = remove_custom_rules
         self.update_custom_rule = update_custom_rule
         self.custom_standards = custom_standards
+        self.custom_standards_encoding = custom_standards_encoding
         self.remove_custom_standards = remove_custom_standards
         self.cache_path = cache_path
         self.report = CacheUpdateReport()
@@ -714,8 +716,7 @@ class CachePopulator:
         """Add or update a custom standard to the cache."""
         if not os.path.isfile(self.custom_standards):
             raise ValueError("Invalid standard filepath")
-        with open(self.custom_standards, "r") as f:
-            new_standard = json.load(f)
+        new_standard = load_json_with_optional_encoding(self.custom_standards, self.custom_standards_encoding)
 
         # Validate the input format
         if not isinstance(new_standard, dict):

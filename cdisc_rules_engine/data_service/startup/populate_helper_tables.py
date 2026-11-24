@@ -47,7 +47,11 @@ def populate_helper_tables(pgi: PostgresQLInterface):
         schema = schema_func()
         pgi.create_table(schema)
 
-        with open(HELPER_DATA_PATH / file_path, "r") as f:
+        if HELPER_DATA_PATH / file_path not in valid_helper_paths:
+            logger.warning(f"Helper data file not found: {file_path.name}")
+            continue
+
+        with open(HELPER_DATA_PATH / file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         if data:

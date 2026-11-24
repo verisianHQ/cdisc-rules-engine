@@ -1,4 +1,5 @@
 import asyncio
+import codecs
 import json
 import logging
 import os
@@ -62,6 +63,18 @@ def valid_data_file(
     if len(found_formats) > 1 and not sql_engine:
         return [], found_formats, unsupported
     return file_list, found_formats, unsupported
+
+
+def validate_encoding(_ctx, _param, value):
+    if value is None:
+        return None
+    try:
+        is_text = getattr(codecs.lookup(value), "_is_text_encoding", True)
+    except LookupError:
+        is_text = False
+    if not is_text:
+        raise click.BadParameter(f"Unsupported encoding '{value}' (e.g. utf-8, cp932, shift_jis, latin-1).")
+    return value
 
 
 @click.group(context_settings={"token_normalize_func": lambda token: token.replace("_", "-")})
@@ -529,6 +542,15 @@ def validate(  # noqa: C901
     ),
 )
 @click.option(
+    "-cse",
+    "--custom-standard-encoding",
+    callback=validate_encoding,
+    help=(
+        "Encoding of the --custom-standard JSON file, e.g. cp932. "
+        "Defaults to UTF-8 (with or without BOM), then the system encoding."
+    ),
+)
+@click.option(
     "-rcs",
     "--remove-custom-standard",
     help=("removes a custom standard and version from the cache. "),
@@ -544,8 +566,11 @@ def update_cache(
     remove_custom_rules: str,
     update_custom_rule: str,
     custom_standard: str,
+    custom_standard_encoding: str,
     remove_custom_standard: str,
 ):
+    if custom_standard_encoding and not custom_standard:
+        raise click.UsageError("--custom-standard-encoding requires --custom-standard.")
     cache = CacheServiceFactory(config).get_cache_service()
     library_service = CDISCLibraryService(apikey, cache)
     cache_populator = CachePopulator(
@@ -558,6 +583,7 @@ def update_cache(
         custom_standard,
         remove_custom_standard,
         cache_path,
+        custom_standards_encoding=custom_standard_encoding,
     )
     if custom_rule or custom_rules_directory:
         cache_populator.add_custom_rules()
