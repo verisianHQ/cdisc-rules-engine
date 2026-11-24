@@ -267,9 +267,22 @@ def extract_file_name_from_path_string(path: str) -> str:
     return os.path.split(path)[-1]
 
 
-def generate_report_filename(generation_time: str) -> str:
-    timestamp = datetime.fromisoformat(generation_time).replace(microsecond=0).isoformat().replace(":", "-")
+def _filename_timestamp(generation_time: str) -> str:
+    return datetime.fromisoformat(generation_time).replace(microsecond=0).isoformat().replace(":", "-")
+
+
+def generate_report_filename(generation_time: str, run_tag: str = None) -> str:
+    timestamp = _filename_timestamp(generation_time)
+    if run_tag:
+        return f"CORE-Report_{run_tag}_{timestamp}"
     return f"CORE-Report-{timestamp}"
+
+
+def generate_runtime_analysis_filename(generation_time: str, run_tag: str = None) -> str:
+    timestamp = _filename_timestamp(generation_time)
+    if run_tag:
+        return f"CORE-runtime-analysis_{run_tag}_{timestamp}.csv"
+    return f"CORE-runtime-analysis_{timestamp}.csv"
 
 
 def get_rules_cache_key(standard: str, version: str, substandard: str = None) -> str:

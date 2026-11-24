@@ -37,6 +37,7 @@ from cdisc_rules_engine.standards.standards_factory import StandardsFactory
 from cdisc_rules_engine.utilities.ingestion_progress import get_ingestion_progress_reporter
 from cdisc_rules_engine.utilities.report_progress import get_report_progress_reporter
 from cdisc_rules_engine.utilities.rule_progress import get_rule_progress_reporter
+from cdisc_rules_engine.utilities.runtime_analysis import add_rule_runtime, write_runtime_analysis
 from cdisc_rules_engine.utilities.rule_required_inputs import (
     get_missing_inputs,
     get_missing_inputs_summary,
@@ -209,6 +210,7 @@ def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals
         data_service.define_xml_path, data_service.stf_file_path, data_service.dictionary_metadata.keys()
     )
     missing_inputs_by_rule = {}
+    rule_runtimes = {}
 
     # instantiate logger in each child process to maintain log level
     # initializer = partial(initialize_logger, engine_logger.disabled, engine_logger._logger.level)
@@ -230,7 +232,10 @@ def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals
             data_service.pgi.reset_connections()
             rule_progress_reporter.start_rule(rule.get("core_id"), rule_index, len(rules))
             missing_inputs = get_missing_inputs(rule, supplied_inputs)
+            rule_start = time.perf_counter()
             result = sql_validate_single_rule(engine, args, rule, missing_inputs)
+            runtime_ms = (time.perf_counter() - rule_start) * 1000
+            add_rule_runtime(rule_runtimes, rule.get("core_id"), runtime_ms)
             # count the rule only if a dataset in its scope was reported as not applicable
             if missing_inputs and any(is_not_applicable(entry) for entry in result.results):
                 missing_inputs_by_rule[rule.get("core_id")] = missing_inputs
@@ -259,6 +264,9 @@ def _run_sql_validation(args: Validation_args, in_memory_postgres: bool, signals
     if missing_inputs_summary:
         print(missing_inputs_summary)
     print(f"Output: {args.output}")
+    if args.runtime_analysis_path:
+        write_runtime_analysis(args.runtime_analysis_path, rule_runtimes)
+        print(f"Runtime analysis: {args.runtime_analysis_path}")
 
 
 # TODO: fix this one first
